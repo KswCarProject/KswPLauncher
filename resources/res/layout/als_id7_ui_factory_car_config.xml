@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:scrollbars="none" android:layout_width="match_parent" android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:scrollbars="none" android:layout_width="match_parent" android:layout_height="match_parent">
     <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:paddingEnd="10dp">
         <com.wits.ksw.settings.utlis_view.CustomSkinCheckBox android:textSize="25sp" android:textColor="@color/color1" android:gravity="center" android:id="@+id/cbox_dcld" android:padding="10dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:button="@drawable/als_id7_ui_checkbox_selector" android:text="@string/factory_text1"/>
         <com.wits.ksw.settings.utlis_view.RtlTextView android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/audi_home_left_widget_textview" android:padding="10dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/audi_home_left_widget"/>

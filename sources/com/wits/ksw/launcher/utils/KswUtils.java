@@ -14,19 +14,19 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import com.ibm.icu.text.DateFormat;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.KswApplication;
-import com.wits.ksw.R;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/* loaded from: classes11.dex */
 public class KswUtils {
     public static final double RPH = 0.621d;
-    private static final String TAG = ("KswApplication." + KswUtils.class.getSimpleName());
+    private static final String TAG = "KswApplication." + KswUtils.class.getSimpleName();
     private static volatile KswUtils singleton;
 
     private KswUtils() {
@@ -45,53 +45,55 @@ public class KswUtils {
 
     public static int calculateTranslate(int top, int h, int i, Context context) {
         Log.d("calculateTranslate", " top: " + top + " h " + h + " index " + i);
-        int hh = h - dip2px(context, 71.3f);
-        int result = (hh - Math.abs(hh - top)) / 6;
+        int h2 = h - dip2px(context, 71.3f);
+        int result = Math.abs(h2 - top);
+        int result2 = (h2 - result) / 6;
         if (i == 1) {
-            result = (top * 20) / 107;
+            result2 = (top * 20) / 107;
         } else if (i == 2) {
-            result = (((top - 107) * 18) / 107) + 20;
+            result2 = (((top - 107) * 18) / 107) + 20;
         } else if (i == 3) {
-            result = (((top - 214) * 14) / 107) + 38;
+            result2 = (((top - 214) * 14) / 107) + 38;
         } else if (i == 4) {
-            result = (((top - 321) * 8) / 107) + 52;
+            result2 = (((top - 321) * 8) / 107) + 52;
         } else if (i == 5 || i == 6) {
-            result = (((top - 428) * 5) / 107) + 60;
+            result2 = (((top - 428) * 5) / 107) + 60;
         }
-        Log.d("calculateTranslate", " result " + result);
-        return result;
+        Log.d("calculateTranslate", " result " + result2);
+        return result2;
     }
 
     public static int calculateTranslate2(int top, int h, int i, Context context) {
         Log.d("calculateTranslate", " top: " + top + " h " + h + " index " + i);
-        int hh = h - dip2px(context, 71.3f);
-        int result = (hh - Math.abs(hh - top)) / 6;
+        int h2 = h - dip2px(context, 71.3f);
+        int result = Math.abs(h2 - top);
+        int result2 = (h2 - result) / 6;
         if (i != 0) {
             if (i == 1) {
-                result = (top * 23) / 107;
+                result2 = (top * 23) / 107;
             } else if (i == 2) {
-                result = (((top - 107) * 16) / 107) + 23;
+                result2 = (((top - 107) * 16) / 107) + 23;
             } else if (i == 3) {
-                result = (((top - 214) * 17) / 107) + 39;
+                result2 = (((top - 214) * 17) / 107) + 39;
             } else if (i == 4) {
-                result = (((top - 321) * 11) / 107) + 56;
-            } else if (i == 5) {
-                result = (((top - 428) * 5) / 107) + 67;
+                result2 = (((top - 321) * 11) / 107) + 56;
             } else {
-                result = (((top - 428) * 5) / 107) + 67;
+                result2 = i == 5 ? (((top - 428) * 5) / 107) + 67 : (((top - 428) * 5) / 107) + 67;
             }
         }
-        Log.d("calculateTranslate", " result " + result);
-        return result;
+        Log.d("calculateTranslate", " result " + result2);
+        return result2;
     }
 
     public static int dip2px(Context context, float dpValue) {
-        return (int) ((dpValue * context.getResources().getDisplayMetrics().density) + 0.5f);
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) ((dpValue * scale) + 0.5f);
     }
 
     public static boolean isAppInstalled(String uri) {
+        PackageManager pm = KswApplication.appContext.getPackageManager();
         try {
-            KswApplication.appContext.getPackageManager().getPackageInfo(uri, 1);
+            pm.getPackageInfo(uri, 1);
             return true;
         } catch (PackageManager.NameNotFoundException e) {
             return false;
@@ -105,18 +107,15 @@ public class KswUtils {
         } catch (PackageManager.NameNotFoundException e) {
             packageInfo = null;
         }
-        if (packageInfo != null) {
-            return true;
-        }
-        return false;
+        return packageInfo != null;
     }
 
     public static boolean isSystemapp(String packageName) {
+        Context context = KswApplication.appContext;
+        PackageManager pm = context.getPackageManager();
         try {
-            if ((KswApplication.appContext.getPackageManager().getPackageInfo(packageName, 0).applicationInfo.flags & 1) > 0) {
-                return true;
-            }
-            return false;
+            PackageInfo packageInfo = pm.getPackageInfo(packageName, 0);
+            return (packageInfo.applicationInfo.flags & 1) > 0;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             return false;
@@ -124,7 +123,8 @@ public class KswUtils {
     }
 
     public static String formatMusicPlayTime(long time) {
-        return new SimpleDateFormat(time >= 3600000 ? "H:m:ss" : "m:ss").format(new Date(time));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(time >= 3600000 ? "H:m:ss" : "m:ss");
+        return simpleDateFormat.format(new Date(time));
     }
 
     public static String formatMusicPlayTimeRemain(int time, int max) {
@@ -134,17 +134,27 @@ public class KswUtils {
         } else {
             value = max - time;
         }
-        return new SimpleDateFormat(value >= 3600000 ? "H:m:ss" : "m:ss").format(new Date((long) value));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(value >= 3600000 ? "H:m:ss" : "m:ss");
+        return simpleDateFormat.format(new Date(value));
     }
 
     public static String formatMonth(Date date) {
-        String m = new SimpleDateFormat(DateFormat.NUM_MONTH).format(date);
+        String[] months;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DateFormat.NUM_MONTH);
+        String m = simpleDateFormat.format(date);
         Log.i("KswUtils", "formatMonth: " + getLocalLanager());
-        return KswApplication.appContext.getResources().getStringArray(R.array.ksw_id7_months)[Integer.valueOf(m).intValue() - 1];
+        if (UiThemeUtils.isUI_PEMP_ID8(KswApplication.appContext)) {
+            months = KswApplication.appContext.getResources().getStringArray(C0899R.array.all_months);
+        } else {
+            months = KswApplication.appContext.getResources().getStringArray(C0899R.array.ksw_id7_months);
+        }
+        int mm = Integer.valueOf(m).intValue();
+        return months[mm - 1];
     }
 
     public static String formatDay(Date date) {
-        return new SimpleDateFormat(is24Hour() ? "dd" : DateFormat.DAY).format(date);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(is24Hour() ? "dd" : DateFormat.DAY);
+        return simpleDateFormat.format(date);
     }
 
     public static boolean is24Hour() {
@@ -152,11 +162,11 @@ public class KswUtils {
     }
 
     public static String splitPathMusicName(String path) {
-        if (TextUtils.isEmpty(path)) {
-            return null;
+        if (!TextUtils.isEmpty(path)) {
+            String[] splits = path.split("/");
+            return splits[splits.length - 1];
         }
-        String[] splits = path.split("/");
-        return splits[splits.length - 1];
+        return null;
     }
 
     public static String getLocalLanager() {
@@ -172,11 +182,14 @@ public class KswUtils {
     }
 
     public static void sendKeyDownUpSync(final int key) {
-        new Handler().post(new Runnable() {
+        new Handler().post(new Runnable() { // from class: com.wits.ksw.launcher.utils.KswUtils.1
+            @Override // java.lang.Runnable
             public void run() {
-                new Thread(new Runnable() {
+                new Thread(new Runnable() { // from class: com.wits.ksw.launcher.utils.KswUtils.1.1
+                    @Override // java.lang.Runnable
                     public void run() {
-                        new Instrumentation().sendKeyDownUpSync(key);
+                        Instrumentation instrumentation = new Instrumentation();
+                        instrumentation.sendKeyDownUpSync(key);
                     }
                 }).start();
             }
@@ -185,20 +198,20 @@ public class KswUtils {
 
     public static int screenWidth(Context context) {
         new DisplayMetrics();
-        return context.getResources().getDisplayMetrics().widthPixels;
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        return dm.widthPixels;
     }
 
     public static int screenHight(Context context) {
         new DisplayMetrics();
-        return context.getResources().getDisplayMetrics().heightPixels;
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        return dm.heightPixels;
     }
 
     public static boolean isDvr() {
         try {
-            if (PowerManagerApp.getSettingsInt("DVR_Type") != 0) {
-                return true;
-            }
-            return false;
+            int dvr = PowerManagerApp.getSettingsInt("DVR_Type");
+            return dvr != 0;
         } catch (RemoteException e) {
             e.printStackTrace();
             return false;
@@ -224,7 +237,7 @@ public class KswUtils {
     }
 
     public static void translate(View view, int id) {
-        Animation translateAnimation = AnimationUtils.loadAnimation(view.getContext(), id);
+        Animation translateAnimation = android.view.animation.AnimationUtils.loadAnimation(view.getContext(), id);
         view.setAnimation(translateAnimation);
         view.startAnimation(translateAnimation);
     }
@@ -248,10 +261,11 @@ public class KswUtils {
     }
 
     public static void saveLexusLsLastPosition(Context context, int position) {
-        if (context != null) {
-            Settings.System.putInt(context.getContentResolver(), "LexusLsPosition", position);
-            Log.i(TAG, "saveLastPosition: LexusLsPosition=" + position);
+        if (context == null) {
+            return;
         }
+        Settings.System.putInt(context.getContentResolver(), "LexusLsPosition", position);
+        Log.i(TAG, "saveLastPosition: LexusLsPosition=" + position);
     }
 
     public static int getLexusLsLastPosition(Context context) {
@@ -259,10 +273,11 @@ public class KswUtils {
     }
 
     public static void saveLastViewId(Context context, View view) {
-        if (view != null && context != null) {
-            Settings.System.putInt(context.getContentResolver(), "view", view.getId());
-            Log.i(TAG, "saveLastViewId: resId=" + view.getId());
+        if (view == null || context == null) {
+            return;
         }
+        Settings.System.putInt(context.getContentResolver(), "view", view.getId());
+        Log.i(TAG, "saveLastViewId: resId=" + view.getId());
     }
 
     public static int getLastViewId(Context context) {
@@ -274,18 +289,23 @@ public class KswUtils {
     }
 
     public static int getBenzpaneVersion() {
+        String str = "getBenzpaneVersion: benzpane=";
+        int benzpane = 0;
         try {
-            int benzpane = PowerManagerApp.getSettingsInt(KeyConfig.BENZPANE);
-            Log.d(TAG, "getBenzpaneVersion: benzpane=" + benzpane);
-            return benzpane;
-        } catch (Exception e) {
-            e.printStackTrace();
-            String str = TAG;
-            Log.e(str, "getBenzpaneVersion: RemoteException=" + e.getMessage());
-            Log.d(str, "getBenzpaneVersion: benzpane=" + 0);
-            return 0;
+            try {
+                benzpane = PowerManagerApp.getSettingsInt(KeyConfig.BENZPANE);
+                str = "getBenzpaneVersion: benzpane=" + benzpane;
+                Log.d(TAG, str);
+                return benzpane;
+            } catch (Exception e) {
+                e.printStackTrace();
+                String str2 = TAG;
+                Log.e(str2, "getBenzpaneVersion: RemoteException=" + e.getMessage());
+                Log.d(str2, "getBenzpaneVersion: benzpane=0");
+                return 0;
+            }
         } catch (Throwable th) {
-            Log.d(TAG, "getBenzpaneVersion: benzpane=" + 0);
+            Log.d(TAG, str + benzpane);
             throw th;
         }
     }

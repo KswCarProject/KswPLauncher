@@ -8,20 +8,22 @@ import io.reactivex.exceptions.CompositeException;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.BiConsumer;
 
+/* loaded from: classes.dex */
 public final class SingleDoOnEvent<T> extends Single<T> {
     final BiConsumer<? super T, ? super Throwable> onEvent;
     final SingleSource<T> source;
 
-    public SingleDoOnEvent(SingleSource<T> source2, BiConsumer<? super T, ? super Throwable> onEvent2) {
-        this.source = source2;
-        this.onEvent = onEvent2;
+    public SingleDoOnEvent(SingleSource<T> source, BiConsumer<? super T, ? super Throwable> onEvent) {
+        this.source = source;
+        this.onEvent = onEvent;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         this.source.subscribe(new DoOnEvent(observer));
     }
 
+    /* loaded from: classes.dex */
     final class DoOnEvent implements SingleObserver<T> {
         private final SingleObserver<? super T> downstream;
 
@@ -29,10 +31,12 @@ public final class SingleDoOnEvent<T> extends Single<T> {
             this.downstream = observer;
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
             this.downstream.onSubscribe(d);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSuccess(T value) {
             try {
                 SingleDoOnEvent.this.onEvent.accept(value, null);
@@ -43,6 +47,7 @@ public final class SingleDoOnEvent<T> extends Single<T> {
             }
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
             try {
                 SingleDoOnEvent.this.onEvent.accept(null, e);

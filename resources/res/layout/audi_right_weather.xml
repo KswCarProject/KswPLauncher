@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:tag="layout/audi_right_weather_0" android:layout_width="match_parent" android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:tag="layout/audi_right_weather_0" android:layout_width="match_parent" android:layout_height="match_parent">
     <android.support.constraint.ConstraintLayout android:id="@+id/cl_weather" android:tag="binding_1" android:visibility="visible" android:layout_width="265dp" android:layout_height="304dp" android:layout_marginTop="74dp" android:layout_marginRight="57dp" android:layout_alignParentRight="true">
         <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/audi_right_weather_bk" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
         <ImageView android:id="@+id/iv_icon" android:tag="binding_2" android:layout_width="119dp" android:layout_height="119dp" android:layout_marginTop="31dp" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>

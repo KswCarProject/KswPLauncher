@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
+import kotlin.UByte;
 
+/* loaded from: classes.dex */
 public final class Util {
     private static final int HASH_ACCUMULATOR = 17;
     private static final int HASH_MULTIPLIER = 31;
@@ -30,7 +32,7 @@ public final class Util {
 
     private static String bytesToHex(byte[] bytes, char[] hexChars) {
         for (int j = 0; j < bytes.length; j++) {
-            int v = bytes[j] & 255;
+            int v = bytes[j] & UByte.MAX_VALUE;
             char[] cArr = HEX_CHAR_ARRAY;
             hexChars[j * 2] = cArr[v >>> 4];
             hexChars[(j * 2) + 1] = cArr[v & 15];
@@ -44,16 +46,16 @@ public final class Util {
     }
 
     public static int getBitmapByteSize(Bitmap bitmap) {
-        if (!bitmap.isRecycled()) {
-            if (Build.VERSION.SDK_INT >= 19) {
-                try {
-                    return bitmap.getAllocationByteCount();
-                } catch (NullPointerException e) {
-                }
-            }
-            return bitmap.getHeight() * bitmap.getRowBytes();
+        if (bitmap.isRecycled()) {
+            throw new IllegalStateException("Cannot obtain size for recycled Bitmap: " + bitmap + "[" + bitmap.getWidth() + "x" + bitmap.getHeight() + "] " + bitmap.getConfig());
         }
-        throw new IllegalStateException("Cannot obtain size for recycled Bitmap: " + bitmap + "[" + bitmap.getWidth() + "x" + bitmap.getHeight() + "] " + bitmap.getConfig());
+        if (Build.VERSION.SDK_INT >= 19) {
+            try {
+                return bitmap.getAllocationByteCount();
+            } catch (NullPointerException e) {
+            }
+        }
+        return bitmap.getHeight() * bitmap.getRowBytes();
     }
 
     public static int getBitmapByteSize(int width, int height, Bitmap.Config config) {
@@ -64,7 +66,7 @@ public final class Util {
         if (config == null) {
             config = Bitmap.Config.ARGB_8888;
         }
-        switch (AnonymousClass1.$SwitchMap$android$graphics$Bitmap$Config[config.ordinal()]) {
+        switch (C05561.$SwitchMap$android$graphics$Bitmap$Config[config.ordinal()]) {
             case 1:
                 return 1;
             case 2:
@@ -77,8 +79,9 @@ public final class Util {
         }
     }
 
-    /* renamed from: com.bumptech.glide.util.Util$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
+    /* renamed from: com.bumptech.glide.util.Util$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C05561 {
         static final /* synthetic */ int[] $SwitchMap$android$graphics$Bitmap$Config;
 
         static {
@@ -150,20 +153,17 @@ public final class Util {
     }
 
     public static boolean bothNullOrEqual(Object a, Object b) {
-        if (a == null) {
-            return b == null;
-        }
-        return a.equals(b);
+        return a == null ? b == null : a.equals(b);
     }
 
     public static boolean bothModelsNullEquivalentOrEquals(Object a, Object b) {
         if (a == null) {
             return b == null;
-        }
-        if (a instanceof Model) {
+        } else if (a instanceof Model) {
             return ((Model) a).isEquivalentTo(b);
+        } else {
+            return a.equals(b);
         }
-        return a.equals(b);
     }
 
     public static int hashCode(int value) {
@@ -187,7 +187,7 @@ public final class Util {
     }
 
     public static int hashCode(boolean value, int accumulator) {
-        return hashCode((int) value, accumulator);
+        return hashCode(value ? 1 : 0, accumulator);
     }
 
     public static int hashCode(boolean value) {

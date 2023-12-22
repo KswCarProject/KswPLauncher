@@ -3,70 +3,60 @@ package android.support.constraint.motion;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.support.constraint.R;
+import android.support.constraint.C0088R;
+import android.support.constraint.ConstraintAttribute;
+import android.support.constraint.motion.TimeCycleSplineSet;
 import android.support.constraint.motion.utils.CurveFit;
-import android.support.v4.app.NotificationCompat;
+import android.support.p001v4.app.NotificationCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseIntArray;
+import android.util.TypedValue;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 
+/* loaded from: classes.dex */
 public class KeyTimeCycle extends Key {
     public static final int KEY_TYPE = 3;
     static final String NAME = "KeyTimeCycle";
     private static final String TAG = "KeyTimeCycle";
-    /* access modifiers changed from: private */
-    public float mAlpha = Float.NaN;
-    /* access modifiers changed from: private */
-    public int mCurveFit = -1;
-    /* access modifiers changed from: private */
-    public float mElevation = Float.NaN;
-    /* access modifiers changed from: private */
-    public float mProgress = Float.NaN;
-    /* access modifiers changed from: private */
-    public float mRotation = Float.NaN;
-    /* access modifiers changed from: private */
-    public float mRotationX = Float.NaN;
-    /* access modifiers changed from: private */
-    public float mRotationY = Float.NaN;
-    /* access modifiers changed from: private */
-    public float mScaleX = Float.NaN;
-    /* access modifiers changed from: private */
-    public float mScaleY = Float.NaN;
-    /* access modifiers changed from: private */
-    public String mTransitionEasing;
-    /* access modifiers changed from: private */
-    public float mTransitionPathRotate = Float.NaN;
-    /* access modifiers changed from: private */
-    public float mTranslationX = Float.NaN;
-    /* access modifiers changed from: private */
-    public float mTranslationY = Float.NaN;
-    /* access modifiers changed from: private */
-    public float mTranslationZ = Float.NaN;
-    /* access modifiers changed from: private */
-    public float mWaveOffset = 0.0f;
+    private String mTransitionEasing;
     private CurveFit mWaveOffsetSpline;
-    /* access modifiers changed from: private */
-    public float mWavePeriod = Float.NaN;
     private CurveFit mWavePeriodSpline;
-    /* access modifiers changed from: private */
-    public int mWaveShape = 0;
+    private int mCurveFit = -1;
+    private float mAlpha = Float.NaN;
+    private float mElevation = Float.NaN;
+    private float mRotation = Float.NaN;
+    private float mRotationX = Float.NaN;
+    private float mRotationY = Float.NaN;
+    private float mTransitionPathRotate = Float.NaN;
+    private float mScaleX = Float.NaN;
+    private float mScaleY = Float.NaN;
+    private float mTranslationX = Float.NaN;
+    private float mTranslationY = Float.NaN;
+    private float mTranslationZ = Float.NaN;
+    private float mProgress = Float.NaN;
+    private int mWaveShape = 0;
+    private float mWavePeriod = Float.NaN;
+    private float mWaveOffset = 0.0f;
 
     public KeyTimeCycle() {
         this.mType = 3;
-        this.mCustomConstraints = new HashMap();
+        this.mCustomConstraints = new HashMap<>();
     }
 
+    @Override // android.support.constraint.motion.Key
     public void load(Context context, AttributeSet attrs) {
-        Loader.read(this, context.obtainStyledAttributes(attrs, R.styleable.KeyTimeCycle));
+        TypedArray a = context.obtainStyledAttributes(attrs, C0088R.styleable.KeyTimeCycle);
+        Loader.read(this, a);
     }
 
-    /* access modifiers changed from: package-private */
-    public int getCurveFit() {
+    int getCurveFit() {
         return this.mCurveFit;
     }
 
+    @Override // android.support.constraint.motion.Key
     public void getAttributeNames(HashSet<String> attributes) {
         if (!Float.isNaN(this.mAlpha)) {
             attributes.add("alpha");
@@ -111,557 +101,412 @@ public class KeyTimeCycle extends Key {
         }
     }
 
+    @Override // android.support.constraint.motion.Key
     public void setInterpolation(HashMap<String, Integer> interpolation) {
-        if (this.mCurveFit != -1) {
-            if (!Float.isNaN(this.mAlpha)) {
-                interpolation.put("alpha", Integer.valueOf(this.mCurveFit));
+        if (this.mCurveFit == -1) {
+            return;
+        }
+        if (!Float.isNaN(this.mAlpha)) {
+            interpolation.put("alpha", Integer.valueOf(this.mCurveFit));
+        }
+        if (!Float.isNaN(this.mElevation)) {
+            interpolation.put("elevation", Integer.valueOf(this.mCurveFit));
+        }
+        if (!Float.isNaN(this.mRotation)) {
+            interpolation.put("rotation", Integer.valueOf(this.mCurveFit));
+        }
+        if (!Float.isNaN(this.mRotationX)) {
+            interpolation.put("rotationX", Integer.valueOf(this.mCurveFit));
+        }
+        if (!Float.isNaN(this.mRotationY)) {
+            interpolation.put("rotationY", Integer.valueOf(this.mCurveFit));
+        }
+        if (!Float.isNaN(this.mTranslationX)) {
+            interpolation.put("translationX", Integer.valueOf(this.mCurveFit));
+        }
+        if (!Float.isNaN(this.mTranslationY)) {
+            interpolation.put("translationY", Integer.valueOf(this.mCurveFit));
+        }
+        if (!Float.isNaN(this.mTranslationZ)) {
+            interpolation.put("translationZ", Integer.valueOf(this.mCurveFit));
+        }
+        if (!Float.isNaN(this.mTransitionPathRotate)) {
+            interpolation.put("transitionPathRotate", Integer.valueOf(this.mCurveFit));
+        }
+        if (!Float.isNaN(this.mScaleX)) {
+            interpolation.put("scaleX", Integer.valueOf(this.mCurveFit));
+        }
+        if (!Float.isNaN(this.mScaleX)) {
+            interpolation.put("scaleY", Integer.valueOf(this.mCurveFit));
+        }
+        if (!Float.isNaN(this.mProgress)) {
+            interpolation.put(NotificationCompat.CATEGORY_PROGRESS, Integer.valueOf(this.mCurveFit));
+        }
+        if (this.mCustomConstraints.size() > 0) {
+            for (String s : this.mCustomConstraints.keySet()) {
+                interpolation.put("CUSTOM," + s, Integer.valueOf(this.mCurveFit));
             }
-            if (!Float.isNaN(this.mElevation)) {
-                interpolation.put("elevation", Integer.valueOf(this.mCurveFit));
-            }
-            if (!Float.isNaN(this.mRotation)) {
-                interpolation.put("rotation", Integer.valueOf(this.mCurveFit));
-            }
-            if (!Float.isNaN(this.mRotationX)) {
-                interpolation.put("rotationX", Integer.valueOf(this.mCurveFit));
-            }
-            if (!Float.isNaN(this.mRotationY)) {
-                interpolation.put("rotationY", Integer.valueOf(this.mCurveFit));
-            }
-            if (!Float.isNaN(this.mTranslationX)) {
-                interpolation.put("translationX", Integer.valueOf(this.mCurveFit));
-            }
-            if (!Float.isNaN(this.mTranslationY)) {
-                interpolation.put("translationY", Integer.valueOf(this.mCurveFit));
-            }
-            if (!Float.isNaN(this.mTranslationZ)) {
-                interpolation.put("translationZ", Integer.valueOf(this.mCurveFit));
-            }
-            if (!Float.isNaN(this.mTransitionPathRotate)) {
-                interpolation.put("transitionPathRotate", Integer.valueOf(this.mCurveFit));
-            }
-            if (!Float.isNaN(this.mScaleX)) {
-                interpolation.put("scaleX", Integer.valueOf(this.mCurveFit));
-            }
-            if (!Float.isNaN(this.mScaleX)) {
-                interpolation.put("scaleY", Integer.valueOf(this.mCurveFit));
-            }
-            if (!Float.isNaN(this.mProgress)) {
-                interpolation.put(NotificationCompat.CATEGORY_PROGRESS, Integer.valueOf(this.mCurveFit));
-            }
-            if (this.mCustomConstraints.size() > 0) {
-                for (String s : this.mCustomConstraints.keySet()) {
-                    interpolation.put("CUSTOM," + s, Integer.valueOf(this.mCurveFit));
+        }
+    }
+
+    @Override // android.support.constraint.motion.Key
+    public void addValues(HashMap<String, SplineSet> splines) {
+        throw new IllegalArgumentException(" KeyTimeCycles do not support SplineSet");
+    }
+
+    /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
+    /* JADX WARN: Code restructure failed: missing block: B:20:0x006d, code lost:
+        if (r1.equals("elevation") != false) goto L12;
+     */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    public void addTimeValues(HashMap<String, TimeCycleSplineSet> splines) {
+        Iterator<String> it = splines.keySet().iterator();
+        while (it.hasNext()) {
+            String s = it.next();
+            TimeCycleSplineSet splineSet = splines.get(s);
+            char c = 1;
+            if (s.startsWith("CUSTOM")) {
+                String ckey = s.substring("CUSTOM".length() + 1);
+                ConstraintAttribute cvalue = this.mCustomConstraints.get(ckey);
+                if (cvalue != null) {
+                    ((TimeCycleSplineSet.CustomSet) splineSet).setPoint(this.mFramePosition, cvalue, this.mWavePeriod, this.mWaveShape, this.mWaveOffset);
+                }
+            } else {
+                switch (s.hashCode()) {
+                    case -1249320806:
+                        if (s.equals("rotationX")) {
+                            c = 3;
+                            break;
+                        }
+                        c = '\uffff';
+                        break;
+                    case -1249320805:
+                        if (s.equals("rotationY")) {
+                            c = 4;
+                            break;
+                        }
+                        c = '\uffff';
+                        break;
+                    case -1225497657:
+                        if (s.equals("translationX")) {
+                            c = '\b';
+                            break;
+                        }
+                        c = '\uffff';
+                        break;
+                    case -1225497656:
+                        if (s.equals("translationY")) {
+                            c = '\t';
+                            break;
+                        }
+                        c = '\uffff';
+                        break;
+                    case -1225497655:
+                        if (s.equals("translationZ")) {
+                            c = '\n';
+                            break;
+                        }
+                        c = '\uffff';
+                        break;
+                    case -1001078227:
+                        if (s.equals(NotificationCompat.CATEGORY_PROGRESS)) {
+                            c = 11;
+                            break;
+                        }
+                        c = '\uffff';
+                        break;
+                    case -908189618:
+                        if (s.equals("scaleX")) {
+                            c = 6;
+                            break;
+                        }
+                        c = '\uffff';
+                        break;
+                    case -908189617:
+                        if (s.equals("scaleY")) {
+                            c = 7;
+                            break;
+                        }
+                        c = '\uffff';
+                        break;
+                    case -40300674:
+                        if (s.equals("rotation")) {
+                            c = 2;
+                            break;
+                        }
+                        c = '\uffff';
+                        break;
+                    case -4379043:
+                        break;
+                    case 37232917:
+                        if (s.equals("transitionPathRotate")) {
+                            c = 5;
+                            break;
+                        }
+                        c = '\uffff';
+                        break;
+                    case 92909918:
+                        if (s.equals("alpha")) {
+                            c = 0;
+                            break;
+                        }
+                        c = '\uffff';
+                        break;
+                    default:
+                        c = '\uffff';
+                        break;
+                }
+                switch (c) {
+                    case 0:
+                        if (!Float.isNaN(this.mAlpha)) {
+                            splineSet.setPoint(this.mFramePosition, this.mAlpha, this.mWavePeriod, this.mWaveShape, this.mWaveOffset);
+                            break;
+                        } else {
+                            continue;
+                        }
+                    case 1:
+                        if (!Float.isNaN(this.mElevation)) {
+                            splineSet.setPoint(this.mFramePosition, this.mElevation, this.mWavePeriod, this.mWaveShape, this.mWaveOffset);
+                            break;
+                        } else {
+                            continue;
+                        }
+                    case 2:
+                        if (!Float.isNaN(this.mRotation)) {
+                            splineSet.setPoint(this.mFramePosition, this.mRotation, this.mWavePeriod, this.mWaveShape, this.mWaveOffset);
+                            break;
+                        } else {
+                            continue;
+                        }
+                    case 3:
+                        if (!Float.isNaN(this.mRotationX)) {
+                            splineSet.setPoint(this.mFramePosition, this.mRotationX, this.mWavePeriod, this.mWaveShape, this.mWaveOffset);
+                            break;
+                        } else {
+                            continue;
+                        }
+                    case 4:
+                        if (!Float.isNaN(this.mRotationY)) {
+                            splineSet.setPoint(this.mFramePosition, this.mRotationY, this.mWavePeriod, this.mWaveShape, this.mWaveOffset);
+                            break;
+                        } else {
+                            continue;
+                        }
+                    case 5:
+                        if (!Float.isNaN(this.mTransitionPathRotate)) {
+                            splineSet.setPoint(this.mFramePosition, this.mTransitionPathRotate, this.mWavePeriod, this.mWaveShape, this.mWaveOffset);
+                            break;
+                        } else {
+                            continue;
+                        }
+                    case 6:
+                        if (!Float.isNaN(this.mScaleX)) {
+                            splineSet.setPoint(this.mFramePosition, this.mScaleX, this.mWavePeriod, this.mWaveShape, this.mWaveOffset);
+                            break;
+                        } else {
+                            continue;
+                        }
+                    case 7:
+                        if (!Float.isNaN(this.mScaleY)) {
+                            splineSet.setPoint(this.mFramePosition, this.mScaleY, this.mWavePeriod, this.mWaveShape, this.mWaveOffset);
+                            break;
+                        } else {
+                            continue;
+                        }
+                    case '\b':
+                        if (!Float.isNaN(this.mTranslationX)) {
+                            splineSet.setPoint(this.mFramePosition, this.mTranslationX, this.mWavePeriod, this.mWaveShape, this.mWaveOffset);
+                            break;
+                        } else {
+                            continue;
+                        }
+                    case '\t':
+                        if (!Float.isNaN(this.mTranslationY)) {
+                            splineSet.setPoint(this.mFramePosition, this.mTranslationY, this.mWavePeriod, this.mWaveShape, this.mWaveOffset);
+                            break;
+                        } else {
+                            continue;
+                        }
+                    case '\n':
+                        if (!Float.isNaN(this.mTranslationZ)) {
+                            splineSet.setPoint(this.mFramePosition, this.mTranslationZ, this.mWavePeriod, this.mWaveShape, this.mWaveOffset);
+                            break;
+                        } else {
+                            continue;
+                        }
+                    case 11:
+                        if (!Float.isNaN(this.mProgress)) {
+                            splineSet.setPoint(this.mFramePosition, this.mProgress, this.mWavePeriod, this.mWaveShape, this.mWaveOffset);
+                            break;
+                        } else {
+                            continue;
+                        }
+                    default:
+                        Log.e("KeyTimeCycles", "UNKNOWN addValues \"" + s + "\"");
+                        continue;
                 }
             }
         }
     }
 
-    public void addValues(HashMap<String, SplineSet> hashMap) {
-        throw new IllegalArgumentException(" KeyTimeCycles do not support SplineSet");
+    /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
+    @Override // android.support.constraint.motion.Key
+    public void setValue(String tag, Object value) {
+        char c;
+        switch (tag.hashCode()) {
+            case -1812823328:
+                if (tag.equals("transitionEasing")) {
+                    c = '\t';
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1249320806:
+                if (tag.equals("rotationX")) {
+                    c = 5;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1249320805:
+                if (tag.equals("rotationY")) {
+                    c = 6;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1225497657:
+                if (tag.equals("translationX")) {
+                    c = 11;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1225497656:
+                if (tag.equals("translationY")) {
+                    c = '\f';
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1001078227:
+                if (tag.equals(NotificationCompat.CATEGORY_PROGRESS)) {
+                    c = 3;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -908189618:
+                if (tag.equals("scaleX")) {
+                    c = 7;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -908189617:
+                if (tag.equals("scaleY")) {
+                    c = '\b';
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -40300674:
+                if (tag.equals("rotation")) {
+                    c = 4;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -4379043:
+                if (tag.equals("elevation")) {
+                    c = 2;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 37232917:
+                if (tag.equals("transitionPathRotate")) {
+                    c = '\n';
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 92909918:
+                if (tag.equals("alpha")) {
+                    c = 0;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 579057826:
+                if (tag.equals("curveFit")) {
+                    c = 1;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 1317633238:
+                if (tag.equals("mTranslationZ")) {
+                    c = '\r';
+                    break;
+                }
+                c = '\uffff';
+                break;
+            default:
+                c = '\uffff';
+                break;
+        }
+        switch (c) {
+            case 0:
+                this.mAlpha = toFloat(value);
+                return;
+            case 1:
+                this.mCurveFit = toInt(value);
+                return;
+            case 2:
+                this.mElevation = toFloat(value);
+                return;
+            case 3:
+                this.mProgress = toFloat(value);
+                return;
+            case 4:
+                this.mRotation = toFloat(value);
+                return;
+            case 5:
+                this.mRotationX = toFloat(value);
+                return;
+            case 6:
+                this.mRotationY = toFloat(value);
+                return;
+            case 7:
+                this.mScaleX = toFloat(value);
+                return;
+            case '\b':
+                this.mScaleY = toFloat(value);
+                return;
+            case '\t':
+                this.mTransitionEasing = value.toString();
+                return;
+            case '\n':
+                this.mTransitionPathRotate = toFloat(value);
+                return;
+            case 11:
+                this.mTranslationX = toFloat(value);
+                return;
+            case '\f':
+                this.mTranslationY = toFloat(value);
+                return;
+            case '\r':
+                this.mTranslationZ = toFloat(value);
+                return;
+            default:
+                return;
+        }
     }
 
-    /* JADX WARNING: Can't fix incorrect switch cases order */
-    /* JADX WARNING: Code restructure failed: missing block: B:17:0x006d, code lost:
-        if (r1.equals("elevation") != false) goto L_0x00d2;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void addTimeValues(java.util.HashMap<java.lang.String, android.support.constraint.motion.TimeCycleSplineSet> r12) {
-        /*
-            r11 = this;
-            java.util.Set r0 = r12.keySet()
-            java.util.Iterator r0 = r0.iterator()
-        L_0x0008:
-            boolean r1 = r0.hasNext()
-            if (r1 == 0) goto L_0x0211
-            java.lang.Object r1 = r0.next()
-            java.lang.String r1 = (java.lang.String) r1
-            java.lang.Object r2 = r12.get(r1)
-            android.support.constraint.motion.TimeCycleSplineSet r2 = (android.support.constraint.motion.TimeCycleSplineSet) r2
-            java.lang.String r3 = "CUSTOM"
-            boolean r4 = r1.startsWith(r3)
-            r5 = 1
-            if (r4 == 0) goto L_0x0046
-            int r3 = r3.length()
-            int r3 = r3 + r5
-            java.lang.String r3 = r1.substring(r3)
-            java.util.HashMap r4 = r11.mCustomConstraints
-            java.lang.Object r4 = r4.get(r3)
-            android.support.constraint.ConstraintAttribute r4 = (android.support.constraint.ConstraintAttribute) r4
-            if (r4 == 0) goto L_0x0008
-            r5 = r2
-            android.support.constraint.motion.TimeCycleSplineSet$CustomSet r5 = (android.support.constraint.motion.TimeCycleSplineSet.CustomSet) r5
-            int r6 = r11.mFramePosition
-            float r8 = r11.mWavePeriod
-            int r9 = r11.mWaveShape
-            float r10 = r11.mWaveOffset
-            r7 = r4
-            r5.setPoint((int) r6, (android.support.constraint.ConstraintAttribute) r7, (float) r8, (int) r9, (float) r10)
-            goto L_0x0008
-        L_0x0046:
-            r3 = -1
-            int r4 = r1.hashCode()
-            switch(r4) {
-                case -1249320806: goto L_0x00c7;
-                case -1249320805: goto L_0x00bd;
-                case -1225497657: goto L_0x00b1;
-                case -1225497656: goto L_0x00a5;
-                case -1225497655: goto L_0x0099;
-                case -1001078227: goto L_0x008e;
-                case -908189618: goto L_0x0084;
-                case -908189617: goto L_0x007a;
-                case -40300674: goto L_0x0070;
-                case -4379043: goto L_0x0067;
-                case 37232917: goto L_0x005b;
-                case 92909918: goto L_0x0050;
-                default: goto L_0x004e;
-            }
-        L_0x004e:
-            goto L_0x00d1
-        L_0x0050:
-            java.lang.String r4 = "alpha"
-            boolean r4 = r1.equals(r4)
-            if (r4 == 0) goto L_0x004e
-            r5 = 0
-            goto L_0x00d2
-        L_0x005b:
-            java.lang.String r4 = "transitionPathRotate"
-            boolean r4 = r1.equals(r4)
-            if (r4 == 0) goto L_0x004e
-            r5 = 5
-            goto L_0x00d2
-        L_0x0067:
-            java.lang.String r4 = "elevation"
-            boolean r4 = r1.equals(r4)
-            if (r4 == 0) goto L_0x004e
-            goto L_0x00d2
-        L_0x0070:
-            java.lang.String r4 = "rotation"
-            boolean r4 = r1.equals(r4)
-            if (r4 == 0) goto L_0x004e
-            r5 = 2
-            goto L_0x00d2
-        L_0x007a:
-            java.lang.String r4 = "scaleY"
-            boolean r4 = r1.equals(r4)
-            if (r4 == 0) goto L_0x004e
-            r5 = 7
-            goto L_0x00d2
-        L_0x0084:
-            java.lang.String r4 = "scaleX"
-            boolean r4 = r1.equals(r4)
-            if (r4 == 0) goto L_0x004e
-            r5 = 6
-            goto L_0x00d2
-        L_0x008e:
-            java.lang.String r4 = "progress"
-            boolean r4 = r1.equals(r4)
-            if (r4 == 0) goto L_0x004e
-            r5 = 11
-            goto L_0x00d2
-        L_0x0099:
-            java.lang.String r4 = "translationZ"
-            boolean r4 = r1.equals(r4)
-            if (r4 == 0) goto L_0x004e
-            r5 = 10
-            goto L_0x00d2
-        L_0x00a5:
-            java.lang.String r4 = "translationY"
-            boolean r4 = r1.equals(r4)
-            if (r4 == 0) goto L_0x004e
-            r5 = 9
-            goto L_0x00d2
-        L_0x00b1:
-            java.lang.String r4 = "translationX"
-            boolean r4 = r1.equals(r4)
-            if (r4 == 0) goto L_0x004e
-            r5 = 8
-            goto L_0x00d2
-        L_0x00bd:
-            java.lang.String r4 = "rotationY"
-            boolean r4 = r1.equals(r4)
-            if (r4 == 0) goto L_0x004e
-            r5 = 4
-            goto L_0x00d2
-        L_0x00c7:
-            java.lang.String r4 = "rotationX"
-            boolean r4 = r1.equals(r4)
-            if (r4 == 0) goto L_0x004e
-            r5 = 3
-            goto L_0x00d2
-        L_0x00d1:
-            r5 = r3
-        L_0x00d2:
-            switch(r5) {
-                case 0: goto L_0x01f9;
-                case 1: goto L_0x01e2;
-                case 2: goto L_0x01cb;
-                case 3: goto L_0x01b4;
-                case 4: goto L_0x019d;
-                case 5: goto L_0x0185;
-                case 6: goto L_0x016d;
-                case 7: goto L_0x0155;
-                case 8: goto L_0x013d;
-                case 9: goto L_0x0125;
-                case 10: goto L_0x010d;
-                case 11: goto L_0x00f5;
-                default: goto L_0x00d5;
-            }
-        L_0x00d5:
-            java.lang.StringBuilder r3 = new java.lang.StringBuilder
-            r3.<init>()
-            java.lang.String r4 = "UNKNOWN addValues \""
-            java.lang.StringBuilder r3 = r3.append(r4)
-            java.lang.StringBuilder r3 = r3.append(r1)
-            java.lang.String r4 = "\""
-            java.lang.StringBuilder r3 = r3.append(r4)
-            java.lang.String r3 = r3.toString()
-            java.lang.String r4 = "KeyTimeCycles"
-            android.util.Log.e(r4, r3)
-            goto L_0x020f
-        L_0x00f5:
-            float r3 = r11.mProgress
-            boolean r3 = java.lang.Float.isNaN(r3)
-            if (r3 != 0) goto L_0x020f
-            int r4 = r11.mFramePosition
-            float r5 = r11.mProgress
-            float r6 = r11.mWavePeriod
-            int r7 = r11.mWaveShape
-            float r8 = r11.mWaveOffset
-            r3 = r2
-            r3.setPoint(r4, r5, r6, r7, r8)
-            goto L_0x020f
-        L_0x010d:
-            float r3 = r11.mTranslationZ
-            boolean r3 = java.lang.Float.isNaN(r3)
-            if (r3 != 0) goto L_0x020f
-            int r4 = r11.mFramePosition
-            float r5 = r11.mTranslationZ
-            float r6 = r11.mWavePeriod
-            int r7 = r11.mWaveShape
-            float r8 = r11.mWaveOffset
-            r3 = r2
-            r3.setPoint(r4, r5, r6, r7, r8)
-            goto L_0x020f
-        L_0x0125:
-            float r3 = r11.mTranslationY
-            boolean r3 = java.lang.Float.isNaN(r3)
-            if (r3 != 0) goto L_0x020f
-            int r4 = r11.mFramePosition
-            float r5 = r11.mTranslationY
-            float r6 = r11.mWavePeriod
-            int r7 = r11.mWaveShape
-            float r8 = r11.mWaveOffset
-            r3 = r2
-            r3.setPoint(r4, r5, r6, r7, r8)
-            goto L_0x020f
-        L_0x013d:
-            float r3 = r11.mTranslationX
-            boolean r3 = java.lang.Float.isNaN(r3)
-            if (r3 != 0) goto L_0x020f
-            int r4 = r11.mFramePosition
-            float r5 = r11.mTranslationX
-            float r6 = r11.mWavePeriod
-            int r7 = r11.mWaveShape
-            float r8 = r11.mWaveOffset
-            r3 = r2
-            r3.setPoint(r4, r5, r6, r7, r8)
-            goto L_0x020f
-        L_0x0155:
-            float r3 = r11.mScaleY
-            boolean r3 = java.lang.Float.isNaN(r3)
-            if (r3 != 0) goto L_0x020f
-            int r4 = r11.mFramePosition
-            float r5 = r11.mScaleY
-            float r6 = r11.mWavePeriod
-            int r7 = r11.mWaveShape
-            float r8 = r11.mWaveOffset
-            r3 = r2
-            r3.setPoint(r4, r5, r6, r7, r8)
-            goto L_0x020f
-        L_0x016d:
-            float r3 = r11.mScaleX
-            boolean r3 = java.lang.Float.isNaN(r3)
-            if (r3 != 0) goto L_0x020f
-            int r4 = r11.mFramePosition
-            float r5 = r11.mScaleX
-            float r6 = r11.mWavePeriod
-            int r7 = r11.mWaveShape
-            float r8 = r11.mWaveOffset
-            r3 = r2
-            r3.setPoint(r4, r5, r6, r7, r8)
-            goto L_0x020f
-        L_0x0185:
-            float r3 = r11.mTransitionPathRotate
-            boolean r3 = java.lang.Float.isNaN(r3)
-            if (r3 != 0) goto L_0x020f
-            int r4 = r11.mFramePosition
-            float r5 = r11.mTransitionPathRotate
-            float r6 = r11.mWavePeriod
-            int r7 = r11.mWaveShape
-            float r8 = r11.mWaveOffset
-            r3 = r2
-            r3.setPoint(r4, r5, r6, r7, r8)
-            goto L_0x020f
-        L_0x019d:
-            float r3 = r11.mRotationY
-            boolean r3 = java.lang.Float.isNaN(r3)
-            if (r3 != 0) goto L_0x020f
-            int r4 = r11.mFramePosition
-            float r5 = r11.mRotationY
-            float r6 = r11.mWavePeriod
-            int r7 = r11.mWaveShape
-            float r8 = r11.mWaveOffset
-            r3 = r2
-            r3.setPoint(r4, r5, r6, r7, r8)
-            goto L_0x020f
-        L_0x01b4:
-            float r3 = r11.mRotationX
-            boolean r3 = java.lang.Float.isNaN(r3)
-            if (r3 != 0) goto L_0x020f
-            int r4 = r11.mFramePosition
-            float r5 = r11.mRotationX
-            float r6 = r11.mWavePeriod
-            int r7 = r11.mWaveShape
-            float r8 = r11.mWaveOffset
-            r3 = r2
-            r3.setPoint(r4, r5, r6, r7, r8)
-            goto L_0x020f
-        L_0x01cb:
-            float r3 = r11.mRotation
-            boolean r3 = java.lang.Float.isNaN(r3)
-            if (r3 != 0) goto L_0x020f
-            int r4 = r11.mFramePosition
-            float r5 = r11.mRotation
-            float r6 = r11.mWavePeriod
-            int r7 = r11.mWaveShape
-            float r8 = r11.mWaveOffset
-            r3 = r2
-            r3.setPoint(r4, r5, r6, r7, r8)
-            goto L_0x020f
-        L_0x01e2:
-            float r3 = r11.mElevation
-            boolean r3 = java.lang.Float.isNaN(r3)
-            if (r3 != 0) goto L_0x020f
-            int r4 = r11.mFramePosition
-            float r5 = r11.mElevation
-            float r6 = r11.mWavePeriod
-            int r7 = r11.mWaveShape
-            float r8 = r11.mWaveOffset
-            r3 = r2
-            r3.setPoint(r4, r5, r6, r7, r8)
-            goto L_0x020f
-        L_0x01f9:
-            float r3 = r11.mAlpha
-            boolean r3 = java.lang.Float.isNaN(r3)
-            if (r3 != 0) goto L_0x020f
-            int r4 = r11.mFramePosition
-            float r5 = r11.mAlpha
-            float r6 = r11.mWavePeriod
-            int r7 = r11.mWaveShape
-            float r8 = r11.mWaveOffset
-            r3 = r2
-            r3.setPoint(r4, r5, r6, r7, r8)
-        L_0x020f:
-            goto L_0x0008
-        L_0x0211:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.support.constraint.motion.KeyTimeCycle.addTimeValues(java.util.HashMap):void");
-    }
-
-    /* JADX WARNING: Can't fix incorrect switch cases order */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void setValue(java.lang.String r2, java.lang.Object r3) {
-        /*
-            r1 = this;
-            int r0 = r2.hashCode()
-            switch(r0) {
-                case -1812823328: goto L_0x0097;
-                case -1249320806: goto L_0x008d;
-                case -1249320805: goto L_0x0083;
-                case -1225497657: goto L_0x0077;
-                case -1225497656: goto L_0x006b;
-                case -1001078227: goto L_0x0061;
-                case -908189618: goto L_0x0057;
-                case -908189617: goto L_0x004c;
-                case -40300674: goto L_0x0042;
-                case -4379043: goto L_0x0038;
-                case 37232917: goto L_0x002b;
-                case 92909918: goto L_0x0020;
-                case 579057826: goto L_0x0015;
-                case 1317633238: goto L_0x0009;
-                default: goto L_0x0007;
-            }
-        L_0x0007:
-            goto L_0x00a3
-        L_0x0009:
-            java.lang.String r0 = "mTranslationZ"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 13
-            goto L_0x00a4
-        L_0x0015:
-            java.lang.String r0 = "curveFit"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 1
-            goto L_0x00a4
-        L_0x0020:
-            java.lang.String r0 = "alpha"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 0
-            goto L_0x00a4
-        L_0x002b:
-            java.lang.String r0 = "transitionPathRotate"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 10
-            goto L_0x00a4
-        L_0x0038:
-            java.lang.String r0 = "elevation"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 2
-            goto L_0x00a4
-        L_0x0042:
-            java.lang.String r0 = "rotation"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 4
-            goto L_0x00a4
-        L_0x004c:
-            java.lang.String r0 = "scaleY"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 8
-            goto L_0x00a4
-        L_0x0057:
-            java.lang.String r0 = "scaleX"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 7
-            goto L_0x00a4
-        L_0x0061:
-            java.lang.String r0 = "progress"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 3
-            goto L_0x00a4
-        L_0x006b:
-            java.lang.String r0 = "translationY"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 12
-            goto L_0x00a4
-        L_0x0077:
-            java.lang.String r0 = "translationX"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 11
-            goto L_0x00a4
-        L_0x0083:
-            java.lang.String r0 = "rotationY"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 6
-            goto L_0x00a4
-        L_0x008d:
-            java.lang.String r0 = "rotationX"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 5
-            goto L_0x00a4
-        L_0x0097:
-            java.lang.String r0 = "transitionEasing"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 9
-            goto L_0x00a4
-        L_0x00a3:
-            r0 = -1
-        L_0x00a4:
-            switch(r0) {
-                case 0: goto L_0x0103;
-                case 1: goto L_0x00fc;
-                case 2: goto L_0x00f5;
-                case 3: goto L_0x00ee;
-                case 4: goto L_0x00e7;
-                case 5: goto L_0x00e0;
-                case 6: goto L_0x00d9;
-                case 7: goto L_0x00d2;
-                case 8: goto L_0x00cb;
-                case 9: goto L_0x00c4;
-                case 10: goto L_0x00bd;
-                case 11: goto L_0x00b6;
-                case 12: goto L_0x00af;
-                case 13: goto L_0x00a8;
-                default: goto L_0x00a7;
-            }
-        L_0x00a7:
-            goto L_0x010a
-        L_0x00a8:
-            float r0 = r1.toFloat(r3)
-            r1.mTranslationZ = r0
-            goto L_0x010a
-        L_0x00af:
-            float r0 = r1.toFloat(r3)
-            r1.mTranslationY = r0
-            goto L_0x010a
-        L_0x00b6:
-            float r0 = r1.toFloat(r3)
-            r1.mTranslationX = r0
-            goto L_0x010a
-        L_0x00bd:
-            float r0 = r1.toFloat(r3)
-            r1.mTransitionPathRotate = r0
-            goto L_0x010a
-        L_0x00c4:
-            java.lang.String r0 = r3.toString()
-            r1.mTransitionEasing = r0
-            goto L_0x010a
-        L_0x00cb:
-            float r0 = r1.toFloat(r3)
-            r1.mScaleY = r0
-            goto L_0x010a
-        L_0x00d2:
-            float r0 = r1.toFloat(r3)
-            r1.mScaleX = r0
-            goto L_0x010a
-        L_0x00d9:
-            float r0 = r1.toFloat(r3)
-            r1.mRotationY = r0
-            goto L_0x010a
-        L_0x00e0:
-            float r0 = r1.toFloat(r3)
-            r1.mRotationX = r0
-            goto L_0x010a
-        L_0x00e7:
-            float r0 = r1.toFloat(r3)
-            r1.mRotation = r0
-            goto L_0x010a
-        L_0x00ee:
-            float r0 = r1.toFloat(r3)
-            r1.mProgress = r0
-            goto L_0x010a
-        L_0x00f5:
-            float r0 = r1.toFloat(r3)
-            r1.mElevation = r0
-            goto L_0x010a
-        L_0x00fc:
-            int r0 = r1.toInt(r3)
-            r1.mCurveFit = r0
-            goto L_0x010a
-        L_0x0103:
-            float r0 = r1.toFloat(r3)
-            r1.mAlpha = r0
-        L_0x010a:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.support.constraint.motion.KeyTimeCycle.setValue(java.lang.String, java.lang.Object):void");
-    }
-
+    /* loaded from: classes.dex */
     private static class Loader {
         private static final int ANDROID_ALPHA = 1;
         private static final int ANDROID_ELEVATION = 2;
@@ -690,25 +535,25 @@ public class KeyTimeCycle extends Key {
         static {
             SparseIntArray sparseIntArray = new SparseIntArray();
             mAttrMap = sparseIntArray;
-            sparseIntArray.append(R.styleable.KeyTimeCycle_android_alpha, 1);
-            mAttrMap.append(R.styleable.KeyTimeCycle_android_elevation, 2);
-            mAttrMap.append(R.styleable.KeyTimeCycle_android_rotation, 4);
-            mAttrMap.append(R.styleable.KeyTimeCycle_android_rotationX, 5);
-            mAttrMap.append(R.styleable.KeyTimeCycle_android_rotationY, 6);
-            mAttrMap.append(R.styleable.KeyTimeCycle_android_scaleX, 7);
-            mAttrMap.append(R.styleable.KeyTimeCycle_transitionPathRotate, 8);
-            mAttrMap.append(R.styleable.KeyTimeCycle_transitionEasing, 9);
-            mAttrMap.append(R.styleable.KeyTimeCycle_motionTarget, 10);
-            mAttrMap.append(R.styleable.KeyTimeCycle_framePosition, 12);
-            mAttrMap.append(R.styleable.KeyTimeCycle_curveFit, 13);
-            mAttrMap.append(R.styleable.KeyTimeCycle_android_scaleY, 14);
-            mAttrMap.append(R.styleable.KeyTimeCycle_android_translationX, 15);
-            mAttrMap.append(R.styleable.KeyTimeCycle_android_translationY, 16);
-            mAttrMap.append(R.styleable.KeyTimeCycle_android_translationZ, 17);
-            mAttrMap.append(R.styleable.KeyTimeCycle_motionProgress, 18);
-            mAttrMap.append(R.styleable.KeyTimeCycle_wavePeriod, 20);
-            mAttrMap.append(R.styleable.KeyTimeCycle_waveOffset, 21);
-            mAttrMap.append(R.styleable.KeyTimeCycle_waveShape, 19);
+            sparseIntArray.append(C0088R.styleable.KeyTimeCycle_android_alpha, 1);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_android_elevation, 2);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_android_rotation, 4);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_android_rotationX, 5);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_android_rotationY, 6);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_android_scaleX, 7);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_transitionPathRotate, 8);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_transitionEasing, 9);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_motionTarget, 10);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_framePosition, 12);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_curveFit, 13);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_android_scaleY, 14);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_android_translationX, 15);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_android_translationY, 16);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_android_translationZ, 17);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_motionProgress, 18);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_wavePeriod, 20);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_waveOffset, 21);
+            mAttrMap.append(C0088R.styleable.KeyTimeCycle_waveShape, 19);
         }
 
         public static void read(KeyTimeCycle c, TypedArray a) {
@@ -717,89 +562,90 @@ public class KeyTimeCycle extends Key {
                 int attr = a.getIndex(i);
                 switch (mAttrMap.get(attr)) {
                     case 1:
-                        float unused = c.mAlpha = a.getFloat(attr, c.mAlpha);
+                        c.mAlpha = a.getFloat(attr, c.mAlpha);
                         break;
                     case 2:
-                        float unused2 = c.mElevation = a.getDimension(attr, c.mElevation);
+                        c.mElevation = a.getDimension(attr, c.mElevation);
+                        break;
+                    case 3:
+                    case 11:
+                    default:
+                        Log.e("KeyTimeCycle", "unused attribute 0x" + Integer.toHexString(attr) + "   " + mAttrMap.get(attr));
                         break;
                     case 4:
-                        float unused3 = c.mRotation = a.getFloat(attr, c.mRotation);
+                        c.mRotation = a.getFloat(attr, c.mRotation);
                         break;
                     case 5:
-                        float unused4 = c.mRotationX = a.getFloat(attr, c.mRotationX);
+                        c.mRotationX = a.getFloat(attr, c.mRotationX);
                         break;
                     case 6:
-                        float unused5 = c.mRotationY = a.getFloat(attr, c.mRotationY);
+                        c.mRotationY = a.getFloat(attr, c.mRotationY);
                         break;
                     case 7:
-                        float unused6 = c.mScaleX = a.getFloat(attr, c.mScaleX);
+                        c.mScaleX = a.getFloat(attr, c.mScaleX);
                         break;
                     case 8:
-                        float unused7 = c.mTransitionPathRotate = a.getFloat(attr, c.mTransitionPathRotate);
+                        c.mTransitionPathRotate = a.getFloat(attr, c.mTransitionPathRotate);
                         break;
                     case 9:
-                        String unused8 = c.mTransitionEasing = a.getString(attr);
+                        c.mTransitionEasing = a.getString(attr);
                         break;
                     case 10:
-                        if (!MotionLayout.IS_IN_EDIT_MODE) {
-                            if (a.peekValue(attr).type != 3) {
-                                c.mTargetId = a.getResourceId(attr, c.mTargetId);
-                                break;
-                            } else {
+                        if (MotionLayout.IS_IN_EDIT_MODE) {
+                            c.mTargetId = a.getResourceId(attr, c.mTargetId);
+                            if (c.mTargetId == -1) {
                                 c.mTargetString = a.getString(attr);
                                 break;
+                            } else {
+                                break;
                             }
+                        } else if (a.peekValue(attr).type == 3) {
+                            c.mTargetString = a.getString(attr);
+                            break;
                         } else {
                             c.mTargetId = a.getResourceId(attr, c.mTargetId);
-                            if (c.mTargetId != -1) {
-                                break;
-                            } else {
-                                c.mTargetString = a.getString(attr);
-                                break;
-                            }
+                            break;
                         }
                     case 12:
                         c.mFramePosition = a.getInt(attr, c.mFramePosition);
                         break;
                     case 13:
-                        int unused9 = c.mCurveFit = a.getInteger(attr, c.mCurveFit);
+                        c.mCurveFit = a.getInteger(attr, c.mCurveFit);
                         break;
                     case 14:
-                        float unused10 = c.mScaleY = a.getFloat(attr, c.mScaleY);
+                        c.mScaleY = a.getFloat(attr, c.mScaleY);
                         break;
                     case 15:
-                        float unused11 = c.mTranslationX = a.getDimension(attr, c.mTranslationX);
+                        c.mTranslationX = a.getDimension(attr, c.mTranslationX);
                         break;
                     case 16:
-                        float unused12 = c.mTranslationY = a.getDimension(attr, c.mTranslationY);
+                        c.mTranslationY = a.getDimension(attr, c.mTranslationY);
                         break;
                     case 17:
-                        if (Build.VERSION.SDK_INT < 21) {
+                        if (Build.VERSION.SDK_INT >= 21) {
+                            c.mTranslationZ = a.getDimension(attr, c.mTranslationZ);
                             break;
                         } else {
-                            float unused13 = c.mTranslationZ = a.getDimension(attr, c.mTranslationZ);
                             break;
                         }
                     case 18:
-                        float unused14 = c.mProgress = a.getFloat(attr, c.mProgress);
+                        c.mProgress = a.getFloat(attr, c.mProgress);
                         break;
                     case 19:
-                        int unused15 = c.mWaveShape = a.getInt(attr, c.mWaveShape);
+                        c.mWaveShape = a.getInt(attr, c.mWaveShape);
                         break;
                     case 20:
-                        float unused16 = c.mWavePeriod = a.getFloat(attr, c.mWavePeriod);
+                        c.mWavePeriod = a.getFloat(attr, c.mWavePeriod);
                         break;
                     case 21:
-                        if (a.peekValue(attr).type != 5) {
-                            float unused17 = c.mWaveOffset = a.getFloat(attr, c.mWaveOffset);
+                        TypedValue type = a.peekValue(attr);
+                        if (type.type == 5) {
+                            c.mWaveOffset = a.getDimension(attr, c.mWaveOffset);
                             break;
                         } else {
-                            float unused18 = c.mWaveOffset = a.getDimension(attr, c.mWaveOffset);
+                            c.mWaveOffset = a.getFloat(attr, c.mWaveOffset);
                             break;
                         }
-                    default:
-                        Log.e("KeyTimeCycle", "unused attribute 0x" + Integer.toHexString(attr) + "   " + mAttrMap.get(attr));
-                        break;
                 }
             }
         }

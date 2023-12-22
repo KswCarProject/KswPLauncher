@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
+    <ImageView android:id="@+id/naviImageView" android:background="@mipmap/ntg55_right_big_bk" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true"/>
+    <TextView android:textSize="30sp" android:textColor="#001222" android:gravity="center" android:id="@+id/tv_TwoMsg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10dp" android:text="@string/item2" android:singleLine="true" android:layout_toLeftOf="@+id/img_TwoBack" android:layout_alignLeft="@+id/naviImageView"/>
+    <ImageView android:id="@+id/img_TwoBack" android:background="@drawable/ntg6_two_back" android:padding="20dp" android:focusable="true" android:nextFocusUp="@+id/img_TwoBack" android:nextFocusDown="@+id/tv_naviapp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:layout_alignParentRight="true"/>
+    <RelativeLayout android:id="@+id/relate_shext" android:layout_width="456dp" android:layout_height="wrap_content" android:layout_marginTop="61dp" android:layout_alignParentRight="true">
+        <LinearLayout android:orientation="vertical" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
+            <TextView android:textSize="25sp" android:textColor="#ffffff" android:gravity="center_vertical" android:id="@+id/tv_navihy" android:background="@drawable/ntg6_czhong_item" android:focusable="true" android:visibility="gone" android:layout_width="match_parent" android:layout_height="77dp" android:layout_marginLeft="20dp" android:text="@string/set_text8" android:drawableLeft="@mipmap/ntg55_item_left"/>
+            <ImageView android:background="@mipmap/ntg55_right_big_line1" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <TextView android:textSize="25sp" android:textColor="#ffffff" android:gravity="center_vertical" android:id="@+id/tv_naviapp" android:background="@drawable/ntg6_czhong_item" android:focusable="true" android:nextFocusDown="@+id/tv_naviapp" android:layout_width="match_parent" android:layout_height="55dp" android:layout_marginLeft="20dp" android:text="@string/set_text9" android:drawableLeft="@mipmap/ntg55_item_left"/>
+            <ImageView android:background="@mipmap/ntg55_right_big_line1" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

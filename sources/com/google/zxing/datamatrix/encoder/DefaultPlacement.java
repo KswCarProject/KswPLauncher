@@ -2,33 +2,31 @@ package com.google.zxing.datamatrix.encoder;
 
 import java.util.Arrays;
 
+/* loaded from: classes.dex */
 public class DefaultPlacement {
     private final byte[] bits;
     private final CharSequence codewords;
     private final int numcols;
     private final int numrows;
 
-    public DefaultPlacement(CharSequence codewords2, int numcols2, int numrows2) {
-        this.codewords = codewords2;
-        this.numcols = numcols2;
-        this.numrows = numrows2;
-        byte[] bArr = new byte[(numcols2 * numrows2)];
+    public DefaultPlacement(CharSequence codewords, int numcols, int numrows) {
+        this.codewords = codewords;
+        this.numcols = numcols;
+        this.numrows = numrows;
+        byte[] bArr = new byte[numcols * numrows];
         this.bits = bArr;
         Arrays.fill(bArr, (byte) -1);
     }
 
-    /* access modifiers changed from: package-private */
-    public final int getNumrows() {
+    final int getNumrows() {
         return this.numrows;
     }
 
-    /* access modifiers changed from: package-private */
-    public final int getNumcols() {
+    final int getNumcols() {
         return this.numcols;
     }
 
-    /* access modifiers changed from: package-private */
-    public final byte[] getBits() {
+    final byte[] getBits() {
         return this.bits;
     }
 
@@ -37,7 +35,7 @@ public class DefaultPlacement {
     }
 
     private void setBit(int col, int row, boolean bit) {
-        this.bits[(this.numcols * row) + col] = bit ? (byte) 1 : 0;
+        this.bits[(this.numcols * row) + col] = bit ? (byte) 1 : (byte) 0;
     }
 
     private boolean hasBit(int col, int row) {
@@ -55,51 +53,49 @@ public class DefaultPlacement {
                 corner1(pos);
                 pos++;
             }
-            if (row == this.numrows - 2 && col == 0 && this.numcols % 4 != 0) {
+            int pos2 = this.numrows;
+            if (row == pos2 - 2 && col == 0 && this.numcols % 4 != 0) {
                 corner2(pos);
                 pos++;
             }
-            if (row == this.numrows - 2 && col == 0 && this.numcols % 8 == 4) {
+            int pos3 = this.numrows;
+            if (row == pos3 - 2 && col == 0 && this.numcols % 8 == 4) {
                 corner3(pos);
                 pos++;
             }
-            if (row == this.numrows + 4 && col == 2 && this.numcols % 8 == 0) {
+            int pos4 = this.numrows;
+            if (row == pos4 + 4 && col == 2 && this.numcols % 8 == 0) {
                 corner4(pos);
                 pos++;
             }
             do {
-                if (row < this.numrows && col >= 0 && !hasBit(col, row)) {
+                int pos5 = this.numrows;
+                if (row < pos5 && col >= 0 && !hasBit(col, row)) {
                     utah(row, col, pos);
                     pos++;
                 }
                 row -= 2;
                 col += 2;
-                if (row < 0 || col >= this.numcols) {
-                    int row2 = row + 1;
-                    int col2 = col + 3;
-                }
-                utah(row, col, pos);
-                pos++;
-                row -= 2;
-                col += 2;
-                break;
-            } while (col >= this.numcols);
-            int row22 = row + 1;
-            int col22 = col + 3;
-            do {
-                if (row22 >= 0 && col22 < this.numcols && !hasBit(col22, row22)) {
-                    utah(row22, col22, pos);
-                    pos++;
-                }
-                row22 += 2;
-                col22 -= 2;
-                i = this.numrows;
-                if (row22 >= i) {
+                if (row < 0) {
                     break;
                 }
-            } while (col22 >= 0);
-            row = row22 + 3;
-            col = col22 + 1;
+            } while (col < this.numcols);
+            int row2 = row + 1;
+            int col2 = col + 3;
+            do {
+                if (row2 >= 0 && col2 < this.numcols && !hasBit(col2, row2)) {
+                    utah(row2, col2, pos);
+                    pos++;
+                }
+                row2 += 2;
+                col2 -= 2;
+                i = this.numrows;
+                if (row2 >= i) {
+                    break;
+                }
+            } while (col2 >= 0);
+            row = row2 + 3;
+            col = col2 + 1;
             if (row >= i && col >= (i2 = this.numcols)) {
                 break;
             }
@@ -121,11 +117,8 @@ public class DefaultPlacement {
             col += i2;
             row += 4 - ((i2 + 4) % 8);
         }
-        boolean z = false;
-        if ((this.codewords.charAt(pos) & (1 << (8 - bit))) != 0) {
-            z = true;
-        }
-        setBit(col, row, z);
+        int v = this.codewords.charAt(pos) & (1 << (8 - bit));
+        setBit(col, row, v != 0);
     }
 
     private void utah(int row, int col, int pos) {

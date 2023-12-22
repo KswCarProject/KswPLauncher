@@ -8,21 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class CarInfoDataGsBinding extends ViewDataBinding {
     public final ImageView ivMask;
     public final RelativeLayout llContainerGs;
     @Bindable
     protected LauncherViewModel mCarViewModel;
 
-    public abstract void setCarViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setCarViewModel(LauncherViewModel CarViewModel);
 
-    protected CarInfoDataGsBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivMask2, RelativeLayout llContainerGs2) {
+    protected CarInfoDataGsBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivMask, RelativeLayout llContainerGs) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.ivMask = ivMask2;
-        this.llContainerGs = llContainerGs2;
+        this.ivMask = ivMask;
+        this.llContainerGs = llContainerGs;
     }
 
     public LauncherViewModel getCarViewModel() {
@@ -35,7 +36,7 @@ public abstract class CarInfoDataGsBinding extends ViewDataBinding {
 
     @Deprecated
     public static CarInfoDataGsBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (CarInfoDataGsBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_car_info_gs, root, attachToRoot, component);
+        return (CarInfoDataGsBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_car_info_gs, root, attachToRoot, component);
     }
 
     public static CarInfoDataGsBinding inflate(LayoutInflater inflater) {
@@ -44,7 +45,7 @@ public abstract class CarInfoDataGsBinding extends ViewDataBinding {
 
     @Deprecated
     public static CarInfoDataGsBinding inflate(LayoutInflater inflater, Object component) {
-        return (CarInfoDataGsBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_car_info_gs, (ViewGroup) null, false, component);
+        return (CarInfoDataGsBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_car_info_gs, null, false, component);
     }
 
     public static CarInfoDataGsBinding bind(View view) {
@@ -53,6 +54,6 @@ public abstract class CarInfoDataGsBinding extends ViewDataBinding {
 
     @Deprecated
     public static CarInfoDataGsBinding bind(View view, Object component) {
-        return (CarInfoDataGsBinding) bind(component, view, R.layout.fragment_car_info_gs);
+        return (CarInfoDataGsBinding) bind(component, view, C0899R.C0902layout.fragment_car_info_gs);
     }
 }

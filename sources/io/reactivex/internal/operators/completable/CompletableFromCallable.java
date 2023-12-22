@@ -8,15 +8,16 @@ import io.reactivex.exceptions.Exceptions;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.Callable;
 
+/* loaded from: classes.dex */
 public final class CompletableFromCallable extends Completable {
     final Callable<?> callable;
 
-    public CompletableFromCallable(Callable<?> callable2) {
-        this.callable = callable2;
+    public CompletableFromCallable(Callable<?> callable) {
+        this.callable = callable;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         Disposable d = Disposables.empty();
         observer.onSubscribe(d);
         try {

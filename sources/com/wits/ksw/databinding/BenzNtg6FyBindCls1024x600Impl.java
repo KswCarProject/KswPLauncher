@@ -1,19 +1,23 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.v7.content.res.AppCompatResources;
+import android.support.p001v4.view.ViewPager;
+import android.support.p004v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.model.ControlBean;
 
+/* loaded from: classes7.dex */
 public class BenzNtg6FyBindCls1024x600Impl extends BenzNtg6FyBindCls {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -24,12 +28,12 @@ public class BenzNtg6FyBindCls1024x600Impl extends BenzNtg6FyBindCls {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.layout_main_ntg_fy, 2);
-        sparseIntArray.put(R.id.benzNtg6FyViewpager, 3);
-        sparseIntArray.put(R.id.indicator_benz_ntg6_fy, 4);
-        sparseIntArray.put(R.id.layout_coat_benz_fy, 5);
-        sparseIntArray.put(R.id.iv_coat_fy, 6);
-        sparseIntArray.put(R.id.tv_coat_fy_tip, 7);
+        sparseIntArray.put(C0899R.C0901id.layout_main_ntg_fy, 2);
+        sparseIntArray.put(C0899R.C0901id.benzNtg6FyViewpager, 3);
+        sparseIntArray.put(C0899R.C0901id.indicator_benz_ntg6_fy, 4);
+        sparseIntArray.put(C0899R.C0901id.layout_coat_benz_fy, 5);
+        sparseIntArray.put(C0899R.C0901id.iv_coat_fy, 6);
+        sparseIntArray.put(C0899R.C0901id.tv_coat_fy_tip, 7);
     }
 
     public BenzNtg6FyBindCls1024x600Impl(DataBindingComponent bindingComponent, View root) {
@@ -37,23 +41,25 @@ public class BenzNtg6FyBindCls1024x600Impl extends BenzNtg6FyBindCls {
     }
 
     private BenzNtg6FyBindCls1024x600Impl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 2, bindings[3], bindings[1], bindings[4], bindings[6], bindings[5], bindings[2], bindings[7]);
-        this.mDirtyFlags = -1;
-        this.controlBtn.setTag((Object) null);
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 2, (ViewPager) bindings[3], (ImageView) bindings[1], (LinearLayout) bindings[4], (ImageView) bindings[6], (LinearLayout) bindings[5], (LinearLayout) bindings[2], (TextView) bindings[7]);
+        this.mDirtyFlags = -1L;
+        this.controlBtn.setTag(null);
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
+        relativeLayout.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 8;
+            this.mDirtyFlags = 8L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -63,14 +69,16 @@ public class BenzNtg6FyBindCls1024x600Impl extends BenzNtg6FyBindCls {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (25 != variableId) {
-            return false;
+        if (25 == variableId) {
+            setViewModel((BcVieModel) variable);
+            return true;
         }
-        setViewModel((BcVieModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.BenzNtg6FyBindCls
     public void setViewModel(BcVieModel ViewModel) {
         this.mViewModel = ViewModel;
         synchronized (this) {
@@ -80,8 +88,8 @@ public class BenzNtg6FyBindCls1024x600Impl extends BenzNtg6FyBindCls {
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeViewModelControlBeanControlPanelClose((ObservableBoolean) object, fieldId);
@@ -93,31 +101,31 @@ public class BenzNtg6FyBindCls1024x600Impl extends BenzNtg6FyBindCls {
     }
 
     private boolean onChangeViewModelControlBeanControlPanelClose(ObservableBoolean ViewModelControlBeanControlPanelClose, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelControlBeanBenzControlPanelState(ObservableBoolean ViewModelControlBeanBenzControlPanelState, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         Drawable viewModelControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = null;
         int viewModelControlBeanControlPanelCloseViewGONEViewVISIBLE = 0;
@@ -136,8 +144,7 @@ public class BenzNtg6FyBindCls1024x600Impl extends BenzNtg6FyBindCls {
                 if (viewModelControlBean != null) {
                     viewModelControlBeanControlPanelClose = viewModelControlBean.controlPanelClose;
                 }
-                int i = 0;
-                updateRegistration(0, (Observable) viewModelControlBeanControlPanelClose);
+                updateRegistration(0, viewModelControlBeanControlPanelClose);
                 if (viewModelControlBeanControlPanelClose != null) {
                     viewModelControlBeanControlPanelCloseGet = viewModelControlBeanControlPanelClose.get();
                 }
@@ -148,16 +155,13 @@ public class BenzNtg6FyBindCls1024x600Impl extends BenzNtg6FyBindCls {
                         dirtyFlags |= 64;
                     }
                 }
-                if (viewModelControlBeanControlPanelCloseGet) {
-                    i = 8;
-                }
-                viewModelControlBeanControlPanelCloseViewGONEViewVISIBLE = i;
+                viewModelControlBeanControlPanelCloseViewGONEViewVISIBLE = viewModelControlBeanControlPanelCloseGet ? 8 : 0;
             }
             if ((dirtyFlags & 14) != 0) {
                 if (viewModelControlBean != null) {
                     viewModelControlBeanBenzControlPanelState = viewModelControlBean.benzControlPanelState;
                 }
-                updateRegistration(1, (Observable) viewModelControlBeanBenzControlPanelState);
+                updateRegistration(1, viewModelControlBeanBenzControlPanelState);
                 if (viewModelControlBeanBenzControlPanelState != null) {
                     viewModelControlBeanBenzControlPanelStateGet = viewModelControlBeanBenzControlPanelState.get();
                 }
@@ -168,9 +172,9 @@ public class BenzNtg6FyBindCls1024x600Impl extends BenzNtg6FyBindCls {
                         dirtyFlags |= 16;
                     }
                 }
-                viewModelControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = viewModelControlBeanBenzControlPanelStateGet ? AppCompatResources.getDrawable(this.controlBtn.getContext(), R.drawable.ntg55_ctrlpanel_down_selector) : AppCompatResources.getDrawable(this.controlBtn.getContext(), R.drawable.ntg55_ctrlpanel_up_selector);
+                viewModelControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = viewModelControlBeanBenzControlPanelStateGet ? AppCompatResources.getDrawable(this.controlBtn.getContext(), C0899R.C0900drawable.ntg55_ctrlpanel_down_selector) : AppCompatResources.getDrawable(this.controlBtn.getContext(), C0899R.C0900drawable.ntg55_ctrlpanel_up_selector);
             }
-            if (!((dirtyFlags & 12) == 0 || viewModel == null)) {
+            if ((dirtyFlags & 12) != 0 && viewModel != null) {
                 OnClickListenerImpl onClickListenerImpl = this.mViewModelOnControlClickAndroidViewViewOnClickListener;
                 if (onClickListenerImpl == null) {
                     onClickListenerImpl = new OnClickListenerImpl();
@@ -190,17 +194,19 @@ public class BenzNtg6FyBindCls1024x600Impl extends BenzNtg6FyBindCls {
         }
     }
 
+    /* loaded from: classes7.dex */
     public static class OnClickListenerImpl implements View.OnClickListener {
         private BcVieModel value;
 
-        public OnClickListenerImpl setValue(BcVieModel value2) {
-            this.value = value2;
-            if (value2 == null) {
+        public OnClickListenerImpl setValue(BcVieModel value) {
+            this.value = value;
+            if (value == null) {
                 return null;
             }
             return this;
         }
 
+        @Override // android.view.View.OnClickListener
         public void onClick(View arg0) {
             this.value.onControlClick(arg0);
         }

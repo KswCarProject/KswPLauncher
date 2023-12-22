@@ -4,16 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.p001v4.content.ContextCompat;
+import android.support.p004v7.widget.DividerItemDecoration;
+import android.support.p004v7.widget.LinearLayoutManager;
+import android.support.p004v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.settings.BaseSkinActivity;
 import com.wits.ksw.settings.alsid7.adapter.AlsID7FunctionAdapter;
 import com.wits.ksw.settings.alsid7.interfaces.IUpdateTwoLayout;
@@ -40,53 +40,17 @@ import com.wits.pms.statuscontrol.PowerManagerApp;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes9.dex */
 public class AlsID7SettingsActivity extends BaseSkinActivity implements IUpdateTwoLayout, ScanNaviList.OnMapListScanListener {
     private ImageView Img_SetBack;
-    /* access modifiers changed from: private */
-    public AlsID7FunctionAdapter adapter;
-    /* access modifiers changed from: private */
-    public List<FunctionBean> data;
-    /* access modifiers changed from: private */
-    public String defPwd = "1314";
-    private boolean first = true;
+    private AlsID7FunctionAdapter adapter;
+    private List<FunctionBean> data;
     private FrameLayout frame_OneLayout;
     private FrameLayout frame_TwoLayout;
-    Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 0:
-                    AlsID7SettingsActivity.this.initOneLayout();
-                    AlsID7SettingsActivity.this.initTwoLayout();
-                    return;
-                case 2:
-                    if (TextUtils.equals(AlsID7SettingsActivity.this.defPwd, (String) msg.obj)) {
-                        AlsID7SettingsActivity.this.startActivity(new Intent(AlsID7SettingsActivity.this, FactoryActivity.class));
-                        AlsID7SettingsActivity.this.finish();
-                        return;
-                    }
-                    AlsID7SettingsActivity.this.setFactoryLayout.SetTextEEro();
-                    return;
-                case 3:
-                    if (AlsID7SettingsActivity.this.naviTwo != null) {
-                        Log.d("Navi", "updateList: " + AlsID7SettingsActivity.this.mapList.size());
-                        AlsID7SettingsActivity.this.naviTwo.updateMapList(AlsID7SettingsActivity.this.mapList);
-                        return;
-                    }
-                    return;
-                default:
-                    return;
-            }
-        }
-    };
     private LinearLayoutManager layoutManager;
-    /* access modifiers changed from: private */
-    public List<MapBean> mapList = new ArrayList();
-    /* access modifiers changed from: private */
-    public AlsID7NaviTwo naviTwo;
+    private AlsID7NaviTwo naviTwo;
     private RecyclerView recyclerView;
-    /* access modifiers changed from: private */
-    public AlsID7SetFactoryLayout setFactoryLayout;
+    private AlsID7SetFactoryLayout setFactoryLayout;
     private SetImageTwo setImageTwo;
     private AlsID7SetLanguageLayout setLanguageLayout;
     private AlsID7SetNaviLayout setNaviLayout;
@@ -100,11 +64,45 @@ public class AlsID7SettingsActivity extends BaseSkinActivity implements IUpdateT
     private AlsID7SetVoiceLayout setVoiceLayout;
     private AlsID7TimeSetTwo timeSetTwo;
     private String voiceData;
+    private String defPwd = "1314";
+    private boolean first = true;
+    Handler handler = new Handler() { // from class: com.wits.ksw.settings.alsid7.AlsID7SettingsActivity.1
+        @Override // android.os.Handler
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    AlsID7SettingsActivity.this.initOneLayout();
+                    AlsID7SettingsActivity.this.initTwoLayout();
+                    return;
+                case 1:
+                default:
+                    return;
+                case 2:
+                    String inputPwd = (String) msg.obj;
+                    if (!TextUtils.equals(AlsID7SettingsActivity.this.defPwd, inputPwd)) {
+                        AlsID7SettingsActivity.this.setFactoryLayout.SetTextEEro();
+                        return;
+                    }
+                    AlsID7SettingsActivity.this.startActivity(new Intent(AlsID7SettingsActivity.this, FactoryActivity.class));
+                    AlsID7SettingsActivity.this.finish();
+                    return;
+                case 3:
+                    if (AlsID7SettingsActivity.this.naviTwo != null) {
+                        Log.d("Navi", "updateList: " + AlsID7SettingsActivity.this.mapList.size());
+                        AlsID7SettingsActivity.this.naviTwo.updateMapList(AlsID7SettingsActivity.this.mapList);
+                        return;
+                    }
+                    return;
+            }
+        }
+    };
+    private List<MapBean> mapList = new ArrayList();
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override // com.wits.ksw.settings.BaseSkinActivity, android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_als_id7_settings);
+        setContentView(C0899R.C0902layout.activity_als_id7_settings);
         initData();
         initView();
     }
@@ -150,22 +148,22 @@ public class AlsID7SettingsActivity extends BaseSkinActivity implements IUpdateT
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void onResume() {
+    @Override // android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onResume() {
         super.onResume();
         ScanNaviList.getInstance().setMapListScanListener(this);
-        this.handler.sendEmptyMessageDelayed(0, 1000);
+        this.handler.sendEmptyMessageDelayed(0, 1000L);
         initSaveData();
         skipItem();
     }
 
-    /* access modifiers changed from: protected */
-    public void onStop() {
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onStop() {
         super.onStop();
-        ScanNaviList.getInstance().setMapListScanListener((ScanNaviList.OnMapListScanListener) null);
+        ScanNaviList.getInstance().setMapListScanListener(null);
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void initOneLayout() {
         if (this.setSystemInfoLayout == null) {
             AlsID7SetSystemLayout alsID7SetSystemLayout = new AlsID7SetSystemLayout(this);
@@ -204,7 +202,7 @@ public class AlsID7SettingsActivity extends BaseSkinActivity implements IUpdateT
         }
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void initTwoLayout() {
         if (this.setSystemTwo == null) {
             this.setSystemTwo = new AlsID7SetSystemTwo(this);
@@ -223,8 +221,8 @@ public class AlsID7SettingsActivity extends BaseSkinActivity implements IUpdateT
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void onNewIntent(Intent intent) {
+    @Override // android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         this.voiceData = intent.getStringExtra("voiceData");
         Log.d("id7startAction", "===data====:" + this.voiceData);
@@ -243,9 +241,9 @@ public class AlsID7SettingsActivity extends BaseSkinActivity implements IUpdateT
             e.getStackTrace();
             this.defPwd = "1314";
         }
-        int[] icons = {R.mipmap.als_id7_icon_system, R.mipmap.als_id7_icon_navi, R.mipmap.als_id7_icon_audio, R.mipmap.als_id7_icon_eq, R.mipmap.als_id7_icon_language, R.mipmap.als_id7_icon_time, R.mipmap.als_id7_icon_info, R.mipmap.als_id7_icon_android, R.mipmap.als_id7_icon_factory};
+        int[] icons = {C0899R.mipmap.als_id7_icon_system, C0899R.mipmap.als_id7_icon_navi, C0899R.mipmap.als_id7_icon_audio, C0899R.mipmap.als_id7_icon_eq, C0899R.mipmap.als_id7_icon_language, C0899R.mipmap.als_id7_icon_time, C0899R.mipmap.als_id7_icon_info, C0899R.mipmap.als_id7_icon_android, C0899R.mipmap.als_id7_icon_factory};
         this.data = new ArrayList();
-        String[] functions = getResources().getStringArray(R.array.set_function);
+        String[] functions = getResources().getStringArray(C0899R.array.set_function);
         for (int i = 0; i < icons.length; i++) {
             FunctionBean fcb = new FunctionBean();
             fcb.setIcon(icons[i]);
@@ -256,7 +254,7 @@ public class AlsID7SettingsActivity extends BaseSkinActivity implements IUpdateT
     }
 
     private void initView() {
-        this.recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        this.recyclerView = (RecyclerView) findViewById(C0899R.C0901id.recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         this.layoutManager = linearLayoutManager;
         linearLayoutManager.setOrientation(1);
@@ -265,9 +263,10 @@ public class AlsID7SettingsActivity extends BaseSkinActivity implements IUpdateT
         this.adapter = alsID7FunctionAdapter;
         this.recyclerView.setAdapter(alsID7FunctionAdapter);
         DividerItemDecoration divider = new DividerItemDecoration(this, 1);
-        divider.setDrawable(ContextCompat.getDrawable(this, R.mipmap.als_id7_lp_line));
+        divider.setDrawable(ContextCompat.getDrawable(this, C0899R.mipmap.als_id7_lp_line));
         this.recyclerView.addItemDecoration(divider);
-        this.adapter.registOnFunctionClickListener(new AlsID7FunctionAdapter.OnFunctionClickListener() {
+        this.adapter.registOnFunctionClickListener(new AlsID7FunctionAdapter.OnFunctionClickListener() { // from class: com.wits.ksw.settings.alsid7.AlsID7SettingsActivity.2
+            @Override // com.wits.ksw.settings.alsid7.adapter.AlsID7FunctionAdapter.OnFunctionClickListener
             public void functonClick(int pos) {
                 AlsID7SettingsActivity.this.setOneLayout(pos);
                 for (FunctionBean fb : AlsID7SettingsActivity.this.data) {
@@ -277,8 +276,8 @@ public class AlsID7SettingsActivity extends BaseSkinActivity implements IUpdateT
                 AlsID7SettingsActivity.this.adapter.notifyDataSetChanged();
             }
         });
-        this.frame_OneLayout = (FrameLayout) findViewById(R.id.frame_OneLayout);
-        this.frame_TwoLayout = (FrameLayout) findViewById(R.id.frame_TwoLayout);
+        this.frame_OneLayout = (FrameLayout) findViewById(C0899R.C0901id.frame_OneLayout);
+        this.frame_TwoLayout = (FrameLayout) findViewById(C0899R.C0901id.frame_TwoLayout);
         if (this.setSystemLayout == null) {
             AlsID7SetSystemLayout alsID7SetSystemLayout = new AlsID7SetSystemLayout(this);
             this.setSystemLayout = alsID7SetSystemLayout;
@@ -289,16 +288,17 @@ public class AlsID7SettingsActivity extends BaseSkinActivity implements IUpdateT
             this.setSystemTwo = new AlsID7SetSystemTwo(this);
         }
         this.frame_TwoLayout.addView(this.setSystemTwo);
-        ImageView imageView = (ImageView) findViewById(R.id.Img_SetBack);
+        ImageView imageView = (ImageView) findViewById(C0899R.C0901id.Img_SetBack);
         this.Img_SetBack = imageView;
-        imageView.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.settings.alsid7.AlsID7SettingsActivity.3
+            @Override // android.view.View.OnClickListener
             public void onClick(View v) {
                 AlsID7SettingsActivity.this.onBackPressed();
             }
         });
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void setOneLayout(int type) {
         this.frame_OneLayout.removeAllViews();
         this.frame_TwoLayout.removeAllViews();
@@ -409,6 +409,7 @@ public class AlsID7SettingsActivity extends BaseSkinActivity implements IUpdateT
         this.frame_OneLayout.requestFocus();
     }
 
+    @Override // com.wits.ksw.settings.alsid7.interfaces.IUpdateTwoLayout
     public void updateTwoLayout(int type, int shwoIndex) {
         switch (type) {
             case 1:
@@ -436,12 +437,14 @@ public class AlsID7SettingsActivity extends BaseSkinActivity implements IUpdateT
         }
     }
 
-    public void onScanFinish(List<MapBean> mapList2) {
-        Log.d("Navi", "onScanFinish " + mapList2.size());
-        this.mapList = mapList2;
+    @Override // com.wits.ksw.settings.utlis_view.ScanNaviList.OnMapListScanListener
+    public void onScanFinish(List<MapBean> mapList) {
+        Log.d("Navi", "onScanFinish " + mapList.size());
+        this.mapList = mapList;
         this.handler.sendEmptyMessage(3);
     }
 
+    @Override // android.view.Window.Callback
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
 }

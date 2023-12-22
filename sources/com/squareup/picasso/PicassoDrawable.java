@@ -16,10 +16,11 @@ import android.os.SystemClock;
 import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
+/* loaded from: classes.dex */
 final class PicassoDrawable extends BitmapDrawable {
     private static final Paint DEBUG_PAINT = new Paint();
     private static final float FADE_DURATION = 200.0f;
-    int alpha = 255;
+    int alpha;
     boolean animating;
     private final boolean debugging;
     private final float density;
@@ -27,12 +28,13 @@ final class PicassoDrawable extends BitmapDrawable {
     Drawable placeholder;
     long startTimeMillis;
 
-    static void setBitmap(ImageView target, Context context, Bitmap bitmap, Picasso.LoadedFrom loadedFrom2, boolean noFade, boolean debugging2) {
-        Drawable placeholder2 = target.getDrawable();
-        if (placeholder2 instanceof AnimationDrawable) {
-            ((AnimationDrawable) placeholder2).stop();
+    static void setBitmap(ImageView target, Context context, Bitmap bitmap, Picasso.LoadedFrom loadedFrom, boolean noFade, boolean debugging) {
+        Drawable placeholder = target.getDrawable();
+        if (placeholder instanceof AnimationDrawable) {
+            ((AnimationDrawable) placeholder).stop();
         }
-        target.setImageDrawable(new PicassoDrawable(context, bitmap, placeholder2, loadedFrom2, noFade, debugging2));
+        PicassoDrawable drawable = new PicassoDrawable(context, bitmap, placeholder, loadedFrom, noFade, debugging);
+        target.setImageDrawable(drawable);
     }
 
     static void setPlaceholder(ImageView target, Drawable placeholderDrawable) {
@@ -42,18 +44,21 @@ final class PicassoDrawable extends BitmapDrawable {
         }
     }
 
-    PicassoDrawable(Context context, Bitmap bitmap, Drawable placeholder2, Picasso.LoadedFrom loadedFrom2, boolean noFade, boolean debugging2) {
+    PicassoDrawable(Context context, Bitmap bitmap, Drawable placeholder, Picasso.LoadedFrom loadedFrom, boolean noFade, boolean debugging) {
         super(context.getResources(), bitmap);
-        this.debugging = debugging2;
+        this.alpha = 255;
+        this.debugging = debugging;
         this.density = context.getResources().getDisplayMetrics().density;
-        this.loadedFrom = loadedFrom2;
-        if (loadedFrom2 != Picasso.LoadedFrom.MEMORY && !noFade) {
-            this.placeholder = placeholder2;
+        this.loadedFrom = loadedFrom;
+        boolean fade = (loadedFrom == Picasso.LoadedFrom.MEMORY || noFade) ? false : true;
+        if (fade) {
+            this.placeholder = placeholder;
             this.animating = true;
             this.startTimeMillis = SystemClock.uptimeMillis();
         }
     }
 
+    @Override // android.graphics.drawable.BitmapDrawable, android.graphics.drawable.Drawable
     public void draw(Canvas canvas) {
         if (!this.animating) {
             super.draw(canvas);
@@ -68,7 +73,8 @@ final class PicassoDrawable extends BitmapDrawable {
                 if (drawable != null) {
                     drawable.draw(canvas);
                 }
-                super.setAlpha((int) (((float) this.alpha) * normalized));
+                int partialAlpha = (int) (this.alpha * normalized);
+                super.setAlpha(partialAlpha);
                 super.draw(canvas);
                 super.setAlpha(this.alpha);
                 if (Build.VERSION.SDK_INT <= 10) {
@@ -81,15 +87,17 @@ final class PicassoDrawable extends BitmapDrawable {
         }
     }
 
-    public void setAlpha(int alpha2) {
-        this.alpha = alpha2;
+    @Override // android.graphics.drawable.BitmapDrawable, android.graphics.drawable.Drawable
+    public void setAlpha(int alpha) {
+        this.alpha = alpha;
         Drawable drawable = this.placeholder;
         if (drawable != null) {
-            drawable.setAlpha(alpha2);
+            drawable.setAlpha(alpha);
         }
-        super.setAlpha(alpha2);
+        super.setAlpha(alpha);
     }
 
+    @Override // android.graphics.drawable.BitmapDrawable, android.graphics.drawable.Drawable
     public void setColorFilter(ColorFilter cf) {
         Drawable drawable = this.placeholder;
         if (drawable != null) {
@@ -98,8 +106,8 @@ final class PicassoDrawable extends BitmapDrawable {
         super.setColorFilter(cf);
     }
 
-    /* access modifiers changed from: protected */
-    public void onBoundsChange(Rect bounds) {
+    @Override // android.graphics.drawable.BitmapDrawable, android.graphics.drawable.Drawable
+    protected void onBoundsChange(Rect bounds) {
         Drawable drawable = this.placeholder;
         if (drawable != null) {
             drawable.setBounds(bounds);
@@ -110,18 +118,20 @@ final class PicassoDrawable extends BitmapDrawable {
     private void drawDebugIndicator(Canvas canvas) {
         Paint paint = DEBUG_PAINT;
         paint.setColor(-1);
-        canvas.drawPath(getTrianglePath(new Point(0, 0), (int) (this.density * 16.0f)), paint);
+        Path path = getTrianglePath(new Point(0, 0), (int) (this.density * 16.0f));
+        canvas.drawPath(path, paint);
         paint.setColor(this.loadedFrom.debugColor);
-        canvas.drawPath(getTrianglePath(new Point(0, 0), (int) (this.density * 15.0f)), paint);
+        Path path2 = getTrianglePath(new Point(0, 0), (int) (this.density * 15.0f));
+        canvas.drawPath(path2, paint);
     }
 
     private static Path getTrianglePath(Point p1, int width) {
         Point p2 = new Point(p1.x + width, p1.y);
         Point p3 = new Point(p1.x, p1.y + width);
         Path path = new Path();
-        path.moveTo((float) p1.x, (float) p1.y);
-        path.lineTo((float) p2.x, (float) p2.y);
-        path.lineTo((float) p3.x, (float) p3.y);
+        path.moveTo(p1.x, p1.y);
+        path.lineTo(p2.x, p2.y);
+        path.lineTo(p3.x, p3.y);
         return path;
     }
 }

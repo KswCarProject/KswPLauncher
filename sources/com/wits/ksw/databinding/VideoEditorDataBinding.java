@@ -7,19 +7,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class VideoEditorDataBinding extends ViewDataBinding {
     public final RelativeLayout layout;
     @Bindable
     protected LauncherViewModel mMediaViewModel;
 
-    public abstract void setMediaViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setMediaViewModel(LauncherViewModel MediaViewModel);
 
-    protected VideoEditorDataBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout layout2) {
+    protected VideoEditorDataBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout layout) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.layout = layout2;
+        this.layout = layout;
     }
 
     public LauncherViewModel getMediaViewModel() {
@@ -32,7 +33,7 @@ public abstract class VideoEditorDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static VideoEditorDataBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (VideoEditorDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_video_edit, root, attachToRoot, component);
+        return (VideoEditorDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_video_edit, root, attachToRoot, component);
     }
 
     public static VideoEditorDataBinding inflate(LayoutInflater inflater) {
@@ -41,7 +42,7 @@ public abstract class VideoEditorDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static VideoEditorDataBinding inflate(LayoutInflater inflater, Object component) {
-        return (VideoEditorDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_video_edit, (ViewGroup) null, false, component);
+        return (VideoEditorDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_video_edit, null, false, component);
     }
 
     public static VideoEditorDataBinding bind(View view) {
@@ -50,6 +51,6 @@ public abstract class VideoEditorDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static VideoEditorDataBinding bind(View view, Object component) {
-        return (VideoEditorDataBinding) bind(component, view, R.layout.fragment_video_edit);
+        return (VideoEditorDataBinding) bind(component, view, C0899R.C0902layout.fragment_video_edit);
     }
 }

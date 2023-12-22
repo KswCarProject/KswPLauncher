@@ -3,37 +3,34 @@ package android.databinding;
 import android.view.View;
 import android.view.ViewStub;
 
+/* loaded from: classes.dex */
 public class ViewStubProxy {
-    /* access modifiers changed from: private */
-    public ViewDataBinding mContainingBinding;
-    /* access modifiers changed from: private */
-    public ViewStub.OnInflateListener mOnInflateListener;
+    private ViewDataBinding mContainingBinding;
+    private ViewStub.OnInflateListener mOnInflateListener;
     private ViewStub.OnInflateListener mProxyListener;
-    /* access modifiers changed from: private */
-    public View mRoot;
-    /* access modifiers changed from: private */
-    public ViewDataBinding mViewDataBinding;
-    /* access modifiers changed from: private */
-    public ViewStub mViewStub;
+    private View mRoot;
+    private ViewDataBinding mViewDataBinding;
+    private ViewStub mViewStub;
 
     public ViewStubProxy(ViewStub viewStub) {
-        AnonymousClass1 r0 = new ViewStub.OnInflateListener() {
+        ViewStub.OnInflateListener onInflateListener = new ViewStub.OnInflateListener() { // from class: android.databinding.ViewStubProxy.1
+            @Override // android.view.ViewStub.OnInflateListener
             public void onInflate(ViewStub stub, View inflated) {
-                View unused = ViewStubProxy.this.mRoot = inflated;
+                ViewStubProxy.this.mRoot = inflated;
                 ViewStubProxy viewStubProxy = ViewStubProxy.this;
-                ViewDataBinding unused2 = viewStubProxy.mViewDataBinding = DataBindingUtil.bind(viewStubProxy.mContainingBinding.mBindingComponent, inflated, stub.getLayoutResource());
-                ViewStub unused3 = ViewStubProxy.this.mViewStub = null;
+                viewStubProxy.mViewDataBinding = DataBindingUtil.bind(viewStubProxy.mContainingBinding.mBindingComponent, inflated, stub.getLayoutResource());
+                ViewStubProxy.this.mViewStub = null;
                 if (ViewStubProxy.this.mOnInflateListener != null) {
                     ViewStubProxy.this.mOnInflateListener.onInflate(stub, inflated);
-                    ViewStub.OnInflateListener unused4 = ViewStubProxy.this.mOnInflateListener = null;
+                    ViewStubProxy.this.mOnInflateListener = null;
                 }
                 ViewStubProxy.this.mContainingBinding.invalidateAll();
                 ViewStubProxy.this.mContainingBinding.forceExecuteBindings();
             }
         };
-        this.mProxyListener = r0;
+        this.mProxyListener = onInflateListener;
         this.mViewStub = viewStub;
-        viewStub.setOnInflateListener(r0);
+        viewStub.setOnInflateListener(onInflateListener);
     }
 
     public void setContainingBinding(ViewDataBinding containingBinding) {

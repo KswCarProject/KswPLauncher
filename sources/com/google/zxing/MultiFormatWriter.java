@@ -16,13 +16,16 @@ import com.google.zxing.pdf417.PDF417Writer;
 import com.google.zxing.qrcode.QRCodeWriter;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class MultiFormatWriter implements Writer {
+    @Override // com.google.zxing.Writer
     public BitMatrix encode(String contents, BarcodeFormat format, int width, int height) throws WriterException {
-        return encode(contents, format, width, height, (Map<EncodeHintType, ?>) null);
+        return encode(contents, format, width, height, null);
     }
 
-    /* renamed from: com.google.zxing.MultiFormatWriter$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
+    /* renamed from: com.google.zxing.MultiFormatWriter$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C06701 {
         static final /* synthetic */ int[] $SwitchMap$com$google$zxing$BarcodeFormat;
 
         static {
@@ -83,9 +86,10 @@ public final class MultiFormatWriter implements Writer {
         }
     }
 
+    @Override // com.google.zxing.Writer
     public BitMatrix encode(String contents, BarcodeFormat format, int width, int height, Map<EncodeHintType, ?> hints) throws WriterException {
         Writer writer;
-        switch (AnonymousClass1.$SwitchMap$com$google$zxing$BarcodeFormat[format.ordinal()]) {
+        switch (C06701.$SwitchMap$com$google$zxing$BarcodeFormat[format.ordinal()]) {
             case 1:
                 writer = new EAN8Writer();
                 break;

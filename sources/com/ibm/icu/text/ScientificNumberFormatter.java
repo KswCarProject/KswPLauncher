@@ -7,6 +7,7 @@ import com.ibm.icu.util.ULocale;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class ScientificNumberFormatter {
     private static final Style SUPER_SCRIPT = new SuperscriptStyle();
     private final DecimalFormat fmt;
@@ -37,9 +38,9 @@ public final class ScientificNumberFormatter {
         return format;
     }
 
+    /* loaded from: classes.dex */
     private static abstract class Style {
-        /* access modifiers changed from: package-private */
-        public abstract String format(AttributedCharacterIterator attributedCharacterIterator, String str);
+        abstract String format(AttributedCharacterIterator attributedCharacterIterator, String str);
 
         private Style() {
         }
@@ -55,22 +56,23 @@ public final class ScientificNumberFormatter {
         }
     }
 
+    /* loaded from: classes.dex */
     private static class MarkupStyle extends Style {
         private final String beginMarkup;
         private final String endMarkup;
 
-        MarkupStyle(String beginMarkup2, String endMarkup2) {
+        MarkupStyle(String beginMarkup, String endMarkup) {
             super();
-            this.beginMarkup = beginMarkup2;
-            this.endMarkup = endMarkup2;
+            this.beginMarkup = beginMarkup;
+            this.endMarkup = endMarkup;
         }
 
-        /* access modifiers changed from: package-private */
-        public String format(AttributedCharacterIterator iterator, String preExponent) {
+        @Override // com.ibm.icu.text.ScientificNumberFormatter.Style
+        String format(AttributedCharacterIterator iterator, String preExponent) {
             int copyFromOffset = 0;
             StringBuilder result = new StringBuilder();
             iterator.first();
-            while (iterator.current() != 65535) {
+            while (iterator.current() != '\uffff') {
                 Map<AttributedCharacterIterator.Attribute, Object> attributeSet = iterator.getAttributes();
                 if (attributeSet.containsKey(NumberFormat.Field.EXPONENT_SYMBOL)) {
                     append(iterator, copyFromOffset, iterator.getRunStart(NumberFormat.Field.EXPONENT_SYMBOL), result);
@@ -93,21 +95,22 @@ public final class ScientificNumberFormatter {
         }
     }
 
+    /* loaded from: classes.dex */
     private static class SuperscriptStyle extends Style {
-        private static final char[] SUPERSCRIPT_DIGITS = {8304, 185, 178, 179, 8308, 8309, 8310, 8311, 8312, 8313};
-        private static final char SUPERSCRIPT_MINUS_SIGN = '⁻';
-        private static final char SUPERSCRIPT_PLUS_SIGN = '⁺';
+        private static final char[] SUPERSCRIPT_DIGITS = {'\u2070', '\u00b9', '\u00b2', '\u00b3', '\u2074', '\u2075', '\u2076', '\u2077', '\u2078', '\u2079'};
+        private static final char SUPERSCRIPT_MINUS_SIGN = '\u207b';
+        private static final char SUPERSCRIPT_PLUS_SIGN = '\u207a';
 
         private SuperscriptStyle() {
             super();
         }
 
-        /* access modifiers changed from: package-private */
-        public String format(AttributedCharacterIterator iterator, String preExponent) {
+        @Override // com.ibm.icu.text.ScientificNumberFormatter.Style
+        String format(AttributedCharacterIterator iterator, String preExponent) {
             int copyFromOffset = 0;
             StringBuilder result = new StringBuilder();
             iterator.first();
-            while (iterator.current() != 65535) {
+            while (iterator.current() != '\uffff') {
                 Map<AttributedCharacterIterator.Attribute, Object> attributeSet = iterator.getAttributes();
                 if (attributeSet.containsKey(NumberFormat.Field.EXPONENT_SYMBOL)) {
                     append(iterator, copyFromOffset, iterator.getRunStart(NumberFormat.Field.EXPONENT_SYMBOL), result);
@@ -148,12 +151,12 @@ public final class ScientificNumberFormatter {
             int oldIndex = iterator.getIndex();
             iterator.setIndex(start);
             while (iterator.getIndex() < limit) {
-                int digit = UCharacter.digit(char32AtAndAdvance(iterator));
-                if (digit >= 0) {
-                    result.append(SUPERSCRIPT_DIGITS[digit]);
-                } else {
+                int aChar = char32AtAndAdvance(iterator);
+                int digit = UCharacter.digit(aChar);
+                if (digit < 0) {
                     throw new IllegalArgumentException();
                 }
+                result.append(SUPERSCRIPT_DIGITS[digit]);
             }
             iterator.setIndex(oldIndex);
         }
@@ -161,34 +164,35 @@ public final class ScientificNumberFormatter {
         private static int char32AtAndAdvance(AttributedCharacterIterator iterator) {
             char c1 = iterator.current();
             char c2 = iterator.next();
-            if (!UCharacter.isHighSurrogate(c1) || !UCharacter.isLowSurrogate(c2)) {
-                return c1;
+            if (UCharacter.isHighSurrogate(c1) && UCharacter.isLowSurrogate(c2)) {
+                iterator.next();
+                return UCharacter.toCodePoint(c1, c2);
             }
-            iterator.next();
-            return UCharacter.toCodePoint(c1, c2);
+            return c1;
         }
     }
 
     private static String getPreExponent(DecimalFormatSymbols dfs) {
-        StringBuilder preExponent2 = new StringBuilder();
-        preExponent2.append(dfs.getExponentMultiplicationSign());
+        StringBuilder preExponent = new StringBuilder();
+        preExponent.append(dfs.getExponentMultiplicationSign());
         char[] digits = dfs.getDigits();
-        preExponent2.append(digits[1]).append(digits[0]);
-        return preExponent2.toString();
+        preExponent.append(digits[1]).append(digits[0]);
+        return preExponent.toString();
     }
 
-    private static ScientificNumberFormatter getInstance(DecimalFormat decimalFormat, Style style2) {
-        return new ScientificNumberFormatter((DecimalFormat) decimalFormat.clone(), getPreExponent(decimalFormat.getDecimalFormatSymbols()), style2);
+    private static ScientificNumberFormatter getInstance(DecimalFormat decimalFormat, Style style) {
+        DecimalFormatSymbols dfs = decimalFormat.getDecimalFormatSymbols();
+        return new ScientificNumberFormatter((DecimalFormat) decimalFormat.clone(), getPreExponent(dfs), style);
     }
 
-    private static ScientificNumberFormatter getInstanceForLocale(ULocale locale, Style style2) {
+    private static ScientificNumberFormatter getInstanceForLocale(ULocale locale, Style style) {
         DecimalFormat decimalFormat = (DecimalFormat) DecimalFormat.getScientificInstance(locale);
-        return new ScientificNumberFormatter(decimalFormat, getPreExponent(decimalFormat.getDecimalFormatSymbols()), style2);
+        return new ScientificNumberFormatter(decimalFormat, getPreExponent(decimalFormat.getDecimalFormatSymbols()), style);
     }
 
-    private ScientificNumberFormatter(DecimalFormat decimalFormat, String preExponent2, Style style2) {
+    private ScientificNumberFormatter(DecimalFormat decimalFormat, String preExponent, Style style) {
         this.fmt = decimalFormat;
-        this.preExponent = preExponent2;
-        this.style = style2;
+        this.preExponent = preExponent;
+        this.style = style;
     }
 }

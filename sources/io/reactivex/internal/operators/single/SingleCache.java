@@ -8,21 +8,22 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class SingleCache<T> extends Single<T> implements SingleObserver<T> {
     static final CacheDisposable[] EMPTY = new CacheDisposable[0];
     static final CacheDisposable[] TERMINATED = new CacheDisposable[0];
     Throwable error;
-    final AtomicReference<CacheDisposable<T>[]> observers = new AtomicReference<>(EMPTY);
     final SingleSource<? extends T> source;
     T value;
     final AtomicInteger wip = new AtomicInteger();
+    final AtomicReference<CacheDisposable<T>[]> observers = new AtomicReference<>(EMPTY);
 
-    public SingleCache(SingleSource<? extends T> source2) {
-        this.source = source2;
+    public SingleCache(SingleSource<? extends T> source) {
+        this.source = source;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         CacheDisposable<T> d = new CacheDisposable<>(observer, this);
         observer.onSubscribe(d);
         if (add(d)) {
@@ -39,100 +40,105 @@ public final class SingleCache<T> extends Single<T> implements SingleObserver<T>
         if (ex != null) {
             observer.onError(ex);
         } else {
-            observer.onSuccess(this.value);
+            observer.onSuccess((T) this.value);
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean add(CacheDisposable<T> observer) {
+    boolean add(CacheDisposable<T> observer) {
         CacheDisposable<T>[] a;
         CacheDisposable<T>[] b;
         do {
-            a = (CacheDisposable[]) this.observers.get();
+            a = this.observers.get();
             if (a == TERMINATED) {
                 return false;
             }
             int n = a.length;
-            b = new CacheDisposable[(n + 1)];
+            b = new CacheDisposable[n + 1];
             System.arraycopy(a, 0, b, 0, n);
             b[n] = observer;
         } while (!this.observers.compareAndSet(a, b));
         return true;
     }
 
-    /* access modifiers changed from: package-private */
-    public void remove(CacheDisposable<T> observer) {
+    /* JADX WARN: Multi-variable type inference failed */
+    void remove(CacheDisposable<T> observer) {
         CacheDisposable<T>[] a;
         CacheDisposable<T>[] b;
         do {
-            a = (CacheDisposable[]) this.observers.get();
+            a = this.observers.get();
             int n = a.length;
-            if (n != 0) {
-                int j = -1;
-                int i = 0;
-                while (true) {
-                    if (i >= n) {
-                        break;
-                    } else if (a[i] == observer) {
-                        j = i;
-                        break;
-                    } else {
-                        i++;
-                    }
-                }
-                if (j >= 0) {
-                    if (n == 1) {
-                        b = EMPTY;
-                    } else {
-                        CacheDisposable<T>[] b2 = new CacheDisposable[(n - 1)];
-                        System.arraycopy(a, 0, b2, 0, j);
-                        System.arraycopy(a, j + 1, b2, j, (n - j) - 1);
-                        b = b2;
-                    }
-                } else {
-                    return;
-                }
-            } else {
+            if (n == 0) {
                 return;
+            }
+            int j = -1;
+            int i = 0;
+            while (true) {
+                if (i >= n) {
+                    break;
+                } else if (a[i] != observer) {
+                    i++;
+                } else {
+                    j = i;
+                    break;
+                }
+            }
+            if (j < 0) {
+                return;
+            }
+            if (n == 1) {
+                b = EMPTY;
+            } else {
+                CacheDisposable<T>[] b2 = new CacheDisposable[n - 1];
+                System.arraycopy(a, 0, b2, 0, j);
+                System.arraycopy(a, j + 1, b2, j, (n - j) - 1);
+                b = b2;
             }
         } while (!this.observers.compareAndSet(a, b));
     }
 
+    @Override // io.reactivex.SingleObserver
     public void onSubscribe(Disposable d) {
     }
 
-    public void onSuccess(T value2) {
-        this.value = value2;
-        for (CacheDisposable<T> d : (CacheDisposable[]) this.observers.getAndSet(TERMINATED)) {
+    @Override // io.reactivex.SingleObserver
+    public void onSuccess(T value) {
+        CacheDisposable<T>[] andSet;
+        this.value = value;
+        for (CacheDisposable<T> d : this.observers.getAndSet(TERMINATED)) {
             if (!d.isDisposed()) {
-                d.downstream.onSuccess(value2);
+                d.downstream.onSuccess(value);
             }
         }
     }
 
+    @Override // io.reactivex.SingleObserver
     public void onError(Throwable e) {
+        CacheDisposable<T>[] andSet;
         this.error = e;
-        for (CacheDisposable<T> d : (CacheDisposable[]) this.observers.getAndSet(TERMINATED)) {
+        for (CacheDisposable<T> d : this.observers.getAndSet(TERMINATED)) {
             if (!d.isDisposed()) {
                 d.downstream.onError(e);
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class CacheDisposable<T> extends AtomicBoolean implements Disposable {
         private static final long serialVersionUID = 7514387411091976596L;
         final SingleObserver<? super T> downstream;
         final SingleCache<T> parent;
 
-        CacheDisposable(SingleObserver<? super T> actual, SingleCache<T> parent2) {
+        CacheDisposable(SingleObserver<? super T> actual, SingleCache<T> parent) {
             this.downstream = actual;
-            this.parent = parent2;
+            this.parent = parent;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return get();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             if (compareAndSet(false, true)) {
                 this.parent.remove(this);

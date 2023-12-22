@@ -5,9 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.constraint.solver.widgets.analyzer.BasicMeasure;
-import android.support.v7.widget.RecyclerView;
+import android.support.p004v7.widget.RecyclerView;
 import android.view.View;
 
+/* loaded from: classes15.dex */
 public class SpacingItemDecoration extends RecyclerView.ItemDecoration {
     private Context context;
     private int mTextSize;
@@ -16,10 +17,11 @@ public class SpacingItemDecoration extends RecyclerView.ItemDecoration {
     private int spacing;
     private int titleHeight = 120;
 
-    public SpacingItemDecoration(Context context2, int spacings) {
+    public SpacingItemDecoration(Context context, int spacings) {
         this.spacing = spacings;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.ItemDecoration
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
         int position = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition();
@@ -28,12 +30,15 @@ public class SpacingItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.ItemDecoration
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
     }
 
     private int getMeasureWidth(View header, RecyclerView recyclerView) {
-        header.measure(View.MeasureSpec.makeMeasureSpec(recyclerView.getWidth(), BasicMeasure.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, 0));
+        int widthSpec = View.MeasureSpec.makeMeasureSpec(recyclerView.getWidth(), BasicMeasure.EXACTLY);
+        int heightSpec = View.MeasureSpec.makeMeasureSpec(0, 0);
+        header.measure(widthSpec, heightSpec);
         header.layout(0, 0, header.getMeasuredWidth(), header.getMeasuredHeight());
         return header.getMeasuredWidth();
     }

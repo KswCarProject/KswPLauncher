@@ -6,64 +6,60 @@ import android.support.constraint.ConstraintSet;
 import android.support.constraint.motion.SplineSet;
 import android.support.constraint.motion.utils.Easing;
 import android.support.constraint.solver.widgets.ConstraintWidget;
-import android.support.v4.app.NotificationCompat;
+import android.support.p001v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import com.ibm.icu.text.DateFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
+/* loaded from: classes.dex */
 class MotionConstrainedPoint implements Comparable<MotionConstrainedPoint> {
     static final int CARTESIAN = 2;
     public static final boolean DEBUG = false;
     static final int PERPENDICULAR = 1;
     public static final String TAG = "MotionPaths";
     static String[] names = {"position", "x", DateFormat.YEAR, "width", "height", "pathRotate"};
-    private float alpha = 1.0f;
-    private boolean applyElevation = false;
-    LinkedHashMap<String, ConstraintAttribute> attributes = new LinkedHashMap<>();
-    private float elevation = 0.0f;
     private float height;
-    private int mDrawPath = 0;
     private Easing mKeyFrameEasing;
-    int mMode = 0;
-    private float mPathRotate = Float.NaN;
-    private float mPivotX = Float.NaN;
-    private float mPivotY = Float.NaN;
-    private float mProgress = Float.NaN;
-    double[] mTempDelta = new double[18];
-    double[] mTempValue = new double[18];
-    int mVisibilityMode = 0;
     private float position;
+    int visibility;
+    private float width;
+
+    /* renamed from: x */
+    private float f7x;
+
+    /* renamed from: y */
+    private float f8y;
+    private float alpha = 1.0f;
+    int mVisibilityMode = 0;
+    private boolean applyElevation = false;
+    private float elevation = 0.0f;
     private float rotation = 0.0f;
     private float rotationX = 0.0f;
     public float rotationY = 0.0f;
     private float scaleX = 1.0f;
     private float scaleY = 1.0f;
+    private float mPivotX = Float.NaN;
+    private float mPivotY = Float.NaN;
     private float translationX = 0.0f;
     private float translationY = 0.0f;
     private float translationZ = 0.0f;
-    int visibility;
-    private float width;
-    private float x;
-    private float y;
+    private int mDrawPath = 0;
+    private float mPathRotate = Float.NaN;
+    private float mProgress = Float.NaN;
+    LinkedHashMap<String, ConstraintAttribute> attributes = new LinkedHashMap<>();
+    int mMode = 0;
+    double[] mTempValue = new double[18];
+    double[] mTempDelta = new double[18];
 
     private boolean diff(float a, float b) {
-        if (Float.isNaN(a) || Float.isNaN(b)) {
-            if (Float.isNaN(a) != Float.isNaN(b)) {
-                return true;
-            }
-            return false;
-        } else if (Math.abs(a - b) > 1.0E-6f) {
-            return true;
-        } else {
-            return false;
-        }
+        return (Float.isNaN(a) || Float.isNaN(b)) ? Float.isNaN(a) != Float.isNaN(b) : Math.abs(a - b) > 1.0E-6f;
     }
 
-    /* access modifiers changed from: package-private */
-    public void different(MotionConstrainedPoint points, HashSet<String> keySet) {
+    void different(MotionConstrainedPoint points, HashSet<String> keySet) {
         if (diff(this.alpha, points.alpha)) {
             keySet.add("alpha");
         }
@@ -113,47 +109,42 @@ class MotionConstrainedPoint implements Comparable<MotionConstrainedPoint> {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void different(MotionConstrainedPoint points, boolean[] mask, String[] custom) {
+    void different(MotionConstrainedPoint points, boolean[] mask, String[] custom) {
         int c = 0 + 1;
         mask[0] = mask[0] | diff(this.position, points.position);
         int c2 = c + 1;
-        mask[c] = mask[c] | diff(this.x, points.x);
+        mask[c] = mask[c] | diff(this.f7x, points.f7x);
         int c3 = c2 + 1;
-        mask[c2] = mask[c2] | diff(this.y, points.y);
+        mask[c2] = mask[c2] | diff(this.f8y, points.f8y);
         int c4 = c3 + 1;
         mask[c3] = mask[c3] | diff(this.width, points.width);
         int i = c4 + 1;
         mask[c4] = mask[c4] | diff(this.height, points.height);
     }
 
-    /* access modifiers changed from: package-private */
-    public void fillStandard(double[] data, int[] toUse) {
-        float[] set = {this.position, this.x, this.y, this.width, this.height, this.alpha, this.elevation, this.rotation, this.rotationX, this.rotationY, this.scaleX, this.scaleY, this.mPivotX, this.mPivotY, this.translationX, this.translationY, this.translationZ, this.mPathRotate};
+    void fillStandard(double[] data, int[] toUse) {
+        float[] set = {this.position, this.f7x, this.f8y, this.width, this.height, this.alpha, this.elevation, this.rotation, this.rotationX, this.rotationY, this.scaleX, this.scaleY, this.mPivotX, this.mPivotY, this.translationX, this.translationY, this.translationZ, this.mPathRotate};
         int c = 0;
         for (int i = 0; i < toUse.length; i++) {
             if (toUse[i] < set.length) {
-                data[c] = (double) set[toUse[i]];
+                data[c] = set[toUse[i]];
                 c++;
             }
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean hasCustomData(String name) {
+    boolean hasCustomData(String name) {
         return this.attributes.containsKey(name);
     }
 
-    /* access modifiers changed from: package-private */
-    public int getCustomDataCount(String name) {
+    int getCustomDataCount(String name) {
         return this.attributes.get(name).noOfInterpValues();
     }
 
-    /* access modifiers changed from: package-private */
-    public int getCustomData(String name, double[] value, int offset) {
+    int getCustomData(String name, double[] value, int offset) {
         ConstraintAttribute a = this.attributes.get(name);
         if (a.noOfInterpValues() == 1) {
-            value[offset] = (double) a.getValueToInterpolate();
+            value[offset] = a.getValueToInterpolate();
             return 1;
         }
         int N = a.noOfInterpValues();
@@ -161,21 +152,21 @@ class MotionConstrainedPoint implements Comparable<MotionConstrainedPoint> {
         a.getValuesToInterpolate(f);
         int i = 0;
         while (i < N) {
-            value[offset] = (double) f[i];
+            value[offset] = f[i];
             i++;
             offset++;
         }
         return N;
     }
 
-    /* access modifiers changed from: package-private */
-    public void setBounds(float x2, float y2, float w, float h) {
-        this.x = x2;
-        this.y = y2;
+    void setBounds(float x, float y, float w, float h) {
+        this.f7x = x;
+        this.f8y = y;
         this.width = w;
         this.height = h;
     }
 
+    @Override // java.lang.Comparable
     public int compareTo(MotionConstrainedPoint o) {
         return Float.compare(this.position, o.position);
     }
@@ -221,7 +212,8 @@ class MotionConstrainedPoint implements Comparable<MotionConstrainedPoint> {
         this.mPathRotate = c.motion.mPathRotate;
         this.mDrawPath = c.motion.mDrawPath;
         this.mProgress = c.propertySet.mProgress;
-        for (String s : c.mCustomConstraints.keySet()) {
+        Set<String> at = c.mCustomConstraints.keySet();
+        for (String s : at) {
             ConstraintAttribute attr = c.mCustomConstraints.get(s);
             if (attr.getType() != ConstraintAttribute.AttributeType.STRING_TYPE) {
                 this.attributes.put(s, attr);
@@ -232,7 +224,7 @@ class MotionConstrainedPoint implements Comparable<MotionConstrainedPoint> {
     public void addValues(HashMap<String, SplineSet> splines, int mFramePosition) {
         for (String s : splines.keySet()) {
             SplineSet splineSet = splines.get(s);
-            char c = 65535;
+            char c = '\uffff';
             switch (s.hashCode()) {
                 case -1249320806:
                     if (s.equals("rotationX")) {
@@ -254,31 +246,31 @@ class MotionConstrainedPoint implements Comparable<MotionConstrainedPoint> {
                     break;
                 case -1225497656:
                     if (s.equals("translationY")) {
-                        c = 12;
+                        c = '\f';
                         break;
                     }
                     break;
                 case -1225497655:
                     if (s.equals("translationZ")) {
-                        c = 13;
+                        c = '\r';
                         break;
                     }
                     break;
                 case -1001078227:
                     if (s.equals(NotificationCompat.CATEGORY_PROGRESS)) {
-                        c = 8;
+                        c = '\b';
                         break;
                     }
                     break;
                 case -908189618:
                     if (s.equals("scaleX")) {
-                        c = 9;
+                        c = '\t';
                         break;
                     }
                     break;
                 case -908189617:
                     if (s.equals("scaleY")) {
-                        c = 10;
+                        c = '\n';
                         break;
                     }
                     break;
@@ -319,124 +311,80 @@ class MotionConstrainedPoint implements Comparable<MotionConstrainedPoint> {
                     }
                     break;
             }
-            float f = 1.0f;
-            float f2 = 0.0f;
             switch (c) {
                 case 0:
-                    if (!Float.isNaN(this.alpha)) {
-                        f = this.alpha;
-                    }
-                    splineSet.setPoint(mFramePosition, f);
+                    splineSet.setPoint(mFramePosition, Float.isNaN(this.alpha) ? 1.0f : this.alpha);
                     break;
                 case 1:
-                    if (!Float.isNaN(this.elevation)) {
-                        f2 = this.elevation;
-                    }
-                    splineSet.setPoint(mFramePosition, f2);
+                    splineSet.setPoint(mFramePosition, Float.isNaN(this.elevation) ? 0.0f : this.elevation);
                     break;
                 case 2:
-                    if (!Float.isNaN(this.rotation)) {
-                        f2 = this.rotation;
-                    }
-                    splineSet.setPoint(mFramePosition, f2);
+                    splineSet.setPoint(mFramePosition, Float.isNaN(this.rotation) ? 0.0f : this.rotation);
                     break;
                 case 3:
-                    if (!Float.isNaN(this.rotationX)) {
-                        f2 = this.rotationX;
-                    }
-                    splineSet.setPoint(mFramePosition, f2);
+                    splineSet.setPoint(mFramePosition, Float.isNaN(this.rotationX) ? 0.0f : this.rotationX);
                     break;
                 case 4:
-                    if (!Float.isNaN(this.rotationY)) {
-                        f2 = this.rotationY;
-                    }
-                    splineSet.setPoint(mFramePosition, f2);
+                    splineSet.setPoint(mFramePosition, Float.isNaN(this.rotationY) ? 0.0f : this.rotationY);
                     break;
                 case 5:
-                    if (!Float.isNaN(this.mPivotX)) {
-                        f2 = this.mPivotX;
-                    }
-                    splineSet.setPoint(mFramePosition, f2);
+                    splineSet.setPoint(mFramePosition, Float.isNaN(this.mPivotX) ? 0.0f : this.mPivotX);
                     break;
                 case 6:
-                    if (!Float.isNaN(this.mPivotY)) {
-                        f2 = this.mPivotY;
-                    }
-                    splineSet.setPoint(mFramePosition, f2);
+                    splineSet.setPoint(mFramePosition, Float.isNaN(this.mPivotY) ? 0.0f : this.mPivotY);
                     break;
                 case 7:
-                    if (!Float.isNaN(this.mPathRotate)) {
-                        f2 = this.mPathRotate;
-                    }
-                    splineSet.setPoint(mFramePosition, f2);
+                    splineSet.setPoint(mFramePosition, Float.isNaN(this.mPathRotate) ? 0.0f : this.mPathRotate);
                     break;
-                case 8:
-                    if (!Float.isNaN(this.mProgress)) {
-                        f2 = this.mProgress;
-                    }
-                    splineSet.setPoint(mFramePosition, f2);
+                case '\b':
+                    splineSet.setPoint(mFramePosition, Float.isNaN(this.mProgress) ? 0.0f : this.mProgress);
                     break;
-                case 9:
-                    if (!Float.isNaN(this.scaleX)) {
-                        f = this.scaleX;
-                    }
-                    splineSet.setPoint(mFramePosition, f);
+                case '\t':
+                    splineSet.setPoint(mFramePosition, Float.isNaN(this.scaleX) ? 1.0f : this.scaleX);
                     break;
-                case 10:
-                    if (!Float.isNaN(this.scaleY)) {
-                        f = this.scaleY;
-                    }
-                    splineSet.setPoint(mFramePosition, f);
+                case '\n':
+                    splineSet.setPoint(mFramePosition, Float.isNaN(this.scaleY) ? 1.0f : this.scaleY);
                     break;
                 case 11:
-                    if (!Float.isNaN(this.translationX)) {
-                        f2 = this.translationX;
-                    }
-                    splineSet.setPoint(mFramePosition, f2);
+                    splineSet.setPoint(mFramePosition, Float.isNaN(this.translationX) ? 0.0f : this.translationX);
                     break;
-                case 12:
-                    if (!Float.isNaN(this.translationY)) {
-                        f2 = this.translationY;
-                    }
-                    splineSet.setPoint(mFramePosition, f2);
+                case '\f':
+                    splineSet.setPoint(mFramePosition, Float.isNaN(this.translationY) ? 0.0f : this.translationY);
                     break;
-                case 13:
-                    if (!Float.isNaN(this.translationZ)) {
-                        f2 = this.translationZ;
-                    }
-                    splineSet.setPoint(mFramePosition, f2);
+                case '\r':
+                    splineSet.setPoint(mFramePosition, Float.isNaN(this.translationZ) ? 0.0f : this.translationZ);
                     break;
                 default:
-                    if (!s.startsWith("CUSTOM")) {
-                        Log.e("MotionPaths", "UNKNOWN spline " + s);
-                        break;
-                    } else {
+                    if (s.startsWith("CUSTOM")) {
                         String customName = s.split(",")[1];
-                        if (!this.attributes.containsKey(customName)) {
-                            Log.e("MotionPaths", "UNKNOWN customName " + customName);
-                            break;
-                        } else {
+                        if (this.attributes.containsKey(customName)) {
                             ConstraintAttribute custom = this.attributes.get(customName);
-                            if (!(splineSet instanceof SplineSet.CustomSet)) {
-                                Log.e("MotionPaths", s + " splineSet not a CustomSet frame = " + mFramePosition + ", value" + custom.getValueToInterpolate() + splineSet);
-                                break;
-                            } else {
+                            if (splineSet instanceof SplineSet.CustomSet) {
                                 ((SplineSet.CustomSet) splineSet).setPoint(mFramePosition, custom);
                                 break;
+                            } else {
+                                Log.e("MotionPaths", s + " splineSet not a CustomSet frame = " + mFramePosition + ", value" + custom.getValueToInterpolate() + splineSet);
+                                break;
                             }
+                        } else {
+                            Log.e("MotionPaths", "UNKNOWN customName " + customName);
+                            break;
                         }
+                    } else {
+                        Log.e("MotionPaths", "UNKNOWN spline " + s);
+                        break;
                     }
             }
         }
     }
 
     public void setState(View view) {
-        setBounds(view.getX(), view.getY(), (float) view.getWidth(), (float) view.getHeight());
+        setBounds(view.getX(), view.getY(), view.getWidth(), view.getHeight());
         applyParameters(view);
     }
 
     public void setState(ConstraintWidget cw, ConstraintSet constraintSet, int viewId) {
-        setBounds((float) cw.getX(), (float) cw.getY(), (float) cw.getWidth(), (float) cw.getHeight());
+        setBounds(cw.getX(), cw.getY(), cw.getWidth(), cw.getHeight());
         applyParameters(constraintSet.getParameters(viewId));
     }
 }

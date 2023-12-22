@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
+/* loaded from: classes.dex */
 public @interface Bindable {
     String[] value() default {};
 }

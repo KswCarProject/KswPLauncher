@@ -8,34 +8,35 @@ import java.util.concurrent.atomic.AtomicReference;
 import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public abstract class DisposableSubscriber<T> implements FlowableSubscriber<T>, Disposable {
     final AtomicReference<Subscription> upstream = new AtomicReference<>();
 
+    @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
     public final void onSubscribe(Subscription s) {
         if (EndConsumerHelper.setOnce(this.upstream, s, getClass())) {
             onStart();
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void onStart() {
+    protected void onStart() {
         this.upstream.get().request(LongCompanionObject.MAX_VALUE);
     }
 
-    /* access modifiers changed from: protected */
-    public final void request(long n) {
+    protected final void request(long n) {
         this.upstream.get().request(n);
     }
 
-    /* access modifiers changed from: protected */
-    public final void cancel() {
+    protected final void cancel() {
         dispose();
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public final boolean isDisposed() {
         return this.upstream.get() == SubscriptionHelper.CANCELLED;
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public final void dispose() {
         SubscriptionHelper.cancel(this.upstream);
     }

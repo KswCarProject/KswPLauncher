@@ -22,17 +22,19 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableCreate<T> extends Flowable<T> {
     final BackpressureStrategy backpressure;
     final FlowableOnSubscribe<T> source;
 
-    public FlowableCreate(FlowableOnSubscribe<T> source2, BackpressureStrategy backpressure2) {
-        this.source = source2;
-        this.backpressure = backpressure2;
+    public FlowableCreate(FlowableOnSubscribe<T> source, BackpressureStrategy backpressure) {
+        this.source = source;
+        this.backpressure = backpressure;
     }
 
-    /* renamed from: io.reactivex.internal.operators.flowable.FlowableCreate$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
+    /* renamed from: io.reactivex.internal.operators.flowable.FlowableCreate$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C18811 {
         static final /* synthetic */ int[] $SwitchMap$io$reactivex$BackpressureStrategy;
 
         static {
@@ -57,9 +59,10 @@ public final class FlowableCreate<T> extends Flowable<T> {
         }
     }
 
+    @Override // io.reactivex.Flowable
     public void subscribeActual(Subscriber<? super T> t) {
         BaseEmitter<T> emitter;
-        switch (AnonymousClass1.$SwitchMap$io$reactivex$BackpressureStrategy[this.backpressure.ordinal()]) {
+        switch (C18811.$SwitchMap$io$reactivex$BackpressureStrategy[this.backpressure.ordinal()]) {
             case 1:
                 emitter = new MissingEmitter<>(t);
                 break;
@@ -85,6 +88,7 @@ public final class FlowableCreate<T> extends Flowable<T> {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class SerializedEmitter<T> extends AtomicInteger implements FlowableEmitter<T> {
         private static final long serialVersionUID = 4883307006032401862L;
         volatile boolean done;
@@ -92,40 +96,44 @@ public final class FlowableCreate<T> extends Flowable<T> {
         final AtomicThrowable error = new AtomicThrowable();
         final SimplePlainQueue<T> queue = new SpscLinkedArrayQueue(16);
 
-        SerializedEmitter(BaseEmitter<T> emitter2) {
-            this.emitter = emitter2;
+        SerializedEmitter(BaseEmitter<T> emitter) {
+            this.emitter = emitter;
         }
 
+        @Override // io.reactivex.Emitter
         public void onNext(T t) {
-            if (!this.emitter.isCancelled() && !this.done) {
-                if (t == null) {
-                    onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
+            if (this.emitter.isCancelled() || this.done) {
+                return;
+            }
+            if (t == null) {
+                onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
+                return;
+            }
+            if (get() == 0 && compareAndSet(0, 1)) {
+                this.emitter.onNext(t);
+                if (decrementAndGet() == 0) {
                     return;
                 }
-                if (get() != 0 || !compareAndSet(0, 1)) {
-                    SimplePlainQueue<T> q = this.queue;
-                    synchronized (q) {
-                        q.offer(t);
-                    }
-                    if (getAndIncrement() != 0) {
-                        return;
-                    }
-                } else {
-                    this.emitter.onNext(t);
-                    if (decrementAndGet() == 0) {
-                        return;
-                    }
+            } else {
+                SimplePlainQueue<T> q = this.queue;
+                synchronized (q) {
+                    q.offer(t);
                 }
-                drainLoop();
+                if (getAndIncrement() != 0) {
+                    return;
+                }
             }
+            drainLoop();
         }
 
+        @Override // io.reactivex.Emitter
         public void onError(Throwable t) {
             if (!tryOnError(t)) {
                 RxJavaPlugins.onError(t);
             }
         }
 
+        @Override // io.reactivex.FlowableEmitter
         public boolean tryOnError(Throwable t) {
             if (this.emitter.isCancelled() || this.done) {
                 return false;
@@ -133,38 +141,38 @@ public final class FlowableCreate<T> extends Flowable<T> {
             if (t == null) {
                 t = new NullPointerException("onError called with null. Null values are generally not allowed in 2.x operators and sources.");
             }
-            if (!this.error.addThrowable(t)) {
-                return false;
+            if (this.error.addThrowable(t)) {
+                this.done = true;
+                drain();
+                return true;
+            }
+            return false;
+        }
+
+        @Override // io.reactivex.Emitter
+        public void onComplete() {
+            if (this.emitter.isCancelled() || this.done) {
+                return;
             }
             this.done = true;
             drain();
-            return true;
         }
 
-        public void onComplete() {
-            if (!this.emitter.isCancelled() && !this.done) {
-                this.done = true;
-                drain();
-            }
-        }
-
-        /* access modifiers changed from: package-private */
-        public void drain() {
+        void drain() {
             if (getAndIncrement() == 0) {
                 drainLoop();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drainLoop() {
+        void drainLoop() {
             BaseEmitter<T> e = this.emitter;
             SimplePlainQueue<T> q = this.queue;
-            AtomicThrowable error2 = this.error;
+            AtomicThrowable error = this.error;
             int missed = 1;
             while (!e.isCancelled()) {
-                if (error2.get() != null) {
+                if (error.get() != null) {
                     q.clear();
-                    e.onError(error2.terminate());
+                    e.onError(error.terminate());
                     return;
                 }
                 boolean d = this.done;
@@ -173,80 +181,88 @@ public final class FlowableCreate<T> extends Flowable<T> {
                 if (d && empty) {
                     e.onComplete();
                     return;
-                } else if (empty) {
+                } else if (!empty) {
+                    e.onNext(v);
+                } else {
                     missed = addAndGet(-missed);
                     if (missed == 0) {
                         return;
                     }
-                } else {
-                    e.onNext(v);
                 }
             }
             q.clear();
         }
 
+        @Override // io.reactivex.FlowableEmitter
         public void setDisposable(Disposable d) {
             this.emitter.setDisposable(d);
         }
 
+        @Override // io.reactivex.FlowableEmitter
         public void setCancellable(Cancellable c) {
             this.emitter.setCancellable(c);
         }
 
+        @Override // io.reactivex.FlowableEmitter
         public long requested() {
             return this.emitter.requested();
         }
 
+        @Override // io.reactivex.FlowableEmitter
         public boolean isCancelled() {
             return this.emitter.isCancelled();
         }
 
+        @Override // io.reactivex.FlowableEmitter
         public FlowableEmitter<T> serialize() {
             return this;
         }
 
+        @Override // java.util.concurrent.atomic.AtomicInteger
         public String toString() {
             return this.emitter.toString();
         }
     }
 
+    /* loaded from: classes.dex */
     static abstract class BaseEmitter<T> extends AtomicLong implements FlowableEmitter<T>, Subscription {
         private static final long serialVersionUID = 7326289992464377023L;
         final Subscriber<? super T> downstream;
         final SequentialDisposable serial = new SequentialDisposable();
 
-        BaseEmitter(Subscriber<? super T> downstream2) {
-            this.downstream = downstream2;
+        BaseEmitter(Subscriber<? super T> downstream) {
+            this.downstream = downstream;
         }
 
+        @Override // io.reactivex.Emitter
         public void onComplete() {
             complete();
         }
 
-        /* access modifiers changed from: protected */
-        public void complete() {
-            if (!isCancelled()) {
-                try {
-                    this.downstream.onComplete();
-                } finally {
-                    this.serial.dispose();
-                }
+        protected void complete() {
+            if (isCancelled()) {
+                return;
+            }
+            try {
+                this.downstream.onComplete();
+            } finally {
+                this.serial.dispose();
             }
         }
 
+        @Override // io.reactivex.Emitter
         public final void onError(Throwable e) {
             if (!tryOnError(e)) {
                 RxJavaPlugins.onError(e);
             }
         }
 
+        @Override // io.reactivex.FlowableEmitter
         public boolean tryOnError(Throwable e) {
             return error(e);
         }
 
-        /* JADX INFO: finally extract failed */
-        /* access modifiers changed from: protected */
-        public boolean error(Throwable e) {
+        protected boolean error(Throwable e) {
             if (e == null) {
                 e = new NullPointerException("onError called with null. Null values are generally not allowed in 2.x operators and sources.");
             }
@@ -263,19 +279,21 @@ public final class FlowableCreate<T> extends Flowable<T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public final void cancel() {
             this.serial.dispose();
             onUnsubscribed();
         }
 
-        /* access modifiers changed from: package-private */
-        public void onUnsubscribed() {
+        void onUnsubscribed() {
         }
 
+        @Override // io.reactivex.FlowableEmitter
         public final boolean isCancelled() {
             return this.serial.isDisposed();
         }
 
+        @Override // org.reactivestreams.Subscription
         public final void request(long n) {
             if (SubscriptionHelper.validate(n)) {
                 BackpressureHelper.add(this, n);
@@ -283,31 +301,36 @@ public final class FlowableCreate<T> extends Flowable<T> {
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void onRequested() {
+        void onRequested() {
         }
 
+        @Override // io.reactivex.FlowableEmitter
         public final void setDisposable(Disposable d) {
             this.serial.update(d);
         }
 
+        @Override // io.reactivex.FlowableEmitter
         public final void setCancellable(Cancellable c) {
             setDisposable(new CancellableDisposable(c));
         }
 
+        @Override // io.reactivex.FlowableEmitter
         public final long requested() {
             return get();
         }
 
+        @Override // io.reactivex.FlowableEmitter
         public final FlowableEmitter<T> serialize() {
             return new SerializedEmitter(this);
         }
 
+        @Override // java.util.concurrent.atomic.AtomicLong
         public String toString() {
-            return String.format("%s{%s}", new Object[]{getClass().getSimpleName(), super.toString()});
+            return String.format("%s{%s}", getClass().getSimpleName(), super.toString());
         }
     }
 
+    /* loaded from: classes.dex */
     static final class MissingEmitter<T> extends BaseEmitter<T> {
         private static final long serialVersionUID = 3776720187248809713L;
 
@@ -315,50 +338,53 @@ public final class FlowableCreate<T> extends Flowable<T> {
             super(downstream);
         }
 
+        @Override // io.reactivex.Emitter
         public void onNext(T t) {
             long r;
-            if (!isCancelled()) {
-                if (t != null) {
-                    this.downstream.onNext(t);
-                    do {
-                        r = get();
-                        if (r == 0 || compareAndSet(r, r - 1)) {
-                            return;
-                        }
-                        r = get();
-                        return;
-                    } while (compareAndSet(r, r - 1));
-                    return;
-                }
-                onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
+            if (isCancelled()) {
+                return;
             }
+            if (t != null) {
+                this.downstream.onNext(t);
+                do {
+                    r = get();
+                    if (r == 0) {
+                        return;
+                    }
+                } while (!compareAndSet(r, r - 1));
+                return;
+            }
+            onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
         }
     }
 
+    /* loaded from: classes.dex */
     static abstract class NoOverflowBaseAsyncEmitter<T> extends BaseEmitter<T> {
         private static final long serialVersionUID = 4127754106204442833L;
 
-        /* access modifiers changed from: package-private */
-        public abstract void onOverflow();
+        abstract void onOverflow();
 
         NoOverflowBaseAsyncEmitter(Subscriber<? super T> downstream) {
             super(downstream);
         }
 
+        @Override // io.reactivex.Emitter
         public final void onNext(T t) {
-            if (!isCancelled()) {
-                if (t == null) {
-                    onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
-                } else if (get() != 0) {
-                    this.downstream.onNext(t);
-                    BackpressureHelper.produced(this, 1);
-                } else {
-                    onOverflow();
-                }
+            if (isCancelled()) {
+                return;
+            }
+            if (t == null) {
+                onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
+            } else if (get() != 0) {
+                this.downstream.onNext(t);
+                BackpressureHelper.produced(this, 1L);
+            } else {
+                onOverflow();
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class DropAsyncEmitter<T> extends NoOverflowBaseAsyncEmitter<T> {
         private static final long serialVersionUID = 8360058422307496563L;
 
@@ -366,11 +392,12 @@ public final class FlowableCreate<T> extends Flowable<T> {
             super(downstream);
         }
 
-        /* access modifiers changed from: package-private */
-        public void onOverflow() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableCreate.NoOverflowBaseAsyncEmitter
+        void onOverflow() {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ErrorAsyncEmitter<T> extends NoOverflowBaseAsyncEmitter<T> {
         private static final long serialVersionUID = 338953216916120960L;
 
@@ -378,35 +405,40 @@ public final class FlowableCreate<T> extends Flowable<T> {
             super(downstream);
         }
 
-        /* access modifiers changed from: package-private */
-        public void onOverflow() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableCreate.NoOverflowBaseAsyncEmitter
+        void onOverflow() {
             onError(new MissingBackpressureException("create: could not emit value due to lack of requests"));
         }
     }
 
+    /* loaded from: classes.dex */
     static final class BufferAsyncEmitter<T> extends BaseEmitter<T> {
         private static final long serialVersionUID = 2427151001689639875L;
         volatile boolean done;
         Throwable error;
         final SpscLinkedArrayQueue<T> queue;
-        final AtomicInteger wip = new AtomicInteger();
+        final AtomicInteger wip;
 
         BufferAsyncEmitter(Subscriber<? super T> actual, int capacityHint) {
             super(actual);
             this.queue = new SpscLinkedArrayQueue<>(capacityHint);
+            this.wip = new AtomicInteger();
         }
 
+        @Override // io.reactivex.Emitter
         public void onNext(T t) {
-            if (!this.done && !isCancelled()) {
-                if (t == null) {
-                    onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
-                    return;
-                }
-                this.queue.offer(t);
-                drain();
+            if (this.done || isCancelled()) {
+                return;
             }
+            if (t == null) {
+                onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
+                return;
+            }
+            this.queue.offer(t);
+            drain();
         }
 
+        @Override // io.reactivex.internal.operators.flowable.FlowableCreate.BaseEmitter, io.reactivex.FlowableEmitter
         public boolean tryOnError(Throwable e) {
             if (this.done || isCancelled()) {
                 return false;
@@ -420,105 +452,112 @@ public final class FlowableCreate<T> extends Flowable<T> {
             return true;
         }
 
+        @Override // io.reactivex.internal.operators.flowable.FlowableCreate.BaseEmitter, io.reactivex.Emitter
         public void onComplete() {
             this.done = true;
             drain();
         }
 
-        /* access modifiers changed from: package-private */
-        public void onRequested() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableCreate.BaseEmitter
+        void onRequested() {
             drain();
         }
 
-        /* access modifiers changed from: package-private */
-        public void onUnsubscribed() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableCreate.BaseEmitter
+        void onUnsubscribed() {
             if (this.wip.getAndIncrement() == 0) {
                 this.queue.clear();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
-            if (this.wip.getAndIncrement() == 0) {
-                int missed = 1;
-                Subscriber<? super T> a = this.downstream;
-                SpscLinkedArrayQueue<T> q = this.queue;
-                do {
-                    long r = get();
-                    long e = 0;
-                    while (e != r) {
-                        if (isCancelled()) {
-                            q.clear();
-                            return;
-                        }
-                        boolean d = this.done;
-                        T o = q.poll();
-                        boolean empty = o == null;
-                        if (d && empty) {
-                            Throwable ex = this.error;
-                            if (ex != null) {
-                                error(ex);
-                                return;
-                            } else {
-                                complete();
-                                return;
-                            }
-                        } else if (empty) {
-                            break;
-                        } else {
-                            a.onNext(o);
-                            e++;
-                        }
-                    }
-                    if (e == r) {
-                        if (isCancelled()) {
-                            q.clear();
-                            return;
-                        }
-                        boolean d2 = this.done;
-                        boolean empty2 = q.isEmpty();
-                        if (d2 && empty2) {
-                            Throwable ex2 = this.error;
-                            if (ex2 != null) {
-                                error(ex2);
-                                return;
-                            } else {
-                                complete();
-                                return;
-                            }
-                        }
-                    }
-                    if (e != 0) {
-                        BackpressureHelper.produced(this, e);
-                    }
-                    missed = this.wip.addAndGet(-missed);
-                } while (missed != 0);
+        void drain() {
+            if (this.wip.getAndIncrement() != 0) {
+                return;
             }
+            int missed = 1;
+            Subscriber<? super T> a = this.downstream;
+            SpscLinkedArrayQueue<T> q = this.queue;
+            do {
+                long r = get();
+                long e = 0;
+                while (e != r) {
+                    if (isCancelled()) {
+                        q.clear();
+                        return;
+                    }
+                    boolean d = this.done;
+                    Object obj = (T) q.poll();
+                    boolean empty = obj == null;
+                    if (d && empty) {
+                        Throwable ex = this.error;
+                        if (ex != null) {
+                            error(ex);
+                            return;
+                        } else {
+                            complete();
+                            return;
+                        }
+                    } else if (empty) {
+                        break;
+                    } else {
+                        a.onNext(obj);
+                        e++;
+                    }
+                }
+                if (e == r) {
+                    if (isCancelled()) {
+                        q.clear();
+                        return;
+                    }
+                    boolean d2 = this.done;
+                    boolean empty2 = q.isEmpty();
+                    if (d2 && empty2) {
+                        Throwable ex2 = this.error;
+                        if (ex2 != null) {
+                            error(ex2);
+                            return;
+                        } else {
+                            complete();
+                            return;
+                        }
+                    }
+                }
+                if (e != 0) {
+                    BackpressureHelper.produced(this, e);
+                }
+                missed = this.wip.addAndGet(-missed);
+            } while (missed != 0);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class LatestAsyncEmitter<T> extends BaseEmitter<T> {
         private static final long serialVersionUID = 4023437720691792495L;
         volatile boolean done;
         Throwable error;
-        final AtomicReference<T> queue = new AtomicReference<>();
-        final AtomicInteger wip = new AtomicInteger();
+        final AtomicReference<T> queue;
+        final AtomicInteger wip;
 
         LatestAsyncEmitter(Subscriber<? super T> downstream) {
             super(downstream);
+            this.queue = new AtomicReference<>();
+            this.wip = new AtomicInteger();
         }
 
+        @Override // io.reactivex.Emitter
         public void onNext(T t) {
-            if (!this.done && !isCancelled()) {
-                if (t == null) {
-                    onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
-                    return;
-                }
-                this.queue.set(t);
-                drain();
+            if (this.done || isCancelled()) {
+                return;
             }
+            if (t == null) {
+                onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
+                return;
+            }
+            this.queue.set(t);
+            drain();
         }
 
+        @Override // io.reactivex.internal.operators.flowable.FlowableCreate.BaseEmitter, io.reactivex.FlowableEmitter
         public boolean tryOnError(Throwable e) {
             if (this.done || isCancelled()) {
                 return false;
@@ -532,87 +571,120 @@ public final class FlowableCreate<T> extends Flowable<T> {
             return true;
         }
 
+        @Override // io.reactivex.internal.operators.flowable.FlowableCreate.BaseEmitter, io.reactivex.Emitter
         public void onComplete() {
             this.done = true;
             drain();
         }
 
-        /* access modifiers changed from: package-private */
-        public void onRequested() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableCreate.BaseEmitter
+        void onRequested() {
             drain();
         }
 
-        /* access modifiers changed from: package-private */
-        public void onUnsubscribed() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableCreate.BaseEmitter
+        void onUnsubscribed() {
             if (this.wip.getAndIncrement() == 0) {
-                this.queue.lazySet((Object) null);
+                this.queue.lazySet(null);
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
-            boolean empty;
-            if (this.wip.getAndIncrement() == 0) {
-                int missed = 1;
-                Subscriber<? super T> a = this.downstream;
-                AtomicReference<T> q = this.queue;
-                do {
-                    long r = get();
-                    long e = 0;
-                    while (true) {
-                        empty = true;
-                        if (e == r) {
-                            break;
-                        } else if (isCancelled()) {
-                            q.lazySet((Object) null);
-                            return;
-                        } else {
-                            boolean d = this.done;
-                            T o = q.getAndSet((Object) null);
-                            boolean empty2 = o == null;
-                            if (d && empty2) {
-                                Throwable ex = this.error;
-                                if (ex != null) {
-                                    error(ex);
-                                    return;
-                                } else {
-                                    complete();
-                                    return;
-                                }
-                            } else if (empty2) {
-                                break;
-                            } else {
-                                a.onNext(o);
-                                e++;
-                            }
-                        }
-                    }
+        /* JADX WARN: Code restructure failed: missing block: B:28:0x004c, code lost:
+            if (r5 != r3) goto L45;
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:30:0x0052, code lost:
+            if (isCancelled() == false) goto L30;
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:31:0x0054, code lost:
+            r2.lazySet(null);
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:32:0x0057, code lost:
+            return;
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:33:0x0058, code lost:
+            r7 = r13.done;
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:34:0x005e, code lost:
+            if (r2.get() != null) goto L32;
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:36:0x0061, code lost:
+            r8 = false;
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:37:0x0062, code lost:
+            if (r7 == false) goto L45;
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:38:0x0064, code lost:
+            if (r8 == false) goto L45;
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:39:0x0066, code lost:
+            r9 = r13.error;
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:40:0x0068, code lost:
+            if (r9 == null) goto L40;
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:41:0x006a, code lost:
+            error(r9);
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:42:0x006e, code lost:
+            complete();
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:43:0x0071, code lost:
+            return;
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:45:0x0076, code lost:
+            if (r5 == 0) goto L48;
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:46:0x0078, code lost:
+            io.reactivex.internal.util.BackpressureHelper.produced(r13, r5);
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:47:0x007b, code lost:
+            r0 = r13.wip.addAndGet(-r0);
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:59:?, code lost:
+            return;
+         */
+        /*
+            Code decompiled incorrectly, please refer to instructions dump.
+        */
+        void drain() {
+            if (this.wip.getAndIncrement() != 0) {
+                return;
+            }
+            int missed = 1;
+            Subscriber<? super T> a = this.downstream;
+            AtomicReference<T> q = this.queue;
+            do {
+                long r = get();
+                long e = 0;
+                while (true) {
+                    boolean empty = true;
                     if (e == r) {
-                        if (isCancelled()) {
-                            q.lazySet((Object) null);
-                            return;
-                        }
-                        boolean d2 = this.done;
-                        if (q.get() != null) {
-                            empty = false;
-                        }
-                        if (d2 && empty) {
-                            Throwable ex2 = this.error;
-                            if (ex2 != null) {
-                                error(ex2);
+                        break;
+                    } else if (isCancelled()) {
+                        q.lazySet(null);
+                        return;
+                    } else {
+                        boolean d = this.done;
+                        Object obj = (T) q.getAndSet(null);
+                        boolean empty2 = obj == null;
+                        if (d && empty2) {
+                            Throwable ex = this.error;
+                            if (ex != null) {
+                                error(ex);
                                 return;
                             } else {
                                 complete();
                                 return;
                             }
+                        } else if (empty2) {
+                            break;
+                        } else {
+                            a.onNext(obj);
+                            e++;
                         }
                     }
-                    if (e != 0) {
-                        BackpressureHelper.produced(this, e);
-                    }
-                    missed = this.wip.addAndGet(-missed);
-                } while (missed != 0);
-            }
+                }
+            } while (missed != 0);
         }
     }
 }

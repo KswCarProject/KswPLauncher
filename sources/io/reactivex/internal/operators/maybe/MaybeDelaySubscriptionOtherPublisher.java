@@ -12,29 +12,32 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class MaybeDelaySubscriptionOtherPublisher<T, U> extends AbstractMaybeWithUpstream<T, T> {
     final Publisher<U> other;
 
-    public MaybeDelaySubscriptionOtherPublisher(MaybeSource<T> source, Publisher<U> other2) {
+    public MaybeDelaySubscriptionOtherPublisher(MaybeSource<T> source, Publisher<U> other) {
         super(source);
-        this.other = other2;
+        this.other = other;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super T> observer) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super T> observer) {
         this.other.subscribe(new OtherSubscriber(observer, this.source));
     }
 
+    /* loaded from: classes.dex */
     static final class OtherSubscriber<T> implements FlowableSubscriber<Object>, Disposable {
         final DelayMaybeObserver<T> main;
         MaybeSource<T> source;
         Subscription upstream;
 
-        OtherSubscriber(MaybeObserver<? super T> actual, MaybeSource<T> source2) {
+        OtherSubscriber(MaybeObserver<? super T> actual, MaybeSource<T> source) {
             this.main = new DelayMaybeObserver<>(actual);
-            this.source = source2;
+            this.source = source;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -43,6 +46,7 @@ public final class MaybeDelaySubscriptionOtherPublisher<T, U> extends AbstractMa
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(Object t) {
             if (this.upstream != SubscriptionHelper.CANCELLED) {
                 this.upstream.cancel();
@@ -51,6 +55,7 @@ public final class MaybeDelaySubscriptionOtherPublisher<T, U> extends AbstractMa
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.upstream != SubscriptionHelper.CANCELLED) {
                 this.upstream = SubscriptionHelper.CANCELLED;
@@ -60,6 +65,7 @@ public final class MaybeDelaySubscriptionOtherPublisher<T, U> extends AbstractMa
             RxJavaPlugins.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             if (this.upstream != SubscriptionHelper.CANCELLED) {
                 this.upstream = SubscriptionHelper.CANCELLED;
@@ -67,17 +73,18 @@ public final class MaybeDelaySubscriptionOtherPublisher<T, U> extends AbstractMa
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void subscribeNext() {
+        void subscribeNext() {
             MaybeSource<T> src = this.source;
             this.source = null;
             src.subscribe(this.main);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return DisposableHelper.isDisposed((Disposable) this.main.get());
+            return DisposableHelper.isDisposed(this.main.get());
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.cancel();
             this.upstream = SubscriptionHelper.CANCELLED;
@@ -85,26 +92,31 @@ public final class MaybeDelaySubscriptionOtherPublisher<T, U> extends AbstractMa
         }
     }
 
+    /* loaded from: classes.dex */
     static final class DelayMaybeObserver<T> extends AtomicReference<Disposable> implements MaybeObserver<T> {
         private static final long serialVersionUID = 706635022205076709L;
         final MaybeObserver<? super T> downstream;
 
-        DelayMaybeObserver(MaybeObserver<? super T> downstream2) {
-            this.downstream = downstream2;
+        DelayMaybeObserver(MaybeObserver<? super T> downstream) {
+            this.downstream = downstream;
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSubscribe(Disposable d) {
             DisposableHelper.setOnce(this, d);
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSuccess(T value) {
             this.downstream.onSuccess(value);
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onError(Throwable e) {
             this.downstream.onError(e);
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onComplete() {
             this.downstream.onComplete();
         }

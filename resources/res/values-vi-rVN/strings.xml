@@ -217,10 +217,17 @@
     <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Lỗi mật khẩu!</string>
     <string name="mcu_file_corrupted">Nâng cấp tệp bị hỏng!</string>
+    <string name="mic_control">MIC tích hợp bên ngoài chuyển đổi</string>
+    <string name="mic_external">Bên ngoài</string>
+    <string name="mic_internal">Có sẵn</string>
     <string name="mic_text">MIC Thu được</string>
     <string name="music_app_sel">Chọn một ứng dụng âm nhạc</string>
+    <string name="music_player">Nhạc công.</string>
     <string name="ntg6_dvr_toast">Không có thiết bị!</string>
     <string name="oil_size">dầu: %s</string>
+    <string name="original_radar_reverse">Radar hiển thị ngược</string>
+    <string name="radar_normal">Đặc trưng</string>
+    <string name="radar_reverse">Đảo ngược</string>
     <string name="raw_car_text1">hiển thị toàn màn hình</string>
     <string name="raw_car_text2">Lựa chọn hiện tại:</string>
     <string name="reverse_exit_time_agreement">Thoát theo hợp đồng xe gốc</string>
@@ -295,6 +302,8 @@
     <string name="text_logo_two">P2</string>
     <string name="text_ram">RAM: %s</string>
     <string name="touch_continuous_send">Dữ liệu cảm ứng được gửi liên tục</string>
+    <string name="tv_id8_brake">Thắng</string>
+    <string name="tv_id8_seat_belt">Thắt dây an toàn</string>
     <string name="txz_oil_text">Thiết lập báo động lượng xăng</string>
     <string name="txz_speed_text">Bộ báo động tốc độ đoàn hộ tống</string>
     <string name="txz_temp_text">Thiết lập báo động nhiệt độ chung</string>

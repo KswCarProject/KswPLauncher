@@ -4,22 +4,24 @@ import com.bumptech.glide.load.engine.bitmap_recycle.ArrayPool;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/* loaded from: classes.dex */
 public final class BufferedOutputStream extends OutputStream {
     private ArrayPool arrayPool;
     private byte[] buffer;
     private int index;
     private final OutputStream out;
 
-    public BufferedOutputStream(OutputStream out2, ArrayPool arrayPool2) {
-        this(out2, arrayPool2, 65536);
+    public BufferedOutputStream(OutputStream out, ArrayPool arrayPool) {
+        this(out, arrayPool, 65536);
     }
 
-    BufferedOutputStream(OutputStream out2, ArrayPool arrayPool2, int bufferSize) {
-        this.out = out2;
-        this.arrayPool = arrayPool2;
-        this.buffer = (byte[]) arrayPool2.get(bufferSize, byte[].class);
+    BufferedOutputStream(OutputStream out, ArrayPool arrayPool, int bufferSize) {
+        this.out = out;
+        this.arrayPool = arrayPool;
+        this.buffer = (byte[]) arrayPool.get(bufferSize, byte[].class);
     }
 
+    @Override // java.io.OutputStream
     public void write(int b) throws IOException {
         byte[] bArr = this.buffer;
         int i = this.index;
@@ -28,29 +30,32 @@ public final class BufferedOutputStream extends OutputStream {
         maybeFlushBuffer();
     }
 
+    @Override // java.io.OutputStream
     public void write(byte[] b) throws IOException {
         write(b, 0, b.length);
     }
 
+    @Override // java.io.OutputStream
     public void write(byte[] b, int initialOffset, int length) throws IOException {
         int writtenSoFar = 0;
         do {
             int remainingToWrite = length - writtenSoFar;
             int currentOffset = initialOffset + writtenSoFar;
             int i = this.index;
-            if (i != 0 || remainingToWrite < this.buffer.length) {
-                int totalBytesToWriteToBuffer = Math.min(remainingToWrite, this.buffer.length - i);
-                System.arraycopy(b, currentOffset, this.buffer, this.index, totalBytesToWriteToBuffer);
-                this.index += totalBytesToWriteToBuffer;
-                writtenSoFar += totalBytesToWriteToBuffer;
-                maybeFlushBuffer();
-            } else {
+            if (i == 0 && remainingToWrite >= this.buffer.length) {
                 this.out.write(b, currentOffset, remainingToWrite);
                 return;
             }
+            int remainingSpaceInBuffer = this.buffer.length - i;
+            int totalBytesToWriteToBuffer = Math.min(remainingToWrite, remainingSpaceInBuffer);
+            System.arraycopy(b, currentOffset, this.buffer, this.index, totalBytesToWriteToBuffer);
+            this.index += totalBytesToWriteToBuffer;
+            writtenSoFar += totalBytesToWriteToBuffer;
+            maybeFlushBuffer();
         } while (writtenSoFar < length);
     }
 
+    @Override // java.io.OutputStream, java.io.Flushable
     public void flush() throws IOException {
         flushBuffer();
         this.out.flush();
@@ -70,7 +75,7 @@ public final class BufferedOutputStream extends OutputStream {
         }
     }
 
-    /* JADX INFO: finally extract failed */
+    @Override // java.io.OutputStream, java.io.Closeable, java.lang.AutoCloseable
     public void close() throws IOException {
         try {
             flush();

@@ -8,44 +8,51 @@ import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Function;
 import io.reactivex.internal.functions.ObjectHelper;
 
+/* loaded from: classes.dex */
 public final class SingleMap<T, R> extends Single<R> {
     final Function<? super T, ? extends R> mapper;
     final SingleSource<? extends T> source;
 
-    public SingleMap(SingleSource<? extends T> source2, Function<? super T, ? extends R> mapper2) {
-        this.source = source2;
-        this.mapper = mapper2;
+    public SingleMap(SingleSource<? extends T> source, Function<? super T, ? extends R> mapper) {
+        this.source = source;
+        this.mapper = mapper;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super R> t) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super R> t) {
         this.source.subscribe(new MapSingleObserver(t, this.mapper));
     }
 
+    /* loaded from: classes.dex */
     static final class MapSingleObserver<T, R> implements SingleObserver<T> {
         final Function<? super T, ? extends R> mapper;
-        final SingleObserver<? super R> t;
 
-        MapSingleObserver(SingleObserver<? super R> t2, Function<? super T, ? extends R> mapper2) {
-            this.t = t2;
-            this.mapper = mapper2;
+        /* renamed from: t */
+        final SingleObserver<? super R> f340t;
+
+        MapSingleObserver(SingleObserver<? super R> t, Function<? super T, ? extends R> mapper) {
+            this.f340t = t;
+            this.mapper = mapper;
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
-            this.t.onSubscribe(d);
+            this.f340t.onSubscribe(d);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSuccess(T value) {
             try {
-                this.t.onSuccess(ObjectHelper.requireNonNull(this.mapper.apply(value), "The mapper function returned a null value."));
+                this.f340t.onSuccess(ObjectHelper.requireNonNull(this.mapper.apply(value), "The mapper function returned a null value."));
             } catch (Throwable e) {
                 Exceptions.throwIfFatal(e);
                 onError(e);
             }
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
-            this.t.onError(e);
+            this.f340t.onError(e);
         }
     }
 }

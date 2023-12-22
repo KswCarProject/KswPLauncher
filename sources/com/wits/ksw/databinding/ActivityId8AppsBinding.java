@@ -7,22 +7,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.AppViewModel;
 import com.wits.ksw.launcher.view.CustomGridView;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityId8AppsBinding extends ViewDataBinding {
     public final CustomGridView appGridView;
-    public final LinearLayout iv;
+
+    /* renamed from: iv */
+    public final LinearLayout f176iv;
     @Bindable
     protected AppViewModel mAppViewModel;
 
-    public abstract void setAppViewModel(AppViewModel appViewModel);
+    public abstract void setAppViewModel(AppViewModel AppViewModel);
 
-    protected ActivityId8AppsBinding(Object _bindingComponent, View _root, int _localFieldCount, CustomGridView appGridView2, LinearLayout iv2) {
+    protected ActivityId8AppsBinding(Object _bindingComponent, View _root, int _localFieldCount, CustomGridView appGridView, LinearLayout iv) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.appGridView = appGridView2;
-        this.iv = iv2;
+        this.appGridView = appGridView;
+        this.f176iv = iv;
     }
 
     public AppViewModel getAppViewModel() {
@@ -35,7 +38,7 @@ public abstract class ActivityId8AppsBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityId8AppsBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityId8AppsBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_id8_apps, root, attachToRoot, component);
+        return (ActivityId8AppsBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_id8_apps, root, attachToRoot, component);
     }
 
     public static ActivityId8AppsBinding inflate(LayoutInflater inflater) {
@@ -44,7 +47,7 @@ public abstract class ActivityId8AppsBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityId8AppsBinding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityId8AppsBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_id8_apps, (ViewGroup) null, false, component);
+        return (ActivityId8AppsBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_id8_apps, null, false, component);
     }
 
     public static ActivityId8AppsBinding bind(View view) {
@@ -53,6 +56,6 @@ public abstract class ActivityId8AppsBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityId8AppsBinding bind(View view, Object component) {
-        return (ActivityId8AppsBinding) bind(component, view, R.layout.activity_id8_apps);
+        return (ActivityId8AppsBinding) bind(component, view, C0899R.C0902layout.activity_id8_apps);
     }
 }

@@ -5,40 +5,41 @@ import android.content.res.TypedArray;
 import android.support.design.widget.TabLayout;
 import android.util.AttributeSet;
 import skin.support.content.res.SkinCompatResources;
-import skin.support.design.R;
+import skin.support.design.C1911R;
 import skin.support.widget.SkinCompatHelper;
 import skin.support.widget.SkinCompatSupportable;
 
+/* loaded from: classes.dex */
 public class SkinMaterialTabLayout extends TabLayout implements SkinCompatSupportable {
     private int mTabIndicatorColorResId;
     private int mTabSelectedTextColorResId;
     private int mTabTextColorsResId;
 
     public SkinMaterialTabLayout(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public SkinMaterialTabLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    /* JADX INFO: finally extract failed */
     public SkinMaterialTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mTabIndicatorColorResId = 0;
         this.mTabTextColorsResId = 0;
         this.mTabSelectedTextColorResId = 0;
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TabLayout, defStyleAttr, 0);
-        this.mTabIndicatorColorResId = a.getResourceId(R.styleable.TabLayout_tabIndicatorColor, 0);
-        TypedArray ta = context.obtainStyledAttributes(a.getResourceId(R.styleable.TabLayout_tabTextAppearance, R.style.TextAppearance_Design_Tab), R.styleable.SkinTextAppearance);
+        TypedArray a = context.obtainStyledAttributes(attrs, C1911R.styleable.TabLayout, defStyleAttr, 0);
+        this.mTabIndicatorColorResId = a.getResourceId(C1911R.styleable.TabLayout_tabIndicatorColor, 0);
+        int tabTextAppearance = a.getResourceId(C1911R.styleable.TabLayout_tabTextAppearance, C1911R.style.TextAppearance_Design_Tab);
+        TypedArray ta = context.obtainStyledAttributes(tabTextAppearance, C1911R.styleable.SkinTextAppearance);
         try {
-            this.mTabTextColorsResId = ta.getResourceId(R.styleable.SkinTextAppearance_android_textColor, 0);
+            this.mTabTextColorsResId = ta.getResourceId(C1911R.styleable.SkinTextAppearance_android_textColor, 0);
             ta.recycle();
-            if (a.hasValue(R.styleable.TabLayout_tabTextColor)) {
-                this.mTabTextColorsResId = a.getResourceId(R.styleable.TabLayout_tabTextColor, 0);
+            if (a.hasValue(C1911R.styleable.TabLayout_tabTextColor)) {
+                this.mTabTextColorsResId = a.getResourceId(C1911R.styleable.TabLayout_tabTextColor, 0);
             }
-            if (a.hasValue(R.styleable.TabLayout_tabSelectedTextColor)) {
-                this.mTabSelectedTextColorResId = a.getResourceId(R.styleable.TabLayout_tabSelectedTextColor, 0);
+            if (a.hasValue(C1911R.styleable.TabLayout_tabSelectedTextColor)) {
+                this.mTabSelectedTextColorResId = a.getResourceId(C1911R.styleable.TabLayout_tabSelectedTextColor, 0);
             }
             a.recycle();
             applySkin();
@@ -48,6 +49,7 @@ public class SkinMaterialTabLayout extends TabLayout implements SkinCompatSuppor
         }
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         int checkResourceId = SkinCompatHelper.checkResourceId(this.mTabIndicatorColorResId);
         this.mTabIndicatorColorResId = checkResourceId;

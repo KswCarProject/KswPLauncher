@@ -6,7 +6,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,35 +14,36 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.RadioButton;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.KswApplication;
 import com.wits.ksw.databinding.AudiNaviBinding;
-import com.wits.ksw.settings.audi.vm.NaviVm;
+import com.wits.ksw.settings.audi.p007vm.NaviVm;
 import com.wits.ksw.settings.id7.bean.MapBean;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import java.util.Iterator;
 import java.util.List;
 
+/* loaded from: classes13.dex */
 public class AudiNaviActivity extends AudiSubActivity {
-    /* access modifiers changed from: private */
-    public static final String TAG = ("KswApplication." + AudiNaviActivity.class.getSimpleName());
-    /* access modifiers changed from: private */
-    public NaviAdpater adpater;
+    private static final String TAG = "KswApplication." + AudiNaviActivity.class.getSimpleName();
+    private NaviAdpater adpater;
     private AudiNaviBinding binding;
-    /* access modifiers changed from: private */
-    public NaviVm naviVm;
+    private NaviVm naviVm;
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override // com.wits.ksw.settings.audi.AudiSubActivity, com.wits.ksw.settings.BaseActivity, android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.binding = (AudiNaviBinding) DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.audi_navi, (ViewGroup) null, false);
+        this.binding = (AudiNaviBinding) DataBindingUtil.inflate(LayoutInflater.from(this), C0899R.C0902layout.audi_navi, null, false);
         this.contentLayout.addView(this.binding.getRoot(), -1, -1);
-        this.naviVm = (NaviVm) ViewModelProviders.of((FragmentActivity) this).get(NaviVm.class);
-        this.tv_title_set.setText(getResources().getString(R.string.item2));
-        this.adpater = new NaviAdpater(this, (List<MapBean>) null);
-        this.binding.naviListView.setAdapter(this.adpater);
-        this.binding.naviListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        this.naviVm = (NaviVm) ViewModelProviders.m59of(this).get(NaviVm.class);
+        this.tv_title_set.setText(getResources().getString(C0899R.string.item2));
+        this.adpater = new NaviAdpater(this, null);
+        this.binding.naviListView.setAdapter((ListAdapter) this.adpater);
+        this.binding.naviListView.setOnItemClickListener(new AdapterView.OnItemClickListener() { // from class: com.wits.ksw.settings.audi.AudiNaviActivity.1
+            @Override // android.widget.AdapterView.OnItemClickListener
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 view.setSelected(true);
                 MapBean mapBean = (MapBean) parent.getItemAtPosition(position);
@@ -58,12 +59,15 @@ public class AudiNaviActivity extends AudiSubActivity {
                     AudiNaviActivity.this.adpater.setMapBeans(mapBeans);
                     AudiNaviActivity.this.adpater.notifyDataSetChanged();
                 }
+                Settings.System.putString(KswApplication.appContext.getContentResolver(), "wits_freedom_pkg", mapBean.getPackageName());
             }
         });
-        this.naviVm.naviList.observe(this, new Observer<List<MapBean>>() {
+        this.naviVm.naviList.observe(this, new Observer<List<MapBean>>() { // from class: com.wits.ksw.settings.audi.AudiNaviActivity.2
+            @Override // android.arch.lifecycle.Observer
             public void onChanged(final List<MapBean> mapBeans) {
                 Log.i(AudiNaviActivity.TAG, "run: " + mapBeans.size());
-                new Handler().post(new Runnable() {
+                new Handler().post(new Runnable() { // from class: com.wits.ksw.settings.audi.AudiNaviActivity.2.1
+                    @Override // java.lang.Runnable
                     public void run() {
                         AudiNaviActivity.this.adpater.setMapBeans(mapBeans);
                         AudiNaviActivity.this.adpater.notifyDataSetChanged();
@@ -73,96 +77,64 @@ public class AudiNaviActivity extends AudiSubActivity {
         });
     }
 
+    /* loaded from: classes13.dex */
     class NaviAdpater extends BaseAdapter {
         private LayoutInflater layoutInflater;
         private List<MapBean> mapBeans;
 
-        public NaviAdpater(Context context, List<MapBean> mapBeans2) {
-            this.mapBeans = mapBeans2;
+        public NaviAdpater(Context context, List<MapBean> mapBeans) {
+            this.mapBeans = mapBeans;
             this.layoutInflater = LayoutInflater.from(context);
         }
 
-        public void setMapBeans(List<MapBean> mapBeans2) {
-            this.mapBeans = mapBeans2;
+        public void setMapBeans(List<MapBean> mapBeans) {
+            this.mapBeans = mapBeans;
         }
 
+        @Override // android.widget.Adapter
         public int getCount() {
             List<MapBean> list = this.mapBeans;
-            if (list == null || list.isEmpty()) {
-                return 0;
+            if (list != null && !list.isEmpty()) {
+                return this.mapBeans.size();
             }
-            return this.mapBeans.size();
+            return 0;
         }
 
+        @Override // android.widget.Adapter
         public Object getItem(int position) {
             List<MapBean> list = this.mapBeans;
-            if (list == null || list.isEmpty()) {
-                return null;
+            if (list != null && !list.isEmpty()) {
+                return this.mapBeans.get(position);
             }
-            return this.mapBeans.get(position);
+            return null;
         }
 
+        @Override // android.widget.Adapter
         public long getItemId(int position) {
-            return (long) position;
+            return position;
         }
 
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v3, resolved type: java.lang.Object} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v2, resolved type: com.wits.ksw.settings.audi.AudiNaviActivity$NaviAdpater$ViewHolder} */
-        /* JADX WARNING: Multi-variable type inference failed */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public android.view.View getView(int r6, android.view.View r7, android.view.ViewGroup r8) {
-            /*
-                r5 = this;
-                r0 = 0
-                if (r7 != 0) goto L_0x002d
-                android.view.LayoutInflater r1 = r5.layoutInflater
-                r2 = 2131427542(0x7f0b00d6, float:1.8476703E38)
-                r3 = 0
-                android.view.View r7 = r1.inflate(r2, r3)
-                com.wits.ksw.settings.audi.AudiNaviActivity$NaviAdpater$ViewHolder r1 = new com.wits.ksw.settings.audi.AudiNaviActivity$NaviAdpater$ViewHolder
-                r1.<init>()
-                r0 = r1
-                r1 = 2131297355(0x7f09044b, float:1.8212653E38)
-                android.view.View r1 = r7.findViewById(r1)
-                android.widget.RadioButton r1 = (android.widget.RadioButton) r1
-                r0.radioButton = r1
-                r1 = 2131297354(0x7f09044a, float:1.821265E38)
-                android.view.View r1 = r7.findViewById(r1)
-                android.widget.ImageView r1 = (android.widget.ImageView) r1
-                r0.icon = r1
-                r7.setTag(r0)
-                goto L_0x0034
-            L_0x002d:
-                java.lang.Object r1 = r7.getTag()
-                r0 = r1
-                com.wits.ksw.settings.audi.AudiNaviActivity$NaviAdpater$ViewHolder r0 = (com.wits.ksw.settings.audi.AudiNaviActivity.NaviAdpater.ViewHolder) r0
-            L_0x0034:
-                java.util.List<com.wits.ksw.settings.id7.bean.MapBean> r1 = r5.mapBeans
-                java.lang.Object r1 = r1.get(r6)
-                com.wits.ksw.settings.id7.bean.MapBean r1 = (com.wits.ksw.settings.id7.bean.MapBean) r1
-                android.widget.ImageView r2 = r0.icon
-                android.graphics.drawable.Drawable r3 = r1.getMapicon()
-                r2.setImageDrawable(r3)
-                android.widget.RadioButton r2 = r0.radioButton
-                java.lang.String r3 = r1.getName()
-                r2.setText(r3)
-                android.widget.RadioButton r2 = r0.radioButton
-                boolean r3 = r1.isCheck()
-                r2.setChecked(r3)
-                java.lang.String r2 = com.wits.ksw.settings.audi.AudiNaviActivity.TAG
-                java.lang.StringBuilder r3 = new java.lang.StringBuilder
-                r3.<init>()
-                java.lang.String r4 = "getView: "
-                java.lang.StringBuilder r3 = r3.append(r4)
-                java.lang.String r4 = r1.getName()
-                java.lang.StringBuilder r3 = r3.append(r4)
-                java.lang.String r3 = r3.toString()
-                android.util.Log.i(r2, r3)
-                return r7
-            */
-            throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.settings.audi.AudiNaviActivity.NaviAdpater.getView(int, android.view.View, android.view.ViewGroup):android.view.View");
+        @Override // android.widget.Adapter
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder;
+            if (convertView == null) {
+                convertView = this.layoutInflater.inflate(C0899R.C0902layout.audi_navi_item, (ViewGroup) null);
+                viewHolder = new ViewHolder();
+                viewHolder.radioButton = (RadioButton) convertView.findViewById(C0899R.C0901id.naviItemTitle);
+                viewHolder.icon = (ImageView) convertView.findViewById(C0899R.C0901id.naviItemIcon);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+            MapBean mapBean = this.mapBeans.get(position);
+            viewHolder.icon.setImageDrawable(mapBean.getMapicon());
+            viewHolder.radioButton.setText(mapBean.getName());
+            viewHolder.radioButton.setChecked(mapBean.isCheck());
+            Log.i(AudiNaviActivity.TAG, "getView: " + mapBean.getName());
+            return convertView;
         }
 
+        /* loaded from: classes13.dex */
         class ViewHolder {
             ImageView icon;
             RadioButton radioButton;

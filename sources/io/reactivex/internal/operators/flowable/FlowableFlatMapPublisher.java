@@ -5,6 +5,7 @@ import io.reactivex.functions.Function;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 
+/* loaded from: classes.dex */
 public final class FlowableFlatMapPublisher<T, U> extends Flowable<U> {
     final int bufferSize;
     final boolean delayErrors;
@@ -12,18 +13,19 @@ public final class FlowableFlatMapPublisher<T, U> extends Flowable<U> {
     final int maxConcurrency;
     final Publisher<T> source;
 
-    public FlowableFlatMapPublisher(Publisher<T> source2, Function<? super T, ? extends Publisher<? extends U>> mapper2, boolean delayErrors2, int maxConcurrency2, int bufferSize2) {
-        this.source = source2;
-        this.mapper = mapper2;
-        this.delayErrors = delayErrors2;
-        this.maxConcurrency = maxConcurrency2;
-        this.bufferSize = bufferSize2;
+    public FlowableFlatMapPublisher(Publisher<T> source, Function<? super T, ? extends Publisher<? extends U>> mapper, boolean delayErrors, int maxConcurrency, int bufferSize) {
+        this.source = source;
+        this.mapper = mapper;
+        this.delayErrors = delayErrors;
+        this.maxConcurrency = maxConcurrency;
+        this.bufferSize = bufferSize;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super U> s) {
-        if (!FlowableScalarXMap.tryScalarXMapSubscribe(this.source, s, this.mapper)) {
-            this.source.subscribe(FlowableFlatMap.subscribe(s, this.mapper, this.delayErrors, this.maxConcurrency, this.bufferSize));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super U> s) {
+        if (FlowableScalarXMap.tryScalarXMapSubscribe(this.source, s, this.mapper)) {
+            return;
         }
+        this.source.subscribe(FlowableFlatMap.subscribe(s, this.mapper, this.delayErrors, this.maxConcurrency, this.bufferSize));
     }
 }

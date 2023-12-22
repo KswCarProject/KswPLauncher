@@ -2,7 +2,6 @@ package com.squareup.picasso;
 
 import android.content.Context;
 import android.net.Uri;
-import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.CacheControl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -13,15 +12,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+/* loaded from: classes.dex */
 public class OkHttpDownloader implements Downloader {
     private final OkHttpClient client;
 
     private static OkHttpClient defaultOkHttpClient() {
-        OkHttpClient client2 = new OkHttpClient();
-        client2.setConnectTimeout(15000, TimeUnit.MILLISECONDS);
-        client2.setReadTimeout(20000, TimeUnit.MILLISECONDS);
-        client2.setWriteTimeout(20000, TimeUnit.MILLISECONDS);
-        return client2;
+        OkHttpClient client = new OkHttpClient();
+        client.setConnectTimeout(15000L, TimeUnit.MILLISECONDS);
+        client.setReadTimeout(20000L, TimeUnit.MILLISECONDS);
+        client.setWriteTimeout(20000L, TimeUnit.MILLISECONDS);
+        return client;
     }
 
     public OkHttpDownloader(Context context) {
@@ -39,20 +39,20 @@ public class OkHttpDownloader implements Downloader {
     public OkHttpDownloader(File cacheDir, long maxSize) {
         this(defaultOkHttpClient());
         try {
-            this.client.setCache(new Cache(cacheDir, maxSize));
+            this.client.setCache(new com.squareup.okhttp.Cache(cacheDir, maxSize));
         } catch (IOException e) {
         }
     }
 
-    public OkHttpDownloader(OkHttpClient client2) {
-        this.client = client2;
+    public OkHttpDownloader(OkHttpClient client) {
+        this.client = client;
     }
 
-    /* access modifiers changed from: protected */
-    public final OkHttpClient getClient() {
+    protected final OkHttpClient getClient() {
         return this.client;
     }
 
+    @Override // com.squareup.picasso.Downloader
     public Downloader.Response load(Uri uri, int networkPolicy) throws IOException {
         CacheControl cacheControl = null;
         if (networkPolicy != 0) {
@@ -75,17 +75,18 @@ public class OkHttpDownloader implements Downloader {
         }
         Response response = this.client.newCall(builder2.build()).execute();
         int responseCode = response.code();
-        if (responseCode < 300) {
-            boolean fromCache = response.cacheResponse() != null;
-            ResponseBody responseBody = response.body();
-            return new Downloader.Response(responseBody.byteStream(), fromCache, responseBody.contentLength());
+        if (responseCode >= 300) {
+            response.body().close();
+            throw new Downloader.ResponseException(responseCode + " " + response.message(), networkPolicy, responseCode);
         }
-        response.body().close();
-        throw new Downloader.ResponseException(responseCode + " " + response.message(), networkPolicy, responseCode);
+        boolean fromCache = response.cacheResponse() != null;
+        ResponseBody responseBody = response.body();
+        return new Downloader.Response(responseBody.byteStream(), fromCache, responseBody.contentLength());
     }
 
+    @Override // com.squareup.picasso.Downloader
     public void shutdown() {
-        Cache cache = this.client.getCache();
+        com.squareup.okhttp.Cache cache = this.client.getCache();
         if (cache != null) {
             try {
                 cache.close();

@@ -1,5 +1,6 @@
 package com.wits.ksw;
 
+/* loaded from: classes17.dex */
 public final class MathUtils {
     private static final float DEG_TO_RAD = 0.017453292f;
     private static final float RAD_TO_DEG = 57.295784f;
@@ -12,40 +13,31 @@ public final class MathUtils {
     }
 
     public static int constrain(int amount, int low, int high) {
-        if (amount < low) {
-            return low;
-        }
-        return amount > high ? high : amount;
+        return amount < low ? low : amount > high ? high : amount;
     }
 
     public static long constrain(long amount, long low, long high) {
-        if (amount < low) {
-            return low;
-        }
-        return amount > high ? high : amount;
+        return amount < low ? low : amount > high ? high : amount;
     }
 
     public static float constrain(float amount, float low, float high) {
-        if (amount < low) {
-            return low;
-        }
-        return amount > high ? high : amount;
+        return amount < low ? low : amount > high ? high : amount;
     }
 
     public static float log(float a) {
-        return (float) Math.log((double) a);
+        return (float) Math.log(a);
     }
 
     public static float exp(float a) {
-        return (float) Math.exp((double) a);
+        return (float) Math.exp(a);
     }
 
     public static float pow(float a, float b) {
-        return (float) Math.pow((double) a, (double) b);
+        return (float) Math.pow(a, b);
     }
 
     public static float sqrt(float a) {
-        return (float) Math.sqrt((double) a);
+        return (float) Math.sqrt(a);
     }
 
     public static float max(float a, float b) {
@@ -53,7 +45,7 @@ public final class MathUtils {
     }
 
     public static float max(int a, int b) {
-        return a > b ? (float) a : (float) b;
+        return a > b ? a : b;
     }
 
     public static float max(float a, float b, float c) {
@@ -72,14 +64,15 @@ public final class MathUtils {
         if (a > b) {
             if (a > c) {
                 i = a;
-                return (float) i;
             }
-        } else if (b > c) {
-            i = b;
-            return (float) i;
+            i = c;
+        } else {
+            if (b > c) {
+                i = b;
+            }
+            i = c;
         }
-        i = c;
-        return (float) i;
+        return i;
     }
 
     public static float min(float a, float b) {
@@ -87,7 +80,7 @@ public final class MathUtils {
     }
 
     public static float min(int a, int b) {
-        return a < b ? (float) a : (float) b;
+        return a < b ? a : b;
     }
 
     public static float min(float a, float b, float c) {
@@ -106,36 +99,40 @@ public final class MathUtils {
         if (a < b) {
             if (a < c) {
                 i = a;
-                return (float) i;
             }
-        } else if (b < c) {
-            i = b;
-            return (float) i;
+            i = c;
+        } else {
+            if (b < c) {
+                i = b;
+            }
+            i = c;
         }
-        i = c;
-        return (float) i;
+        return i;
     }
 
     public static float dist(float x1, float y1, float x2, float y2) {
-        return (float) Math.hypot((double) (x2 - x1), (double) (y2 - y1));
+        float x = x2 - x1;
+        float y = y2 - y1;
+        return (float) Math.hypot(x, y);
     }
 
     public static float dist(float x1, float y1, float z1, float x2, float y2, float z2) {
         float x = x2 - x1;
         float y = y2 - y1;
         float z = z2 - z1;
-        return (float) Math.sqrt((double) ((x * x) + (y * y) + (z * z)));
+        return (float) Math.sqrt((x * x) + (y * y) + (z * z));
     }
 
     public static float mag(float a, float b) {
-        return (float) Math.hypot((double) a, (double) b);
+        return (float) Math.hypot(a, b);
     }
 
     public static float mag(float a, float b, float c) {
-        return (float) Math.sqrt((double) ((a * a) + (b * b) + (c * c)));
+        return (float) Math.sqrt((a * a) + (b * b) + (c * c));
     }
 
-    public static float sq(float v) {
+    /* renamed from: sq */
+    public static float m45sq(float v) {
         return v * v;
     }
 
@@ -156,23 +153,23 @@ public final class MathUtils {
     }
 
     public static float acos(float value) {
-        return (float) Math.acos((double) value);
+        return (float) Math.acos(value);
     }
 
     public static float asin(float value) {
-        return (float) Math.asin((double) value);
+        return (float) Math.asin(value);
     }
 
     public static float atan(float value) {
-        return (float) Math.atan((double) value);
+        return (float) Math.atan(value);
     }
 
     public static float atan2(float a, float b) {
-        return (float) Math.atan2((double) a, (double) b);
+        return (float) Math.atan2(a, b);
     }
 
     public static float tan(float angle) {
-        return (float) Math.tan((double) angle);
+        return (float) Math.tan(angle);
     }
 
     public static float lerp(float start, float stop, float amount) {
@@ -180,7 +177,8 @@ public final class MathUtils {
     }
 
     public static float lerpDeg(float start, float end, float amount) {
-        return (((((end - start) + 180.0f) % 360.0f) - 180.0f) * amount) + start;
+        float minAngle = (((end - start) + 180.0f) % 360.0f) - 180.0f;
+        return (minAngle * amount) + start;
     }
 
     public static float norm(float start, float stop, float value) {

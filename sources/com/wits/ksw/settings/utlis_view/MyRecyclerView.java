@@ -1,9 +1,10 @@
 package com.wits.ksw.settings.utlis_view;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import android.support.p004v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
+/* loaded from: classes10.dex */
 public class MyRecyclerView extends RecyclerView {
     public MyRecyclerView(Context context) {
         super(context);
@@ -17,16 +18,19 @@ public class MyRecyclerView extends RecyclerView {
         super(context, attrs, defStyle);
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView, android.view.View, android.support.p001v4.view.ScrollingView
     public int computeVerticalScrollExtent() {
         return 5;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView, android.view.View, android.support.p001v4.view.ScrollingView
     public int computeVerticalScrollOffset() {
         int sRange = super.computeVerticalScrollRange();
-        int range = sRange - super.computeVerticalScrollExtent();
+        int sExtent = super.computeVerticalScrollExtent();
+        int range = sRange - sExtent;
         if (range == 0) {
             return 0;
         }
-        return (int) ((((float) (super.computeVerticalScrollOffset() * sRange)) * 1.0f) / ((float) range));
+        return (int) (((super.computeVerticalScrollOffset() * sRange) * 1.0f) / range);
     }
 }

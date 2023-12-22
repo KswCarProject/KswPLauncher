@@ -11,13 +11,15 @@ import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import com.bumptech.glide.signature.ObjectKey;
 import java.io.InputStream;
 
+/* loaded from: classes.dex */
 public class MediaStoreImageThumbLoader implements ModelLoader<Uri, InputStream> {
     private final Context context;
 
-    public MediaStoreImageThumbLoader(Context context2) {
-        this.context = context2.getApplicationContext();
+    public MediaStoreImageThumbLoader(Context context) {
+        this.context = context.getApplicationContext();
     }
 
+    @Override // com.bumptech.glide.load.model.ModelLoader
     public ModelLoader.LoadData<InputStream> buildLoadData(Uri model, int width, int height, Options options) {
         if (MediaStoreUtil.isThumbnailSize(width, height)) {
             return new ModelLoader.LoadData<>(new ObjectKey(model), ThumbFetcher.buildImageFetcher(this.context, model));
@@ -25,21 +27,25 @@ public class MediaStoreImageThumbLoader implements ModelLoader<Uri, InputStream>
         return null;
     }
 
+    @Override // com.bumptech.glide.load.model.ModelLoader
     public boolean handles(Uri model) {
         return MediaStoreUtil.isMediaStoreImageUri(model);
     }
 
+    /* loaded from: classes.dex */
     public static class Factory implements ModelLoaderFactory<Uri, InputStream> {
         private final Context context;
 
-        public Factory(Context context2) {
-            this.context = context2;
+        public Factory(Context context) {
+            this.context = context;
         }
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public ModelLoader<Uri, InputStream> build(MultiModelLoaderFactory multiFactory) {
             return new MediaStoreImageThumbLoader(this.context);
         }
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public void teardown() {
         }
     }

@@ -23,46 +23,49 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableWindowBoundarySupplier<T, B> extends AbstractFlowableWithUpstream<T, Flowable<T>> {
     final int capacityHint;
     final Callable<? extends Publisher<B>> other;
 
-    public FlowableWindowBoundarySupplier(Flowable<T> source, Callable<? extends Publisher<B>> other2, int capacityHint2) {
+    public FlowableWindowBoundarySupplier(Flowable<T> source, Callable<? extends Publisher<B>> other, int capacityHint) {
         super(source);
-        this.other = other2;
-        this.capacityHint = capacityHint2;
+        this.other = other;
+        this.capacityHint = capacityHint;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super Flowable<T>> subscriber) {
-        this.source.subscribe(new WindowBoundaryMainSubscriber<>(subscriber, this.capacityHint, this.other));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super Flowable<T>> subscriber) {
+        WindowBoundaryMainSubscriber<T, B> parent = new WindowBoundaryMainSubscriber<>(subscriber, this.capacityHint, this.other);
+        this.source.subscribe((FlowableSubscriber) parent);
     }
 
+    /* loaded from: classes.dex */
     static final class WindowBoundaryMainSubscriber<T, B> extends AtomicInteger implements FlowableSubscriber<T>, Subscription, Runnable {
-        static final WindowBoundaryInnerSubscriber<Object, Object> BOUNDARY_DISPOSED = new WindowBoundaryInnerSubscriber<>((WindowBoundaryMainSubscriber) null);
+        static final WindowBoundaryInnerSubscriber<Object, Object> BOUNDARY_DISPOSED = new WindowBoundaryInnerSubscriber<>(null);
         static final Object NEXT_WINDOW = new Object();
         private static final long serialVersionUID = 2233020065421370272L;
-        final AtomicReference<WindowBoundaryInnerSubscriber<T, B>> boundarySubscriber = new AtomicReference<>();
         final int capacityHint;
         volatile boolean done;
         final Subscriber<? super Flowable<T>> downstream;
         long emitted;
-        final AtomicThrowable errors = new AtomicThrowable();
         final Callable<? extends Publisher<B>> other;
-        final MpscLinkedQueue<Object> queue = new MpscLinkedQueue<>();
-        final AtomicLong requested;
-        final AtomicBoolean stopWindows = new AtomicBoolean();
         Subscription upstream;
         UnicastProcessor<T> window;
+        final AtomicReference<WindowBoundaryInnerSubscriber<T, B>> boundarySubscriber = new AtomicReference<>();
         final AtomicInteger windows = new AtomicInteger(1);
+        final MpscLinkedQueue<Object> queue = new MpscLinkedQueue<>();
+        final AtomicThrowable errors = new AtomicThrowable();
+        final AtomicBoolean stopWindows = new AtomicBoolean();
+        final AtomicLong requested = new AtomicLong();
 
-        WindowBoundaryMainSubscriber(Subscriber<? super Flowable<T>> downstream2, int capacityHint2, Callable<? extends Publisher<B>> other2) {
-            this.downstream = downstream2;
-            this.capacityHint = capacityHint2;
-            this.other = other2;
-            this.requested = new AtomicLong();
+        WindowBoundaryMainSubscriber(Subscriber<? super Flowable<T>> downstream, int capacityHint, Callable<? extends Publisher<B>> other) {
+            this.downstream = downstream;
+            this.capacityHint = capacityHint;
+            this.other = other;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -73,11 +76,13 @@ public final class FlowableWindowBoundarySupplier<T, B> extends AbstractFlowable
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             this.queue.offer(t);
             drain();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable e) {
             disposeBoundary();
             if (this.errors.addThrowable(e)) {
@@ -88,12 +93,14 @@ public final class FlowableWindowBoundarySupplier<T, B> extends AbstractFlowable
             RxJavaPlugins.onError(e);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             disposeBoundary();
             this.done = true;
             drain();
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             if (this.stopWindows.compareAndSet(false, true)) {
                 disposeBoundary();
@@ -103,35 +110,34 @@ public final class FlowableWindowBoundarySupplier<T, B> extends AbstractFlowable
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             BackpressureHelper.add(this.requested, n);
         }
 
-        /* access modifiers changed from: package-private */
-        public void disposeBoundary() {
-            AtomicReference<WindowBoundaryInnerSubscriber<T, B>> atomicReference = this.boundarySubscriber;
+        /* JADX WARN: Multi-variable type inference failed */
+        void disposeBoundary() {
             WindowBoundaryInnerSubscriber<Object, Object> windowBoundaryInnerSubscriber = BOUNDARY_DISPOSED;
-            Disposable d = atomicReference.getAndSet(windowBoundaryInnerSubscriber);
+            Disposable d = (Disposable) this.boundarySubscriber.getAndSet(windowBoundaryInnerSubscriber);
             if (d != null && d != windowBoundaryInnerSubscriber) {
                 d.dispose();
             }
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             if (this.windows.decrementAndGet() == 0) {
                 this.upstream.cancel();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerNext(WindowBoundaryInnerSubscriber<T, B> sender) {
-            this.boundarySubscriber.compareAndSet(sender, (Object) null);
+        void innerNext(WindowBoundaryInnerSubscriber<T, B> sender) {
+            this.boundarySubscriber.compareAndSet(sender, null);
             this.queue.offer(NEXT_WINDOW);
             drain();
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerError(Throwable e) {
+        void innerError(Throwable e) {
             this.upstream.cancel();
             if (this.errors.addThrowable(e)) {
                 this.done = true;
@@ -141,115 +147,120 @@ public final class FlowableWindowBoundarySupplier<T, B> extends AbstractFlowable
             RxJavaPlugins.onError(e);
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerComplete() {
+        void innerComplete() {
             this.upstream.cancel();
             this.done = true;
             drain();
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
-            if (getAndIncrement() == 0) {
-                int missed = 1;
-                Subscriber<? super Flowable<T>> downstream2 = this.downstream;
-                MpscLinkedQueue<Object> queue2 = this.queue;
-                AtomicThrowable errors2 = this.errors;
-                long emitted2 = this.emitted;
-                while (this.windows.get() != 0) {
-                    UnicastProcessor<T> w = this.window;
-                    boolean d = this.done;
-                    if (!d || errors2.get() == null) {
-                        Object v = queue2.poll();
-                        boolean empty = v == null;
-                        if (d && empty) {
-                            Throwable ex = errors2.terminate();
-                            if (ex == null) {
-                                if (w != null) {
-                                    this.window = null;
-                                    w.onComplete();
-                                }
-                                downstream2.onComplete();
-                                return;
-                            }
-                            if (w != null) {
-                                this.window = null;
-                                w.onError(ex);
-                            }
-                            downstream2.onError(ex);
-                            return;
-                        } else if (empty) {
-                            this.emitted = emitted2;
-                            missed = addAndGet(-missed);
-                            if (missed == 0) {
-                                return;
-                            }
-                        } else if (v != NEXT_WINDOW) {
-                            w.onNext(v);
-                        } else {
-                            if (w != null) {
-                                this.window = null;
-                                w.onComplete();
-                            }
-                            if (!this.stopWindows.get()) {
-                                if (emitted2 != this.requested.get()) {
-                                    UnicastProcessor<T> w2 = UnicastProcessor.create(this.capacityHint, this);
-                                    this.window = w2;
-                                    this.windows.getAndIncrement();
-                                    try {
-                                        Publisher publisher = (Publisher) ObjectHelper.requireNonNull(this.other.call(), "The other Callable returned a null Publisher");
-                                        WindowBoundaryInnerSubscriber<T, B> bo = new WindowBoundaryInnerSubscriber<>(this);
-                                        if (this.boundarySubscriber.compareAndSet((Object) null, bo)) {
-                                            publisher.subscribe(bo);
-                                            emitted2++;
-                                            downstream2.onNext(w2);
-                                        }
-                                    } catch (Throwable ex2) {
-                                        Exceptions.throwIfFatal(ex2);
-                                        errors2.addThrowable(ex2);
-                                        this.done = true;
+        /* JADX WARN: Multi-variable type inference failed */
+        void drain() {
+            if (getAndIncrement() != 0) {
+                return;
+            }
+            int missed = 1;
+            Subscriber<? super Flowable<T>> downstream = this.downstream;
+            MpscLinkedQueue<Object> queue = this.queue;
+            AtomicThrowable errors = this.errors;
+            long emitted = this.emitted;
+            while (this.windows.get() != 0) {
+                UnicastProcessor<T> w = this.window;
+                boolean d = this.done;
+                if (d && errors.get() != null) {
+                    queue.clear();
+                    Throwable ex = errors.terminate();
+                    if (w != 0) {
+                        this.window = null;
+                        w.onError(ex);
+                    }
+                    downstream.onError(ex);
+                    return;
+                }
+                Object v = queue.poll();
+                boolean empty = v == null;
+                if (d && empty) {
+                    Throwable ex2 = errors.terminate();
+                    if (ex2 == null) {
+                        if (w != 0) {
+                            this.window = null;
+                            w.onComplete();
+                        }
+                        downstream.onComplete();
+                        return;
+                    }
+                    if (w != 0) {
+                        this.window = null;
+                        w.onError(ex2);
+                    }
+                    downstream.onError(ex2);
+                    return;
+                } else if (!empty) {
+                    if (v != NEXT_WINDOW) {
+                        w.onNext(v);
+                    } else {
+                        if (w != 0) {
+                            this.window = null;
+                            w.onComplete();
+                        }
+                        if (!this.stopWindows.get()) {
+                            if (emitted != this.requested.get()) {
+                                UnicastProcessor<T> w2 = UnicastProcessor.create(this.capacityHint, this);
+                                this.window = w2;
+                                this.windows.getAndIncrement();
+                                try {
+                                    Publisher<B> otherSource = (Publisher) ObjectHelper.requireNonNull(this.other.call(), "The other Callable returned a null Publisher");
+                                    WindowBoundaryInnerSubscriber<T, B> bo = new WindowBoundaryInnerSubscriber<>(this);
+                                    if (this.boundarySubscriber.compareAndSet(null, bo)) {
+                                        otherSource.subscribe(bo);
+                                        emitted++;
+                                        downstream.onNext(w2);
                                     }
-                                } else {
-                                    this.upstream.cancel();
-                                    disposeBoundary();
-                                    errors2.addThrowable(new MissingBackpressureException("Could not deliver a window due to lack of requests"));
+                                } catch (Throwable ex3) {
+                                    Exceptions.throwIfFatal(ex3);
+                                    errors.addThrowable(ex3);
                                     this.done = true;
                                 }
+                            } else {
+                                this.upstream.cancel();
+                                disposeBoundary();
+                                errors.addThrowable(new MissingBackpressureException("Could not deliver a window due to lack of requests"));
+                                this.done = true;
                             }
                         }
-                    } else {
-                        queue2.clear();
-                        Throwable ex3 = errors2.terminate();
-                        if (w != null) {
-                            this.window = null;
-                            w.onError(ex3);
-                        }
-                        downstream2.onError(ex3);
+                    }
+                } else {
+                    this.emitted = emitted;
+                    missed = addAndGet(-missed);
+                    if (missed == 0) {
                         return;
                     }
                 }
-                queue2.clear();
-                this.window = null;
             }
+            queue.clear();
+            this.window = null;
         }
     }
 
+    /* loaded from: classes.dex */
     static final class WindowBoundaryInnerSubscriber<T, B> extends DisposableSubscriber<B> {
         boolean done;
         final WindowBoundaryMainSubscriber<T, B> parent;
 
-        WindowBoundaryInnerSubscriber(WindowBoundaryMainSubscriber<T, B> parent2) {
-            this.parent = parent2;
+        WindowBoundaryInnerSubscriber(WindowBoundaryMainSubscriber<T, B> parent) {
+            this.parent = parent;
         }
 
-        public void onNext(B b) {
-            if (!this.done) {
-                this.done = true;
-                dispose();
-                this.parent.innerNext(this);
+        @Override // org.reactivestreams.Subscriber
+        public void onNext(B t) {
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            dispose();
+            this.parent.innerNext(this);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -259,11 +270,13 @@ public final class FlowableWindowBoundarySupplier<T, B> extends AbstractFlowable
             this.parent.innerError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                this.parent.innerComplete();
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            this.parent.innerComplete();
         }
     }
 }

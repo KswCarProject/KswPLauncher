@@ -1,5 +1,6 @@
 package com.google.zxing.pdf417.encoder;
 
+/* loaded from: classes.dex */
 final class BarcodeRow {
     private int currentLocation = 0;
     private final byte[] row;
@@ -8,17 +9,15 @@ final class BarcodeRow {
         this.row = new byte[width];
     }
 
-    /* access modifiers changed from: package-private */
-    public void set(int x, byte value) {
+    void set(int x, byte value) {
         this.row[x] = value;
     }
 
     private void set(int x, boolean black) {
-        this.row[x] = black ? (byte) 1 : 0;
+        this.row[x] = black ? (byte) 1 : (byte) 0;
     }
 
-    /* access modifiers changed from: package-private */
-    public void addBar(boolean black, int width) {
+    void addBar(boolean black, int width) {
         for (int ii = 0; ii < width; ii++) {
             int i = this.currentLocation;
             this.currentLocation = i + 1;
@@ -26,9 +25,8 @@ final class BarcodeRow {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public byte[] getScaledRow(int scale) {
-        byte[] output = new byte[(this.row.length * scale)];
+    byte[] getScaledRow(int scale) {
+        byte[] output = new byte[this.row.length * scale];
         for (int i = 0; i < output.length; i++) {
             output[i] = this.row[i / scale];
         }

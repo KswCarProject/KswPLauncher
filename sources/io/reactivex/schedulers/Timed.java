@@ -3,15 +3,16 @@ package io.reactivex.schedulers;
 import io.reactivex.internal.functions.ObjectHelper;
 import java.util.concurrent.TimeUnit;
 
+/* loaded from: classes.dex */
 public final class Timed<T> {
     final long time;
     final TimeUnit unit;
     final T value;
 
-    public Timed(T value2, long time2, TimeUnit unit2) {
-        this.value = value2;
-        this.time = time2;
-        this.unit = (TimeUnit) ObjectHelper.requireNonNull(unit2, "unit is null");
+    public Timed(T value, long time, TimeUnit unit) {
+        this.value = value;
+        this.time = time;
+        this.unit = (TimeUnit) ObjectHelper.requireNonNull(unit, "unit is null");
     }
 
     public T value() {
@@ -26,19 +27,16 @@ public final class Timed<T> {
         return this.time;
     }
 
-    public long time(TimeUnit unit2) {
-        return unit2.convert(this.time, this.unit);
+    public long time(TimeUnit unit) {
+        return unit.convert(this.time, this.unit);
     }
 
     public boolean equals(Object other) {
-        if (!(other instanceof Timed)) {
-            return false;
+        if (other instanceof Timed) {
+            Timed<?> o = (Timed) other;
+            return ObjectHelper.equals(this.value, o.value) && this.time == o.time && ObjectHelper.equals(this.unit, o.unit);
         }
-        Timed<?> o = (Timed) other;
-        if (!ObjectHelper.equals(this.value, o.value) || this.time != o.time || !ObjectHelper.equals(this.unit, o.unit)) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
     public int hashCode() {

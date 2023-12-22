@@ -4,25 +4,26 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 
+/* loaded from: classes3.dex */
 public class LexusUiParams {
-    public final ObservableBoolean acStatus = new ObservableBoolean();
-    public final ObservableBoolean autoSwitch = new ObservableBoolean();
-    public final ObservableBoolean backMistSwitch = new ObservableBoolean();
-    public final ObservableInt blowingMode = new ObservableInt();
-    public final ObservableBoolean dual = new ObservableBoolean();
-    public final ObservableBoolean frontMistSwitch = new ObservableBoolean();
     public final ObservableBoolean isOpen = new ObservableBoolean();
     public final ObservableField<String> leftTempStr = new ObservableField<>();
-    public final ObservableInt loopMode = new ObservableInt();
     public final ObservableField<String> rightTempStr = new ObservableField<>();
+    public final ObservableInt blowingMode = new ObservableInt();
     public final ObservableInt windSpeed = new ObservableInt();
+    public final ObservableBoolean acStatus = new ObservableBoolean();
+    public final ObservableInt loopMode = new ObservableInt();
+    public final ObservableBoolean backMistSwitch = new ObservableBoolean();
+    public final ObservableBoolean frontMistSwitch = new ObservableBoolean();
+    public final ObservableBoolean autoSwitch = new ObservableBoolean();
+    public final ObservableBoolean dual = new ObservableBoolean();
 
-    public void setOpen(boolean isOpen2) {
-        this.isOpen.set(isOpen2);
+    public void setOpen(boolean isOpen) {
+        this.isOpen.set(isOpen);
     }
 
-    public void setDual(boolean dual2) {
-        this.dual.set(dual2);
+    public void setDual(boolean dual) {
+        this.dual.set(dual);
     }
 
     public void setLoopMode(int value) {
@@ -32,16 +33,16 @@ public class LexusUiParams {
         this.loopMode.set(value);
     }
 
-    public void setFrontMistSwitch(boolean frontMistSwitch2) {
-        this.frontMistSwitch.set(frontMistSwitch2);
+    public void setFrontMistSwitch(boolean frontMistSwitch) {
+        this.frontMistSwitch.set(frontMistSwitch);
     }
 
-    public void setBackMistSwitch(boolean backMistSwitch2) {
-        this.backMistSwitch.set(backMistSwitch2);
+    public void setBackMistSwitch(boolean backMistSwitch) {
+        this.backMistSwitch.set(backMistSwitch);
     }
 
-    public void setAutoSwitch(boolean autoSwitch2) {
-        this.autoSwitch.set(autoSwitch2);
+    public void setAutoSwitch(boolean autoSwitch) {
+        this.autoSwitch.set(autoSwitch);
     }
 
     public void setACStatus(boolean value) {

@@ -17,33 +17,36 @@ import java.util.concurrent.Callable;
 import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableToListSingle<T, U extends Collection<? super T>> extends Single<U> implements FuseToFlowable<U> {
     final Callable<U> collectionSupplier;
     final Flowable<T> source;
 
-    public FlowableToListSingle(Flowable<T> source2) {
-        this(source2, ArrayListSupplier.asCallable());
+    public FlowableToListSingle(Flowable<T> source) {
+        this(source, ArrayListSupplier.asCallable());
     }
 
-    public FlowableToListSingle(Flowable<T> source2, Callable<U> collectionSupplier2) {
-        this.source = source2;
-        this.collectionSupplier = collectionSupplier2;
+    public FlowableToListSingle(Flowable<T> source, Callable<U> collectionSupplier) {
+        this.source = source;
+        this.collectionSupplier = collectionSupplier;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super U> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super U> observer) {
         try {
-            this.source.subscribe(new ToListSubscriber(observer, (Collection) ObjectHelper.requireNonNull(this.collectionSupplier.call(), "The collectionSupplier returned a null collection. Null values are generally not allowed in 2.x operators and sources.")));
+            this.source.subscribe((FlowableSubscriber) new ToListSubscriber(observer, (Collection) ObjectHelper.requireNonNull(this.collectionSupplier.call(), "The collectionSupplier returned a null collection. Null values are generally not allowed in 2.x operators and sources.")));
         } catch (Throwable e) {
             Exceptions.throwIfFatal(e);
-            EmptyDisposable.error(e, (SingleObserver<?>) observer);
+            EmptyDisposable.error(e, observer);
         }
     }
 
+    @Override // io.reactivex.internal.fuseable.FuseToFlowable
     public Flowable<U> fuseToFlowable() {
         return RxJavaPlugins.onAssembly(new FlowableToList(this.source, this.collectionSupplier));
     }
 
+    /* loaded from: classes.dex */
     static final class ToListSubscriber<T, U extends Collection<? super T>> implements FlowableSubscriber<T>, Disposable {
         final SingleObserver<? super U> downstream;
         Subscription upstream;
@@ -54,6 +57,7 @@ public final class FlowableToListSingle<T, U extends Collection<? super T>> exte
             this.value = collection;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -62,26 +66,31 @@ public final class FlowableToListSingle<T, U extends Collection<? super T>> exte
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             this.value.add(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             this.value = null;
             this.upstream = SubscriptionHelper.CANCELLED;
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.upstream = SubscriptionHelper.CANCELLED;
             this.downstream.onSuccess(this.value);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.cancel();
             this.upstream = SubscriptionHelper.CANCELLED;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream == SubscriptionHelper.CANCELLED;
         }

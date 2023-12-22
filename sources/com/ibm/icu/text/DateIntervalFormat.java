@@ -15,24 +15,27 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.text.FieldPosition;
 import java.text.ParsePosition;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public class DateIntervalFormat extends UFormat {
     private static ICUCache<String, Map<String, DateIntervalInfo.PatternInfo>> LOCAL_PATTERN_CACHE = new SimpleCache();
     private static final long serialVersionUID = 1;
     private SimpleDateFormat fDateFormat;
-    private String fDatePattern = null;
-    private String fDateTimeFormat = null;
+    private String fDatePattern;
+    private String fDateTimeFormat;
     private Calendar fFromCalendar;
     private DateIntervalInfo fInfo;
-    private transient Map<String, DateIntervalInfo.PatternInfo> fIntervalPatterns = null;
-    private String fSkeleton = null;
-    private String fTimePattern = null;
+    private transient Map<String, DateIntervalInfo.PatternInfo> fIntervalPatterns;
+    private String fSkeleton;
+    private String fTimePattern;
     private Calendar fToCalendar;
     private boolean isDateIntervalInfoDefault;
 
+    /* loaded from: classes.dex */
     static final class BestMatchInfo {
         final int bestMatchDistanceInfo;
         final String bestMatchSkeleton;
@@ -43,35 +46,51 @@ public class DateIntervalFormat extends UFormat {
         }
     }
 
+    /* loaded from: classes.dex */
     private static final class SkeletonAndItsBestMatch {
         final String bestMatchSkeleton;
         final String skeleton;
 
-        SkeletonAndItsBestMatch(String skeleton2, String bestMatch) {
-            this.skeleton = skeleton2;
+        SkeletonAndItsBestMatch(String skeleton, String bestMatch) {
+            this.skeleton = skeleton;
             this.bestMatchSkeleton = bestMatch;
         }
     }
 
     private DateIntervalFormat() {
+        this.fSkeleton = null;
+        this.fIntervalPatterns = null;
+        this.fDatePattern = null;
+        this.fTimePattern = null;
+        this.fDateTimeFormat = null;
     }
 
     @Deprecated
     public DateIntervalFormat(String skeleton, DateIntervalInfo dtItvInfo, SimpleDateFormat simpleDateFormat) {
+        this.fSkeleton = null;
+        this.fIntervalPatterns = null;
+        this.fDatePattern = null;
+        this.fTimePattern = null;
+        this.fDateTimeFormat = null;
         this.fDateFormat = simpleDateFormat;
-        dtItvInfo.freeze();
+        dtItvInfo.m76freeze();
         this.fSkeleton = skeleton;
         this.fInfo = dtItvInfo;
         this.isDateIntervalInfoDefault = false;
         this.fFromCalendar = (Calendar) this.fDateFormat.getCalendar().clone();
         this.fToCalendar = (Calendar) this.fDateFormat.getCalendar().clone();
-        initializePattern((ICUCache<String, Map<String, DateIntervalInfo.PatternInfo>>) null);
+        initializePattern(null);
     }
 
     private DateIntervalFormat(String skeleton, ULocale locale, SimpleDateFormat simpleDateFormat) {
+        this.fSkeleton = null;
+        this.fIntervalPatterns = null;
+        this.fDatePattern = null;
+        this.fTimePattern = null;
+        this.fDateTimeFormat = null;
         this.fDateFormat = simpleDateFormat;
         this.fSkeleton = skeleton;
-        this.fInfo = new DateIntervalInfo(locale).freeze();
+        this.fInfo = new DateIntervalInfo(locale).m76freeze();
         this.isDateIntervalInfoDefault = true;
         this.fFromCalendar = (Calendar) this.fDateFormat.getCalendar().clone();
         this.fToCalendar = (Calendar) this.fDateFormat.getCalendar().clone();
@@ -87,7 +106,8 @@ public class DateIntervalFormat extends UFormat {
     }
 
     public static final DateIntervalFormat getInstance(String skeleton, ULocale locale) {
-        return new DateIntervalFormat(skeleton, locale, new SimpleDateFormat(DateTimePatternGenerator.getInstance(locale).getBestPattern(skeleton), locale));
+        DateTimePatternGenerator generator = DateTimePatternGenerator.getInstance(locale);
+        return new DateIntervalFormat(skeleton, locale, new SimpleDateFormat(generator.getBestPattern(skeleton), locale));
     }
 
     public static final DateIntervalFormat getInstance(String skeleton, DateIntervalInfo dtitvinf) {
@@ -99,9 +119,12 @@ public class DateIntervalFormat extends UFormat {
     }
 
     public static final DateIntervalFormat getInstance(String skeleton, ULocale locale, DateIntervalInfo dtitvinf) {
-        return new DateIntervalFormat(skeleton, (DateIntervalInfo) dtitvinf.clone(), new SimpleDateFormat(DateTimePatternGenerator.getInstance(locale).getBestPattern(skeleton), locale));
+        DateIntervalInfo dtitvinf2 = (DateIntervalInfo) dtitvinf.clone();
+        DateTimePatternGenerator generator = DateTimePatternGenerator.getInstance(locale);
+        return new DateIntervalFormat(skeleton, dtitvinf2, new SimpleDateFormat(generator.getBestPattern(skeleton), locale));
     }
 
+    @Override // java.text.Format
     public synchronized Object clone() {
         DateIntervalFormat other;
         other = (DateIntervalFormat) super.clone();
@@ -115,6 +138,7 @@ public class DateIntervalFormat extends UFormat {
         return other;
     }
 
+    @Override // java.text.Format
     public final StringBuffer format(Object obj, StringBuffer appendTo, FieldPosition fieldPosition) {
         if (obj instanceof DateInterval) {
             return format((DateInterval) obj, appendTo, fieldPosition);
@@ -145,262 +169,147 @@ public class DateIntervalFormat extends UFormat {
             field = 10;
         } else if (fromCalendar.get(12) != toCalendar.get(12)) {
             field = 12;
-        } else if (fromCalendar.get(13) == toCalendar.get(13)) {
-            return null;
-        } else {
+        } else if (fromCalendar.get(13) != toCalendar.get(13)) {
             field = 13;
+        } else {
+            return null;
         }
         DateIntervalInfo.PatternInfo intervalPattern = this.fIntervalPatterns.get(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[field]);
         part2.value = intervalPattern.getSecondPart();
         return intervalPattern.getFirstPart();
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:38:0x00a6  */
-    /* JADX WARNING: Removed duplicated region for block: B:48:0x00c6 A[SYNTHETIC, Splitter:B:48:0x00c6] */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public final synchronized java.lang.StringBuffer format(com.ibm.icu.util.Calendar r18, com.ibm.icu.util.Calendar r19, java.lang.StringBuffer r20, java.text.FieldPosition r21) {
-        /*
-            r17 = this;
-            r12 = r17
-            r0 = r18
-            r13 = r19
-            r14 = r20
-            r15 = r21
-            monitor-enter(r17)
-            boolean r1 = r18.isEquivalentTo(r19)     // Catch:{ all -> 0x0156 }
-            if (r1 == 0) goto L_0x014e
-            r1 = -1
-            r2 = 0
-            int r3 = r0.get(r2)     // Catch:{ all -> 0x0156 }
-            int r4 = r13.get(r2)     // Catch:{ all -> 0x0156 }
-            r5 = 13
-            r6 = 12
-            r7 = 10
-            r8 = 9
-            r9 = 1
-            if (r3 == r4) goto L_0x002a
-            r1 = 0
-            r11 = r1
-            goto L_0x008a
-        L_0x002a:
-            int r3 = r0.get(r9)     // Catch:{ all -> 0x0156 }
-            int r4 = r13.get(r9)     // Catch:{ all -> 0x0156 }
-            if (r3 == r4) goto L_0x0037
-            r1 = 1
-            r11 = r1
-            goto L_0x008a
-        L_0x0037:
-            r3 = 2
-            int r4 = r0.get(r3)     // Catch:{ all -> 0x0156 }
-            int r3 = r13.get(r3)     // Catch:{ all -> 0x0156 }
-            if (r4 == r3) goto L_0x0045
-            r1 = 2
-            r11 = r1
-            goto L_0x008a
-        L_0x0045:
-            r3 = 5
-            int r4 = r0.get(r3)     // Catch:{ all -> 0x0156 }
-            int r3 = r13.get(r3)     // Catch:{ all -> 0x0156 }
-            if (r4 == r3) goto L_0x0053
-            r1 = 5
-            r11 = r1
-            goto L_0x008a
-        L_0x0053:
-            int r3 = r0.get(r8)     // Catch:{ all -> 0x0156 }
-            int r4 = r13.get(r8)     // Catch:{ all -> 0x0156 }
-            if (r3 == r4) goto L_0x0061
-            r1 = 9
-            r11 = r1
-            goto L_0x008a
-        L_0x0061:
-            int r3 = r0.get(r7)     // Catch:{ all -> 0x0156 }
-            int r4 = r13.get(r7)     // Catch:{ all -> 0x0156 }
-            if (r3 == r4) goto L_0x006f
-            r1 = 10
-            r11 = r1
-            goto L_0x008a
-        L_0x006f:
-            int r3 = r0.get(r6)     // Catch:{ all -> 0x0156 }
-            int r4 = r13.get(r6)     // Catch:{ all -> 0x0156 }
-            if (r3 == r4) goto L_0x007d
-            r1 = 12
-            r11 = r1
-            goto L_0x008a
-        L_0x007d:
-            int r3 = r0.get(r5)     // Catch:{ all -> 0x0156 }
-            int r4 = r13.get(r5)     // Catch:{ all -> 0x0156 }
-            if (r3 == r4) goto L_0x0146
-            r1 = 13
-            r11 = r1
-        L_0x008a:
-            if (r11 == r8) goto L_0x0095
-            if (r11 == r7) goto L_0x0095
-            if (r11 == r6) goto L_0x0095
-            if (r11 != r5) goto L_0x0093
-            goto L_0x0095
-        L_0x0093:
-            r4 = r2
-            goto L_0x0096
-        L_0x0095:
-            r4 = r9
-        L_0x0096:
-            java.util.Map<java.lang.String, com.ibm.icu.text.DateIntervalInfo$PatternInfo> r1 = r12.fIntervalPatterns     // Catch:{ all -> 0x0156 }
-            java.lang.String[] r2 = com.ibm.icu.text.DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER     // Catch:{ all -> 0x0156 }
-            r2 = r2[r11]     // Catch:{ all -> 0x0156 }
-            java.lang.Object r1 = r1.get(r2)     // Catch:{ all -> 0x0156 }
-            com.ibm.icu.text.DateIntervalInfo$PatternInfo r1 = (com.ibm.icu.text.DateIntervalInfo.PatternInfo) r1     // Catch:{ all -> 0x0156 }
-            r16 = r1
-            if (r16 != 0) goto L_0x00c6
-            com.ibm.icu.text.SimpleDateFormat r1 = r12.fDateFormat     // Catch:{ all -> 0x0156 }
-            boolean r1 = r1.isFieldUnitIgnored(r11)     // Catch:{ all -> 0x0156 }
-            if (r1 == 0) goto L_0x00b6
-            com.ibm.icu.text.SimpleDateFormat r1 = r12.fDateFormat     // Catch:{ all -> 0x0156 }
-            java.lang.StringBuffer r1 = r1.format(r0, r14, r15)     // Catch:{ all -> 0x0156 }
-            monitor-exit(r17)
-            return r1
-        L_0x00b6:
-            r1 = r17
-            r2 = r18
-            r3 = r19
-            r5 = r20
-            r6 = r21
-            java.lang.StringBuffer r1 = r1.fallbackFormat(r2, r3, r4, r5, r6)     // Catch:{ all -> 0x0156 }
-            monitor-exit(r17)
-            return r1
-        L_0x00c6:
-            java.lang.String r1 = r16.getFirstPart()     // Catch:{ all -> 0x0156 }
-            if (r1 != 0) goto L_0x00e4
-            java.lang.String r1 = r16.getSecondPart()     // Catch:{ all -> 0x0156 }
-            r5 = r17
-            r6 = r18
-            r7 = r19
-            r8 = r4
-            r9 = r20
-            r10 = r21
-            r2 = r11
-            r11 = r1
-            java.lang.StringBuffer r1 = r5.fallbackFormat(r6, r7, r8, r9, r10, r11)     // Catch:{ all -> 0x0156 }
-            monitor-exit(r17)
-            return r1
-        L_0x00e4:
-            r2 = r11
-            boolean r1 = r16.firstDateInPtnIsLaterDate()     // Catch:{ all -> 0x0156 }
-            if (r1 == 0) goto L_0x00f0
-            r1 = r19
-            r3 = r18
-            goto L_0x00f4
-        L_0x00f0:
-            r1 = r18
-            r3 = r19
-        L_0x00f4:
-            com.ibm.icu.text.SimpleDateFormat r5 = r12.fDateFormat     // Catch:{ all -> 0x0156 }
-            java.lang.String r5 = r5.toPattern()     // Catch:{ all -> 0x0156 }
-            com.ibm.icu.text.SimpleDateFormat r6 = r12.fDateFormat     // Catch:{ all -> 0x0156 }
-            java.lang.String r7 = r16.getFirstPart()     // Catch:{ all -> 0x0156 }
-            r6.applyPattern(r7)     // Catch:{ all -> 0x0156 }
-            com.ibm.icu.text.SimpleDateFormat r6 = r12.fDateFormat     // Catch:{ all -> 0x0156 }
-            r6.format(r1, r14, r15)     // Catch:{ all -> 0x0156 }
-            java.lang.String r6 = r16.getSecondPart()     // Catch:{ all -> 0x0156 }
-            if (r6 == 0) goto L_0x013f
-            com.ibm.icu.text.SimpleDateFormat r6 = r12.fDateFormat     // Catch:{ all -> 0x0156 }
-            java.lang.String r7 = r16.getSecondPart()     // Catch:{ all -> 0x0156 }
-            r6.applyPattern(r7)     // Catch:{ all -> 0x0156 }
-            java.text.FieldPosition r6 = new java.text.FieldPosition     // Catch:{ all -> 0x0156 }
-            int r7 = r21.getField()     // Catch:{ all -> 0x0156 }
-            r6.<init>(r7)     // Catch:{ all -> 0x0156 }
-            com.ibm.icu.text.SimpleDateFormat r7 = r12.fDateFormat     // Catch:{ all -> 0x0156 }
-            r7.format(r3, r14, r6)     // Catch:{ all -> 0x0156 }
-            int r7 = r21.getEndIndex()     // Catch:{ all -> 0x0156 }
-            if (r7 != 0) goto L_0x013f
-            int r7 = r6.getEndIndex()     // Catch:{ all -> 0x0156 }
-            if (r7 <= 0) goto L_0x013f
-            int r7 = r6.getBeginIndex()     // Catch:{ all -> 0x0156 }
-            r15.setBeginIndex(r7)     // Catch:{ all -> 0x0156 }
-            int r7 = r6.getEndIndex()     // Catch:{ all -> 0x0156 }
-            r15.setEndIndex(r7)     // Catch:{ all -> 0x0156 }
-        L_0x013f:
-            com.ibm.icu.text.SimpleDateFormat r6 = r12.fDateFormat     // Catch:{ all -> 0x0156 }
-            r6.applyPattern(r5)     // Catch:{ all -> 0x0156 }
-            monitor-exit(r17)
-            return r14
-        L_0x0146:
-            com.ibm.icu.text.SimpleDateFormat r2 = r12.fDateFormat     // Catch:{ all -> 0x0156 }
-            java.lang.StringBuffer r2 = r2.format(r0, r14, r15)     // Catch:{ all -> 0x0156 }
-            monitor-exit(r17)
-            return r2
-        L_0x014e:
-            java.lang.IllegalArgumentException r1 = new java.lang.IllegalArgumentException     // Catch:{ all -> 0x0156 }
-            java.lang.String r2 = "can not format on two different calendars"
-            r1.<init>(r2)     // Catch:{ all -> 0x0156 }
-            throw r1     // Catch:{ all -> 0x0156 }
-        L_0x0156:
-            r0 = move-exception
-            monitor-exit(r17)
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.DateIntervalFormat.format(com.ibm.icu.util.Calendar, com.ibm.icu.util.Calendar, java.lang.StringBuffer, java.text.FieldPosition):java.lang.StringBuffer");
+    /* JADX WARN: Removed duplicated region for block: B:39:0x00a6 A[Catch: all -> 0x0156, TryCatch #0 {, blocks: (B:4:0x000b, B:6:0x0011, B:37:0x0096, B:39:0x00a6, B:41:0x00ae, B:45:0x00c0, B:48:0x00c6, B:50:0x00cd, B:54:0x00e5, B:58:0x00f4, B:60:0x010e, B:62:0x012b, B:64:0x0131, B:65:0x013f, B:9:0x002a, B:12:0x0037, B:15:0x0045, B:18:0x0053, B:21:0x0061, B:24:0x006f, B:27:0x007d, B:68:0x0146, B:71:0x014e, B:72:0x0155), top: B:76:0x000b }] */
+    /* JADX WARN: Removed duplicated region for block: B:48:0x00c6 A[Catch: all -> 0x0156, TRY_ENTER, TryCatch #0 {, blocks: (B:4:0x000b, B:6:0x0011, B:37:0x0096, B:39:0x00a6, B:41:0x00ae, B:45:0x00c0, B:48:0x00c6, B:50:0x00cd, B:54:0x00e5, B:58:0x00f4, B:60:0x010e, B:62:0x012b, B:64:0x0131, B:65:0x013f, B:9:0x002a, B:12:0x0037, B:15:0x0045, B:18:0x0053, B:21:0x0061, B:24:0x006f, B:27:0x007d, B:68:0x0146, B:71:0x014e, B:72:0x0155), top: B:76:0x000b }] */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    public final synchronized StringBuffer format(Calendar fromCalendar, Calendar toCalendar, StringBuffer appendTo, FieldPosition pos) {
+        int field;
+        boolean fromToOnSameDay;
+        DateIntervalInfo.PatternInfo intervalPattern;
+        Calendar firstCal;
+        Calendar secondCal;
+        if (!fromCalendar.isEquivalentTo(toCalendar)) {
+            throw new IllegalArgumentException("can not format on two different calendars");
+        }
+        if (fromCalendar.get(0) != toCalendar.get(0)) {
+            field = 0;
+        } else if (fromCalendar.get(1) != toCalendar.get(1)) {
+            field = 1;
+        } else if (fromCalendar.get(2) != toCalendar.get(2)) {
+            field = 2;
+        } else if (fromCalendar.get(5) != toCalendar.get(5)) {
+            field = 5;
+        } else if (fromCalendar.get(9) != toCalendar.get(9)) {
+            field = 9;
+        } else if (fromCalendar.get(10) != toCalendar.get(10)) {
+            field = 10;
+        } else if (fromCalendar.get(12) != toCalendar.get(12)) {
+            field = 12;
+        } else if (fromCalendar.get(13) != toCalendar.get(13)) {
+            field = 13;
+        } else {
+            return this.fDateFormat.format(fromCalendar, appendTo, pos);
+        }
+        if (field != 9 && field != 10 && field != 12 && field != 13) {
+            fromToOnSameDay = false;
+            intervalPattern = this.fIntervalPatterns.get(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[field]);
+            if (intervalPattern != null) {
+                if (this.fDateFormat.isFieldUnitIgnored(field)) {
+                    return this.fDateFormat.format(fromCalendar, appendTo, pos);
+                }
+                return fallbackFormat(fromCalendar, toCalendar, fromToOnSameDay, appendTo, pos);
+            } else if (intervalPattern.getFirstPart() == null) {
+                return fallbackFormat(fromCalendar, toCalendar, fromToOnSameDay, appendTo, pos, intervalPattern.getSecondPart());
+            } else {
+                if (intervalPattern.firstDateInPtnIsLaterDate()) {
+                    firstCal = toCalendar;
+                    secondCal = fromCalendar;
+                } else {
+                    firstCal = fromCalendar;
+                    secondCal = toCalendar;
+                }
+                String originalPattern = this.fDateFormat.toPattern();
+                this.fDateFormat.applyPattern(intervalPattern.getFirstPart());
+                this.fDateFormat.format(firstCal, appendTo, pos);
+                if (intervalPattern.getSecondPart() != null) {
+                    this.fDateFormat.applyPattern(intervalPattern.getSecondPart());
+                    FieldPosition otherPos = new FieldPosition(pos.getField());
+                    this.fDateFormat.format(secondCal, appendTo, otherPos);
+                    if (pos.getEndIndex() == 0 && otherPos.getEndIndex() > 0) {
+                        pos.setBeginIndex(otherPos.getBeginIndex());
+                        pos.setEndIndex(otherPos.getEndIndex());
+                    }
+                }
+                this.fDateFormat.applyPattern(originalPattern);
+                return appendTo;
+            }
+        }
+        fromToOnSameDay = true;
+        intervalPattern = this.fIntervalPatterns.get(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[field]);
+        if (intervalPattern != null) {
+        }
     }
 
     private void adjustPosition(String combiningPattern, String pat0, FieldPosition pos0, String pat1, FieldPosition pos1, FieldPosition posResult) {
         int index0 = combiningPattern.indexOf("{0}");
         int index1 = combiningPattern.indexOf("{1}");
-        if (index0 >= 0 && index1 >= 0) {
-            if (index0 < index1) {
-                if (pos0.getEndIndex() > 0) {
-                    posResult.setBeginIndex(pos0.getBeginIndex() + index0);
-                    posResult.setEndIndex(pos0.getEndIndex() + index0);
-                } else if (pos1.getEndIndex() > 0) {
-                    int index12 = index1 + (pat0.length() - 3);
-                    posResult.setBeginIndex(pos1.getBeginIndex() + index12);
-                    posResult.setEndIndex(pos1.getEndIndex() + index12);
-                }
+        if (index0 < 0 || index1 < 0) {
+            return;
+        }
+        if (index0 < index1) {
+            if (pos0.getEndIndex() > 0) {
+                posResult.setBeginIndex(pos0.getBeginIndex() + index0);
+                posResult.setEndIndex(pos0.getEndIndex() + index0);
             } else if (pos1.getEndIndex() > 0) {
-                posResult.setBeginIndex(pos1.getBeginIndex() + index1);
-                posResult.setEndIndex(pos1.getEndIndex() + index1);
-            } else if (pos0.getEndIndex() > 0) {
-                int index02 = index0 + (pat1.length() - 3);
-                posResult.setBeginIndex(pos0.getBeginIndex() + index02);
-                posResult.setEndIndex(pos0.getEndIndex() + index02);
+                int index12 = index1 + (pat0.length() - 3);
+                posResult.setBeginIndex(pos1.getBeginIndex() + index12);
+                posResult.setEndIndex(pos1.getEndIndex() + index12);
             }
+        } else if (pos1.getEndIndex() > 0) {
+            posResult.setBeginIndex(pos1.getBeginIndex() + index1);
+            posResult.setEndIndex(pos1.getEndIndex() + index1);
+        } else if (pos0.getEndIndex() > 0) {
+            int index02 = index0 + (pat1.length() - 3);
+            posResult.setBeginIndex(pos0.getBeginIndex() + index02);
+            posResult.setEndIndex(pos0.getEndIndex() + index02);
         }
     }
 
     private final StringBuffer fallbackFormat(Calendar fromCalendar, Calendar toCalendar, boolean fromToOnSameDay, StringBuffer appendTo, FieldPosition pos) {
         String fullPattern;
         String fallbackRange;
-        Calendar calendar = fromCalendar;
-        StringBuffer stringBuffer = appendTo;
         boolean formatDatePlusTimeRange = (!fromToOnSameDay || this.fDatePattern == null || this.fTimePattern == null) ? false : true;
-        if (formatDatePlusTimeRange) {
+        if (!formatDatePlusTimeRange) {
+            fullPattern = null;
+        } else {
             String fullPattern2 = this.fDateFormat.toPattern();
             this.fDateFormat.applyPattern(this.fTimePattern);
             fullPattern = fullPattern2;
-        } else {
-            fullPattern = null;
         }
         FieldPosition otherPos = new FieldPosition(pos.getField());
-        FieldPosition fieldPosition = pos;
-        StringBuffer earlierDate = this.fDateFormat.format(calendar, new StringBuffer(64), fieldPosition);
+        StringBuffer earlierDate = this.fDateFormat.format(fromCalendar, new StringBuffer(64), pos);
         StringBuffer laterDate = this.fDateFormat.format(toCalendar, new StringBuffer(64), otherPos);
         String fallbackPattern = this.fInfo.getFallbackIntervalPattern();
-        adjustPosition(fallbackPattern, earlierDate.toString(), pos, laterDate.toString(), otherPos, fieldPosition);
+        adjustPosition(fallbackPattern, earlierDate.toString(), pos, laterDate.toString(), otherPos, pos);
         String fallbackRange2 = SimpleFormatterImpl.formatRawPattern(fallbackPattern, 2, 2, new CharSequence[]{earlierDate, laterDate});
         if (formatDatePlusTimeRange) {
             this.fDateFormat.applyPattern(this.fDatePattern);
             StringBuffer datePortion = new StringBuffer(64);
             otherPos.setBeginIndex(0);
             otherPos.setEndIndex(0);
-            StringBuffer datePortion2 = this.fDateFormat.format(calendar, datePortion, otherPos);
+            StringBuffer datePortion2 = this.fDateFormat.format(fromCalendar, datePortion, otherPos);
             adjustPosition(this.fDateTimeFormat, fallbackRange2, pos, datePortion2.toString(), otherPos, pos);
             fallbackRange = SimpleFormatterImpl.formatRawPattern(this.fDateTimeFormat, 2, 2, new CharSequence[]{fallbackRange2, datePortion2});
         } else {
             fallbackRange = fallbackRange2;
         }
-        stringBuffer.append(fallbackRange);
+        appendTo.append(fallbackRange);
         if (formatDatePlusTimeRange) {
             this.fDateFormat.applyPattern(fullPattern);
         }
-        return stringBuffer;
+        return appendTo;
     }
 
     private final StringBuffer fallbackFormat(Calendar fromCalendar, Calendar toCalendar, boolean fromToOnSameDay, StringBuffer appendTo, FieldPosition pos, String fullPattern) {
@@ -411,6 +320,7 @@ public class DateIntervalFormat extends UFormat {
         return appendTo;
     }
 
+    @Override // java.text.Format
     @Deprecated
     public Object parseObject(String source, ParsePosition parse_pos) {
         throw new UnsupportedOperationException("parsing is not supported");
@@ -424,9 +334,9 @@ public class DateIntervalFormat extends UFormat {
         DateIntervalInfo dateIntervalInfo = (DateIntervalInfo) newItvPattern.clone();
         this.fInfo = dateIntervalInfo;
         this.isDateIntervalInfoDefault = false;
-        dateIntervalInfo.freeze();
+        dateIntervalInfo.m76freeze();
         if (this.fDateFormat != null) {
-            initializePattern((ICUCache<String, Map<String, DateIntervalInfo.PatternInfo>>) null);
+            initializePattern(null);
         }
     }
 
@@ -458,65 +368,33 @@ public class DateIntervalFormat extends UFormat {
         return (DateFormat) this.fDateFormat.clone();
     }
 
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r4v2, resolved type: java.lang.Object} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r3v4, resolved type: java.util.Map<java.lang.String, com.ibm.icu.text.DateIntervalInfo$PatternInfo>} */
-    /* JADX WARNING: Multi-variable type inference failed */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private void initializePattern(com.ibm.icu.impl.ICUCache<java.lang.String, java.util.Map<java.lang.String, com.ibm.icu.text.DateIntervalInfo.PatternInfo>> r8) {
-        /*
-            r7 = this;
-            com.ibm.icu.text.SimpleDateFormat r0 = r7.fDateFormat
-            java.lang.String r0 = r0.toPattern()
-            com.ibm.icu.text.SimpleDateFormat r1 = r7.fDateFormat
-            com.ibm.icu.util.ULocale r1 = r1.getLocale()
-            r2 = 0
-            r3 = 0
-            if (r8 == 0) goto L_0x005a
-            java.lang.String r4 = r7.fSkeleton
-            java.lang.String r5 = "+"
-            if (r4 == 0) goto L_0x003a
-            java.lang.StringBuilder r4 = new java.lang.StringBuilder
-            r4.<init>()
-            java.lang.String r6 = r1.toString()
-            java.lang.StringBuilder r4 = r4.append(r6)
-            java.lang.StringBuilder r4 = r4.append(r5)
-            java.lang.StringBuilder r4 = r4.append(r0)
-            java.lang.StringBuilder r4 = r4.append(r5)
-            java.lang.String r5 = r7.fSkeleton
-            java.lang.StringBuilder r4 = r4.append(r5)
-            java.lang.String r2 = r4.toString()
-            goto L_0x0053
-        L_0x003a:
-            java.lang.StringBuilder r4 = new java.lang.StringBuilder
-            r4.<init>()
-            java.lang.String r6 = r1.toString()
-            java.lang.StringBuilder r4 = r4.append(r6)
-            java.lang.StringBuilder r4 = r4.append(r5)
-            java.lang.StringBuilder r4 = r4.append(r0)
-            java.lang.String r2 = r4.toString()
-        L_0x0053:
-            java.lang.Object r4 = r8.get(r2)
-            r3 = r4
-            java.util.Map r3 = (java.util.Map) r3
-        L_0x005a:
-            if (r3 != 0) goto L_0x0069
-            java.util.Map r4 = r7.initializeIntervalPattern(r0, r1)
-            java.util.Map r3 = java.util.Collections.unmodifiableMap(r4)
-            if (r8 == 0) goto L_0x0069
-            r8.put(r2, r3)
-        L_0x0069:
-            r7.fIntervalPatterns = r3
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.DateIntervalFormat.initializePattern(com.ibm.icu.impl.ICUCache):void");
+    private void initializePattern(ICUCache<String, Map<String, DateIntervalInfo.PatternInfo>> cache) {
+        String fullPattern = this.fDateFormat.toPattern();
+        ULocale locale = this.fDateFormat.getLocale();
+        String key = null;
+        Map<String, DateIntervalInfo.PatternInfo> patterns = null;
+        if (cache != null) {
+            if (this.fSkeleton != null) {
+                key = locale.toString() + "+" + fullPattern + "+" + this.fSkeleton;
+            } else {
+                key = locale.toString() + "+" + fullPattern;
+            }
+            patterns = (Map) cache.get(key);
+        }
+        if (patterns == null) {
+            Map<String, DateIntervalInfo.PatternInfo> intervalPatterns = initializeIntervalPattern(fullPattern, locale);
+            patterns = Collections.unmodifiableMap(intervalPatterns);
+            if (cache != null) {
+                cache.put(key, patterns);
+            }
+        }
+        this.fIntervalPatterns = patterns;
     }
 
     private Map<String, DateIntervalInfo.PatternInfo> initializeIntervalPattern(String fullPattern, ULocale locale) {
         DateTimePatternGenerator dtpng = DateTimePatternGenerator.getInstance(locale);
         if (this.fSkeleton == null) {
             this.fSkeleton = dtpng.getSkeleton(fullPattern);
-        } else {
-            String str = fullPattern;
         }
         String skeleton = this.fSkeleton;
         HashMap<String, DateIntervalInfo.PatternInfo> intervalPatterns = new HashMap<>();
@@ -529,30 +407,24 @@ public class DateIntervalFormat extends UFormat {
         String timeSkeleton = time.toString();
         String normalizedDateSkeleton = normalizedDate.toString();
         String normalizedTimeSkeleton = normalizedTime.toString();
-        if (time.length() == 0 || date.length() == 0) {
-            ULocale uLocale = locale;
-        } else {
+        if (time.length() != 0 && date.length() != 0) {
             this.fDateTimeFormat = getConcatenationPattern(locale);
         }
-        if (!genSeparateDateTimePtn(normalizedDateSkeleton, normalizedTimeSkeleton, intervalPatterns, dtpng)) {
-            if (time.length() == 0) {
-                StringBuilder sb = normalizedTime;
-            } else if (date.length() == 0) {
-                StringBuilder sb2 = normalizedDate;
-                StringBuilder sb3 = normalizedTime;
-                DateIntervalInfo.PatternInfo ptn = new DateIntervalInfo.PatternInfo((String) null, dtpng.getBestPattern(DateFormat.YEAR_NUM_MONTH_DAY + timeSkeleton), this.fInfo.getDefaultOrder());
+        boolean found = genSeparateDateTimePtn(normalizedDateSkeleton, normalizedTimeSkeleton, intervalPatterns, dtpng);
+        if (!found) {
+            if (time.length() != 0 && date.length() == 0) {
+                String pattern = dtpng.getBestPattern(DateFormat.YEAR_NUM_MONTH_DAY + timeSkeleton);
+                DateIntervalInfo.PatternInfo ptn = new DateIntervalInfo.PatternInfo(null, pattern, this.fInfo.getDefaultOrder());
                 intervalPatterns.put(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[5], ptn);
                 intervalPatterns.put(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[2], ptn);
                 intervalPatterns.put(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[1], ptn);
-            } else {
-                StringBuilder sb4 = normalizedTime;
             }
             return intervalPatterns;
         }
-        StringBuilder sb5 = normalizedTime;
         if (time.length() != 0) {
             if (date.length() == 0) {
-                DateIntervalInfo.PatternInfo ptn2 = new DateIntervalInfo.PatternInfo((String) null, dtpng.getBestPattern(DateFormat.YEAR_NUM_MONTH_DAY + timeSkeleton), this.fInfo.getDefaultOrder());
+                String pattern2 = dtpng.getBestPattern(DateFormat.YEAR_NUM_MONTH_DAY + timeSkeleton);
+                DateIntervalInfo.PatternInfo ptn2 = new DateIntervalInfo.PatternInfo(null, pattern2, this.fInfo.getDefaultOrder());
                 intervalPatterns.put(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[5], ptn2);
                 intervalPatterns.put(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[2], ptn2);
                 intervalPatterns.put(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[1], ptn2);
@@ -581,7 +453,9 @@ public class DateIntervalFormat extends UFormat {
     }
 
     private String getConcatenationPattern(ULocale locale) {
-        ICUResourceBundle concatenationPatternRb = UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b", locale).getWithFallback("calendar/gregorian/DateTimePatterns").get(8);
+        ICUResourceBundle rb = UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b", locale);
+        ICUResourceBundle dtPatternsRb = rb.getWithFallback("calendar/gregorian/DateTimePatterns");
+        ICUResourceBundle concatenationPatternRb = dtPatternsRb.get(8);
         if (concatenationPatternRb.getType() == 0) {
             return concatenationPatternRb.getString();
         }
@@ -589,14 +463,12 @@ public class DateIntervalFormat extends UFormat {
     }
 
     private void genFallbackPattern(int field, String skeleton, Map<String, DateIntervalInfo.PatternInfo> intervalPatterns, DateTimePatternGenerator dtpng) {
-        intervalPatterns.put(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[field], new DateIntervalInfo.PatternInfo((String) null, dtpng.getBestPattern(skeleton), this.fInfo.getDefaultOrder()));
+        String pattern = dtpng.getBestPattern(skeleton);
+        DateIntervalInfo.PatternInfo ptn = new DateIntervalInfo.PatternInfo(null, pattern, this.fInfo.getDefaultOrder());
+        intervalPatterns.put(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[field], ptn);
     }
 
     private static void getDateTimeSkeleton(String skeleton, StringBuilder dateSkeleton, StringBuilder normalizedDateSkeleton, StringBuilder timeSkeleton, StringBuilder normalizedTimeSkeleton) {
-        StringBuilder sb = dateSkeleton;
-        StringBuilder sb2 = normalizedDateSkeleton;
-        StringBuilder sb3 = timeSkeleton;
-        StringBuilder sb4 = normalizedTimeSkeleton;
         int ECount = 0;
         int dCount = 0;
         int MCount = 0;
@@ -617,8 +489,8 @@ public class DateIntervalFormat extends UFormat {
                 case 'j':
                 case 'k':
                 case 's':
-                    sb3.append(ch);
-                    sb4.append(ch);
+                    timeSkeleton.append(ch);
+                    normalizedTimeSkeleton.append(ch);
                     break;
                 case 'D':
                 case 'F':
@@ -636,94 +508,89 @@ public class DateIntervalFormat extends UFormat {
                 case 'r':
                 case 'u':
                 case 'w':
-                    sb2.append(ch);
-                    sb.append(ch);
+                    normalizedDateSkeleton.append(ch);
+                    dateSkeleton.append(ch);
                     break;
                 case 'E':
-                    sb.append(ch);
+                    dateSkeleton.append(ch);
                     ECount++;
                     break;
                 case 'H':
-                    sb3.append(ch);
+                    timeSkeleton.append(ch);
                     HCount++;
                     break;
                 case 'M':
-                    sb.append(ch);
+                    dateSkeleton.append(ch);
                     MCount++;
                     break;
                 case 'a':
-                    sb3.append(ch);
+                    timeSkeleton.append(ch);
                     break;
                 case 'd':
-                    sb.append(ch);
+                    dateSkeleton.append(ch);
                     dCount++;
                     break;
                 case 'h':
-                    sb3.append(ch);
+                    timeSkeleton.append(ch);
                     hCount++;
                     break;
                 case 'm':
-                    sb3.append(ch);
+                    timeSkeleton.append(ch);
                     mCount++;
                     break;
                 case 'v':
                     vCount++;
-                    sb3.append(ch);
+                    timeSkeleton.append(ch);
                     break;
                 case 'y':
-                    sb.append(ch);
+                    dateSkeleton.append(ch);
                     yCount++;
                     break;
                 case 'z':
                     zCount++;
-                    sb3.append(ch);
+                    timeSkeleton.append(ch);
                     break;
             }
         }
-        String str = skeleton;
         if (yCount != 0) {
             for (int i2 = 0; i2 < yCount; i2++) {
-                sb2.append('y');
+                normalizedDateSkeleton.append('y');
             }
         }
         if (MCount != 0) {
             if (MCount < 3) {
-                sb2.append('M');
+                normalizedDateSkeleton.append('M');
             } else {
-                int i3 = 0;
-                while (i3 < MCount && i3 < 5) {
-                    sb2.append('M');
-                    i3++;
+                for (int i3 = 0; i3 < MCount && i3 < 5; i3++) {
+                    normalizedDateSkeleton.append('M');
                 }
             }
         }
         if (ECount != 0) {
             if (ECount <= 3) {
-                sb2.append('E');
+                normalizedDateSkeleton.append('E');
             } else {
-                int i4 = 0;
-                while (i4 < ECount && i4 < 5) {
-                    sb2.append('E');
-                    i4++;
+                for (int i4 = 0; i4 < ECount && i4 < 5; i4++) {
+                    normalizedDateSkeleton.append('E');
                 }
             }
         }
         if (dCount != 0) {
-            sb2.append('d');
+            normalizedDateSkeleton.append('d');
         }
         if (HCount != 0) {
-            sb4.append('H');
+            normalizedTimeSkeleton.append('H');
         } else if (hCount != 0) {
-            sb4.append('h');
+            normalizedTimeSkeleton.append('h');
         }
         if (mCount != 0) {
-            sb4.append('m');
+            normalizedTimeSkeleton.append('m');
         }
         if (zCount != 0) {
-            sb4.append('z');
+            normalizedTimeSkeleton.append('z');
         }
         if (vCount != 0) {
-            sb4.append('v');
+            normalizedTimeSkeleton.append('v');
         }
     }
 
@@ -748,11 +615,8 @@ public class DateIntervalFormat extends UFormat {
         }
         if (timeSkeleton.length() == 0) {
             String str = skeleton;
-            String str2 = bestSkeleton;
-            int i = differenceInfo;
-            Map<String, DateIntervalInfo.PatternInfo> map = intervalPatterns;
-            genIntervalPattern(5, str, str2, i, map);
-            SkeletonAndItsBestMatch skeletons = genIntervalPattern(2, str, str2, i, map);
+            genIntervalPattern(5, str, bestSkeleton, differenceInfo, intervalPatterns);
+            SkeletonAndItsBestMatch skeletons = genIntervalPattern(2, str, bestSkeleton, differenceInfo, intervalPatterns);
             if (skeletons != null) {
                 String bestSkeleton2 = skeletons.skeleton;
                 skeleton = skeletons.bestMatchSkeleton;
@@ -761,13 +625,10 @@ public class DateIntervalFormat extends UFormat {
             genIntervalPattern(1, skeleton, bestSkeleton, differenceInfo, intervalPatterns);
             return true;
         }
-        String str3 = skeleton;
-        String str4 = bestSkeleton;
-        int i2 = differenceInfo;
-        Map<String, DateIntervalInfo.PatternInfo> map2 = intervalPatterns;
-        genIntervalPattern(12, str3, str4, i2, map2);
-        genIntervalPattern(10, str3, str4, i2, map2);
-        genIntervalPattern(9, str3, str4, i2, map2);
+        String str2 = skeleton;
+        genIntervalPattern(12, str2, bestSkeleton, differenceInfo, intervalPatterns);
+        genIntervalPattern(10, str2, bestSkeleton, differenceInfo, intervalPatterns);
+        genIntervalPattern(9, str2, bestSkeleton, differenceInfo, intervalPatterns);
         return true;
     }
 
@@ -776,7 +637,8 @@ public class DateIntervalFormat extends UFormat {
         DateIntervalInfo.PatternInfo pattern = this.fInfo.getIntervalPattern(bestSkeleton, field);
         if (pattern == null) {
             if (SimpleDateFormat.isFieldUnitIgnored(bestSkeleton, field)) {
-                intervalPatterns.put(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[field], new DateIntervalInfo.PatternInfo(this.fDateFormat.toPattern(), (String) null, this.fInfo.getDefaultOrder()));
+                DateIntervalInfo.PatternInfo ptnInfo = new DateIntervalInfo.PatternInfo(this.fDateFormat.toPattern(), null, this.fInfo.getDefaultOrder());
+                intervalPatterns.put(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[field], ptnInfo);
                 return null;
             } else if (field == 9) {
                 DateIntervalInfo.PatternInfo pattern2 = this.fInfo.getIntervalPattern(bestSkeleton, 10);
@@ -793,7 +655,7 @@ public class DateIntervalFormat extends UFormat {
                     BestMatchInfo tmpRetValue = this.fInfo.getBestSkeleton(skeleton);
                     String tmpBestSkeleton = tmpRetValue.bestMatchSkeleton;
                     differenceInfo = tmpRetValue.bestMatchDistanceInfo;
-                    if (!(tmpBestSkeleton.length() == 0 || differenceInfo == -1)) {
+                    if (tmpBestSkeleton.length() != 0 && differenceInfo != -1) {
                         pattern = this.fInfo.getIntervalPattern(tmpBestSkeleton, field);
                         bestSkeleton = tmpBestSkeleton;
                     }
@@ -805,169 +667,118 @@ public class DateIntervalFormat extends UFormat {
         }
         if (pattern != null) {
             if (differenceInfo != 0) {
-                pattern = new DateIntervalInfo.PatternInfo(adjustFieldWidth(skeleton, bestSkeleton, pattern.getFirstPart(), differenceInfo), adjustFieldWidth(skeleton, bestSkeleton, pattern.getSecondPart(), differenceInfo), pattern.firstDateInPtnIsLaterDate());
+                String part1 = adjustFieldWidth(skeleton, bestSkeleton, pattern.getFirstPart(), differenceInfo);
+                String part2 = adjustFieldWidth(skeleton, bestSkeleton, pattern.getSecondPart(), differenceInfo);
+                pattern = new DateIntervalInfo.PatternInfo(part1, part2, pattern.firstDateInPtnIsLaterDate());
             }
             intervalPatterns.put(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[field], pattern);
         }
         return retValue;
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:40:0x0097, code lost:
-        if (r15 > 'z') goto L_0x009c;
+    /* JADX WARN: Code restructure failed: missing block: B:43:0x0097, code lost:
+        if (r15 > 'z') goto L47;
      */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private static java.lang.String adjustFieldWidth(java.lang.String r18, java.lang.String r19, java.lang.String r20, int r21) {
-        /*
-            r0 = r20
-            if (r0 != 0) goto L_0x0006
-            r1 = 0
-            return r1
-        L_0x0006:
-            r1 = 58
-            int[] r2 = new int[r1]
-            int[] r1 = new int[r1]
-            r3 = r18
-            com.ibm.icu.text.DateIntervalInfo.parseSkeleton(r3, r2)
-            r4 = r19
-            com.ibm.icu.text.DateIntervalInfo.parseSkeleton(r4, r1)
-            r5 = 2
-            r6 = 122(0x7a, float:1.71E-43)
-            r7 = r21
-            if (r7 != r5) goto L_0x0023
-            r5 = 118(0x76, float:1.65E-43)
-            java.lang.String r0 = r0.replace(r5, r6)
-        L_0x0023:
-            java.lang.StringBuilder r5 = new java.lang.StringBuilder
-            r5.<init>(r0)
-            r8 = 0
-            r9 = 0
-            r10 = 0
-            r11 = 65
-            int r12 = r5.length()
-            r13 = 0
-        L_0x0032:
-            r14 = 76
-            if (r13 >= r12) goto L_0x00b1
-            char r15 = r5.charAt(r13)
-            if (r15 == r9) goto L_0x006b
-            if (r10 <= 0) goto L_0x006b
-            r20 = r9
-            r6 = r20
-            if (r6 != r14) goto L_0x0046
-            r6 = 77
-        L_0x0046:
-            int r14 = r6 - r11
-            r14 = r1[r14]
-            int r16 = r6 - r11
-            r20 = r0
-            r0 = r2[r16]
-            if (r14 != r10) goto L_0x0067
-            if (r0 <= r14) goto L_0x0067
-            int r10 = r0 - r14
-            r16 = 0
-            r17 = r0
-            r0 = r16
-        L_0x005c:
-            if (r0 >= r10) goto L_0x0064
-            r5.insert(r13, r9)
-            int r0 = r0 + 1
-            goto L_0x005c
-        L_0x0064:
-            int r13 = r13 + r10
-            int r12 = r12 + r10
-            goto L_0x0069
-        L_0x0067:
-            r17 = r0
-        L_0x0069:
-            r10 = 0
-            goto L_0x006d
-        L_0x006b:
-            r20 = r0
-        L_0x006d:
-            r0 = 39
-            if (r15 != r0) goto L_0x008f
-            int r14 = r13 + 1
-            int r6 = r5.length()
-            if (r14 >= r6) goto L_0x0086
-            int r6 = r13 + 1
-            char r6 = r5.charAt(r6)
-            if (r6 != r0) goto L_0x0086
-            int r13 = r13 + 1
-            r0 = 122(0x7a, float:1.71E-43)
-            goto L_0x00ab
-        L_0x0086:
-            if (r8 != 0) goto L_0x008a
-            r0 = 1
-            goto L_0x008b
-        L_0x008a:
-            r0 = 0
-        L_0x008b:
-            r8 = r0
-            r0 = 122(0x7a, float:1.71E-43)
-            goto L_0x00ab
-        L_0x008f:
-            if (r8 != 0) goto L_0x00a9
-            r0 = 97
-            if (r15 < r0) goto L_0x009a
-            r0 = 122(0x7a, float:1.71E-43)
-            if (r15 <= r0) goto L_0x00a4
-            goto L_0x009c
-        L_0x009a:
-            r0 = 122(0x7a, float:1.71E-43)
-        L_0x009c:
-            r6 = 65
-            if (r15 < r6) goto L_0x00ab
-            r6 = 90
-            if (r15 > r6) goto L_0x00ab
-        L_0x00a4:
-            r6 = r15
-            int r10 = r10 + 1
-            r9 = r6
-            goto L_0x00ab
-        L_0x00a9:
-            r0 = 122(0x7a, float:1.71E-43)
-        L_0x00ab:
-            r6 = 1
-            int r13 = r13 + r6
-            r6 = r0
-            r0 = r20
-            goto L_0x0032
-        L_0x00b1:
-            r20 = r0
-            if (r10 <= 0) goto L_0x00d1
-            r0 = r9
-            if (r0 != r14) goto L_0x00ba
-            r0 = 77
-        L_0x00ba:
-            int r6 = r0 - r11
-            r6 = r1[r6]
-            int r13 = r0 - r11
-            r13 = r2[r13]
-            if (r6 != r10) goto L_0x00d1
-            if (r13 <= r6) goto L_0x00d1
-            int r10 = r13 - r6
-            r14 = 0
-        L_0x00c9:
-            if (r14 >= r10) goto L_0x00d1
-            r5.append(r9)
-            int r14 = r14 + 1
-            goto L_0x00c9
-        L_0x00d1:
-            java.lang.String r0 = r5.toString()
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.DateIntervalFormat.adjustFieldWidth(java.lang.String, java.lang.String, java.lang.String, int):java.lang.String");
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    private static String adjustFieldWidth(String inputSkeleton, String bestMatchSkeleton, String bestMatchIntervalPattern, int differenceInfo) {
+        String bestMatchIntervalPattern2;
+        char c;
+        String bestMatchIntervalPattern3 = bestMatchIntervalPattern;
+        if (bestMatchIntervalPattern3 == null) {
+            return null;
+        }
+        int[] inputSkeletonFieldWidth = new int[58];
+        int[] bestMatchSkeletonFieldWidth = new int[58];
+        DateIntervalInfo.parseSkeleton(inputSkeleton, inputSkeletonFieldWidth);
+        DateIntervalInfo.parseSkeleton(bestMatchSkeleton, bestMatchSkeletonFieldWidth);
+        if (differenceInfo == 2) {
+            bestMatchIntervalPattern3 = bestMatchIntervalPattern3.replace('v', 'z');
+        }
+        StringBuilder adjustedPtn = new StringBuilder(bestMatchIntervalPattern3);
+        boolean inQuote = false;
+        char prevCh = 0;
+        int count = 0;
+        int adjustedPtnLength = adjustedPtn.length();
+        int i = 0;
+        while (i < adjustedPtnLength) {
+            char ch = adjustedPtn.charAt(i);
+            if (ch == prevCh || count <= 0) {
+                bestMatchIntervalPattern2 = bestMatchIntervalPattern3;
+            } else {
+                char skeletonChar = prevCh;
+                if (skeletonChar == 'L') {
+                    skeletonChar = 'M';
+                }
+                int fieldCount = bestMatchSkeletonFieldWidth[skeletonChar - 'A'];
+                bestMatchIntervalPattern2 = bestMatchIntervalPattern3;
+                int inputFieldCount = inputSkeletonFieldWidth[skeletonChar - 'A'];
+                if (fieldCount == count && inputFieldCount > fieldCount) {
+                    int count2 = inputFieldCount - fieldCount;
+                    for (int inputFieldCount2 = 0; inputFieldCount2 < count2; inputFieldCount2++) {
+                        adjustedPtn.insert(i, prevCh);
+                    }
+                    i += count2;
+                    adjustedPtnLength += count2;
+                }
+                count = 0;
+            }
+            if (ch == '\'') {
+                if (i + 1 < adjustedPtn.length() && adjustedPtn.charAt(i + 1) == '\'') {
+                    i++;
+                    c = 'z';
+                } else {
+                    inQuote = !inQuote;
+                    c = 'z';
+                }
+            } else if (inQuote) {
+                c = 'z';
+            } else {
+                if (ch >= 'a') {
+                    c = 'z';
+                } else {
+                    c = 'z';
+                }
+                if (ch >= 'A') {
+                    if (ch > 'Z') {
+                    }
+                    count++;
+                    prevCh = ch;
+                }
+            }
+            i++;
+            bestMatchIntervalPattern3 = bestMatchIntervalPattern2;
+        }
+        if (count > 0) {
+            char skeletonChar2 = prevCh;
+            if (skeletonChar2 == 'L') {
+                skeletonChar2 = 'M';
+            }
+            int fieldCount2 = bestMatchSkeletonFieldWidth[skeletonChar2 - 'A'];
+            int inputFieldCount3 = inputSkeletonFieldWidth[skeletonChar2 - 'A'];
+            if (fieldCount2 == count && inputFieldCount3 > fieldCount2) {
+                int count3 = inputFieldCount3 - fieldCount2;
+                for (int j = 0; j < count3; j++) {
+                    adjustedPtn.append(prevCh);
+                }
+            }
+        }
+        return adjustedPtn.toString();
     }
 
     private void concatSingleDate2TimeInterval(String dtfmt, String datePattern, int field, Map<String, DateIntervalInfo.PatternInfo> intervalPatterns) {
         DateIntervalInfo.PatternInfo timeItvPtnInfo = intervalPatterns.get(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[field]);
         if (timeItvPtnInfo != null) {
-            intervalPatterns.put(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[field], DateIntervalInfo.genPatternInfo(SimpleFormatterImpl.formatRawPattern(dtfmt, 2, 2, new CharSequence[]{timeItvPtnInfo.getFirstPart() + timeItvPtnInfo.getSecondPart(), datePattern}), timeItvPtnInfo.firstDateInPtnIsLaterDate()));
+            String timeIntervalPattern = timeItvPtnInfo.getFirstPart() + timeItvPtnInfo.getSecondPart();
+            String pattern = SimpleFormatterImpl.formatRawPattern(dtfmt, 2, 2, new CharSequence[]{timeIntervalPattern, datePattern});
+            intervalPatterns.put(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[field], DateIntervalInfo.genPatternInfo(pattern, timeItvPtnInfo.firstDateInPtnIsLaterDate()));
         }
     }
 
     private static boolean fieldExistsInSkeleton(int field, String skeleton) {
-        return skeleton.indexOf(DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[field]) != -1;
+        String fieldChar = DateIntervalInfo.CALENDAR_FIELD_TO_PATTERN_LETTER[field];
+        return skeleton.indexOf(fieldChar) != -1;
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {

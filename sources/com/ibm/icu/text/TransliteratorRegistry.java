@@ -18,26 +18,29 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/* loaded from: classes.dex */
 class TransliteratorRegistry {
     private static final String ANY = "Any";
     private static final boolean DEBUG = false;
     private static final char LOCALE_SEP = '_';
     private static final String NO_VARIANT = "";
-    private List<CaseInsensitiveString> availableIDs = new ArrayList();
     private Map<CaseInsensitiveString, Object[]> registry = Collections.synchronizedMap(new HashMap());
     private Map<CaseInsensitiveString, Map<CaseInsensitiveString, List<CaseInsensitiveString>>> specDAG = Collections.synchronizedMap(new HashMap());
+    private List<CaseInsensitiveString> availableIDs = new ArrayList();
 
+    /* loaded from: classes.dex */
     static class Spec {
         private boolean isNextLocale;
         private boolean isSpecLocale;
         private String nextSpec;
         private ICUResourceBundle res;
-        private String scriptName = null;
+        private String scriptName;
         private String spec = null;
         private String top;
 
         public Spec(String theSpec) {
             this.top = theSpec;
+            this.scriptName = null;
             try {
                 int script = UScript.getCodeFromName(theSpec);
                 int[] s = UScript.getCode(this.top);
@@ -51,7 +54,8 @@ class TransliteratorRegistry {
                 this.isSpecLocale = false;
                 this.res = null;
                 if (script == -1) {
-                    ICUResourceBundle bundleInstance = UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b/translit", LocaleUtility.getLocaleFromName(this.top));
+                    Locale toploc = LocaleUtility.getLocaleFromName(this.top);
+                    ICUResourceBundle bundleInstance = UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b/translit", toploc);
                     this.res = bundleInstance;
                     if (bundleInstance != null && LocaleUtility.isFallbackOf(bundleInstance.getULocale().toString(), this.top)) {
                         this.isSpecLocale = true;
@@ -111,10 +115,10 @@ class TransliteratorRegistry {
 
         public ResourceBundle getBundle() {
             ICUResourceBundle iCUResourceBundle = this.res;
-            if (iCUResourceBundle == null || !iCUResourceBundle.getULocale().toString().equals(this.spec)) {
-                return null;
+            if (iCUResourceBundle != null && iCUResourceBundle.getULocale().toString().equals(this.spec)) {
+                return this.res;
             }
-            return this.res;
+            return null;
         }
 
         public String getTop() {
@@ -122,6 +126,7 @@ class TransliteratorRegistry {
         }
     }
 
+    /* loaded from: classes.dex */
     static class ResourceEntry {
         public int direction;
         public String resource;
@@ -132,6 +137,7 @@ class TransliteratorRegistry {
         }
     }
 
+    /* loaded from: classes.dex */
     static class LocaleEntry {
         public int direction;
         public String rule;
@@ -142,6 +148,7 @@ class TransliteratorRegistry {
         }
     }
 
+    /* loaded from: classes.dex */
     static class AliasEntry {
         public String alias;
 
@@ -150,14 +157,17 @@ class TransliteratorRegistry {
         }
     }
 
+    /* loaded from: classes.dex */
     static class CompoundRBTEntry {
-        private String ID;
+
+        /* renamed from: ID */
+        private String f169ID;
         private UnicodeSet compoundFilter;
         private List<RuleBasedTransliterator.Data> dataVector;
         private List<String> idBlockVector;
 
         public CompoundRBTEntry(String theID, List<String> theIDBlockVector, List<RuleBasedTransliterator.Data> theDataVector, UnicodeSet theCompoundFilter) {
-            this.ID = theID;
+            this.f169ID = theID;
             this.idBlockVector = theIDBlockVector;
             this.dataVector = theDataVector;
             this.compoundFilter = theCompoundFilter;
@@ -175,16 +185,16 @@ class TransliteratorRegistry {
                     }
                 }
                 if (i < this.dataVector.size()) {
-                    int passNumber2 = passNumber + 1;
-                    transliterators.add(new RuleBasedTransliterator("%Pass" + passNumber, this.dataVector.get(i), (UnicodeFilter) null));
-                    passNumber = passNumber2;
+                    RuleBasedTransliterator.Data data = this.dataVector.get(i);
+                    transliterators.add(new RuleBasedTransliterator("%Pass" + passNumber, data, null));
+                    passNumber++;
                 }
             }
             Transliterator t = new CompoundTransliterator(transliterators, passNumber - 1);
-            t.setID(this.ID);
-            UnicodeSet unicodeSet = this.compoundFilter;
-            if (unicodeSet != null) {
-                t.setFilter(unicodeSet);
+            t.setID(this.f169ID);
+            UnicodeFilter unicodeFilter = this.compoundFilter;
+            if (unicodeFilter != null) {
+                t.setFilter(unicodeFilter);
             }
             return t;
         }
@@ -226,20 +236,25 @@ class TransliteratorRegistry {
         this.availableIDs.remove(new CaseInsensitiveString(id));
     }
 
+    /* loaded from: classes.dex */
     private static class IDEnumeration implements Enumeration<String> {
-        Enumeration<CaseInsensitiveString> en;
+
+        /* renamed from: en */
+        Enumeration<CaseInsensitiveString> f170en;
 
         public IDEnumeration(Enumeration<CaseInsensitiveString> e) {
-            this.en = e;
+            this.f170en = e;
         }
 
+        @Override // java.util.Enumeration
         public boolean hasMoreElements() {
-            Enumeration<CaseInsensitiveString> enumeration = this.en;
+            Enumeration<CaseInsensitiveString> enumeration = this.f170en;
             return enumeration != null && enumeration.hasMoreElements();
         }
 
+        @Override // java.util.Enumeration
         public String nextElement() {
-            return this.en.nextElement().getString();
+            return this.f170en.nextElement().getString();
         }
     }
 
@@ -252,9 +267,10 @@ class TransliteratorRegistry {
     }
 
     public Enumeration<String> getAvailableTargets(String source) {
-        Map<CaseInsensitiveString, List<CaseInsensitiveString>> targets = this.specDAG.get(new CaseInsensitiveString(source));
+        CaseInsensitiveString cisrc = new CaseInsensitiveString(source);
+        Map<CaseInsensitiveString, List<CaseInsensitiveString>> targets = this.specDAG.get(cisrc);
         if (targets == null) {
-            return new IDEnumeration((Enumeration<CaseInsensitiveString>) null);
+            return new IDEnumeration(null);
         }
         return new IDEnumeration(Collections.enumeration(targets.keySet()));
     }
@@ -264,11 +280,11 @@ class TransliteratorRegistry {
         CaseInsensitiveString citrg = new CaseInsensitiveString(target);
         Map<CaseInsensitiveString, List<CaseInsensitiveString>> targets = this.specDAG.get(cisrc);
         if (targets == null) {
-            return new IDEnumeration((Enumeration<CaseInsensitiveString>) null);
+            return new IDEnumeration(null);
         }
         List<CaseInsensitiveString> variants = targets.get(citrg);
         if (variants == null) {
-            return new IDEnumeration((Enumeration<CaseInsensitiveString>) null);
+            return new IDEnumeration(null);
         }
         return new IDEnumeration(Collections.enumeration(variants));
     }
@@ -278,17 +294,20 @@ class TransliteratorRegistry {
         if (s.length() == 0) {
             s = ANY;
         }
-        registerEntry(TransliteratorIDParser.STVtoID(source, target, variant), s, target, variant, entry, visible);
+        String ID = TransliteratorIDParser.STVtoID(source, target, variant);
+        registerEntry(ID, s, target, variant, entry, visible);
     }
 
     private void registerEntry(String ID, Object entry, boolean visible) {
         String[] stv = TransliteratorIDParser.IDtoSTV(ID);
-        registerEntry(TransliteratorIDParser.STVtoID(stv[0], stv[1], stv[2]), stv[0], stv[1], stv[2], entry, visible);
+        String id = TransliteratorIDParser.STVtoID(stv[0], stv[1], stv[2]);
+        registerEntry(id, stv[0], stv[1], stv[2], entry, visible);
     }
 
     private void registerEntry(String ID, String source, String target, String variant, Object entry, boolean visible) {
         CaseInsensitiveString ciID = new CaseInsensitiveString(ID);
-        this.registry.put(ciID, entry instanceof Object[] ? (Object[]) entry : new Object[]{entry});
+        Object[] arrayOfObj = entry instanceof Object[] ? (Object[]) entry : new Object[]{entry};
+        this.registry.put(ciID, arrayOfObj);
         if (visible) {
             registerSTV(source, target, variant);
             if (!this.availableIDs.contains(ciID)) {
@@ -312,16 +331,15 @@ class TransliteratorRegistry {
         }
         List<CaseInsensitiveString> variants = targets.get(citrg);
         if (variants == null) {
-            variants = new ArrayList<>();
+            variants = new ArrayList();
             targets.put(citrg, variants);
         }
-        if (variants.contains(civar)) {
-            return;
-        }
-        if (variant.length() > 0) {
-            variants.add(civar);
-        } else {
-            variants.add(0, civar);
+        if (!variants.contains(civar)) {
+            if (variant.length() > 0) {
+                variants.add(civar);
+            } else {
+                variants.add(0, civar);
+            }
         }
     }
 
@@ -331,19 +349,21 @@ class TransliteratorRegistry {
         CaseInsensitiveString citrg = new CaseInsensitiveString(target);
         CaseInsensitiveString civar = new CaseInsensitiveString(variant);
         Map<CaseInsensitiveString, List<CaseInsensitiveString>> targets = this.specDAG.get(cisrc);
-        if (targets != null && (variants = targets.get(citrg)) != null) {
-            variants.remove(civar);
-            if (variants.size() == 0) {
-                targets.remove(citrg);
-                if (targets.size() == 0) {
-                    this.specDAG.remove(cisrc);
-                }
+        if (targets == null || (variants = targets.get(citrg)) == null) {
+            return;
+        }
+        variants.remove(civar);
+        if (variants.size() == 0) {
+            targets.remove(citrg);
+            if (targets.size() == 0) {
+                this.specDAG.remove(cisrc);
             }
         }
     }
 
     private Object[] findInDynamicStore(Spec src, Spec trg, String variant) {
-        return this.registry.get(new CaseInsensitiveString(TransliteratorIDParser.STVtoID(src.get(), trg.get(), variant)));
+        String ID = TransliteratorIDParser.STVtoID(src.get(), trg.get(), variant);
+        return this.registry.get(new CaseInsensitiveString(ID));
     }
 
     private Object[] findInStaticStore(Spec src, Spec trg, String variant) {
@@ -360,6 +380,8 @@ class TransliteratorRegistry {
     }
 
     private Object[] findInBundle(Spec specToOpen, Spec specToFind, String variant, int direction) {
+        String[] subres;
+        int i;
         ResourceBundle res = specToOpen.getBundle();
         if (res == null) {
             return null;
@@ -374,25 +396,22 @@ class TransliteratorRegistry {
             }
             tag.append(specToFind.get().toUpperCase(Locale.ENGLISH));
             try {
-                String[] subres = res.getStringArray(tag.toString());
-                int i = 0;
+                subres = res.getStringArray(tag.toString());
+                i = 0;
                 if (variant.length() != 0) {
                     i = 0;
-                    while (true) {
-                        if (i >= subres.length) {
-                            break;
-                        } else if (subres[i].equalsIgnoreCase(variant)) {
-                            break;
-                        } else {
-                            i += 2;
-                        }
+                    while (i < subres.length && !subres[i].equalsIgnoreCase(variant)) {
+                        i += 2;
                     }
                 }
-                if (i < subres.length) {
-                    return new Object[]{new LocaleEntry(subres[i + 1], pass == 0 ? 0 : direction)};
-                }
-                pass++;
             } catch (MissingResourceException e) {
+            }
+            if (i >= subres.length) {
+                continue;
+                pass++;
+            } else {
+                int dir = pass == 0 ? 0 : direction;
+                return new Object[]{new LocaleEntry(subres[i + 1], dir)};
             }
         }
         return null;
@@ -403,109 +422,100 @@ class TransliteratorRegistry {
         return find(stv[0], stv[1], stv[2]);
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:18:0x003d, code lost:
-        if (r1.hasFallback() != false) goto L_0x0042;
+    /* JADX WARN: Code restructure failed: missing block: B:20:0x003d, code lost:
+        if (r1.hasFallback() != false) goto L22;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:19:0x003f, code lost:
+    /* JADX WARN: Code restructure failed: missing block: B:21:0x0040, code lost:
         return null;
      */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private java.lang.Object[] find(java.lang.String r5, java.lang.String r6, java.lang.String r7) {
-        /*
-            r4 = this;
-            com.ibm.icu.text.TransliteratorRegistry$Spec r0 = new com.ibm.icu.text.TransliteratorRegistry$Spec
-            r0.<init>(r5)
-            com.ibm.icu.text.TransliteratorRegistry$Spec r1 = new com.ibm.icu.text.TransliteratorRegistry$Spec
-            r1.<init>(r6)
-            r2 = 0
-            int r3 = r7.length()
-            if (r3 == 0) goto L_0x001f
-            java.lang.Object[] r2 = r4.findInDynamicStore(r0, r1, r7)
-            if (r2 == 0) goto L_0x0018
-            return r2
-        L_0x0018:
-            java.lang.Object[] r2 = r4.findInStaticStore(r0, r1, r7)
-            if (r2 == 0) goto L_0x001f
-            return r2
-        L_0x001f:
-            r0.reset()
-        L_0x0022:
-            java.lang.String r3 = ""
-            java.lang.Object[] r2 = r4.findInDynamicStore(r0, r1, r3)
-            if (r2 == 0) goto L_0x002b
-            return r2
-        L_0x002b:
-            java.lang.Object[] r2 = r4.findInStaticStore(r0, r1, r3)
-            if (r2 == 0) goto L_0x0032
-            return r2
-        L_0x0032:
-            boolean r3 = r0.hasFallback()
-            if (r3 != 0) goto L_0x0046
-            boolean r3 = r1.hasFallback()
-            if (r3 != 0) goto L_0x0042
-            r3 = 0
-            return r3
-        L_0x0042:
-            r1.next()
-            goto L_0x001f
-        L_0x0046:
-            r0.next()
-            goto L_0x0022
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.TransliteratorRegistry.find(java.lang.String, java.lang.String, java.lang.String):java.lang.Object[]");
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    private Object[] find(String source, String target, String variant) {
+        Spec src = new Spec(source);
+        Spec trg = new Spec(target);
+        if (variant.length() != 0) {
+            Object[] entry = findInDynamicStore(src, trg, variant);
+            if (entry != null) {
+                return entry;
+            }
+            Object[] entry2 = findInStaticStore(src, trg, variant);
+            if (entry2 != null) {
+                return entry2;
+            }
+        }
+        while (true) {
+            src.reset();
+            while (true) {
+                Object[] entry3 = findInDynamicStore(src, trg, "");
+                if (entry3 != null) {
+                    return entry3;
+                }
+                Object[] entry4 = findInStaticStore(src, trg, "");
+                if (entry4 != null) {
+                    return entry4;
+                }
+                if (!src.hasFallback()) {
+                    break;
+                }
+                src.next();
+            }
+            trg.next();
+        }
     }
 
     private Transliterator instantiateEntry(String ID, Object[] entryWrapper, StringBuffer aliasReturn) {
         while (true) {
-            ResourceEntry data = entryWrapper[0];
-            if (data instanceof RuleBasedTransliterator.Data) {
-                return new RuleBasedTransliterator(ID, data, (UnicodeFilter) null);
-            }
-            if (data instanceof Class) {
+            Object entry = entryWrapper[0];
+            if (entry instanceof RuleBasedTransliterator.Data) {
+                RuleBasedTransliterator.Data data = (RuleBasedTransliterator.Data) entry;
+                return new RuleBasedTransliterator(ID, data, null);
+            } else if (entry instanceof Class) {
                 try {
-                    return (Transliterator) data.newInstance();
+                    return (Transliterator) ((Class) entry).newInstance();
                 } catch (IllegalAccessException | InstantiationException e) {
                     return null;
                 }
-            } else if (data instanceof AliasEntry) {
-                aliasReturn.append(data.alias);
+            } else if (entry instanceof AliasEntry) {
+                aliasReturn.append(((AliasEntry) entry).alias);
                 return null;
-            } else if (data instanceof Transliterator.Factory) {
-                return data.getInstance(ID);
+            } else if (entry instanceof Transliterator.Factory) {
+                return ((Transliterator.Factory) entry).getInstance(ID);
             } else {
-                if (data instanceof CompoundRBTEntry) {
-                    return data.getInstance();
+                if (entry instanceof CompoundRBTEntry) {
+                    return ((CompoundRBTEntry) entry).getInstance();
                 }
-                if (data instanceof AnyTransliterator) {
-                    return data.safeClone();
-                }
-                if (data instanceof RuleBasedTransliterator) {
-                    return data.safeClone();
-                }
-                if (data instanceof CompoundTransliterator) {
-                    return data.safeClone();
-                }
-                if (data instanceof Transliterator) {
-                    return data;
-                }
-                TransliteratorParser parser = new TransliteratorParser();
-                try {
-                    ResourceEntry re = data;
-                    parser.parse(re.resource, re.direction);
-                } catch (ClassCastException e2) {
-                    LocaleEntry le = data;
-                    parser.parse(le.rule, le.direction);
-                }
-                if (parser.idBlockVector.size() == 0 && parser.dataVector.size() == 0) {
-                    entryWrapper[0] = new AliasEntry("Any-Null");
-                } else if (parser.idBlockVector.size() == 0 && parser.dataVector.size() == 1) {
-                    entryWrapper[0] = parser.dataVector.get(0);
-                } else if (parser.idBlockVector.size() != 1 || parser.dataVector.size() != 0) {
-                    entryWrapper[0] = new CompoundRBTEntry(ID, parser.idBlockVector, parser.dataVector, parser.compoundFilter);
-                } else if (parser.compoundFilter != null) {
-                    entryWrapper[0] = new AliasEntry(parser.compoundFilter.toPattern(false) + ";" + parser.idBlockVector.get(0));
+                if (entry instanceof AnyTransliterator) {
+                    AnyTransliterator temp = (AnyTransliterator) entry;
+                    return temp.safeClone();
+                } else if (entry instanceof RuleBasedTransliterator) {
+                    RuleBasedTransliterator temp2 = (RuleBasedTransliterator) entry;
+                    return temp2.safeClone();
+                } else if (entry instanceof CompoundTransliterator) {
+                    CompoundTransliterator temp3 = (CompoundTransliterator) entry;
+                    return temp3.safeClone();
+                } else if (entry instanceof Transliterator) {
+                    return (Transliterator) entry;
                 } else {
-                    entryWrapper[0] = new AliasEntry(parser.idBlockVector.get(0));
+                    TransliteratorParser parser = new TransliteratorParser();
+                    try {
+                        ResourceEntry re = (ResourceEntry) entry;
+                        parser.parse(re.resource, re.direction);
+                    } catch (ClassCastException e2) {
+                        LocaleEntry le = (LocaleEntry) entry;
+                        parser.parse(le.rule, le.direction);
+                    }
+                    if (parser.idBlockVector.size() == 0 && parser.dataVector.size() == 0) {
+                        entryWrapper[0] = new AliasEntry("Any-Null");
+                    } else if (parser.idBlockVector.size() == 0 && parser.dataVector.size() == 1) {
+                        entryWrapper[0] = parser.dataVector.get(0);
+                    } else if (parser.idBlockVector.size() != 1 || parser.dataVector.size() != 0) {
+                        entryWrapper[0] = new CompoundRBTEntry(ID, parser.idBlockVector, parser.dataVector, parser.compoundFilter);
+                    } else if (parser.compoundFilter != null) {
+                        entryWrapper[0] = new AliasEntry(parser.compoundFilter.toPattern(false) + ";" + parser.idBlockVector.get(0));
+                    } else {
+                        entryWrapper[0] = new AliasEntry(parser.idBlockVector.get(0));
+                    }
                 }
             }
         }

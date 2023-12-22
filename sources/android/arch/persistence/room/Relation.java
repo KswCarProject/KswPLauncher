@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.CLASS)
+/* loaded from: classes.dex */
 public @interface Relation {
     Class entity() default Object.class;
 

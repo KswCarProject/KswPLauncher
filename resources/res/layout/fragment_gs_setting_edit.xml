@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" style="@style/id8_gs_edit_main_card_container_left_padding">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/id8_gs_edit_main_card_container_left_padding">
     <ImageView android:background="@drawable/gs_id8_main_icon_settings" style="@style/id8_gs_main_big_card_size"/>
     <LinearLayout style="@style/id8_gs_main_big_card_size">
         <TextView android:text="@string/ksw_id8_setting" style="@style/id8_gs_main_card_title"/>

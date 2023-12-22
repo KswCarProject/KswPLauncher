@@ -10,44 +10,49 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/* loaded from: classes.dex */
 public class StreamEncoder implements Encoder<InputStream> {
     private static final String TAG = "StreamEncoder";
     private final ArrayPool byteArrayPool;
 
-    public StreamEncoder(ArrayPool byteArrayPool2) {
-        this.byteArrayPool = byteArrayPool2;
+    public StreamEncoder(ArrayPool byteArrayPool) {
+        this.byteArrayPool = byteArrayPool;
     }
 
+    @Override // com.bumptech.glide.load.Encoder
     public boolean encode(InputStream data, File file, Options options) {
         byte[] buffer = (byte[]) this.byteArrayPool.get(65536, byte[].class);
         boolean success = false;
         OutputStream os = null;
         try {
-            OutputStream os2 = new FileOutputStream(file);
-            while (true) {
-                int read = data.read(buffer);
-                int read2 = read;
-                if (read == -1) {
-                    break;
-                }
-                os2.write(buffer, 0, read2);
-            }
-            os2.close();
-            success = true;
             try {
-                os2.close();
-            } catch (IOException e) {
-            }
-        } catch (IOException e2) {
-            if (Log.isLoggable(TAG, 3)) {
-                Log.d(TAG, "Failed to encode data onto the OutputStream", e2);
-            }
-            if (os != null) {
+                os = new FileOutputStream(file);
+                while (true) {
+                    int read = data.read(buffer);
+                    if (read == -1) {
+                        break;
+                    }
+                    os.write(buffer, 0, read);
+                }
+                os.close();
+                success = true;
                 try {
                     os.close();
-                } catch (IOException e3) {
+                } catch (IOException e) {
+                }
+            } catch (IOException e2) {
+                if (Log.isLoggable(TAG, 3)) {
+                    Log.d(TAG, "Failed to encode data onto the OutputStream", e2);
+                }
+                if (os != null) {
+                    try {
+                        os.close();
+                    } catch (IOException e3) {
+                    }
                 }
             }
+            this.byteArrayPool.put(buffer);
+            return success;
         } catch (Throwable th) {
             if (os != null) {
                 try {
@@ -58,7 +63,5 @@ public class StreamEncoder implements Encoder<InputStream> {
             this.byteArrayPool.put(buffer);
             throw th;
         }
-        this.byteArrayPool.put(buffer);
-        return success;
     }
 }

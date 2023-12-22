@@ -4,6 +4,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicLong;
 import kotlin.jvm.internal.LongCompanionObject;
 
+/* loaded from: classes.dex */
 public final class BackpressureHelper {
     private BackpressureHelper() {
         throw new IllegalStateException("No instances!");
@@ -19,25 +20,28 @@ public final class BackpressureHelper {
 
     public static long multiplyCap(long a, long b) {
         long u = a * b;
-        if (((a | b) >>> 31) == 0 || u / a == b) {
-            return u;
+        if (((a | b) >>> 31) != 0 && u / a != b) {
+            return LongCompanionObject.MAX_VALUE;
         }
-        return LongCompanionObject.MAX_VALUE;
+        return u;
     }
 
     public static long add(AtomicLong requested, long n) {
         long r;
+        long u;
         do {
             r = requested.get();
             if (r == LongCompanionObject.MAX_VALUE) {
                 return LongCompanionObject.MAX_VALUE;
             }
-        } while (!requested.compareAndSet(r, addCap(r, n)));
+            u = addCap(r, n);
+        } while (!requested.compareAndSet(r, u));
         return r;
     }
 
     public static long addCancel(AtomicLong requested, long n) {
         long r;
+        long u;
         do {
             r = requested.get();
             if (r == Long.MIN_VALUE) {
@@ -46,7 +50,8 @@ public final class BackpressureHelper {
             if (r == LongCompanionObject.MAX_VALUE) {
                 return LongCompanionObject.MAX_VALUE;
             }
-        } while (!requested.compareAndSet(r, addCap(r, n)));
+            u = addCap(r, n);
+        } while (!requested.compareAndSet(r, u));
         return r;
     }
 

@@ -34,18 +34,19 @@ import java.util.concurrent.TimeUnit;
 import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class Functions {
-    static final Predicate<Object> ALWAYS_FALSE = new FalsePredicate();
-    static final Predicate<Object> ALWAYS_TRUE = new TruePredicate();
+    static final Function<Object, Object> IDENTITY = new Identity();
+    public static final Runnable EMPTY_RUNNABLE = new EmptyRunnable();
     public static final Action EMPTY_ACTION = new EmptyAction();
     static final Consumer<Object> EMPTY_CONSUMER = new EmptyConsumer();
-    public static final LongConsumer EMPTY_LONG_CONSUMER = new EmptyLongConsumer();
-    public static final Runnable EMPTY_RUNNABLE = new EmptyRunnable();
     public static final Consumer<Throwable> ERROR_CONSUMER = new ErrorConsumer();
-    static final Function<Object, Object> IDENTITY = new Identity();
-    static final Comparator<Object> NATURAL_COMPARATOR = new NaturalObjectComparator();
-    static final Callable<Object> NULL_SUPPLIER = new NullCallable();
     public static final Consumer<Throwable> ON_ERROR_MISSING = new OnErrorMissingConsumer();
+    public static final LongConsumer EMPTY_LONG_CONSUMER = new EmptyLongConsumer();
+    static final Predicate<Object> ALWAYS_TRUE = new TruePredicate();
+    static final Predicate<Object> ALWAYS_FALSE = new FalsePredicate();
+    static final Callable<Object> NULL_SUPPLIER = new NullCallable();
+    static final Comparator<Object> NATURAL_COMPARATOR = new NaturalObjectComparator();
     public static final Consumer<Subscription> REQUEST_MAX = new MaxRequestSubscription();
 
     private Functions() {
@@ -93,36 +94,38 @@ public final class Functions {
     }
 
     public static <T> Function<T, T> identity() {
-        return IDENTITY;
+        return (Function<T, T>) IDENTITY;
     }
 
     public static <T> Consumer<T> emptyConsumer() {
-        return EMPTY_CONSUMER;
+        return (Consumer<T>) EMPTY_CONSUMER;
     }
 
     public static <T> Predicate<T> alwaysTrue() {
-        return ALWAYS_TRUE;
+        return (Predicate<T>) ALWAYS_TRUE;
     }
 
     public static <T> Predicate<T> alwaysFalse() {
-        return ALWAYS_FALSE;
+        return (Predicate<T>) ALWAYS_FALSE;
     }
 
     public static <T> Callable<T> nullSupplier() {
-        return NULL_SUPPLIER;
+        return (Callable<T>) NULL_SUPPLIER;
     }
 
     public static <T> Comparator<T> naturalOrder() {
-        return NATURAL_COMPARATOR;
+        return (Comparator<T>) NATURAL_COMPARATOR;
     }
 
+    /* loaded from: classes.dex */
     static final class FutureAction implements Action {
         final Future<?> future;
 
-        FutureAction(Future<?> future2) {
-            this.future = future2;
+        FutureAction(Future<?> future) {
+            this.future = future;
         }
 
+        @Override // io.reactivex.functions.Action
         public void run() throws Exception {
             this.future.get();
         }
@@ -132,17 +135,20 @@ public final class Functions {
         return new FutureAction(future);
     }
 
+    /* loaded from: classes.dex */
     static final class JustValue<T, U> implements Callable<U>, Function<T, U> {
         final U value;
 
-        JustValue(U value2) {
-            this.value = value2;
+        JustValue(U value) {
+            this.value = value;
         }
 
+        @Override // java.util.concurrent.Callable
         public U call() throws Exception {
             return this.value;
         }
 
+        @Override // io.reactivex.functions.Function
         public U apply(T t) throws Exception {
             return this.value;
         }
@@ -156,13 +162,15 @@ public final class Functions {
         return new JustValue(value);
     }
 
+    /* loaded from: classes.dex */
     static final class CastToClass<T, U> implements Function<T, U> {
         final Class<U> clazz;
 
-        CastToClass(Class<U> clazz2) {
-            this.clazz = clazz2;
+        CastToClass(Class<U> clazz) {
+            this.clazz = clazz;
         }
 
+        @Override // io.reactivex.functions.Function
         public U apply(T t) throws Exception {
             return this.clazz.cast(t);
         }
@@ -172,13 +180,15 @@ public final class Functions {
         return new CastToClass(target);
     }
 
+    /* loaded from: classes.dex */
     static final class ArrayListCapacityCallable<T> implements Callable<List<T>> {
         final int capacity;
 
-        ArrayListCapacityCallable(int capacity2) {
-            this.capacity = capacity2;
+        ArrayListCapacityCallable(int capacity) {
+            this.capacity = capacity;
         }
 
+        @Override // java.util.concurrent.Callable
         public List<T> call() throws Exception {
             return new ArrayList(this.capacity);
         }
@@ -188,13 +198,15 @@ public final class Functions {
         return new ArrayListCapacityCallable(capacity);
     }
 
+    /* loaded from: classes.dex */
     static final class EqualsPredicate<T> implements Predicate<T> {
         final T value;
 
-        EqualsPredicate(T value2) {
-            this.value = value2;
+        EqualsPredicate(T value) {
+            this.value = value;
         }
 
+        @Override // io.reactivex.functions.Predicate
         public boolean test(T t) throws Exception {
             return ObjectHelper.equals(t, this.value);
         }
@@ -204,9 +216,11 @@ public final class Functions {
         return new EqualsPredicate(value);
     }
 
+    /* loaded from: classes.dex */
     enum HashSetCallable implements Callable<Set<Object>> {
         INSTANCE;
 
+        @Override // java.util.concurrent.Callable
         public Set<Object> call() throws Exception {
             return new HashSet();
         }
@@ -216,37 +230,43 @@ public final class Functions {
         return HashSetCallable.INSTANCE;
     }
 
+    /* loaded from: classes.dex */
     static final class NotificationOnNext<T> implements Consumer<T> {
         final Consumer<? super Notification<T>> onNotification;
 
-        NotificationOnNext(Consumer<? super Notification<T>> onNotification2) {
-            this.onNotification = onNotification2;
+        NotificationOnNext(Consumer<? super Notification<T>> onNotification) {
+            this.onNotification = onNotification;
         }
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(T v) throws Exception {
             this.onNotification.accept(Notification.createOnNext(v));
         }
     }
 
+    /* loaded from: classes.dex */
     static final class NotificationOnError<T> implements Consumer<Throwable> {
         final Consumer<? super Notification<T>> onNotification;
 
-        NotificationOnError(Consumer<? super Notification<T>> onNotification2) {
-            this.onNotification = onNotification2;
+        NotificationOnError(Consumer<? super Notification<T>> onNotification) {
+            this.onNotification = onNotification;
         }
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(Throwable v) throws Exception {
             this.onNotification.accept(Notification.createOnError(v));
         }
     }
 
+    /* loaded from: classes.dex */
     static final class NotificationOnComplete<T> implements Action {
         final Consumer<? super Notification<T>> onNotification;
 
-        NotificationOnComplete(Consumer<? super Notification<T>> onNotification2) {
-            this.onNotification = onNotification2;
+        NotificationOnComplete(Consumer<? super Notification<T>> onNotification) {
+            this.onNotification = onNotification;
         }
 
+        @Override // io.reactivex.functions.Action
         public void run() throws Exception {
             this.onNotification.accept(Notification.createOnComplete());
         }
@@ -264,13 +284,15 @@ public final class Functions {
         return new NotificationOnComplete(onNotification);
     }
 
+    /* loaded from: classes.dex */
     static final class ActionConsumer<T> implements Consumer<T> {
         final Action action;
 
-        ActionConsumer(Action action2) {
-            this.action = action2;
+        ActionConsumer(Action action) {
+            this.action = action;
         }
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(T t) throws Exception {
             this.action.run();
         }
@@ -280,13 +302,15 @@ public final class Functions {
         return new ActionConsumer(action);
     }
 
+    /* loaded from: classes.dex */
     static final class ClassFilter<T, U> implements Predicate<T> {
         final Class<U> clazz;
 
-        ClassFilter(Class<U> clazz2) {
-            this.clazz = clazz2;
+        ClassFilter(Class<U> clazz) {
+            this.clazz = clazz;
         }
 
+        @Override // io.reactivex.functions.Predicate
         public boolean test(T t) throws Exception {
             return this.clazz.isInstance(t);
         }
@@ -296,13 +320,15 @@ public final class Functions {
         return new ClassFilter(clazz);
     }
 
+    /* loaded from: classes.dex */
     static final class BooleanSupplierPredicateReverse<T> implements Predicate<T> {
         final BooleanSupplier supplier;
 
-        BooleanSupplierPredicateReverse(BooleanSupplier supplier2) {
-            this.supplier = supplier2;
+        BooleanSupplierPredicateReverse(BooleanSupplier supplier) {
+            this.supplier = supplier;
         }
 
+        @Override // io.reactivex.functions.Predicate
         public boolean test(T t) throws Exception {
             return !this.supplier.getAsBoolean();
         }
@@ -312,15 +338,23 @@ public final class Functions {
         return new BooleanSupplierPredicateReverse(supplier);
     }
 
+    /* loaded from: classes.dex */
     static final class TimestampFunction<T> implements Function<T, Timed<T>> {
         final Scheduler scheduler;
         final TimeUnit unit;
 
-        TimestampFunction(TimeUnit unit2, Scheduler scheduler2) {
-            this.unit = unit2;
-            this.scheduler = scheduler2;
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.Function
+        public /* bridge */ /* synthetic */ Object apply(Object obj) throws Exception {
+            return apply((TimestampFunction<T>) obj);
         }
 
+        TimestampFunction(TimeUnit unit, Scheduler scheduler) {
+            this.unit = unit;
+            this.scheduler = scheduler;
+        }
+
+        @Override // io.reactivex.functions.Function
         public Timed<T> apply(T t) throws Exception {
             return new Timed<>(t, this.scheduler.now(this.unit), this.unit);
         }
@@ -330,15 +364,23 @@ public final class Functions {
         return new TimestampFunction(unit, scheduler);
     }
 
+    /* loaded from: classes.dex */
     static final class ToMapKeySelector<K, T> implements BiConsumer<Map<K, T>, T> {
         private final Function<? super T, ? extends K> keySelector;
 
-        ToMapKeySelector(Function<? super T, ? extends K> keySelector2) {
-            this.keySelector = keySelector2;
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.BiConsumer
+        public /* bridge */ /* synthetic */ void accept(Object obj, Object obj2) throws Exception {
+            accept((Map<K, Map<K, T>>) obj, (Map<K, T>) obj2);
+        }
+
+        ToMapKeySelector(Function<? super T, ? extends K> keySelector) {
+            this.keySelector = keySelector;
         }
 
         public void accept(Map<K, T> m, T t) throws Exception {
-            m.put(this.keySelector.apply(t), t);
+            K key = this.keySelector.apply(t);
+            m.put(key, t);
         }
     }
 
@@ -346,17 +388,26 @@ public final class Functions {
         return new ToMapKeySelector(keySelector);
     }
 
+    /* loaded from: classes.dex */
     static final class ToMapKeyValueSelector<K, V, T> implements BiConsumer<Map<K, V>, T> {
         private final Function<? super T, ? extends K> keySelector;
         private final Function<? super T, ? extends V> valueSelector;
 
-        ToMapKeyValueSelector(Function<? super T, ? extends V> valueSelector2, Function<? super T, ? extends K> keySelector2) {
-            this.valueSelector = valueSelector2;
-            this.keySelector = keySelector2;
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.BiConsumer
+        public /* bridge */ /* synthetic */ void accept(Object obj, Object obj2) throws Exception {
+            accept((Map) ((Map) obj), (Map<K, V>) obj2);
+        }
+
+        ToMapKeyValueSelector(Function<? super T, ? extends V> valueSelector, Function<? super T, ? extends K> keySelector) {
+            this.valueSelector = valueSelector;
+            this.keySelector = keySelector;
         }
 
         public void accept(Map<K, V> m, T t) throws Exception {
-            m.put(this.keySelector.apply(t), this.valueSelector.apply(t));
+            K key = this.keySelector.apply(t);
+            V value = this.valueSelector.apply(t);
+            m.put(key, value);
         }
     }
 
@@ -364,41 +415,33 @@ public final class Functions {
         return new ToMapKeyValueSelector(valueSelector, keySelector);
     }
 
+    /* loaded from: classes.dex */
     static final class ToMultimapKeyValueSelector<K, V, T> implements BiConsumer<Map<K, Collection<V>>, T> {
         private final Function<? super K, ? extends Collection<? super V>> collectionFactory;
         private final Function<? super T, ? extends K> keySelector;
         private final Function<? super T, ? extends V> valueSelector;
 
-        ToMultimapKeyValueSelector(Function<? super K, ? extends Collection<? super V>> collectionFactory2, Function<? super T, ? extends V> valueSelector2, Function<? super T, ? extends K> keySelector2) {
-            this.collectionFactory = collectionFactory2;
-            this.valueSelector = valueSelector2;
-            this.keySelector = keySelector2;
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.BiConsumer
+        public /* bridge */ /* synthetic */ void accept(Object obj, Object obj2) throws Exception {
+            accept((Map) ((Map) obj), (Map<K, Collection<V>>) obj2);
         }
 
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v3, resolved type: java.lang.Object} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v3, resolved type: java.util.Collection} */
-        /* JADX WARNING: Multi-variable type inference failed */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public void accept(java.util.Map<K, java.util.Collection<V>> r4, T r5) throws java.lang.Exception {
-            /*
-                r3 = this;
-                io.reactivex.functions.Function<? super T, ? extends K> r0 = r3.keySelector
-                java.lang.Object r0 = r0.apply(r5)
-                java.lang.Object r1 = r4.get(r0)
-                java.util.Collection r1 = (java.util.Collection) r1
-                if (r1 != 0) goto L_0x001a
-                io.reactivex.functions.Function<? super K, ? extends java.util.Collection<? super V>> r2 = r3.collectionFactory
-                java.lang.Object r2 = r2.apply(r0)
-                r1 = r2
-                java.util.Collection r1 = (java.util.Collection) r1
-                r4.put(r0, r1)
-            L_0x001a:
-                io.reactivex.functions.Function<? super T, ? extends V> r2 = r3.valueSelector
-                java.lang.Object r2 = r2.apply(r5)
-                r1.add(r2)
-                return
-            */
-            throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.functions.Functions.ToMultimapKeyValueSelector.accept(java.util.Map, java.lang.Object):void");
+        ToMultimapKeyValueSelector(Function<? super K, ? extends Collection<? super V>> collectionFactory, Function<? super T, ? extends V> valueSelector, Function<? super T, ? extends K> keySelector) {
+            this.collectionFactory = collectionFactory;
+            this.valueSelector = valueSelector;
+            this.keySelector = keySelector;
+        }
+
+        public void accept(Map<K, Collection<V>> m, T t) throws Exception {
+            K key = this.keySelector.apply(t);
+            Collection<? super V> collection = m.get(key);
+            if (collection == null) {
+                collection = this.collectionFactory.apply(key);
+                m.put(key, collection);
+            }
+            V value = this.valueSelector.apply(t);
+            collection.add(value);
         }
     }
 
@@ -406,9 +449,11 @@ public final class Functions {
         return new ToMultimapKeyValueSelector(collectionFactory, valueSelector, keySelector);
     }
 
+    /* loaded from: classes.dex */
     enum NaturalComparator implements Comparator<Object> {
         INSTANCE;
 
+        @Override // java.util.Comparator
         public int compare(Object o1, Object o2) {
             return ((Comparable) o1).compareTo(o2);
         }
@@ -418,11 +463,17 @@ public final class Functions {
         return NaturalComparator.INSTANCE;
     }
 
+    /* loaded from: classes.dex */
     static final class ListSorter<T> implements Function<List<T>, List<T>> {
         final Comparator<? super T> comparator;
 
-        ListSorter(Comparator<? super T> comparator2) {
-            this.comparator = comparator2;
+        @Override // io.reactivex.functions.Function
+        public /* bridge */ /* synthetic */ Object apply(Object obj) throws Exception {
+            return apply((List) ((List) obj));
+        }
+
+        ListSorter(Comparator<? super T> comparator) {
+            this.comparator = comparator;
         }
 
         public List<T> apply(List<T> v) {
@@ -435,130 +486,171 @@ public final class Functions {
         return new ListSorter(comparator);
     }
 
+    /* loaded from: classes.dex */
     static final class Array2Func<T1, T2, R> implements Function<Object[], R> {
-        final BiFunction<? super T1, ? super T2, ? extends R> f;
 
-        Array2Func(BiFunction<? super T1, ? super T2, ? extends R> f2) {
-            this.f = f2;
+        /* renamed from: f */
+        final BiFunction<? super T1, ? super T2, ? extends R> f256f;
+
+        Array2Func(BiFunction<? super T1, ? super T2, ? extends R> f) {
+            this.f256f = f;
         }
 
+        @Override // io.reactivex.functions.Function
         public R apply(Object[] a) throws Exception {
-            if (a.length == 2) {
-                return this.f.apply(a[0], a[1]);
+            if (a.length != 2) {
+                throw new IllegalArgumentException("Array of size 2 expected but got " + a.length);
             }
-            throw new IllegalArgumentException("Array of size 2 expected but got " + a.length);
+            return this.f256f.apply(a[0], a[1]);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class Array3Func<T1, T2, T3, R> implements Function<Object[], R> {
-        final Function3<T1, T2, T3, R> f;
 
-        Array3Func(Function3<T1, T2, T3, R> f2) {
-            this.f = f2;
+        /* renamed from: f */
+        final Function3<T1, T2, T3, R> f257f;
+
+        Array3Func(Function3<T1, T2, T3, R> f) {
+            this.f257f = f;
         }
 
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.Function
         public R apply(Object[] a) throws Exception {
-            if (a.length == 3) {
-                return this.f.apply(a[0], a[1], a[2]);
+            if (a.length != 3) {
+                throw new IllegalArgumentException("Array of size 3 expected but got " + a.length);
             }
-            throw new IllegalArgumentException("Array of size 3 expected but got " + a.length);
+            return (R) this.f257f.apply(a[0], a[1], a[2]);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class Array4Func<T1, T2, T3, T4, R> implements Function<Object[], R> {
-        final Function4<T1, T2, T3, T4, R> f;
 
-        Array4Func(Function4<T1, T2, T3, T4, R> f2) {
-            this.f = f2;
+        /* renamed from: f */
+        final Function4<T1, T2, T3, T4, R> f258f;
+
+        Array4Func(Function4<T1, T2, T3, T4, R> f) {
+            this.f258f = f;
         }
 
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.Function
         public R apply(Object[] a) throws Exception {
-            if (a.length == 4) {
-                return this.f.apply(a[0], a[1], a[2], a[3]);
+            if (a.length != 4) {
+                throw new IllegalArgumentException("Array of size 4 expected but got " + a.length);
             }
-            throw new IllegalArgumentException("Array of size 4 expected but got " + a.length);
+            return (R) this.f258f.apply(a[0], a[1], a[2], a[3]);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class Array5Func<T1, T2, T3, T4, T5, R> implements Function<Object[], R> {
-        private final Function5<T1, T2, T3, T4, T5, R> f;
 
-        Array5Func(Function5<T1, T2, T3, T4, T5, R> f2) {
-            this.f = f2;
+        /* renamed from: f */
+        private final Function5<T1, T2, T3, T4, T5, R> f259f;
+
+        Array5Func(Function5<T1, T2, T3, T4, T5, R> f) {
+            this.f259f = f;
         }
 
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.Function
         public R apply(Object[] a) throws Exception {
-            if (a.length == 5) {
-                return this.f.apply(a[0], a[1], a[2], a[3], a[4]);
+            if (a.length != 5) {
+                throw new IllegalArgumentException("Array of size 5 expected but got " + a.length);
             }
-            throw new IllegalArgumentException("Array of size 5 expected but got " + a.length);
+            return (R) this.f259f.apply(a[0], a[1], a[2], a[3], a[4]);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class Array6Func<T1, T2, T3, T4, T5, T6, R> implements Function<Object[], R> {
-        final Function6<T1, T2, T3, T4, T5, T6, R> f;
 
-        Array6Func(Function6<T1, T2, T3, T4, T5, T6, R> f2) {
-            this.f = f2;
+        /* renamed from: f */
+        final Function6<T1, T2, T3, T4, T5, T6, R> f260f;
+
+        Array6Func(Function6<T1, T2, T3, T4, T5, T6, R> f) {
+            this.f260f = f;
         }
 
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.Function
         public R apply(Object[] a) throws Exception {
-            if (a.length == 6) {
-                return this.f.apply(a[0], a[1], a[2], a[3], a[4], a[5]);
+            if (a.length != 6) {
+                throw new IllegalArgumentException("Array of size 6 expected but got " + a.length);
             }
-            throw new IllegalArgumentException("Array of size 6 expected but got " + a.length);
+            return (R) this.f260f.apply(a[0], a[1], a[2], a[3], a[4], a[5]);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class Array7Func<T1, T2, T3, T4, T5, T6, T7, R> implements Function<Object[], R> {
-        final Function7<T1, T2, T3, T4, T5, T6, T7, R> f;
 
-        Array7Func(Function7<T1, T2, T3, T4, T5, T6, T7, R> f2) {
-            this.f = f2;
+        /* renamed from: f */
+        final Function7<T1, T2, T3, T4, T5, T6, T7, R> f261f;
+
+        Array7Func(Function7<T1, T2, T3, T4, T5, T6, T7, R> f) {
+            this.f261f = f;
         }
 
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.Function
         public R apply(Object[] a) throws Exception {
-            if (a.length == 7) {
-                return this.f.apply(a[0], a[1], a[2], a[3], a[4], a[5], a[6]);
+            if (a.length != 7) {
+                throw new IllegalArgumentException("Array of size 7 expected but got " + a.length);
             }
-            throw new IllegalArgumentException("Array of size 7 expected but got " + a.length);
+            return (R) this.f261f.apply(a[0], a[1], a[2], a[3], a[4], a[5], a[6]);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class Array8Func<T1, T2, T3, T4, T5, T6, T7, T8, R> implements Function<Object[], R> {
-        final Function8<T1, T2, T3, T4, T5, T6, T7, T8, R> f;
 
-        Array8Func(Function8<T1, T2, T3, T4, T5, T6, T7, T8, R> f2) {
-            this.f = f2;
+        /* renamed from: f */
+        final Function8<T1, T2, T3, T4, T5, T6, T7, T8, R> f262f;
+
+        Array8Func(Function8<T1, T2, T3, T4, T5, T6, T7, T8, R> f) {
+            this.f262f = f;
         }
 
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.Function
         public R apply(Object[] a) throws Exception {
-            if (a.length == 8) {
-                return this.f.apply(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7]);
+            if (a.length != 8) {
+                throw new IllegalArgumentException("Array of size 8 expected but got " + a.length);
             }
-            throw new IllegalArgumentException("Array of size 8 expected but got " + a.length);
+            return (R) this.f262f.apply(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7]);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class Array9Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> implements Function<Object[], R> {
-        final Function9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> f;
 
-        Array9Func(Function9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> f2) {
-            this.f = f2;
+        /* renamed from: f */
+        final Function9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> f263f;
+
+        Array9Func(Function9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> f) {
+            this.f263f = f;
         }
 
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.Function
         public R apply(Object[] a) throws Exception {
-            if (a.length == 9) {
-                return this.f.apply(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8]);
+            if (a.length != 9) {
+                throw new IllegalArgumentException("Array of size 9 expected but got " + a.length);
             }
-            throw new IllegalArgumentException("Array of size 9 expected but got " + a.length);
+            return (R) this.f263f.apply(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8]);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class Identity implements Function<Object, Object> {
         Identity() {
         }
 
+        @Override // io.reactivex.functions.Function
         public Object apply(Object v) {
             return v;
         }
@@ -568,10 +660,12 @@ public final class Functions {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class EmptyRunnable implements Runnable {
         EmptyRunnable() {
         }
 
+        @Override // java.lang.Runnable
         public void run() {
         }
 
@@ -580,10 +674,12 @@ public final class Functions {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class EmptyAction implements Action {
         EmptyAction() {
         }
 
+        @Override // io.reactivex.functions.Action
         public void run() {
         }
 
@@ -592,10 +688,12 @@ public final class Functions {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class EmptyConsumer implements Consumer<Object> {
         EmptyConsumer() {
         }
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(Object v) {
         }
 
@@ -604,72 +702,88 @@ public final class Functions {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ErrorConsumer implements Consumer<Throwable> {
         ErrorConsumer() {
         }
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(Throwable error) {
             RxJavaPlugins.onError(error);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class OnErrorMissingConsumer implements Consumer<Throwable> {
         OnErrorMissingConsumer() {
         }
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(Throwable error) {
             RxJavaPlugins.onError(new OnErrorNotImplementedException(error));
         }
     }
 
+    /* loaded from: classes.dex */
     static final class EmptyLongConsumer implements LongConsumer {
         EmptyLongConsumer() {
         }
 
+        @Override // io.reactivex.functions.LongConsumer
         public void accept(long v) {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class TruePredicate implements Predicate<Object> {
         TruePredicate() {
         }
 
+        @Override // io.reactivex.functions.Predicate
         public boolean test(Object o) {
             return true;
         }
     }
 
+    /* loaded from: classes.dex */
     static final class FalsePredicate implements Predicate<Object> {
         FalsePredicate() {
         }
 
+        @Override // io.reactivex.functions.Predicate
         public boolean test(Object o) {
             return false;
         }
     }
 
+    /* loaded from: classes.dex */
     static final class NullCallable implements Callable<Object> {
         NullCallable() {
         }
 
+        @Override // java.util.concurrent.Callable
         public Object call() {
             return null;
         }
     }
 
+    /* loaded from: classes.dex */
     static final class NaturalObjectComparator implements Comparator<Object> {
         NaturalObjectComparator() {
         }
 
+        @Override // java.util.Comparator
         public int compare(Object a, Object b) {
             return ((Comparable) a).compareTo(b);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class MaxRequestSubscription implements Consumer<Subscription> {
         MaxRequestSubscription() {
         }
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(Subscription t) throws Exception {
             t.request(LongCompanionObject.MAX_VALUE);
         }
@@ -679,15 +793,17 @@ public final class Functions {
         return new BoundedConsumer(bufferSize);
     }
 
+    /* loaded from: classes.dex */
     public static class BoundedConsumer implements Consumer<Subscription> {
         final int bufferSize;
 
-        BoundedConsumer(int bufferSize2) {
-            this.bufferSize = bufferSize2;
+        BoundedConsumer(int bufferSize) {
+            this.bufferSize = bufferSize;
         }
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(Subscription s) throws Exception {
-            s.request((long) this.bufferSize);
+            s.request(this.bufferSize);
         }
     }
 }

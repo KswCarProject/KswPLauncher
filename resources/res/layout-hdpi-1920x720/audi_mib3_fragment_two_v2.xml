@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:id="@+id/fragmentTwo_ll" android:tag="layout-hdpi-1920x720/audi_mib3_fragment_two_v2_0" android:paddingLeft="60dp" android:paddingRight="60dp" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+        <RelativeLayout android:gravity="center" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginBottom="20dp" android:layout_weight="1">
+            <com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView android:id="@+id/dvr_itemview" android:background="@drawable/audi_mib3_ripple_dvr" android:nextFocusLeft="@+id/set_itemview" android:nextFocusRight="@+id/dashboard_itemview" android:nextFocusUp="@+id/set_itemview" android:nextFocusDown="@+id/dashboard_itemview" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/audi_mib3_anim_dvr" android:layout_centerHorizontal="true"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:paddingLeft="20dp" android:paddingRight="20dp" android:focusable="false" android:layout_width="match_parent" android:layout_height="50dp" android:layout_alignLeft="@+id/dvr_itemview" android:layout_alignRight="@+id/dvr_itemview" android:layout_alignParentBottom="true">
+                <ImageView android:id="@+id/dvr_iv" android:focusable="false" android:layout_width="wrap_content" android:layout_height="match_parent" android:src="@drawable/audi_mib3_main_icon_dvr" android:scaleType="centerInside"/>
+                <TextView android:id="@+id/dvr_tv" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/function_text8" android:singleLine="true" style="@style/audi_mib3_item_txt_style"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout android:gravity="center" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginLeft="33dp" android:layout_marginBottom="20dp" android:layout_weight="1">
+            <com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView android:id="@+id/dashboard_itemview" android:background="@drawable/audi_mib3_ripple_dashboard" android:nextFocusLeft="@+id/dvr_itemview" android:nextFocusRight="@+id/file_itemview" android:nextFocusUp="@+id/dvr_itemview" android:nextFocusDown="@+id/file_itemview" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/audi_mib3_anim_dashboard" android:layout_centerHorizontal="true"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:paddingLeft="20dp" android:paddingRight="20dp" android:focusable="false" android:layout_width="match_parent" android:layout_height="50dp" android:layout_alignLeft="@+id/dashboard_itemview" android:layout_alignRight="@+id/dashboard_itemview" android:layout_alignParentBottom="true">
+                <ImageView android:id="@+id/dashboard_iv" android:focusable="false" android:layout_width="wrap_content" android:layout_height="match_parent" android:src="@drawable/audi_mib3_main_icon_dashboard" android:scaleType="centerInside"/>
+                <TextView android:id="@+id/dashboard_tv" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/ksw_id7_dashboard_lable" android:singleLine="true" style="@style/audi_mib3_item_txt_style"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout android:gravity="center" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginLeft="33dp" android:layout_marginBottom="20dp" android:layout_weight="1">
+            <com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView android:id="@+id/file_itemview" android:background="@drawable/audi_mib3_ripple_file" android:nextFocusLeft="@+id/dashboard_itemview" android:nextFocusRight="@+id/browser_itemview" android:nextFocusUp="@+id/dashboard_itemview" android:nextFocusDown="@+id/browser_itemview" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/audi_mib3_anim_file" android:layout_centerHorizontal="true"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:paddingLeft="20dp" android:paddingRight="20dp" android:focusable="false" android:layout_width="match_parent" android:layout_height="50dp" android:layout_alignLeft="@+id/file_itemview" android:layout_alignRight="@+id/file_itemview" android:layout_alignParentBottom="true">
+                <ImageView android:id="@+id/file_iv" android:focusable="false" android:layout_width="wrap_content" android:layout_height="match_parent" android:src="@drawable/audi_mib3_main_icon_file" android:scaleType="centerInside"/>
+                <TextView android:id="@+id/file_tv" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/id6_filemanager" android:singleLine="true" style="@style/audi_mib3_item_txt_style"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout android:gravity="center" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginLeft="33dp" android:layout_marginBottom="20dp" android:layout_weight="1">
+            <com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView android:id="@+id/browser_itemview" android:background="@drawable/audi_mib3_ripple_browser" android:nextFocusLeft="@+id/file_itemview" android:nextFocusRight="@+id/app_itemview" android:nextFocusUp="@+id/file_itemview" android:nextFocusDown="@+id/app_itemview" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/audi_mib3_anim_browser" android:layout_centerHorizontal="true"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:paddingLeft="20dp" android:paddingRight="20dp" android:focusable="false" android:layout_width="match_parent" android:layout_height="50dp" android:layout_alignLeft="@+id/browser_itemview" android:layout_alignRight="@+id/browser_itemview" android:layout_alignParentBottom="true">
+                <ImageView android:id="@+id/browser_iv" android:focusable="false" android:layout_width="wrap_content" android:layout_height="match_parent" android:src="@drawable/audi_mib3_main_icon_browser" android:scaleType="centerInside"/>
+                <TextView android:id="@+id/browser_tv" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/id6_browser" android:singleLine="true" style="@style/audi_mib3_item_txt_style"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+        <RelativeLayout android:gravity="center" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginBottom="20dp" android:layout_weight="1">
+            <com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView android:id="@+id/app_itemview" android:background="@drawable/audi_mib3_ripple_apps" android:nextFocusLeft="@+id/browser_itemview" android:nextFocusRight="@+id/app_itemview" android:nextFocusUp="@+id/browser_itemview" android:nextFocusDown="@+id/app_itemview" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/audi_mib3_anim_app" android:layout_centerHorizontal="true"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:paddingLeft="20dp" android:paddingRight="20dp" android:focusable="false" android:layout_width="match_parent" android:layout_height="50dp" android:layout_alignLeft="@+id/app_itemview" android:layout_alignRight="@+id/app_itemview" android:layout_alignParentBottom="true">
+                <ImageView android:id="@+id/app_iv" android:focusable="false" android:layout_width="wrap_content" android:layout_height="match_parent" android:src="@drawable/audi_mib3_main_icon_app" android:scaleType="centerInside"/>
+                <TextView android:id="@+id/app_tv" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/ksw_id7_apps" style="@style/audi_mib3_item_txt_style"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <View android:focusable="false" android:layout_width="0dp" android:layout_height="match_parent" android:layout_marginLeft="99dp" android:layout_weight="3"/>
+    </LinearLayout>
+</LinearLayout>

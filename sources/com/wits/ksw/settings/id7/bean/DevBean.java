@@ -2,6 +2,7 @@ package com.wits.ksw.settings.id7.bean;
 
 import android.graphics.drawable.Drawable;
 
+/* loaded from: classes4.dex */
 public class DevBean {
     private Drawable appicon;
     private boolean isCheck;
@@ -12,8 +13,8 @@ public class DevBean {
         return this.appicon;
     }
 
-    public void setAppicon(Drawable appicon2) {
-        this.appicon = appicon2;
+    public void setAppicon(Drawable appicon) {
+        this.appicon = appicon;
     }
 
     public boolean isCheck() {
@@ -28,15 +29,15 @@ public class DevBean {
         return this.name;
     }
 
-    public void setName(String name2) {
-        this.name = name2;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPackageName() {
         return this.packageName;
     }
 
-    public void setPackageName(String packageName2) {
-        this.packageName = packageName2;
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 }

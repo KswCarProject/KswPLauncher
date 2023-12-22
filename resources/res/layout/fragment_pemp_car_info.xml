@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/ll_container" android:tag="layout/fragment_pemp_car_info_0" style="@style/id8_main_card_container">
+    <ImageView android:background="@drawable/pemp_id8_main_icon_car" style="@style/id8_pemp_main_big_card_size"/>
+    <ImageView android:id="@+id/iv_mask" android:tag="binding_1" style="@style/id8_pemp_main_big_card_size"/>
+    <LinearLayout style="@style/id8_pemp_main_big_card_container">
+        <TextView android:text="@string/ksw_id8_car_info" style="@style/id8_pemp_main_card_title"/>
+        <ImageView android:background="@drawable/id8_main_icon_navi_line" style="@style/id8_pemp_main_card_divider"/>
+        <TextView android:id="@+id/tv_desc" android:text="@string/ksw_id8_switch_to_carinfo_window" style="@style/id8_pemp_main_card_desc"/>
+    </LinearLayout>
+</RelativeLayout>

@@ -2,6 +2,7 @@ package com.wits.pms.statuscontrol;
 
 import com.google.gson.Gson;
 
+/* loaded from: classes.dex */
 public class WitsStatus {
     public String jsonArg;
     public int type;
@@ -10,44 +11,49 @@ public class WitsStatus {
         return this.type;
     }
 
-    public void setType(int type2) {
-        this.type = type2;
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getJsonArg() {
         return this.jsonArg;
     }
 
-    public void setJsonArg(String jsonArg2) {
-        this.jsonArg = jsonArg2;
+    public void setJsonArg(String jsonArg) {
+        this.jsonArg = jsonArg;
     }
 
-    public static WitsStatus getWitsStatusFormJson(String jsonArg2) {
-        return (WitsStatus) new Gson().fromJson(jsonArg2, WitsStatus.class);
+    public static WitsStatus getWitsStatusFormJson(String jsonArg) {
+        return (WitsStatus) new Gson().fromJson(jsonArg, (Class<Object>) WitsStatus.class);
     }
 
-    public WitsStatus(int type2, String jsonArg2) {
-        this.type = type2;
-        this.jsonArg = jsonArg2;
+    public WitsStatus(int type, String jsonArg) {
+        this.type = type;
+        this.jsonArg = jsonArg;
     }
 
     public static void sendOutBtStatus(BtPhoneStatus btPhoneStatus) {
-        PowerManagerApp.sendStatus(new WitsStatus(3, new Gson().toJson((Object) btPhoneStatus)));
+        WitsStatus witsStatus = new WitsStatus(3, new Gson().toJson(btPhoneStatus));
+        PowerManagerApp.sendStatus(witsStatus);
     }
 
     public static void sendOutMusicStatus(MusicStatus musicStatus) {
-        PowerManagerApp.sendStatus(new WitsStatus(21, new Gson().toJson((Object) musicStatus)));
+        WitsStatus witsStatus = new WitsStatus(21, new Gson().toJson(musicStatus));
+        PowerManagerApp.sendStatus(witsStatus);
     }
 
     public static void sendOutVideoStatus(VideoStatus videoStatus) {
-        PowerManagerApp.sendStatus(new WitsStatus(22, new Gson().toJson((Object) videoStatus)));
+        WitsStatus witsStatus = new WitsStatus(22, new Gson().toJson(videoStatus));
+        PowerManagerApp.sendStatus(witsStatus);
     }
 
     public static void sendOutPictureStatus(PictureStatus pictureStatus) {
-        PowerManagerApp.sendStatus(new WitsStatus(23, new Gson().toJson((Object) pictureStatus)));
+        WitsStatus witsStatus = new WitsStatus(23, new Gson().toJson(pictureStatus));
+        PowerManagerApp.sendStatus(witsStatus);
     }
 
     public static void sendOutSystemStatus(SystemStatus systemStatus) {
-        PowerManagerApp.sendStatus(new WitsStatus(1, new Gson().toJson((Object) systemStatus)));
+        WitsStatus witsStatus = new WitsStatus(1, new Gson().toJson(systemStatus));
+        PowerManagerApp.sendStatus(witsStatus);
     }
 }

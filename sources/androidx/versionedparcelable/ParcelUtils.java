@@ -4,6 +4,7 @@ import android.os.Parcelable;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/* loaded from: classes.dex */
 public class ParcelUtils {
     private ParcelUtils() {
     }
@@ -13,19 +14,20 @@ public class ParcelUtils {
     }
 
     public static <T extends VersionedParcelable> T fromParcelable(Parcelable p) {
-        if (p instanceof ParcelImpl) {
-            return ((ParcelImpl) p).getVersionedParcel();
+        if (!(p instanceof ParcelImpl)) {
+            throw new IllegalArgumentException("Invalid parcel");
         }
-        throw new IllegalArgumentException("Invalid parcel");
+        return (T) ((ParcelImpl) p).getVersionedParcel();
     }
 
     public static void toOutputStream(VersionedParcelable obj, OutputStream output) {
-        VersionedParcelStream stream = new VersionedParcelStream((InputStream) null, output);
+        VersionedParcelStream stream = new VersionedParcelStream(null, output);
         stream.writeVersionedParcelable(obj);
         stream.closeField();
     }
 
     public static <T extends VersionedParcelable> T fromInputStream(InputStream input) {
-        return new VersionedParcelStream(input, (OutputStream) null).readVersionedParcelable();
+        VersionedParcelStream stream = new VersionedParcelStream(input, null);
+        return (T) stream.readVersionedParcelable();
     }
 }

@@ -3,6 +3,7 @@ package com.bumptech.glide.load.engine;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.util.Preconditions;
 
+/* loaded from: classes.dex */
 class EngineResource<Z> implements Resource<Z> {
     private int acquired;
     private final boolean isCacheable;
@@ -12,79 +13,77 @@ class EngineResource<Z> implements Resource<Z> {
     private ResourceListener listener;
     private final Resource<Z> resource;
 
+    /* loaded from: classes.dex */
     interface ResourceListener {
         void onResourceReleased(Key key, EngineResource<?> engineResource);
     }
 
-    EngineResource(Resource<Z> toWrap, boolean isCacheable2, boolean isRecyclable2) {
+    EngineResource(Resource<Z> toWrap, boolean isCacheable, boolean isRecyclable) {
         this.resource = (Resource) Preconditions.checkNotNull(toWrap);
-        this.isCacheable = isCacheable2;
-        this.isRecyclable = isRecyclable2;
+        this.isCacheable = isCacheable;
+        this.isRecyclable = isRecyclable;
     }
 
-    /* access modifiers changed from: package-private */
-    public synchronized void setResourceListener(Key key2, ResourceListener listener2) {
-        this.key = key2;
-        this.listener = listener2;
+    synchronized void setResourceListener(Key key, ResourceListener listener) {
+        this.key = key;
+        this.listener = listener;
     }
 
-    /* access modifiers changed from: package-private */
-    public Resource<Z> getResource() {
+    Resource<Z> getResource() {
         return this.resource;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isCacheable() {
+    boolean isCacheable() {
         return this.isCacheable;
     }
 
+    @Override // com.bumptech.glide.load.engine.Resource
     public Class<Z> getResourceClass() {
         return this.resource.getResourceClass();
     }
 
+    @Override // com.bumptech.glide.load.engine.Resource
     public Z get() {
         return this.resource.get();
     }
 
+    @Override // com.bumptech.glide.load.engine.Resource
     public int getSize() {
         return this.resource.getSize();
     }
 
+    @Override // com.bumptech.glide.load.engine.Resource
     public synchronized void recycle() {
         if (this.acquired > 0) {
             throw new IllegalStateException("Cannot recycle a resource while it is still acquired");
-        } else if (!this.isRecycled) {
-            this.isRecycled = true;
-            if (this.isRecyclable) {
-                this.resource.recycle();
-            }
-        } else {
+        }
+        if (this.isRecycled) {
             throw new IllegalStateException("Cannot recycle a resource that has already been recycled");
         }
-    }
-
-    /* access modifiers changed from: package-private */
-    public synchronized void acquire() {
-        if (!this.isRecycled) {
-            this.acquired++;
-        } else {
-            throw new IllegalStateException("Cannot acquire a recycled resource");
+        this.isRecycled = true;
+        if (this.isRecyclable) {
+            this.resource.recycle();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void release() {
+    synchronized void acquire() {
+        if (this.isRecycled) {
+            throw new IllegalStateException("Cannot acquire a recycled resource");
+        }
+        this.acquired++;
+    }
+
+    void release() {
         synchronized (this.listener) {
             synchronized (this) {
                 int i = this.acquired;
-                if (i > 0) {
-                    int i2 = i - 1;
-                    this.acquired = i2;
-                    if (i2 == 0) {
-                        this.listener.onResourceReleased(this.key, this);
-                    }
-                } else {
+                if (i <= 0) {
                     throw new IllegalStateException("Cannot release a recycled or not yet acquired resource");
+                }
+                int i2 = i - 1;
+                this.acquired = i2;
+                if (i2 == 0) {
+                    this.listener.onResourceReleased(this.key, this);
                 }
             }
         }

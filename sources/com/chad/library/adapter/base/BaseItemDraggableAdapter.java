@@ -1,45 +1,61 @@
 package com.chad.library.adapter.base;
 
 import android.graphics.Canvas;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.support.p001v4.view.MotionEventCompat;
+import android.support.p004v7.widget.RecyclerView;
+import android.support.p004v7.widget.helper.ItemTouchHelper;
 import android.view.MotionEvent;
 import android.view.View;
-import com.chad.library.R;
+import com.chad.library.C0561R;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.listener.OnItemDragListener;
 import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 import java.util.Collections;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public abstract class BaseItemDraggableAdapter<T, K extends BaseViewHolder> extends BaseQuickAdapter<T, K> {
     private static final String ERROR_NOT_SAME_ITEMTOUCHHELPER = "Item drag and item swipe should pass the same ItemTouchHelper";
     private static final int NO_TOGGLE_VIEW = 0;
-    protected boolean itemDragEnabled = false;
-    protected boolean itemSwipeEnabled = false;
-    protected boolean mDragOnLongPress = true;
+    protected boolean itemDragEnabled;
+    protected boolean itemSwipeEnabled;
+    protected boolean mDragOnLongPress;
     protected ItemTouchHelper mItemTouchHelper;
     protected OnItemDragListener mOnItemDragListener;
     protected OnItemSwipeListener mOnItemSwipeListener;
     protected View.OnLongClickListener mOnToggleViewLongClickListener;
     protected View.OnTouchListener mOnToggleViewTouchListener;
-    protected int mToggleViewId = 0;
+    protected int mToggleViewId;
+
+    /* JADX WARN: Multi-variable type inference failed */
+    @Override // com.chad.library.adapter.base.BaseQuickAdapter, android.support.p004v7.widget.RecyclerView.Adapter
+    public /* bridge */ /* synthetic */ void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
+        onBindViewHolder((BaseItemDraggableAdapter<T, K>) ((BaseViewHolder) viewHolder), i);
+    }
 
     public BaseItemDraggableAdapter(List<T> data) {
         super(data);
+        this.mToggleViewId = 0;
+        this.itemDragEnabled = false;
+        this.itemSwipeEnabled = false;
+        this.mDragOnLongPress = true;
     }
 
     public BaseItemDraggableAdapter(int layoutResId, List<T> data) {
         super(layoutResId, data);
+        this.mToggleViewId = 0;
+        this.itemDragEnabled = false;
+        this.itemSwipeEnabled = false;
+        this.mDragOnLongPress = true;
     }
 
+    @Override // com.chad.library.adapter.base.BaseQuickAdapter
     public void onBindViewHolder(K holder, int position) {
         View toggleView;
-        super.onBindViewHolder(holder, position);
+        super.onBindViewHolder((BaseItemDraggableAdapter<T, K>) holder, position);
         int viewType = holder.getItemViewType();
         if (this.mItemTouchHelper != null && this.itemDragEnabled && viewType != 546 && viewType != 273 && viewType != 1365 && viewType != 819 && hasToggleView() && (toggleView = holder.getView(this.mToggleViewId)) != null) {
-            toggleView.setTag(R.id.BaseQuickAdapter_viewholder_support, holder);
+            toggleView.setTag(C0561R.C0563id.BaseQuickAdapter_viewholder_support, holder);
             if (this.mDragOnLongPress) {
                 toggleView.setOnLongClickListener(this.mOnToggleViewLongClickListener);
             } else {
@@ -60,27 +76,29 @@ public abstract class BaseItemDraggableAdapter<T, K extends BaseViewHolder> exte
         this.mDragOnLongPress = longPress;
         if (longPress) {
             this.mOnToggleViewTouchListener = null;
-            this.mOnToggleViewLongClickListener = new View.OnLongClickListener() {
+            this.mOnToggleViewLongClickListener = new View.OnLongClickListener() { // from class: com.chad.library.adapter.base.BaseItemDraggableAdapter.1
+                @Override // android.view.View.OnLongClickListener
                 public boolean onLongClick(View v) {
-                    if (BaseItemDraggableAdapter.this.mItemTouchHelper == null || !BaseItemDraggableAdapter.this.itemDragEnabled) {
+                    if (BaseItemDraggableAdapter.this.mItemTouchHelper != null && BaseItemDraggableAdapter.this.itemDragEnabled) {
+                        BaseItemDraggableAdapter.this.mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(C0561R.C0563id.BaseQuickAdapter_viewholder_support));
                         return true;
                     }
-                    BaseItemDraggableAdapter.this.mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(R.id.BaseQuickAdapter_viewholder_support));
                     return true;
                 }
             };
             return;
         }
-        this.mOnToggleViewTouchListener = new View.OnTouchListener() {
+        this.mOnToggleViewTouchListener = new View.OnTouchListener() { // from class: com.chad.library.adapter.base.BaseItemDraggableAdapter.2
+            @Override // android.view.View.OnTouchListener
             public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEventCompat.getActionMasked(event) != 0 || BaseItemDraggableAdapter.this.mDragOnLongPress) {
-                    return false;
-                }
-                if (BaseItemDraggableAdapter.this.mItemTouchHelper == null || !BaseItemDraggableAdapter.this.itemDragEnabled) {
+                if (MotionEventCompat.getActionMasked(event) == 0 && !BaseItemDraggableAdapter.this.mDragOnLongPress) {
+                    if (BaseItemDraggableAdapter.this.mItemTouchHelper != null && BaseItemDraggableAdapter.this.itemDragEnabled) {
+                        BaseItemDraggableAdapter.this.mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(C0561R.C0563id.BaseQuickAdapter_viewholder_support));
+                        return true;
+                    }
                     return true;
                 }
-                BaseItemDraggableAdapter.this.mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(R.id.BaseQuickAdapter_viewholder_support));
-                return true;
+                return false;
             }
         };
         this.mOnToggleViewLongClickListener = null;
@@ -150,7 +168,8 @@ public abstract class BaseItemDraggableAdapter<T, K extends BaseViewHolder> exte
                     Collections.swap(this.mData, i2, i2 - 1);
                 }
             }
-            notifyItemMoved(source.getAdapterPosition(), target.getAdapterPosition());
+            int i3 = source.getAdapterPosition();
+            notifyItemMoved(i3, target.getAdapterPosition());
         }
         OnItemDragListener onItemDragListener = this.mOnItemDragListener;
         if (onItemDragListener != null && this.itemDragEnabled) {

@@ -5,22 +5,25 @@ import android.net.Uri;
 import java.io.IOException;
 import java.io.InputStream;
 
+/* loaded from: classes.dex */
 public interface Downloader {
     Response load(Uri uri, int i) throws IOException;
 
     void shutdown();
 
+    /* loaded from: classes.dex */
     public static class ResponseException extends IOException {
         final boolean localCacheOnly;
         final int responseCode;
 
-        public ResponseException(String message, int networkPolicy, int responseCode2) {
+        public ResponseException(String message, int networkPolicy, int responseCode) {
             super(message);
             this.localCacheOnly = NetworkPolicy.isOfflineOnly(networkPolicy);
-            this.responseCode = responseCode2;
+            this.responseCode = responseCode;
         }
     }
 
+    /* loaded from: classes.dex */
     public static class Response {
         final Bitmap bitmap;
         final boolean cached;
@@ -28,36 +31,34 @@ public interface Downloader {
         final InputStream stream;
 
         @Deprecated
-        public Response(Bitmap bitmap2, boolean loadedFromCache) {
-            if (bitmap2 != null) {
-                this.stream = null;
-                this.bitmap = bitmap2;
-                this.cached = loadedFromCache;
-                this.contentLength = -1;
-                return;
+        public Response(Bitmap bitmap, boolean loadedFromCache) {
+            if (bitmap == null) {
+                throw new IllegalArgumentException("Bitmap may not be null.");
             }
-            throw new IllegalArgumentException("Bitmap may not be null.");
+            this.stream = null;
+            this.bitmap = bitmap;
+            this.cached = loadedFromCache;
+            this.contentLength = -1L;
         }
 
         @Deprecated
-        public Response(InputStream stream2, boolean loadedFromCache) {
-            this(stream2, loadedFromCache, -1);
+        public Response(InputStream stream, boolean loadedFromCache) {
+            this(stream, loadedFromCache, -1L);
         }
 
         @Deprecated
-        public Response(Bitmap bitmap2, boolean loadedFromCache, long contentLength2) {
-            this(bitmap2, loadedFromCache);
+        public Response(Bitmap bitmap, boolean loadedFromCache, long contentLength) {
+            this(bitmap, loadedFromCache);
         }
 
-        public Response(InputStream stream2, boolean loadedFromCache, long contentLength2) {
-            if (stream2 != null) {
-                this.stream = stream2;
-                this.bitmap = null;
-                this.cached = loadedFromCache;
-                this.contentLength = contentLength2;
-                return;
+        public Response(InputStream stream, boolean loadedFromCache, long contentLength) {
+            if (stream == null) {
+                throw new IllegalArgumentException("Stream may not be null.");
             }
-            throw new IllegalArgumentException("Stream may not be null.");
+            this.stream = stream;
+            this.bitmap = null;
+            this.cached = loadedFromCache;
+            this.contentLength = contentLength;
         }
 
         public InputStream getInputStream() {

@@ -46,22 +46,22 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public abstract class ParallelFlowable<T> {
     public abstract int parallelism();
 
     public abstract void subscribe(Subscriber<? super T>[] subscriberArr);
 
-    /* access modifiers changed from: protected */
-    public final boolean validate(Subscriber<?>[] subscribers) {
+    protected final boolean validate(Subscriber<?>[] subscribers) {
         int p = parallelism();
-        if (subscribers.length == p) {
-            return true;
+        if (subscribers.length != p) {
+            Throwable iae = new IllegalArgumentException("parallelism = " + p + ", subscribers = " + subscribers.length);
+            for (Subscriber<?> s : subscribers) {
+                EmptySubscription.error(iae, s);
+            }
+            return false;
         }
-        Throwable iae = new IllegalArgumentException("parallelism = " + p + ", subscribers = " + subscribers.length);
-        for (Subscriber<?> s : subscribers) {
-            EmptySubscription.error(iae, s);
-        }
-        return false;
+        return true;
     }
 
     @CheckReturnValue
@@ -83,8 +83,9 @@ public abstract class ParallelFlowable<T> {
     }
 
     @CheckReturnValue
-    public final <R> R as(ParallelFlowableConverter<T, R> converter) {
-        return ((ParallelFlowableConverter) ObjectHelper.requireNonNull(converter, "converter is null")).apply(this);
+    /* renamed from: as */
+    public final <R> R m29as(ParallelFlowableConverter<T, R> converter) {
+        return (R) ((ParallelFlowableConverter) ObjectHelper.requireNonNull(converter, "converter is null")).apply(this);
     }
 
     @CheckReturnValue
@@ -152,31 +153,31 @@ public abstract class ParallelFlowable<T> {
         return RxJavaPlugins.onAssembly(new ParallelReduce(this, initialSupplier, reducer));
     }
 
-    @CheckReturnValue
+    @SchedulerSupport(SchedulerSupport.NONE)
     @BackpressureSupport(BackpressureKind.FULL)
-    @SchedulerSupport("none")
+    @CheckReturnValue
     public final Flowable<T> sequential() {
         return sequential(Flowable.bufferSize());
     }
 
-    @CheckReturnValue
+    @SchedulerSupport(SchedulerSupport.NONE)
     @BackpressureSupport(BackpressureKind.FULL)
-    @SchedulerSupport("none")
+    @CheckReturnValue
     public final Flowable<T> sequential(int prefetch) {
         ObjectHelper.verifyPositive(prefetch, "prefetch");
         return RxJavaPlugins.onAssembly(new ParallelJoin(this, prefetch, false));
     }
 
-    @CheckReturnValue
+    @SchedulerSupport(SchedulerSupport.NONE)
     @BackpressureSupport(BackpressureKind.FULL)
-    @SchedulerSupport("none")
+    @CheckReturnValue
     public final Flowable<T> sequentialDelayError() {
         return sequentialDelayError(Flowable.bufferSize());
     }
 
-    @CheckReturnValue
+    @SchedulerSupport(SchedulerSupport.NONE)
     @BackpressureSupport(BackpressureKind.FULL)
-    @SchedulerSupport("none")
+    @CheckReturnValue
     public final Flowable<T> sequentialDelayError(int prefetch) {
         ObjectHelper.verifyPositive(prefetch, "prefetch");
         return RxJavaPlugins.onAssembly(new ParallelJoin(this, prefetch, true));
@@ -191,7 +192,8 @@ public abstract class ParallelFlowable<T> {
     public final Flowable<T> sorted(Comparator<? super T> comparator, int capacityHint) {
         ObjectHelper.requireNonNull(comparator, "comparator is null");
         ObjectHelper.verifyPositive(capacityHint, "capacityHint");
-        return RxJavaPlugins.onAssembly(new ParallelSortedJoin(reduce(Functions.createArrayList((capacityHint / parallelism()) + 1), ListAddBiConsumer.instance()).map(new SorterFunction(comparator)), comparator));
+        int ch = (capacityHint / parallelism()) + 1;
+        return RxJavaPlugins.onAssembly(new ParallelSortedJoin(reduce(Functions.createArrayList(ch), ListAddBiConsumer.instance()).map(new SorterFunction(comparator)), comparator));
     }
 
     @CheckReturnValue
@@ -203,7 +205,9 @@ public abstract class ParallelFlowable<T> {
     public final Flowable<List<T>> toSortedList(Comparator<? super T> comparator, int capacityHint) {
         ObjectHelper.requireNonNull(comparator, "comparator is null");
         ObjectHelper.verifyPositive(capacityHint, "capacityHint");
-        return RxJavaPlugins.onAssembly(reduce(Functions.createArrayList((capacityHint / parallelism()) + 1), ListAddBiConsumer.instance()).map(new SorterFunction(comparator)).reduce(new MergerBiFunction(comparator)));
+        int ch = (capacityHint / parallelism()) + 1;
+        Flowable<List<T>> merged = reduce(Functions.createArrayList(ch), ListAddBiConsumer.instance()).map(new SorterFunction(comparator)).reduce(new MergerBiFunction(comparator));
+        return RxJavaPlugins.onAssembly(merged);
     }
 
     @CheckReturnValue
@@ -277,16 +281,17 @@ public abstract class ParallelFlowable<T> {
 
     @CheckReturnValue
     public static <T> ParallelFlowable<T> fromArray(Publisher<T>... publishers) {
-        if (publishers.length != 0) {
-            return RxJavaPlugins.onAssembly(new ParallelFromArray(publishers));
+        if (publishers.length == 0) {
+            throw new IllegalArgumentException("Zero publishers not supported");
         }
-        throw new IllegalArgumentException("Zero publishers not supported");
+        return RxJavaPlugins.onAssembly(new ParallelFromArray(publishers));
     }
 
     @CheckReturnValue
-    public final <U> U to(Function<? super ParallelFlowable<T>, U> converter) {
+    /* renamed from: to */
+    public final <U> U m28to(Function<? super ParallelFlowable<T>, U> converter) {
         try {
-            return ((Function) ObjectHelper.requireNonNull(converter, "converter is null")).apply(this);
+            return (U) ((Function) ObjectHelper.requireNonNull(converter, "converter is null")).apply(this);
         } catch (Throwable ex) {
             Exceptions.throwIfFatal(ex);
             throw ExceptionHelper.wrapOrThrow(ex);

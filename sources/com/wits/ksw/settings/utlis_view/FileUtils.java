@@ -28,12 +28,13 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+/* loaded from: classes10.dex */
 public class FileUtils {
-    private static String factoryPath = " ";
-    public static String folderPath = Environment.getExternalStorageDirectory().getPath();
     public static String logoFilePath = " ";
-    private static String persistPath = "/mnt/vendor/persist/";
     public static String upZipPath = " ";
+    private static String factoryPath = " ";
+    private static String persistPath = "/mnt/vendor/persist/";
+    public static String folderPath = Environment.getExternalStorageDirectory().getPath();
 
     static {
         getFilePath();
@@ -89,7 +90,7 @@ public class FileUtils {
                 long availableBlocks = getAvailableBlocks(persistPath);
                 Log.d("FileUtils", "copyFile fileLength=" + fileLength + " availableBlocks=" + availableBlocks);
                 if (availableBlocks - fileLength < 3145728) {
-                    Toast.makeText(context, "空间不足,导入失败,请重试", 0).show();
+                    Toast.makeText(context, "\u7a7a\u95f4\u4e0d\u8db3,\u5bfc\u5165\u5931\u8d25,\u8bf7\u91cd\u8bd5", 0).show();
                     return false;
                 }
                 file.createNewFile();
@@ -97,9 +98,8 @@ public class FileUtils {
                 FileOutputStream fs = new FileOutputStream(getFactoryPath());
                 byte[] buffer = new byte[1444];
                 while (true) {
-                    int read = inStream.read(buffer);
-                    int byteread = read;
-                    if (read == -1) {
+                    int byteread = inStream.read(buffer);
+                    if (byteread == -1) {
                         break;
                     }
                     bytesum += byteread;
@@ -126,35 +126,40 @@ public class FileUtils {
 
     public static void copyFolder(String resource, String target) throws Exception {
         File resourceFile = new File(resource);
-        if (resourceFile.exists()) {
-            File targetFile = new File(target);
-            if (!targetFile.exists()) {
-                targetFile.mkdirs();
-            } else {
-                targetFile.delete();
-                targetFile.mkdirs();
-            }
-            for (File file : resourceFile.listFiles()) {
-                File file1 = new File(targetFile.getAbsolutePath() + File.separator + resourceFile.getName());
-                if (file.isFile()) {
-                    Log.d("logoUpdate", "文件" + file.getName());
-                    if (!file1.exists()) {
-                        file1.mkdirs();
-                    }
-                    copyFile(file, new File(file1.getAbsolutePath() + File.separator + file.getName()));
-                }
-                if (file.isDirectory()) {
-                    copyFolder(file.getAbsolutePath(), file1.getAbsolutePath());
-                }
-            }
-            return;
+        if (!resourceFile.exists()) {
+            throw new Exception("\u6e90\u76ee\u6807\u8def\u5f84\uff1a[" + resource + "] \u4e0d\u5b58\u5728...");
         }
-        throw new Exception("源目标路径：[" + resource + "] 不存在...");
+        File targetFile = new File(target);
+        if (!targetFile.exists()) {
+            targetFile.mkdirs();
+        } else {
+            targetFile.delete();
+            targetFile.mkdirs();
+        }
+        File[] resourceFiles = resourceFile.listFiles();
+        for (File file : resourceFiles) {
+            File file1 = new File(targetFile.getAbsolutePath() + File.separator + resourceFile.getName());
+            if (file.isFile()) {
+                Log.d("logoUpdate", "\u6587\u4ef6" + file.getName());
+                if (!file1.exists()) {
+                    file1.mkdirs();
+                }
+                File targetFile1 = new File(file1.getAbsolutePath() + File.separator + file.getName());
+                copyFile(file, targetFile1);
+            }
+            if (file.isDirectory()) {
+                String dir1 = file.getAbsolutePath();
+                String dir2 = file1.getAbsolutePath();
+                copyFolder(dir1, dir2);
+            }
+        }
     }
 
     public static void copyZip(String soure, String target) {
+        File se = new File(soure);
+        File tg = new File(target);
         try {
-            copyFile(new File(soure), new File(target));
+            copyFile(se, tg);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -168,9 +173,8 @@ public class FileUtils {
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
         byte[] bytes = new byte[2048];
         while (true) {
-            int read = inputStream.read(bytes);
-            int len = read;
-            if (read != -1) {
+            int len = inputStream.read(bytes);
+            if (len != -1) {
                 bufferedOutputStream.write(bytes, 0, len);
             } else {
                 bufferedOutputStream.flush();
@@ -178,7 +182,8 @@ public class FileUtils {
                 bufferedOutputStream.close();
                 inputStream.close();
                 outputStream.close();
-                Log.d("logoUpdate", "耗时：" + ((System.currentTimeMillis() - start) / 1000) + " s");
+                long end = System.currentTimeMillis();
+                Log.d("logoUpdate", "\u8017\u65f6\uff1a" + ((end - start) / 1000) + " s");
                 return;
             }
         }
@@ -189,20 +194,20 @@ public class FileUtils {
         Enumeration zList = zfile.entries();
         byte[] buf = new byte[1024];
         while (zList.hasMoreElements()) {
-            ZipEntry ze = (ZipEntry) zList.nextElement();
+            ZipEntry ze = zList.nextElement();
             if (ze.isDirectory()) {
                 Log.d("unzip", "ze.getName() = " + ze.getName());
                 String dirstr = new String((folderPath2 + ze.getName()).getBytes("8859_1"), StringUtils.GB2312);
                 Log.d("unzip", "str = " + dirstr);
-                new File(dirstr).mkdir();
+                File f = new File(dirstr);
+                f.mkdir();
             } else {
                 Log.d("unzip", "ze.getName() = " + ze.getName());
                 OutputStream os = new BufferedOutputStream(new FileOutputStream(getRealFileName(folderPath2, ze.getName())));
                 InputStream is = new BufferedInputStream(zfile.getInputStream(ze));
                 while (true) {
-                    int read = is.read(buf, 0, 1024);
-                    int readLen = read;
-                    if (read == -1) {
+                    int readLen = is.read(buf, 0, 1024);
+                    if (readLen == -1) {
                         break;
                     }
                     os.write(buf, 0, readLen);
@@ -217,37 +222,39 @@ public class FileUtils {
     private static File getRealFileName(String baseDir, String absFileName) {
         String[] dirs = absFileName.split("/");
         File ret = new File(baseDir);
-        if (dirs.length <= 1) {
-            return ret;
-        }
-        for (int i = 0; i < dirs.length - 1; i++) {
-            String substr = dirs[i];
-            try {
-                substr = new String(substr.getBytes("8859_1"), StringUtils.GB2312);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+        if (dirs.length > 1) {
+            for (int i = 0; i < dirs.length - 1; i++) {
+                String substr = dirs[i];
+                try {
+                    substr = new String(substr.getBytes("8859_1"), StringUtils.GB2312);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                ret = new File(ret, substr);
             }
-            ret = new File(ret, substr);
+            Log.d("unzip", "1ret = " + ret);
+            if (!ret.exists()) {
+                ret.mkdirs();
+            }
+            String substr2 = dirs[dirs.length - 1];
+            try {
+                substr2 = new String(substr2.getBytes("8859_1"), StringUtils.GB2312);
+                Log.d("", "substr = " + substr2);
+            } catch (UnsupportedEncodingException e2) {
+                e2.printStackTrace();
+            }
+            File ret2 = new File(ret, substr2);
+            Log.d("unzip", "2ret = " + ret2);
+            return ret2;
         }
-        Log.d("unzip", "1ret = " + ret);
-        if (!ret.exists()) {
-            ret.mkdirs();
-        }
-        String substr2 = dirs[dirs.length - 1];
-        try {
-            substr2 = new String(substr2.getBytes("8859_1"), StringUtils.GB2312);
-            Log.d("", "substr = " + substr2);
-        } catch (UnsupportedEncodingException e2) {
-            e2.printStackTrace();
-        }
-        File ret2 = new File(ret, substr2);
-        Log.d("unzip", "2ret = " + ret2);
-        return ret2;
+        return ret;
     }
 
     public static List<String> getExtSdUsbPathList() {
         List<String> paths = new ArrayList<>();
-        for (File fl : new File("/storage").listFiles()) {
+        File file = new File("/storage");
+        File[] files = file.listFiles();
+        for (File fl : files) {
             Log.i("FileUtil ", "path =" + fl.getAbsolutePath());
             if (fl.getAbsolutePath().lastIndexOf("self") < 0 && fl.getAbsolutePath().lastIndexOf("emulated") < 0) {
                 paths.add(fl.getAbsolutePath());
@@ -259,7 +266,8 @@ public class FileUtils {
 
     public static List<String> getSDPath(Context context) {
         List<String> paths = new ArrayList<>();
-        List<StorageVolume> volumes = ((StorageManager) context.getSystemService("storage")).getStorageVolumes();
+        StorageManager mStorageManager = (StorageManager) context.getSystemService("storage");
+        List<StorageVolume> volumes = mStorageManager.getStorageVolumes();
         try {
             Class<?> storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
             Method getPath = storageVolumeClazz.getMethod("getPath", new Class[0]);
@@ -285,11 +293,15 @@ public class FileUtils {
         if (locale != null) {
             try {
                 Class classActivityManagerNative = Class.forName("android.app.ActivityManagerNative");
-                Object objIActivityManager = classActivityManagerNative.getDeclaredMethod("getDefault", new Class[0]).invoke(classActivityManagerNative, new Object[0]);
+                Method getDefault = classActivityManagerNative.getDeclaredMethod("getDefault", new Class[0]);
+                Object objIActivityManager = getDefault.invoke(classActivityManagerNative, new Object[0]);
                 Class classIActivityManager = Class.forName("android.app.IActivityManager");
-                Configuration config = (Configuration) classIActivityManager.getDeclaredMethod("getConfiguration", new Class[0]).invoke(objIActivityManager, new Object[0]);
+                Method getConfiguration = classIActivityManager.getDeclaredMethod("getConfiguration", new Class[0]);
+                Configuration config = (Configuration) getConfiguration.invoke(objIActivityManager, new Object[0]);
                 config.setLocales(locale);
-                classIActivityManager.getDeclaredMethod("updatePersistentConfiguration", new Class[]{Configuration.class}).invoke(objIActivityManager, new Object[]{config});
+                Class[] clzParams = {Configuration.class};
+                Method updateConfiguration = classIActivityManager.getDeclaredMethod("updatePersistentConfiguration", clzParams);
+                updateConfiguration.invoke(objIActivityManager, config);
             } catch (Exception e) {
             }
         }
@@ -305,8 +317,9 @@ public class FileUtils {
     private static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
-            for (String file : children) {
-                if (!deleteDir(new File(dir, file))) {
+            for (String str : children) {
+                boolean success = deleteDir(new File(dir, str));
+                if (!success) {
                     return false;
                 }
             }
@@ -315,14 +328,14 @@ public class FileUtils {
     }
 
     public static void savaData(String key, boolean isCheck) {
-        if (isCheck) {
-            try {
+        try {
+            if (isCheck) {
                 PowerManagerApp.setSettingsInt(key, 1);
-            } catch (Exception e) {
-                e.getStackTrace();
+            } else {
+                PowerManagerApp.setSettingsInt(key, 0);
             }
-        } else {
-            PowerManagerApp.setSettingsInt(key, 0);
+        } catch (Exception e) {
+            e.getStackTrace();
         }
     }
 

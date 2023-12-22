@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true" android:drawable="@drawable/mbux2_coat_set_icon1_1_yo_sel"/>
+    <item android:state_selected="false" android:drawable="@drawable/mbux2_coat_set_icon1_1_yo"/>
+</selector>

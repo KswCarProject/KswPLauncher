@@ -4,8 +4,10 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.data.DataFetcher;
 
+/* loaded from: classes.dex */
 interface DataFetcherGenerator {
 
+    /* loaded from: classes.dex */
     public interface FetcherReadyCallback {
         void onDataFetcherFailed(Key key, Exception exc, DataFetcher<?> dataFetcher, DataSource dataSource);
 

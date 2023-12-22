@@ -10,20 +10,22 @@ import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class SingleDoOnDispose<T> extends Single<T> {
     final Action onDispose;
     final SingleSource<T> source;
 
-    public SingleDoOnDispose(SingleSource<T> source2, Action onDispose2) {
-        this.source = source2;
-        this.onDispose = onDispose2;
+    public SingleDoOnDispose(SingleSource<T> source, Action onDispose) {
+        this.source = source;
+        this.onDispose = onDispose;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         this.source.subscribe(new DoOnDisposeObserver(observer, this.onDispose));
     }
 
+    /* loaded from: classes.dex */
     static final class DoOnDisposeObserver<T> extends AtomicReference<Action> implements SingleObserver<T>, Disposable {
         private static final long serialVersionUID = -8583764624474935784L;
         final SingleObserver<? super T> downstream;
@@ -34,8 +36,9 @@ public final class SingleDoOnDispose<T> extends Single<T> {
             lazySet(onDispose);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
-            Action a = (Action) getAndSet((Object) null);
+            Action a = getAndSet(null);
             if (a != null) {
                 try {
                     a.run();
@@ -47,10 +50,12 @@ public final class SingleDoOnDispose<T> extends Single<T> {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -58,10 +63,12 @@ public final class SingleDoOnDispose<T> extends Single<T> {
             }
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSuccess(T value) {
             this.downstream.onSuccess(value);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
             this.downstream.onError(e);
         }

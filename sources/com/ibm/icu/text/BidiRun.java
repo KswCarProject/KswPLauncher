@@ -1,5 +1,6 @@
 package com.ibm.icu.text;
 
+/* loaded from: classes.dex */
 public class BidiRun {
     int insertRemove;
     byte level;
@@ -10,14 +11,13 @@ public class BidiRun {
         this(0, 0, (byte) 0);
     }
 
-    BidiRun(int start2, int limit2, byte embeddingLevel) {
-        this.start = start2;
-        this.limit = limit2;
+    BidiRun(int start, int limit, byte embeddingLevel) {
+        this.start = start;
+        this.limit = limit;
         this.level = embeddingLevel;
     }
 
-    /* access modifiers changed from: package-private */
-    public void copyFrom(BidiRun run) {
+    void copyFrom(BidiRun run) {
         this.start = run.start;
         this.limit = run.limit;
         this.level = run.level;
@@ -53,6 +53,6 @@ public class BidiRun {
     }
 
     public String toString() {
-        return "BidiRun " + this.start + " - " + this.limit + " @ " + this.level;
+        return "BidiRun " + this.start + " - " + this.limit + " @ " + ((int) this.level);
     }
 }

@@ -1,8 +1,10 @@
 package android.support.constraint.solver;
 
+/* loaded from: classes.dex */
 final class Pools {
     private static final boolean DEBUG = false;
 
+    /* loaded from: classes.dex */
     interface Pool<T> {
         T acquire();
 
@@ -14,42 +16,45 @@ final class Pools {
     private Pools() {
     }
 
+    /* loaded from: classes.dex */
     static class SimplePool<T> implements Pool<T> {
         private final Object[] mPool;
         private int mPoolSize;
 
         SimplePool(int maxPoolSize) {
-            if (maxPoolSize > 0) {
-                this.mPool = new Object[maxPoolSize];
-                return;
+            if (maxPoolSize <= 0) {
+                throw new IllegalArgumentException("The max pool size must be > 0");
             }
-            throw new IllegalArgumentException("The max pool size must be > 0");
+            this.mPool = new Object[maxPoolSize];
         }
 
+        @Override // android.support.constraint.solver.Pools.Pool
         public T acquire() {
             int i = this.mPoolSize;
-            if (i <= 0) {
-                return null;
+            if (i > 0) {
+                int lastPooledIndex = i - 1;
+                Object[] objArr = this.mPool;
+                T instance = (T) objArr[lastPooledIndex];
+                objArr[lastPooledIndex] = null;
+                this.mPoolSize = i - 1;
+                return instance;
             }
-            int lastPooledIndex = i - 1;
-            T[] tArr = this.mPool;
-            T instance = tArr[lastPooledIndex];
-            tArr[lastPooledIndex] = null;
-            this.mPoolSize = i - 1;
-            return instance;
+            return null;
         }
 
+        @Override // android.support.constraint.solver.Pools.Pool
         public boolean release(T instance) {
             int i = this.mPoolSize;
             Object[] objArr = this.mPool;
-            if (i >= objArr.length) {
-                return false;
+            if (i < objArr.length) {
+                objArr[i] = instance;
+                this.mPoolSize = i + 1;
+                return true;
             }
-            objArr[i] = instance;
-            this.mPoolSize = i + 1;
-            return true;
+            return false;
         }
 
+        @Override // android.support.constraint.solver.Pools.Pool
         public void releaseAll(T[] variables, int count) {
             if (count > variables.length) {
                 count = variables.length;

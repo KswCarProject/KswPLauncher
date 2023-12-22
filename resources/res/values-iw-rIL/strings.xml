@@ -220,10 +220,17 @@
     <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">שגיאת סיסמא!</string>
     <string name="mcu_file_corrupted">שדרוג קובץ פגום!</string>
+    <string name="mic_control">מחליף חיצוני MIC בנוי</string>
+    <string name="mic_external">חיצוני</string>
+    <string name="mic_internal">נבנה</string>
     <string name="mic_text">MIC לְהַשִׂיג</string>
     <string name="music_app_sel">בחר אפליקציית מוזיקה</string>
+    <string name="music_player">נגן מוסיקה</string>
     <string name="ntg6_dvr_toast">אין מכשירים!</string>
     <string name="oil_size">דלק:%s</string>
+    <string name="original_radar_reverse">ההצגה המקורית של רדר הפוך</string>
+    <string name="radar_normal">נורמלי</string>
+    <string name="radar_reverse">אחורה</string>
     <string name="raw_car_text1">תצוגה במסך מלא</string>
     <string name="raw_car_text2">בחירה נוכחית:</string>
     <string name="reverse_exit_time_agreement">יציאה לפי הסכם המקורי של הרכב</string>
@@ -298,6 +305,8 @@
     <string name="text_logo_two">עמוד 2</string>
     <string name="text_ram">זיכרון RAM:%s</string>
     <string name="touch_continuous_send">נתוני מגע נשלחים ברציפות</string>
+    <string name="tv_id8_brake">בלם</string>
+    <string name="tv_id8_seat_belt">חגורת בטיחות</string>
     <string name="txz_oil_text">הגדרת אזעקת קול דלק</string>
     <string name="txz_speed_text">תצוגת אזעקת מהירות הנוסעים חברים</string>
     <string name="txz_temp_text">הגדרת אזעקת טמפרטורה סביבה משותפת</string>

@@ -3,6 +3,7 @@ package com.wits.ksw.launcher.utils;
 import android.content.SharedPreferences;
 import com.wits.ksw.KswApplication;
 
+/* loaded from: classes11.dex */
 public class SharedPreUtils {
     private static final String UI_ID_TYLE = "UI_ID_TYLE";
     private static volatile SharedPreUtils singleton;

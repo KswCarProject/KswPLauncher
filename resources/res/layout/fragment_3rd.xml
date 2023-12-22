@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/ll_container" style="@style/id8_main_card_container">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/ll_container" style="@style/id8_main_card_container">
     <ImageView android:id="@+id/iv_3rd_bg" style="@style/id8_main_small_card_size"/>
     <ImageView android:id="@+id/iv_mask" style="@style/id8_main_small_card_size"/>
     <LinearLayout style="@style/id8_main_small_card_container">

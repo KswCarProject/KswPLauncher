@@ -2,6 +2,7 @@ package android.arch.lifecycle;
 
 import android.arch.lifecycle.Lifecycle;
 
+/* loaded from: classes.dex */
 class FullLifecycleObserverAdapter implements GenericLifecycleObserver {
     private final FullLifecycleObserver mObserver;
 
@@ -9,8 +10,9 @@ class FullLifecycleObserverAdapter implements GenericLifecycleObserver {
         this.mObserver = observer;
     }
 
-    /* renamed from: android.arch.lifecycle.FullLifecycleObserverAdapter$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
+    /* renamed from: android.arch.lifecycle.FullLifecycleObserverAdapter$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C00071 {
         static final /* synthetic */ int[] $SwitchMap$android$arch$lifecycle$Lifecycle$Event;
 
         static {
@@ -47,8 +49,9 @@ class FullLifecycleObserverAdapter implements GenericLifecycleObserver {
         }
     }
 
+    @Override // android.arch.lifecycle.GenericLifecycleObserver
     public void onStateChanged(LifecycleOwner source, Lifecycle.Event event) {
-        switch (AnonymousClass1.$SwitchMap$android$arch$lifecycle$Lifecycle$Event[event.ordinal()]) {
+        switch (C00071.$SwitchMap$android$arch$lifecycle$Lifecycle$Event[event.ordinal()]) {
             case 1:
                 this.mObserver.onCreate(source);
                 return;

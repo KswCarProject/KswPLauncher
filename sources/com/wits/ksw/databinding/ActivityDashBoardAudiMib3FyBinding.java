@@ -13,10 +13,11 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.DashboardViewModel;
 import com.wits.ksw.launcher.view.ID7SpeedImageView;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityDashBoardAudiMib3FyBinding extends ViewDataBinding {
     public final ImageView brakeTextView;
     public final ImageView carImageView;
@@ -44,34 +45,33 @@ public abstract class ActivityDashBoardAudiMib3FyBinding extends ViewDataBinding
     public final ImageView zspeedPointerImageView;
     public final TextView zspeedPointerTextView;
 
-    public abstract void setViewModel(DashboardViewModel dashboardViewModel);
+    public abstract void setViewModel(DashboardViewModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected ActivityDashBoardAudiMib3FyBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView brakeTextView2, ImageView carImageView2, TextClock clockTime2, RadioButton comfortableRb2, ImageView dorrBackImageView2, ImageView dorrLeftFlImageView2, ImageView dorrLeftFrImageView2, ImageView dorrLeftRlImageView2, RadioButton energyConservationRb2, ImageView imageView192, RelativeLayout leftModeRl2, ConstraintLayout linearLayout22, RadioGroup modeRg2, RadioButton motionRb2, ImageView seatBeltTextView2, ImageView showModeIv2, ID7SpeedImageView speedPointerImageView2, TextView speedPointerTextView2, ID7SpeedImageView speedometerImageView2, ImageView tachometerImageView2, TextView temperatureTextView2, ImageView zspeedPointerImageView2, TextView zspeedPointerTextView2) {
+    protected ActivityDashBoardAudiMib3FyBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView brakeTextView, ImageView carImageView, TextClock clockTime, RadioButton comfortableRb, ImageView dorrBackImageView, ImageView dorrLeftFlImageView, ImageView dorrLeftFrImageView, ImageView dorrLeftRlImageView, RadioButton energyConservationRb, ImageView imageView19, RelativeLayout leftModeRl, ConstraintLayout linearLayout2, RadioGroup modeRg, RadioButton motionRb, ImageView seatBeltTextView, ImageView showModeIv, ID7SpeedImageView speedPointerImageView, TextView speedPointerTextView, ID7SpeedImageView speedometerImageView, ImageView tachometerImageView, TextView temperatureTextView, ImageView zspeedPointerImageView, TextView zspeedPointerTextView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.brakeTextView = brakeTextView2;
-        this.carImageView = carImageView2;
-        this.clockTime = clockTime2;
-        this.comfortableRb = comfortableRb2;
-        this.dorrBackImageView = dorrBackImageView2;
-        this.dorrLeftFlImageView = dorrLeftFlImageView2;
-        this.dorrLeftFrImageView = dorrLeftFrImageView2;
-        this.dorrLeftRlImageView = dorrLeftRlImageView2;
-        this.energyConservationRb = energyConservationRb2;
-        this.imageView19 = imageView192;
-        this.leftModeRl = leftModeRl2;
-        this.linearLayout2 = linearLayout22;
-        this.modeRg = modeRg2;
-        this.motionRb = motionRb2;
-        this.seatBeltTextView = seatBeltTextView2;
-        this.showModeIv = showModeIv2;
-        this.speedPointerImageView = speedPointerImageView2;
-        this.speedPointerTextView = speedPointerTextView2;
-        this.speedometerImageView = speedometerImageView2;
-        this.tachometerImageView = tachometerImageView2;
-        this.temperatureTextView = temperatureTextView2;
-        this.zspeedPointerImageView = zspeedPointerImageView2;
-        this.zspeedPointerTextView = zspeedPointerTextView2;
+        this.brakeTextView = brakeTextView;
+        this.carImageView = carImageView;
+        this.clockTime = clockTime;
+        this.comfortableRb = comfortableRb;
+        this.dorrBackImageView = dorrBackImageView;
+        this.dorrLeftFlImageView = dorrLeftFlImageView;
+        this.dorrLeftFrImageView = dorrLeftFrImageView;
+        this.dorrLeftRlImageView = dorrLeftRlImageView;
+        this.energyConservationRb = energyConservationRb;
+        this.imageView19 = imageView19;
+        this.leftModeRl = leftModeRl;
+        this.linearLayout2 = linearLayout2;
+        this.modeRg = modeRg;
+        this.motionRb = motionRb;
+        this.seatBeltTextView = seatBeltTextView;
+        this.showModeIv = showModeIv;
+        this.speedPointerImageView = speedPointerImageView;
+        this.speedPointerTextView = speedPointerTextView;
+        this.speedometerImageView = speedometerImageView;
+        this.tachometerImageView = tachometerImageView;
+        this.temperatureTextView = temperatureTextView;
+        this.zspeedPointerImageView = zspeedPointerImageView;
+        this.zspeedPointerTextView = zspeedPointerTextView;
     }
 
     public DashboardViewModel getViewModel() {
@@ -84,7 +84,7 @@ public abstract class ActivityDashBoardAudiMib3FyBinding extends ViewDataBinding
 
     @Deprecated
     public static ActivityDashBoardAudiMib3FyBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityDashBoardAudiMib3FyBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_dash_board_audi_mib3_fy, root, attachToRoot, component);
+        return (ActivityDashBoardAudiMib3FyBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_dash_board_audi_mib3_fy, root, attachToRoot, component);
     }
 
     public static ActivityDashBoardAudiMib3FyBinding inflate(LayoutInflater inflater) {
@@ -93,7 +93,7 @@ public abstract class ActivityDashBoardAudiMib3FyBinding extends ViewDataBinding
 
     @Deprecated
     public static ActivityDashBoardAudiMib3FyBinding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityDashBoardAudiMib3FyBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_dash_board_audi_mib3_fy, (ViewGroup) null, false, component);
+        return (ActivityDashBoardAudiMib3FyBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_dash_board_audi_mib3_fy, null, false, component);
     }
 
     public static ActivityDashBoardAudiMib3FyBinding bind(View view) {
@@ -102,6 +102,6 @@ public abstract class ActivityDashBoardAudiMib3FyBinding extends ViewDataBinding
 
     @Deprecated
     public static ActivityDashBoardAudiMib3FyBinding bind(View view, Object component) {
-        return (ActivityDashBoardAudiMib3FyBinding) bind(component, view, R.layout.activity_dash_board_audi_mib3_fy);
+        return (ActivityDashBoardAudiMib3FyBinding) bind(component, view, C0899R.C0902layout.activity_dash_board_audi_mib3_fy);
     }
 }

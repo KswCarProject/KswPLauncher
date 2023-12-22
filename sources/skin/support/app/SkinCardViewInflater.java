@@ -1,41 +1,31 @@
 package skin.support.app;
 
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
+import skin.support.widget.SkinCompatCardView;
+
+/* loaded from: classes.dex */
 public class SkinCardViewInflater implements SkinLayoutInflater {
-    /* JADX WARNING: Can't fix incorrect switch cases order */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public android.view.View createView(android.content.Context r3, java.lang.String r4, android.util.AttributeSet r5) {
-        /*
-            r2 = this;
-            r0 = 0
-            int r1 = r4.hashCode()
-            switch(r1) {
-                case 1677098064: goto L_0x0009;
-                default: goto L_0x0008;
-            }
-        L_0x0008:
-            goto L_0x0013
-        L_0x0009:
-            java.lang.String r1 = "android.support.v7.widget.CardView"
-            boolean r1 = r4.equals(r1)
-            if (r1 == 0) goto L_0x0008
-            r1 = 0
-            goto L_0x0014
-        L_0x0013:
-            r1 = -1
-        L_0x0014:
-            switch(r1) {
-                case 0: goto L_0x0018;
-                default: goto L_0x0017;
-            }
-        L_0x0017:
-            goto L_0x001e
-        L_0x0018:
-            skin.support.widget.SkinCompatCardView r1 = new skin.support.widget.SkinCompatCardView
-            r1.<init>(r3, r5)
-            r0 = r1
-        L_0x001e:
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: skin.support.app.SkinCardViewInflater.createView(android.content.Context, java.lang.String, android.util.AttributeSet):android.view.View");
+    @Override // skin.support.app.SkinLayoutInflater
+    public View createView(Context context, String name, AttributeSet attrs) {
+        char c;
+        switch (name.hashCode()) {
+            case 1677098064:
+                if (name.equals("android.support.v7.widget.CardView")) {
+                    c = 0;
+                    break;
+                }
+            default:
+                c = '\uffff';
+                break;
+        }
+        switch (c) {
+            case 0:
+                View view = new SkinCompatCardView(context, attrs);
+                return view;
+            default:
+                return null;
+        }
     }
 }

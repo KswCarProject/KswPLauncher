@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.inputmethod.EditorInfo;
 
+/* loaded from: classes.dex */
 public final class EditorInfoCompat {
     private static final String CONTENT_MIME_TYPES_KEY = "android.support.v13.view.inputmethod.EditorInfoCompat.CONTENT_MIME_TYPES";
     private static final String[] EMPTY_STRING_ARRAY = new String[0];

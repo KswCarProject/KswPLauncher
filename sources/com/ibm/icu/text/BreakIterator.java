@@ -6,12 +6,11 @@ import com.ibm.icu.impl.ICUDebug;
 import com.ibm.icu.util.ICUCloneNotSupportedException;
 import com.ibm.icu.util.ULocale;
 import java.text.CharacterIterator;
-import java.text.StringCharacterIterator;
 import java.util.Locale;
 import java.util.MissingResourceException;
 
+/* loaded from: classes.dex */
 public abstract class BreakIterator implements Cloneable {
-    private static final boolean DEBUG = ICUDebug.enabled("breakiterator");
     public static final int DONE = -1;
     public static final int KIND_CHARACTER = 0;
     private static final int KIND_COUNT = 5;
@@ -29,10 +28,11 @@ public abstract class BreakIterator implements Cloneable {
     public static final int WORD_NONE_LIMIT = 100;
     public static final int WORD_NUMBER = 100;
     public static final int WORD_NUMBER_LIMIT = 200;
-    private static final CacheValue<?>[] iterCache = new CacheValue[5];
     private static BreakIteratorServiceShim shim;
     private ULocale actualLocale;
     private ULocale validLocale;
+    private static final boolean DEBUG = ICUDebug.enabled("breakiterator");
+    private static final CacheValue<?>[] iterCache = new CacheValue[5];
 
     public abstract int current();
 
@@ -72,10 +72,7 @@ public abstract class BreakIterator implements Cloneable {
     }
 
     public boolean isBoundary(int offset) {
-        if (offset == 0 || following(offset - 1) == offset) {
-            return true;
-        }
-        return false;
+        return offset == 0 || following(offset + (-1)) == offset;
     }
 
     public int getRuleStatus() {
@@ -83,15 +80,15 @@ public abstract class BreakIterator implements Cloneable {
     }
 
     public int getRuleStatusVec(int[] fillInArray) {
-        if (fillInArray == null || fillInArray.length <= 0) {
+        if (fillInArray != null && fillInArray.length > 0) {
+            fillInArray[0] = 0;
             return 1;
         }
-        fillInArray[0] = 0;
         return 1;
     }
 
     public void setText(String newText) {
-        setText((CharacterIterator) new StringCharacterIterator(newText));
+        setText(new java.text.StringCharacterIterator(newText));
     }
 
     public void setText(CharSequence newText) {
@@ -165,7 +162,7 @@ public abstract class BreakIterator implements Cloneable {
     public static Object registerInstance(BreakIterator iter, ULocale locale, int kind) {
         BreakIteratorCache cache;
         CacheValue<?>[] cacheValueArr = iterCache;
-        if (!(cacheValueArr[kind] == null || (cache = (BreakIteratorCache) cacheValueArr[kind].get()) == null || !cache.getLocale().equals(locale))) {
+        if (cacheValueArr[kind] != null && (cache = (BreakIteratorCache) cacheValueArr[kind].get()) != null && cache.getLocale().equals(locale)) {
             cacheValueArr[kind] = null;
         }
         return getShim().registerInstance(iter, locale, kind);
@@ -174,29 +171,29 @@ public abstract class BreakIterator implements Cloneable {
     public static boolean unregister(Object key) {
         if (key == null) {
             throw new IllegalArgumentException("registry key must not be null");
-        } else if (shim == null) {
-            return false;
-        } else {
+        }
+        if (shim != null) {
             for (int kind = 0; kind < 5; kind++) {
                 iterCache[kind] = null;
             }
             return shim.unregister(key);
         }
+        return false;
     }
 
     @Deprecated
     public static BreakIterator getBreakInstance(ULocale where, int kind) {
         BreakIteratorCache cache;
-        if (where != null) {
-            CacheValue<?>[] cacheValueArr = iterCache;
-            if (cacheValueArr[kind] != null && (cache = (BreakIteratorCache) cacheValueArr[kind].get()) != null && cache.getLocale().equals(where)) {
-                return cache.createBreakInstance();
-            }
-            BreakIterator result = getShim().createBreakIterator(where, kind);
-            cacheValueArr[kind] = CacheValue.getInstance(new BreakIteratorCache(where, result));
-            return result;
+        if (where == null) {
+            throw new NullPointerException("Specified locale is null");
         }
-        throw new NullPointerException("Specified locale is null");
+        CacheValue<?>[] cacheValueArr = iterCache;
+        if (cacheValueArr[kind] != null && (cache = (BreakIteratorCache) cacheValueArr[kind].get()) != null && cache.getLocale().equals(where)) {
+            return cache.createBreakInstance();
+        }
+        BreakIterator result = getShim().createBreakIterator(where, kind);
+        cacheValueArr[kind] = CacheValue.getInstance(new BreakIteratorCache(where, result));
+        return result;
     }
 
     public static synchronized Locale[] getAvailableLocales() {
@@ -215,26 +212,26 @@ public abstract class BreakIterator implements Cloneable {
         return availableULocales;
     }
 
+    /* loaded from: classes.dex */
     private static final class BreakIteratorCache {
         private BreakIterator iter;
         private ULocale where;
 
-        BreakIteratorCache(ULocale where2, BreakIterator iter2) {
-            this.where = where2;
-            this.iter = (BreakIterator) iter2.clone();
+        BreakIteratorCache(ULocale where, BreakIterator iter) {
+            this.where = where;
+            this.iter = (BreakIterator) iter.clone();
         }
 
-        /* access modifiers changed from: package-private */
-        public ULocale getLocale() {
+        ULocale getLocale() {
             return this.where;
         }
 
-        /* access modifiers changed from: package-private */
-        public BreakIterator createBreakInstance() {
+        BreakIterator createBreakInstance() {
             return (BreakIterator) this.iter.clone();
         }
     }
 
+    /* loaded from: classes.dex */
     static abstract class BreakIteratorServiceShim {
         public abstract BreakIterator createBreakIterator(ULocale uLocale, int i);
 
@@ -253,7 +250,8 @@ public abstract class BreakIterator implements Cloneable {
     private static BreakIteratorServiceShim getShim() {
         if (shim == null) {
             try {
-                shim = (BreakIteratorServiceShim) Class.forName("com.ibm.icu.text.BreakIteratorFactory").newInstance();
+                Class<?> cls = Class.forName("com.ibm.icu.text.BreakIteratorFactory");
+                shim = (BreakIteratorServiceShim) cls.newInstance();
             } catch (MissingResourceException e) {
                 throw e;
             } catch (Exception e2) {
@@ -270,18 +268,11 @@ public abstract class BreakIterator implements Cloneable {
         return type == ULocale.ACTUAL_LOCALE ? this.actualLocale : this.validLocale;
     }
 
-    /* access modifiers changed from: package-private */
-    public final void setLocale(ULocale valid, ULocale actual) {
-        boolean z = true;
-        boolean z2 = valid == null;
-        if (actual != null) {
-            z = false;
+    final void setLocale(ULocale valid, ULocale actual) {
+        if ((valid == null) != (actual == null)) {
+            throw new IllegalArgumentException();
         }
-        if (z2 == z) {
-            this.validLocale = valid;
-            this.actualLocale = actual;
-            return;
-        }
-        throw new IllegalArgumentException();
+        this.validLocale = valid;
+        this.actualLocale = actual;
     }
 }

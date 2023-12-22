@@ -6,6 +6,7 @@ import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public interface MultipleBarcodeReader {
     Result[] decodeMultiple(BinaryBitmap binaryBitmap) throws NotFoundException;
 

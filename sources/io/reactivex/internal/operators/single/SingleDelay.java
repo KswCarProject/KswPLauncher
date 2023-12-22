@@ -8,6 +8,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.SequentialDisposable;
 import java.util.concurrent.TimeUnit;
 
+/* loaded from: classes.dex */
 public final class SingleDelay<T> extends Single<T> {
     final boolean delayError;
     final Scheduler scheduler;
@@ -15,63 +16,75 @@ public final class SingleDelay<T> extends Single<T> {
     final long time;
     final TimeUnit unit;
 
-    public SingleDelay(SingleSource<? extends T> source2, long time2, TimeUnit unit2, Scheduler scheduler2, boolean delayError2) {
-        this.source = source2;
-        this.time = time2;
-        this.unit = unit2;
-        this.scheduler = scheduler2;
-        this.delayError = delayError2;
+    public SingleDelay(SingleSource<? extends T> source, long time, TimeUnit unit, Scheduler scheduler, boolean delayError) {
+        this.source = source;
+        this.time = time;
+        this.unit = unit;
+        this.scheduler = scheduler;
+        this.delayError = delayError;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         SequentialDisposable sd = new SequentialDisposable();
         observer.onSubscribe(sd);
         this.source.subscribe(new Delay(sd, observer));
     }
 
+    /* loaded from: classes.dex */
     final class Delay implements SingleObserver<T> {
         final SingleObserver<? super T> downstream;
-        private final SequentialDisposable sd;
 
-        Delay(SequentialDisposable sd2, SingleObserver<? super T> observer) {
-            this.sd = sd2;
+        /* renamed from: sd */
+        private final SequentialDisposable f336sd;
+
+        Delay(SequentialDisposable sd, SingleObserver<? super T> observer) {
+            this.f336sd = sd;
             this.downstream = observer;
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
-            this.sd.replace(d);
+            this.f336sd.replace(d);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSuccess(T value) {
-            this.sd.replace(SingleDelay.this.scheduler.scheduleDirect(new OnSuccess(value), SingleDelay.this.time, SingleDelay.this.unit));
+            this.f336sd.replace(SingleDelay.this.scheduler.scheduleDirect(new OnSuccess(value), SingleDelay.this.time, SingleDelay.this.unit));
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
-            this.sd.replace(SingleDelay.this.scheduler.scheduleDirect(new OnError(e), SingleDelay.this.delayError ? SingleDelay.this.time : 0, SingleDelay.this.unit));
+            this.f336sd.replace(SingleDelay.this.scheduler.scheduleDirect(new OnError(e), SingleDelay.this.delayError ? SingleDelay.this.time : 0L, SingleDelay.this.unit));
         }
 
+        /* loaded from: classes.dex */
         final class OnSuccess implements Runnable {
             private final T value;
 
-            OnSuccess(T value2) {
-                this.value = value2;
+            OnSuccess(T value) {
+                this.value = value;
             }
 
+            @Override // java.lang.Runnable
             public void run() {
-                Delay.this.downstream.onSuccess(this.value);
+                Delay.this.downstream.onSuccess((T) this.value);
             }
         }
 
+        /* loaded from: classes.dex */
         final class OnError implements Runnable {
-            private final Throwable e;
 
-            OnError(Throwable e2) {
-                this.e = e2;
+            /* renamed from: e */
+            private final Throwable f337e;
+
+            OnError(Throwable e) {
+                this.f337e = e;
             }
 
+            @Override // java.lang.Runnable
             public void run() {
-                Delay.this.downstream.onError(this.e);
+                Delay.this.downstream.onError(this.f337e);
             }
         }
     }

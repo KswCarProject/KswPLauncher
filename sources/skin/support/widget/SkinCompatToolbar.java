@@ -2,11 +2,12 @@ package skin.support.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.Toolbar;
+import android.support.p004v7.widget.Toolbar;
 import android.util.AttributeSet;
-import skin.support.R;
+import skin.support.C1899R;
 import skin.support.content.res.SkinCompatResources;
 
+/* loaded from: classes.dex */
 public class SkinCompatToolbar extends Toolbar implements SkinCompatSupportable {
     private SkinCompatBackgroundHelper mBackgroundTintHelper;
     private int mNavigationIconResId;
@@ -14,11 +15,11 @@ public class SkinCompatToolbar extends Toolbar implements SkinCompatSupportable 
     private int mTitleTextColorResId;
 
     public SkinCompatToolbar(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public SkinCompatToolbar(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.toolbarStyle);
+        this(context, attrs, C1899R.attr.toolbarStyle);
     }
 
     public SkinCompatToolbar(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -29,27 +30,27 @@ public class SkinCompatToolbar extends Toolbar implements SkinCompatSupportable 
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = new SkinCompatBackgroundHelper(this);
         this.mBackgroundTintHelper = skinCompatBackgroundHelper;
         skinCompatBackgroundHelper.loadFromAttributes(attrs, defStyleAttr);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Toolbar, defStyleAttr, 0);
-        this.mNavigationIconResId = a.getResourceId(R.styleable.Toolbar_navigationIcon, 0);
-        int titleAp = a.getResourceId(R.styleable.Toolbar_titleTextAppearance, 0);
-        int subtitleAp = a.getResourceId(R.styleable.Toolbar_subtitleTextAppearance, 0);
+        TypedArray a = context.obtainStyledAttributes(attrs, C1899R.styleable.Toolbar, defStyleAttr, 0);
+        this.mNavigationIconResId = a.getResourceId(C1899R.styleable.Toolbar_navigationIcon, 0);
+        int titleAp = a.getResourceId(C1899R.styleable.Toolbar_titleTextAppearance, 0);
+        int subtitleAp = a.getResourceId(C1899R.styleable.Toolbar_subtitleTextAppearance, 0);
         a.recycle();
         if (titleAp != 0) {
-            TypedArray a2 = context.obtainStyledAttributes(titleAp, R.styleable.SkinTextAppearance);
-            this.mTitleTextColorResId = a2.getResourceId(R.styleable.SkinTextAppearance_android_textColor, 0);
+            TypedArray a2 = context.obtainStyledAttributes(titleAp, C1899R.styleable.SkinTextAppearance);
+            this.mTitleTextColorResId = a2.getResourceId(C1899R.styleable.SkinTextAppearance_android_textColor, 0);
             a2.recycle();
         }
         if (subtitleAp != 0) {
-            TypedArray a3 = context.obtainStyledAttributes(subtitleAp, R.styleable.SkinTextAppearance);
-            this.mSubtitleTextColorResId = a3.getResourceId(R.styleable.SkinTextAppearance_android_textColor, 0);
+            TypedArray a3 = context.obtainStyledAttributes(subtitleAp, C1899R.styleable.SkinTextAppearance);
+            this.mSubtitleTextColorResId = a3.getResourceId(C1899R.styleable.SkinTextAppearance_android_textColor, 0);
             a3.recycle();
         }
-        TypedArray a4 = context.obtainStyledAttributes(attrs, R.styleable.Toolbar, defStyleAttr, 0);
-        if (a4.hasValue(R.styleable.Toolbar_titleTextColor)) {
-            this.mTitleTextColorResId = a4.getResourceId(R.styleable.Toolbar_titleTextColor, 0);
+        TypedArray a4 = context.obtainStyledAttributes(attrs, C1899R.styleable.Toolbar, defStyleAttr, 0);
+        if (a4.hasValue(C1899R.styleable.Toolbar_titleTextColor)) {
+            this.mTitleTextColorResId = a4.getResourceId(C1899R.styleable.Toolbar_titleTextColor, 0);
         }
-        if (a4.hasValue(R.styleable.Toolbar_subtitleTextColor)) {
-            this.mSubtitleTextColorResId = a4.getResourceId(R.styleable.Toolbar_subtitleTextColor, 0);
+        if (a4.hasValue(C1899R.styleable.Toolbar_subtitleTextColor)) {
+            this.mSubtitleTextColorResId = a4.getResourceId(C1899R.styleable.Toolbar_subtitleTextColor, 0);
         }
         a4.recycle();
         applyTitleTextColor();
@@ -81,6 +82,7 @@ public class SkinCompatToolbar extends Toolbar implements SkinCompatSupportable 
         }
     }
 
+    @Override // android.view.View
     public void setBackgroundResource(int resId) {
         super.setBackgroundResource(resId);
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
@@ -89,12 +91,14 @@ public class SkinCompatToolbar extends Toolbar implements SkinCompatSupportable 
         }
     }
 
+    @Override // android.support.p004v7.widget.Toolbar
     public void setNavigationIcon(int resId) {
         super.setNavigationIcon(resId);
         this.mNavigationIconResId = resId;
         applyNavigationIcon();
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
         if (skinCompatBackgroundHelper != null) {

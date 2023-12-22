@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="vertical" android:id="@+id/ll_left_bar_container" android:tag="layout/id8_pemp_launcher_left_bar_0" android:background="@drawable/id8_main_left_bg" android:paddingTop="60dp" android:paddingBottom="15dp" android:focusable="true" android:clickable="true" android:layout_width="120dp" android:layout_height="match_parent" android:paddingStart="4dp" android:paddingEnd="8dp">
+    <LinearLayout android:id="@+id/ll_left_1" android:tag="binding_1" android:background="@drawable/bmw_id8_main_left_btn_yellow" android:nextFocusLeft="@+id/ll_left_1" android:nextFocusUp="@+id/ll_left_1" style="@style/id8_main_left_bar_container">
+        <ImageView android:id="@+id/iv_left_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/pemp_id8_main_left_icon_app"/>
+        <TextView android:id="@+id/tv_left_1" android:text="@string/ksw_id8_apps" style="@style/gs_id8_main_left_bar_text"/>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/ll_left_2" android:tag="binding_2" android:background="@drawable/bmw_id8_main_left_btn_yellow" style="@style/id8_main_left_bar_container">
+        <ImageView android:id="@+id/iv_left_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/pemp_id8_main_left_icon_set"/>
+        <TextView android:id="@+id/tv_left_2" android:text="@string/ksw_id8_abbr_setting" style="@style/gs_id8_main_left_bar_text"/>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/ll_left_3" android:background="@drawable/bmw_id8_main_left_btn_yellow" style="@style/id8_main_left_bar_container">
+        <ImageView android:id="@+id/iv_left_3" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <TextView android:id="@+id/tv_left_3" style="@style/gs_id8_main_left_bar_text"/>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/ll_left_4" android:background="@drawable/bmw_id8_main_left_btn_yellow" style="@style/id8_main_left_bar_container">
+        <ImageView android:id="@+id/iv_left_4" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <TextView android:id="@+id/tv_left_4" style="@style/gs_id8_main_left_bar_text"/>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/ll_left_5" android:background="@drawable/bmw_id8_main_left_btn_yellow" style="@style/id8_main_left_bar_container">
+        <ImageView android:id="@+id/iv_left_5" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <TextView android:id="@+id/tv_left_5" style="@style/gs_id8_main_left_bar_text"/>
+    </LinearLayout>
+</LinearLayout>

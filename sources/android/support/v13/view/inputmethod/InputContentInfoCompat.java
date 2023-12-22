@@ -5,9 +5,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.view.inputmethod.InputContentInfo;
 
+/* loaded from: classes.dex */
 public final class InputContentInfoCompat {
     private final InputContentInfoCompatImpl mImpl;
 
+    /* loaded from: classes.dex */
     private interface InputContentInfoCompatImpl {
         Uri getContentUri();
 
@@ -22,6 +24,7 @@ public final class InputContentInfoCompat {
         void requestPermission();
     }
 
+    /* loaded from: classes.dex */
     private static final class InputContentInfoCompatBaseImpl implements InputContentInfoCompatImpl {
         private final Uri mContentUri;
         private final ClipDescription mDescription;
@@ -33,29 +36,36 @@ public final class InputContentInfoCompat {
             this.mLinkUri = linkUri;
         }
 
+        @Override // android.support.v13.view.inputmethod.InputContentInfoCompat.InputContentInfoCompatImpl
         public Uri getContentUri() {
             return this.mContentUri;
         }
 
+        @Override // android.support.v13.view.inputmethod.InputContentInfoCompat.InputContentInfoCompatImpl
         public ClipDescription getDescription() {
             return this.mDescription;
         }
 
+        @Override // android.support.v13.view.inputmethod.InputContentInfoCompat.InputContentInfoCompatImpl
         public Uri getLinkUri() {
             return this.mLinkUri;
         }
 
+        @Override // android.support.v13.view.inputmethod.InputContentInfoCompat.InputContentInfoCompatImpl
         public Object getInputContentInfo() {
             return null;
         }
 
+        @Override // android.support.v13.view.inputmethod.InputContentInfoCompat.InputContentInfoCompatImpl
         public void requestPermission() {
         }
 
+        @Override // android.support.v13.view.inputmethod.InputContentInfoCompat.InputContentInfoCompatImpl
         public void releasePermission() {
         }
     }
 
+    /* loaded from: classes.dex */
     private static final class InputContentInfoCompatApi25Impl implements InputContentInfoCompatImpl {
         final InputContentInfo mObject;
 
@@ -67,26 +77,32 @@ public final class InputContentInfoCompat {
             this.mObject = new InputContentInfo(contentUri, description, linkUri);
         }
 
+        @Override // android.support.v13.view.inputmethod.InputContentInfoCompat.InputContentInfoCompatImpl
         public Uri getContentUri() {
             return this.mObject.getContentUri();
         }
 
+        @Override // android.support.v13.view.inputmethod.InputContentInfoCompat.InputContentInfoCompatImpl
         public ClipDescription getDescription() {
             return this.mObject.getDescription();
         }
 
+        @Override // android.support.v13.view.inputmethod.InputContentInfoCompat.InputContentInfoCompatImpl
         public Uri getLinkUri() {
             return this.mObject.getLinkUri();
         }
 
+        @Override // android.support.v13.view.inputmethod.InputContentInfoCompat.InputContentInfoCompatImpl
         public Object getInputContentInfo() {
             return this.mObject;
         }
 
+        @Override // android.support.v13.view.inputmethod.InputContentInfoCompat.InputContentInfoCompatImpl
         public void requestPermission() {
             this.mObject.requestPermission();
         }
 
+        @Override // android.support.v13.view.inputmethod.InputContentInfoCompat.InputContentInfoCompatImpl
         public void releasePermission() {
             this.mObject.releasePermission();
         }
@@ -117,10 +133,10 @@ public final class InputContentInfoCompat {
     }
 
     public static InputContentInfoCompat wrap(Object inputContentInfo) {
-        if (inputContentInfo != null && Build.VERSION.SDK_INT >= 25) {
-            return new InputContentInfoCompat(new InputContentInfoCompatApi25Impl(inputContentInfo));
+        if (inputContentInfo == null || Build.VERSION.SDK_INT < 25) {
+            return null;
         }
-        return null;
+        return new InputContentInfoCompat(new InputContentInfoCompatApi25Impl(inputContentInfo));
     }
 
     public Object unwrap() {

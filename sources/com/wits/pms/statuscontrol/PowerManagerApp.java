@@ -14,22 +14,23 @@ import com.wits.pms.IContentObserver;
 import com.wits.pms.IPowerManagerAppService;
 import com.wits.pms.IStatusObserver;
 import com.wits.pms.IStatusService;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
+/* loaded from: classes.dex */
 public class PowerManagerApp {
-    /* access modifiers changed from: private */
-    public static ICmdListener cmdListener;
+    private static ICmdListener cmdListener;
     private static Context context;
-    /* access modifiers changed from: private */
-    public static final Object lock = new Object();
-    /* access modifiers changed from: private */
-    public static final HashMap<String, IContentObserver> maps = new HashMap<>();
+    private static final HashMap<String, IContentObserver> maps = new HashMap<>();
+    private static final Object lock = new Object();
 
     public static void init(Context context2) {
         context = context2.getApplicationContext();
-        context2.getContentResolver().registerContentObserver(Settings.System.getUriFor("bootTimes"), true, new ContentObserver(new Handler(context2.getMainLooper())) {
+        context2.getContentResolver().registerContentObserver(Settings.System.getUriFor("bootTimes"), true, new ContentObserver(new Handler(context2.getMainLooper())) { // from class: com.wits.pms.statuscontrol.PowerManagerApp.1
+            @Override // android.database.ContentObserver
             public void onChange(boolean selfChange) {
                 super.onChange(selfChange);
                 if (PowerManagerApp.cmdListener != null) {
@@ -39,8 +40,8 @@ public class PowerManagerApp {
                     for (String key : PowerManagerApp.maps.keySet()) {
                         PowerManagerApp.registerIContentObserver(key, (IContentObserver) PowerManagerApp.maps.get(key));
                     }
-                    for (String key2 : V2.maps.keySet()) {
-                        V2.registerIContentObserver(key2, (IStatusObserver) V2.maps.get(key2));
+                    for (String key2 : C1877V2.maps.keySet()) {
+                        C1877V2.registerIContentObserver(key2, (IStatusObserver) C1877V2.maps.get(key2));
                     }
                 }
             }
@@ -54,9 +55,10 @@ public class PowerManagerApp {
     public static void registerICmdListener(ICmdListener listener) {
         try {
             cmdListener = listener;
-            if (getManager() != null) {
-                getManager().registerCmdListener(listener);
+            if (getManager() == null) {
+                return;
             }
+            getManager().registerCmdListener(listener);
         } catch (RemoteException e) {
         }
     }
@@ -66,36 +68,40 @@ public class PowerManagerApp {
         synchronized (lock) {
             try {
                 maps.put(key, contentObserver);
-                if (getManager() != null) {
-                    getManager().registerObserver(key, contentObserver);
-                }
             } catch (RemoteException e) {
             }
+            if (getManager() == null) {
+                return;
+            }
+            getManager().registerObserver(key, contentObserver);
         }
     }
 
     public static void unRegisterIContentObserver(IContentObserver contentObserver) {
         synchronized (lock) {
             try {
-                for (String key : maps.keySet()) {
+                Set<String> strings = maps.keySet();
+                for (String key : strings) {
                     HashMap<String, IContentObserver> hashMap = maps;
                     if (hashMap.get(key) == contentObserver) {
                         hashMap.remove(key, contentObserver);
                     }
                 }
-                if (getManager() != null) {
-                    getManager().unregisterObserver(contentObserver);
-                }
             } catch (Exception e) {
                 maps.clear();
             }
+            if (getManager() == null) {
+                return;
+            }
+            getManager().unregisterObserver(contentObserver);
         }
     }
 
     public static IBinder getService(String serviceName) {
         try {
             Class<?> serviceManager = Class.forName("android.os.ServiceManager");
-            return (IBinder) serviceManager.getMethod("getService", new Class[]{String.class}).invoke(serviceManager, new Object[]{serviceName});
+            Method getService = serviceManager.getMethod("getService", String.class);
+            return (IBinder) getService.invoke(serviceManager, serviceName);
         } catch (Exception var3) {
             Log.e(PowerManagerApp.class.getName(), "error service init - " + serviceName, var3);
             return null;
@@ -114,14 +120,15 @@ public class PowerManagerApp {
     public static void sendStatus(WitsStatus witsStatus) {
         if (getManager() != null) {
             try {
-                getManager().sendStatus(new Gson().toJson((Object) witsStatus));
+                getManager().sendStatus(new Gson().toJson(witsStatus));
             } catch (RemoteException e) {
             }
         }
     }
 
     public static List<String> getDataListFromJsonKey(String key) {
-        return (List) new Gson().fromJson(Settings.System.getString(context.getContentResolver(), key), new TypeToken<ArrayList<String>>() {
+        String json = Settings.System.getString(context.getContentResolver(), key);
+        return (List) new Gson().fromJson(json, new TypeToken<ArrayList<String>>() { // from class: com.wits.pms.statuscontrol.PowerManagerApp.2
         }.getType());
     }
 
@@ -192,9 +199,10 @@ public class PowerManagerApp {
         }
     }
 
-    public static class V2 {
-        /* access modifiers changed from: private */
-        public static final HashMap<String, IStatusObserver> maps = new HashMap<>();
+    /* renamed from: com.wits.pms.statuscontrol.PowerManagerApp$V2 */
+    /* loaded from: classes.dex */
+    public static class C1877V2 {
+        private static final HashMap<String, IStatusObserver> maps = new HashMap<>();
 
         public static IStatusService getManager() {
             return IStatusService.Stub.asInterface(PowerManagerApp.getService("wits_status"));
@@ -250,29 +258,32 @@ public class PowerManagerApp {
             synchronized (PowerManagerApp.lock) {
                 try {
                     maps.put(key, statusObserver);
-                    if (getManager() != null) {
-                        getManager().registerStatusListener(key, statusObserver);
-                    }
                 } catch (RemoteException e) {
                 }
+                if (getManager() == null) {
+                    return;
+                }
+                getManager().registerStatusListener(key, statusObserver);
             }
         }
 
         public static void unRegisterIContentObserver(IStatusObserver statusObserver) {
             synchronized (PowerManagerApp.lock) {
                 try {
-                    for (String key : maps.keySet()) {
+                    Set<String> strings = maps.keySet();
+                    for (String key : strings) {
                         HashMap<String, IStatusObserver> hashMap = maps;
                         if (hashMap.get(key) == statusObserver) {
                             hashMap.remove(key, statusObserver);
                         }
                     }
-                    if (getManager() != null) {
-                        getManager().unregisterStatusListener(statusObserver);
-                    }
                 } catch (Exception e) {
                     maps.clear();
                 }
+                if (getManager() == null) {
+                    return;
+                }
+                getManager().unregisterStatusListener(statusObserver);
             }
         }
     }

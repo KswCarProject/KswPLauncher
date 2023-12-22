@@ -1,13 +1,13 @@
 package android.arch.persistence.room;
 
-import android.arch.persistence.db.SupportSQLiteStatement;
+import android.arch.persistence.p000db.SupportSQLiteStatement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public abstract class EntityInsertionAdapter<T> extends SharedSQLiteStatement {
-    /* access modifiers changed from: protected */
-    public abstract void bind(SupportSQLiteStatement supportSQLiteStatement, T t);
+    protected abstract void bind(SupportSQLiteStatement supportSQLiteStatement, T t);
 
     public EntityInsertionAdapter(RoomDatabase database) {
         super(database);

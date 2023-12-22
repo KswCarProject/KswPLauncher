@@ -8,21 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class DashboardDataBinding extends ViewDataBinding {
     public final ImageView ivMask;
     public final RelativeLayout llContainer;
     @Bindable
     protected LauncherViewModel mDashboardViewModel;
 
-    public abstract void setDashboardViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setDashboardViewModel(LauncherViewModel DashboardViewModel);
 
-    protected DashboardDataBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivMask2, RelativeLayout llContainer2) {
+    protected DashboardDataBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivMask, RelativeLayout llContainer) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.ivMask = ivMask2;
-        this.llContainer = llContainer2;
+        this.ivMask = ivMask;
+        this.llContainer = llContainer;
     }
 
     public LauncherViewModel getDashboardViewModel() {
@@ -35,7 +36,7 @@ public abstract class DashboardDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static DashboardDataBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (DashboardDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_dashboard, root, attachToRoot, component);
+        return (DashboardDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_dashboard, root, attachToRoot, component);
     }
 
     public static DashboardDataBinding inflate(LayoutInflater inflater) {
@@ -44,7 +45,7 @@ public abstract class DashboardDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static DashboardDataBinding inflate(LayoutInflater inflater, Object component) {
-        return (DashboardDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_dashboard, (ViewGroup) null, false, component);
+        return (DashboardDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_dashboard, null, false, component);
     }
 
     public static DashboardDataBinding bind(View view) {
@@ -53,6 +54,6 @@ public abstract class DashboardDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static DashboardDataBinding bind(View view, Object component) {
-        return (DashboardDataBinding) bind(component, view, R.layout.fragment_dashboard);
+        return (DashboardDataBinding) bind(component, view, C0899R.C0902layout.fragment_dashboard);
     }
 }

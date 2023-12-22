@@ -7,26 +7,31 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
+/* loaded from: classes13.dex */
 public class ID6ShowSystemSet extends RelativeLayout {
     private CheckBox cbox_sysDcgj;
     private CheckBox cbox_sysDcld;
     private CheckBox cbox_sysHjs;
     private CheckBox cbox_sysXcjz;
-    private int cheVideo = 0;
+    private int cheVideo;
     private Context context;
-    private int dcgj = 0;
-    private int dcld = 0;
-    private int housi = 0;
+    private int dcgj;
+    private int dcld;
+    private int housi;
     private View view;
 
-    public ID6ShowSystemSet(Context context2) {
-        super(context2);
-        this.context = context2;
-        this.view = LayoutInflater.from(context2).inflate(R.layout.layout_id6_system_set_shwo, (ViewGroup) null);
+    public ID6ShowSystemSet(Context context) {
+        super(context);
+        this.housi = 0;
+        this.cheVideo = 0;
+        this.dcgj = 0;
+        this.dcld = 0;
+        this.context = context;
+        this.view = LayoutInflater.from(context).inflate(C0899R.C0902layout.layout_id6_system_set_shwo, (ViewGroup) null);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(-1, -1);
         initData();
         initView(this.view);
@@ -45,20 +50,15 @@ public class ID6ShowSystemSet extends RelativeLayout {
         }
     }
 
-    private void initView(View view2) {
-        this.cbox_sysHjs = (CheckBox) view2.findViewById(R.id.scbox_sysHjs);
-        this.cbox_sysXcjz = (CheckBox) view2.findViewById(R.id.scbox_sysXcjz);
-        this.cbox_sysDcgj = (CheckBox) view2.findViewById(R.id.scbox_sysDcgj);
-        this.cbox_sysDcld = (CheckBox) view2.findViewById(R.id.scbox_sysDcld);
-        boolean z = true;
+    private void initView(View view) {
+        this.cbox_sysHjs = (CheckBox) view.findViewById(C0899R.C0901id.scbox_sysHjs);
+        this.cbox_sysXcjz = (CheckBox) view.findViewById(C0899R.C0901id.scbox_sysXcjz);
+        this.cbox_sysDcgj = (CheckBox) view.findViewById(C0899R.C0901id.scbox_sysDcgj);
+        this.cbox_sysDcld = (CheckBox) view.findViewById(C0899R.C0901id.scbox_sysDcld);
         this.cbox_sysHjs.setChecked(this.housi != 0);
         this.cbox_sysXcjz.setChecked(this.cheVideo != 0);
         this.cbox_sysDcgj.setChecked(this.dcgj != 0);
-        CheckBox checkBox = this.cbox_sysDcld;
-        if (this.dcld == 0) {
-            z = false;
-        }
-        checkBox.setChecked(z);
+        this.cbox_sysDcld.setChecked(this.dcld != 0);
         this.cbox_sysHjs.setEnabled(false);
         this.cbox_sysXcjz.setEnabled(false);
         this.cbox_sysDcgj.setEnabled(false);

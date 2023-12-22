@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:focusable="true" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="55dp">
-    <com.wits.ksw.settings.utlis_view.RtlNaviRadioButton android:enabled="false" android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rbt_navi" android:background="@drawable/ntg6_czhong_item" android:padding="10dp" android:focusable="true" android:layout_width="match_parent" android:layout_height="55dp" android:button="@drawable/ntg6_rad_btn_sel" android:lines="1"/>
-</RelativeLayout>

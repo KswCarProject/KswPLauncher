@@ -18,24 +18,26 @@ import java.util.concurrent.atomic.AtomicReference;
 import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableSwitchMapCompletable<T> extends Completable {
     final boolean delayErrors;
     final Function<? super T, ? extends CompletableSource> mapper;
     final Flowable<T> source;
 
-    public FlowableSwitchMapCompletable(Flowable<T> source2, Function<? super T, ? extends CompletableSource> mapper2, boolean delayErrors2) {
-        this.source = source2;
-        this.mapper = mapper2;
-        this.delayErrors = delayErrors2;
+    public FlowableSwitchMapCompletable(Flowable<T> source, Function<? super T, ? extends CompletableSource> mapper, boolean delayErrors) {
+        this.source = source;
+        this.mapper = mapper;
+        this.delayErrors = delayErrors;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
-        this.source.subscribe(new SwitchMapCompletableObserver(observer, this.mapper, this.delayErrors));
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
+        this.source.subscribe((FlowableSubscriber) new SwitchMapCompletableObserver(observer, this.mapper, this.delayErrors));
     }
 
+    /* loaded from: classes.dex */
     static final class SwitchMapCompletableObserver<T> implements FlowableSubscriber<T>, Disposable {
-        static final SwitchMapInnerObserver INNER_DISPOSED = new SwitchMapInnerObserver((SwitchMapCompletableObserver<?>) null);
+        static final SwitchMapInnerObserver INNER_DISPOSED = new SwitchMapInnerObserver(null);
         final boolean delayErrors;
         volatile boolean done;
         final CompletableObserver downstream;
@@ -44,12 +46,13 @@ public final class FlowableSwitchMapCompletable<T> extends Completable {
         final Function<? super T, ? extends CompletableSource> mapper;
         Subscription upstream;
 
-        SwitchMapCompletableObserver(CompletableObserver downstream2, Function<? super T, ? extends CompletableSource> mapper2, boolean delayErrors2) {
-            this.downstream = downstream2;
-            this.mapper = mapper2;
-            this.delayErrors = delayErrors2;
+        SwitchMapCompletableObserver(CompletableObserver downstream, Function<? super T, ? extends CompletableSource> mapper, boolean delayErrors) {
+            this.downstream = downstream;
+            this.mapper = mapper;
+            this.delayErrors = delayErrors;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -58,6 +61,7 @@ public final class FlowableSwitchMapCompletable<T> extends Completable {
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             SwitchMapInnerObserver current;
             try {
@@ -80,20 +84,25 @@ public final class FlowableSwitchMapCompletable<T> extends Completable {
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
-            if (!this.errors.addThrowable(t)) {
-                RxJavaPlugins.onError(t);
-            } else if (this.delayErrors) {
-                onComplete();
-            } else {
+            if (this.errors.addThrowable(t)) {
+                if (this.delayErrors) {
+                    onComplete();
+                    return;
+                }
                 disposeInner();
                 Throwable ex = this.errors.terminate();
                 if (ex != ExceptionHelper.TERMINATED) {
                     this.downstream.onError(ex);
+                    return;
                 }
+                return;
             }
+            RxJavaPlugins.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.done = true;
             if (this.inner.get() == null) {
@@ -106,8 +115,7 @@ public final class FlowableSwitchMapCompletable<T> extends Completable {
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void disposeInner() {
+        void disposeInner() {
             AtomicReference<SwitchMapInnerObserver> atomicReference = this.inner;
             SwitchMapInnerObserver switchMapInnerObserver = INNER_DISPOSED;
             SwitchMapInnerObserver o = atomicReference.getAndSet(switchMapInnerObserver);
@@ -116,33 +124,39 @@ public final class FlowableSwitchMapCompletable<T> extends Completable {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.cancel();
             disposeInner();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.inner.get() == INNER_DISPOSED;
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerError(SwitchMapInnerObserver sender, Throwable error) {
-            if (!this.inner.compareAndSet(sender, (Object) null) || !this.errors.addThrowable(error)) {
-                RxJavaPlugins.onError(error);
-            } else if (!this.delayErrors) {
+        void innerError(SwitchMapInnerObserver sender, Throwable error) {
+            if (this.inner.compareAndSet(sender, null) && this.errors.addThrowable(error)) {
+                if (this.delayErrors) {
+                    if (this.done) {
+                        this.downstream.onError(this.errors.terminate());
+                        return;
+                    }
+                    return;
+                }
                 dispose();
                 Throwable ex = this.errors.terminate();
                 if (ex != ExceptionHelper.TERMINATED) {
                     this.downstream.onError(ex);
+                    return;
                 }
-            } else if (this.done) {
-                this.downstream.onError(this.errors.terminate());
+                return;
             }
+            RxJavaPlugins.onError(error);
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerComplete(SwitchMapInnerObserver sender) {
-            if (this.inner.compareAndSet(sender, (Object) null) && this.done) {
+        void innerComplete(SwitchMapInnerObserver sender) {
+            if (this.inner.compareAndSet(sender, null) && this.done) {
                 Throwable ex = this.errors.terminate();
                 if (ex == null) {
                     this.downstream.onComplete();
@@ -152,28 +166,31 @@ public final class FlowableSwitchMapCompletable<T> extends Completable {
             }
         }
 
+        /* loaded from: classes.dex */
         static final class SwitchMapInnerObserver extends AtomicReference<Disposable> implements CompletableObserver {
             private static final long serialVersionUID = -8003404460084760287L;
             final SwitchMapCompletableObserver<?> parent;
 
-            SwitchMapInnerObserver(SwitchMapCompletableObserver<?> parent2) {
-                this.parent = parent2;
+            SwitchMapInnerObserver(SwitchMapCompletableObserver<?> parent) {
+                this.parent = parent;
             }
 
+            @Override // io.reactivex.CompletableObserver
             public void onSubscribe(Disposable d) {
                 DisposableHelper.setOnce(this, d);
             }
 
+            @Override // io.reactivex.CompletableObserver
             public void onError(Throwable e) {
                 this.parent.innerError(this, e);
             }
 
+            @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
             public void onComplete() {
                 this.parent.innerComplete(this);
             }
 
-            /* access modifiers changed from: package-private */
-            public void dispose() {
+            void dispose() {
                 DisposableHelper.dispose(this);
             }
         }

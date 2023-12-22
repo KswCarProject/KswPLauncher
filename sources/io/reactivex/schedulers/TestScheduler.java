@@ -9,6 +9,7 @@ import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+/* loaded from: classes.dex */
 public final class TestScheduler extends Scheduler {
     long counter;
     final Queue<TimedRunnable> queue = new PriorityBlockingQueue(11);
@@ -21,23 +22,25 @@ public final class TestScheduler extends Scheduler {
         this.time = unit.toNanos(delayTime);
     }
 
+    /* loaded from: classes.dex */
     static final class TimedRunnable implements Comparable<TimedRunnable> {
         final long count;
         final Runnable run;
         final TestWorker scheduler;
         final long time;
 
-        TimedRunnable(TestWorker scheduler2, long time2, Runnable run2, long count2) {
-            this.time = time2;
-            this.run = run2;
-            this.scheduler = scheduler2;
-            this.count = count2;
+        TimedRunnable(TestWorker scheduler, long time, Runnable run, long count) {
+            this.time = time;
+            this.run = run;
+            this.scheduler = scheduler;
+            this.count = count;
         }
 
         public String toString() {
-            return String.format("TimedRunnable(time = %d, run = %s)", new Object[]{Long.valueOf(this.time), this.run.toString()});
+            return String.format("TimedRunnable(time = %d, run = %s)", Long.valueOf(this.time), this.run.toString());
         }
 
+        @Override // java.lang.Comparable
         public int compareTo(TimedRunnable o) {
             long j = this.time;
             long j2 = o.time;
@@ -48,6 +51,7 @@ public final class TestScheduler extends Scheduler {
         }
     }
 
+    @Override // io.reactivex.Scheduler
     public long now(TimeUnit unit) {
         return unit.convert(this.time, TimeUnit.NANOSECONDS);
     }
@@ -57,7 +61,8 @@ public final class TestScheduler extends Scheduler {
     }
 
     public void advanceTimeTo(long delayTime, TimeUnit unit) {
-        triggerActions(unit.toNanos(delayTime));
+        long targetTime = unit.toNanos(delayTime);
+        triggerActions(targetTime);
     }
 
     public void triggerActions() {
@@ -68,36 +73,40 @@ public final class TestScheduler extends Scheduler {
         while (true) {
             TimedRunnable current = this.queue.peek();
             if (current == null || current.time > targetTimeInNanoseconds) {
-                this.time = targetTimeInNanoseconds;
-            } else {
-                this.time = current.time == 0 ? this.time : current.time;
-                this.queue.remove(current);
-                if (!current.scheduler.disposed) {
-                    current.run.run();
-                }
+                break;
+            }
+            this.time = current.time == 0 ? this.time : current.time;
+            this.queue.remove(current);
+            if (!current.scheduler.disposed) {
+                current.run.run();
             }
         }
         this.time = targetTimeInNanoseconds;
     }
 
+    @Override // io.reactivex.Scheduler
     public Scheduler.Worker createWorker() {
         return new TestWorker();
     }
 
+    /* loaded from: classes.dex */
     final class TestWorker extends Scheduler.Worker {
         volatile boolean disposed;
 
         TestWorker() {
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.disposed = true;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.disposed;
         }
 
+        @Override // io.reactivex.Scheduler.Worker
         public Disposable schedule(Runnable run, long delayTime, TimeUnit unit) {
             if (this.disposed) {
                 return EmptyDisposable.INSTANCE;
@@ -106,11 +115,12 @@ public final class TestScheduler extends Scheduler {
             TestScheduler testScheduler = TestScheduler.this;
             long j = testScheduler.counter;
             testScheduler.counter = 1 + j;
-            TimedRunnable timedRunnable = new TimedRunnable(this, nanos, run, j);
-            TestScheduler.this.queue.add(timedRunnable);
-            return Disposables.fromRunnable(new QueueRemove(timedRunnable));
+            TimedRunnable timedAction = new TimedRunnable(this, nanos, run, j);
+            TestScheduler.this.queue.add(timedAction);
+            return Disposables.fromRunnable(new QueueRemove(timedAction));
         }
 
+        @Override // io.reactivex.Scheduler.Worker
         public Disposable schedule(Runnable run) {
             if (this.disposed) {
                 return EmptyDisposable.INSTANCE;
@@ -118,22 +128,25 @@ public final class TestScheduler extends Scheduler {
             TestScheduler testScheduler = TestScheduler.this;
             long j = testScheduler.counter;
             testScheduler.counter = 1 + j;
-            TimedRunnable timedRunnable = new TimedRunnable(this, 0, run, j);
-            TestScheduler.this.queue.add(timedRunnable);
-            return Disposables.fromRunnable(new QueueRemove(timedRunnable));
+            TimedRunnable timedAction = new TimedRunnable(this, 0L, run, j);
+            TestScheduler.this.queue.add(timedAction);
+            return Disposables.fromRunnable(new QueueRemove(timedAction));
         }
 
+        @Override // io.reactivex.Scheduler.Worker
         public long now(TimeUnit unit) {
             return TestScheduler.this.now(unit);
         }
 
+        /* loaded from: classes.dex */
         final class QueueRemove implements Runnable {
             final TimedRunnable timedAction;
 
-            QueueRemove(TimedRunnable timedAction2) {
-                this.timedAction = timedAction2;
+            QueueRemove(TimedRunnable timedAction) {
+                this.timedAction = timedAction;
             }
 
+            @Override // java.lang.Runnable
             public void run() {
                 TestScheduler.this.queue.remove(this.timedAction);
             }

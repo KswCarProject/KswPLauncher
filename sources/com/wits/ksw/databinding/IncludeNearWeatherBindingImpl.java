@@ -1,13 +1,12 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.p001v4.media.session.PlaybackStateCompat;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 import com.wits.ksw.launcher.bean.WeatherInfo;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public class IncludeNearWeatherBindingImpl extends IncludeNearWeatherBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
@@ -53,96 +53,98 @@ public class IncludeNearWeatherBindingImpl extends IncludeNearWeatherBinding {
 
     private IncludeNearWeatherBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 21);
-        this.mDirtyFlags = -1;
-        LinearLayout linearLayout = bindings[0];
+        this.mDirtyFlags = -1L;
+        LinearLayout linearLayout = (LinearLayout) bindings[0];
         this.mboundView0 = linearLayout;
-        linearLayout.setTag((Object) null);
-        TextView textView = bindings[1];
+        linearLayout.setTag(null);
+        TextView textView = (TextView) bindings[1];
         this.mboundView1 = textView;
-        textView.setTag((Object) null);
-        TextView textView2 = bindings[10];
+        textView.setTag(null);
+        TextView textView2 = (TextView) bindings[10];
         this.mboundView10 = textView2;
-        textView2.setTag((Object) null);
-        TextView textView3 = bindings[11];
+        textView2.setTag(null);
+        TextView textView3 = (TextView) bindings[11];
         this.mboundView11 = textView3;
-        textView3.setTag((Object) null);
-        TextView textView4 = bindings[12];
+        textView3.setTag(null);
+        TextView textView4 = (TextView) bindings[12];
         this.mboundView12 = textView4;
-        textView4.setTag((Object) null);
-        ImageView imageView = bindings[13];
+        textView4.setTag(null);
+        ImageView imageView = (ImageView) bindings[13];
         this.mboundView13 = imageView;
-        imageView.setTag((Object) null);
-        TextView textView5 = bindings[14];
+        imageView.setTag(null);
+        TextView textView5 = (TextView) bindings[14];
         this.mboundView14 = textView5;
-        textView5.setTag((Object) null);
-        TextView textView6 = bindings[15];
+        textView5.setTag(null);
+        TextView textView6 = (TextView) bindings[15];
         this.mboundView15 = textView6;
-        textView6.setTag((Object) null);
-        TextView textView7 = bindings[16];
+        textView6.setTag(null);
+        TextView textView7 = (TextView) bindings[16];
         this.mboundView16 = textView7;
-        textView7.setTag((Object) null);
-        TextView textView8 = bindings[17];
+        textView7.setTag(null);
+        TextView textView8 = (TextView) bindings[17];
         this.mboundView17 = textView8;
-        textView8.setTag((Object) null);
-        ImageView imageView2 = bindings[18];
+        textView8.setTag(null);
+        ImageView imageView2 = (ImageView) bindings[18];
         this.mboundView18 = imageView2;
-        imageView2.setTag((Object) null);
-        TextView textView9 = bindings[19];
+        imageView2.setTag(null);
+        TextView textView9 = (TextView) bindings[19];
         this.mboundView19 = textView9;
-        textView9.setTag((Object) null);
-        TextView textView10 = bindings[2];
+        textView9.setTag(null);
+        TextView textView10 = (TextView) bindings[2];
         this.mboundView2 = textView10;
-        textView10.setTag((Object) null);
-        TextView textView11 = bindings[20];
+        textView10.setTag(null);
+        TextView textView11 = (TextView) bindings[20];
         this.mboundView20 = textView11;
-        textView11.setTag((Object) null);
-        TextView textView12 = bindings[21];
+        textView11.setTag(null);
+        TextView textView12 = (TextView) bindings[21];
         this.mboundView21 = textView12;
-        textView12.setTag((Object) null);
-        TextView textView13 = bindings[22];
+        textView12.setTag(null);
+        TextView textView13 = (TextView) bindings[22];
         this.mboundView22 = textView13;
-        textView13.setTag((Object) null);
-        ImageView imageView3 = bindings[23];
+        textView13.setTag(null);
+        ImageView imageView3 = (ImageView) bindings[23];
         this.mboundView23 = imageView3;
-        imageView3.setTag((Object) null);
-        TextView textView14 = bindings[24];
+        imageView3.setTag(null);
+        TextView textView14 = (TextView) bindings[24];
         this.mboundView24 = textView14;
-        textView14.setTag((Object) null);
-        TextView textView15 = bindings[25];
+        textView14.setTag(null);
+        TextView textView15 = (TextView) bindings[25];
         this.mboundView25 = textView15;
-        textView15.setTag((Object) null);
-        ImageView imageView4 = bindings[3];
+        textView15.setTag(null);
+        ImageView imageView4 = (ImageView) bindings[3];
         this.mboundView3 = imageView4;
-        imageView4.setTag((Object) null);
-        TextView textView16 = bindings[4];
+        imageView4.setTag(null);
+        TextView textView16 = (TextView) bindings[4];
         this.mboundView4 = textView16;
-        textView16.setTag((Object) null);
-        TextView textView17 = bindings[5];
+        textView16.setTag(null);
+        TextView textView17 = (TextView) bindings[5];
         this.mboundView5 = textView17;
-        textView17.setTag((Object) null);
-        TextView textView18 = bindings[6];
+        textView17.setTag(null);
+        TextView textView18 = (TextView) bindings[6];
         this.mboundView6 = textView18;
-        textView18.setTag((Object) null);
-        TextView textView19 = bindings[7];
+        textView18.setTag(null);
+        TextView textView19 = (TextView) bindings[7];
         this.mboundView7 = textView19;
-        textView19.setTag((Object) null);
-        ImageView imageView5 = bindings[8];
+        textView19.setTag(null);
+        ImageView imageView5 = (ImageView) bindings[8];
         this.mboundView8 = imageView5;
-        imageView5.setTag((Object) null);
-        TextView textView20 = bindings[9];
+        imageView5.setTag(null);
+        TextView textView20 = (TextView) bindings[9];
         this.mboundView9 = textView20;
-        textView20.setTag((Object) null);
+        textView20.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 4194304;
+            this.mDirtyFlags = 4194304L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -152,20 +154,22 @@ public class IncludeNearWeatherBindingImpl extends IncludeNearWeatherBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
-            return false;
+        if (17 == variableId) {
+            setWeatherViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setWeatherViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.IncludeNearWeatherBinding
     public void setWeatherViewModel(LauncherViewModel WeatherViewModel) {
         this.mWeatherViewModel = WeatherViewModel;
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeWeatherViewModelWeatherInfoNear4HourClock((ObservableField) object, fieldId);
@@ -214,246 +218,246 @@ public class IncludeNearWeatherBindingImpl extends IncludeNearWeatherBinding {
         }
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear4HourClock(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear4HourClock(ObservableField<String> WeatherViewModelWeatherInfoNear4HourClock, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear1HourImg(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear1HourImg(ObservableField<Drawable> WeatherViewModelWeatherInfoNear1HourImg, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear4HourImg(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear4HourImg(ObservableField<Drawable> WeatherViewModelWeatherInfoNear4HourImg, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear4HourClockUnit(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear4HourClockUnit(ObservableField<String> WeatherViewModelWeatherInfoNear4HourClockUnit, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear4HourTemp(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear4HourTemp(ObservableField<String> WeatherViewModelWeatherInfoNear4HourTemp, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 16;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 16;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear1HourClockUnit(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear1HourClockUnit(ObservableField<String> WeatherViewModelWeatherInfoNear1HourClockUnit, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 32;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 32;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear3HourImg(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear3HourImg(ObservableField<Drawable> WeatherViewModelWeatherInfoNear3HourImg, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 64;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 64;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear3HourClock(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear3HourClock(ObservableField<String> WeatherViewModelWeatherInfoNear3HourClock, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 128;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 128;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear5HourClockUnit(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear5HourClockUnit(ObservableField<String> WeatherViewModelWeatherInfoNear5HourClockUnit, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 256;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 256;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear1HourTemp(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear1HourTemp(ObservableField<String> WeatherViewModelWeatherInfoNear1HourTemp, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 512;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 512;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear2HourImg(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear2HourImg(ObservableField<Drawable> WeatherViewModelWeatherInfoNear2HourImg, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear5HourImg(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear5HourImg(ObservableField<Drawable> WeatherViewModelWeatherInfoNear5HourImg, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear3HourTemp(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear3HourTemp(ObservableField<String> WeatherViewModelWeatherInfoNear3HourTemp, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear2HourClockUnit(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear2HourClockUnit(ObservableField<String> WeatherViewModelWeatherInfoNear2HourClockUnit, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear2HourClock(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear2HourClock(ObservableField<String> WeatherViewModelWeatherInfoNear2HourClock, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoTemperUnit(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoTemperUnit(ObservableField<String> WeatherViewModelWeatherInfoTemperUnit, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear1HourClock(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear1HourClock(ObservableField<String> WeatherViewModelWeatherInfoNear1HourClock, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear5HourTemp(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear5HourTemp(ObservableField<String> WeatherViewModelWeatherInfoNear5HourTemp, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_URI;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_URI;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear5HourClock(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear5HourClock(ObservableField<String> WeatherViewModelWeatherInfoNear5HourClock, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_SET_REPEAT_MODE;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_SET_REPEAT_MODE;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear2HourTemp(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear2HourTemp(ObservableField<String> WeatherViewModelWeatherInfoNear2HourTemp, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE_ENABLED;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE_ENABLED;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoNear3HourClockUnit(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoNear3HourClockUnit(ObservableField<String> WeatherViewModelWeatherInfoNear3HourClockUnit, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_SET_CAPTIONING_ENABLED;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_SET_CAPTIONING_ENABLED;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
-        String weatherViewModelWeatherInfoNear5HourTempGet;
-        Drawable weatherViewModelWeatherInfoNear2HourImgGet;
-        String weatherViewModelWeatherInfoNear1HourTempGet;
-        String weatherViewModelWeatherInfoNear2HourTempGet;
-        Drawable weatherViewModelWeatherInfoNear5HourImgGet;
-        Drawable weatherViewModelWeatherInfoNear1HourImgGet;
-        String weatherViewModelWeatherInfoNear4HourTempGet;
-        String weatherViewModelWeatherInfoNear3HourClockUnitGet;
-        String weatherViewModelWeatherInfoNear2HourClockGet;
-        String weatherViewModelWeatherInfoNear3HourTempGet;
-        String weatherViewModelWeatherInfoNear4HourTempGet2;
-        String weatherViewModelWeatherInfoNear3HourClockUnitGet2;
-        String weatherViewModelWeatherInfoNear3HourClockGet;
-        String weatherViewModelWeatherInfoNear4HourClockUnitGet;
-        String weatherViewModelWeatherInfoNear5HourClockUnitGet;
-        String weatherViewModelWeatherInfoTemperUnitGet;
         String weatherViewModelWeatherInfoNear5HourClockGet;
+        String weatherViewModelWeatherInfoTemperUnitGet;
+        String weatherViewModelWeatherInfoNear2HourTempGet;
+        String weatherViewModelWeatherInfoNear1HourTempGet;
+        Drawable weatherViewModelWeatherInfoNear2HourImgGet;
+        String weatherViewModelWeatherInfoNear5HourTempGet;
+        String weatherViewModelWeatherInfoNear5HourClockUnitGet;
+        String weatherViewModelWeatherInfoNear4HourClockUnitGet;
+        Drawable weatherViewModelWeatherInfoNear1HourImgGet;
+        String weatherViewModelWeatherInfoNear3HourTempGet;
+        String weatherViewModelWeatherInfoNear3HourClockGet;
+        String weatherViewModelWeatherInfoNear4HourTempGet;
+        String weatherViewModelWeatherInfoNear4HourTempGet2;
+        String weatherViewModelWeatherInfoNear2HourClockGet;
+        Drawable weatherViewModelWeatherInfoNear5HourImgGet;
+        String weatherViewModelWeatherInfoNear3HourClockUnitGet;
+        String weatherViewModelWeatherInfoNear3HourClockUnitGet2;
         String weatherViewModelWeatherInfoNear5HourClockUnitGet2;
-        String weatherViewModelWeatherInfoNear5HourClockUnitGet3;
+        String weatherViewModelWeatherInfoNear4HourClockGet;
         Drawable weatherViewModelWeatherInfoNear5HourImgGet2;
         String weatherViewModelWeatherInfoNear5HourTempGet2;
         Drawable weatherViewModelWeatherInfoNear1HourImgGet2;
         String weatherViewModelWeatherInfoNear1HourTempGet2;
         String weatherViewModelWeatherInfoNear1HourTempGet3;
-        String weatherViewModelWeatherInfoNear2HourClockUnitGet;
+        String weatherViewModelWeatherInfoNear2HourClockGet2;
         Drawable weatherViewModelWeatherInfoNear2HourImgGet2;
-        String weatherViewModelWeatherInfoNear4HourClockGet;
+        String weatherViewModelWeatherInfoNear4HourClockGet2;
         ObservableField<String> weatherViewModelWeatherInfoNear3HourClockUnit;
         ObservableField<String> weatherViewModelWeatherInfoNear2HourTemp;
         ObservableField<String> weatherViewModelWeatherInfoNear5HourClock;
@@ -472,9 +476,9 @@ public class IncludeNearWeatherBindingImpl extends IncludeNearWeatherBinding {
         ObservableField<String> weatherViewModelWeatherInfoNear1HourClockUnit;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
-        String weatherViewModelWeatherInfoNear4HourClockGet2 = null;
+        String weatherViewModelWeatherInfoNear4HourClockGet3 = null;
         ObservableField<String> weatherViewModelWeatherInfoNear4HourClock = null;
         ObservableField<Drawable> weatherViewModelWeatherInfoNear1HourImg = null;
         ObservableField<Drawable> weatherViewModelWeatherInfoNear4HourImg = null;
@@ -483,15 +487,15 @@ public class IncludeNearWeatherBindingImpl extends IncludeNearWeatherBinding {
         ObservableField<String> weatherViewModelWeatherInfoNear4HourTemp = null;
         String weatherViewModelWeatherInfoNear1HourClockUnitGet = null;
         Drawable weatherViewModelWeatherInfoNear1HourImgGet3 = null;
-        String weatherViewModelWeatherInfoNear2HourClockGet2 = null;
+        String weatherViewModelWeatherInfoNear2HourClockGet3 = null;
         Drawable weatherViewModelWeatherInfoNear3HourImgGet = null;
         String weatherViewModelWeatherInfoNear5HourClockGet2 = null;
         String weatherViewModelWeatherInfoTemperUnitGet2 = null;
-        String weatherViewModelWeatherInfoNear2HourClockUnitGet2 = null;
+        String weatherViewModelWeatherInfoNear2HourClockUnitGet = null;
         Drawable weatherViewModelWeatherInfoNear5HourImgGet3 = null;
         String weatherViewModelWeatherInfoNear3HourClockGet2 = null;
         String weatherViewModelWeatherInfoNear4HourTempGet3 = null;
-        String weatherViewModelWeatherInfoNear5HourClockUnitGet4 = null;
+        String weatherViewModelWeatherInfoNear5HourClockUnitGet3 = null;
         String weatherViewModelWeatherInfoNear1HourClockGet = null;
         String weatherViewModelWeatherInfoNear2HourTempGet2 = null;
         String weatherViewModelWeatherInfoNear1HourTempGet4 = null;
@@ -499,356 +503,7 @@ public class IncludeNearWeatherBindingImpl extends IncludeNearWeatherBinding {
         String weatherViewModelWeatherInfoNear3HourTempGet2 = null;
         String weatherViewModelWeatherInfoNear4HourClockUnitGet2 = null;
         String weatherViewModelWeatherInfoNear5HourTempGet3 = null;
-        if ((dirtyFlags & 6291455) != 0) {
-            WeatherInfo weatherViewModelWeatherInfo = LauncherViewModel.weatherInfo;
-            if ((dirtyFlags & 4194305) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear4HourClock = weatherViewModelWeatherInfo.near4HourClock;
-                }
-                updateRegistration(0, (Observable) weatherViewModelWeatherInfoNear4HourClock);
-                if (weatherViewModelWeatherInfoNear4HourClock != null) {
-                    weatherViewModelWeatherInfoNear4HourClockGet2 = weatherViewModelWeatherInfoNear4HourClock.get();
-                }
-            }
-            if ((dirtyFlags & 4194306) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear1HourImg = weatherViewModelWeatherInfo.near1HourImg;
-                }
-                updateRegistration(1, (Observable) weatherViewModelWeatherInfoNear1HourImg);
-                if (weatherViewModelWeatherInfoNear1HourImg != null) {
-                    weatherViewModelWeatherInfoNear1HourImgGet3 = weatherViewModelWeatherInfoNear1HourImg.get();
-                }
-            }
-            if ((dirtyFlags & 4194308) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear4HourImg = weatherViewModelWeatherInfo.near4HourImg;
-                }
-                updateRegistration(2, (Observable) weatherViewModelWeatherInfoNear4HourImg);
-                if (weatherViewModelWeatherInfoNear4HourImg != null) {
-                    weatherViewModelWeatherInfoNear4HourImgGet = weatherViewModelWeatherInfoNear4HourImg.get();
-                }
-            }
-            if ((dirtyFlags & 4194312) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear4HourClockUnit = weatherViewModelWeatherInfo.near4HourClockUnit;
-                }
-                updateRegistration(3, (Observable) weatherViewModelWeatherInfoNear4HourClockUnit);
-                if (weatherViewModelWeatherInfoNear4HourClockUnit != null) {
-                    weatherViewModelWeatherInfoNear4HourClockUnitGet2 = weatherViewModelWeatherInfoNear4HourClockUnit.get();
-                }
-            }
-            if ((dirtyFlags & 4194320) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear4HourTemp = weatherViewModelWeatherInfo.near4HourTemp;
-                }
-                updateRegistration(4, (Observable) weatherViewModelWeatherInfoNear4HourTemp);
-                if (weatherViewModelWeatherInfoNear4HourTemp != null) {
-                    weatherViewModelWeatherInfoNear4HourTempGet3 = weatherViewModelWeatherInfoNear4HourTemp.get();
-                }
-            }
-            if ((dirtyFlags & 4194336) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear1HourClockUnit = weatherViewModelWeatherInfo.near1HourClockUnit;
-                } else {
-                    weatherViewModelWeatherInfoNear1HourClockUnit = null;
-                }
-                weatherViewModelWeatherInfoNear4HourClockGet = weatherViewModelWeatherInfoNear4HourClockGet2;
-                updateRegistration(5, (Observable) weatherViewModelWeatherInfoNear1HourClockUnit);
-                if (weatherViewModelWeatherInfoNear1HourClockUnit != null) {
-                    weatherViewModelWeatherInfoNear1HourClockUnitGet = weatherViewModelWeatherInfoNear1HourClockUnit.get();
-                    ObservableField<String> observableField = weatherViewModelWeatherInfoNear1HourClockUnit;
-                } else {
-                    ObservableField<String> observableField2 = weatherViewModelWeatherInfoNear1HourClockUnit;
-                }
-            } else {
-                weatherViewModelWeatherInfoNear4HourClockGet = weatherViewModelWeatherInfoNear4HourClockGet2;
-            }
-            if ((dirtyFlags & 4194368) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear3HourImg = weatherViewModelWeatherInfo.near3HourImg;
-                } else {
-                    weatherViewModelWeatherInfoNear3HourImg = null;
-                }
-                updateRegistration(6, (Observable) weatherViewModelWeatherInfoNear3HourImg);
-                if (weatherViewModelWeatherInfoNear3HourImg != null) {
-                    weatherViewModelWeatherInfoNear3HourImgGet = weatherViewModelWeatherInfoNear3HourImg.get();
-                    ObservableField<Drawable> observableField3 = weatherViewModelWeatherInfoNear3HourImg;
-                } else {
-                    ObservableField<Drawable> observableField4 = weatherViewModelWeatherInfoNear3HourImg;
-                }
-            }
-            if ((dirtyFlags & 4194432) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear3HourClock = weatherViewModelWeatherInfo.near3HourClock;
-                } else {
-                    weatherViewModelWeatherInfoNear3HourClock = null;
-                }
-                updateRegistration(7, (Observable) weatherViewModelWeatherInfoNear3HourClock);
-                if (weatherViewModelWeatherInfoNear3HourClock != null) {
-                    weatherViewModelWeatherInfoNear3HourClockGet2 = weatherViewModelWeatherInfoNear3HourClock.get();
-                    ObservableField<String> observableField5 = weatherViewModelWeatherInfoNear3HourClock;
-                } else {
-                    ObservableField<String> observableField6 = weatherViewModelWeatherInfoNear3HourClock;
-                }
-            }
-            if ((dirtyFlags & 4194560) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear5HourClockUnit = weatherViewModelWeatherInfo.near5HourClockUnit;
-                } else {
-                    weatherViewModelWeatherInfoNear5HourClockUnit = null;
-                }
-                updateRegistration(8, (Observable) weatherViewModelWeatherInfoNear5HourClockUnit);
-                if (weatherViewModelWeatherInfoNear5HourClockUnit != null) {
-                    weatherViewModelWeatherInfoNear5HourClockUnitGet4 = weatherViewModelWeatherInfoNear5HourClockUnit.get();
-                    ObservableField<String> observableField7 = weatherViewModelWeatherInfoNear5HourClockUnit;
-                } else {
-                    ObservableField<String> observableField8 = weatherViewModelWeatherInfoNear5HourClockUnit;
-                }
-            }
-            if ((dirtyFlags & 4194816) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear1HourTemp = weatherViewModelWeatherInfo.near1HourTemp;
-                } else {
-                    weatherViewModelWeatherInfoNear1HourTemp = null;
-                }
-                updateRegistration(9, (Observable) weatherViewModelWeatherInfoNear1HourTemp);
-                if (weatherViewModelWeatherInfoNear1HourTemp != null) {
-                    weatherViewModelWeatherInfoNear1HourTempGet4 = weatherViewModelWeatherInfoNear1HourTemp.get();
-                    ObservableField<String> observableField9 = weatherViewModelWeatherInfoNear1HourTemp;
-                } else {
-                    ObservableField<String> observableField10 = weatherViewModelWeatherInfoNear1HourTemp;
-                }
-            }
-            if ((dirtyFlags & 4195328) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear2HourImg = weatherViewModelWeatherInfo.near2HourImg;
-                } else {
-                    weatherViewModelWeatherInfoNear2HourImg = null;
-                }
-                updateRegistration(10, (Observable) weatherViewModelWeatherInfoNear2HourImg);
-                if (weatherViewModelWeatherInfoNear2HourImg != null) {
-                    weatherViewModelWeatherInfoNear2HourImgGet3 = weatherViewModelWeatherInfoNear2HourImg.get();
-                    ObservableField<Drawable> observableField11 = weatherViewModelWeatherInfoNear2HourImg;
-                } else {
-                    ObservableField<Drawable> observableField12 = weatherViewModelWeatherInfoNear2HourImg;
-                }
-            }
-            if ((dirtyFlags & 4196352) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear5HourImg = weatherViewModelWeatherInfo.near5HourImg;
-                } else {
-                    weatherViewModelWeatherInfoNear5HourImg = null;
-                }
-                updateRegistration(11, (Observable) weatherViewModelWeatherInfoNear5HourImg);
-                if (weatherViewModelWeatherInfoNear5HourImg != null) {
-                    weatherViewModelWeatherInfoNear5HourImgGet3 = weatherViewModelWeatherInfoNear5HourImg.get();
-                    ObservableField<Drawable> observableField13 = weatherViewModelWeatherInfoNear5HourImg;
-                } else {
-                    ObservableField<Drawable> observableField14 = weatherViewModelWeatherInfoNear5HourImg;
-                }
-            }
-            if ((dirtyFlags & 4198400) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear3HourTemp = weatherViewModelWeatherInfo.near3HourTemp;
-                } else {
-                    weatherViewModelWeatherInfoNear3HourTemp = null;
-                }
-                updateRegistration(12, (Observable) weatherViewModelWeatherInfoNear3HourTemp);
-                if (weatherViewModelWeatherInfoNear3HourTemp != null) {
-                    weatherViewModelWeatherInfoNear3HourTempGet2 = weatherViewModelWeatherInfoNear3HourTemp.get();
-                    ObservableField<String> observableField15 = weatherViewModelWeatherInfoNear3HourTemp;
-                } else {
-                    ObservableField<String> observableField16 = weatherViewModelWeatherInfoNear3HourTemp;
-                }
-            }
-            if ((dirtyFlags & 4202496) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear2HourClockUnit = weatherViewModelWeatherInfo.near2HourClockUnit;
-                } else {
-                    weatherViewModelWeatherInfoNear2HourClockUnit = null;
-                }
-                updateRegistration(13, (Observable) weatherViewModelWeatherInfoNear2HourClockUnit);
-                if (weatherViewModelWeatherInfoNear2HourClockUnit != null) {
-                    weatherViewModelWeatherInfoNear2HourClockUnitGet2 = weatherViewModelWeatherInfoNear2HourClockUnit.get();
-                    ObservableField<String> observableField17 = weatherViewModelWeatherInfoNear2HourClockUnit;
-                } else {
-                    ObservableField<String> observableField18 = weatherViewModelWeatherInfoNear2HourClockUnit;
-                }
-            }
-            if ((dirtyFlags & 4210688) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear2HourClock = weatherViewModelWeatherInfo.near2HourClock;
-                } else {
-                    weatherViewModelWeatherInfoNear2HourClock = null;
-                }
-                updateRegistration(14, (Observable) weatherViewModelWeatherInfoNear2HourClock);
-                if (weatherViewModelWeatherInfoNear2HourClock != null) {
-                    weatherViewModelWeatherInfoNear2HourClockGet2 = weatherViewModelWeatherInfoNear2HourClock.get();
-                    ObservableField<String> observableField19 = weatherViewModelWeatherInfoNear2HourClock;
-                } else {
-                    ObservableField<String> observableField20 = weatherViewModelWeatherInfoNear2HourClock;
-                }
-            }
-            if ((dirtyFlags & 4227072) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoTemperUnit = weatherViewModelWeatherInfo.temperUnit;
-                } else {
-                    weatherViewModelWeatherInfoTemperUnit = null;
-                }
-                updateRegistration(15, (Observable) weatherViewModelWeatherInfoTemperUnit);
-                if (weatherViewModelWeatherInfoTemperUnit != null) {
-                    weatherViewModelWeatherInfoTemperUnitGet2 = weatherViewModelWeatherInfoTemperUnit.get();
-                    ObservableField<String> observableField21 = weatherViewModelWeatherInfoTemperUnit;
-                } else {
-                    ObservableField<String> observableField22 = weatherViewModelWeatherInfoTemperUnit;
-                }
-            }
-            if ((dirtyFlags & 4259840) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear1HourClock = weatherViewModelWeatherInfo.near1HourClock;
-                } else {
-                    weatherViewModelWeatherInfoNear1HourClock = null;
-                }
-                updateRegistration(16, (Observable) weatherViewModelWeatherInfoNear1HourClock);
-                if (weatherViewModelWeatherInfoNear1HourClock != null) {
-                    weatherViewModelWeatherInfoNear1HourClockGet = weatherViewModelWeatherInfoNear1HourClock.get();
-                    ObservableField<String> observableField23 = weatherViewModelWeatherInfoNear1HourClock;
-                } else {
-                    ObservableField<String> observableField24 = weatherViewModelWeatherInfoNear1HourClock;
-                }
-            }
-            if ((dirtyFlags & 4325376) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear5HourTemp = weatherViewModelWeatherInfo.near5HourTemp;
-                } else {
-                    weatherViewModelWeatherInfoNear5HourTemp = null;
-                }
-                updateRegistration(17, (Observable) weatherViewModelWeatherInfoNear5HourTemp);
-                if (weatherViewModelWeatherInfoNear5HourTemp != null) {
-                    weatherViewModelWeatherInfoNear5HourTempGet3 = weatherViewModelWeatherInfoNear5HourTemp.get();
-                    ObservableField<String> observableField25 = weatherViewModelWeatherInfoNear5HourTemp;
-                } else {
-                    ObservableField<String> observableField26 = weatherViewModelWeatherInfoNear5HourTemp;
-                }
-            }
-            if ((dirtyFlags & 4456448) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear5HourClock = weatherViewModelWeatherInfo.near5HourClock;
-                } else {
-                    weatherViewModelWeatherInfoNear5HourClock = null;
-                }
-                updateRegistration(18, (Observable) weatherViewModelWeatherInfoNear5HourClock);
-                if (weatherViewModelWeatherInfoNear5HourClock != null) {
-                    weatherViewModelWeatherInfoNear5HourClockGet2 = weatherViewModelWeatherInfoNear5HourClock.get();
-                    ObservableField<String> observableField27 = weatherViewModelWeatherInfoNear5HourClock;
-                } else {
-                    ObservableField<String> observableField28 = weatherViewModelWeatherInfoNear5HourClock;
-                }
-            }
-            if ((dirtyFlags & 4718592) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear2HourTemp = weatherViewModelWeatherInfo.near2HourTemp;
-                } else {
-                    weatherViewModelWeatherInfoNear2HourTemp = null;
-                }
-                updateRegistration(19, (Observable) weatherViewModelWeatherInfoNear2HourTemp);
-                if (weatherViewModelWeatherInfoNear2HourTemp != null) {
-                    weatherViewModelWeatherInfoNear2HourTempGet2 = weatherViewModelWeatherInfoNear2HourTemp.get();
-                    ObservableField<String> observableField29 = weatherViewModelWeatherInfoNear2HourTemp;
-                } else {
-                    ObservableField<String> observableField30 = weatherViewModelWeatherInfoNear2HourTemp;
-                }
-            }
-            if ((dirtyFlags & 5242880) != 0) {
-                if (weatherViewModelWeatherInfo != null) {
-                    weatherViewModelWeatherInfoNear3HourClockUnit = weatherViewModelWeatherInfo.near3HourClockUnit;
-                } else {
-                    weatherViewModelWeatherInfoNear3HourClockUnit = null;
-                }
-                updateRegistration(20, (Observable) weatherViewModelWeatherInfoNear3HourClockUnit);
-                if (weatherViewModelWeatherInfoNear3HourClockUnit != null) {
-                    ObservableField<String> observableField31 = weatherViewModelWeatherInfoNear3HourClockUnit;
-                    weatherViewModelWeatherInfoTemperUnitGet = weatherViewModelWeatherInfoTemperUnitGet2;
-                    weatherViewModelWeatherInfoNear2HourTempGet = weatherViewModelWeatherInfoNear2HourTempGet2;
-                    weatherViewModelWeatherInfoNear1HourTempGet = weatherViewModelWeatherInfoNear1HourTempGet4;
-                    weatherViewModelWeatherInfoNear4HourClockGet2 = weatherViewModelWeatherInfoNear4HourClockGet;
-                    weatherViewModelWeatherInfoNear2HourImgGet = weatherViewModelWeatherInfoNear2HourImgGet3;
-                    weatherViewModelWeatherInfoNear5HourTempGet = weatherViewModelWeatherInfoNear5HourTempGet3;
-                    WeatherInfo weatherInfo = weatherViewModelWeatherInfo;
-                    ObservableField<Drawable> observableField32 = weatherViewModelWeatherInfoNear1HourImg;
-                    weatherViewModelWeatherInfoNear5HourClockGet = weatherViewModelWeatherInfoNear5HourClockGet2;
-                    weatherViewModelWeatherInfoNear4HourClockUnitGet = weatherViewModelWeatherInfoNear4HourClockUnitGet2;
-                    ObservableField<String> observableField33 = weatherViewModelWeatherInfoNear4HourClock;
-                    weatherViewModelWeatherInfoNear5HourClockUnitGet = weatherViewModelWeatherInfoNear5HourClockUnitGet4;
-                    weatherViewModelWeatherInfoNear1HourImgGet = weatherViewModelWeatherInfoNear1HourImgGet3;
-                    weatherViewModelWeatherInfoNear3HourTempGet = weatherViewModelWeatherInfoNear3HourTempGet2;
-                    String str = weatherViewModelWeatherInfoNear2HourClockUnitGet2;
-                    ObservableField<Drawable> observableField34 = weatherViewModelWeatherInfoNear4HourImg;
-                    weatherViewModelWeatherInfoNear3HourClockGet = weatherViewModelWeatherInfoNear3HourClockGet2;
-                    ObservableField<String> observableField35 = weatherViewModelWeatherInfoNear4HourTemp;
-                    weatherViewModelWeatherInfoNear4HourTempGet2 = weatherViewModelWeatherInfoNear4HourTempGet3;
-                    weatherViewModelWeatherInfoNear4HourTempGet = weatherViewModelWeatherInfoNear2HourClockGet2;
-                    weatherViewModelWeatherInfoNear2HourClockGet = weatherViewModelWeatherInfoNear1HourClockGet;
-                    weatherViewModelWeatherInfoNear5HourImgGet = weatherViewModelWeatherInfoNear5HourImgGet3;
-                    ObservableField<String> observableField36 = weatherViewModelWeatherInfoNear4HourClockUnit;
-                    weatherViewModelWeatherInfoNear3HourClockUnitGet2 = weatherViewModelWeatherInfoNear3HourClockUnit.get();
-                    weatherViewModelWeatherInfoNear3HourClockUnitGet = str;
-                } else {
-                    ObservableField<String> observableField37 = weatherViewModelWeatherInfoNear3HourClockUnit;
-                    weatherViewModelWeatherInfoTemperUnitGet = weatherViewModelWeatherInfoTemperUnitGet2;
-                    weatherViewModelWeatherInfoNear2HourTempGet = weatherViewModelWeatherInfoNear2HourTempGet2;
-                    weatherViewModelWeatherInfoNear1HourTempGet = weatherViewModelWeatherInfoNear1HourTempGet4;
-                    weatherViewModelWeatherInfoNear4HourClockGet2 = weatherViewModelWeatherInfoNear4HourClockGet;
-                    weatherViewModelWeatherInfoNear2HourImgGet = weatherViewModelWeatherInfoNear2HourImgGet3;
-                    weatherViewModelWeatherInfoNear5HourTempGet = weatherViewModelWeatherInfoNear5HourTempGet3;
-                    WeatherInfo weatherInfo2 = weatherViewModelWeatherInfo;
-                    ObservableField<Drawable> observableField38 = weatherViewModelWeatherInfoNear1HourImg;
-                    weatherViewModelWeatherInfoNear5HourClockGet = weatherViewModelWeatherInfoNear5HourClockGet2;
-                    weatherViewModelWeatherInfoNear4HourClockUnitGet = weatherViewModelWeatherInfoNear4HourClockUnitGet2;
-                    ObservableField<String> observableField39 = weatherViewModelWeatherInfoNear4HourClock;
-                    weatherViewModelWeatherInfoNear5HourClockUnitGet = weatherViewModelWeatherInfoNear5HourClockUnitGet4;
-                    weatherViewModelWeatherInfoNear1HourImgGet = weatherViewModelWeatherInfoNear1HourImgGet3;
-                    weatherViewModelWeatherInfoNear3HourTempGet = weatherViewModelWeatherInfoNear3HourTempGet2;
-                    String str2 = weatherViewModelWeatherInfoNear2HourClockUnitGet2;
-                    ObservableField<Drawable> observableField40 = weatherViewModelWeatherInfoNear4HourImg;
-                    weatherViewModelWeatherInfoNear3HourClockGet = weatherViewModelWeatherInfoNear3HourClockGet2;
-                    ObservableField<String> observableField41 = weatherViewModelWeatherInfoNear4HourTemp;
-                    weatherViewModelWeatherInfoNear4HourTempGet2 = weatherViewModelWeatherInfoNear4HourTempGet3;
-                    weatherViewModelWeatherInfoNear4HourTempGet = weatherViewModelWeatherInfoNear2HourClockGet2;
-                    weatherViewModelWeatherInfoNear2HourClockGet = weatherViewModelWeatherInfoNear1HourClockGet;
-                    weatherViewModelWeatherInfoNear5HourImgGet = weatherViewModelWeatherInfoNear5HourImgGet3;
-                    ObservableField<String> observableField42 = weatherViewModelWeatherInfoNear4HourClockUnit;
-                    weatherViewModelWeatherInfoNear3HourClockUnitGet2 = null;
-                    weatherViewModelWeatherInfoNear3HourClockUnitGet = str2;
-                }
-            } else {
-                weatherViewModelWeatherInfoTemperUnitGet = weatherViewModelWeatherInfoTemperUnitGet2;
-                weatherViewModelWeatherInfoNear2HourTempGet = weatherViewModelWeatherInfoNear2HourTempGet2;
-                weatherViewModelWeatherInfoNear1HourTempGet = weatherViewModelWeatherInfoNear1HourTempGet4;
-                weatherViewModelWeatherInfoNear4HourClockGet2 = weatherViewModelWeatherInfoNear4HourClockGet;
-                weatherViewModelWeatherInfoNear2HourImgGet = weatherViewModelWeatherInfoNear2HourImgGet3;
-                weatherViewModelWeatherInfoNear5HourTempGet = weatherViewModelWeatherInfoNear5HourTempGet3;
-                WeatherInfo weatherInfo3 = weatherViewModelWeatherInfo;
-                ObservableField<Drawable> observableField43 = weatherViewModelWeatherInfoNear1HourImg;
-                weatherViewModelWeatherInfoNear5HourClockGet = weatherViewModelWeatherInfoNear5HourClockGet2;
-                weatherViewModelWeatherInfoNear4HourClockUnitGet = weatherViewModelWeatherInfoNear4HourClockUnitGet2;
-                ObservableField<String> observableField44 = weatherViewModelWeatherInfoNear4HourClock;
-                weatherViewModelWeatherInfoNear5HourClockUnitGet = weatherViewModelWeatherInfoNear5HourClockUnitGet4;
-                weatherViewModelWeatherInfoNear1HourImgGet = weatherViewModelWeatherInfoNear1HourImgGet3;
-                weatherViewModelWeatherInfoNear3HourTempGet = weatherViewModelWeatherInfoNear3HourTempGet2;
-                String str3 = weatherViewModelWeatherInfoNear2HourClockUnitGet2;
-                ObservableField<Drawable> observableField45 = weatherViewModelWeatherInfoNear4HourImg;
-                weatherViewModelWeatherInfoNear3HourClockGet = weatherViewModelWeatherInfoNear3HourClockGet2;
-                ObservableField<String> observableField46 = weatherViewModelWeatherInfoNear4HourTemp;
-                weatherViewModelWeatherInfoNear4HourTempGet2 = weatherViewModelWeatherInfoNear4HourTempGet3;
-                weatherViewModelWeatherInfoNear4HourTempGet = weatherViewModelWeatherInfoNear2HourClockGet2;
-                weatherViewModelWeatherInfoNear2HourClockGet = weatherViewModelWeatherInfoNear1HourClockGet;
-                weatherViewModelWeatherInfoNear5HourImgGet = weatherViewModelWeatherInfoNear5HourImgGet3;
-                ObservableField<String> observableField47 = weatherViewModelWeatherInfoNear4HourClockUnit;
-                weatherViewModelWeatherInfoNear3HourClockUnitGet2 = null;
-                weatherViewModelWeatherInfoNear3HourClockUnitGet = str3;
-            }
-        } else {
+        if ((dirtyFlags & 6291455) == 0) {
             weatherViewModelWeatherInfoNear5HourClockGet = null;
             weatherViewModelWeatherInfoTemperUnitGet = null;
             weatherViewModelWeatherInfoNear2HourTempGet = null;
@@ -860,18 +515,301 @@ public class IncludeNearWeatherBindingImpl extends IncludeNearWeatherBinding {
             weatherViewModelWeatherInfoNear1HourImgGet = null;
             weatherViewModelWeatherInfoNear3HourTempGet = null;
             weatherViewModelWeatherInfoNear3HourClockGet = null;
-            weatherViewModelWeatherInfoNear4HourTempGet2 = null;
             weatherViewModelWeatherInfoNear4HourTempGet = null;
+            weatherViewModelWeatherInfoNear4HourTempGet2 = null;
             weatherViewModelWeatherInfoNear2HourClockGet = null;
             weatherViewModelWeatherInfoNear5HourImgGet = null;
-            weatherViewModelWeatherInfoNear3HourClockUnitGet2 = null;
             weatherViewModelWeatherInfoNear3HourClockUnitGet = null;
+            weatherViewModelWeatherInfoNear3HourClockUnitGet2 = null;
+        } else {
+            WeatherInfo weatherViewModelWeatherInfo = LauncherViewModel.weatherInfo;
+            if ((dirtyFlags & 4194305) != 0) {
+                if (weatherViewModelWeatherInfo != null) {
+                    weatherViewModelWeatherInfoNear4HourClock = weatherViewModelWeatherInfo.near4HourClock;
+                }
+                updateRegistration(0, weatherViewModelWeatherInfoNear4HourClock);
+                if (weatherViewModelWeatherInfoNear4HourClock != null) {
+                    weatherViewModelWeatherInfoNear4HourClockGet3 = weatherViewModelWeatherInfoNear4HourClock.get();
+                }
+            }
+            if ((dirtyFlags & 4194306) != 0) {
+                if (weatherViewModelWeatherInfo != null) {
+                    weatherViewModelWeatherInfoNear1HourImg = weatherViewModelWeatherInfo.near1HourImg;
+                }
+                updateRegistration(1, weatherViewModelWeatherInfoNear1HourImg);
+                if (weatherViewModelWeatherInfoNear1HourImg != null) {
+                    weatherViewModelWeatherInfoNear1HourImgGet3 = weatherViewModelWeatherInfoNear1HourImg.get();
+                }
+            }
+            if ((dirtyFlags & 4194308) != 0) {
+                if (weatherViewModelWeatherInfo != null) {
+                    weatherViewModelWeatherInfoNear4HourImg = weatherViewModelWeatherInfo.near4HourImg;
+                }
+                updateRegistration(2, weatherViewModelWeatherInfoNear4HourImg);
+                if (weatherViewModelWeatherInfoNear4HourImg != null) {
+                    weatherViewModelWeatherInfoNear4HourImgGet = weatherViewModelWeatherInfoNear4HourImg.get();
+                }
+            }
+            if ((dirtyFlags & 4194312) != 0) {
+                if (weatherViewModelWeatherInfo != null) {
+                    weatherViewModelWeatherInfoNear4HourClockUnit = weatherViewModelWeatherInfo.near4HourClockUnit;
+                }
+                updateRegistration(3, weatherViewModelWeatherInfoNear4HourClockUnit);
+                if (weatherViewModelWeatherInfoNear4HourClockUnit != null) {
+                    weatherViewModelWeatherInfoNear4HourClockUnitGet2 = weatherViewModelWeatherInfoNear4HourClockUnit.get();
+                }
+            }
+            if ((dirtyFlags & 4194320) != 0) {
+                if (weatherViewModelWeatherInfo != null) {
+                    weatherViewModelWeatherInfoNear4HourTemp = weatherViewModelWeatherInfo.near4HourTemp;
+                }
+                updateRegistration(4, weatherViewModelWeatherInfoNear4HourTemp);
+                if (weatherViewModelWeatherInfoNear4HourTemp != null) {
+                    weatherViewModelWeatherInfoNear4HourTempGet3 = weatherViewModelWeatherInfoNear4HourTemp.get();
+                }
+            }
+            if ((dirtyFlags & 4194336) == 0) {
+                weatherViewModelWeatherInfoNear4HourClockGet2 = weatherViewModelWeatherInfoNear4HourClockGet3;
+            } else {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoNear1HourClockUnit = null;
+                } else {
+                    weatherViewModelWeatherInfoNear1HourClockUnit = weatherViewModelWeatherInfo.near1HourClockUnit;
+                }
+                weatherViewModelWeatherInfoNear4HourClockGet2 = weatherViewModelWeatherInfoNear4HourClockGet3;
+                updateRegistration(5, weatherViewModelWeatherInfoNear1HourClockUnit);
+                if (weatherViewModelWeatherInfoNear1HourClockUnit != null) {
+                    weatherViewModelWeatherInfoNear1HourClockUnitGet = weatherViewModelWeatherInfoNear1HourClockUnit.get();
+                }
+            }
+            if ((dirtyFlags & 4194368) != 0) {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoNear3HourImg = null;
+                } else {
+                    weatherViewModelWeatherInfoNear3HourImg = weatherViewModelWeatherInfo.near3HourImg;
+                }
+                updateRegistration(6, weatherViewModelWeatherInfoNear3HourImg);
+                if (weatherViewModelWeatherInfoNear3HourImg != null) {
+                    weatherViewModelWeatherInfoNear3HourImgGet = weatherViewModelWeatherInfoNear3HourImg.get();
+                }
+            }
+            if ((dirtyFlags & 4194432) != 0) {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoNear3HourClock = null;
+                } else {
+                    weatherViewModelWeatherInfoNear3HourClock = weatherViewModelWeatherInfo.near3HourClock;
+                }
+                updateRegistration(7, weatherViewModelWeatherInfoNear3HourClock);
+                if (weatherViewModelWeatherInfoNear3HourClock != null) {
+                    weatherViewModelWeatherInfoNear3HourClockGet2 = weatherViewModelWeatherInfoNear3HourClock.get();
+                }
+            }
+            if ((dirtyFlags & 4194560) != 0) {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoNear5HourClockUnit = null;
+                } else {
+                    weatherViewModelWeatherInfoNear5HourClockUnit = weatherViewModelWeatherInfo.near5HourClockUnit;
+                }
+                updateRegistration(8, weatherViewModelWeatherInfoNear5HourClockUnit);
+                if (weatherViewModelWeatherInfoNear5HourClockUnit != null) {
+                    weatherViewModelWeatherInfoNear5HourClockUnitGet3 = weatherViewModelWeatherInfoNear5HourClockUnit.get();
+                }
+            }
+            if ((dirtyFlags & 4194816) != 0) {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoNear1HourTemp = null;
+                } else {
+                    weatherViewModelWeatherInfoNear1HourTemp = weatherViewModelWeatherInfo.near1HourTemp;
+                }
+                updateRegistration(9, weatherViewModelWeatherInfoNear1HourTemp);
+                if (weatherViewModelWeatherInfoNear1HourTemp != null) {
+                    weatherViewModelWeatherInfoNear1HourTempGet4 = weatherViewModelWeatherInfoNear1HourTemp.get();
+                }
+            }
+            if ((dirtyFlags & 4195328) != 0) {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoNear2HourImg = null;
+                } else {
+                    weatherViewModelWeatherInfoNear2HourImg = weatherViewModelWeatherInfo.near2HourImg;
+                }
+                updateRegistration(10, weatherViewModelWeatherInfoNear2HourImg);
+                if (weatherViewModelWeatherInfoNear2HourImg != null) {
+                    weatherViewModelWeatherInfoNear2HourImgGet3 = weatherViewModelWeatherInfoNear2HourImg.get();
+                }
+            }
+            if ((dirtyFlags & 4196352) != 0) {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoNear5HourImg = null;
+                } else {
+                    weatherViewModelWeatherInfoNear5HourImg = weatherViewModelWeatherInfo.near5HourImg;
+                }
+                updateRegistration(11, weatherViewModelWeatherInfoNear5HourImg);
+                if (weatherViewModelWeatherInfoNear5HourImg != null) {
+                    weatherViewModelWeatherInfoNear5HourImgGet3 = weatherViewModelWeatherInfoNear5HourImg.get();
+                }
+            }
+            if ((dirtyFlags & 4198400) != 0) {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoNear3HourTemp = null;
+                } else {
+                    weatherViewModelWeatherInfoNear3HourTemp = weatherViewModelWeatherInfo.near3HourTemp;
+                }
+                updateRegistration(12, weatherViewModelWeatherInfoNear3HourTemp);
+                if (weatherViewModelWeatherInfoNear3HourTemp != null) {
+                    weatherViewModelWeatherInfoNear3HourTempGet2 = weatherViewModelWeatherInfoNear3HourTemp.get();
+                }
+            }
+            if ((dirtyFlags & 4202496) != 0) {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoNear2HourClockUnit = null;
+                } else {
+                    weatherViewModelWeatherInfoNear2HourClockUnit = weatherViewModelWeatherInfo.near2HourClockUnit;
+                }
+                updateRegistration(13, weatherViewModelWeatherInfoNear2HourClockUnit);
+                if (weatherViewModelWeatherInfoNear2HourClockUnit != null) {
+                    weatherViewModelWeatherInfoNear2HourClockUnitGet = weatherViewModelWeatherInfoNear2HourClockUnit.get();
+                }
+            }
+            if ((dirtyFlags & 4210688) != 0) {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoNear2HourClock = null;
+                } else {
+                    weatherViewModelWeatherInfoNear2HourClock = weatherViewModelWeatherInfo.near2HourClock;
+                }
+                updateRegistration(14, weatherViewModelWeatherInfoNear2HourClock);
+                if (weatherViewModelWeatherInfoNear2HourClock != null) {
+                    weatherViewModelWeatherInfoNear2HourClockGet3 = weatherViewModelWeatherInfoNear2HourClock.get();
+                }
+            }
+            if ((dirtyFlags & 4227072) != 0) {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoTemperUnit = null;
+                } else {
+                    weatherViewModelWeatherInfoTemperUnit = weatherViewModelWeatherInfo.temperUnit;
+                }
+                updateRegistration(15, weatherViewModelWeatherInfoTemperUnit);
+                if (weatherViewModelWeatherInfoTemperUnit != null) {
+                    weatherViewModelWeatherInfoTemperUnitGet2 = weatherViewModelWeatherInfoTemperUnit.get();
+                }
+            }
+            if ((dirtyFlags & 4259840) != 0) {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoNear1HourClock = null;
+                } else {
+                    weatherViewModelWeatherInfoNear1HourClock = weatherViewModelWeatherInfo.near1HourClock;
+                }
+                updateRegistration(16, weatherViewModelWeatherInfoNear1HourClock);
+                if (weatherViewModelWeatherInfoNear1HourClock != null) {
+                    weatherViewModelWeatherInfoNear1HourClockGet = weatherViewModelWeatherInfoNear1HourClock.get();
+                }
+            }
+            if ((dirtyFlags & 4325376) != 0) {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoNear5HourTemp = null;
+                } else {
+                    weatherViewModelWeatherInfoNear5HourTemp = weatherViewModelWeatherInfo.near5HourTemp;
+                }
+                updateRegistration(17, weatherViewModelWeatherInfoNear5HourTemp);
+                if (weatherViewModelWeatherInfoNear5HourTemp != null) {
+                    weatherViewModelWeatherInfoNear5HourTempGet3 = weatherViewModelWeatherInfoNear5HourTemp.get();
+                }
+            }
+            if ((dirtyFlags & 4456448) != 0) {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoNear5HourClock = null;
+                } else {
+                    weatherViewModelWeatherInfoNear5HourClock = weatherViewModelWeatherInfo.near5HourClock;
+                }
+                updateRegistration(18, weatherViewModelWeatherInfoNear5HourClock);
+                if (weatherViewModelWeatherInfoNear5HourClock != null) {
+                    weatherViewModelWeatherInfoNear5HourClockGet2 = weatherViewModelWeatherInfoNear5HourClock.get();
+                }
+            }
+            if ((dirtyFlags & 4718592) != 0) {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoNear2HourTemp = null;
+                } else {
+                    weatherViewModelWeatherInfoNear2HourTemp = weatherViewModelWeatherInfo.near2HourTemp;
+                }
+                updateRegistration(19, weatherViewModelWeatherInfoNear2HourTemp);
+                if (weatherViewModelWeatherInfoNear2HourTemp != null) {
+                    weatherViewModelWeatherInfoNear2HourTempGet2 = weatherViewModelWeatherInfoNear2HourTemp.get();
+                }
+            }
+            if ((dirtyFlags & 5242880) == 0) {
+                weatherViewModelWeatherInfoTemperUnitGet = weatherViewModelWeatherInfoTemperUnitGet2;
+                weatherViewModelWeatherInfoNear2HourTempGet = weatherViewModelWeatherInfoNear2HourTempGet2;
+                weatherViewModelWeatherInfoNear1HourTempGet = weatherViewModelWeatherInfoNear1HourTempGet4;
+                weatherViewModelWeatherInfoNear4HourClockGet3 = weatherViewModelWeatherInfoNear4HourClockGet2;
+                weatherViewModelWeatherInfoNear2HourImgGet = weatherViewModelWeatherInfoNear2HourImgGet3;
+                weatherViewModelWeatherInfoNear5HourTempGet = weatherViewModelWeatherInfoNear5HourTempGet3;
+                weatherViewModelWeatherInfoNear5HourClockGet = weatherViewModelWeatherInfoNear5HourClockGet2;
+                weatherViewModelWeatherInfoNear4HourClockUnitGet = weatherViewModelWeatherInfoNear4HourClockUnitGet2;
+                weatherViewModelWeatherInfoNear5HourClockUnitGet = weatherViewModelWeatherInfoNear5HourClockUnitGet3;
+                weatherViewModelWeatherInfoNear1HourImgGet = weatherViewModelWeatherInfoNear1HourImgGet3;
+                weatherViewModelWeatherInfoNear3HourTempGet = weatherViewModelWeatherInfoNear3HourTempGet2;
+                weatherViewModelWeatherInfoNear3HourClockGet = weatherViewModelWeatherInfoNear3HourClockGet2;
+                weatherViewModelWeatherInfoNear4HourTempGet = weatherViewModelWeatherInfoNear4HourTempGet3;
+                weatherViewModelWeatherInfoNear4HourTempGet2 = weatherViewModelWeatherInfoNear2HourClockGet3;
+                weatherViewModelWeatherInfoNear2HourClockGet = weatherViewModelWeatherInfoNear1HourClockGet;
+                weatherViewModelWeatherInfoNear5HourImgGet = weatherViewModelWeatherInfoNear5HourImgGet3;
+                weatherViewModelWeatherInfoNear3HourClockUnitGet = null;
+                weatherViewModelWeatherInfoNear3HourClockUnitGet2 = weatherViewModelWeatherInfoNear2HourClockUnitGet;
+            } else {
+                if (weatherViewModelWeatherInfo == null) {
+                    weatherViewModelWeatherInfoNear3HourClockUnit = null;
+                } else {
+                    weatherViewModelWeatherInfoNear3HourClockUnit = weatherViewModelWeatherInfo.near3HourClockUnit;
+                }
+                updateRegistration(20, weatherViewModelWeatherInfoNear3HourClockUnit);
+                if (weatherViewModelWeatherInfoNear3HourClockUnit == null) {
+                    weatherViewModelWeatherInfoTemperUnitGet = weatherViewModelWeatherInfoTemperUnitGet2;
+                    weatherViewModelWeatherInfoNear2HourTempGet = weatherViewModelWeatherInfoNear2HourTempGet2;
+                    weatherViewModelWeatherInfoNear1HourTempGet = weatherViewModelWeatherInfoNear1HourTempGet4;
+                    weatherViewModelWeatherInfoNear4HourClockGet3 = weatherViewModelWeatherInfoNear4HourClockGet2;
+                    weatherViewModelWeatherInfoNear2HourImgGet = weatherViewModelWeatherInfoNear2HourImgGet3;
+                    weatherViewModelWeatherInfoNear5HourTempGet = weatherViewModelWeatherInfoNear5HourTempGet3;
+                    weatherViewModelWeatherInfoNear5HourClockGet = weatherViewModelWeatherInfoNear5HourClockGet2;
+                    weatherViewModelWeatherInfoNear4HourClockUnitGet = weatherViewModelWeatherInfoNear4HourClockUnitGet2;
+                    weatherViewModelWeatherInfoNear5HourClockUnitGet = weatherViewModelWeatherInfoNear5HourClockUnitGet3;
+                    weatherViewModelWeatherInfoNear1HourImgGet = weatherViewModelWeatherInfoNear1HourImgGet3;
+                    weatherViewModelWeatherInfoNear3HourTempGet = weatherViewModelWeatherInfoNear3HourTempGet2;
+                    weatherViewModelWeatherInfoNear3HourClockGet = weatherViewModelWeatherInfoNear3HourClockGet2;
+                    weatherViewModelWeatherInfoNear4HourTempGet = weatherViewModelWeatherInfoNear4HourTempGet3;
+                    weatherViewModelWeatherInfoNear4HourTempGet2 = weatherViewModelWeatherInfoNear2HourClockGet3;
+                    weatherViewModelWeatherInfoNear2HourClockGet = weatherViewModelWeatherInfoNear1HourClockGet;
+                    weatherViewModelWeatherInfoNear5HourImgGet = weatherViewModelWeatherInfoNear5HourImgGet3;
+                    weatherViewModelWeatherInfoNear3HourClockUnitGet = null;
+                    weatherViewModelWeatherInfoNear3HourClockUnitGet2 = weatherViewModelWeatherInfoNear2HourClockUnitGet;
+                } else {
+                    String weatherViewModelWeatherInfoNear3HourClockUnitGet3 = weatherViewModelWeatherInfoNear3HourClockUnit.get();
+                    String weatherViewModelWeatherInfoNear3HourClockUnitGet4 = weatherViewModelWeatherInfoNear3HourClockUnitGet3;
+                    weatherViewModelWeatherInfoTemperUnitGet = weatherViewModelWeatherInfoTemperUnitGet2;
+                    weatherViewModelWeatherInfoNear2HourTempGet = weatherViewModelWeatherInfoNear2HourTempGet2;
+                    weatherViewModelWeatherInfoNear1HourTempGet = weatherViewModelWeatherInfoNear1HourTempGet4;
+                    weatherViewModelWeatherInfoNear4HourClockGet3 = weatherViewModelWeatherInfoNear4HourClockGet2;
+                    weatherViewModelWeatherInfoNear2HourImgGet = weatherViewModelWeatherInfoNear2HourImgGet3;
+                    weatherViewModelWeatherInfoNear5HourTempGet = weatherViewModelWeatherInfoNear5HourTempGet3;
+                    weatherViewModelWeatherInfoNear5HourClockGet = weatherViewModelWeatherInfoNear5HourClockGet2;
+                    weatherViewModelWeatherInfoNear4HourClockUnitGet = weatherViewModelWeatherInfoNear4HourClockUnitGet2;
+                    weatherViewModelWeatherInfoNear5HourClockUnitGet = weatherViewModelWeatherInfoNear5HourClockUnitGet3;
+                    weatherViewModelWeatherInfoNear1HourImgGet = weatherViewModelWeatherInfoNear1HourImgGet3;
+                    weatherViewModelWeatherInfoNear3HourTempGet = weatherViewModelWeatherInfoNear3HourTempGet2;
+                    weatherViewModelWeatherInfoNear3HourClockGet = weatherViewModelWeatherInfoNear3HourClockGet2;
+                    weatherViewModelWeatherInfoNear4HourTempGet = weatherViewModelWeatherInfoNear4HourTempGet3;
+                    weatherViewModelWeatherInfoNear4HourTempGet2 = weatherViewModelWeatherInfoNear2HourClockGet3;
+                    weatherViewModelWeatherInfoNear2HourClockGet = weatherViewModelWeatherInfoNear1HourClockGet;
+                    weatherViewModelWeatherInfoNear5HourImgGet = weatherViewModelWeatherInfoNear5HourImgGet3;
+                    weatherViewModelWeatherInfoNear3HourClockUnitGet = weatherViewModelWeatherInfoNear3HourClockUnitGet4;
+                    weatherViewModelWeatherInfoNear3HourClockUnitGet2 = weatherViewModelWeatherInfoNear2HourClockUnitGet;
+                }
+            }
         }
-        if ((dirtyFlags & 4259840) != 0) {
+        if ((dirtyFlags & 4259840) == 0) {
             weatherViewModelWeatherInfoNear5HourClockUnitGet2 = weatherViewModelWeatherInfoNear5HourClockUnitGet;
-            TextViewBindingAdapter.setText(this.mboundView1, weatherViewModelWeatherInfoNear2HourClockGet);
         } else {
             weatherViewModelWeatherInfoNear5HourClockUnitGet2 = weatherViewModelWeatherInfoNear5HourClockUnitGet;
+            TextViewBindingAdapter.setText(this.mboundView1, weatherViewModelWeatherInfoNear2HourClockGet);
         }
         if ((dirtyFlags & 4227072) != 0) {
             TextViewBindingAdapter.setText(this.mboundView10, weatherViewModelWeatherInfoTemperUnitGet);
@@ -884,7 +822,7 @@ public class IncludeNearWeatherBindingImpl extends IncludeNearWeatherBinding {
             TextViewBindingAdapter.setText(this.mboundView11, weatherViewModelWeatherInfoNear3HourClockGet);
         }
         if ((dirtyFlags & 5242880) != 0) {
-            TextViewBindingAdapter.setText(this.mboundView12, weatherViewModelWeatherInfoNear3HourClockUnitGet2);
+            TextViewBindingAdapter.setText(this.mboundView12, weatherViewModelWeatherInfoNear3HourClockUnitGet);
         }
         if ((dirtyFlags & 4194368) != 0) {
             ImageViewBindingAdapter.setImageDrawable(this.mboundView13, weatherViewModelWeatherInfoNear3HourImgGet);
@@ -893,7 +831,7 @@ public class IncludeNearWeatherBindingImpl extends IncludeNearWeatherBinding {
             TextViewBindingAdapter.setText(this.mboundView14, weatherViewModelWeatherInfoNear3HourTempGet);
         }
         if ((dirtyFlags & 4194305) != 0) {
-            TextViewBindingAdapter.setText(this.mboundView16, weatherViewModelWeatherInfoNear4HourClockGet2);
+            TextViewBindingAdapter.setText(this.mboundView16, weatherViewModelWeatherInfoNear4HourClockGet3);
         }
         if ((dirtyFlags & 4194312) != 0) {
             TextViewBindingAdapter.setText(this.mboundView17, weatherViewModelWeatherInfoNear4HourClockUnitGet);
@@ -902,7 +840,7 @@ public class IncludeNearWeatherBindingImpl extends IncludeNearWeatherBinding {
             ImageViewBindingAdapter.setImageDrawable(this.mboundView18, weatherViewModelWeatherInfoNear4HourImgGet);
         }
         if ((dirtyFlags & 4194320) != 0) {
-            TextViewBindingAdapter.setText(this.mboundView19, weatherViewModelWeatherInfoNear4HourTempGet2);
+            TextViewBindingAdapter.setText(this.mboundView19, weatherViewModelWeatherInfoNear4HourTempGet);
         }
         if ((dirtyFlags & 4194336) != 0) {
             TextViewBindingAdapter.setText(this.mboundView2, weatherViewModelWeatherInfoNear1HourClockUnitGet);
@@ -911,67 +849,55 @@ public class IncludeNearWeatherBindingImpl extends IncludeNearWeatherBinding {
             TextViewBindingAdapter.setText(this.mboundView21, weatherViewModelWeatherInfoNear5HourClockGet);
         }
         if ((dirtyFlags & 4194560) != 0) {
-            String str4 = weatherViewModelWeatherInfoNear4HourClockGet2;
-            weatherViewModelWeatherInfoNear5HourClockUnitGet3 = weatherViewModelWeatherInfoNear5HourClockUnitGet2;
-            TextViewBindingAdapter.setText(this.mboundView22, weatherViewModelWeatherInfoNear5HourClockUnitGet3);
+            weatherViewModelWeatherInfoNear4HourClockGet = weatherViewModelWeatherInfoNear5HourClockUnitGet2;
+            TextViewBindingAdapter.setText(this.mboundView22, weatherViewModelWeatherInfoNear4HourClockGet);
         } else {
-            weatherViewModelWeatherInfoNear5HourClockUnitGet3 = weatherViewModelWeatherInfoNear5HourClockUnitGet2;
+            weatherViewModelWeatherInfoNear4HourClockGet = weatherViewModelWeatherInfoNear5HourClockUnitGet2;
         }
         if ((dirtyFlags & 4196352) != 0) {
-            String str5 = weatherViewModelWeatherInfoNear5HourClockUnitGet3;
             weatherViewModelWeatherInfoNear5HourImgGet2 = weatherViewModelWeatherInfoNear5HourImgGet;
             ImageViewBindingAdapter.setImageDrawable(this.mboundView23, weatherViewModelWeatherInfoNear5HourImgGet2);
         } else {
             weatherViewModelWeatherInfoNear5HourImgGet2 = weatherViewModelWeatherInfoNear5HourImgGet;
         }
         if ((dirtyFlags & 4325376) != 0) {
-            Drawable drawable = weatherViewModelWeatherInfoNear5HourImgGet2;
             weatherViewModelWeatherInfoNear5HourTempGet2 = weatherViewModelWeatherInfoNear5HourTempGet;
             TextViewBindingAdapter.setText(this.mboundView24, weatherViewModelWeatherInfoNear5HourTempGet2);
         } else {
             weatherViewModelWeatherInfoNear5HourTempGet2 = weatherViewModelWeatherInfoNear5HourTempGet;
         }
         if ((dirtyFlags & 4194306) != 0) {
-            String str6 = weatherViewModelWeatherInfoNear5HourTempGet2;
             weatherViewModelWeatherInfoNear1HourImgGet2 = weatherViewModelWeatherInfoNear1HourImgGet;
             ImageViewBindingAdapter.setImageDrawable(this.mboundView3, weatherViewModelWeatherInfoNear1HourImgGet2);
         } else {
             weatherViewModelWeatherInfoNear1HourImgGet2 = weatherViewModelWeatherInfoNear1HourImgGet;
         }
         if ((dirtyFlags & 4194816) != 0) {
-            Drawable drawable2 = weatherViewModelWeatherInfoNear1HourImgGet2;
             weatherViewModelWeatherInfoNear1HourTempGet2 = weatherViewModelWeatherInfoNear1HourTempGet;
             TextViewBindingAdapter.setText(this.mboundView4, weatherViewModelWeatherInfoNear1HourTempGet2);
         } else {
             weatherViewModelWeatherInfoNear1HourTempGet2 = weatherViewModelWeatherInfoNear1HourTempGet;
         }
         if ((dirtyFlags & 4210688) != 0) {
-            String str7 = weatherViewModelWeatherInfoNear1HourTempGet2;
-            weatherViewModelWeatherInfoNear1HourTempGet3 = weatherViewModelWeatherInfoNear4HourTempGet;
+            weatherViewModelWeatherInfoNear1HourTempGet3 = weatherViewModelWeatherInfoNear4HourTempGet2;
             TextViewBindingAdapter.setText(this.mboundView6, weatherViewModelWeatherInfoNear1HourTempGet3);
         } else {
-            weatherViewModelWeatherInfoNear1HourTempGet3 = weatherViewModelWeatherInfoNear4HourTempGet;
+            weatherViewModelWeatherInfoNear1HourTempGet3 = weatherViewModelWeatherInfoNear4HourTempGet2;
         }
         if ((dirtyFlags & 4202496) != 0) {
-            String str8 = weatherViewModelWeatherInfoNear1HourTempGet3;
-            weatherViewModelWeatherInfoNear2HourClockUnitGet = weatherViewModelWeatherInfoNear3HourClockUnitGet;
-            TextViewBindingAdapter.setText(this.mboundView7, weatherViewModelWeatherInfoNear2HourClockUnitGet);
+            weatherViewModelWeatherInfoNear2HourClockGet2 = weatherViewModelWeatherInfoNear3HourClockUnitGet2;
+            TextViewBindingAdapter.setText(this.mboundView7, weatherViewModelWeatherInfoNear2HourClockGet2);
         } else {
-            String weatherViewModelWeatherInfoNear2HourClockGet3 = weatherViewModelWeatherInfoNear1HourTempGet3;
-            weatherViewModelWeatherInfoNear2HourClockUnitGet = weatherViewModelWeatherInfoNear3HourClockUnitGet;
+            weatherViewModelWeatherInfoNear2HourClockGet2 = weatherViewModelWeatherInfoNear3HourClockUnitGet2;
         }
         if ((dirtyFlags & 4195328) != 0) {
-            String str9 = weatherViewModelWeatherInfoNear2HourClockUnitGet;
             weatherViewModelWeatherInfoNear2HourImgGet2 = weatherViewModelWeatherInfoNear2HourImgGet;
             ImageViewBindingAdapter.setImageDrawable(this.mboundView8, weatherViewModelWeatherInfoNear2HourImgGet2);
         } else {
             weatherViewModelWeatherInfoNear2HourImgGet2 = weatherViewModelWeatherInfoNear2HourImgGet;
         }
         if ((dirtyFlags & 4718592) != 0) {
-            Drawable drawable3 = weatherViewModelWeatherInfoNear2HourImgGet2;
             TextViewBindingAdapter.setText(this.mboundView9, weatherViewModelWeatherInfoNear2HourTempGet);
-            return;
         }
-        String str10 = weatherViewModelWeatherInfoNear2HourTempGet;
     }
 }

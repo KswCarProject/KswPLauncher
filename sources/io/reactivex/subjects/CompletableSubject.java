@@ -9,12 +9,13 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class CompletableSubject extends Completable implements CompletableObserver {
     static final CompletableDisposable[] EMPTY = new CompletableDisposable[0];
     static final CompletableDisposable[] TERMINATED = new CompletableDisposable[0];
     Throwable error;
-    final AtomicReference<CompletableDisposable[]> observers = new AtomicReference<>(EMPTY);
     final AtomicBoolean once = new AtomicBoolean();
+    final AtomicReference<CompletableDisposable[]> observers = new AtomicReference<>(EMPTY);
 
     @CheckReturnValue
     public static CompletableSubject create() {
@@ -24,13 +25,16 @@ public final class CompletableSubject extends Completable implements Completable
     CompletableSubject() {
     }
 
+    @Override // io.reactivex.CompletableObserver
     public void onSubscribe(Disposable d) {
         if (this.observers.get() == TERMINATED) {
             d.dispose();
         }
     }
 
+    @Override // io.reactivex.CompletableObserver
     public void onError(Throwable e) {
+        CompletableDisposable[] andSet;
         ObjectHelper.requireNonNull(e, "onError called with null. Null values are generally not allowed in 2.x operators and sources.");
         if (this.once.compareAndSet(false, true)) {
             this.error = e;
@@ -42,7 +46,9 @@ public final class CompletableSubject extends Completable implements Completable
         RxJavaPlugins.onError(e);
     }
 
+    @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
     public void onComplete() {
+        CompletableDisposable[] andSet;
         if (this.once.compareAndSet(false, true)) {
             for (CompletableDisposable md : this.observers.getAndSet(TERMINATED)) {
                 md.downstream.onComplete();
@@ -50,24 +56,26 @@ public final class CompletableSubject extends Completable implements Completable
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         CompletableDisposable md = new CompletableDisposable(observer, this);
         observer.onSubscribe(md);
-        if (!add(md)) {
-            Throwable ex = this.error;
-            if (ex != null) {
-                observer.onError(ex);
-            } else {
-                observer.onComplete();
+        if (add(md)) {
+            if (md.isDisposed()) {
+                remove(md);
+                return;
             }
-        } else if (md.isDisposed()) {
-            remove(md);
+            return;
+        }
+        Throwable ex = this.error;
+        if (ex != null) {
+            observer.onError(ex);
+        } else {
+            observer.onComplete();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean add(CompletableDisposable inner) {
+    boolean add(CompletableDisposable inner) {
         CompletableDisposable[] a;
         CompletableDisposable[] b;
         do {
@@ -76,47 +84,44 @@ public final class CompletableSubject extends Completable implements Completable
                 return false;
             }
             int n = a.length;
-            b = new CompletableDisposable[(n + 1)];
+            b = new CompletableDisposable[n + 1];
             System.arraycopy(a, 0, b, 0, n);
             b[n] = inner;
         } while (!this.observers.compareAndSet(a, b));
         return true;
     }
 
-    /* access modifiers changed from: package-private */
-    public void remove(CompletableDisposable inner) {
+    void remove(CompletableDisposable inner) {
         CompletableDisposable[] a;
         CompletableDisposable[] b;
         do {
             a = this.observers.get();
             int n = a.length;
-            if (n != 0) {
-                int j = -1;
-                int i = 0;
-                while (true) {
-                    if (i >= n) {
-                        break;
-                    } else if (a[i] == inner) {
-                        j = i;
-                        break;
-                    } else {
-                        i++;
-                    }
-                }
-                if (j >= 0) {
-                    if (n == 1) {
-                        b = EMPTY;
-                    } else {
-                        CompletableDisposable[] b2 = new CompletableDisposable[(n - 1)];
-                        System.arraycopy(a, 0, b2, 0, j);
-                        System.arraycopy(a, j + 1, b2, j, (n - j) - 1);
-                        b = b2;
-                    }
-                } else {
-                    return;
-                }
-            } else {
+            if (n == 0) {
                 return;
+            }
+            int j = -1;
+            int i = 0;
+            while (true) {
+                if (i >= n) {
+                    break;
+                } else if (a[i] != inner) {
+                    i++;
+                } else {
+                    j = i;
+                    break;
+                }
+            }
+            if (j < 0) {
+                return;
+            }
+            if (n == 1) {
+                b = EMPTY;
+            } else {
+                CompletableDisposable[] b2 = new CompletableDisposable[n - 1];
+                System.arraycopy(a, 0, b2, 0, j);
+                System.arraycopy(a, j + 1, b2, j, (n - j) - 1);
+                b = b2;
             }
         } while (!this.observers.compareAndSet(a, b));
     }
@@ -140,11 +145,11 @@ public final class CompletableSubject extends Completable implements Completable
         return this.observers.get().length != 0;
     }
 
-    /* access modifiers changed from: package-private */
-    public int observerCount() {
+    int observerCount() {
         return this.observers.get().length;
     }
 
+    /* loaded from: classes.dex */
     static final class CompletableDisposable extends AtomicReference<CompletableSubject> implements Disposable {
         private static final long serialVersionUID = -7650903191002190468L;
         final CompletableObserver downstream;
@@ -154,13 +159,15 @@ public final class CompletableSubject extends Completable implements Completable
             lazySet(parent);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
-            CompletableSubject parent = (CompletableSubject) getAndSet((Object) null);
+            CompletableSubject parent = getAndSet(null);
             if (parent != null) {
                 parent.remove(this);
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return get() == null;
         }

@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.view.benzmbux.BenzMbuxBean;
 import com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView;
 
+/* loaded from: classes7.dex */
 public abstract class BenzMbuxItemBinding extends ViewDataBinding {
     public final BenzMbuxItemView benzMbuxImageView;
     public final TextView benzMbuxTextView;
@@ -23,16 +24,16 @@ public abstract class BenzMbuxItemBinding extends ViewDataBinding {
     public final RelativeLayout naviCusLinearLayout;
     public final View space;
 
-    public abstract void setListItem(BenzMbuxBean benzMbuxBean);
+    public abstract void setListItem(BenzMbuxBean listItem);
 
-    public abstract void setVieModel(BcVieModel bcVieModel);
+    public abstract void setVieModel(BcVieModel vieModel);
 
-    protected BenzMbuxItemBinding(Object _bindingComponent, View _root, int _localFieldCount, BenzMbuxItemView benzMbuxImageView2, TextView benzMbuxTextView2, RelativeLayout naviCusLinearLayout2, View space2) {
+    protected BenzMbuxItemBinding(Object _bindingComponent, View _root, int _localFieldCount, BenzMbuxItemView benzMbuxImageView, TextView benzMbuxTextView, RelativeLayout naviCusLinearLayout, View space) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.benzMbuxImageView = benzMbuxImageView2;
-        this.benzMbuxTextView = benzMbuxTextView2;
-        this.naviCusLinearLayout = naviCusLinearLayout2;
-        this.space = space2;
+        this.benzMbuxImageView = benzMbuxImageView;
+        this.benzMbuxTextView = benzMbuxTextView;
+        this.naviCusLinearLayout = naviCusLinearLayout;
+        this.space = space;
     }
 
     public BenzMbuxBean getListItem() {
@@ -49,7 +50,7 @@ public abstract class BenzMbuxItemBinding extends ViewDataBinding {
 
     @Deprecated
     public static BenzMbuxItemBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BenzMbuxItemBinding) ViewDataBinding.inflateInternal(inflater, R.layout.benz_mbux_item, root, attachToRoot, component);
+        return (BenzMbuxItemBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.benz_mbux_item, root, attachToRoot, component);
     }
 
     public static BenzMbuxItemBinding inflate(LayoutInflater inflater) {
@@ -58,7 +59,7 @@ public abstract class BenzMbuxItemBinding extends ViewDataBinding {
 
     @Deprecated
     public static BenzMbuxItemBinding inflate(LayoutInflater inflater, Object component) {
-        return (BenzMbuxItemBinding) ViewDataBinding.inflateInternal(inflater, R.layout.benz_mbux_item, (ViewGroup) null, false, component);
+        return (BenzMbuxItemBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.benz_mbux_item, null, false, component);
     }
 
     public static BenzMbuxItemBinding bind(View view) {
@@ -67,6 +68,6 @@ public abstract class BenzMbuxItemBinding extends ViewDataBinding {
 
     @Deprecated
     public static BenzMbuxItemBinding bind(View view, Object component) {
-        return (BenzMbuxItemBinding) bind(component, view, R.layout.benz_mbux_item);
+        return (BenzMbuxItemBinding) bind(component, view, C0899R.C0902layout.benz_mbux_item);
     }
 }

@@ -9,16 +9,20 @@ import com.bumptech.glide.util.ByteBufferUtil;
 import java.io.File;
 import java.io.IOException;
 
+/* loaded from: classes.dex */
 public class GifDrawableEncoder implements ResourceEncoder<GifDrawable> {
     private static final String TAG = "GifEncoder";
 
+    @Override // com.bumptech.glide.load.ResourceEncoder
     public EncodeStrategy getEncodeStrategy(Options options) {
         return EncodeStrategy.SOURCE;
     }
 
+    @Override // com.bumptech.glide.load.Encoder
     public boolean encode(Resource<GifDrawable> data, File file, Options options) {
+        GifDrawable drawable = data.get();
         try {
-            ByteBufferUtil.toFile(data.get().getBuffer(), file);
+            ByteBufferUtil.toFile(drawable.getBuffer(), file);
             return true;
         } catch (IOException e) {
             if (!Log.isLoggable(TAG, 5)) {

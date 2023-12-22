@@ -6,43 +6,48 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public class Code93Writer extends OneDimensionalCodeWriter {
+    @Override // com.google.zxing.oned.OneDimensionalCodeWriter, com.google.zxing.Writer
     public BitMatrix encode(String contents, BarcodeFormat format, int width, int height, Map<EncodeHintType, ?> hints) throws WriterException {
-        if (format == BarcodeFormat.CODE_93) {
-            return super.encode(contents, format, width, height, hints);
+        if (format != BarcodeFormat.CODE_93) {
+            throw new IllegalArgumentException("Can only encode CODE_93, but got ".concat(String.valueOf(format)));
         }
-        throw new IllegalArgumentException("Can only encode CODE_93, but got ".concat(String.valueOf(format)));
+        return super.encode(contents, format, width, height, hints);
     }
 
+    @Override // com.google.zxing.oned.OneDimensionalCodeWriter
     public boolean[] encode(String contents) {
         int length = contents.length();
-        int length2 = length;
-        if (length <= 80) {
-            int[] widths = new int[9];
-            toIntArray(Code93Reader.CHARACTER_ENCODINGS[47], widths);
-            boolean[] zArr = new boolean[(((contents.length() + 2 + 2) * 9) + 1)];
-            boolean[] result = zArr;
-            int pos = appendPattern(zArr, 0, widths);
-            for (int i = 0; i < length2; i++) {
-                toIntArray(Code93Reader.CHARACTER_ENCODINGS["0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%abcd*".indexOf(contents.charAt(i))], widths);
-                pos += appendPattern(result, pos, widths);
-            }
-            int check1 = computeChecksumIndex(contents, 20);
-            toIntArray(Code93Reader.CHARACTER_ENCODINGS[check1], widths);
-            int pos2 = pos + appendPattern(result, pos, widths);
-            toIntArray(Code93Reader.CHARACTER_ENCODINGS[computeChecksumIndex(contents + "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%abcd*".charAt(check1), 15)], widths);
-            int pos3 = pos2 + appendPattern(result, pos2, widths);
-            toIntArray(Code93Reader.CHARACTER_ENCODINGS[47], widths);
-            result[pos3 + appendPattern(result, pos3, widths)] = true;
-            return result;
+        if (length > 80) {
+            throw new IllegalArgumentException("Requested contents should be less than 80 digits long, but got ".concat(String.valueOf(length)));
         }
-        throw new IllegalArgumentException("Requested contents should be less than 80 digits long, but got ".concat(String.valueOf(length2)));
+        int[] widths = new int[9];
+        int codeWidth = ((contents.length() + 2 + 2) * 9) + 1;
+        toIntArray(Code93Reader.CHARACTER_ENCODINGS[47], widths);
+        boolean[] result = new boolean[codeWidth];
+        int pos = appendPattern(result, 0, widths);
+        for (int i = 0; i < length; i++) {
+            int indexInString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%abcd*".indexOf(contents.charAt(i));
+            toIntArray(Code93Reader.CHARACTER_ENCODINGS[indexInString], widths);
+            pos += appendPattern(result, pos, widths);
+        }
+        int check1 = computeChecksumIndex(contents, 20);
+        toIntArray(Code93Reader.CHARACTER_ENCODINGS[check1], widths);
+        int pos2 = pos + appendPattern(result, pos, widths);
+        int check2 = computeChecksumIndex(contents + "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%abcd*".charAt(check1), 15);
+        toIntArray(Code93Reader.CHARACTER_ENCODINGS[check2], widths);
+        int pos3 = pos2 + appendPattern(result, pos2, widths);
+        toIntArray(Code93Reader.CHARACTER_ENCODINGS[47], widths);
+        result[pos3 + appendPattern(result, pos3, widths)] = true;
+        return result;
     }
 
     private static void toIntArray(int a, int[] toReturn) {
         for (int i = 0; i < 9; i++) {
             int i2 = 1;
-            if (((1 << (8 - i)) & a) == 0) {
+            int temp = (1 << (8 - i)) & a;
+            if (temp == 0) {
                 i2 = 0;
             }
             toReturn[i] = i2;
@@ -58,8 +63,9 @@ public class Code93Writer extends OneDimensionalCodeWriter {
         int length = pattern.length;
         int i = 0;
         while (i < length) {
+            int bit = pattern[i];
             int pos2 = pos + 1;
-            target[pos] = pattern[i] != 0;
+            target[pos] = bit != 0;
             i++;
             pos = pos2;
         }
@@ -70,12 +76,14 @@ public class Code93Writer extends OneDimensionalCodeWriter {
         int weight = 1;
         int total = 0;
         for (int i = contents.length() - 1; i >= 0; i--) {
-            total += "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%abcd*".indexOf(contents.charAt(i)) * weight;
+            int indexInString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%abcd*".indexOf(contents.charAt(i));
+            total += indexInString * weight;
             weight++;
             if (weight > maxWeight) {
                 weight = 1;
             }
         }
-        return total % 47;
+        int i2 = total % 47;
+        return i2;
     }
 }

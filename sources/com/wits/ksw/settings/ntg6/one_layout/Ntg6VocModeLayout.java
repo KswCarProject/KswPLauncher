@@ -12,20 +12,24 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.settings.id7.interfaces.IUpdateTwoLayout;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
+/* loaded from: classes17.dex */
 public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekBarChangeListener {
-    private int barMax = 24;
+    private int barMax;
     private Context context;
-    private int di = 12;
-    private int eqModel = 0;
-    private int ga = 12;
-    /* access modifiers changed from: private */
-    public Handler handler;
+
+    /* renamed from: di */
+    private int f237di;
+    private int eqModel;
+
+    /* renamed from: ga */
+    private int f238ga;
+    private Handler handler;
     private ImageView img_TwoBack;
     private RadioGroup rdg_vocmd;
     private SeekBar seekbar_mdi;
@@ -35,17 +39,24 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
     private TextView tv_mgoSize;
     private TextView tv_mzhSize;
     private IUpdateTwoLayout updateTwoLayout;
-    private int zo = 12;
+
+    /* renamed from: zo */
+    private int f239zo;
 
     public void registIUpdateTwoLayout(IUpdateTwoLayout twoLayout) {
         this.updateTwoLayout = twoLayout;
     }
 
-    public Ntg6VocModeLayout(Context context2, Handler handler2) {
-        super(context2);
-        this.handler = handler2;
-        this.context = context2;
-        View view = LayoutInflater.from(context2).inflate(R.layout.layout_ntg6_voc_model, (ViewGroup) null);
+    public Ntg6VocModeLayout(Context context, Handler handler) {
+        super(context);
+        this.eqModel = 0;
+        this.barMax = 24;
+        this.f237di = 12;
+        this.f239zo = 12;
+        this.f238ga = 12;
+        this.handler = handler;
+        this.context = context;
+        View view = LayoutInflater.from(context).inflate(C0899R.C0902layout.layout_ntg6_voc_model, (ViewGroup) null);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(-1, -1);
         initData();
         initView(view);
@@ -55,11 +66,11 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
 
     private void initData() {
         try {
-            this.di = PowerManagerApp.getSettingsInt(KeyConfig.EQ_BASS);
-            this.zo = PowerManagerApp.getSettingsInt(KeyConfig.EQ_MIDDLE);
-            this.ga = PowerManagerApp.getSettingsInt(KeyConfig.EQ_TREBLE);
+            this.f237di = PowerManagerApp.getSettingsInt(KeyConfig.EQ_BASS);
+            this.f239zo = PowerManagerApp.getSettingsInt(KeyConfig.EQ_MIDDLE);
+            this.f238ga = PowerManagerApp.getSettingsInt(KeyConfig.EQ_TREBLE);
             this.eqModel = PowerManagerApp.getSettingsInt(KeyConfig.EQ_MODE);
-            Log.d("BenchiEQ", "di:" + this.di + "\tzo:" + this.zo + "\tga:" + this.ga + "\tmodel:" + this.eqModel);
+            Log.d("BenchiEQ", "di:" + this.f237di + "\tzo:" + this.f239zo + "\tga:" + this.f238ga + "\tmodel:" + this.eqModel);
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -70,18 +81,18 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
     }
 
     private void initView(View view) {
-        this.img_TwoBack = (ImageView) view.findViewById(R.id.img_TwoBack);
-        this.rdg_vocmd = (RadioGroup) view.findViewById(R.id.rdg_vocmd);
-        this.tv_mdiSize = (TextView) view.findViewById(R.id.tv_mdiSize);
-        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekbar_mdi);
+        this.img_TwoBack = (ImageView) view.findViewById(C0899R.C0901id.img_TwoBack);
+        this.rdg_vocmd = (RadioGroup) view.findViewById(C0899R.C0901id.rdg_vocmd);
+        this.tv_mdiSize = (TextView) view.findViewById(C0899R.C0901id.tv_mdiSize);
+        SeekBar seekBar = (SeekBar) view.findViewById(C0899R.C0901id.seekbar_mdi);
         this.seekbar_mdi = seekBar;
         seekBar.setMax(this.barMax);
-        this.tv_mzhSize = (TextView) view.findViewById(R.id.tv_mzhSize);
-        SeekBar seekBar2 = (SeekBar) view.findViewById(R.id.seekbar_mzh);
+        this.tv_mzhSize = (TextView) view.findViewById(C0899R.C0901id.tv_mzhSize);
+        SeekBar seekBar2 = (SeekBar) view.findViewById(C0899R.C0901id.seekbar_mzh);
         this.seekbar_mzh = seekBar2;
         seekBar2.setMax(this.barMax);
-        this.tv_mgoSize = (TextView) view.findViewById(R.id.tv_mgoSize);
-        SeekBar seekBar3 = (SeekBar) view.findViewById(R.id.seekbar_mgo);
+        this.tv_mgoSize = (TextView) view.findViewById(C0899R.C0901id.tv_mgoSize);
+        SeekBar seekBar3 = (SeekBar) view.findViewById(C0899R.C0901id.seekbar_mgo);
         this.seekbar_mgo = seekBar3;
         seekBar3.setMax(this.barMax);
         this.seekbar_mdi.setOnSeekBarChangeListener(this);
@@ -89,44 +100,45 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
         this.seekbar_mgo.setOnSeekBarChangeListener(this);
         switch (this.eqModel) {
             case 0:
-                this.rdg_vocmd.check(R.id.rdb_vocmd1);
+                this.rdg_vocmd.check(C0899R.C0901id.rdb_vocmd1);
                 break;
             case 1:
-                this.rdg_vocmd.check(R.id.rdb_vocmd2);
+                this.rdg_vocmd.check(C0899R.C0901id.rdb_vocmd2);
                 break;
             case 2:
-                this.rdg_vocmd.check(R.id.rdb_vocmd3);
+                this.rdg_vocmd.check(C0899R.C0901id.rdb_vocmd3);
                 break;
             case 3:
-                this.rdg_vocmd.check(R.id.rdb_vocmd4);
+                this.rdg_vocmd.check(C0899R.C0901id.rdb_vocmd4);
                 break;
             case 4:
-                this.rdg_vocmd.check(R.id.rdb_vocmd5);
+                this.rdg_vocmd.check(C0899R.C0901id.rdb_vocmd5);
                 break;
             case 5:
-                this.rdg_vocmd.check(R.id.rdb_vocmd6);
+                this.rdg_vocmd.check(C0899R.C0901id.rdb_vocmd6);
                 break;
         }
         initBarView(this.eqModel);
-        this.rdg_vocmd.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        this.rdg_vocmd.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() { // from class: com.wits.ksw.settings.ntg6.one_layout.Ntg6VocModeLayout.1
+            @Override // android.widget.RadioGroup.OnCheckedChangeListener
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.rdb_vocmd1:
+                    case C0899R.C0901id.rdb_vocmd1 /* 2131297497 */:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(0);
                         return;
-                    case R.id.rdb_vocmd2:
+                    case C0899R.C0901id.rdb_vocmd2 /* 2131297498 */:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(1);
                         return;
-                    case R.id.rdb_vocmd3:
+                    case C0899R.C0901id.rdb_vocmd3 /* 2131297499 */:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(2);
                         return;
-                    case R.id.rdb_vocmd4:
+                    case C0899R.C0901id.rdb_vocmd4 /* 2131297500 */:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(3);
                         return;
-                    case R.id.rdb_vocmd5:
+                    case C0899R.C0901id.rdb_vocmd5 /* 2131297501 */:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(4);
                         return;
-                    case R.id.rdb_vocmd6:
+                    case C0899R.C0901id.rdb_vocmd6 /* 2131297502 */:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(5);
                         return;
                     default:
@@ -134,7 +146,8 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
                 }
             }
         });
-        this.img_TwoBack.setOnClickListener(new View.OnClickListener() {
+        this.img_TwoBack.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.settings.ntg6.one_layout.Ntg6VocModeLayout.2
+            @Override // android.view.View.OnClickListener
             public void onClick(View v) {
                 Ntg6VocModeLayout.this.handler.sendEmptyMessage(1);
             }
@@ -144,9 +157,9 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
     private void initBarView(int index) {
         switch (index) {
             case 0:
-                this.seekbar_mdi.setProgress(this.di);
-                this.seekbar_mzh.setProgress(this.zo);
-                this.seekbar_mgo.setProgress(this.ga);
+                this.seekbar_mdi.setProgress(this.f237di);
+                this.seekbar_mzh.setProgress(this.f239zo);
+                this.seekbar_mgo.setProgress(this.f238ga);
                 break;
             case 1:
                 this.seekbar_mdi.setProgress(16);
@@ -174,12 +187,15 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
                 this.seekbar_mgo.setProgress(19);
                 break;
         }
-        this.tv_mdiSize.setText((this.seekbar_mdi.getProgress() - 12) + "");
-        this.tv_mzhSize.setText((this.seekbar_mzh.getProgress() - 12) + "");
-        this.tv_mgoSize.setText((this.seekbar_mgo.getProgress() - 12) + "");
+        int sdi = this.seekbar_mdi.getProgress() - 12;
+        this.tv_mdiSize.setText(sdi + "");
+        int zh = this.seekbar_mzh.getProgress() - 12;
+        this.tv_mzhSize.setText(zh + "");
+        int go = this.seekbar_mgo.getProgress() - 12;
+        this.tv_mgoSize.setText(go + "");
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void setUpdateTwoLayout(int index) {
         FileUtils.savaIntData(KeyConfig.EQ_MODE, index);
         this.eqModel = index;
@@ -194,9 +210,9 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
         }
         switch (index) {
             case 0:
-                this.seekbar_mdi.setProgress(this.di);
-                this.seekbar_mzh.setProgress(this.zo);
-                this.seekbar_mgo.setProgress(this.ga);
+                this.seekbar_mdi.setProgress(this.f237di);
+                this.seekbar_mzh.setProgress(this.f239zo);
+                this.seekbar_mgo.setProgress(this.f238ga);
                 return;
             case 1:
                 this.seekbar_mdi.setProgress(16);
@@ -228,32 +244,36 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
         }
     }
 
+    @Override // android.widget.SeekBar.OnSeekBarChangeListener
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         switch (seekBar.getId()) {
-            case R.id.seekbar_mdi:
-                this.tv_mdiSize.setText((progress - 12) + "");
+            case C0899R.C0901id.seekbar_mdi /* 2131297743 */:
+                int go = progress - 12;
+                this.tv_mdiSize.setText(go + "");
                 if (this.eqModel == 0) {
-                    this.di = progress;
+                    this.f237di = progress;
                     FileUtils.savaIntData(KeyConfig.EQ_BASS, progress);
-                    Log.d("BenchiEQ", "save di:" + this.di);
+                    Log.d("BenchiEQ", "save di:" + this.f237di);
                     return;
                 }
                 return;
-            case R.id.seekbar_mgo:
-                this.tv_mgoSize.setText((progress - 12) + "");
+            case C0899R.C0901id.seekbar_mgo /* 2131297744 */:
+                int zh = progress - 12;
+                this.tv_mgoSize.setText(zh + "");
                 if (this.eqModel == 0) {
-                    this.ga = progress;
+                    this.f238ga = progress;
                     FileUtils.savaIntData(KeyConfig.EQ_TREBLE, progress);
-                    Log.d("BenchiEQ", "save go:" + this.ga);
+                    Log.d("BenchiEQ", "save go:" + this.f238ga);
                     return;
                 }
                 return;
-            case R.id.seekbar_mzh:
-                this.tv_mzhSize.setText((progress - 12) + "");
+            case C0899R.C0901id.seekbar_mzh /* 2131297745 */:
+                int zh2 = progress - 12;
+                this.tv_mzhSize.setText(zh2 + "");
                 if (this.eqModel == 0) {
-                    this.zo = progress;
+                    this.f239zo = progress;
                     FileUtils.savaIntData(KeyConfig.EQ_MIDDLE, progress);
-                    Log.d("BenchiEQ", "save zo:" + this.zo);
+                    Log.d("BenchiEQ", "save zo:" + this.f239zo);
                     return;
                 }
                 return;
@@ -262,9 +282,11 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
         }
     }
 
+    @Override // android.widget.SeekBar.OnSeekBarChangeListener
     public void onStartTrackingTouch(SeekBar seekBar) {
     }
 
+    @Override // android.widget.SeekBar.OnSeekBarChangeListener
     public void onStopTrackingTouch(SeekBar seekBar) {
     }
 }

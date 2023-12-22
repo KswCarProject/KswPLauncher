@@ -8,6 +8,7 @@ import com.squareup.picasso.RequestHandler;
 import java.io.IOException;
 import java.io.InputStream;
 
+/* loaded from: classes.dex */
 class NetworkRequestHandler extends RequestHandler {
     static final int RETRY_COUNT = 2;
     private static final String SCHEME_HTTP = "http";
@@ -15,16 +16,18 @@ class NetworkRequestHandler extends RequestHandler {
     private final Downloader downloader;
     private final Stats stats;
 
-    public NetworkRequestHandler(Downloader downloader2, Stats stats2) {
-        this.downloader = downloader2;
-        this.stats = stats2;
+    public NetworkRequestHandler(Downloader downloader, Stats stats) {
+        this.downloader = downloader;
+        this.stats = stats;
     }
 
+    @Override // com.squareup.picasso.RequestHandler
     public boolean canHandleRequest(Request data) {
         String scheme = data.uri.getScheme();
         return SCHEME_HTTP.equals(scheme) || SCHEME_HTTPS.equals(scheme);
     }
 
+    @Override // com.squareup.picasso.RequestHandler
     public RequestHandler.Result load(Request request, int networkPolicy) throws IOException {
         Downloader.Response response = this.downloader.load(request.uri, request.networkPolicy);
         if (response == null) {
@@ -49,21 +52,22 @@ class NetworkRequestHandler extends RequestHandler {
         return new RequestHandler.Result(is, loadedFrom);
     }
 
-    /* access modifiers changed from: package-private */
-    public int getRetryCount() {
+    @Override // com.squareup.picasso.RequestHandler
+    int getRetryCount() {
         return 2;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean shouldRetry(boolean airplaneMode, NetworkInfo info) {
+    @Override // com.squareup.picasso.RequestHandler
+    boolean shouldRetry(boolean airplaneMode, NetworkInfo info) {
         return info == null || info.isConnected();
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean supportsReplay() {
+    @Override // com.squareup.picasso.RequestHandler
+    boolean supportsReplay() {
         return true;
     }
 
+    /* loaded from: classes.dex */
     static class ContentLengthException extends IOException {
         public ContentLengthException(String message) {
             super(message);

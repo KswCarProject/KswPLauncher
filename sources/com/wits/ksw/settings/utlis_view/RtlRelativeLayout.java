@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+/* loaded from: classes10.dex */
 public class RtlRelativeLayout extends RelativeLayout {
     public RtlRelativeLayout(Context context) {
         super(context);

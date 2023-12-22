@@ -3,6 +3,7 @@ package android.databinding.adapters;
 import android.databinding.InverseBindingListener;
 import android.widget.TabHost;
 
+/* loaded from: classes.dex */
 public class TabHostBindingAdapter {
     public static int getCurrentTab(TabHost view) {
         return view.getCurrentTab();
@@ -29,7 +30,8 @@ public class TabHostBindingAdapter {
         if (attrChange == null) {
             view.setOnTabChangedListener(listener);
         } else {
-            view.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            view.setOnTabChangedListener(new TabHost.OnTabChangeListener() { // from class: android.databinding.adapters.TabHostBindingAdapter.1
+                @Override // android.widget.TabHost.OnTabChangeListener
                 public void onTabChanged(String tabId) {
                     TabHost.OnTabChangeListener onTabChangeListener = listener;
                     if (onTabChangeListener != null) {

@@ -6,18 +6,23 @@ import android.os.IInterface;
 import android.os.Parcel;
 import android.os.RemoteException;
 
+/* loaded from: classes.dex */
 public interface IStatusObserver extends IInterface {
     void onChange() throws RemoteException;
 
+    /* loaded from: classes.dex */
     public static class Default implements IStatusObserver {
+        @Override // com.wits.pms.IStatusObserver
         public void onChange() throws RemoteException {
         }
 
+        @Override // android.os.IInterface
         public IBinder asBinder() {
             return null;
         }
     }
 
+    /* loaded from: classes.dex */
     public static abstract class Stub extends Binder implements IStatusObserver {
         private static final String DESCRIPTOR = "com.wits.pms.IStatusObserver";
         static final int TRANSACTION_onChange = 1;
@@ -31,16 +36,18 @@ public interface IStatusObserver extends IInterface {
                 return null;
             }
             IInterface iin = obj.queryLocalInterface(DESCRIPTOR);
-            if (iin == null || !(iin instanceof IStatusObserver)) {
-                return new Proxy(obj);
+            if (iin != null && (iin instanceof IStatusObserver)) {
+                return (IStatusObserver) iin;
             }
-            return (IStatusObserver) iin;
+            return new Proxy(obj);
         }
 
+        @Override // android.os.IInterface
         public IBinder asBinder() {
             return this;
         }
 
+        @Override // android.os.Binder
         public boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
             switch (code) {
                 case 1:
@@ -56,6 +63,7 @@ public interface IStatusObserver extends IInterface {
             }
         }
 
+        /* loaded from: classes.dex */
         private static class Proxy implements IStatusObserver {
             public static IStatusObserver sDefaultImpl;
             private IBinder mRemote;
@@ -64,6 +72,7 @@ public interface IStatusObserver extends IInterface {
                 this.mRemote = remote;
             }
 
+            @Override // android.os.IInterface
             public IBinder asBinder() {
                 return this.mRemote;
             }
@@ -72,18 +81,18 @@ public interface IStatusObserver extends IInterface {
                 return Stub.DESCRIPTOR;
             }
 
+            @Override // com.wits.pms.IStatusObserver
             public void onChange() throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    if (this.mRemote.transact(1, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                    boolean _status = this.mRemote.transact(1, _data, _reply, 0);
+                    if (!_status && Stub.getDefaultImpl() != null) {
+                        Stub.getDefaultImpl().onChange();
+                    } else {
                         _reply.readException();
-                        _reply.recycle();
-                        _data.recycle();
-                        return;
                     }
-                    Stub.getDefaultImpl().onChange();
                 } finally {
                     _reply.recycle();
                     _data.recycle();
@@ -94,12 +103,12 @@ public interface IStatusObserver extends IInterface {
         public static boolean setDefaultImpl(IStatusObserver impl) {
             if (Proxy.sDefaultImpl != null) {
                 throw new IllegalStateException("setDefaultImpl() called twice");
-            } else if (impl == null) {
-                return false;
-            } else {
+            }
+            if (impl != null) {
                 Proxy.sDefaultImpl = impl;
                 return true;
             }
+            return false;
         }
 
         public static IStatusObserver getDefaultImpl() {

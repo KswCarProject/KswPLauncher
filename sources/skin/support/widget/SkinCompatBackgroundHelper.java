@@ -2,12 +2,13 @@ package skin.support.widget;
 
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.v4.view.ViewCompat;
+import android.support.p001v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import skin.support.R;
+import skin.support.C1899R;
 import skin.support.content.res.SkinCompatResources;
 
+/* loaded from: classes.dex */
 public class SkinCompatBackgroundHelper extends SkinCompatHelper {
     private int mBackgroundResId = 0;
     private final View mView;
@@ -16,12 +17,11 @@ public class SkinCompatBackgroundHelper extends SkinCompatHelper {
         this.mView = view;
     }
 
-    /* JADX INFO: finally extract failed */
     public void loadFromAttributes(AttributeSet attrs, int defStyleAttr) {
-        TypedArray a = this.mView.getContext().obtainStyledAttributes(attrs, R.styleable.SkinBackgroundHelper, defStyleAttr, 0);
+        TypedArray a = this.mView.getContext().obtainStyledAttributes(attrs, C1899R.styleable.SkinBackgroundHelper, defStyleAttr, 0);
         try {
-            if (a.hasValue(R.styleable.SkinBackgroundHelper_android_background)) {
-                this.mBackgroundResId = a.getResourceId(R.styleable.SkinBackgroundHelper_android_background, 0);
+            if (a.hasValue(C1899R.styleable.SkinBackgroundHelper_android_background)) {
+                this.mBackgroundResId = a.getResourceId(C1899R.styleable.SkinBackgroundHelper_android_background, 0);
             }
             a.recycle();
             applySkin();
@@ -36,6 +36,7 @@ public class SkinCompatBackgroundHelper extends SkinCompatHelper {
         applySkin();
     }
 
+    @Override // skin.support.widget.SkinCompatHelper
     public void applySkin() {
         Drawable drawable;
         int checkResourceId = checkResourceId(this.mBackgroundResId);

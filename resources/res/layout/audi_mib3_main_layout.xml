@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="horizontal" android:tag="layout/audi_mib3_main_layout_0" android:background="@drawable/audi_mib3_main_bk" android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="horizontal" android:tag="layout/audi_mib3_main_layout_0" android:background="@drawable/audi_mib3_main_bk" android:layout_width="match_parent" android:layout_height="match_parent">
     <LinearLayout android:id="@+id/include_ll" android:tag="binding_1" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <include android:id="@+id/include" android:layout_width="120dp" android:layout_height="match_parent" android:layout_marginTop="60dp" android:layout_marginBottom="14dp" layout="@layout/audi_mib3_main_left"/>
     </LinearLayout>
     <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_height="match_parent" android:layout_marginTop="56dp" android:layout_marginBottom="14dp" android:layout_weight="1">
-        <android.support.v4.view.ViewPager android:id="@+id/viewPage_AudiMib3" android:focusable="true" android:focusableInTouchMode="true" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="0dp" android:layout_marginLeft="20dp" android:layout_marginRight="30dp" android:layout_weight="1" android:overScrollMode="never" android:focusedByDefault="true"/>
+        <android.support.p001v4.view.ViewPager android:id="@+id/viewPage_AudiMib3" android:focusable="true" android:focusableInTouchMode="true" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="0dp" android:layout_marginLeft="20dp" android:layout_marginRight="30dp" android:layout_weight="1" android:overScrollMode="never" android:focusedByDefault="true"/>
         <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@+id/indicator_audimib3" android:layout_width="match_parent" android:layout_height="wrap_content"/>
     </LinearLayout>
 </LinearLayout>

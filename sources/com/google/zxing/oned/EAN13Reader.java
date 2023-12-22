@@ -4,12 +4,13 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.common.BitArray;
 
+/* loaded from: classes.dex */
 public final class EAN13Reader extends UPCEANReader {
     static final int[] FIRST_DIGIT_ENCODINGS = {0, 11, 13, 14, 19, 25, 28, 21, 22, 26};
     private final int[] decodeMiddleCounters = new int[4];
 
-    /* access modifiers changed from: protected */
-    public int decodeMiddle(BitArray bitArray, int[] iArr, StringBuilder sb) throws NotFoundException {
+    @Override // com.google.zxing.oned.UPCEANReader
+    protected int decodeMiddle(BitArray bitArray, int[] iArr, StringBuilder sb) throws NotFoundException {
         int[] iArr2 = this.decodeMiddleCounters;
         iArr2[0] = 0;
         iArr2[1] = 0;
@@ -39,8 +40,8 @@ public final class EAN13Reader extends UPCEANReader {
         return i5;
     }
 
-    /* access modifiers changed from: package-private */
-    public BarcodeFormat getBarcodeFormat() {
+    @Override // com.google.zxing.oned.UPCEANReader
+    BarcodeFormat getBarcodeFormat() {
         return BarcodeFormat.EAN_13;
     }
 

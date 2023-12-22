@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/* loaded from: classes.dex */
 class RBBINode {
     static final int endMark = 6;
     static int gLastSerial = 0;
@@ -41,7 +42,7 @@ class RBBINode {
     boolean fLookAheadEnd;
     boolean fNullable;
     RBBINode fParent;
-    int fPrecedence = 0;
+    int fPrecedence;
     RBBINode fRightChild;
     boolean fRuleRoot;
     int fSerialNum;
@@ -50,7 +51,14 @@ class RBBINode {
     int fVal;
 
     RBBINode(int t) {
-        Assert.assrt(t < 16);
+        boolean z;
+        this.fPrecedence = 0;
+        if (t >= 16) {
+            z = false;
+        } else {
+            z = true;
+        }
+        Assert.assrt(z);
         int i = gLastSerial + 1;
         gLastSerial = i;
         this.fSerialNum = i;
@@ -72,6 +80,7 @@ class RBBINode {
     }
 
     RBBINode(RBBINode other) {
+        this.fPrecedence = 0;
         int i = gLastSerial + 1;
         gLastSerial = i;
         this.fSerialNum = i;
@@ -90,8 +99,7 @@ class RBBINode {
         this.fFollowPos = new HashSet(other.fFollowPos);
     }
 
-    /* access modifiers changed from: package-private */
-    public RBBINode cloneTree() {
+    RBBINode cloneTree() {
         int i = this.fType;
         if (i == 2) {
             return this.fLeftChild.cloneTree();
@@ -107,17 +115,16 @@ class RBBINode {
             cloneTree.fParent = n;
         }
         RBBINode rBBINode2 = this.fRightChild;
-        if (rBBINode2 == null) {
+        if (rBBINode2 != null) {
+            RBBINode cloneTree2 = rBBINode2.cloneTree();
+            n.fRightChild = cloneTree2;
+            cloneTree2.fParent = n;
             return n;
         }
-        RBBINode cloneTree2 = rBBINode2.cloneTree();
-        n.fRightChild = cloneTree2;
-        cloneTree2.fParent = n;
         return n;
     }
 
-    /* access modifiers changed from: package-private */
-    public RBBINode flattenVariables() {
+    RBBINode flattenVariables() {
         if (this.fType == 2) {
             RBBINode retNode = this.fLeftChild.cloneTree();
             retNode.fRuleRoot = this.fRuleRoot;
@@ -139,13 +146,15 @@ class RBBINode {
         return this;
     }
 
-    /* access modifiers changed from: package-private */
-    public void flattenSets() {
+    void flattenSets() {
         Assert.assrt(this.fType != 0);
         RBBINode rBBINode = this.fLeftChild;
         if (rBBINode != null) {
             if (rBBINode.fType == 0) {
-                RBBINode cloneTree = this.fLeftChild.fLeftChild.fLeftChild.cloneTree();
+                RBBINode setRefNode = this.fLeftChild;
+                RBBINode usetNode = setRefNode.fLeftChild;
+                RBBINode replTree = usetNode.fLeftChild;
+                RBBINode cloneTree = replTree.cloneTree();
                 this.fLeftChild = cloneTree;
                 cloneTree.fParent = this;
             } else {
@@ -153,20 +162,21 @@ class RBBINode {
             }
         }
         RBBINode rBBINode2 = this.fRightChild;
-        if (rBBINode2 == null) {
-            return;
+        if (rBBINode2 != null) {
+            if (rBBINode2.fType == 0) {
+                RBBINode setRefNode2 = this.fRightChild;
+                RBBINode usetNode2 = setRefNode2.fLeftChild;
+                RBBINode replTree2 = usetNode2.fLeftChild;
+                RBBINode cloneTree2 = replTree2.cloneTree();
+                this.fRightChild = cloneTree2;
+                cloneTree2.fParent = this;
+                return;
+            }
+            rBBINode2.flattenSets();
         }
-        if (rBBINode2.fType == 0) {
-            RBBINode cloneTree2 = this.fRightChild.fLeftChild.fLeftChild.cloneTree();
-            this.fRightChild = cloneTree2;
-            cloneTree2.fParent = this;
-            return;
-        }
-        rBBINode2.flattenSets();
     }
 
-    /* access modifiers changed from: package-private */
-    public void findNodes(List<RBBINode> dest, int kind) {
+    void findNodes(List<RBBINode> dest, int kind) {
         if (this.fType == kind) {
             dest.add(this);
         }
@@ -187,15 +197,11 @@ class RBBINode {
             printInt(n.fSerialNum, 10);
             printString(nodeTypeNames[n.fType], 11);
             RBBINode rBBINode = n.fParent;
-            int i = 0;
             printInt(rBBINode == null ? 0 : rBBINode.fSerialNum, 11);
             RBBINode rBBINode2 = n.fLeftChild;
             printInt(rBBINode2 == null ? 0 : rBBINode2.fSerialNum, 11);
             RBBINode rBBINode3 = n.fRightChild;
-            if (rBBINode3 != null) {
-                i = rBBINode3.fSerialNum;
-            }
-            printInt(i, 12);
+            printInt(rBBINode3 != null ? rBBINode3.fSerialNum : 0, 12);
             printInt(n.fFirstPos, 12);
             printInt(n.fVal, 7);
             if (n.fType == 2) {
@@ -222,11 +228,11 @@ class RBBINode {
 
     static void printHex(int i, int minWidth) {
         String s = Integer.toString(i, 16);
-        printString("00000".substring(0, Math.max(0, 5 - s.length())) + s, minWidth);
+        String leadingZeroes = "00000".substring(0, Math.max(0, 5 - s.length()));
+        printString(leadingZeroes + s, minWidth);
     }
 
-    /* access modifiers changed from: package-private */
-    public void printTree(boolean printHeading) {
+    void printTree(boolean printHeading) {
         if (printHeading) {
             System.out.println("-------------------------------------------------------------------");
             System.out.println("    Serial       type     Parent  LeftChild  RightChild    position  value");

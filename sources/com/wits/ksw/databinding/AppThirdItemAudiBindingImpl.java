@@ -7,10 +7,14 @@ import android.databinding.adapters.TextViewBindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean;
+import com.wits.ksw.settings.utlis_view.RtlNaviRadioButton;
 
+/* loaded from: classes7.dex */
 public class AppThirdItemAudiBindingImpl extends AppThirdItemAudiBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -20,7 +24,7 @@ public class AppThirdItemAudiBindingImpl extends AppThirdItemAudiBinding {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.rbt_apps, 3);
+        sparseIntArray.put(C0899R.C0901id.rbt_apps, 3);
     }
 
     public AppThirdItemAudiBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -28,24 +32,26 @@ public class AppThirdItemAudiBindingImpl extends AppThirdItemAudiBinding {
     }
 
     private AppThirdItemAudiBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[1], bindings[3], bindings[2]);
-        this.mDirtyFlags = -1;
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 0, (ImageView) bindings[1], (RtlNaviRadioButton) bindings[3], (TextView) bindings[2]);
+        this.mDirtyFlags = -1L;
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
-        this.nameImageView.setTag((Object) null);
-        this.textView.setTag((Object) null);
+        relativeLayout.setTag(null);
+        this.nameImageView.setTag(null);
+        this.textView.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 2;
+            this.mDirtyFlags = 2L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -55,14 +61,16 @@ public class AppThirdItemAudiBindingImpl extends AppThirdItemAudiBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (20 != variableId) {
-            return false;
+        if (20 == variableId) {
+            setListItem((LexusLsAppSelBean) variable);
+            return true;
         }
-        setListItem((LexusLsAppSelBean) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AppThirdItemAudiBinding
     public void setListItem(LexusLsAppSelBean ListItem) {
         this.mListItem = ListItem;
         synchronized (this) {
@@ -72,22 +80,22 @@ public class AppThirdItemAudiBindingImpl extends AppThirdItemAudiBinding {
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         LexusLsAppSelBean listItem = this.mListItem;
         Drawable listItemAppIcon = null;
         String listItemAppName = null;
-        if (!((dirtyFlags & 3) == 0 || listItem == null)) {
+        if ((dirtyFlags & 3) != 0 && listItem != null) {
             listItemAppIcon = listItem.getAppIcon();
             listItemAppName = listItem.getAppName();
         }

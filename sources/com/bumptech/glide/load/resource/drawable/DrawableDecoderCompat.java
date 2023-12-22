@@ -3,11 +3,12 @@ package com.bumptech.glide.load.resource.drawable;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.content.res.AppCompatResources;
-import android.support.v7.view.ContextThemeWrapper;
+import android.support.p001v4.content.ContextCompat;
+import android.support.p001v4.content.res.ResourcesCompat;
+import android.support.p004v7.content.res.AppCompatResources;
+import android.support.p004v7.view.ContextThemeWrapper;
 
+/* loaded from: classes.dex */
 public final class DrawableDecoderCompat {
     private static volatile boolean shouldCallAppCompatResources = true;
 
@@ -15,7 +16,7 @@ public final class DrawableDecoderCompat {
     }
 
     public static Drawable getDrawable(Context ourContext, Context targetContext, int id) {
-        return getDrawable(ourContext, targetContext, id, (Resources.Theme) null);
+        return getDrawable(ourContext, targetContext, id, null);
     }
 
     public static Drawable getDrawable(Context ourContext, int id, Resources.Theme theme) {
@@ -27,23 +28,25 @@ public final class DrawableDecoderCompat {
             if (shouldCallAppCompatResources) {
                 return loadDrawableV7(targetContext, id, theme);
             }
-        } catch (NoClassDefFoundError e) {
-            shouldCallAppCompatResources = false;
+        } catch (Resources.NotFoundException e) {
         } catch (IllegalStateException e2) {
-            if (!ourContext.getPackageName().equals(targetContext.getPackageName())) {
-                return ContextCompat.getDrawable(targetContext, id);
+            if (ourContext.getPackageName().equals(targetContext.getPackageName())) {
+                throw e2;
             }
-            throw e2;
-        } catch (Resources.NotFoundException e3) {
+            return ContextCompat.getDrawable(targetContext, id);
+        } catch (NoClassDefFoundError e3) {
+            shouldCallAppCompatResources = false;
         }
         return loadDrawableV4(targetContext, id, theme != null ? theme : targetContext.getTheme());
     }
 
     private static Drawable loadDrawableV7(Context context, int id, Resources.Theme theme) {
-        return AppCompatResources.getDrawable(theme != null ? new ContextThemeWrapper(context, theme) : context, id);
+        Context resourceContext = theme != null ? new ContextThemeWrapper(context, theme) : context;
+        return AppCompatResources.getDrawable(resourceContext, id);
     }
 
     private static Drawable loadDrawableV4(Context context, int id, Resources.Theme theme) {
-        return ResourcesCompat.getDrawable(context.getResources(), id, theme);
+        Resources resources = context.getResources();
+        return ResourcesCompat.getDrawable(resources, id, theme);
     }
 }

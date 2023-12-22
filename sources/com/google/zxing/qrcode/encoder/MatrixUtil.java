@@ -6,14 +6,15 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.google.zxing.qrcode.decoder.Version;
 import com.wits.pms.statuscontrol.WitsCommand;
 
+/* loaded from: classes.dex */
 final class MatrixUtil {
-    private static final int[][] POSITION_ADJUSTMENT_PATTERN = {new int[]{1, 1, 1, 1, 1}, new int[]{1, 0, 0, 0, 1}, new int[]{1, 0, 1, 0, 1}, new int[]{1, 0, 0, 0, 1}, new int[]{1, 1, 1, 1, 1}};
-    private static final int[][] POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE = {new int[]{-1, -1, -1, -1, -1, -1, -1}, new int[]{6, 18, -1, -1, -1, -1, -1}, new int[]{6, 22, -1, -1, -1, -1, -1}, new int[]{6, 26, -1, -1, -1, -1, -1}, new int[]{6, 30, -1, -1, -1, -1, -1}, new int[]{6, 34, -1, -1, -1, -1, -1}, new int[]{6, 22, 38, -1, -1, -1, -1}, new int[]{6, 24, 42, -1, -1, -1, -1}, new int[]{6, 26, 46, -1, -1, -1, -1}, new int[]{6, 28, 50, -1, -1, -1, -1}, new int[]{6, 30, 54, -1, -1, -1, -1}, new int[]{6, 32, 58, -1, -1, -1, -1}, new int[]{6, 34, 62, -1, -1, -1, -1}, new int[]{6, 26, 46, 66, -1, -1, -1}, new int[]{6, 26, 48, 70, -1, -1, -1}, new int[]{6, 26, 50, 74, -1, -1, -1}, new int[]{6, 30, 54, 78, -1, -1, -1}, new int[]{6, 30, 56, 82, -1, -1, -1}, new int[]{6, 30, 58, 86, -1, -1, -1}, new int[]{6, 34, 62, 90, -1, -1, -1}, new int[]{6, 28, 50, 72, 94, -1, -1}, new int[]{6, 26, 50, 74, 98, -1, -1}, new int[]{6, 30, 54, 78, 102, -1, -1}, new int[]{6, 28, 54, 80, 106, -1, -1}, new int[]{6, 32, 58, 84, 110, -1, -1}, new int[]{6, 30, 58, 86, 114, -1, -1}, new int[]{6, 34, 62, 90, 118, -1, -1}, new int[]{6, 26, 50, 74, 98, 122, -1}, new int[]{6, 30, 54, 78, 102, 126, -1}, new int[]{6, 26, 52, 78, 104, 130, -1}, new int[]{6, 30, 56, 82, 108, WitsCommand.SystemCommand.PRE_DOT_SEEK_FM, -1}, new int[]{6, 34, 60, 86, 112, 138, -1}, new int[]{6, 30, 58, 86, 114, 142, -1}, new int[]{6, 34, 62, 90, 118, 146, -1}, new int[]{6, 30, 54, 78, 102, 126, 150}, new int[]{6, 24, 50, 76, 102, 128, 154}, new int[]{6, 28, 54, 80, 106, WitsCommand.SystemCommand.PRE_SEEK_FM, 158}, new int[]{6, 32, 58, 84, 110, WitsCommand.SystemCommand.LOC_SWITCH, 162}, new int[]{6, 26, 54, 82, 110, 138, 166}, new int[]{6, 30, 58, 86, 114, 142, 170}};
-    private static final int[][] POSITION_DETECTION_PATTERN = {new int[]{1, 1, 1, 1, 1, 1, 1}, new int[]{1, 0, 0, 0, 0, 0, 1}, new int[]{1, 0, 1, 1, 1, 0, 1}, new int[]{1, 0, 1, 1, 1, 0, 1}, new int[]{1, 0, 1, 1, 1, 0, 1}, new int[]{1, 0, 0, 0, 0, 0, 1}, new int[]{1, 1, 1, 1, 1, 1, 1}};
-    private static final int[][] TYPE_INFO_COORDINATES = {new int[]{8, 0}, new int[]{8, 1}, new int[]{8, 2}, new int[]{8, 3}, new int[]{8, 4}, new int[]{8, 5}, new int[]{8, 7}, new int[]{8, 8}, new int[]{7, 8}, new int[]{5, 8}, new int[]{4, 8}, new int[]{3, 8}, new int[]{2, 8}, new int[]{1, 8}, new int[]{0, 8}};
     private static final int TYPE_INFO_MASK_PATTERN = 21522;
     private static final int TYPE_INFO_POLY = 1335;
     private static final int VERSION_INFO_POLY = 7973;
+    private static final int[][] POSITION_DETECTION_PATTERN = {new int[]{1, 1, 1, 1, 1, 1, 1}, new int[]{1, 0, 0, 0, 0, 0, 1}, new int[]{1, 0, 1, 1, 1, 0, 1}, new int[]{1, 0, 1, 1, 1, 0, 1}, new int[]{1, 0, 1, 1, 1, 0, 1}, new int[]{1, 0, 0, 0, 0, 0, 1}, new int[]{1, 1, 1, 1, 1, 1, 1}};
+    private static final int[][] POSITION_ADJUSTMENT_PATTERN = {new int[]{1, 1, 1, 1, 1}, new int[]{1, 0, 0, 0, 1}, new int[]{1, 0, 1, 0, 1}, new int[]{1, 0, 0, 0, 1}, new int[]{1, 1, 1, 1, 1}};
+    private static final int[][] POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE = {new int[]{-1, -1, -1, -1, -1, -1, -1}, new int[]{6, 18, -1, -1, -1, -1, -1}, new int[]{6, 22, -1, -1, -1, -1, -1}, new int[]{6, 26, -1, -1, -1, -1, -1}, new int[]{6, 30, -1, -1, -1, -1, -1}, new int[]{6, 34, -1, -1, -1, -1, -1}, new int[]{6, 22, 38, -1, -1, -1, -1}, new int[]{6, 24, 42, -1, -1, -1, -1}, new int[]{6, 26, 46, -1, -1, -1, -1}, new int[]{6, 28, 50, -1, -1, -1, -1}, new int[]{6, 30, 54, -1, -1, -1, -1}, new int[]{6, 32, 58, -1, -1, -1, -1}, new int[]{6, 34, 62, -1, -1, -1, -1}, new int[]{6, 26, 46, 66, -1, -1, -1}, new int[]{6, 26, 48, 70, -1, -1, -1}, new int[]{6, 26, 50, 74, -1, -1, -1}, new int[]{6, 30, 54, 78, -1, -1, -1}, new int[]{6, 30, 56, 82, -1, -1, -1}, new int[]{6, 30, 58, 86, -1, -1, -1}, new int[]{6, 34, 62, 90, -1, -1, -1}, new int[]{6, 28, 50, 72, 94, -1, -1}, new int[]{6, 26, 50, 74, 98, -1, -1}, new int[]{6, 30, 54, 78, 102, -1, -1}, new int[]{6, 28, 54, 80, 106, -1, -1}, new int[]{6, 32, 58, 84, 110, -1, -1}, new int[]{6, 30, 58, 86, 114, -1, -1}, new int[]{6, 34, 62, 90, 118, -1, -1}, new int[]{6, 26, 50, 74, 98, 122, -1}, new int[]{6, 30, 54, 78, 102, 126, -1}, new int[]{6, 26, 52, 78, 104, 130, -1}, new int[]{6, 30, 56, 82, 108, WitsCommand.SystemCommand.PRE_DOT_SEEK_FM, -1}, new int[]{6, 34, 60, 86, 112, 138, -1}, new int[]{6, 30, 58, 86, 114, 142, -1}, new int[]{6, 34, 62, 90, 118, 146, -1}, new int[]{6, 30, 54, 78, 102, 126, 150}, new int[]{6, 24, 50, 76, 102, 128, 154}, new int[]{6, 28, 54, 80, 106, WitsCommand.SystemCommand.PRE_SEEK_FM, 158}, new int[]{6, 32, 58, 84, 110, WitsCommand.SystemCommand.LOC_SWITCH, 162}, new int[]{6, 26, 54, 82, 110, 138, 166}, new int[]{6, 30, 58, 86, 114, 142, 170}};
+    private static final int[][] TYPE_INFO_COORDINATES = {new int[]{8, 0}, new int[]{8, 1}, new int[]{8, 2}, new int[]{8, 3}, new int[]{8, 4}, new int[]{8, 5}, new int[]{8, 7}, new int[]{8, 8}, new int[]{7, 8}, new int[]{5, 8}, new int[]{4, 8}, new int[]{3, 8}, new int[]{2, 8}, new int[]{1, 8}, new int[]{0, 8}};
 
     private MatrixUtil() {
     }
@@ -43,27 +44,32 @@ final class MatrixUtil {
         for (int i = 0; i < typeInfoBits.getSize(); i++) {
             boolean bit = typeInfoBits.get((typeInfoBits.getSize() - 1) - i);
             int[] coordinates = TYPE_INFO_COORDINATES[i];
-            matrix.set(coordinates[0], coordinates[1], bit);
+            int x1 = coordinates[0];
+            int y1 = coordinates[1];
+            matrix.set(x1, y1, bit);
             if (i < 8) {
-                matrix.set((matrix.getWidth() - i) - 1, 8, bit);
+                int x2 = (matrix.getWidth() - i) - 1;
+                matrix.set(x2, 8, bit);
             } else {
-                matrix.set(8, (matrix.getHeight() - 7) + (i - 8), bit);
+                int y2 = (matrix.getHeight() - 7) + (i - 8);
+                matrix.set(8, y2, bit);
             }
         }
     }
 
     static void maybeEmbedVersionInfo(Version version, ByteMatrix matrix) throws WriterException {
-        if (version.getVersionNumber() >= 7) {
-            BitArray versionInfoBits = new BitArray();
-            makeVersionInfoBits(version, versionInfoBits);
-            int bitIndex = 17;
-            for (int i = 0; i < 6; i++) {
-                for (int j = 0; j < 3; j++) {
-                    boolean bit = versionInfoBits.get(bitIndex);
-                    bitIndex--;
-                    matrix.set(i, (matrix.getHeight() - 11) + j, bit);
-                    matrix.set((matrix.getHeight() - 11) + j, i, bit);
-                }
+        if (version.getVersionNumber() < 7) {
+            return;
+        }
+        BitArray versionInfoBits = new BitArray();
+        makeVersionInfoBits(version, versionInfoBits);
+        int bitIndex = 17;
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 3; j++) {
+                boolean bit = versionInfoBits.get(bitIndex);
+                bitIndex--;
+                matrix.set(i, (matrix.getHeight() - 11) + j, bit);
+                matrix.set((matrix.getHeight() - 11) + j, i, bit);
             }
         }
     }
@@ -110,36 +116,37 @@ final class MatrixUtil {
     }
 
     static int calculateBCHCode(int value, int poly) {
-        if (poly != 0) {
-            int msbSetInPoly = findMSBSet(poly);
-            int value2 = value << (msbSetInPoly - 1);
-            while (findMSBSet(value2) >= msbSetInPoly) {
-                value2 ^= poly << (findMSBSet(value2) - msbSetInPoly);
-            }
-            return value2;
+        if (poly == 0) {
+            throw new IllegalArgumentException("0 polynomial");
         }
-        throw new IllegalArgumentException("0 polynomial");
+        int msbSetInPoly = findMSBSet(poly);
+        int value2 = value << (msbSetInPoly - 1);
+        while (findMSBSet(value2) >= msbSetInPoly) {
+            value2 ^= poly << (findMSBSet(value2) - msbSetInPoly);
+        }
+        return value2;
     }
 
     static void makeTypeInfoBits(ErrorCorrectionLevel ecLevel, int maskPattern, BitArray bits) throws WriterException {
-        if (QRCode.isValidMaskPattern(maskPattern)) {
-            int typeInfo = (ecLevel.getBits() << 3) | maskPattern;
-            bits.appendBits(typeInfo, 5);
-            bits.appendBits(calculateBCHCode(typeInfo, TYPE_INFO_POLY), 10);
-            BitArray maskBits = new BitArray();
-            maskBits.appendBits(TYPE_INFO_MASK_PATTERN, 15);
-            bits.xor(maskBits);
-            if (bits.getSize() != 15) {
-                throw new WriterException("should not happen but we got: " + bits.getSize());
-            }
-            return;
+        if (!QRCode.isValidMaskPattern(maskPattern)) {
+            throw new WriterException("Invalid mask pattern");
         }
-        throw new WriterException("Invalid mask pattern");
+        int typeInfo = (ecLevel.getBits() << 3) | maskPattern;
+        bits.appendBits(typeInfo, 5);
+        int bchCode = calculateBCHCode(typeInfo, TYPE_INFO_POLY);
+        bits.appendBits(bchCode, 10);
+        BitArray maskBits = new BitArray();
+        maskBits.appendBits(TYPE_INFO_MASK_PATTERN, 15);
+        bits.xor(maskBits);
+        if (bits.getSize() != 15) {
+            throw new WriterException("should not happen but we got: " + bits.getSize());
+        }
     }
 
     static void makeVersionInfoBits(Version version, BitArray bits) throws WriterException {
         bits.appendBits(version.getVersionNumber(), 6);
-        bits.appendBits(calculateBCHCode(version.getVersionNumber(), VERSION_INFO_POLY), 12);
+        int bchCode = calculateBCHCode(version.getVersionNumber(), VERSION_INFO_POLY);
+        bits.appendBits(bchCode, 12);
         if (bits.getSize() != 18) {
             throw new WriterException("should not happen but we got: " + bits.getSize());
         }
@@ -162,34 +169,27 @@ final class MatrixUtil {
     }
 
     private static void embedDarkDotAtLeftBottomCorner(ByteMatrix matrix) throws WriterException {
-        if (matrix.get(8, matrix.getHeight() - 8) != 0) {
-            matrix.set(8, matrix.getHeight() - 8, 1);
-            return;
+        if (matrix.get(8, matrix.getHeight() - 8) == 0) {
+            throw new WriterException();
         }
-        throw new WriterException();
+        matrix.set(8, matrix.getHeight() - 8, 1);
     }
 
     private static void embedHorizontalSeparationPattern(int xStart, int yStart, ByteMatrix matrix) throws WriterException {
-        int x = 0;
-        while (x < 8) {
-            if (isEmpty(matrix.get(xStart + x, yStart))) {
-                matrix.set(xStart + x, yStart, 0);
-                x++;
-            } else {
+        for (int x = 0; x < 8; x++) {
+            if (!isEmpty(matrix.get(xStart + x, yStart))) {
                 throw new WriterException();
             }
+            matrix.set(xStart + x, yStart, 0);
         }
     }
 
     private static void embedVerticalSeparationPattern(int xStart, int yStart, ByteMatrix matrix) throws WriterException {
-        int y = 0;
-        while (y < 7) {
-            if (isEmpty(matrix.get(xStart, yStart + y))) {
-                matrix.set(xStart, yStart + y, 0);
-                y++;
-            } else {
+        for (int y = 0; y < 7; y++) {
+            if (!isEmpty(matrix.get(xStart, yStart + y))) {
                 throw new WriterException();
             }
+            matrix.set(xStart, yStart + y, 0);
         }
     }
 
@@ -225,17 +225,16 @@ final class MatrixUtil {
     }
 
     private static void maybeEmbedPositionAdjustmentPatterns(Version version, ByteMatrix matrix) {
-        if (version.getVersionNumber() >= 2) {
-            int[] iArr = POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE[version.getVersionNumber() - 1];
-            int[] coordinates = iArr;
-            for (int i : iArr) {
-                int y = i;
-                if (i >= 0) {
-                    for (int i2 : coordinates) {
-                        int x = i2;
-                        if (i2 >= 0 && isEmpty(matrix.get(x, y))) {
-                            embedPositionAdjustmentPattern(x - 2, y - 2, matrix);
-                        }
+        if (version.getVersionNumber() < 2) {
+            return;
+        }
+        int index = version.getVersionNumber() - 1;
+        int[] coordinates = POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE[index];
+        for (int y : coordinates) {
+            if (y >= 0) {
+                for (int x : coordinates) {
+                    if (x >= 0 && isEmpty(matrix.get(x, y))) {
+                        embedPositionAdjustmentPattern(x - 2, y - 2, matrix);
                     }
                 }
             }

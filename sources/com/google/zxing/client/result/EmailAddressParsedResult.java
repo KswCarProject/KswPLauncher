@@ -1,5 +1,6 @@
 package com.google.zxing.client.result;
 
+/* loaded from: classes.dex */
 public final class EmailAddressParsedResult extends ParsedResult {
     private final String[] bccs;
     private final String body;
@@ -8,16 +9,16 @@ public final class EmailAddressParsedResult extends ParsedResult {
     private final String[] tos;
 
     EmailAddressParsedResult(String to) {
-        this(new String[]{to}, (String[]) null, (String[]) null, (String) null, (String) null);
+        this(new String[]{to}, null, null, null, null);
     }
 
-    EmailAddressParsedResult(String[] tos2, String[] ccs2, String[] bccs2, String subject2, String body2) {
+    EmailAddressParsedResult(String[] tos, String[] ccs, String[] bccs, String subject, String body) {
         super(ParsedResultType.EMAIL_ADDRESS);
-        this.tos = tos2;
-        this.ccs = ccs2;
-        this.bccs = bccs2;
-        this.subject = subject2;
-        this.body = body2;
+        this.tos = tos;
+        this.ccs = ccs;
+        this.bccs = bccs;
+        this.subject = subject;
+        this.body = body;
     }
 
     @Deprecated
@@ -54,6 +55,7 @@ public final class EmailAddressParsedResult extends ParsedResult {
         return "mailto:";
     }
 
+    @Override // com.google.zxing.client.result.ParsedResult
     public String getDisplayResult() {
         StringBuilder result = new StringBuilder(30);
         maybeAppend(this.tos, result);

@@ -1,35 +1,43 @@
 package com.wits.ksw.launcher.pagerlayoutmanager;
 
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
+import android.support.p004v7.widget.LinearSmoothScroller;
+import android.support.p004v7.widget.RecyclerView;
+import android.support.p004v7.widget.SnapHelper;
 import android.view.View;
 
+/* loaded from: classes7.dex */
 public class PagerGridSnapHelper extends SnapHelper {
     private RecyclerView mRecyclerView;
 
+    @Override // android.support.p004v7.widget.SnapHelper
     public void attachToRecyclerView(RecyclerView recyclerView) throws IllegalStateException {
         super.attachToRecyclerView(recyclerView);
         this.mRecyclerView = recyclerView;
     }
 
+    @Override // android.support.p004v7.widget.SnapHelper
     public int[] calculateDistanceToFinalSnap(RecyclerView.LayoutManager layoutManager, View targetView) {
         int pos = layoutManager.getPosition(targetView);
         PagerConfig.Loge("findTargetSnapPosition, pos = " + pos);
         int[] offset = new int[2];
         if (layoutManager instanceof PagerGridLayoutManager) {
-            return ((PagerGridLayoutManager) layoutManager).getSnapOffset(pos);
+            PagerGridLayoutManager manager = (PagerGridLayoutManager) layoutManager;
+            int[] offset2 = manager.getSnapOffset(pos);
+            return offset2;
         }
         return offset;
     }
 
+    @Override // android.support.p004v7.widget.SnapHelper
     public View findSnapView(RecyclerView.LayoutManager layoutManager) {
         if (layoutManager instanceof PagerGridLayoutManager) {
-            return ((PagerGridLayoutManager) layoutManager).findSnapView();
+            PagerGridLayoutManager manager = (PagerGridLayoutManager) layoutManager;
+            return manager.findSnapView();
         }
         return null;
     }
 
+    @Override // android.support.p004v7.widget.SnapHelper
     public int findTargetSnapPosition(RecyclerView.LayoutManager layoutManager, int velocityX, int velocityY) {
         int target = -1;
         PagerConfig.Loge("findTargetSnapPosition, velocityX = " + velocityX + ", velocityY" + velocityY);
@@ -53,17 +61,19 @@ public class PagerGridSnapHelper extends SnapHelper {
         return target;
     }
 
+    @Override // android.support.p004v7.widget.SnapHelper, android.support.p004v7.widget.RecyclerView.OnFlingListener
     public boolean onFling(int velocityX, int velocityY) {
         RecyclerView.LayoutManager layoutManager = this.mRecyclerView.getLayoutManager();
-        if (layoutManager == null || this.mRecyclerView.getAdapter() == null) {
+        if (layoutManager == null) {
+            return false;
+        }
+        RecyclerView.Adapter adapter = this.mRecyclerView.getAdapter();
+        if (adapter == null) {
             return false;
         }
         int minFlingVelocity = PagerConfig.getFlingThreshold();
         PagerConfig.Loge("minFlingVelocity = " + minFlingVelocity);
-        if ((Math.abs(velocityY) > minFlingVelocity || Math.abs(velocityX) > minFlingVelocity) && snapFromFling(layoutManager, velocityX, velocityY)) {
-            return true;
-        }
-        return false;
+        return (Math.abs(velocityY) > minFlingVelocity || Math.abs(velocityX) > minFlingVelocity) && snapFromFling(layoutManager, velocityX, velocityY);
     }
 
     private boolean snapFromFling(RecyclerView.LayoutManager layoutManager, int velocityX, int velocityY) {
@@ -77,8 +87,8 @@ public class PagerGridSnapHelper extends SnapHelper {
         return true;
     }
 
-    /* access modifiers changed from: protected */
-    public LinearSmoothScroller createSnapScroller(RecyclerView.LayoutManager layoutManager) {
+    @Override // android.support.p004v7.widget.SnapHelper
+    protected LinearSmoothScroller createSnapScroller(RecyclerView.LayoutManager layoutManager) {
         if (!(layoutManager instanceof RecyclerView.SmoothScroller.ScrollVectorProvider)) {
             return null;
         }

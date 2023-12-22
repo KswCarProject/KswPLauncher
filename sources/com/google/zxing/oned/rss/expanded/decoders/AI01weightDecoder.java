@@ -2,19 +2,17 @@ package com.google.zxing.oned.rss.expanded.decoders;
 
 import com.google.zxing.common.BitArray;
 
+/* loaded from: classes.dex */
 abstract class AI01weightDecoder extends AI01decoder {
-    /* access modifiers changed from: protected */
-    public abstract void addWeightCode(StringBuilder sb, int i);
+    protected abstract void addWeightCode(StringBuilder sb, int i);
 
-    /* access modifiers changed from: protected */
-    public abstract int checkWeight(int i);
+    protected abstract int checkWeight(int i);
 
     AI01weightDecoder(BitArray information) {
         super(information);
     }
 
-    /* access modifiers changed from: package-private */
-    public final void encodeCompressedWeight(StringBuilder buf, int currentPos, int weightSize) {
+    final void encodeCompressedWeight(StringBuilder buf, int currentPos, int weightSize) {
         int originalWeightNumeric = getGeneralDecoder().extractNumericValueFromBitArray(currentPos, weightSize);
         addWeightCode(buf, originalWeightNumeric);
         int weightNumeric = checkWeight(originalWeightNumeric);

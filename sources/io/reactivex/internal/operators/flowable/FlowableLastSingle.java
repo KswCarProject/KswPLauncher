@@ -10,40 +10,45 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableLastSingle<T> extends Single<T> {
     final T defaultItem;
     final Publisher<T> source;
 
-    public FlowableLastSingle(Publisher<T> source2, T defaultItem2) {
-        this.source = source2;
-        this.defaultItem = defaultItem2;
+    public FlowableLastSingle(Publisher<T> source, T defaultItem) {
+        this.source = source;
+        this.defaultItem = defaultItem;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         this.source.subscribe(new LastSubscriber(observer, this.defaultItem));
     }
 
+    /* loaded from: classes.dex */
     static final class LastSubscriber<T> implements FlowableSubscriber<T>, Disposable {
         final T defaultItem;
         final SingleObserver<? super T> downstream;
         T item;
         Subscription upstream;
 
-        LastSubscriber(SingleObserver<? super T> actual, T defaultItem2) {
+        LastSubscriber(SingleObserver<? super T> actual, T defaultItem) {
             this.downstream = actual;
-            this.defaultItem = defaultItem2;
+            this.defaultItem = defaultItem;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.cancel();
             this.upstream = SubscriptionHelper.CANCELLED;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream == SubscriptionHelper.CANCELLED;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -52,16 +57,19 @@ public final class FlowableLastSingle<T> extends Single<T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             this.item = t;
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             this.upstream = SubscriptionHelper.CANCELLED;
             this.item = null;
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.upstream = SubscriptionHelper.CANCELLED;
             T v = this.item;

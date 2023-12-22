@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 class GroupedLinkedMap<K extends Poolable, V> {
     private final LinkedEntry<K, V> head = new LinkedEntry<>();
     private final Map<K, LinkedEntry<K, V>> keyToEntry = new HashMap();
@@ -38,14 +39,14 @@ class GroupedLinkedMap<K extends Poolable, V> {
     }
 
     public V removeLast() {
-        for (LinkedEntry<K, V> last = this.head.prev; !last.equals(this.head); last = last.prev) {
-            V removed = last.removeLast();
+        for (LinkedEntry linkedEntry = this.head.prev; !linkedEntry.equals(this.head); linkedEntry = linkedEntry.prev) {
+            V removed = (V) linkedEntry.removeLast();
             if (removed != null) {
                 return removed;
             }
-            removeEntry(last);
-            this.keyToEntry.remove(last.key);
-            ((Poolable) last.key).offer();
+            removeEntry(linkedEntry);
+            this.keyToEntry.remove(linkedEntry.key);
+            ((Poolable) linkedEntry.key).offer();
         }
         return null;
     }
@@ -53,9 +54,9 @@ class GroupedLinkedMap<K extends Poolable, V> {
     public String toString() {
         StringBuilder sb = new StringBuilder("GroupedLinkedMap( ");
         boolean hadAtLeastOneItem = false;
-        for (LinkedEntry<K, V> current = this.head.next; !current.equals(this.head); current = current.next) {
+        for (LinkedEntry linkedEntry = this.head.next; !linkedEntry.equals(this.head); linkedEntry = linkedEntry.next) {
             hadAtLeastOneItem = true;
-            sb.append('{').append(current.key).append(':').append(current.size()).append("}, ");
+            sb.append('{').append(linkedEntry.key).append(':').append(linkedEntry.size()).append("}, ");
         }
         if (hadAtLeastOneItem) {
             sb.delete(sb.length() - 2, sb.length());
@@ -87,6 +88,7 @@ class GroupedLinkedMap<K extends Poolable, V> {
         entry.next.prev = entry.prev;
     }
 
+    /* loaded from: classes.dex */
     private static class LinkedEntry<K, V> {
         final K key;
         LinkedEntry<K, V> next;
@@ -94,13 +96,13 @@ class GroupedLinkedMap<K extends Poolable, V> {
         private List<V> values;
 
         LinkedEntry() {
-            this((Object) null);
+            this(null);
         }
 
-        LinkedEntry(K key2) {
+        LinkedEntry(K key) {
             this.prev = this;
             this.next = this;
-            this.key = key2;
+            this.key = key;
         }
 
         public V removeLast() {

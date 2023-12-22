@@ -3,23 +3,28 @@ package com.wits.ksw.databinding;
 import android.databinding.DataBindingComponent;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
+import android.databinding.adapters.TextViewBindingAdapter;
+import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
+import com.wits.ksw.launcher.view.CustomBmwImageView;
 
+/* loaded from: classes7.dex */
 public class AlsId7SubCarViewBindingImpl extends AlsId7SubCarViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback333;
+    private final View.OnClickListener mCallback477;
     private long mDirtyFlags;
 
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.textView2, 4);
-        sparseIntArray.put(R.id.textView3, 5);
+        sparseIntArray.put(C0899R.C0901id.textView2, 4);
+        sparseIntArray.put(C0899R.C0901id.textView3, 5);
     }
 
     public AlsId7SubCarViewBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -27,24 +32,26 @@ public class AlsId7SubCarViewBindingImpl extends AlsId7SubCarViewBinding impleme
     }
 
     private AlsId7SubCarViewBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 2, bindings[0], bindings[1], bindings[3], bindings[2], bindings[4], bindings[5]);
-        this.mDirtyFlags = -1;
-        this.carConstraintLayout.setTag((Object) null);
-        this.carImageView.setTag((Object) null);
-        this.dayTextView.setTag((Object) null);
-        this.monthTextView.setTag((Object) null);
+        super(bindingComponent, root, 2, (ConstraintLayout) bindings[0], (CustomBmwImageView) bindings[1], (TextView) bindings[3], (TextView) bindings[2], (TextView) bindings[4], (TextView) bindings[5]);
+        this.mDirtyFlags = -1L;
+        this.carConstraintLayout.setTag(null);
+        this.carImageView.setTag(null);
+        this.dayTextView.setTag(null);
+        this.monthTextView.setTag(null);
         setRootTag(root);
-        this.mCallback333 = new OnClickListener(this, 1);
+        this.mCallback477 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 8;
+            this.mDirtyFlags = 8L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -54,14 +61,16 @@ public class AlsId7SubCarViewBindingImpl extends AlsId7SubCarViewBinding impleme
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (13 != variableId) {
-            return false;
+        if (13 == variableId) {
+            setNaviCarViewModel((AlsID7ViewModel) variable);
+            return true;
         }
-        setNaviCarViewModel((AlsID7ViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AlsId7SubCarViewBinding
     public void setNaviCarViewModel(AlsID7ViewModel NaviCarViewModel) {
         this.mNaviCarViewModel = NaviCarViewModel;
         synchronized (this) {
@@ -71,8 +80,8 @@ public class AlsId7SubCarViewBindingImpl extends AlsId7SubCarViewBinding impleme
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeNaviCarViewModelDay((ObservableField) object, fieldId);
@@ -83,128 +92,81 @@ public class AlsId7SubCarViewBindingImpl extends AlsId7SubCarViewBinding impleme
         }
     }
 
-    private boolean onChangeNaviCarViewModelDay(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeNaviCarViewModelDay(ObservableField<String> NaviCarViewModelDay, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
+        return false;
+    }
+
+    private boolean onChangeNaviCarViewModelMonth(ObservableField<String> NaviCarViewModelMonth, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
+        long dirtyFlags;
         synchronized (this) {
-            this.mDirtyFlags |= 1;
+            dirtyFlags = this.mDirtyFlags;
+            this.mDirtyFlags = 0L;
         }
-        return true;
+        View.OnFocusChangeListener naviCarViewModelCarinfoViewFocusChangeListener = null;
+        ObservableField<String> naviCarViewModelDay = null;
+        String naviCarViewModelDayGet = null;
+        ObservableField<String> naviCarViewModelMonth = null;
+        String naviCarViewModelMonthGet = null;
+        AlsID7ViewModel naviCarViewModel = this.mNaviCarViewModel;
+        if ((15 & dirtyFlags) != 0) {
+            if ((dirtyFlags & 12) != 0 && naviCarViewModel != null) {
+                naviCarViewModelCarinfoViewFocusChangeListener = naviCarViewModel.carinfoViewFocusChangeListener;
+            }
+            if ((dirtyFlags & 13) != 0) {
+                if (naviCarViewModel != null) {
+                    naviCarViewModelDay = naviCarViewModel.day;
+                }
+                updateRegistration(0, naviCarViewModelDay);
+                if (naviCarViewModelDay != null) {
+                    naviCarViewModelDayGet = naviCarViewModelDay.get();
+                }
+            }
+            if ((dirtyFlags & 14) != 0) {
+                if (naviCarViewModel != null) {
+                    naviCarViewModelMonth = naviCarViewModel.month;
+                }
+                updateRegistration(1, naviCarViewModelMonth);
+                if (naviCarViewModelMonth != null) {
+                    naviCarViewModelMonthGet = naviCarViewModelMonth.get();
+                }
+            }
+        }
+        if ((dirtyFlags & 8) != 0) {
+            this.carImageView.setOnClickListener(this.mCallback477);
+        }
+        if ((dirtyFlags & 12) != 0) {
+            this.carImageView.setOnFocusChangeListener(naviCarViewModelCarinfoViewFocusChangeListener);
+        }
+        if ((dirtyFlags & 13) != 0) {
+            TextViewBindingAdapter.setText(this.dayTextView, naviCarViewModelDayGet);
+        }
+        if ((14 & dirtyFlags) != 0) {
+            TextViewBindingAdapter.setText(this.monthTextView, naviCarViewModelMonthGet);
+        }
     }
 
-    private boolean onChangeNaviCarViewModelMonth(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
-        }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
-    }
-
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r11v17, resolved type: java.lang.Object} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v2, resolved type: java.lang.String} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r11v19, resolved type: java.lang.Object} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r7v3, resolved type: java.lang.String} */
-    /* access modifiers changed from: protected */
-    /* JADX WARNING: Multi-variable type inference failed */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void executeBindings() {
-        /*
-            r20 = this;
-            r1 = r20
-            r2 = 0
-            monitor-enter(r20)
-            long r4 = r1.mDirtyFlags     // Catch:{ all -> 0x008b }
-            r2 = r4
-            r4 = 0
-            r1.mDirtyFlags = r4     // Catch:{ all -> 0x008b }
-            monitor-exit(r20)     // Catch:{ all -> 0x008b }
-            r0 = 0
-            r6 = 0
-            r7 = 0
-            r8 = 0
-            r9 = 0
-            com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel r10 = r1.mNaviCarViewModel
-            r11 = 15
-            long r11 = r11 & r2
-            int r11 = (r11 > r4 ? 1 : (r11 == r4 ? 0 : -1))
-            r12 = 14
-            r14 = 13
-            r16 = 12
-            if (r11 == 0) goto L_0x0059
-            long r18 = r2 & r16
-            int r11 = (r18 > r4 ? 1 : (r18 == r4 ? 0 : -1))
-            if (r11 == 0) goto L_0x002b
-            if (r10 == 0) goto L_0x002b
-            android.view.View$OnFocusChangeListener r0 = r10.carinfoViewFocusChangeListener
-        L_0x002b:
-            long r18 = r2 & r14
-            int r11 = (r18 > r4 ? 1 : (r18 == r4 ? 0 : -1))
-            if (r11 == 0) goto L_0x0042
-            if (r10 == 0) goto L_0x0035
-            android.databinding.ObservableField r6 = r10.day
-        L_0x0035:
-            r11 = 0
-            r1.updateRegistration((int) r11, (android.databinding.Observable) r6)
-            if (r6 == 0) goto L_0x0042
-            java.lang.Object r11 = r6.get()
-            r7 = r11
-            java.lang.String r7 = (java.lang.String) r7
-        L_0x0042:
-            long r18 = r2 & r12
-            int r11 = (r18 > r4 ? 1 : (r18 == r4 ? 0 : -1))
-            if (r11 == 0) goto L_0x0059
-            if (r10 == 0) goto L_0x004c
-            android.databinding.ObservableField r8 = r10.month
-        L_0x004c:
-            r11 = 1
-            r1.updateRegistration((int) r11, (android.databinding.Observable) r8)
-            if (r8 == 0) goto L_0x0059
-            java.lang.Object r11 = r8.get()
-            r9 = r11
-            java.lang.String r9 = (java.lang.String) r9
-        L_0x0059:
-            r18 = 8
-            long r18 = r2 & r18
-            int r11 = (r18 > r4 ? 1 : (r18 == r4 ? 0 : -1))
-            if (r11 == 0) goto L_0x0068
-            com.wits.ksw.launcher.view.CustomBmwImageView r11 = r1.carImageView
-            android.view.View$OnClickListener r12 = r1.mCallback333
-            r11.setOnClickListener(r12)
-        L_0x0068:
-            long r11 = r2 & r16
-            int r11 = (r11 > r4 ? 1 : (r11 == r4 ? 0 : -1))
-            if (r11 == 0) goto L_0x0073
-            com.wits.ksw.launcher.view.CustomBmwImageView r11 = r1.carImageView
-            r11.setOnFocusChangeListener(r0)
-        L_0x0073:
-            long r11 = r2 & r14
-            int r11 = (r11 > r4 ? 1 : (r11 == r4 ? 0 : -1))
-            if (r11 == 0) goto L_0x007e
-            android.widget.TextView r11 = r1.dayTextView
-            android.databinding.adapters.TextViewBindingAdapter.setText(r11, r7)
-        L_0x007e:
-            r11 = 14
-            long r11 = r11 & r2
-            int r4 = (r11 > r4 ? 1 : (r11 == r4 ? 0 : -1))
-            if (r4 == 0) goto L_0x008a
-            android.widget.TextView r4 = r1.monthTextView
-            android.databinding.adapters.TextViewBindingAdapter.setText(r4, r9)
-        L_0x008a:
-            return
-        L_0x008b:
-            r0 = move-exception
-            monitor-exit(r20)     // Catch:{ all -> 0x008b }
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.AlsId7SubCarViewBindingImpl.executeBindings():void");
-    }
-
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
         AlsID7ViewModel naviCarViewModel = this.mNaviCarViewModel;
-        if (naviCarViewModel != null) {
+        boolean naviCarViewModelJavaLangObjectNull = naviCarViewModel != null;
+        if (naviCarViewModelJavaLangObjectNull) {
             naviCarViewModel.openCar(callbackArg_0);
         }
     }

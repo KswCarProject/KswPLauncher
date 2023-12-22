@@ -3,15 +3,18 @@ package com.wits.ksw.launcher.view.ntg5;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.os.Handler;
-import android.support.v7.widget.AppCompatImageView;
+import android.support.p004v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.ibm.icu.text.SCSU;
 import com.wits.ksw.launcher.adpater.BenzNTG5RecyclerViewAdapter;
 
+/* loaded from: classes3.dex */
 public class NTG5ImageView extends AppCompatImageView implements View.OnFocusChangeListener {
     public static final String TAG = "NTG5ImageView";
     private BenzNTG5RecyclerViewAdapter adapter;
@@ -19,7 +22,7 @@ public class NTG5ImageView extends AppCompatImageView implements View.OnFocusCha
     private int screenWidth;
 
     public NTG5ImageView(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public TextView getTextView() {
@@ -30,8 +33,8 @@ public class NTG5ImageView extends AppCompatImageView implements View.OnFocusCha
         return this.adapter;
     }
 
-    public void setAdapter(BenzNTG5RecyclerViewAdapter adapter2) {
-        this.adapter = adapter2;
+    public void setAdapter(BenzNTG5RecyclerViewAdapter adapter) {
+        this.adapter = adapter;
     }
 
     public void bindTextView(TextView textView) {
@@ -41,14 +44,17 @@ public class NTG5ImageView extends AppCompatImageView implements View.OnFocusCha
     public NTG5ImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.screenWidth = 0;
-        setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        setOnFocusChangeListener(new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.view.ntg5.-$$Lambda$K9Okm5wilKXreWe5S-ReH_Q0YVM
+            @Override // android.view.View.OnFocusChangeListener
             public final void onFocusChange(View view, boolean z) {
                 NTG5ImageView.this.onFocusChange(view, z);
             }
         });
-        this.screenWidth = getResources().getDisplayMetrics().widthPixels;
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        this.screenWidth = displayMetrics.widthPixels;
     }
 
+    @Override // android.view.View.OnFocusChangeListener
     public void onFocusChange(View v, boolean hasFocus) {
         Log.d(TAG, "onFocusChange: " + hasFocus);
         if (hasFocus) {
@@ -90,6 +96,7 @@ public class NTG5ImageView extends AppCompatImageView implements View.OnFocusCha
         }
     }
 
+    @Override // android.view.View
     public boolean dispatchKeyEvent(KeyEvent event) {
         int keyCode = event.getKeyCode();
         if (event.getAction() == 0) {
@@ -111,11 +118,14 @@ public class NTG5ImageView extends AppCompatImageView implements View.OnFocusCha
     }
 
     public static void sendKeyDownUpSync(final int key) {
-        new Handler().post(new Runnable() {
+        new Handler().post(new Runnable() { // from class: com.wits.ksw.launcher.view.ntg5.NTG5ImageView.1
+            @Override // java.lang.Runnable
             public void run() {
-                new Thread(new Runnable() {
+                new Thread(new Runnable() { // from class: com.wits.ksw.launcher.view.ntg5.NTG5ImageView.1.1
+                    @Override // java.lang.Runnable
                     public void run() {
-                        new Instrumentation().sendKeyDownUpSync(key);
+                        Instrumentation instrumentation = new Instrumentation();
+                        instrumentation.sendKeyDownUpSync(key);
                     }
                 }).start();
             }

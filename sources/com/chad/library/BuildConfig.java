@@ -1,5 +1,6 @@
 package com.chad.library;
 
+/* loaded from: classes.dex */
 public final class BuildConfig {
     public static final String APPLICATION_ID = "com.chad.library";
     public static final String BUILD_TYPE = "release";

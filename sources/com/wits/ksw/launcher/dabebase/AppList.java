@@ -1,5 +1,6 @@
 package com.wits.ksw.launcher.dabebase;
 
+/* loaded from: classes10.dex */
 public final class AppList {
     public String className;
     private int uid;
@@ -8,15 +9,15 @@ public final class AppList {
         return this.uid;
     }
 
-    public void setUid(int uid2) {
-        this.uid = uid2;
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 
     public String getClassName() {
         return this.className;
     }
 
-    public void setClassName(String className2) {
-        this.className = className2;
+    public void setClassName(String className) {
+        this.className = className;
     }
 }

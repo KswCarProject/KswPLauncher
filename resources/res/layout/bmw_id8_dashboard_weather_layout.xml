@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:tag="layout/bmw_id8_dashboard_weather_layout_0" android:layout_width="350dp" android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:tag="layout/bmw_id8_dashboard_weather_layout_0" android:layout_width="350dp" android:layout_height="match_parent">
     <ProgressBar android:tag="binding_1" android:layout_width="50dp" android:layout_height="50dp" android:layout_centerInParent="true" android:indeterminateTint="@color/color1" android:indeterminateTintMode="src_atop"/>
     <LinearLayout android:gravity="center" android:orientation="vertical" android:tag="binding_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
         <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="20dp" android:src="@drawable/weather_error" android:scaleType="fitXY"/>

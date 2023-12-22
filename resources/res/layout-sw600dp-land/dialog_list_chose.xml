@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="center_horizontal" android:orientation="vertical" android:background="@mipmap/dialog_bk" android:layout_width="match_parent" android:layout_height="match_parent">
+    <android.support.p004v7.widget.RecyclerView android:id="@+id/navi_recycle" android:layout_width="370dp" android:layout_height="wrap_content" android:layout_marginTop="10dp"/>
+</LinearLayout>

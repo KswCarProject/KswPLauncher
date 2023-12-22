@@ -4,14 +4,15 @@ import android.databinding.Bindable;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.AppCompatTextView;
+import android.support.p004v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi_mib3.vm.AudiMib3VolumeViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi_mib3.p008vm.AudiMib3VolumeViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityAudiMib3SoundBinding extends ViewDataBinding {
     public final TextView carVolumeTextView;
     public final TextView hzTextView;
@@ -22,16 +23,16 @@ public abstract class ActivityAudiMib3SoundBinding extends ViewDataBinding {
     public final View titleDivider;
     public final View vDivider;
 
-    public abstract void setVm(AudiMib3VolumeViewModel audiMib3VolumeViewModel);
+    public abstract void setVm(AudiMib3VolumeViewModel vm);
 
-    protected ActivityAudiMib3SoundBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView carVolumeTextView2, TextView hzTextView2, ConstraintLayout linearLayout42, AppCompatTextView title2, View titleDivider2, View vDivider2) {
+    protected ActivityAudiMib3SoundBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView carVolumeTextView, TextView hzTextView, ConstraintLayout linearLayout4, AppCompatTextView title, View titleDivider, View vDivider) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.carVolumeTextView = carVolumeTextView2;
-        this.hzTextView = hzTextView2;
-        this.linearLayout4 = linearLayout42;
-        this.title = title2;
-        this.titleDivider = titleDivider2;
-        this.vDivider = vDivider2;
+        this.carVolumeTextView = carVolumeTextView;
+        this.hzTextView = hzTextView;
+        this.linearLayout4 = linearLayout4;
+        this.title = title;
+        this.titleDivider = titleDivider;
+        this.vDivider = vDivider;
     }
 
     public AudiMib3VolumeViewModel getVm() {
@@ -44,7 +45,7 @@ public abstract class ActivityAudiMib3SoundBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityAudiMib3SoundBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityAudiMib3SoundBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_audi_mib3_sound, root, attachToRoot, component);
+        return (ActivityAudiMib3SoundBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_audi_mib3_sound, root, attachToRoot, component);
     }
 
     public static ActivityAudiMib3SoundBinding inflate(LayoutInflater inflater) {
@@ -53,7 +54,7 @@ public abstract class ActivityAudiMib3SoundBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityAudiMib3SoundBinding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityAudiMib3SoundBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_audi_mib3_sound, (ViewGroup) null, false, component);
+        return (ActivityAudiMib3SoundBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_audi_mib3_sound, null, false, component);
     }
 
     public static ActivityAudiMib3SoundBinding bind(View view) {
@@ -62,6 +63,6 @@ public abstract class ActivityAudiMib3SoundBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityAudiMib3SoundBinding bind(View view, Object component) {
-        return (ActivityAudiMib3SoundBinding) bind(component, view, R.layout.activity_audi_mib3_sound);
+        return (ActivityAudiMib3SoundBinding) bind(component, view, C0899R.C0902layout.activity_audi_mib3_sound);
     }
 }

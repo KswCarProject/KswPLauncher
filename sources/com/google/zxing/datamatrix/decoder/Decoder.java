@@ -9,6 +9,7 @@ import com.google.zxing.common.reedsolomon.ReedSolomonDecoder;
 import com.google.zxing.common.reedsolomon.ReedSolomonException;
 import kotlin.UByte;
 
+/* loaded from: classes.dex */
 public final class Decoder {
     private final ReedSolomonDecoder rsDecoder = new ReedSolomonDecoder(GenericGF.DATA_MATRIX_FIELD_256);
 
@@ -18,7 +19,8 @@ public final class Decoder {
 
     public DecoderResult decode(BitMatrix bits) throws FormatException, ChecksumException {
         BitMatrixParser parser = new BitMatrixParser(bits);
-        DataBlock[] dataBlocks = DataBlock.getDataBlocks(parser.readCodewords(), parser.getVersion());
+        Version version = parser.getVersion();
+        DataBlock[] dataBlocks = DataBlock.getDataBlocks(parser.readCodewords(), version);
         int totalBytes = 0;
         for (DataBlock db : dataBlocks) {
             totalBytes += db.getNumDataCodewords();
@@ -27,9 +29,8 @@ public final class Decoder {
         int dataBlocksCount = dataBlocks.length;
         for (int j = 0; j < dataBlocksCount; j++) {
             DataBlock dataBlock = dataBlocks[j];
-            DataBlock dataBlock2 = dataBlock;
             byte[] codewordBytes = dataBlock.getCodewords();
-            int numDataCodewords = dataBlock2.getNumDataCodewords();
+            int numDataCodewords = dataBlock.getNumDataCodewords();
             correctErrors(codewordBytes, numDataCodewords);
             for (int i = 0; i < numDataCodewords; i++) {
                 resultBytes[(i * dataBlocksCount) + j] = codewordBytes[i];

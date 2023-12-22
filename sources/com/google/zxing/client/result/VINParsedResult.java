@@ -1,5 +1,6 @@
 package com.google.zxing.client.result;
 
+/* loaded from: classes.dex */
 public final class VINParsedResult extends ParsedResult {
     private final String countryCode;
     private final int modelYear;
@@ -11,17 +12,17 @@ public final class VINParsedResult extends ParsedResult {
     private final String vin;
     private final String worldManufacturerID;
 
-    public VINParsedResult(String vin2, String worldManufacturerID2, String vehicleDescriptorSection2, String vehicleIdentifierSection2, String countryCode2, String vehicleAttributes2, int modelYear2, char plantCode2, String sequentialNumber2) {
+    public VINParsedResult(String vin, String worldManufacturerID, String vehicleDescriptorSection, String vehicleIdentifierSection, String countryCode, String vehicleAttributes, int modelYear, char plantCode, String sequentialNumber) {
         super(ParsedResultType.VIN);
-        this.vin = vin2;
-        this.worldManufacturerID = worldManufacturerID2;
-        this.vehicleDescriptorSection = vehicleDescriptorSection2;
-        this.vehicleIdentifierSection = vehicleIdentifierSection2;
-        this.countryCode = countryCode2;
-        this.vehicleAttributes = vehicleAttributes2;
-        this.modelYear = modelYear2;
-        this.plantCode = plantCode2;
-        this.sequentialNumber = sequentialNumber2;
+        this.vin = vin;
+        this.worldManufacturerID = worldManufacturerID;
+        this.vehicleDescriptorSection = vehicleDescriptorSection;
+        this.vehicleIdentifierSection = vehicleIdentifierSection;
+        this.countryCode = countryCode;
+        this.vehicleAttributes = vehicleAttributes;
+        this.modelYear = modelYear;
+        this.plantCode = plantCode;
+        this.sequentialNumber = sequentialNumber;
     }
 
     public String getVIN() {
@@ -60,19 +61,19 @@ public final class VINParsedResult extends ParsedResult {
         return this.sequentialNumber;
     }
 
+    @Override // com.google.zxing.client.result.ParsedResult
     public String getDisplayResult() {
-        StringBuilder sb = new StringBuilder(50);
-        StringBuilder result = sb;
-        sb.append(this.worldManufacturerID).append(' ');
+        StringBuilder result = new StringBuilder(50);
+        result.append(this.worldManufacturerID).append(' ');
         result.append(this.vehicleDescriptorSection).append(' ');
-        result.append(this.vehicleIdentifierSection).append(10);
+        result.append(this.vehicleIdentifierSection).append('\n');
         String str = this.countryCode;
         if (str != null) {
             result.append(str).append(' ');
         }
         result.append(this.modelYear).append(' ');
         result.append(this.plantCode).append(' ');
-        result.append(this.sequentialNumber).append(10);
+        result.append(this.sequentialNumber).append('\n');
         return result.toString();
     }
 }

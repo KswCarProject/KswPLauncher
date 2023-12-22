@@ -1,13 +1,13 @@
 package android.arch.persistence.room;
 
-import android.arch.persistence.db.SupportSQLiteStatement;
+import android.arch.persistence.p000db.SupportSQLiteStatement;
 
+/* loaded from: classes.dex */
 public abstract class EntityDeletionOrUpdateAdapter<T> extends SharedSQLiteStatement {
-    /* access modifiers changed from: protected */
-    public abstract void bind(SupportSQLiteStatement supportSQLiteStatement, T t);
+    protected abstract void bind(SupportSQLiteStatement supportSQLiteStatement, T t);
 
-    /* access modifiers changed from: protected */
-    public abstract String createQuery();
+    @Override // android.arch.persistence.room.SharedSQLiteStatement
+    protected abstract String createQuery();
 
     public EntityDeletionOrUpdateAdapter(RoomDatabase database) {
         super(database);

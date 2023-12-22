@@ -12,55 +12,63 @@ import io.reactivex.internal.functions.ObjectHelper;
 import io.reactivex.internal.observers.ResumeSingleObserver;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class SingleResumeNext<T> extends Single<T> {
     final Function<? super Throwable, ? extends SingleSource<? extends T>> nextFunction;
     final SingleSource<? extends T> source;
 
-    public SingleResumeNext(SingleSource<? extends T> source2, Function<? super Throwable, ? extends SingleSource<? extends T>> nextFunction2) {
-        this.source = source2;
-        this.nextFunction = nextFunction2;
+    public SingleResumeNext(SingleSource<? extends T> source, Function<? super Throwable, ? extends SingleSource<? extends T>> nextFunction) {
+        this.source = source;
+        this.nextFunction = nextFunction;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         this.source.subscribe(new ResumeMainSingleObserver(observer, this.nextFunction));
     }
 
+    /* loaded from: classes.dex */
     static final class ResumeMainSingleObserver<T> extends AtomicReference<Disposable> implements SingleObserver<T>, Disposable {
         private static final long serialVersionUID = -5314538511045349925L;
         final SingleObserver<? super T> downstream;
         final Function<? super Throwable, ? extends SingleSource<? extends T>> nextFunction;
 
-        ResumeMainSingleObserver(SingleObserver<? super T> actual, Function<? super Throwable, ? extends SingleSource<? extends T>> nextFunction2) {
+        ResumeMainSingleObserver(SingleObserver<? super T> actual, Function<? super Throwable, ? extends SingleSource<? extends T>> nextFunction) {
             this.downstream = actual;
-            this.nextFunction = nextFunction2;
+            this.nextFunction = nextFunction;
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.setOnce(this, d)) {
                 this.downstream.onSubscribe(this);
             }
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSuccess(T value) {
             this.downstream.onSuccess(value);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
             try {
-                ((SingleSource) ObjectHelper.requireNonNull(this.nextFunction.apply(e), "The nextFunction returned a null SingleSource.")).subscribe(new ResumeSingleObserver(this, this.downstream));
+                SingleSource<? extends T> source = (SingleSource) ObjectHelper.requireNonNull(this.nextFunction.apply(e), "The nextFunction returned a null SingleSource.");
+                source.subscribe(new ResumeSingleObserver<>(this, this.downstream));
             } catch (Throwable ex) {
                 Exceptions.throwIfFatal(ex);
                 this.downstream.onError(new CompositeException(e, ex));
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             DisposableHelper.dispose(this);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return DisposableHelper.isDisposed((Disposable) get());
+            return DisposableHelper.isDisposed(get());
         }
     }
 }

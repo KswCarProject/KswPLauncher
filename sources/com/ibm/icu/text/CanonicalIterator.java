@@ -9,10 +9,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/* loaded from: classes.dex */
 public final class CanonicalIterator {
-    private static boolean PROGRESS = false;
     private static final Set<String> SET_WITH_NULL_STRING;
-    private static boolean SKIP_ZEROS = true;
     private transient StringBuilder buffer = new StringBuilder();
     private int[] current;
     private boolean done;
@@ -20,12 +19,14 @@ public final class CanonicalIterator {
     private final Normalizer2 nfd;
     private String[][] pieces;
     private String source;
+    private static boolean PROGRESS = false;
+    private static boolean SKIP_ZEROS = true;
 
-    public CanonicalIterator(String source2) {
+    public CanonicalIterator(String source) {
         Norm2AllModes allModes = Norm2AllModes.getNFCInstance();
         this.nfd = allModes.decomp;
         this.nfcImpl = allModes.impl.ensureCanonIterData();
-        setSource(source2);
+        setSource(source);
     }
 
     public String getSource() {
@@ -82,10 +83,9 @@ public final class CanonicalIterator {
         this.source = this.nfd.normalize(newSource);
         this.done = false;
         if (newSource.length() == 0) {
-            String[][] strArr = new String[1][];
-            this.pieces = strArr;
+            this.pieces = r1;
             this.current = new int[1];
-            strArr[0] = new String[]{""};
+            String[][] strArr = {new String[]{""}};
             return;
         }
         List<String> segmentList = new ArrayList<>();
@@ -100,7 +100,7 @@ public final class CanonicalIterator {
             i += Character.charCount(cp);
         }
         segmentList.add(this.source.substring(start, i));
-        this.pieces = new String[segmentList.size()][];
+        this.pieces = new String[segmentList.size()];
         this.current = new int[segmentList.size()];
         for (int i2 = 0; i2 < this.pieces.length; i2++) {
             if (PROGRESS) {
@@ -111,25 +111,26 @@ public final class CanonicalIterator {
     }
 
     @Deprecated
-    public static void permute(String source2, boolean skipZeros, Set<String> output) {
-        if (source2.length() > 2 || UTF16.countCodePoint(source2) > 1) {
-            Set<String> subpermute = new HashSet<>();
-            int i = 0;
-            while (i < source2.length()) {
-                int cp = UTF16.charAt(source2, i);
-                if (!skipZeros || i == 0 || UCharacter.getCombiningClass(cp) != 0) {
-                    subpermute.clear();
-                    permute(source2.substring(0, i) + source2.substring(UTF16.getCharCount(cp) + i), skipZeros, subpermute);
-                    String chStr = UTF16.valueOf(source2, i);
-                    for (String s : subpermute) {
-                        output.add(chStr + s);
-                    }
-                }
-                i += UTF16.getCharCount(cp);
-            }
+    public static void permute(String source, boolean skipZeros, Set<String> output) {
+        if (source.length() <= 2 && UTF16.countCodePoint(source) <= 1) {
+            output.add(source);
             return;
         }
-        output.add(source2);
+        Set<String> subpermute = new HashSet<>();
+        int i = 0;
+        while (i < source.length()) {
+            int cp = UTF16.charAt(source, i);
+            if (!skipZeros || i == 0 || UCharacter.getCombiningClass(cp) != 0) {
+                subpermute.clear();
+                permute(source.substring(0, i) + source.substring(UTF16.getCharCount(cp) + i), skipZeros, subpermute);
+                String chStr = UTF16.valueOf(source, i);
+                for (String s : subpermute) {
+                    String piece = chStr + s;
+                    output.add(piece);
+                }
+            }
+            i += UTF16.getCharCount(cp);
+        }
     }
 
     static {
@@ -178,9 +179,10 @@ public final class CanonicalIterator {
                     int cp2 = iter.codepoint;
                     Set<String> remainder = extract(cp2, segment, i, workingBuffer);
                     if (remainder != null) {
-                        String prefix = segment.substring(0, i) + UTF16.valueOf(cp2);
+                        String prefix = segment.substring(0, i);
+                        String prefix2 = prefix + UTF16.valueOf(cp2);
                         for (String item : remainder) {
-                            result.add(prefix + item);
+                            result.add(prefix2 + item);
                         }
                     }
                 }

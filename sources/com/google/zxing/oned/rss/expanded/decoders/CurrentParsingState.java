@@ -1,9 +1,11 @@
 package com.google.zxing.oned.rss.expanded.decoders;
 
+/* loaded from: classes.dex */
 final class CurrentParsingState {
-    private State encoding = State.NUMERIC;
     private int position = 0;
+    private State encoding = State.NUMERIC;
 
+    /* loaded from: classes.dex */
     private enum State {
         NUMERIC,
         ALPHA,
@@ -13,48 +15,39 @@ final class CurrentParsingState {
     CurrentParsingState() {
     }
 
-    /* access modifiers changed from: package-private */
-    public int getPosition() {
+    int getPosition() {
         return this.position;
     }
 
-    /* access modifiers changed from: package-private */
-    public void setPosition(int position2) {
-        this.position = position2;
+    void setPosition(int position) {
+        this.position = position;
     }
 
-    /* access modifiers changed from: package-private */
-    public void incrementPosition(int delta) {
+    void incrementPosition(int delta) {
         this.position += delta;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isAlpha() {
+    boolean isAlpha() {
         return this.encoding == State.ALPHA;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isNumeric() {
+    boolean isNumeric() {
         return this.encoding == State.NUMERIC;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isIsoIec646() {
+    boolean isIsoIec646() {
         return this.encoding == State.ISO_IEC_646;
     }
 
-    /* access modifiers changed from: package-private */
-    public void setNumeric() {
+    void setNumeric() {
         this.encoding = State.NUMERIC;
     }
 
-    /* access modifiers changed from: package-private */
-    public void setAlpha() {
+    void setAlpha() {
         this.encoding = State.ALPHA;
     }
 
-    /* access modifiers changed from: package-private */
-    public void setIsoIec646() {
+    void setIsoIec646() {
         this.encoding = State.ISO_IEC_646;
     }
 }

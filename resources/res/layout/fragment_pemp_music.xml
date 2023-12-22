@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/ll_container" android:tag="layout/fragment_pemp_music_0" style="@style/id8_main_card_container">
+    <ImageView android:background="@drawable/pemp_id8_main_icon_music" style="@style/id8_pemp_main_card_size"/>
+    <ImageView android:id="@+id/iv_mask" android:tag="binding_1" style="@style/id8_pemp_main_card_size"/>
+    <LinearLayout style="@style/id8_pemp_main_card_container">
+        <TextView android:text="@string/ksw_id8_music" style="@style/id8_pemp_main_card_title"/>
+        <ImageView android:background="@drawable/id8_main_icon_weather_line" style="@style/id8_pemp_main_card_divider"/>
+        <TextView android:text="@string/music_player" style="@style/id8_pemp_main_card_desc"/>
+        <FrameLayout android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="7dp">
+            <ImageView android:layout_gravity="center_horizontal" android:id="@+id/iv_music_album" android:tag="binding_2" android:layout_width="162dp" android:layout_height="162dp" android:layout_marginTop="1dp" android:scaleType="fitXY"/>
+            <ImageView android:tag="binding_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/id8_main_icon_music_pic"/>
+        </FrameLayout>
+        <com.wits.ksw.launcher.view.CustomizeSeekBar android:layout_gravity="center_horizontal" android:tag="binding_4" android:background="@null" android:focusable="false" android:layout_width="164dp" android:layout_height="4dp" android:layout_marginTop="7dp" app:layout_background="@drawable/pemp_id8_main_icon_music_progress_bar_n" app:layout_indicator="@drawable/id8_main_icon_music_progress_thumb" app:layout_progress_bg="@drawable/pemp_id8_main_icon_music_progress_bar_d"/>
+        <com.wits.ksw.launcher.view.MarqueeTextView android:id="@+id/tv_song_title" android:tag="binding_5" style="@style/id8_pemp_music_card_song"/>
+        <TextView android:id="@+id/tv_singer" android:tag="binding_6" style="@style/id8_pemp_music_card_artist"/>
+        <RelativeLayout android:orientation="horizontal" android:tag="binding_7" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp">
+            <ImageView android:id="@+id/pemp_id8_music_prev" android:tag="binding_8" android:focusable="true" android:layout_width="50dp" android:layout_height="50dp" android:src="@drawable/pemp_id8_main_icon_music_btn_prev_n" android:layout_toLeftOf="@+id/pemp_id8_music_play"/>
+            <ImageView android:id="@+id/pemp_id8_music_play" android:tag="binding_9" android:focusable="true" android:layout_width="50dp" android:layout_height="50dp" android:layout_centerInParent="true" android:layout_marginStart="40dp" android:layout_marginEnd="40dp"/>
+            <ImageView android:id="@+id/pemp_id8_music_next" android:tag="binding_10" android:focusable="true" android:layout_width="50dp" android:layout_height="50dp" android:src="@drawable/pemp_id8_main_icon_music_btn_next_n" android:layout_toRightOf="@+id/pemp_id8_music_play"/>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

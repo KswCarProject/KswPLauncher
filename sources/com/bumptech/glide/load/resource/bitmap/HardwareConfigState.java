@@ -7,6 +7,7 @@ import android.util.Log;
 import com.bumptech.glide.load.DecodeFormat;
 import java.io.File;
 
+/* loaded from: classes.dex */
 final class HardwareConfigState {
     private static final File FD_SIZE_LIST = new File("/proc/self/fd");
     private static final int MAXIMUM_FDS_FOR_HARDWARE_CONFIGS = 700;
@@ -30,9 +31,8 @@ final class HardwareConfigState {
     private HardwareConfigState() {
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean setHardwareConfigIfAllowed(int targetWidth, int targetHeight, BitmapFactory.Options optionsWithScaling, DecodeFormat decodeFormat, boolean isHardwareConfigAllowed2, boolean isExifOrientationRequired) {
-        if (!isHardwareConfigAllowed2 || Build.VERSION.SDK_INT < 26 || isExifOrientationRequired) {
+    boolean setHardwareConfigIfAllowed(int targetWidth, int targetHeight, BitmapFactory.Options optionsWithScaling, DecodeFormat decodeFormat, boolean isHardwareConfigAllowed, boolean isExifOrientationRequired) {
+        if (!isHardwareConfigAllowed || Build.VERSION.SDK_INT < 26 || isExifOrientationRequired) {
             return false;
         }
         boolean result = targetWidth >= 128 && targetHeight >= 128 && isFdSizeBelowHardwareLimit();
@@ -55,7 +55,7 @@ final class HardwareConfigState {
             }
             this.isHardwareConfigAllowed = z;
             if (!this.isHardwareConfigAllowed && Log.isLoggable("Downsampler", 5)) {
-                Log.w("Downsampler", "Excluding HARDWARE bitmap config because we're over the file descriptor limit, file descriptors " + currentFds + ", limit " + 700);
+                Log.w("Downsampler", "Excluding HARDWARE bitmap config because we're over the file descriptor limit, file descriptors " + currentFds + ", limit 700");
             }
         }
         return this.isHardwareConfigAllowed;

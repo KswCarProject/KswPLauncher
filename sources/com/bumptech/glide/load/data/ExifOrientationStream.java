@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import kotlin.UByte;
 
+/* loaded from: classes.dex */
 public final class ExifOrientationStream extends FilterInputStream {
     private static final byte[] EXIF_SEGMENT;
     private static final int ORIENTATION_POSITION;
@@ -21,22 +22,25 @@ public final class ExifOrientationStream extends FilterInputStream {
         ORIENTATION_POSITION = length + 2;
     }
 
-    public ExifOrientationStream(InputStream in, int orientation2) {
+    public ExifOrientationStream(InputStream in, int orientation) {
         super(in);
-        if (orientation2 < -1 || orientation2 > 8) {
-            throw new IllegalArgumentException("Cannot add invalid orientation: " + orientation2);
+        if (orientation < -1 || orientation > 8) {
+            throw new IllegalArgumentException("Cannot add invalid orientation: " + orientation);
         }
-        this.orientation = (byte) orientation2;
+        this.orientation = (byte) orientation;
     }
 
+    @Override // java.io.FilterInputStream, java.io.InputStream
     public boolean markSupported() {
         return false;
     }
 
+    @Override // java.io.FilterInputStream, java.io.InputStream
     public void mark(int readLimit) {
         throw new UnsupportedOperationException();
     }
 
+    @Override // java.io.FilterInputStream, java.io.InputStream
     public int read() throws IOException {
         int result;
         int i;
@@ -54,6 +58,7 @@ public final class ExifOrientationStream extends FilterInputStream {
         return result;
     }
 
+    @Override // java.io.FilterInputStream, java.io.InputStream
     public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
         int read;
         int read2 = this.position;
@@ -75,14 +80,16 @@ public final class ExifOrientationStream extends FilterInputStream {
         return read;
     }
 
+    @Override // java.io.FilterInputStream, java.io.InputStream
     public long skip(long byteCount) throws IOException {
         long skipped = super.skip(byteCount);
         if (skipped > 0) {
-            this.position = (int) (((long) this.position) + skipped);
+            this.position = (int) (this.position + skipped);
         }
         return skipped;
     }
 
+    @Override // java.io.FilterInputStream, java.io.InputStream
     public void reset() throws IOException {
         throw new UnsupportedOperationException();
     }

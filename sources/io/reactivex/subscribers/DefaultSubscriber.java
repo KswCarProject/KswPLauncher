@@ -6,9 +6,11 @@ import io.reactivex.internal.util.EndConsumerHelper;
 import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public abstract class DefaultSubscriber<T> implements FlowableSubscriber<T> {
     Subscription upstream;
 
+    @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
     public final void onSubscribe(Subscription s) {
         if (EndConsumerHelper.validate(this.upstream, s, getClass())) {
             this.upstream = s;
@@ -16,23 +18,20 @@ public abstract class DefaultSubscriber<T> implements FlowableSubscriber<T> {
         }
     }
 
-    /* access modifiers changed from: protected */
-    public final void request(long n) {
+    protected final void request(long n) {
         Subscription s = this.upstream;
         if (s != null) {
             s.request(n);
         }
     }
 
-    /* access modifiers changed from: protected */
-    public final void cancel() {
+    protected final void cancel() {
         Subscription s = this.upstream;
         this.upstream = SubscriptionHelper.CANCELLED;
         s.cancel();
     }
 
-    /* access modifiers changed from: protected */
-    public void onStart() {
+    protected void onStart() {
         request(LongCompanionObject.MAX_VALUE);
     }
 }

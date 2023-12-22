@@ -7,6 +7,7 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collection;
 
+/* loaded from: classes.dex */
 public final class FieldAttributes {
     private final Field field;
 
@@ -32,7 +33,7 @@ public final class FieldAttributes {
     }
 
     public <T extends Annotation> T getAnnotation(Class<T> annotation) {
-        return this.field.getAnnotation(annotation);
+        return (T) this.field.getAnnotation(annotation);
     }
 
     public Collection<Annotation> getAnnotations() {
@@ -43,13 +44,11 @@ public final class FieldAttributes {
         return (this.field.getModifiers() & modifier) != 0;
     }
 
-    /* access modifiers changed from: package-private */
-    public Object get(Object instance) throws IllegalAccessException {
+    Object get(Object instance) throws IllegalAccessException {
         return this.field.get(instance);
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isSynthetic() {
+    boolean isSynthetic() {
         return this.field.isSynthetic();
     }
 }

@@ -3,81 +3,51 @@ package com.bumptech.glide.load.engine.bitmap_recycle;
 import android.graphics.Bitmap;
 import android.os.Build;
 import com.bumptech.glide.util.Util;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
+/* loaded from: classes.dex */
 public class SizeConfigStrategy implements LruPoolStrategy {
-    private static final Bitmap.Config[] ALPHA_8_IN_CONFIGS = {Bitmap.Config.ALPHA_8};
-    private static final Bitmap.Config[] ARGB_4444_IN_CONFIGS = {Bitmap.Config.ARGB_4444};
+    private static final Bitmap.Config[] ALPHA_8_IN_CONFIGS;
+    private static final Bitmap.Config[] ARGB_4444_IN_CONFIGS;
     private static final Bitmap.Config[] ARGB_8888_IN_CONFIGS;
     private static final int MAX_SIZE_MULTIPLE = 8;
     private static final Bitmap.Config[] RGBA_F16_IN_CONFIGS;
-    private static final Bitmap.Config[] RGB_565_IN_CONFIGS = {Bitmap.Config.RGB_565};
-    private final GroupedLinkedMap<Key, Bitmap> groupedMap = new GroupedLinkedMap<>();
+    private static final Bitmap.Config[] RGB_565_IN_CONFIGS;
     private final KeyPool keyPool = new KeyPool();
+    private final GroupedLinkedMap<Key, Bitmap> groupedMap = new GroupedLinkedMap<>();
     private final Map<Bitmap.Config, NavigableMap<Integer, Integer>> sortedSizes = new HashMap();
 
-    /* JADX WARNING: type inference failed for: r1v8, types: [java.lang.Object[]] */
-    /* JADX WARNING: Multi-variable type inference failed */
     static {
-        /*
-            r0 = 2
-            android.graphics.Bitmap$Config[] r0 = new android.graphics.Bitmap.Config[r0]
-            android.graphics.Bitmap$Config r1 = android.graphics.Bitmap.Config.ARGB_8888
-            r2 = 0
-            r0[r2] = r1
-            r1 = 0
-            r3 = 1
-            r0[r3] = r1
-            int r1 = android.os.Build.VERSION.SDK_INT
-            r4 = 26
-            if (r1 < r4) goto L_0x0021
-            int r1 = r0.length
-            int r1 = r1 + r3
-            java.lang.Object[] r1 = java.util.Arrays.copyOf(r0, r1)
-            r0 = r1
-            android.graphics.Bitmap$Config[] r0 = (android.graphics.Bitmap.Config[]) r0
-            int r1 = r0.length
-            int r1 = r1 - r3
-            android.graphics.Bitmap$Config r4 = android.graphics.Bitmap.Config.RGBA_F16
-            r0[r1] = r4
-        L_0x0021:
-            ARGB_8888_IN_CONFIGS = r0
-            RGBA_F16_IN_CONFIGS = r0
-            android.graphics.Bitmap$Config[] r0 = new android.graphics.Bitmap.Config[r3]
-            android.graphics.Bitmap$Config r1 = android.graphics.Bitmap.Config.RGB_565
-            r0[r2] = r1
-            RGB_565_IN_CONFIGS = r0
-            android.graphics.Bitmap$Config[] r0 = new android.graphics.Bitmap.Config[r3]
-            android.graphics.Bitmap$Config r1 = android.graphics.Bitmap.Config.ARGB_4444
-            r0[r2] = r1
-            ARGB_4444_IN_CONFIGS = r0
-            android.graphics.Bitmap$Config[] r0 = new android.graphics.Bitmap.Config[r3]
-            android.graphics.Bitmap$Config r1 = android.graphics.Bitmap.Config.ALPHA_8
-            r0[r2] = r1
-            ALPHA_8_IN_CONFIGS = r0
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.load.engine.bitmap_recycle.SizeConfigStrategy.<clinit>():void");
+        Bitmap.Config[] result = {Bitmap.Config.ARGB_8888, null};
+        if (Build.VERSION.SDK_INT >= 26) {
+            result = (Bitmap.Config[]) Arrays.copyOf(result, result.length + 1);
+            result[result.length - 1] = Bitmap.Config.RGBA_F16;
+        }
+        ARGB_8888_IN_CONFIGS = result;
+        RGBA_F16_IN_CONFIGS = result;
+        RGB_565_IN_CONFIGS = new Bitmap.Config[]{Bitmap.Config.RGB_565};
+        ARGB_4444_IN_CONFIGS = new Bitmap.Config[]{Bitmap.Config.ARGB_4444};
+        ALPHA_8_IN_CONFIGS = new Bitmap.Config[]{Bitmap.Config.ALPHA_8};
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public void put(Bitmap bitmap) {
-        Key key = this.keyPool.get(Util.getBitmapByteSize(bitmap), bitmap.getConfig());
+        int size = Util.getBitmapByteSize(bitmap);
+        Key key = this.keyPool.get(size, bitmap.getConfig());
         this.groupedMap.put(key, bitmap);
         NavigableMap<Integer, Integer> sizes = getSizesForConfig(bitmap.getConfig());
         Integer current = (Integer) sizes.get(Integer.valueOf(key.size));
-        Integer valueOf = Integer.valueOf(key.size);
-        int i = 1;
-        if (current != null) {
-            i = 1 + current.intValue();
-        }
-        sizes.put(valueOf, Integer.valueOf(i));
+        sizes.put(Integer.valueOf(key.size), Integer.valueOf(current != null ? 1 + current.intValue() : 1));
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public Bitmap get(int width, int height, Bitmap.Config config) {
-        Key bestKey = findBestKey(Util.getBitmapByteSize(width, height, config), config);
+        int size = Util.getBitmapByteSize(width, height, config);
+        Key bestKey = findBestKey(size, config);
         Bitmap result = this.groupedMap.get(bestKey);
         if (result != null) {
             decrementBitmapOfSize(Integer.valueOf(bestKey.size), result);
@@ -87,16 +57,12 @@ public class SizeConfigStrategy implements LruPoolStrategy {
     }
 
     private Key findBestKey(int size, Bitmap.Config config) {
+        Bitmap.Config[] inConfigs;
         Key result = this.keyPool.get(size, config);
-        Bitmap.Config[] inConfigs = getInConfigs(config);
-        int length = inConfigs.length;
-        int i = 0;
-        while (i < length) {
-            Bitmap.Config possibleConfig = inConfigs[i];
-            Integer possibleSize = getSizesForConfig(possibleConfig).ceilingKey(Integer.valueOf(size));
-            if (possibleSize == null || possibleSize.intValue() > size * 8) {
-                i++;
-            } else {
+        for (Bitmap.Config possibleConfig : getInConfigs(config)) {
+            NavigableMap<Integer, Integer> sizesForPossibleConfig = getSizesForConfig(possibleConfig);
+            Integer possibleSize = sizesForPossibleConfig.ceilingKey(Integer.valueOf(size));
+            if (possibleSize != null && possibleSize.intValue() <= size * 8) {
                 if (possibleSize.intValue() == size) {
                     if (possibleConfig == null) {
                         if (config == null) {
@@ -113,20 +79,24 @@ public class SizeConfigStrategy implements LruPoolStrategy {
         return result;
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public Bitmap removeLast() {
         Bitmap removed = this.groupedMap.removeLast();
         if (removed != null) {
-            decrementBitmapOfSize(Integer.valueOf(Util.getBitmapByteSize(removed)), removed);
+            int removedSize = Util.getBitmapByteSize(removed);
+            decrementBitmapOfSize(Integer.valueOf(removedSize), removed);
         }
         return removed;
     }
 
     private void decrementBitmapOfSize(Integer size, Bitmap removed) {
-        NavigableMap<Integer, Integer> sizes = getSizesForConfig(removed.getConfig());
+        Bitmap.Config config = removed.getConfig();
+        NavigableMap<Integer, Integer> sizes = getSizesForConfig(config);
         Integer current = (Integer) sizes.get(size);
         if (current == null) {
             throw new NullPointerException("Tried to decrement empty size, size: " + size + ", removed: " + logBitmap(removed) + ", this: " + this);
-        } else if (current.intValue() == 1) {
+        }
+        if (current.intValue() == 1) {
             sizes.remove(size);
         } else {
             sizes.put(size, Integer.valueOf(current.intValue() - 1));
@@ -135,22 +105,27 @@ public class SizeConfigStrategy implements LruPoolStrategy {
 
     private NavigableMap<Integer, Integer> getSizesForConfig(Bitmap.Config config) {
         NavigableMap<Integer, Integer> sizes = this.sortedSizes.get(config);
-        if (sizes != null) {
-            return sizes;
+        if (sizes == null) {
+            NavigableMap<Integer, Integer> sizes2 = new TreeMap<>();
+            this.sortedSizes.put(config, sizes2);
+            return sizes2;
         }
-        NavigableMap<Integer, Integer> sizes2 = new TreeMap<>();
-        this.sortedSizes.put(config, sizes2);
-        return sizes2;
+        return sizes;
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public String logBitmap(Bitmap bitmap) {
-        return getBitmapString(Util.getBitmapByteSize(bitmap), bitmap.getConfig());
+        int size = Util.getBitmapByteSize(bitmap);
+        return getBitmapString(size, bitmap.getConfig());
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public String logBitmap(int width, int height, Bitmap.Config config) {
-        return getBitmapString(Util.getBitmapByteSize(width, height, config), config);
+        int size = Util.getBitmapByteSize(width, height, config);
+        return getBitmapString(size, config);
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public int getSize(Bitmap bitmap) {
         return Util.getBitmapByteSize(bitmap);
     }
@@ -166,41 +141,45 @@ public class SizeConfigStrategy implements LruPoolStrategy {
         return sb.append(")}").toString();
     }
 
+    /* loaded from: classes.dex */
     static class KeyPool extends BaseKeyPool<Key> {
         KeyPool() {
         }
 
         public Key get(int size, Bitmap.Config config) {
-            Key result = (Key) get();
+            Key result = get();
             result.init(size, config);
             return result;
         }
 
-        /* access modifiers changed from: protected */
+        /* JADX INFO: Access modifiers changed from: protected */
+        @Override // com.bumptech.glide.load.engine.bitmap_recycle.BaseKeyPool
         public Key create() {
             return new Key(this);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class Key implements Poolable {
         private Bitmap.Config config;
         private final KeyPool pool;
         int size;
 
-        public Key(KeyPool pool2) {
-            this.pool = pool2;
+        public Key(KeyPool pool) {
+            this.pool = pool;
         }
 
-        Key(KeyPool pool2, int size2, Bitmap.Config config2) {
-            this(pool2);
-            init(size2, config2);
+        Key(KeyPool pool, int size, Bitmap.Config config) {
+            this(pool);
+            init(size, config);
         }
 
-        public void init(int size2, Bitmap.Config config2) {
-            this.size = size2;
-            this.config = config2;
+        public void init(int size, Bitmap.Config config) {
+            this.size = size;
+            this.config = config;
         }
 
+        @Override // com.bumptech.glide.load.engine.bitmap_recycle.Poolable
         public void offer() {
             this.pool.offer(this);
         }
@@ -210,20 +189,19 @@ public class SizeConfigStrategy implements LruPoolStrategy {
         }
 
         public boolean equals(Object o) {
-            if (!(o instanceof Key)) {
-                return false;
+            if (o instanceof Key) {
+                Key other = (Key) o;
+                return this.size == other.size && Util.bothNullOrEqual(this.config, other.config);
             }
-            Key other = (Key) o;
-            if (this.size != other.size || !Util.bothNullOrEqual(this.config, other.config)) {
-                return false;
-            }
-            return true;
+            return false;
         }
 
         public int hashCode() {
-            int i = this.size * 31;
-            Bitmap.Config config2 = this.config;
-            return i + (config2 != null ? config2.hashCode() : 0);
+            int result = this.size;
+            int i = result * 31;
+            Bitmap.Config config = this.config;
+            int result2 = i + (config != null ? config.hashCode() : 0);
+            return result2;
         }
     }
 
@@ -235,7 +213,7 @@ public class SizeConfigStrategy implements LruPoolStrategy {
         if (Build.VERSION.SDK_INT >= 26 && Bitmap.Config.RGBA_F16.equals(requested)) {
             return RGBA_F16_IN_CONFIGS;
         }
-        switch (AnonymousClass1.$SwitchMap$android$graphics$Bitmap$Config[requested.ordinal()]) {
+        switch (C05251.$SwitchMap$android$graphics$Bitmap$Config[requested.ordinal()]) {
             case 1:
                 return ARGB_8888_IN_CONFIGS;
             case 2:
@@ -249,8 +227,9 @@ public class SizeConfigStrategy implements LruPoolStrategy {
         }
     }
 
-    /* renamed from: com.bumptech.glide.load.engine.bitmap_recycle.SizeConfigStrategy$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
+    /* renamed from: com.bumptech.glide.load.engine.bitmap_recycle.SizeConfigStrategy$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C05251 {
         static final /* synthetic */ int[] $SwitchMap$android$graphics$Bitmap$Config;
 
         static {

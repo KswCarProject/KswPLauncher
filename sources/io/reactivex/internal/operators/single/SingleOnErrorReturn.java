@@ -8,29 +8,32 @@ import io.reactivex.exceptions.CompositeException;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Function;
 
+/* loaded from: classes.dex */
 public final class SingleOnErrorReturn<T> extends Single<T> {
     final SingleSource<? extends T> source;
     final T value;
     final Function<? super Throwable, ? extends T> valueSupplier;
 
-    public SingleOnErrorReturn(SingleSource<? extends T> source2, Function<? super Throwable, ? extends T> valueSupplier2, T value2) {
-        this.source = source2;
-        this.valueSupplier = valueSupplier2;
-        this.value = value2;
+    public SingleOnErrorReturn(SingleSource<? extends T> source, Function<? super Throwable, ? extends T> valueSupplier, T value) {
+        this.source = source;
+        this.valueSupplier = valueSupplier;
+        this.value = value;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         this.source.subscribe(new OnErrorReturn(observer));
     }
 
+    /* loaded from: classes.dex */
     final class OnErrorReturn implements SingleObserver<T> {
         private final SingleObserver<? super T> observer;
 
-        OnErrorReturn(SingleObserver<? super T> observer2) {
-            this.observer = observer2;
+        OnErrorReturn(SingleObserver<? super T> observer) {
+            this.observer = observer;
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
             T v;
             if (SingleOnErrorReturn.this.valueSupplier != null) {
@@ -53,10 +56,12 @@ public final class SingleOnErrorReturn<T> extends Single<T> {
             this.observer.onSuccess(v);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
             this.observer.onSubscribe(d);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSuccess(T value) {
             this.observer.onSuccess(value);
         }

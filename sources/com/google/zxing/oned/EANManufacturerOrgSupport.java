@@ -1,29 +1,31 @@
 package com.google.zxing.oned;
 
 import com.google.zxing.client.result.ExpandedProductParsedResult;
+import com.ibm.icu.text.BreakIterator;
+import com.wits.pms.statuscontrol.WitsCommand;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 final class EANManufacturerOrgSupport {
-    private final List<String> countryIdentifiers = new ArrayList();
     private final List<int[]> ranges = new ArrayList();
+    private final List<String> countryIdentifiers = new ArrayList();
 
     EANManufacturerOrgSupport() {
     }
 
-    /* access modifiers changed from: package-private */
-    public String lookupCountryIdentifier(String productCode) {
+    String lookupCountryIdentifier(String productCode) {
         initIfNeeded();
         int prefix = Integer.parseInt(productCode.substring(0, 3));
         int max = this.ranges.size();
         for (int i = 0; i < max; i++) {
-            int[] iArr = this.ranges.get(i);
-            int[] range = iArr;
-            int start = iArr[0];
+            int[] range = this.ranges.get(i);
+            int start = range[0];
             if (prefix < start) {
                 return null;
             }
-            if (prefix <= (range.length == 1 ? start : range[1])) {
+            int end = range.length == 1 ? start : range[1];
+            if (prefix <= end) {
                 return this.countryIdentifiers.get(i);
             }
         }
@@ -64,7 +66,7 @@ final class EANManufacturerOrgSupport {
             add(new int[]{487}, "KZ");
             add(new int[]{489}, "HK");
             add(new int[]{490, 499}, "JP");
-            add(new int[]{500, 509}, "GB");
+            add(new int[]{BreakIterator.WORD_IDEO_LIMIT, 509}, "GB");
             add(new int[]{520}, "GR");
             add(new int[]{528}, ExpandedProductParsedResult.POUND);
             add(new int[]{529}, "CY");
@@ -78,12 +80,12 @@ final class EANManufacturerOrgSupport {
             add(new int[]{590}, "PL");
             add(new int[]{594}, "RO");
             add(new int[]{599}, "HU");
-            add(new int[]{600, 601}, "ZA");
-            add(new int[]{603}, "GH");
-            add(new int[]{608}, "BH");
-            add(new int[]{609}, "MU");
-            add(new int[]{611}, "MA");
-            add(new int[]{613}, "DZ");
+            add(new int[]{600, WitsCommand.SystemCommand.CAR_MODE}, "ZA");
+            add(new int[]{WitsCommand.SystemCommand.OUT_MODE}, "GH");
+            add(new int[]{WitsCommand.SystemCommand.USING_NAVI}, "BH");
+            add(new int[]{WitsCommand.SystemCommand.OPEN_CVBSDVR}, "MU");
+            add(new int[]{WitsCommand.SystemCommand.CHECK_CAN_BOX}, "MA");
+            add(new int[]{WitsCommand.SystemCommand.AIR_DATA_REQ}, "DZ");
             add(new int[]{616}, "KE");
             add(new int[]{618}, "CI");
             add(new int[]{619}, "TN");
@@ -97,7 +99,7 @@ final class EANManufacturerOrgSupport {
             add(new int[]{629}, "AE");
             add(new int[]{640, 649}, "FI");
             add(new int[]{690, 695}, "CN");
-            add(new int[]{700, 709}, "NO");
+            add(new int[]{WitsCommand.SystemCommand.MCU_UPDATE, 709}, "NO");
             add(new int[]{729}, "IL");
             add(new int[]{730, 739}, "SE");
             add(new int[]{740}, "GT");
@@ -138,7 +140,7 @@ final class EANManufacturerOrgSupport {
             add(new int[]{893}, "VN");
             add(new int[]{896}, "PK");
             add(new int[]{899}, "ID");
-            add(new int[]{900, 919}, "AT");
+            add(new int[]{WitsCommand.SystemCommand.MUTE_NAVI, 919}, "AT");
             add(new int[]{930, 939}, "AU");
             add(new int[]{940, 949}, "AZ");
             add(new int[]{955}, "MY");

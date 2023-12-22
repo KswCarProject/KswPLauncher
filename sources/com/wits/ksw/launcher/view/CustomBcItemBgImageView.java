@@ -6,11 +6,12 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
 
+/* loaded from: classes16.dex */
 public class CustomBcItemBgImageView extends ImageView {
     private static final String TAG = CustomBcItemBgImageView.class.getName();
 
     public CustomBcItemBgImageView(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public CustomBcItemBgImageView(Context context, AttributeSet attrs) {
@@ -18,9 +19,9 @@ public class CustomBcItemBgImageView extends ImageView {
         setDefaultFocusHighlightEnabled(false);
     }
 
-    public void translationX(int x) {
+    public void translationX(final int x) {
         try {
-            ObjectAnimator.ofFloat(this, "translationX", new float[]{(float) x}).setDuration(200).start();
+            ObjectAnimator.ofFloat(this, "translationX", x).setDuration(200L).start();
             Log.i(TAG, "<<<<<<<<<<<<<<< translationX: x=" + x);
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,17 +1,22 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.CompoundButtonBindingAdapter;
+import android.support.p004v7.widget.AppCompatTextView;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi_mib3.vm.AudiMib3SystemViewModel;
+import android.widget.ScrollView;
+import android.widget.Switch;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi.widget.AudiConstraintLayout;
+import com.wits.ksw.settings.audi_mib3.p008vm.AudiMib3SystemViewModel;
 
+/* loaded from: classes7.dex */
 public class AudiMib3SystemSetBindingImpl extends AudiMib3SystemSetBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -21,17 +26,17 @@ public class AudiMib3SystemSetBindingImpl extends AudiMib3SystemSetBinding {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.title, 7);
-        sparseIntArray.put(R.id.title_divider, 8);
-        sparseIntArray.put(R.id.sv_list, 9);
-        sparseIntArray.put(R.id.audiSystemSetParentPanel, 10);
-        sparseIntArray.put(R.id.audi_system_speed_unit, 11);
-        sparseIntArray.put(R.id.audi_system_temp_unit, 12);
-        sparseIntArray.put(R.id.audi_system_rever_camera, 13);
-        sparseIntArray.put(R.id.audi_system_brightness, 14);
-        sparseIntArray.put(R.id.tv_music_app, 15);
-        sparseIntArray.put(R.id.tv_video_app, 16);
-        sparseIntArray.put(R.id.v_divider, 17);
+        sparseIntArray.put(C0899R.C0901id.title, 7);
+        sparseIntArray.put(C0899R.C0901id.title_divider, 8);
+        sparseIntArray.put(C0899R.C0901id.sv_list, 9);
+        sparseIntArray.put(C0899R.C0901id.audiSystemSetParentPanel, 10);
+        sparseIntArray.put(C0899R.C0901id.audi_system_speed_unit, 11);
+        sparseIntArray.put(C0899R.C0901id.audi_system_temp_unit, 12);
+        sparseIntArray.put(C0899R.C0901id.audi_system_rever_camera, 13);
+        sparseIntArray.put(C0899R.C0901id.audi_system_brightness, 14);
+        sparseIntArray.put(C0899R.C0901id.tv_music_app, 15);
+        sparseIntArray.put(C0899R.C0901id.tv_video_app, 16);
+        sparseIntArray.put(C0899R.C0901id.v_divider, 17);
     }
 
     public AudiMib3SystemSetBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -39,28 +44,30 @@ public class AudiMib3SystemSetBindingImpl extends AudiMib3SystemSetBinding {
     }
 
     private AudiMib3SystemSetBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 6, bindings[6], bindings[14], bindings[2], bindings[13], bindings[1], bindings[5], bindings[4], bindings[3], bindings[10], bindings[11], bindings[12], bindings[9], bindings[7], bindings[8], bindings[15], bindings[16], bindings[17]);
-        this.mDirtyFlags = -1;
-        this.audiSystemAuxPostion.setTag((Object) null);
-        this.audiSystemDrivingProhibitedVideo.setTag((Object) null);
-        this.audiSystemReverCameraImg.setTag((Object) null);
-        this.audiSystemReverMute.setTag((Object) null);
-        this.audiSystemReverRadar.setTag((Object) null);
-        this.audiSystemReverTrack.setTag((Object) null);
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 6, (TextView) bindings[6], (TextView) bindings[14], (Switch) bindings[2], (TextView) bindings[13], (Switch) bindings[1], (Switch) bindings[5], (Switch) bindings[4], (Switch) bindings[3], (AudiConstraintLayout) bindings[10], (TextView) bindings[11], (TextView) bindings[12], (ScrollView) bindings[9], (AppCompatTextView) bindings[7], (View) bindings[8], (TextView) bindings[15], (TextView) bindings[16], (View) bindings[17]);
+        this.mDirtyFlags = -1L;
+        this.audiSystemAuxPostion.setTag(null);
+        this.audiSystemDrivingProhibitedVideo.setTag(null);
+        this.audiSystemReverCameraImg.setTag(null);
+        this.audiSystemReverMute.setTag(null);
+        this.audiSystemReverRadar.setTag(null);
+        this.audiSystemReverTrack.setTag(null);
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
+        relativeLayout.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 128;
+            this.mDirtyFlags = 128L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -70,14 +77,16 @@ public class AudiMib3SystemSetBindingImpl extends AudiMib3SystemSetBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((AudiMib3SystemViewModel) variable);
+            return true;
         }
-        setVm((AudiMib3SystemViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AudiMib3SystemSetBinding
     public void setVm(AudiMib3SystemViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -87,8 +96,8 @@ public class AudiMib3SystemSetBindingImpl extends AudiMib3SystemSetBinding {
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmReverTrack((ObservableBoolean) object, fieldId);
@@ -108,79 +117,79 @@ public class AudiMib3SystemSetBindingImpl extends AudiMib3SystemSetBinding {
     }
 
     private boolean onChangeVmReverTrack(ObservableBoolean VmReverTrack, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmReverMute(ObservableBoolean VmReverMute, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmReverView(ObservableBoolean VmReverView, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmShowAuxPostion(ObservableBoolean VmShowAuxPostion, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmReverRadar(ObservableBoolean VmReverRadar, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 16;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 16;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmDrivingVideo(ObservableBoolean VmDrivingVideo, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 32;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 32;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
-        CompoundButton.OnCheckedChangeListener vmOnReverRadarkChangeListener;
-        CompoundButton.OnCheckedChangeListener vmOnReverTrackChangeListener;
-        CompoundButton.OnCheckedChangeListener vmOnReverMuteChangeListener;
-        boolean vmReverTrackGet;
         boolean vmReverViewGet;
+        boolean vmReverTrackGet;
+        CompoundButton.OnCheckedChangeListener vmOnReverMuteChangeListener;
+        CompoundButton.OnCheckedChangeListener vmOnReverTrackChangeListener;
+        CompoundButton.OnCheckedChangeListener vmOnReverRadarkChangeListener;
         boolean vmReverMuteGet;
         ObservableBoolean vmDrivingVideo;
         ObservableBoolean vmReverRadar;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         boolean vmReverMuteGet2 = false;
         ObservableBoolean vmReverTrack = null;
@@ -204,45 +213,45 @@ public class AudiMib3SystemSetBindingImpl extends AudiMib3SystemSetBinding {
                 if (vm != null) {
                     vmReverTrack = vm.reverTrack;
                 }
-                updateRegistration(0, (Observable) vmReverTrack);
+                updateRegistration(0, vmReverTrack);
                 if (vmReverTrack != null) {
                     vmReverTrackGet2 = vmReverTrack.get();
                 }
             }
             if ((dirtyFlags & 192) == 0) {
                 vmReverMuteGet = false;
-            } else if (vm != null) {
+            } else if (vm == null) {
+                vmReverMuteGet = false;
+            } else {
                 CompoundButton.OnCheckedChangeListener vmOndrivingVideoChangeListener = vm.ondrivingVideoChangeListener;
-                CompoundButton.OnCheckedChangeListener vmOnReverViewChangeListener2 = vm.onReverViewChangeListener;
-                CompoundButton.OnCheckedChangeListener vmOnReverMuteChangeListener4 = vm.onReverMuteChangeListener;
+                CompoundButton.OnCheckedChangeListener vmOndrivingVideoChangeListener2 = vm.onReverViewChangeListener;
+                CompoundButton.OnCheckedChangeListener vmOnReverViewChangeListener2 = vm.onReverMuteChangeListener;
                 CompoundButton.OnCheckedChangeListener vmOnReverTrackChangeListener3 = vm.onReverTrackChangeListener;
                 vmReverMuteGet = false;
                 vmOnReverRadarkChangeListener2 = vm.onReverRadarkChangeListener;
                 vmOnReverTrackChangeListener2 = vmOnReverTrackChangeListener3;
-                vmOnReverMuteChangeListener3 = vmOnReverMuteChangeListener4;
-                vmOnReverMuteChangeListener2 = vmOnReverViewChangeListener2;
+                vmOnReverMuteChangeListener3 = vmOnReverViewChangeListener2;
+                vmOnReverMuteChangeListener2 = vmOndrivingVideoChangeListener2;
                 vmOnReverViewChangeListener = vmOndrivingVideoChangeListener;
-            } else {
-                vmReverMuteGet = false;
             }
-            if ((dirtyFlags & 194) != 0) {
+            if ((dirtyFlags & 194) == 0) {
+                vmReverMuteGet2 = vmReverMuteGet;
+            } else {
                 if (vm != null) {
                     vmReverMute = vm.reverMute;
                 }
-                updateRegistration(1, (Observable) vmReverMute);
-                if (vmReverMute != null) {
-                    vmReverMuteGet2 = vmReverMute.get();
-                } else {
+                updateRegistration(1, vmReverMute);
+                if (vmReverMute == null) {
                     vmReverMuteGet2 = vmReverMuteGet;
+                } else {
+                    vmReverMuteGet2 = vmReverMute.get();
                 }
-            } else {
-                vmReverMuteGet2 = vmReverMuteGet;
             }
             if ((dirtyFlags & 196) != 0) {
                 if (vm != null) {
                     vmReverView = vm.reverView;
                 }
-                updateRegistration(2, (Observable) vmReverView);
+                updateRegistration(2, vmReverView);
                 if (vmReverView != null) {
                     vmReverViewGet2 = vmReverView.get();
                 }
@@ -251,7 +260,7 @@ public class AudiMib3SystemSetBindingImpl extends AudiMib3SystemSetBinding {
                 if (vm != null) {
                     vmShowAuxPostion = vm.showAuxPostion;
                 }
-                updateRegistration(3, (Observable) vmShowAuxPostion);
+                updateRegistration(3, vmShowAuxPostion);
                 if (vmShowAuxPostion != null) {
                     vmShowAuxPostionGet = vmShowAuxPostion.get();
                 }
@@ -265,68 +274,52 @@ public class AudiMib3SystemSetBindingImpl extends AudiMib3SystemSetBinding {
                 vmShowAuxPostionViewVISIBLEViewGONE = vmShowAuxPostionGet ? 0 : 8;
             }
             if ((dirtyFlags & 208) != 0) {
-                if (vm != null) {
-                    vmReverRadar = vm.reverRadar;
-                } else {
+                if (vm == null) {
                     vmReverRadar = null;
-                }
-                updateRegistration(4, (Observable) vmReverRadar);
-                if (vmReverRadar != null) {
-                    ObservableBoolean observableBoolean = vmReverRadar;
-                    vmReverRadarGet = vmReverRadar.get();
                 } else {
-                    ObservableBoolean observableBoolean2 = vmReverRadar;
+                    vmReverRadar = vm.reverRadar;
+                }
+                updateRegistration(4, vmReverRadar);
+                if (vmReverRadar != null) {
+                    vmReverRadarGet = vmReverRadar.get();
                 }
             }
-            if ((dirtyFlags & 224) != 0) {
-                if (vm != null) {
-                    vmDrivingVideo = vm.drivingVideo;
-                } else {
-                    vmDrivingVideo = null;
-                }
-                updateRegistration(5, (Observable) vmDrivingVideo);
-                if (vmDrivingVideo != null) {
-                    vmDrivingVideoGet = vmDrivingVideo.get();
-                    ObservableBoolean observableBoolean3 = vmDrivingVideo;
-                    vmReverViewGet = vmReverViewGet2;
-                    vmReverTrackGet = vmReverTrackGet2;
-                    ObservableBoolean observableBoolean4 = vmReverTrack;
-                    AudiMib3SystemViewModel audiMib3SystemViewModel = vm;
-                    vmOnReverMuteChangeListener = vmOnReverMuteChangeListener3;
-                    vmOnReverTrackChangeListener = vmOnReverTrackChangeListener2;
-                    ObservableBoolean observableBoolean5 = vmReverMute;
-                    vmOnReverRadarkChangeListener = vmOnReverRadarkChangeListener2;
-                } else {
-                    ObservableBoolean observableBoolean6 = vmDrivingVideo;
-                    vmReverViewGet = vmReverViewGet2;
-                    vmReverTrackGet = vmReverTrackGet2;
-                    ObservableBoolean observableBoolean7 = vmReverTrack;
-                    AudiMib3SystemViewModel audiMib3SystemViewModel2 = vm;
-                    vmOnReverMuteChangeListener = vmOnReverMuteChangeListener3;
-                    vmOnReverTrackChangeListener = vmOnReverTrackChangeListener2;
-                    ObservableBoolean observableBoolean8 = vmReverMute;
-                    vmOnReverRadarkChangeListener = vmOnReverRadarkChangeListener2;
-                }
-            } else {
+            if ((dirtyFlags & 224) == 0) {
                 vmReverViewGet = vmReverViewGet2;
                 vmReverTrackGet = vmReverTrackGet2;
-                ObservableBoolean observableBoolean9 = vmReverTrack;
-                AudiMib3SystemViewModel audiMib3SystemViewModel3 = vm;
                 vmOnReverMuteChangeListener = vmOnReverMuteChangeListener3;
                 vmOnReverTrackChangeListener = vmOnReverTrackChangeListener2;
-                ObservableBoolean observableBoolean10 = vmReverMute;
                 vmOnReverRadarkChangeListener = vmOnReverRadarkChangeListener2;
+            } else {
+                if (vm == null) {
+                    vmDrivingVideo = null;
+                } else {
+                    vmDrivingVideo = vm.drivingVideo;
+                }
+                updateRegistration(5, vmDrivingVideo);
+                if (vmDrivingVideo != null) {
+                    vmDrivingVideoGet = vmDrivingVideo.get();
+                    vmReverViewGet = vmReverViewGet2;
+                    vmReverTrackGet = vmReverTrackGet2;
+                    vmOnReverMuteChangeListener = vmOnReverMuteChangeListener3;
+                    vmOnReverTrackChangeListener = vmOnReverTrackChangeListener2;
+                    vmOnReverRadarkChangeListener = vmOnReverRadarkChangeListener2;
+                } else {
+                    vmReverViewGet = vmReverViewGet2;
+                    vmReverTrackGet = vmReverTrackGet2;
+                    vmOnReverMuteChangeListener = vmOnReverMuteChangeListener3;
+                    vmOnReverTrackChangeListener = vmOnReverTrackChangeListener2;
+                    vmOnReverRadarkChangeListener = vmOnReverRadarkChangeListener2;
+                }
             }
         } else {
             vmReverViewGet = false;
             vmReverTrackGet = false;
-            AudiMib3SystemViewModel audiMib3SystemViewModel4 = vm;
             vmOnReverMuteChangeListener = null;
             vmOnReverTrackChangeListener = null;
             vmOnReverRadarkChangeListener = null;
         }
         if ((dirtyFlags & 200) != 0) {
-            ObservableBoolean observableBoolean11 = vmReverView;
             this.audiSystemAuxPostion.setVisibility(vmShowAuxPostionViewVISIBLEViewGONE);
         }
         if ((dirtyFlags & 224) != 0) {

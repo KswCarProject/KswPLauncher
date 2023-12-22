@@ -2,6 +2,7 @@ package com.ibm.icu.text;
 
 import java.text.ParseException;
 
+/* loaded from: classes.dex */
 public class StringPrepParseException extends ParseException {
     static final /* synthetic */ boolean $assertionsDisabled = false;
     public static final int ACE_PREFIX_ERROR = 6;
@@ -20,40 +21,44 @@ public class StringPrepParseException extends ParseException {
     static final long serialVersionUID = 7160264827701651255L;
     private int error;
     private int line;
-    private StringBuffer postContext = new StringBuffer();
-    private StringBuffer preContext = new StringBuffer();
+    private StringBuffer postContext;
+    private StringBuffer preContext;
 
-    public StringPrepParseException(String message, int error2) {
+    public StringPrepParseException(String message, int error) {
         super(message, -1);
-        this.error = error2;
+        this.preContext = new StringBuffer();
+        this.postContext = new StringBuffer();
+        this.error = error;
         this.line = 0;
     }
 
-    public StringPrepParseException(String message, int error2, String rules, int pos) {
+    public StringPrepParseException(String message, int error, String rules, int pos) {
         super(message, -1);
-        this.error = error2;
+        this.preContext = new StringBuffer();
+        this.postContext = new StringBuffer();
+        this.error = error;
         setContext(rules, pos);
         this.line = 0;
     }
 
-    public StringPrepParseException(String message, int error2, String rules, int pos, int lineNumber) {
+    public StringPrepParseException(String message, int error, String rules, int pos, int lineNumber) {
         super(message, -1);
-        this.error = error2;
+        this.preContext = new StringBuffer();
+        this.postContext = new StringBuffer();
+        this.error = error;
         setContext(rules, pos);
         this.line = lineNumber;
     }
 
     public boolean equals(Object other) {
-        if ((other instanceof StringPrepParseException) && ((StringPrepParseException) other).error == this.error) {
-            return true;
-        }
-        return false;
+        return (other instanceof StringPrepParseException) && ((StringPrepParseException) other).error == this.error;
     }
 
     public int hashCode() {
         throw new AssertionError("hashCode not designed");
     }
 
+    @Override // java.lang.Throwable
     public String toString() {
         return super.getMessage() + ". line:  " + this.line + ". preContext:  " + this.preContext + ". postContext: " + this.postContext + "\n";
     }
@@ -63,11 +68,8 @@ public class StringPrepParseException extends ParseException {
     }
 
     private void setPreContext(char[] str, int pos) {
-        int len = 16;
         int start = pos <= 16 ? 0 : pos - 15;
-        if (start <= 16) {
-            len = start;
-        }
+        int len = start <= 16 ? start : 16;
         this.preContext.append(str, start, len);
     }
 
@@ -76,8 +78,8 @@ public class StringPrepParseException extends ParseException {
     }
 
     private void setPostContext(char[] str, int pos) {
-        int start = pos;
-        this.postContext.append(str, start, str.length - start);
+        int len = str.length - pos;
+        this.postContext.append(str, pos, len);
     }
 
     private void setContext(String str, int pos) {

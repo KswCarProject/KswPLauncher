@@ -6,50 +6,50 @@ import android.view.MotionEvent;
 import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.ksw.settings.id7.bean.FunctionBean;
 import java.util.List;
 
+/* loaded from: classes15.dex */
 public class BmwId8SettingsLanguageAdapter extends BaseQuickAdapter<FunctionBean, BaseViewHolder> {
-    private final String TAG = "BmwId8SettingsLanguageAdapter";
+    private final String TAG;
 
     public BmwId8SettingsLanguageAdapter(List<FunctionBean> data) {
-        super(R.layout.bmw_id8_settings_language_item, data);
+        super(C0899R.C0902layout.bmw_id8_settings_language_item, data);
+        this.TAG = "BmwId8SettingsLanguageAdapter";
     }
 
-    /* access modifiers changed from: protected */
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // com.chad.library.adapter.base.BaseQuickAdapter
     public void convert(BaseViewHolder helper, final FunctionBean item) {
         if (item != null) {
-            helper.setChecked(R.id.bmw_id8_settings_language_item_btn, item.isIscheck());
-            helper.itemView.findViewById(R.id.bmw_id8_settings_language_item_lay).setSelected(item.isIscheck());
-            helper.setText((int) R.id.bmw_id8_settings_language_item_btn, (CharSequence) item.getTitle());
-            helper.itemView.findViewById(R.id.bmw_id8_settings_language_item_lay).setOnTouchListener(new View.OnTouchListener() {
+            helper.setChecked(C0899R.C0901id.bmw_id8_settings_language_item_btn, item.isIscheck());
+            helper.itemView.findViewById(C0899R.C0901id.bmw_id8_settings_language_item_lay).setSelected(item.isIscheck());
+            helper.setText(C0899R.C0901id.bmw_id8_settings_language_item_btn, item.getTitle());
+            helper.itemView.findViewById(C0899R.C0901id.bmw_id8_settings_language_item_lay).setOnTouchListener(new View.OnTouchListener() { // from class: com.wits.ksw.settings.bmw_id8.adapter.BmwId8SettingsLanguageAdapter.1
+                @Override // android.view.View.OnTouchListener
                 public boolean onTouch(View v, MotionEvent event) {
-                    if (event.getAction() != 1 || v.isFocused()) {
+                    if (event.getAction() == 1 && !v.isFocused()) {
+                        v.requestFocus();
                         return false;
                     }
-                    v.requestFocus();
                     return false;
                 }
             });
-            helper.itemView.findViewById(R.id.bmw_id8_settings_language_item_lay).setOnKeyListener(new View.OnKeyListener() {
+            helper.itemView.findViewById(C0899R.C0901id.bmw_id8_settings_language_item_lay).setOnKeyListener(new View.OnKeyListener() { // from class: com.wits.ksw.settings.bmw_id8.adapter.BmwId8SettingsLanguageAdapter.2
+                @Override // android.view.View.OnKeyListener
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
                     int position = BmwId8SettingsLanguageAdapter.this.getData().indexOf(item);
                     Log.i("BmwId8SettingsLanguageAdapter", " position " + position + " keyCode " + keyCode + " event.getAction() " + event.getAction());
                     if (keyCode == 19) {
-                        if (position == 0) {
-                            return true;
-                        }
-                        return false;
-                    } else if (keyCode != 20) {
+                        return position == 0;
+                    } else if (keyCode == 20) {
+                        return position == BmwId8SettingsLanguageAdapter.this.getData().size() - 1;
+                    } else {
                         if (keyCode == 21 && event.getAction() == 0) {
                             KswUtils.sendKeyDownUpSync(4);
                         }
-                        return false;
-                    } else if (position == BmwId8SettingsLanguageAdapter.this.getData().size() - 1) {
-                        return true;
-                    } else {
                         return false;
                     }
                 }

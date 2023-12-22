@@ -14,7 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.ksw.launcher.utils.UiThemeUtils;
@@ -26,15 +26,18 @@ import com.wits.ksw.settings.utlis_view.ScanDevList;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import java.util.List;
 
+/* loaded from: classes5.dex */
 public class AlsID7UiFunctionConfig extends FrameLayout implements CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener {
     private static final String TAG = "AlsID7UiFunctionConfig";
-    private int ahdsele = 0;
-    private int bgkz = 0;
+    private int ahdsele;
+    private int bgkz;
     private int bootMode;
     private RadioGroup bootModeRadiogroup;
-    private int bt;
-    private int btType = 0;
-    private int cam360 = 0;
+
+    /* renamed from: bt */
+    private int f213bt;
+    private int btType;
+    private int cam360;
     private CheckBox cbox_bt;
     private CheckBox cbox_function1;
     private CheckBox cbox_function3;
@@ -47,15 +50,13 @@ public class AlsID7UiFunctionConfig extends FrameLayout implements CompoundButto
     private CheckBox cbox_screencast;
     private CheckBox cbox_sysXcjz;
     private CheckBox cbox_touch_send;
-    private int cheVideo = 0;
+    private int cheVideo;
     private CheckBox chox_function_fcam;
-    private int danwei = 0;
-    private String defDev = "";
-    private String defPlayApp = "";
-    /* access modifiers changed from: private */
-    public List<DevBean> devBanList;
-    /* access modifiers changed from: private */
-    public DialogViews dialogViews;
+    private int danwei;
+    private String defDev;
+    private String defPlayApp;
+    private List<DevBean> devBanList;
+    private DialogViews dialogViews;
     private int fcamType;
     private int funtion1;
     private int funtion3;
@@ -63,18 +64,13 @@ public class AlsID7UiFunctionConfig extends FrameLayout implements CompoundButto
     private int funtion5;
     private int funtion6;
     private int funtion7;
-    private int gongfang = 0;
+    private int gongfang;
     private int googleOff;
-    Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-        }
-    };
-    private int hicar = 0;
+    Handler handler;
+    private int hicar;
     private FrameLayout.LayoutParams layoutParams;
     private Context m_con;
-    /* access modifiers changed from: private */
-    public List<DevBean> playAppList;
+    private List<DevBean> playAppList;
     private RadioGroup rdg_360sx;
     private RadioGroup rdg_Ahd;
     private RadioGroup rdg_bgkz;
@@ -82,18 +78,37 @@ public class AlsID7UiFunctionConfig extends FrameLayout implements CompoundButto
     private RadioGroup rdg_funbt;
     private RadioGroup rdg_fungf;
     private RadioGroup rdg_funxcjl;
-    private int screencast = 0;
+    private int screencast;
     private int touch_send;
     private TextView tv_seleAPk;
     private TextView tv_selePlayAPk;
-    private int usbHost = 0;
+    private int usbHost;
     private View view;
-    private int xingcjl = 0;
+    private int xingcjl;
 
     public AlsID7UiFunctionConfig(Context context) {
         super(context);
+        this.usbHost = 0;
+        this.xingcjl = 0;
+        this.btType = 0;
+        this.gongfang = 0;
+        this.cam360 = 0;
+        this.bgkz = 0;
+        this.danwei = 0;
+        this.ahdsele = 0;
+        this.hicar = 0;
+        this.screencast = 0;
+        this.defPlayApp = "";
+        this.cheVideo = 0;
+        this.defDev = "";
+        this.handler = new Handler() { // from class: com.wits.ksw.settings.als_id7_ui_set.factory.AlsID7UiFunctionConfig.1
+            @Override // android.os.Handler
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+            }
+        };
         this.m_con = context;
-        this.view = LayoutInflater.from(context).inflate(R.layout.als_id7_ui_layout_function_config, (ViewGroup) null);
+        this.view = LayoutInflater.from(context).inflate(C0899R.C0902layout.als_id7_ui_layout_function_config, (ViewGroup) null);
         this.layoutParams = new FrameLayout.LayoutParams(-1, -1);
         initData();
         initView();
@@ -107,7 +122,7 @@ public class AlsID7UiFunctionConfig extends FrameLayout implements CompoundButto
             this.defPlayApp = string;
             boolean exits = KswUtils.isAppInstalled(string);
             if (TextUtils.isEmpty(this.defPlayApp) || !exits) {
-                this.defPlayApp = "com.wits.ksw.media";
+                this.defPlayApp = "com.wits.ksw.music";
             }
             this.cheVideo = PowerManagerApp.getSettingsInt(KeyConfig.XING_CHE_JZSP);
             this.funtion1 = PowerManagerApp.getSettingsInt(KeyConfig.USB_HOST);
@@ -124,13 +139,13 @@ public class AlsID7UiFunctionConfig extends FrameLayout implements CompoundButto
             this.btType = PowerManagerApp.getSettingsInt(KeyConfig.BT_TYPE);
             this.gongfang = PowerManagerApp.getSettingsInt(KeyConfig.AMP_TYPE);
             this.bootMode = PowerManagerApp.getSettingsInt(KeyConfig.DEFAULT_POWER_BOOT);
-            this.bt = PowerManagerApp.getSettingsInt(KeyConfig.Android_Bt_Switch);
+            this.f213bt = PowerManagerApp.getSettingsInt(KeyConfig.Android_Bt_Switch);
             this.touch_send = PowerManagerApp.getSettingsInt(KeyConfig.TOUCH_CONTINUOUS_SEND);
             this.fcamType = PowerManagerApp.getSettingsInt("Front_view_camera");
             this.googleOff = PowerManagerApp.getSettingsInt(KeyConfig.ZLINK_AUTO_START);
             this.hicar = PowerManagerApp.getSettingsInt(KeyConfig.HiCar);
             this.screencast = PowerManagerApp.getSettingsInt(KeyConfig.SCAREEN_CAST);
-            Log.d(TAG, "initData get data==\tUSBHost:" + this.funtion1 + "\tgoogapp:" + this.funtion3 + "\taux:" + this.funtion4 + "\tdtv:" + this.funtion5 + "\tdishboard:" + this.funtion6 + "\ttxz:" + this.funtion7 + "\tbootMode:" + this.bootMode + "\tscreencast:" + this.screencast + "\tbt:" + this.bt + "\tfcamType:" + this.fcamType + "\tgoogleOff:" + this.googleOff);
+            Log.d(TAG, "initData get data==\tUSBHost:" + this.funtion1 + "\tgoogapp:" + this.funtion3 + "\taux:" + this.funtion4 + "\tdtv:" + this.funtion5 + "\tdishboard:" + this.funtion6 + "\ttxz:" + this.funtion7 + "\tbootMode:" + this.bootMode + "\tscreencast:" + this.screencast + "\tbt:" + this.f213bt + "\tfcamType:" + this.fcamType + "\tgoogleOff:" + this.googleOff);
             this.defDev = PowerManagerApp.getSettingsString(KeyConfig.DEF_DVRAPK);
             Log.d(TAG, "defDvrApk:" + this.defDev);
             List<String> devList = PowerManagerApp.getDataListFromJsonKey(KeyConfig.DVRAPKLIST);
@@ -145,45 +160,45 @@ public class AlsID7UiFunctionConfig extends FrameLayout implements CompoundButto
 
     private void initView() {
         this.dialogViews = new DialogViews(this.m_con);
-        TextView textView = (TextView) this.view.findViewById(R.id.tv_seleAPk);
+        TextView textView = (TextView) this.view.findViewById(C0899R.C0901id.tv_seleAPk);
         this.tv_seleAPk = textView;
-        textView.setOnClickListener(new View.OnClickListener() {
+        textView.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.settings.als_id7_ui_set.factory.AlsID7UiFunctionConfig.2
+            @Override // android.view.View.OnClickListener
             public void onClick(View v) {
                 AlsID7UiFunctionConfig.this.dialogViews.listChoseApk(AlsID7UiFunctionConfig.this.devBanList);
             }
         });
-        this.cbox_bt = (CheckBox) this.view.findViewById(R.id.cbox_bt);
-        this.cbox_touch_send = (CheckBox) this.view.findViewById(R.id.cbox_touch_send);
-        CheckBox checkBox = (CheckBox) this.view.findViewById(R.id.cbox_function1);
+        this.cbox_bt = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_bt);
+        this.cbox_touch_send = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_touch_send);
+        CheckBox checkBox = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_function1);
         this.cbox_function1 = checkBox;
-        boolean z = false;
         checkBox.setChecked(this.funtion1 != 0);
-        CheckBox checkBox2 = (CheckBox) this.view.findViewById(R.id.cbox_function3);
+        CheckBox checkBox2 = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_function3);
         this.cbox_function3 = checkBox2;
         checkBox2.setChecked(this.funtion3 != 0);
-        CheckBox checkBox3 = (CheckBox) this.view.findViewById(R.id.cbox_function4);
+        CheckBox checkBox3 = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_function4);
         this.cbox_function4 = checkBox3;
         checkBox3.setChecked(this.funtion4 != 0);
-        CheckBox checkBox4 = (CheckBox) this.view.findViewById(R.id.cbox_function5);
+        CheckBox checkBox4 = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_function5);
         this.cbox_function5 = checkBox4;
         checkBox4.setChecked(this.funtion5 != 0);
-        CheckBox checkBox5 = (CheckBox) this.view.findViewById(R.id.cbox_function6);
+        CheckBox checkBox5 = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_function6);
         this.cbox_function6 = checkBox5;
         checkBox5.setChecked(this.funtion6 != 0);
-        CheckBox checkBox6 = (CheckBox) this.view.findViewById(R.id.cbox_function7);
+        CheckBox checkBox6 = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_function7);
         this.cbox_function7 = checkBox6;
         checkBox6.setChecked(this.funtion7 != 0);
-        CheckBox checkBox7 = (CheckBox) this.view.findViewById(R.id.cbox_sysXcjz);
+        CheckBox checkBox7 = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_sysXcjz);
         this.cbox_sysXcjz = checkBox7;
         checkBox7.setChecked(this.cheVideo != 0);
-        CheckBox checkBox8 = (CheckBox) this.view.findViewById(R.id.cbox_function_fcam);
+        CheckBox checkBox8 = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_function_fcam);
         this.chox_function_fcam = checkBox8;
         checkBox8.setChecked(this.fcamType == 1);
-        CheckBox checkBox9 = (CheckBox) this.view.findViewById(R.id.cbox_sreencast);
+        CheckBox checkBox9 = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_sreencast);
         this.cbox_screencast = checkBox9;
         checkBox9.setChecked(this.screencast == 1);
         this.cbox_screencast.setVisibility(0);
-        CheckBox checkBox10 = (CheckBox) this.view.findViewById(R.id.cbox_function_google_off);
+        CheckBox checkBox10 = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_function_google_off);
         this.cbox_function_google_off = checkBox10;
         checkBox10.setChecked(this.googleOff == 1);
         if (UiThemeUtils.isBMW_EVO_ID6(this.m_con) || UiThemeUtils.isBMW_EVO_ID5(this.m_con) || UiThemeUtils.isCommon_UI_GS(this.m_con) || (UiThemeUtils.isBMW_EVO_ID6_CUSP(this.m_con) && ClientManager.getInstance().isCUSP_210407())) {
@@ -191,111 +206,111 @@ public class AlsID7UiFunctionConfig extends FrameLayout implements CompoundButto
         } else {
             this.cbox_sysXcjz.setVisibility(8);
         }
-        RadioGroup radioGroup = (RadioGroup) this.view.findViewById(R.id.rdg_funxcjl);
+        RadioGroup radioGroup = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_funxcjl);
         this.rdg_funxcjl = radioGroup;
         switch (this.xingcjl) {
             case 0:
-                radioGroup.check(R.id.rdb_funxcjl1);
+                radioGroup.check(C0899R.C0901id.rdb_funxcjl1);
                 this.tv_seleAPk.setVisibility(8);
                 break;
             case 1:
-                radioGroup.check(R.id.rdb_funxcjl2);
+                radioGroup.check(C0899R.C0901id.rdb_funxcjl2);
                 this.tv_seleAPk.setVisibility(8);
                 break;
             case 2:
-                radioGroup.check(R.id.rdb_funxcjl3);
+                radioGroup.check(C0899R.C0901id.rdb_funxcjl3);
                 this.tv_seleAPk.setVisibility(0);
                 break;
         }
-        RadioGroup radioGroup2 = (RadioGroup) this.view.findViewById(R.id.rdg_funbt);
+        RadioGroup radioGroup2 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_funbt);
         this.rdg_funbt = radioGroup2;
         switch (this.btType) {
             case 0:
-                radioGroup2.check(R.id.rdb_funbt2);
+                radioGroup2.check(C0899R.C0901id.rdb_funbt2);
                 break;
             case 1:
-                radioGroup2.check(R.id.rdb_funbt1);
+                radioGroup2.check(C0899R.C0901id.rdb_funbt1);
                 break;
         }
-        RadioGroup radioGroup3 = (RadioGroup) this.view.findViewById(R.id.rdg_fungf);
+        RadioGroup radioGroup3 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_fungf);
         this.rdg_fungf = radioGroup3;
         switch (this.gongfang) {
             case 0:
-                radioGroup3.check(R.id.rdg_fungf1);
+                radioGroup3.check(C0899R.C0901id.rdg_fungf1);
                 break;
             case 1:
-                radioGroup3.check(R.id.rdg_fungf2);
+                radioGroup3.check(C0899R.C0901id.rdg_fungf2);
                 break;
         }
-        RadioGroup radioGroup4 = (RadioGroup) this.view.findViewById(R.id.rdg_360sx);
+        RadioGroup radioGroup4 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_360sx);
         this.rdg_360sx = radioGroup4;
         switch (this.cam360) {
             case 0:
-                radioGroup4.check(R.id.rdg_360sx1);
+                radioGroup4.check(C0899R.C0901id.rdg_360sx1);
                 break;
             case 1:
-                radioGroup4.check(R.id.rdg_360sx2);
+                radioGroup4.check(C0899R.C0901id.rdg_360sx2);
                 break;
         }
-        RadioGroup radioGroup5 = (RadioGroup) this.view.findViewById(R.id.rdg_bgkz);
+        RadioGroup radioGroup5 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_bgkz);
         this.rdg_bgkz = radioGroup5;
         switch (this.bgkz) {
             case 0:
-                radioGroup5.check(R.id.rdg_bgkz1);
+                radioGroup5.check(C0899R.C0901id.rdg_bgkz1);
                 break;
             case 1:
-                radioGroup5.check(R.id.rdg_bgkz2);
+                radioGroup5.check(C0899R.C0901id.rdg_bgkz2);
                 break;
         }
-        RadioGroup radioGroup6 = (RadioGroup) this.view.findViewById(R.id.rdg_dawei);
+        RadioGroup radioGroup6 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_dawei);
         this.rdg_dawei = radioGroup6;
         switch (this.danwei) {
             case 0:
-                radioGroup6.check(R.id.rdg_dawei1);
+                radioGroup6.check(C0899R.C0901id.rdg_dawei1);
                 break;
             case 1:
-                radioGroup6.check(R.id.rdg_dawei2);
+                radioGroup6.check(C0899R.C0901id.rdg_dawei2);
                 break;
         }
-        RadioGroup radioGroup7 = (RadioGroup) this.view.findViewById(R.id.rdg_Ahd);
+        RadioGroup radioGroup7 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_Ahd);
         this.rdg_Ahd = radioGroup7;
         switch (this.ahdsele) {
             case 0:
-                radioGroup7.check(R.id.rdg_ahd0);
+                radioGroup7.check(C0899R.C0901id.rdg_ahd0);
                 break;
             case 1:
-                radioGroup7.check(R.id.rdg_ahd1);
+                radioGroup7.check(C0899R.C0901id.rdg_ahd1);
                 break;
             case 2:
-                radioGroup7.check(R.id.rdg_ahd2);
+                radioGroup7.check(C0899R.C0901id.rdg_ahd2);
                 break;
             case 3:
-                radioGroup7.check(R.id.rdg_ahd3);
+                radioGroup7.check(C0899R.C0901id.rdg_ahd3);
                 break;
             case 4:
-                radioGroup7.check(R.id.rdg_ahd4);
+                radioGroup7.check(C0899R.C0901id.rdg_ahd4);
                 break;
             case 5:
-                radioGroup7.check(R.id.rdg_ahd5);
+                radioGroup7.check(C0899R.C0901id.rdg_ahd5);
                 break;
             case 6:
-                radioGroup7.check(R.id.rdg_ahd6);
+                radioGroup7.check(C0899R.C0901id.rdg_ahd6);
                 break;
             case 7:
-                radioGroup7.check(R.id.rdg_ahd7);
+                radioGroup7.check(C0899R.C0901id.rdg_ahd7);
                 break;
         }
-        RadioGroup radioGroup8 = (RadioGroup) this.view.findViewById(R.id.boot_record_mode_radiogroup);
+        RadioGroup radioGroup8 = (RadioGroup) this.view.findViewById(C0899R.C0901id.boot_record_mode_radiogroup);
         this.bootModeRadiogroup = radioGroup8;
         switch (this.bootMode) {
             case 0:
-                radioGroup8.check(R.id.boot_record_mode_radio1);
+                radioGroup8.check(C0899R.C0901id.boot_record_mode_radio1);
                 break;
             case 1:
-                radioGroup8.check(R.id.boot_record_mode_radio2);
+                radioGroup8.check(C0899R.C0901id.boot_record_mode_radio2);
                 break;
             case 2:
-                radioGroup8.check(R.id.boot_record_mode_radio3);
+                radioGroup8.check(C0899R.C0901id.boot_record_mode_radio3);
                 break;
         }
         this.cbox_bt.setOnCheckedChangeListener(this);
@@ -318,149 +333,158 @@ public class AlsID7UiFunctionConfig extends FrameLayout implements CompoundButto
         this.rdg_dawei.setOnCheckedChangeListener(this);
         this.rdg_Ahd.setOnCheckedChangeListener(this);
         this.bootModeRadiogroup.setOnCheckedChangeListener(this);
-        CheckBox checkBox11 = (CheckBox) this.view.findViewById(R.id.cbox_hicar);
+        CheckBox checkBox11 = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_hicar);
         this.cbox_hicar = checkBox11;
         checkBox11.setChecked(this.hicar == 1);
         this.cbox_hicar.setOnCheckedChangeListener(this);
-        TextView textView2 = (TextView) this.view.findViewById(R.id.tv_selePlayAPk);
+        TextView textView2 = (TextView) this.view.findViewById(C0899R.C0901id.tv_selePlayAPk);
         this.tv_selePlayAPk = textView2;
-        textView2.setOnClickListener(new View.OnClickListener() {
+        textView2.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.settings.als_id7_ui_set.factory.AlsID7UiFunctionConfig.3
+            @Override // android.view.View.OnClickListener
             public void onClick(View v) {
                 AlsID7UiFunctionConfig.this.dialogViews.listPlayApk(AlsID7UiFunctionConfig.this.playAppList);
             }
         });
-        this.cbox_bt.setChecked(this.bt == 1);
-        CheckBox checkBox12 = this.cbox_touch_send;
-        if (this.touch_send == 1) {
-            z = true;
-        }
-        checkBox12.setChecked(z);
+        this.cbox_bt.setChecked(this.f213bt == 1);
+        this.cbox_touch_send.setChecked(this.touch_send == 1);
     }
 
+    @Override // android.widget.CompoundButton.OnCheckedChangeListener
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
-            case R.id.cbox_bt /*2131296712*/:
+            case C0899R.C0901id.cbox_bt /* 2131296739 */:
                 FileUtils.savaData(KeyConfig.Android_Bt_Switch, isChecked);
                 return;
-            case R.id.cbox_function1 /*2131296717*/:
+            case C0899R.C0901id.cbox_canBus /* 2131296740 */:
+            case C0899R.C0901id.cbox_dcld /* 2131296741 */:
+            case C0899R.C0901id.cbox_eq_app /* 2131296742 */:
+            case C0899R.C0901id.cbox_front_view /* 2131296743 */:
+            case C0899R.C0901id.cbox_global_weather /* 2131296752 */:
+            case C0899R.C0901id.cbox_oem_fm /* 2131296754 */:
+            case C0899R.C0901id.cbox_sysDcgj /* 2131296756 */:
+            case C0899R.C0901id.cbox_sysDcjy /* 2131296757 */:
+            case C0899R.C0901id.cbox_sysDcld /* 2131296758 */:
+            case C0899R.C0901id.cbox_sysHjs /* 2131296759 */:
+            default:
+                return;
+            case C0899R.C0901id.cbox_function1 /* 2131296744 */:
                 FileUtils.savaData(KeyConfig.USB_HOST, isChecked);
                 return;
-            case R.id.cbox_function3 /*2131296718*/:
+            case C0899R.C0901id.cbox_function3 /* 2131296745 */:
                 FileUtils.savaData(KeyConfig.GOOGLE_APP, isChecked);
                 return;
-            case R.id.cbox_function4 /*2131296719*/:
+            case C0899R.C0901id.cbox_function4 /* 2131296746 */:
                 FileUtils.savaData("AUX_Type", isChecked);
                 return;
-            case R.id.cbox_function5 /*2131296720*/:
+            case C0899R.C0901id.cbox_function5 /* 2131296747 */:
                 FileUtils.savaData("DTV_Type", isChecked);
                 return;
-            case R.id.cbox_function6 /*2131296721*/:
+            case C0899R.C0901id.cbox_function6 /* 2131296748 */:
                 FileUtils.savaData(KeyConfig.DISH_BOARD, isChecked);
                 return;
-            case R.id.cbox_function7 /*2131296722*/:
+            case C0899R.C0901id.cbox_function7 /* 2131296749 */:
                 FileUtils.savaData(KeyConfig.TXZ, isChecked);
                 return;
-            case R.id.cbox_function_fcam /*2131296723*/:
+            case C0899R.C0901id.cbox_function_fcam /* 2131296750 */:
                 FileUtils.savaData("Front_view_camera", isChecked);
                 return;
-            case R.id.cbox_function_google_off /*2131296724*/:
+            case C0899R.C0901id.cbox_function_google_off /* 2131296751 */:
                 FileUtils.savaData(KeyConfig.ZLINK_AUTO_START, isChecked);
                 return;
-            case R.id.cbox_hicar /*2131296725*/:
-                FileUtils.savaIntData(KeyConfig.HiCar, isChecked);
+            case C0899R.C0901id.cbox_hicar /* 2131296753 */:
+                FileUtils.savaIntData(KeyConfig.HiCar, isChecked ? 1 : 0);
                 return;
-            case R.id.cbox_sreencast /*2131296727*/:
-                FileUtils.savaIntData(KeyConfig.SCAREEN_CAST, isChecked);
+            case C0899R.C0901id.cbox_sreencast /* 2131296755 */:
+                FileUtils.savaIntData(KeyConfig.SCAREEN_CAST, isChecked ? 1 : 0);
                 return;
-            case R.id.cbox_sysXcjz /*2131296732*/:
+            case C0899R.C0901id.cbox_sysXcjz /* 2131296760 */:
                 FileUtils.savaData(KeyConfig.XING_CHE_JZSP, isChecked);
                 return;
-            case R.id.cbox_touch_send /*2131296733*/:
+            case C0899R.C0901id.cbox_touch_send /* 2131296761 */:
                 FileUtils.savaData(KeyConfig.TOUCH_CONTINUOUS_SEND, isChecked);
-                return;
-            default:
                 return;
         }
     }
 
+    @Override // android.widget.RadioGroup.OnCheckedChangeListener
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.boot_record_mode_radio1 /*2131296638*/:
+            case C0899R.C0901id.boot_record_mode_radio1 /* 2131296664 */:
                 Log.i(TAG, "onCheckedChanged: set booMdode: 0");
                 FileUtils.savaIntData(KeyConfig.DEFAULT_POWER_BOOT, 0);
                 return;
-            case R.id.boot_record_mode_radio2 /*2131296639*/:
+            case C0899R.C0901id.boot_record_mode_radio2 /* 2131296665 */:
                 Log.i(TAG, "onCheckedChanged: set booMdode: 1");
                 FileUtils.savaIntData(KeyConfig.DEFAULT_POWER_BOOT, 1);
                 return;
-            case R.id.boot_record_mode_radio3 /*2131296640*/:
+            case C0899R.C0901id.boot_record_mode_radio3 /* 2131296666 */:
                 Log.i(TAG, "onCheckedChanged: set booMdode: 2");
                 FileUtils.savaIntData(KeyConfig.DEFAULT_POWER_BOOT, 2);
                 return;
-            case R.id.rdb_funbt1 /*2131297447*/:
+            case C0899R.C0901id.rdb_funbt1 /* 2131297480 */:
                 FileUtils.savaIntData(KeyConfig.BT_TYPE, 1);
                 return;
-            case R.id.rdb_funbt2 /*2131297448*/:
+            case C0899R.C0901id.rdb_funbt2 /* 2131297481 */:
                 FileUtils.savaIntData(KeyConfig.BT_TYPE, 0);
                 return;
-            case R.id.rdb_funxcjl1 /*2131297449*/:
+            case C0899R.C0901id.rdb_funxcjl1 /* 2131297482 */:
                 FileUtils.savaIntData("DVR_Type", 0);
                 this.tv_seleAPk.setVisibility(8);
                 return;
-            case R.id.rdb_funxcjl2 /*2131297450*/:
+            case C0899R.C0901id.rdb_funxcjl2 /* 2131297483 */:
                 FileUtils.savaIntData("DVR_Type", 1);
                 this.tv_seleAPk.setVisibility(8);
                 return;
-            case R.id.rdb_funxcjl3 /*2131297451*/:
+            case C0899R.C0901id.rdb_funxcjl3 /* 2131297484 */:
                 FileUtils.savaIntData("DVR_Type", 2);
                 this.tv_seleAPk.setVisibility(0);
                 return;
-            case R.id.rdg_360sx1 /*2131297472*/:
+            case C0899R.C0901id.rdg_360sx1 /* 2131297506 */:
                 FileUtils.savaIntData(KeyConfig.CAM360, 0);
                 return;
-            case R.id.rdg_360sx2 /*2131297473*/:
+            case C0899R.C0901id.rdg_360sx2 /* 2131297507 */:
                 FileUtils.savaIntData(KeyConfig.CAM360, 1);
                 return;
-            case R.id.rdg_ahd0 /*2131297476*/:
+            case C0899R.C0901id.rdg_ahd0 /* 2131297510 */:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 0);
                 return;
-            case R.id.rdg_ahd1 /*2131297477*/:
+            case C0899R.C0901id.rdg_ahd1 /* 2131297511 */:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 1);
                 return;
-            case R.id.rdg_ahd2 /*2131297478*/:
+            case C0899R.C0901id.rdg_ahd2 /* 2131297512 */:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 2);
                 return;
-            case R.id.rdg_ahd3 /*2131297479*/:
+            case C0899R.C0901id.rdg_ahd3 /* 2131297513 */:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 3);
                 return;
-            case R.id.rdg_ahd4 /*2131297480*/:
+            case C0899R.C0901id.rdg_ahd4 /* 2131297514 */:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 4);
                 return;
-            case R.id.rdg_ahd5 /*2131297481*/:
+            case C0899R.C0901id.rdg_ahd5 /* 2131297515 */:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 5);
                 return;
-            case R.id.rdg_ahd6 /*2131297482*/:
+            case C0899R.C0901id.rdg_ahd6 /* 2131297516 */:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 6);
                 return;
-            case R.id.rdg_ahd7 /*2131297483*/:
+            case C0899R.C0901id.rdg_ahd7 /* 2131297517 */:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 7);
                 return;
-            case R.id.rdg_bgkz1 /*2131297489*/:
+            case C0899R.C0901id.rdg_bgkz1 /* 2131297523 */:
                 FileUtils.savaIntData(KeyConfig.BACKLIGHT, 0);
                 return;
-            case R.id.rdg_bgkz2 /*2131297490*/:
+            case C0899R.C0901id.rdg_bgkz2 /* 2131297524 */:
                 FileUtils.savaIntData(KeyConfig.BACKLIGHT, 1);
                 return;
-            case R.id.rdg_dawei1 /*2131297500*/:
+            case C0899R.C0901id.rdg_dawei1 /* 2131297535 */:
                 FileUtils.savaIntData(KeyConfig.DASHBOARDUNIT, 0);
                 return;
-            case R.id.rdg_dawei2 /*2131297501*/:
+            case C0899R.C0901id.rdg_dawei2 /* 2131297536 */:
                 FileUtils.savaIntData(KeyConfig.DASHBOARDUNIT, 1);
                 return;
-            case R.id.rdg_fungf1 /*2131297543*/:
+            case C0899R.C0901id.rdg_fungf1 /* 2131297578 */:
                 FileUtils.savaIntData(KeyConfig.AMP_TYPE, 0);
                 return;
-            case R.id.rdg_fungf2 /*2131297544*/:
+            case C0899R.C0901id.rdg_fungf2 /* 2131297579 */:
                 FileUtils.savaIntData(KeyConfig.AMP_TYPE, 1);
                 return;
             default:

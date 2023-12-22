@@ -11,10 +11,8 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/* loaded from: classes.dex */
 public final class CalendarParsedResult extends ParsedResult {
-    private static final Pattern DATE_TIME = Pattern.compile("[0-9]{8}(T[0-9]{6}Z?)?");
-    private static final Pattern RFC2445_DURATION = Pattern.compile("P(?:(\\d+)W)?(?:(\\d+)D)?(?:T(?:(\\d+)H)?(?:(\\d+)M)?(?:(\\d+)S)?)?");
-    private static final long[] RFC2445_DURATION_FIELD_UNITS = {604800000, 86400000, 3600000, 60000, 1000};
     private final String[] attendees;
     private final String description;
     private final long end;
@@ -26,46 +24,36 @@ public final class CalendarParsedResult extends ParsedResult {
     private final long start;
     private final boolean startAllDay;
     private final String summary;
+    private static final Pattern RFC2445_DURATION = Pattern.compile("P(?:(\\d+)W)?(?:(\\d+)D)?(?:T(?:(\\d+)H)?(?:(\\d+)M)?(?:(\\d+)S)?)?");
+    private static final long[] RFC2445_DURATION_FIELD_UNITS = {604800000, 86400000, 3600000, 60000, 1000};
+    private static final Pattern DATE_TIME = Pattern.compile("[0-9]{8}(T[0-9]{6}Z?)?");
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    public CalendarParsedResult(String summary2, String startString, String endString, String durationString, String location2, String organizer2, String[] attendees2, String description2, double latitude2, double longitude2) {
+    public CalendarParsedResult(String summary, String startString, String endString, String durationString, String location, String organizer, String[] attendees, String description, double latitude, double longitude) {
         super(ParsedResultType.CALENDAR);
-        this.summary = summary2;
+        this.summary = summary;
         try {
             long parseDate = parseDate(startString);
             this.start = parseDate;
-            if (endString == null) {
-                long durationMS = parseDurationMS(durationString);
-                this.end = durationMS < 0 ? -1 : parseDate + durationMS;
-            } else {
+            if (endString != null) {
                 try {
                     this.end = parseDate(endString);
                 } catch (ParseException pe) {
-                    String str = location2;
-                    String str2 = organizer2;
-                    String[] strArr = attendees2;
-                    String str3 = description2;
-                    double d = latitude2;
-                    double d2 = longitude2;
                     throw new IllegalArgumentException(pe.toString());
                 }
+            } else {
+                long durationMS = parseDurationMS(durationString);
+                this.end = durationMS < 0 ? -1L : parseDate + durationMS;
             }
             boolean z = true;
             this.startAllDay = startString.length() == 8;
             this.endAllDay = (endString == null || endString.length() != 8) ? false : z;
-            this.location = location2;
-            this.organizer = organizer2;
-            this.attendees = attendees2;
-            this.description = description2;
-            this.latitude = latitude2;
-            this.longitude = longitude2;
+            this.location = location;
+            this.organizer = organizer;
+            this.attendees = attendees;
+            this.description = description;
+            this.latitude = latitude;
+            this.longitude = longitude;
         } catch (ParseException pe2) {
-            String str4 = location2;
-            String str5 = organizer2;
-            String[] strArr2 = attendees2;
-            String str6 = description2;
-            double d3 = latitude2;
-            double d4 = longitude2;
             throw new IllegalArgumentException(pe2.toString());
         }
     }
@@ -127,6 +115,7 @@ public final class CalendarParsedResult extends ParsedResult {
         return this.longitude;
     }
 
+    @Override // com.google.zxing.client.result.ParsedResult
     public String getDisplayResult() {
         StringBuilder result = new StringBuilder(100);
         maybeAppend(this.summary, result);
@@ -142,56 +131,56 @@ public final class CalendarParsedResult extends ParsedResult {
     private static long parseDate(String when) throws ParseException {
         if (!DATE_TIME.matcher(when).matches()) {
             throw new ParseException(when, 0);
-        } else if (when.length() == 8) {
+        }
+        if (when.length() == 8) {
             DateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
             format.setTimeZone(TimeZone.getTimeZone("GMT"));
             return format.parse(when).getTime();
-        } else if (when.length() != 16 || when.charAt(15) != 'Z') {
-            return parseDateTimeString(when);
-        } else {
+        } else if (when.length() == 16 && when.charAt(15) == 'Z') {
             long milliseconds = parseDateTimeString(when.substring(0, 15));
             Calendar calendar = new GregorianCalendar();
-            long milliseconds2 = milliseconds + ((long) calendar.get(15));
+            long milliseconds2 = milliseconds + calendar.get(15);
             calendar.setTime(new Date(milliseconds2));
-            return ((long) calendar.get(16)) + milliseconds2;
+            return calendar.get(16) + milliseconds2;
+        } else {
+            return parseDateTimeString(when);
         }
     }
 
     private static String format(boolean allDay, long date) {
-        DateFormat dateFormat;
+        DateFormat dateTimeInstance;
         if (date < 0) {
             return null;
         }
         if (allDay) {
-            dateFormat = DateFormat.getDateInstance(2);
+            dateTimeInstance = DateFormat.getDateInstance(2);
         } else {
-            dateFormat = DateFormat.getDateTimeInstance(2, 2);
+            dateTimeInstance = DateFormat.getDateTimeInstance(2, 2);
         }
-        return dateFormat.format(Long.valueOf(date));
+        return dateTimeInstance.format(Long.valueOf(date));
     }
 
     private static long parseDurationMS(CharSequence durationString) {
         if (durationString == null) {
-            return -1;
+            return -1L;
         }
-        Matcher matcher = RFC2445_DURATION.matcher(durationString);
-        Matcher m = matcher;
-        if (!matcher.matches()) {
-            return -1;
+        Matcher m = RFC2445_DURATION.matcher(durationString);
+        if (!m.matches()) {
+            return -1L;
         }
         long durationMS = 0;
         int i = 0;
         while (true) {
             long[] jArr = RFC2445_DURATION_FIELD_UNITS;
-            if (i >= jArr.length) {
+            if (i < jArr.length) {
+                String fieldValue = m.group(i + 1);
+                if (fieldValue != null) {
+                    durationMS += jArr[i] * Integer.parseInt(fieldValue);
+                }
+                i++;
+            } else {
                 return durationMS;
             }
-            String group = m.group(i + 1);
-            String fieldValue = group;
-            if (group != null) {
-                durationMS += jArr[i] * ((long) Integer.parseInt(fieldValue));
-            }
-            i++;
         }
     }
 

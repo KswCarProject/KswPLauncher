@@ -1,5 +1,6 @@
 package com.google.zxing.oned.rss;
 
+/* loaded from: classes.dex */
 public final class RSSUtils {
     private RSSUtils() {
     }
@@ -25,7 +26,8 @@ public final class RSSUtils {
                     for (int mxwElement = (n - elmWidth) - ((elements - bar) - 2); mxwElement > maxWidth; mxwElement--) {
                         lessVal += combins(((n - elmWidth) - mxwElement) - 1, (elements - bar) - 3);
                     }
-                    subVal -= ((elements - 1) - bar) * lessVal;
+                    int mxwElement2 = elements - 1;
+                    subVal -= (mxwElement2 - bar) * lessVal;
                 } else if (n - elmWidth > maxWidth) {
                     subVal--;
                 }
@@ -39,8 +41,8 @@ public final class RSSUtils {
     }
 
     private static int combins(int n, int r) {
-        int maxDenom;
         int minDenom;
+        int maxDenom;
         if (n - r > r) {
             minDenom = r;
             maxDenom = n - r;

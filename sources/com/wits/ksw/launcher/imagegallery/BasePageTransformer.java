@@ -1,6 +1,7 @@
 package com.wits.ksw.launcher.imagegallery;
 
-import android.support.v4.view.ViewPager;
+import android.support.p001v4.view.ViewPager;
 
+/* loaded from: classes11.dex */
 public abstract class BasePageTransformer implements ViewPager.PageTransformer {
 }

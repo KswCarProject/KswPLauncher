@@ -7,15 +7,16 @@ import io.reactivex.disposables.Disposables;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.plugins.RxJavaPlugins;
 
+/* loaded from: classes.dex */
 public final class CompletableFromRunnable extends Completable {
     final Runnable runnable;
 
-    public CompletableFromRunnable(Runnable runnable2) {
-        this.runnable = runnable2;
+    public CompletableFromRunnable(Runnable runnable) {
+        this.runnable = runnable;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         Disposable d = Disposables.empty();
         observer.onSubscribe(d);
         try {

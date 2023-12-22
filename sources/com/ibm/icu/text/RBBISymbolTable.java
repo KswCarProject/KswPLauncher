@@ -4,12 +4,14 @@ import com.ibm.icu.lang.UCharacter;
 import java.text.ParsePosition;
 import java.util.HashMap;
 
+/* loaded from: classes.dex */
 class RBBISymbolTable implements SymbolTable {
     UnicodeSet fCachedSetLookup;
-    HashMap<String, RBBISymbolTableEntry> fHashTable = new HashMap<>();
     RBBIRuleScanner fRuleScanner;
-    String ffffString = "￿";
+    HashMap<String, RBBISymbolTableEntry> fHashTable = new HashMap<>();
+    String ffffString = "\uffff";
 
+    /* loaded from: classes.dex */
     static class RBBISymbolTableEntry {
         String key;
         RBBINode val;
@@ -22,6 +24,7 @@ class RBBISymbolTable implements SymbolTable {
         this.fRuleScanner = rs;
     }
 
+    @Override // com.ibm.icu.text.SymbolTable
     public char[] lookup(String s) {
         String retString;
         RBBISymbolTableEntry el = this.fHashTable.get(s);
@@ -34,7 +37,8 @@ class RBBISymbolTable implements SymbolTable {
         }
         RBBINode exprNode = varRefNode.fLeftChild;
         if (exprNode.fType == 0) {
-            this.fCachedSetLookup = exprNode.fLeftChild.fInputSet;
+            RBBINode usetNode = exprNode.fLeftChild;
+            this.fCachedSetLookup = usetNode.fInputSet;
             retString = this.ffffString;
         } else {
             this.fRuleScanner.error(66063);
@@ -44,6 +48,7 @@ class RBBISymbolTable implements SymbolTable {
         return retString.toCharArray();
     }
 
+    @Override // com.ibm.icu.text.SymbolTable
     public UnicodeMatcher lookupMatcher(int ch) {
         if (ch != 65535) {
             return null;
@@ -53,6 +58,7 @@ class RBBISymbolTable implements SymbolTable {
         return retVal;
     }
 
+    @Override // com.ibm.icu.text.SymbolTable
     public String parseReference(String text, ParsePosition pos, int limit) {
         int start = pos.getIndex();
         int i = start;
@@ -67,20 +73,20 @@ class RBBISymbolTable implements SymbolTable {
             return "";
         }
         pos.setIndex(i);
-        return text.substring(start, i);
+        String result = text.substring(start, i);
+        return result;
     }
 
-    /* access modifiers changed from: package-private */
-    public RBBINode lookupNode(String key) {
+    RBBINode lookupNode(String key) {
         RBBISymbolTableEntry el = this.fHashTable.get(key);
-        if (el != null) {
-            return el.val;
+        if (el == null) {
+            return null;
         }
-        return null;
+        RBBINode retNode = el.val;
+        return retNode;
     }
 
-    /* access modifiers changed from: package-private */
-    public void addEntry(String key, RBBINode val) {
+    void addEntry(String key, RBBINode val) {
         if (this.fHashTable.get(key) != null) {
             this.fRuleScanner.error(66055);
             return;
@@ -91,8 +97,7 @@ class RBBISymbolTable implements SymbolTable {
         this.fHashTable.put(e.key, e);
     }
 
-    /* access modifiers changed from: package-private */
-    public void rbbiSymtablePrint() {
+    void rbbiSymtablePrint() {
         System.out.print("Variable Definitions\nName               Node Val     String Val\n----------------------------------------------------------------------\n");
         RBBISymbolTableEntry[] syms = (RBBISymbolTableEntry[]) this.fHashTable.values().toArray(new RBBISymbolTableEntry[0]);
         for (RBBISymbolTableEntry s : syms) {

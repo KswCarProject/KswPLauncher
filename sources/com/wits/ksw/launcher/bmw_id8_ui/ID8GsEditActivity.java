@@ -1,10 +1,13 @@
 package com.wits.ksw.launcher.bmw_id8_ui;
 
-import android.graphics.drawable.Drawable;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.app.SkinAppCompatDelegateImpl;
+import android.support.p004v7.app.AppCompatActivity;
+import android.support.p004v7.app.AppCompatDelegate;
+import android.support.p004v7.app.SkinAppCompatDelegateImpl;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
@@ -14,22 +17,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bmw_id8_ui.fragment.ID8GsFragmentHelper;
 import com.wits.ksw.launcher.bmw_id8_ui.listener.GSID8BarOnDragListener;
 import com.wits.ksw.launcher.utils.KswUtils;
 import java.util.Iterator;
 import java.util.List;
 
+/* loaded from: classes5.dex */
 public class ID8GsEditActivity extends AppCompatActivity {
     private static final String TAG = "ID8GsEditActivity";
     public static int mScreenWidth;
     private float autoScrollLeftPosition;
     private float autoScrollRightPosition;
-    /* access modifiers changed from: private */
-    public int currentScrollX;
-    /* access modifiers changed from: private */
-    public int currentScrollY;
+    private int currentScrollX;
+    private int currentScrollY;
     ImageView ivLeft1;
     ImageView ivLeft2;
     ImageView ivLeft3;
@@ -49,55 +51,58 @@ public class ID8GsEditActivity extends AppCompatActivity {
     TextView tvLeft4;
     TextView tvLeft5;
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         KswUtils.setFull(getWindow());
-        setContentView((int) R.layout.activity_id8_gs_launcher_edit);
-        HorizontalScrollView horizontalScrollView = (HorizontalScrollView) findViewById(R.id.scrollView);
+        setContentView(C0899R.C0902layout.activity_id8_gs_launcher_edit);
+        HorizontalScrollView horizontalScrollView = (HorizontalScrollView) findViewById(C0899R.C0901id.scrollView);
         this.scrollView = horizontalScrollView;
-        horizontalScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+        horizontalScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() { // from class: com.wits.ksw.launcher.bmw_id8_ui.ID8GsEditActivity.1
+            @Override // android.view.View.OnScrollChangeListener
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                int unused = ID8GsEditActivity.this.currentScrollX = scrollX;
-                int unused2 = ID8GsEditActivity.this.currentScrollY = scrollY;
+                ID8GsEditActivity.this.currentScrollX = scrollX;
+                ID8GsEditActivity.this.currentScrollY = scrollY;
             }
         });
-        this.scrollView.setOnDragListener(new View.OnDragListener() {
+        this.scrollView.setOnDragListener(new View.OnDragListener() { // from class: com.wits.ksw.launcher.bmw_id8_ui.ID8GsEditActivity.2
+            @Override // android.view.View.OnDragListener
             public boolean onDrag(View v, DragEvent event) {
                 Log.w(ID8GsEditActivity.TAG, "scrollView onDrag: " + event.getX());
                 return false;
             }
         });
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ll_container);
+        LinearLayout linearLayout = (LinearLayout) findViewById(C0899R.C0901id.ll_containe);
         this.llContainer = linearLayout;
-        linearLayout.setOnClickListener(new View.OnClickListener() {
+        linearLayout.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.launcher.bmw_id8_ui.ID8GsEditActivity.3
+            @Override // android.view.View.OnClickListener
             public void onClick(View v) {
                 ID8GsEditActivity.this.finish();
             }
         });
-        this.llLeft1 = (LinearLayout) findViewById(R.id.ll_left_1);
-        this.llLeft2 = (LinearLayout) findViewById(R.id.ll_left_2);
-        this.llLeft3 = (LinearLayout) findViewById(R.id.ll_left_3);
-        this.llLeft4 = (LinearLayout) findViewById(R.id.ll_left_4);
-        this.llLeft5 = (LinearLayout) findViewById(R.id.ll_left_5);
-        this.llLeft1.setBackground((Drawable) null);
-        this.llLeft2.setBackground((Drawable) null);
-        this.llLeft3.setBackground((Drawable) null);
-        this.llLeft4.setBackground((Drawable) null);
-        this.llLeft5.setBackground((Drawable) null);
-        LinearLayout llLeftBarContainer = (LinearLayout) findViewById(R.id.ll_left_bar_container);
+        this.llLeft1 = (LinearLayout) findViewById(C0899R.C0901id.ll_left_1);
+        this.llLeft2 = (LinearLayout) findViewById(C0899R.C0901id.ll_left_2);
+        this.llLeft3 = (LinearLayout) findViewById(C0899R.C0901id.ll_left_3);
+        this.llLeft4 = (LinearLayout) findViewById(C0899R.C0901id.ll_left_4);
+        this.llLeft5 = (LinearLayout) findViewById(C0899R.C0901id.ll_left_5);
+        this.llLeft1.setBackground(null);
+        this.llLeft2.setBackground(null);
+        this.llLeft3.setBackground(null);
+        this.llLeft4.setBackground(null);
+        this.llLeft5.setBackground(null);
+        LinearLayout llLeftBarContainer = (LinearLayout) findViewById(C0899R.C0901id.ll_left_bar_container);
         llLeftBarContainer.setClickable(false);
         llLeftBarContainer.setFocusable(false);
-        this.ivLeft1 = (ImageView) findViewById(R.id.iv_left_1);
-        this.ivLeft2 = (ImageView) findViewById(R.id.iv_left_2);
-        this.ivLeft3 = (ImageView) findViewById(R.id.iv_left_3);
-        this.ivLeft4 = (ImageView) findViewById(R.id.iv_left_4);
-        this.ivLeft5 = (ImageView) findViewById(R.id.iv_left_5);
-        this.tvLeft1 = (TextView) findViewById(R.id.tv_left_1);
-        this.tvLeft2 = (TextView) findViewById(R.id.tv_left_2);
-        this.tvLeft3 = (TextView) findViewById(R.id.tv_left_3);
-        this.tvLeft4 = (TextView) findViewById(R.id.tv_left_4);
-        this.tvLeft5 = (TextView) findViewById(R.id.tv_left_5);
+        this.ivLeft1 = (ImageView) findViewById(C0899R.C0901id.iv_left_1);
+        this.ivLeft2 = (ImageView) findViewById(C0899R.C0901id.iv_left_2);
+        this.ivLeft3 = (ImageView) findViewById(C0899R.C0901id.iv_left_3);
+        this.ivLeft4 = (ImageView) findViewById(C0899R.C0901id.iv_left_4);
+        this.ivLeft5 = (ImageView) findViewById(C0899R.C0901id.iv_left_5);
+        this.tvLeft1 = (TextView) findViewById(C0899R.C0901id.tv_left_1);
+        this.tvLeft2 = (TextView) findViewById(C0899R.C0901id.tv_left_2);
+        this.tvLeft3 = (TextView) findViewById(C0899R.C0901id.tv_left_3);
+        this.tvLeft4 = (TextView) findViewById(C0899R.C0901id.tv_left_4);
+        this.tvLeft5 = (TextView) findViewById(C0899R.C0901id.tv_left_5);
         initLeftIcon(this.ivLeft3, this.tvLeft3, GSID8LauncherConstants.leftIcon3);
         initLeftIcon(this.ivLeft4, this.tvLeft4, GSID8LauncherConstants.leftIcon4);
         initLeftIcon(this.ivLeft5, this.tvLeft5, GSID8LauncherConstants.leftIcon5);
@@ -106,208 +111,191 @@ public class ID8GsEditActivity extends AppCompatActivity {
         this.llLeft3.setOnDragListener(barOnDragListener);
         this.llLeft4.setOnDragListener(barOnDragListener);
         this.llLeft5.setOnDragListener(barOnDragListener);
-        int i = getResources().getDisplayMetrics().widthPixels;
+        Resources resources = getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        int i = dm.widthPixels;
         mScreenWidth = i;
-        this.autoScrollLeftPosition = ((float) i) * 0.2f;
-        this.autoScrollRightPosition = ((float) i) * 0.9f;
+        this.autoScrollLeftPosition = i * 0.2f;
+        this.autoScrollRightPosition = i * 0.9f;
         Log.w(TAG, "onCreate: mScreenWidth : " + mScreenWidth);
         Log.w(TAG, "onCreate: autoScrollLeftPosition : " + this.autoScrollLeftPosition);
         Log.w(TAG, "onCreate: autoScrollRightPosition : " + this.autoScrollRightPosition);
     }
 
-    /* JADX WARNING: Can't fix incorrect switch cases order */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private void initLeftIcon(android.widget.ImageView r5, android.widget.TextView r6, java.lang.String r7) {
-        /*
-            r4 = this;
-            r0 = -1
-            r1 = -1
-            int r2 = r7.hashCode()
-            r3 = -1
-            switch(r2) {
-                case -1591043536: goto L_0x005c;
-                case -1409845903: goto L_0x0052;
-                case 73532672: goto L_0x0048;
-                case 73725445: goto L_0x003e;
-                case 76105038: goto L_0x0034;
-                case 81665115: goto L_0x0029;
-                case 741767578: goto L_0x001f;
-                case 1738734196: goto L_0x0015;
-                case 1941423060: goto L_0x000b;
-                default: goto L_0x000a;
-            }
-        L_0x000a:
-            goto L_0x0066
-        L_0x000b:
-            java.lang.String r2 = "WEATHER"
-            boolean r2 = r7.equals(r2)
-            if (r2 == 0) goto L_0x000a
-            r2 = 4
-            goto L_0x0067
-        L_0x0015:
-            java.lang.String r2 = "DASHBOARD"
-            boolean r2 = r7.equals(r2)
-            if (r2 == 0) goto L_0x000a
-            r2 = 6
-            goto L_0x0067
-        L_0x001f:
-            java.lang.String r2 = "CAR INFO"
-            boolean r2 = r7.equals(r2)
-            if (r2 == 0) goto L_0x000a
-            r2 = 2
-            goto L_0x0067
-        L_0x0029:
-            java.lang.String r2 = "VIDEO"
-            boolean r2 = r7.equals(r2)
-            if (r2 == 0) goto L_0x000a
-            r2 = 8
-            goto L_0x0067
-        L_0x0034:
-            java.lang.String r2 = "PHONE"
-            boolean r2 = r7.equals(r2)
-            if (r2 == 0) goto L_0x000a
-            r2 = 3
-            goto L_0x0067
-        L_0x003e:
-            java.lang.String r2 = "MUSIC"
-            boolean r2 = r7.equals(r2)
-            if (r2 == 0) goto L_0x000a
-            r2 = 1
-            goto L_0x0067
-        L_0x0048:
-            java.lang.String r2 = "MODUS"
-            boolean r2 = r7.equals(r2)
-            if (r2 == 0) goto L_0x000a
-            r2 = 5
-            goto L_0x0067
-        L_0x0052:
-            java.lang.String r2 = "NAVIGATE"
-            boolean r2 = r7.equals(r2)
-            if (r2 == 0) goto L_0x000a
-            r2 = 0
-            goto L_0x0067
-        L_0x005c:
-            java.lang.String r2 = "SETTING"
-            boolean r2 = r7.equals(r2)
-            if (r2 == 0) goto L_0x000a
-            r2 = 7
-            goto L_0x0067
-        L_0x0066:
-            r2 = r3
-        L_0x0067:
-            switch(r2) {
-                case 0: goto L_0x00a3;
-                case 1: goto L_0x009c;
-                case 2: goto L_0x0095;
-                case 3: goto L_0x008e;
-                case 4: goto L_0x0087;
-                case 5: goto L_0x0080;
-                case 6: goto L_0x0079;
-                case 7: goto L_0x0072;
-                case 8: goto L_0x006b;
-                default: goto L_0x006a;
-            }
-        L_0x006a:
-            goto L_0x00aa
-        L_0x006b:
-            r0 = 2131233433(0x7f080a99, float:1.8083003E38)
-            r1 = 2131558779(0x7f0d017b, float:1.8742883E38)
-            goto L_0x00aa
-        L_0x0072:
-            r0 = 2131233432(0x7f080a98, float:1.8083001E38)
-            r1 = 2131558780(0x7f0d017c, float:1.8742885E38)
-            goto L_0x00aa
-        L_0x0079:
-            r0 = 2131233428(0x7f080a94, float:1.8082993E38)
-            r1 = 2131558787(0x7f0d0183, float:1.87429E38)
-            goto L_0x00aa
-        L_0x0080:
-            r0 = 2131233429(0x7f080a95, float:1.8082995E38)
-            r1 = 2131558795(0x7f0d018b, float:1.8742916E38)
-            goto L_0x00aa
-        L_0x0087:
-            r0 = 2131233434(0x7f080a9a, float:1.8083005E38)
-            r1 = 2131558821(0x7f0d01a5, float:1.8742969E38)
-            goto L_0x00aa
-        L_0x008e:
-            r0 = 2131233077(0x7f080935, float:1.8082281E38)
-            r1 = 2131558781(0x7f0d017d, float:1.8742888E38)
-            goto L_0x00aa
-        L_0x0095:
-            r0 = 2131233078(0x7f080936, float:1.8082283E38)
-            r1 = 2131558758(0x7f0d0166, float:1.874284E38)
-            goto L_0x00aa
-        L_0x009c:
-            r0 = 2131233079(0x7f080937, float:1.8082285E38)
-            r1 = 2131558796(0x7f0d018c, float:1.8742918E38)
-            goto L_0x00aa
-        L_0x00a3:
-            r0 = 2131233080(0x7f080938, float:1.8082287E38)
-            r1 = 2131558782(0x7f0d017e, float:1.874289E38)
-        L_0x00aa:
-            if (r0 != r3) goto L_0x00ad
-            return
-        L_0x00ad:
-            java.lang.String r2 = r4.getString(r1)
-            r6.setText(r2)
-            android.content.res.Resources r2 = r4.getResources()
-            android.graphics.Bitmap r2 = android.graphics.BitmapFactory.decodeResource(r2, r0)
-            r5.setImageBitmap(r2)
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.launcher.bmw_id8_ui.ID8GsEditActivity.initLeftIcon(android.widget.ImageView, android.widget.TextView, java.lang.String):void");
+    /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
+    private void initLeftIcon(ImageView iv, TextView tv, String name) {
+        char c;
+        int iconRes = -1;
+        int nameRes = -1;
+        switch (name.hashCode()) {
+            case -1591043536:
+                if (name.equals("SETTING")) {
+                    c = 7;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1409845903:
+                if (name.equals("NAVIGATE")) {
+                    c = 0;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 73532672:
+                if (name.equals("MODUS")) {
+                    c = 5;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 73725445:
+                if (name.equals("MUSIC")) {
+                    c = 1;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 76105038:
+                if (name.equals("PHONE")) {
+                    c = 3;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 81665115:
+                if (name.equals("VIDEO")) {
+                    c = '\b';
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 741767578:
+                if (name.equals("CAR INFO")) {
+                    c = 2;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 1738734196:
+                if (name.equals("DASHBOARD")) {
+                    c = 6;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 1941423060:
+                if (name.equals("WEATHER")) {
+                    c = 4;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            default:
+                c = '\uffff';
+                break;
+        }
+        switch (c) {
+            case 0:
+                iconRes = C0899R.C0900drawable.id8_gs_main_left_icon_navi;
+                nameRes = C0899R.string.ksw_id8_abbr_tel_navigate;
+                break;
+            case 1:
+                iconRes = C0899R.C0900drawable.id8_gs_main_left_icon_music;
+                nameRes = C0899R.string.ksw_id8_music;
+                break;
+            case 2:
+                iconRes = C0899R.C0900drawable.id8_gs_main_left_icon_car;
+                nameRes = C0899R.string.ksw_id7_car;
+                break;
+            case 3:
+                iconRes = C0899R.C0900drawable.id8_gs_main_left_icon_bt;
+                nameRes = C0899R.string.ksw_id8_abbr_tel;
+                break;
+            case 4:
+                iconRes = C0899R.C0900drawable.id8_main_left_icon_weather;
+                nameRes = C0899R.string.ksw_id8_weather;
+                break;
+            case 5:
+                iconRes = C0899R.C0900drawable.id8_main_left_icon_modus;
+                nameRes = C0899R.string.ksw_id8_modus;
+                break;
+            case 6:
+                iconRes = C0899R.C0900drawable.id8_main_left_icon_dashboard;
+                nameRes = C0899R.string.ksw_id8_dashboard;
+                break;
+            case 7:
+                iconRes = C0899R.C0900drawable.id8_main_left_icon_set;
+                nameRes = C0899R.string.ksw_id8_abbr_setting;
+                break;
+            case '\b':
+                iconRes = C0899R.C0900drawable.id8_main_left_icon_video;
+                nameRes = C0899R.string.ksw_id8_abbr_hd_video;
+                break;
+        }
+        if (iconRes == -1) {
+            return;
+        }
+        tv.setText(getString(nameRes));
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), iconRes);
+        iv.setImageBitmap(bitmap);
     }
 
     public void sort(String dragName, String releaseName) {
         List<String> nameList = GSID8LauncherConstants.nameList;
-        if (!dragName.equals(releaseName)) {
-            if (!nameList.remove(dragName)) {
-                Toast.makeText(this, "排序异常，请重试。occur error,please try again.", 0).show();
-                return;
-            }
-            int releasePosition = -1;
-            Iterator<String> it = nameList.iterator();
-            while (true) {
-                if (it.hasNext()) {
-                    if (it.next().equals(releaseName)) {
-                        releasePosition = nameList.indexOf(releaseName);
-                        break;
-                    }
-                } else {
-                    break;
-                }
-            }
-            if (releasePosition == -1) {
-                Toast.makeText(this, "排序异常，请重试。occur error,please try again.", 0).show();
-                return;
-            }
-            nameList.add(releasePosition, dragName);
-            int tempX = this.currentScrollX;
-            int tempY = this.currentScrollY;
-            ID8GsFragmentHelper.getInstance(this).locateFragmentPosition();
-            this.scrollView.scrollTo(tempX, tempY);
+        if (dragName.equals(releaseName)) {
+            return;
         }
+        boolean remove = nameList.remove(dragName);
+        if (!remove) {
+            Toast.makeText(this, "\u6392\u5e8f\u5f02\u5e38\uff0c\u8bf7\u91cd\u8bd5\u3002occur error,please try again.", 0).show();
+            return;
+        }
+        int releasePosition = -1;
+        Iterator<String> it = nameList.iterator();
+        while (true) {
+            if (!it.hasNext()) {
+                break;
+            }
+            String name = it.next();
+            if (name.equals(releaseName)) {
+                releasePosition = nameList.indexOf(releaseName);
+                break;
+            }
+        }
+        if (releasePosition == -1) {
+            Toast.makeText(this, "\u6392\u5e8f\u5f02\u5e38\uff0c\u8bf7\u91cd\u8bd5\u3002occur error,please try again.", 0).show();
+            return;
+        }
+        nameList.add(releasePosition, dragName);
+        int tempX = this.currentScrollX;
+        int tempY = this.currentScrollY;
+        ID8GsFragmentHelper.getInstance(this).locateFragmentPosition();
+        this.scrollView.scrollTo(tempX, tempY);
     }
 
     public void emptyClick(View view) {
         finish();
     }
 
-    /* access modifiers changed from: protected */
-    public void onDestroy() {
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onDestroy() {
         super.onDestroy();
         GSID8LauncherConstants.saveSystemCardSeq();
     }
 
+    @Override // android.support.p004v7.app.AppCompatActivity
     public AppCompatDelegate getDelegate() {
         return SkinAppCompatDelegateImpl.get(this, this);
     }
 
+    @Override // android.app.Activity, android.view.Window.Callback
     public boolean dispatchTouchEvent(MotionEvent ev) {
         Log.w(TAG, "dispatchTouchEvent: ");
         return super.dispatchTouchEvent(ev);
     }
 
+    @Override // android.app.Activity
     public boolean onTouchEvent(MotionEvent event) {
         Log.w(TAG, "onTouchEvent: ");
         return super.onTouchEvent(event);
@@ -315,12 +303,14 @@ public class ID8GsEditActivity extends AppCompatActivity {
 
     public void checkAutoScroll(float fingerX) {
         if (this.autoScrollLeftPosition >= fingerX) {
-            if (fingerX >= 0.0f) {
-                int i = this.currentScrollX - this.offsetX;
-                this.currentScrollX = i;
-                this.scrollView.scrollTo(i, this.currentScrollY);
+            if (fingerX < 0.0f) {
+                return;
             }
-        } else if (fingerX >= this.autoScrollRightPosition && fingerX <= ((float) mScreenWidth)) {
+            int i = this.currentScrollX - this.offsetX;
+            this.currentScrollX = i;
+            this.scrollView.scrollTo(i, this.currentScrollY);
+        } else if (fingerX < this.autoScrollRightPosition || fingerX > mScreenWidth) {
+        } else {
             int i2 = this.currentScrollX + this.offsetX;
             this.currentScrollX = i2;
             this.scrollView.scrollTo(i2, this.currentScrollY);

@@ -6,11 +6,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@ListenerClass(callbacks = Callback.class, setter = "setOnItemSelectedListener", targetType = "android.widget.AdapterView<?>", type = "android.widget.AdapterView.OnItemSelectedListener")
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.CLASS)
+@ListenerClass(callbacks = Callback.class, setter = "setOnItemSelectedListener", targetType = "android.widget.AdapterView<?>", type = "android.widget.AdapterView.OnItemSelectedListener")
+/* loaded from: classes.dex */
 public @interface OnItemSelected {
 
+    /* loaded from: classes.dex */
     public enum Callback {
         ITEM_SELECTED,
         NOTHING_SELECTED

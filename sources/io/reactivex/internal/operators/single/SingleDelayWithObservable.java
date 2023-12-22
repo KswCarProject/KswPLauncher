@@ -11,42 +11,47 @@ import io.reactivex.internal.observers.ResumeSingleObserver;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class SingleDelayWithObservable<T, U> extends Single<T> {
     final ObservableSource<U> other;
     final SingleSource<T> source;
 
-    public SingleDelayWithObservable(SingleSource<T> source2, ObservableSource<U> other2) {
-        this.source = source2;
-        this.other = other2;
+    public SingleDelayWithObservable(SingleSource<T> source, ObservableSource<U> other) {
+        this.source = source;
+        this.other = other;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         this.other.subscribe(new OtherSubscriber(observer, this.source));
     }
 
+    /* loaded from: classes.dex */
     static final class OtherSubscriber<T, U> extends AtomicReference<Disposable> implements Observer<U>, Disposable {
         private static final long serialVersionUID = -8565274649390031272L;
         boolean done;
         final SingleObserver<? super T> downstream;
         final SingleSource<T> source;
 
-        OtherSubscriber(SingleObserver<? super T> actual, SingleSource<T> source2) {
+        OtherSubscriber(SingleObserver<? super T> actual, SingleSource<T> source) {
             this.downstream = actual;
-            this.source = source2;
+            this.source = source;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.set(this, d)) {
                 this.downstream.onSubscribe(this);
             }
         }
 
-        public void onNext(U u) {
-            ((Disposable) get()).dispose();
+        @Override // io.reactivex.Observer
+        public void onNext(U value) {
+            get().dispose();
             onComplete();
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable e) {
             if (this.done) {
                 RxJavaPlugins.onError(e);
@@ -56,19 +61,23 @@ public final class SingleDelayWithObservable<T, U> extends Single<T> {
             this.downstream.onError(e);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                this.source.subscribe(new ResumeSingleObserver(this, this.downstream));
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            this.source.subscribe(new ResumeSingleObserver(this, this.downstream));
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             DisposableHelper.dispose(this);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return DisposableHelper.isDisposed((Disposable) get());
+            return DisposableHelper.isDisposed(get());
         }
     }
 }

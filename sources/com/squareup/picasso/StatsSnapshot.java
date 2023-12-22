@@ -4,6 +4,7 @@ import android.util.Log;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+/* loaded from: classes.dex */
 public class StatsSnapshot {
     public final long averageDownloadSize;
     public final long averageOriginalBitmapSize;
@@ -20,21 +21,21 @@ public class StatsSnapshot {
     public final long totalTransformedBitmapSize;
     public final int transformedBitmapCount;
 
-    public StatsSnapshot(int maxSize2, int size2, long cacheHits2, long cacheMisses2, long totalDownloadSize2, long totalOriginalBitmapSize2, long totalTransformedBitmapSize2, long averageDownloadSize2, long averageOriginalBitmapSize2, long averageTransformedBitmapSize2, int downloadCount2, int originalBitmapCount2, int transformedBitmapCount2, long timeStamp2) {
-        this.maxSize = maxSize2;
-        this.size = size2;
-        this.cacheHits = cacheHits2;
-        this.cacheMisses = cacheMisses2;
-        this.totalDownloadSize = totalDownloadSize2;
-        this.totalOriginalBitmapSize = totalOriginalBitmapSize2;
-        this.totalTransformedBitmapSize = totalTransformedBitmapSize2;
-        this.averageDownloadSize = averageDownloadSize2;
-        this.averageOriginalBitmapSize = averageOriginalBitmapSize2;
-        this.averageTransformedBitmapSize = averageTransformedBitmapSize2;
-        this.downloadCount = downloadCount2;
-        this.originalBitmapCount = originalBitmapCount2;
-        this.transformedBitmapCount = transformedBitmapCount2;
-        this.timeStamp = timeStamp2;
+    public StatsSnapshot(int maxSize, int size, long cacheHits, long cacheMisses, long totalDownloadSize, long totalOriginalBitmapSize, long totalTransformedBitmapSize, long averageDownloadSize, long averageOriginalBitmapSize, long averageTransformedBitmapSize, int downloadCount, int originalBitmapCount, int transformedBitmapCount, long timeStamp) {
+        this.maxSize = maxSize;
+        this.size = size;
+        this.cacheHits = cacheHits;
+        this.cacheMisses = cacheMisses;
+        this.totalDownloadSize = totalDownloadSize;
+        this.totalOriginalBitmapSize = totalOriginalBitmapSize;
+        this.totalTransformedBitmapSize = totalTransformedBitmapSize;
+        this.averageDownloadSize = averageDownloadSize;
+        this.averageOriginalBitmapSize = averageOriginalBitmapSize;
+        this.averageTransformedBitmapSize = averageTransformedBitmapSize;
+        this.downloadCount = downloadCount;
+        this.originalBitmapCount = originalBitmapCount;
+        this.transformedBitmapCount = transformedBitmapCount;
+        this.timeStamp = timeStamp;
     }
 
     public void dump() {
@@ -51,7 +52,7 @@ public class StatsSnapshot {
         writer.print("  Cache Size: ");
         writer.println(this.size);
         writer.print("  Cache % Full: ");
-        writer.println((int) Math.ceil((double) ((((float) this.size) / ((float) this.maxSize)) * 100.0f)));
+        writer.println((int) Math.ceil((this.size / this.maxSize) * 100.0f));
         writer.print("  Cache Hits: ");
         writer.println(this.cacheHits);
         writer.print("  Cache Misses: ");

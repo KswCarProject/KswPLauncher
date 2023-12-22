@@ -2,12 +2,13 @@ package com.ibm.icu.text;
 
 import kotlin.UByte;
 
+/* loaded from: classes.dex */
 abstract class CharsetRecog_Unicode extends CharsetRecognizer {
-    /* access modifiers changed from: package-private */
-    public abstract String getName();
+    @Override // com.ibm.icu.text.CharsetRecognizer
+    abstract String getName();
 
-    /* access modifiers changed from: package-private */
-    public abstract CharsetMatch match(CharsetDetector charsetDetector);
+    @Override // com.ibm.icu.text.CharsetRecognizer
+    abstract CharsetMatch match(CharsetDetector charsetDetector);
 
     CharsetRecog_Unicode() {
     }
@@ -31,17 +32,18 @@ abstract class CharsetRecog_Unicode extends CharsetRecognizer {
         return confidence;
     }
 
+    /* loaded from: classes.dex */
     static class CharsetRecog_UTF_16_BE extends CharsetRecog_Unicode {
         CharsetRecog_UTF_16_BE() {
         }
 
-        /* access modifiers changed from: package-private */
-        public String getName() {
+        @Override // com.ibm.icu.text.CharsetRecog_Unicode, com.ibm.icu.text.CharsetRecognizer
+        String getName() {
             return "UTF-16BE";
         }
 
-        /* access modifiers changed from: package-private */
-        public CharsetMatch match(CharsetDetector det) {
+        @Override // com.ibm.icu.text.CharsetRecog_Unicode, com.ibm.icu.text.CharsetRecognizer
+        CharsetMatch match(CharsetDetector det) {
             byte[] input = det.fRawInput;
             int confidence = 10;
             int bytesToCheck = Math.min(input.length, 30);
@@ -51,16 +53,15 @@ abstract class CharsetRecog_Unicode extends CharsetRecognizer {
                     break;
                 }
                 int codeUnit = codeUnit16FromBytes(input[charIndex], input[charIndex + 1]);
-                if (charIndex != 0 || codeUnit != 65279) {
-                    confidence = adjustConfidence(codeUnit, confidence);
-                    if (confidence == 0 || confidence == 100) {
-                        break;
-                    }
-                    charIndex += 2;
-                } else {
+                if (charIndex == 0 && codeUnit == 65279) {
                     confidence = 100;
                     break;
                 }
+                confidence = adjustConfidence(codeUnit, confidence);
+                if (confidence == 0 || confidence == 100) {
+                    break;
+                }
+                charIndex += 2;
             }
             if (bytesToCheck < 4 && confidence < 100) {
                 confidence = 0;
@@ -72,17 +73,18 @@ abstract class CharsetRecog_Unicode extends CharsetRecognizer {
         }
     }
 
+    /* loaded from: classes.dex */
     static class CharsetRecog_UTF_16_LE extends CharsetRecog_Unicode {
         CharsetRecog_UTF_16_LE() {
         }
 
-        /* access modifiers changed from: package-private */
-        public String getName() {
+        @Override // com.ibm.icu.text.CharsetRecog_Unicode, com.ibm.icu.text.CharsetRecognizer
+        String getName() {
             return "UTF-16LE";
         }
 
-        /* access modifiers changed from: package-private */
-        public CharsetMatch match(CharsetDetector det) {
+        @Override // com.ibm.icu.text.CharsetRecog_Unicode, com.ibm.icu.text.CharsetRecognizer
+        CharsetMatch match(CharsetDetector det) {
             byte[] input = det.fRawInput;
             int confidence = 10;
             int bytesToCheck = Math.min(input.length, 30);
@@ -92,16 +94,15 @@ abstract class CharsetRecog_Unicode extends CharsetRecognizer {
                     break;
                 }
                 int codeUnit = codeUnit16FromBytes(input[charIndex + 1], input[charIndex]);
-                if (charIndex != 0 || codeUnit != 65279) {
-                    confidence = adjustConfidence(codeUnit, confidence);
-                    if (confidence == 0 || confidence == 100) {
-                        break;
-                    }
-                    charIndex += 2;
-                } else {
+                if (charIndex == 0 && codeUnit == 65279) {
                     confidence = 100;
                     break;
                 }
+                confidence = adjustConfidence(codeUnit, confidence);
+                if (confidence == 0 || confidence == 100) {
+                    break;
+                }
+                charIndex += 2;
             }
             if (bytesToCheck < 4 && confidence < 100) {
                 confidence = 0;
@@ -113,18 +114,18 @@ abstract class CharsetRecog_Unicode extends CharsetRecognizer {
         }
     }
 
+    /* loaded from: classes.dex */
     static abstract class CharsetRecog_UTF_32 extends CharsetRecog_Unicode {
-        /* access modifiers changed from: package-private */
-        public abstract int getChar(byte[] bArr, int i);
+        abstract int getChar(byte[] bArr, int i);
 
-        /* access modifiers changed from: package-private */
-        public abstract String getName();
+        @Override // com.ibm.icu.text.CharsetRecog_Unicode, com.ibm.icu.text.CharsetRecognizer
+        abstract String getName();
 
         CharsetRecog_UTF_32() {
         }
 
-        /* access modifiers changed from: package-private */
-        public CharsetMatch match(CharsetDetector det) {
+        @Override // com.ibm.icu.text.CharsetRecog_Unicode, com.ibm.icu.text.CharsetRecognizer
+        CharsetMatch match(CharsetDetector det) {
             byte[] input = det.fRawInput;
             int limit = (det.fRawLength / 4) * 4;
             int numValid = 0;
@@ -163,32 +164,34 @@ abstract class CharsetRecog_Unicode extends CharsetRecognizer {
         }
     }
 
+    /* loaded from: classes.dex */
     static class CharsetRecog_UTF_32_BE extends CharsetRecog_UTF_32 {
         CharsetRecog_UTF_32_BE() {
         }
 
-        /* access modifiers changed from: package-private */
-        public int getChar(byte[] input, int index) {
+        @Override // com.ibm.icu.text.CharsetRecog_Unicode.CharsetRecog_UTF_32
+        int getChar(byte[] input, int index) {
             return ((input[index + 0] & UByte.MAX_VALUE) << 24) | ((input[index + 1] & UByte.MAX_VALUE) << 16) | ((input[index + 2] & UByte.MAX_VALUE) << 8) | (input[index + 3] & UByte.MAX_VALUE);
         }
 
-        /* access modifiers changed from: package-private */
-        public String getName() {
+        @Override // com.ibm.icu.text.CharsetRecog_Unicode.CharsetRecog_UTF_32, com.ibm.icu.text.CharsetRecog_Unicode, com.ibm.icu.text.CharsetRecognizer
+        String getName() {
             return "UTF-32BE";
         }
     }
 
+    /* loaded from: classes.dex */
     static class CharsetRecog_UTF_32_LE extends CharsetRecog_UTF_32 {
         CharsetRecog_UTF_32_LE() {
         }
 
-        /* access modifiers changed from: package-private */
-        public int getChar(byte[] input, int index) {
+        @Override // com.ibm.icu.text.CharsetRecog_Unicode.CharsetRecog_UTF_32
+        int getChar(byte[] input, int index) {
             return ((input[index + 3] & UByte.MAX_VALUE) << 24) | ((input[index + 2] & UByte.MAX_VALUE) << 16) | ((input[index + 1] & UByte.MAX_VALUE) << 8) | (input[index + 0] & UByte.MAX_VALUE);
         }
 
-        /* access modifiers changed from: package-private */
-        public String getName() {
+        @Override // com.ibm.icu.text.CharsetRecog_Unicode.CharsetRecog_UTF_32, com.ibm.icu.text.CharsetRecog_Unicode, com.ibm.icu.text.CharsetRecognizer
+        String getName() {
             return "UTF-32LE";
         }
     }

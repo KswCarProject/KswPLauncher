@@ -3,17 +3,18 @@ package com.ibm.icu.text;
 import com.bumptech.glide.load.Key;
 import kotlin.UByte;
 
+/* loaded from: classes.dex */
 class CharsetRecog_UTF8 extends CharsetRecognizer {
     CharsetRecog_UTF8() {
     }
 
-    /* access modifiers changed from: package-private */
-    public String getName() {
+    @Override // com.ibm.icu.text.CharsetRecognizer
+    String getName() {
         return Key.STRING_CHARSET_NAME;
     }
 
-    /* access modifiers changed from: package-private */
-    public CharsetMatch match(CharsetDetector det) {
+    @Override // com.ibm.icu.text.CharsetRecognizer
+    CharsetMatch match(CharsetDetector det) {
         int trailBytes;
         boolean hasBOM = false;
         int numValid = 0;
@@ -24,11 +25,11 @@ class CharsetRecog_UTF8 extends CharsetRecognizer {
         }
         int i = 0;
         while (i < det.fRawLength) {
-            byte b = input[i];
+            int b = input[i];
             if ((b & 128) != 0) {
                 if ((b & 224) == 192) {
                     trailBytes = 1;
-                } else if ((b & 240) == 224) {
+                } else if ((b & SCSU.UQUOTEU) == 224) {
                     trailBytes = 2;
                 } else if ((b & 248) == 240) {
                     trailBytes = 3;
@@ -38,18 +39,15 @@ class CharsetRecog_UTF8 extends CharsetRecognizer {
                 while (true) {
                     i++;
                     if (i < det.fRawLength) {
-                        if ((input[i] & 192) == 128) {
-                            trailBytes--;
-                            if (trailBytes == 0) {
-                                numValid++;
-                                break;
-                            }
-                        } else {
+                        if ((input[i] & 192) != 128) {
                             numInvalid++;
                             break;
                         }
-                    } else {
-                        break;
+                        trailBytes--;
+                        if (trailBytes == 0) {
+                            numValid++;
+                            break;
+                        }
                     }
                 }
             }

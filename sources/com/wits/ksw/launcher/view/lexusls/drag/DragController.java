@@ -15,109 +15,106 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import java.util.ArrayList;
 
+/* loaded from: classes13.dex */
 public class DragController {
-    public static int DRAG_ACTION_COPY = 1;
-    public static int DRAG_ACTION_MOVE = 0;
     private static final boolean PROFILE_DRAWING_DURING_DRAG = false;
     private static final int REMAIN_TIME = 500;
     private static final String TAG = "liuhao DragController";
     private static final int VALID_ZONE = 60;
-    private DisplayMetrics displayMetrics = new DisplayMetrics();
     private Object dragInfo;
     private DragSource dragSource;
     private DragView dragView;
-    private ArrayList<DropTarget> dropTargets = new ArrayList<>();
-    Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-                    LOGE.E("Page Turning to right !!!");
-                    DragController.this.scrollUtil.arrowScroll(false);
-                    boolean unused = DragController.this.isRightControlPageTurn = false;
-                    return;
-                case 2:
-                    LOGE.E("Page Turning to left !!!");
-                    DragController.this.scrollUtil.arrowScroll(true);
-                    boolean unused2 = DragController.this.isLeftControlPageTurn = false;
-                    return;
-                default:
-                    return;
-            }
-        }
-    };
     private boolean isDragging;
-    private boolean isEnterFlag = false;
-    /* access modifiers changed from: private */
-    public boolean isLeftControlPageTurn = false;
-    /* access modifiers changed from: private */
-    public boolean isRightControlPageTurn = false;
     private Context mContext;
-    private final int[] mCoordinatesTemp = new int[2];
     private InputMethodManager mInputMethodManager;
     private DropTarget mLastDropTarget;
     private DraggingListener mListener;
     private float mMotionDownX;
     private float mMotionDownY;
     private View mMoveTarget;
-    private Rect mRectTemp = new Rect();
     private float mTouchOffsetX;
     private float mTouchOffsetY;
     private View mTuozhuaiView;
     private IBinder mWindowToken;
-    /* access modifiers changed from: private */
-    public ScrollController scrollUtil;
+    private ScrollController scrollUtil;
+    public static int DRAG_ACTION_MOVE = 0;
+    public static int DRAG_ACTION_COPY = 1;
+    private boolean isEnterFlag = false;
+    private boolean isRightControlPageTurn = false;
+    private boolean isLeftControlPageTurn = false;
+    private Rect mRectTemp = new Rect();
+    private final int[] mCoordinatesTemp = new int[2];
+    private DisplayMetrics displayMetrics = new DisplayMetrics();
+    private ArrayList<DropTarget> dropTargets = new ArrayList<>();
+    Handler handler = new Handler() { // from class: com.wits.ksw.launcher.view.lexusls.drag.DragController.1
+        @Override // android.os.Handler
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    LOGE.m43E("Page Turning to right !!!");
+                    DragController.this.scrollUtil.arrowScroll(false);
+                    DragController.this.isRightControlPageTurn = false;
+                    return;
+                case 2:
+                    LOGE.m43E("Page Turning to left !!!");
+                    DragController.this.scrollUtil.arrowScroll(true);
+                    DragController.this.isLeftControlPageTurn = false;
+                    return;
+                default:
+                    return;
+            }
+        }
+    };
 
+    /* loaded from: classes13.dex */
     public interface DraggingListener {
         void onDragEnd();
 
-        void onDragStart(DragSource dragSource, Object obj, int i);
+        void onDragStart(DragSource source, Object info, int dragAction);
     }
 
     public DragController(Context context) {
         this.mContext = context;
     }
 
-    public void startDragBitmap(View v, DragSource source, Object dragInfo2, int dragAction) {
-        View view = v;
-        this.mTuozhuaiView = view;
+    public void startDragBitmap(View v, DragSource source, Object dragInfo, int dragAction) {
+        this.mTuozhuaiView = v;
         Bitmap bitmap = getViewBitmap(v);
-        if (bitmap != null) {
-            int[] loc = this.mCoordinatesTemp;
-            view.getLocationOnScreen(loc);
-            int screenX = loc[0];
-            startDragBitmap(bitmap, screenX, loc[1], 0, 0, bitmap.getWidth(), bitmap.getHeight(), source, dragInfo2, dragAction);
-            bitmap.recycle();
-            if (dragAction == DRAG_ACTION_MOVE) {
-                view.setVisibility(8);
-            }
+        if (bitmap == null) {
+            return;
+        }
+        int[] loc = this.mCoordinatesTemp;
+        v.getLocationOnScreen(loc);
+        int screenX = loc[0];
+        int screenY = loc[1];
+        startDragBitmap(bitmap, screenX, screenY, 0, 0, bitmap.getWidth(), bitmap.getHeight(), source, dragInfo, dragAction);
+        bitmap.recycle();
+        if (dragAction == DRAG_ACTION_MOVE) {
+            v.setVisibility(8);
         }
     }
 
-    public void startDragBitmap(Bitmap bitmap, int screenX, int screenY, int textureLeft, int textureTop, int textureWidth, int textureHeight, DragSource source, Object dragInfo2, int dragAction) {
-        int i = screenX;
-        int i2 = screenY;
-        DragSource dragSource2 = source;
-        Object obj = dragInfo2;
+    public void startDragBitmap(Bitmap bitmap, int screenX, int screenY, int textureLeft, int textureTop, int textureWidth, int textureHeight, DragSource source, Object dragInfo, int dragAction) {
         if (this.mInputMethodManager == null) {
             this.mInputMethodManager = (InputMethodManager) this.mContext.getSystemService("input_method");
         }
         this.mInputMethodManager.hideSoftInputFromWindow(this.mWindowToken, 0);
         DraggingListener draggingListener = this.mListener;
         if (draggingListener != null) {
-            draggingListener.onDragStart(dragSource2, obj, dragAction);
-        } else {
-            int i3 = dragAction;
+            draggingListener.onDragStart(source, dragInfo, dragAction);
         }
         float f = this.mMotionDownX;
+        int registrationX = ((int) f) - screenX;
         float f2 = this.mMotionDownY;
-        this.mTouchOffsetX = f - ((float) i);
-        this.mTouchOffsetY = f2 - ((float) i2);
+        int registrationY = ((int) f2) - screenY;
+        this.mTouchOffsetX = f - screenX;
+        this.mTouchOffsetY = f2 - screenY;
         this.isDragging = true;
-        this.dragSource = dragSource2;
-        this.dragInfo = obj;
-        DragView dragView2 = new DragView(this.mContext, bitmap, ((int) f) - i, ((int) f2) - i2, textureLeft, textureTop, textureWidth, textureHeight);
-        this.dragView = dragView2;
-        dragView2.show(this.mWindowToken, (int) this.mMotionDownX, (int) this.mMotionDownY);
+        this.dragSource = source;
+        this.dragInfo = dragInfo;
+        DragView dragView = new DragView(this.mContext, bitmap, registrationX, registrationY, textureLeft, textureTop, textureWidth, textureHeight);
+        this.dragView = dragView;
+        dragView.show(this.mWindowToken, (int) this.mMotionDownX, (int) this.mMotionDownY);
     }
 
     private void endDrag() {
@@ -131,9 +128,9 @@ public class DragController {
             if (draggingListener != null) {
                 draggingListener.onDragEnd();
             }
-            DragView dragView2 = this.dragView;
-            if (dragView2 != null) {
-                dragView2.remove();
+            DragView dragView = this.dragView;
+            if (dragView != null) {
+                dragView.remove();
                 this.dragView = null;
             }
         }
@@ -148,14 +145,14 @@ public class DragController {
         int downY = clamp((int) ev.getRawY(), 0, this.displayMetrics.heightPixels);
         switch (action) {
             case 0:
-                this.mMotionDownX = (float) downX;
-                this.mMotionDownY = (float) downY;
+                this.mMotionDownX = downX;
+                this.mMotionDownY = downY;
                 this.mLastDropTarget = null;
                 break;
             case 1:
             case 3:
                 if (this.isDragging) {
-                    drop((float) downX, (float) downY);
+                    drop(downX, downY);
                 }
                 endDrag();
                 break;
@@ -164,74 +161,76 @@ public class DragController {
     }
 
     public boolean onTouchEvent(MotionEvent ev) {
-        if (!this.isDragging) {
-            return false;
-        }
-        int action = ev.getAction();
-        int downX = clamp((int) ev.getRawX(), 0, this.displayMetrics.widthPixels);
-        int downY = clamp((int) ev.getRawY(), 0, this.displayMetrics.heightPixels);
-        switch (action) {
-            case 0:
-                MotionEvent motionEvent = ev;
-                this.mMotionDownX = (float) downX;
-                this.mMotionDownY = (float) downY;
-                return true;
-            case 1:
-                MotionEvent motionEvent2 = ev;
-                if (this.isDragging) {
-                    drop((float) downX, (float) downY);
-                }
-                endDrag();
-                return true;
-            case 2:
-                this.dragView.move((int) ev.getRawX(), (int) ev.getRawY());
-                monitorPageTurning(ev, this.displayMetrics, this.dragView);
-                int[] coordinates = this.mCoordinatesTemp;
-                DropTarget dropTarget = findDropTarget(downX, downY, coordinates);
-                if (dropTarget != null) {
-                    DropTarget dropTarget2 = this.mLastDropTarget;
-                    if (dropTarget2 == dropTarget) {
-                        dropTarget.onDragOver(this.dragSource, coordinates[0], coordinates[1], (int) this.mTouchOffsetX, (int) this.mTouchOffsetY, this.dragView, this.dragInfo);
-                    } else {
-                        if (dropTarget2 != null) {
-                            dropTarget2.onDragExit(this.dragSource, coordinates[0], coordinates[1], (int) this.mTouchOffsetX, (int) this.mTouchOffsetY, this.dragView, this.dragInfo);
+        if (this.isDragging) {
+            int action = ev.getAction();
+            int downX = clamp((int) ev.getRawX(), 0, this.displayMetrics.widthPixels);
+            int downY = clamp((int) ev.getRawY(), 0, this.displayMetrics.heightPixels);
+            switch (action) {
+                case 0:
+                    this.mMotionDownX = downX;
+                    this.mMotionDownY = downY;
+                    return true;
+                case 1:
+                    if (this.isDragging) {
+                        drop(downX, downY);
+                    }
+                    endDrag();
+                    return true;
+                case 2:
+                    this.dragView.move((int) ev.getRawX(), (int) ev.getRawY());
+                    monitorPageTurning(ev, this.displayMetrics, this.dragView);
+                    int[] coordinates = this.mCoordinatesTemp;
+                    DropTarget dropTarget = findDropTarget(downX, downY, coordinates);
+                    if (dropTarget != null) {
+                        DropTarget dropTarget2 = this.mLastDropTarget;
+                        if (dropTarget2 == dropTarget) {
+                            dropTarget.onDragOver(this.dragSource, coordinates[0], coordinates[1], (int) this.mTouchOffsetX, (int) this.mTouchOffsetY, this.dragView, this.dragInfo);
+                        } else {
+                            if (dropTarget2 != null) {
+                                dropTarget2.onDragExit(this.dragSource, coordinates[0], coordinates[1], (int) this.mTouchOffsetX, (int) this.mTouchOffsetY, this.dragView, this.dragInfo);
+                            }
+                            dropTarget.onDragEnter(this.dragSource, coordinates[0], coordinates[1], (int) this.mTouchOffsetX, (int) this.mTouchOffsetY, this.dragView, this.dragInfo);
                         }
-                        dropTarget.onDragEnter(this.dragSource, coordinates[0], coordinates[1], (int) this.mTouchOffsetX, (int) this.mTouchOffsetY, this.dragView, this.dragInfo);
+                    } else {
+                        DropTarget dropTarget3 = this.mLastDropTarget;
+                        if (dropTarget3 != null) {
+                            dropTarget3.onDragExit(this.dragSource, coordinates[0], coordinates[1], (int) this.mTouchOffsetX, (int) this.mTouchOffsetY, this.dragView, this.dragInfo);
+                        }
                     }
-                } else {
-                    DropTarget dropTarget3 = this.mLastDropTarget;
-                    if (dropTarget3 != null) {
-                        dropTarget3.onDragExit(this.dragSource, coordinates[0], coordinates[1], (int) this.mTouchOffsetX, (int) this.mTouchOffsetY, this.dragView, this.dragInfo);
-                    }
-                }
-                this.mLastDropTarget = dropTarget;
-                return true;
-            case 3:
-                endDrag();
-                MotionEvent motionEvent3 = ev;
-                return true;
-            default:
-                MotionEvent motionEvent4 = ev;
-                return true;
+                    this.mLastDropTarget = dropTarget;
+                    return true;
+                case 3:
+                    endDrag();
+                    return true;
+                default:
+                    return true;
+            }
         }
+        return false;
     }
 
     private void monitorPageTurning(MotionEvent ev, DisplayMetrics metrics, DragView itemView) {
         if (this.isDragging) {
-            if (((float) (metrics.widthPixels - 60)) > ev.getRawX()) {
+            int rightValidZone = metrics.widthPixels - 60;
+            if (rightValidZone <= ev.getRawX()) {
+                if (!this.isRightControlPageTurn) {
+                    this.handler.sendEmptyMessageDelayed(1, 500L);
+                    this.isRightControlPageTurn = true;
+                }
+            } else {
                 this.handler.removeMessages(1);
                 this.isRightControlPageTurn = false;
-            } else if (!this.isRightControlPageTurn) {
-                this.handler.sendEmptyMessageDelayed(1, 500);
-                this.isRightControlPageTurn = true;
             }
-            if (((float) 60) < ev.getRawX()) {
-                this.handler.removeMessages(2);
-                this.isLeftControlPageTurn = false;
-            } else if (!this.isLeftControlPageTurn) {
-                this.handler.sendEmptyMessageDelayed(2, 500);
-                this.isLeftControlPageTurn = true;
+            if (60 >= ev.getRawX()) {
+                if (!this.isLeftControlPageTurn) {
+                    this.handler.sendEmptyMessageDelayed(2, 500L);
+                    this.isLeftControlPageTurn = true;
+                    return;
+                }
+                return;
             }
+            this.handler.removeMessages(2);
+            this.isLeftControlPageTurn = false;
         }
     }
 
@@ -240,17 +239,16 @@ public class DragController {
     }
 
     public boolean dispatchKeyEvent(KeyEvent event) {
-        LOGE.E("DragController dispatchKeyEvent ：isDragging = " + this.isDragging);
+        LOGE.m43E("DragController dispatchKeyEvent \uff1aisDragging = " + this.isDragging);
         return this.isDragging;
     }
 
-    /* access modifiers changed from: package-private */
-    public void setMoveTarget(View view) {
+    void setMoveTarget(View view) {
         this.mMoveTarget = view;
     }
 
     public boolean dispatchUnhandledMove(View focused, int direction) {
-        LOGE.E("DragLayer dispatchUnhandledMove focused= " + focused + " direction= " + direction);
+        LOGE.m43E("DragLayer dispatchUnhandledMove focused= " + focused + " direction= " + direction);
         View view = this.mMoveTarget;
         return view != null && view.dispatchUnhandledMove(focused, direction);
     }
@@ -265,8 +263,9 @@ public class DragController {
         dropTarget.onDragExit(this.dragSource, coordinates[0], coordinates[1], (int) this.mTouchOffsetX, (int) this.mTouchOffsetY, this.dragView, this.dragInfo);
         if (dropTarget.acceptDrop(this.dragSource, coordinates[0], coordinates[1], (int) this.mTouchOffsetX, (int) this.mTouchOffsetY, this.dragView, this.dragInfo)) {
             dropTarget.onDrop(this.dragSource, coordinates[0], coordinates[1], (int) this.mTouchOffsetX, (int) this.mTouchOffsetY, this.dragView, this.dragInfo);
-            LOGE.E("DragController============= view: left - >" + dropTarget.getLeft());
-            this.dragSource.onDropCompleted((View) dropTarget, true);
+            View v = (View) dropTarget;
+            LOGE.m43E("DragController============= view: left - >" + dropTarget.getLeft());
+            this.dragSource.onDropCompleted(v, true);
             return true;
         }
         this.dragSource.onDropCompleted((View) dropTarget, false);
@@ -275,9 +274,10 @@ public class DragController {
 
     public DropTarget findDropTarget(int x, int y, int[] dropCoordinates) {
         Rect r = this.mRectTemp;
-        ArrayList<DropTarget> dropTargets2 = this.dropTargets;
-        for (int i = dropTargets2.size() - 1; i >= 0; i--) {
-            DropTarget target = dropTargets2.get(i);
+        ArrayList<DropTarget> dropTargets = this.dropTargets;
+        int count = dropTargets.size();
+        for (int i = count - 1; i >= 0; i--) {
+            DropTarget target = dropTargets.get(i);
             target.getHitRect(r);
             target.getLocationOnScreen(dropCoordinates);
             r.offset(dropCoordinates[0] - target.getLeft(), dropCoordinates[1] - target.getTop());

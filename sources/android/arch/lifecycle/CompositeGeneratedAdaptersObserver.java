@@ -2,6 +2,7 @@ package android.arch.lifecycle;
 
 import android.arch.lifecycle.Lifecycle;
 
+/* loaded from: classes.dex */
 public class CompositeGeneratedAdaptersObserver implements GenericLifecycleObserver {
     private final GeneratedAdapter[] mGeneratedAdapters;
 
@@ -9,7 +10,10 @@ public class CompositeGeneratedAdaptersObserver implements GenericLifecycleObser
         this.mGeneratedAdapters = generatedAdapters;
     }
 
+    @Override // android.arch.lifecycle.GenericLifecycleObserver
     public void onStateChanged(LifecycleOwner source, Lifecycle.Event event) {
+        GeneratedAdapter[] generatedAdapterArr;
+        GeneratedAdapter[] generatedAdapterArr2;
         MethodCallsLogger logger = new MethodCallsLogger();
         for (GeneratedAdapter mGenerated : this.mGeneratedAdapters) {
             mGenerated.callMethods(source, event, false, logger);

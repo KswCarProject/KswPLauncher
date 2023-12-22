@@ -10,16 +10,16 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.settings.id7.interfaces.IUpdateTwoLayout;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
+/* loaded from: classes17.dex */
 public class Ntg6TimeLayout extends RelativeLayout implements RadioGroup.OnCheckedChangeListener {
     private Context context;
-    /* access modifiers changed from: private */
-    public Handler handler;
+    private Handler handler;
     private ImageView img_TwoBack;
     public onTimeListener listener;
     private RadioGroup rdg_timeSy;
@@ -31,6 +31,7 @@ public class Ntg6TimeLayout extends RelativeLayout implements RadioGroup.OnCheck
     private IUpdateTwoLayout updateTwoLayout;
     private View view;
 
+    /* loaded from: classes17.dex */
     public interface onTimeListener {
         void getTieType();
     }
@@ -39,11 +40,11 @@ public class Ntg6TimeLayout extends RelativeLayout implements RadioGroup.OnCheck
         this.updateTwoLayout = twoLayout;
     }
 
-    public Ntg6TimeLayout(Context context2, Handler handler2) {
-        super(context2);
-        this.context = context2;
-        this.handler = handler2;
-        this.view = LayoutInflater.from(context2).inflate(R.layout.layout_ntg6_time, (ViewGroup) null);
+    public Ntg6TimeLayout(Context context, Handler handler) {
+        super(context);
+        this.context = context;
+        this.handler = handler;
+        this.view = LayoutInflater.from(context).inflate(C0899R.C0902layout.layout_ntg6_time, (ViewGroup) null);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(-1, -1);
         initData();
         initView(this.view);
@@ -69,40 +70,42 @@ public class Ntg6TimeLayout extends RelativeLayout implements RadioGroup.OnCheck
         this.img_TwoBack.requestFocus();
     }
 
-    private void initView(View view2) {
-        this.tv_timeSync = (TextView) view2.findViewById(R.id.tv_timeSync);
-        this.tv_timeZhis = (TextView) view2.findViewById(R.id.tv_timeZhis);
-        this.img_TwoBack = (ImageView) view2.findViewById(R.id.img_TwoBack);
-        this.rdg_timeSy = (RadioGroup) view2.findViewById(R.id.rdg_timeSy);
-        this.rdg_timeZhis = (RadioGroup) view2.findViewById(R.id.rdg_timeZhis);
+    private void initView(View view) {
+        this.tv_timeSync = (TextView) view.findViewById(C0899R.C0901id.tv_timeSync);
+        this.tv_timeZhis = (TextView) view.findViewById(C0899R.C0901id.tv_timeZhis);
+        this.img_TwoBack = (ImageView) view.findViewById(C0899R.C0901id.img_TwoBack);
+        this.rdg_timeSy = (RadioGroup) view.findViewById(C0899R.C0901id.rdg_timeSy);
+        this.rdg_timeZhis = (RadioGroup) view.findViewById(C0899R.C0901id.rdg_timeZhis);
         switch (this.timeSync) {
             case 0:
-                this.rdg_timeSy.check(R.id.rdb_sync2);
+                this.rdg_timeSy.check(C0899R.C0901id.rdb_sync2);
                 break;
             case 1:
-                this.rdg_timeSy.check(R.id.rdb_sync1);
+                this.rdg_timeSy.check(C0899R.C0901id.rdb_sync1);
                 break;
         }
         switch (this.timeZhis) {
             case 0:
-                this.rdg_timeZhis.check(R.id.rdb_zhis2);
+                this.rdg_timeZhis.check(C0899R.C0901id.rdb_zhis2);
                 break;
             case 1:
-                this.rdg_timeZhis.check(R.id.rdb_zhis1);
+                this.rdg_timeZhis.check(C0899R.C0901id.rdb_zhis1);
                 break;
         }
         this.rdg_timeSy.setOnCheckedChangeListener(this);
         this.rdg_timeZhis.setOnCheckedChangeListener(this);
-        this.img_TwoBack.setOnClickListener(new View.OnClickListener() {
+        this.img_TwoBack.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.settings.ntg6.one_layout.Ntg6TimeLayout.1
+            @Override // android.view.View.OnClickListener
             public void onClick(View v) {
                 Ntg6TimeLayout.this.handler.sendEmptyMessage(1);
             }
         });
     }
 
+    @Override // android.widget.RadioGroup.OnCheckedChangeListener
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.rdb_sync1:
+            case C0899R.C0901id.rdb_sync1 /* 2131297495 */:
                 FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 1);
                 onTimeListener ontimelistener = this.listener;
                 if (ontimelistener != null) {
@@ -110,7 +113,7 @@ public class Ntg6TimeLayout extends RelativeLayout implements RadioGroup.OnCheck
                     return;
                 }
                 return;
-            case R.id.rdb_sync2:
+            case C0899R.C0901id.rdb_sync2 /* 2131297496 */:
                 FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 0);
                 onTimeListener ontimelistener2 = this.listener;
                 if (ontimelistener2 != null) {
@@ -118,7 +121,7 @@ public class Ntg6TimeLayout extends RelativeLayout implements RadioGroup.OnCheck
                     return;
                 }
                 return;
-            case R.id.rdb_zhis1:
+            case C0899R.C0901id.rdb_zhis1 /* 2131297503 */:
                 FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 1);
                 onTimeListener ontimelistener3 = this.listener;
                 if (ontimelistener3 != null) {
@@ -126,7 +129,7 @@ public class Ntg6TimeLayout extends RelativeLayout implements RadioGroup.OnCheck
                     return;
                 }
                 return;
-            case R.id.rdb_zhis2:
+            case C0899R.C0901id.rdb_zhis2 /* 2131297504 */:
                 FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 0);
                 onTimeListener ontimelistener4 = this.listener;
                 if (ontimelistener4 != null) {
@@ -139,7 +142,7 @@ public class Ntg6TimeLayout extends RelativeLayout implements RadioGroup.OnCheck
         }
     }
 
-    public void setOnTimeListener(onTimeListener listener2) {
-        this.listener = listener2;
+    public void setOnTimeListener(onTimeListener listener) {
+        this.listener = listener;
     }
 }

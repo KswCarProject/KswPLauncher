@@ -1,16 +1,19 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
+import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
+import com.wits.ksw.launcher.view.CustomBmwImageView;
 
+/* loaded from: classes7.dex */
 public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -20,7 +23,7 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.textView2, 5);
+        sparseIntArray.put(C0899R.C0901id.textView2, 5);
     }
 
     public Id7SubPhoneViewBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -28,25 +31,27 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
     }
 
     private Id7SubPhoneViewBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 3, bindings[4], bindings[3], bindings[2], bindings[0], bindings[1], bindings[5]);
-        this.mDirtyFlags = -1;
-        this.dayTextView.setTag((Object) null);
-        this.monthTextView.setTag((Object) null);
-        this.phoneConnectionTextView.setTag((Object) null);
-        this.phoneConstraintLayout.setTag((Object) null);
-        this.phoneImageView.setTag((Object) null);
+        super(bindingComponent, root, 3, (TextView) bindings[4], (TextView) bindings[3], (TextView) bindings[2], (ConstraintLayout) bindings[0], (CustomBmwImageView) bindings[1], (TextView) bindings[5]);
+        this.mDirtyFlags = -1L;
+        this.dayTextView.setTag(null);
+        this.monthTextView.setTag(null);
+        this.phoneConnectionTextView.setTag(null);
+        this.phoneConstraintLayout.setTag(null);
+        this.phoneImageView.setTag(null);
         setRootTag(root);
         this.mCallback14 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 16;
+            this.mDirtyFlags = 16L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -56,14 +61,16 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (14 != variableId) {
-            return false;
+        if (14 == variableId) {
+            setNaviViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setNaviViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.Id7SubPhoneViewBinding
     public void setNaviViewModel(LauncherViewModel NaviViewModel) {
         this.mNaviViewModel = NaviViewModel;
         synchronized (this) {
@@ -73,8 +80,8 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeNaviViewModelBtState((ObservableField) object, fieldId);
@@ -87,42 +94,42 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
         }
     }
 
-    private boolean onChangeNaviViewModelBtState(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeNaviViewModelBtState(ObservableField<String> NaviViewModelBtState, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeNaviViewModelMonth(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeNaviViewModelMonth(ObservableField<String> NaviViewModelMonth, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeNaviViewModelDay(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeNaviViewModelDay(ObservableField<String> NaviViewModelDay, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         ObservableField<String> naviViewModelBtState = null;
         LauncherViewModel naviViewModel = this.mNaviViewModel;
@@ -137,7 +144,7 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
                 if (naviViewModel != null) {
                     naviViewModelBtState = naviViewModel.btState;
                 }
-                updateRegistration(0, (Observable) naviViewModelBtState);
+                updateRegistration(0, naviViewModelBtState);
                 if (naviViewModelBtState != null) {
                     naviViewModelBtStateGet = naviViewModelBtState.get();
                 }
@@ -146,7 +153,7 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
                 if (naviViewModel != null) {
                     naviViewModelMonth = naviViewModel.month;
                 }
-                updateRegistration(1, (Observable) naviViewModelMonth);
+                updateRegistration(1, naviViewModelMonth);
                 if (naviViewModelMonth != null) {
                     naviViewModelMonthGet = naviViewModelMonth.get();
                 }
@@ -155,12 +162,12 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
                 if (naviViewModel != null) {
                     naviViewModelDay = naviViewModel.day;
                 }
-                updateRegistration(2, (Observable) naviViewModelDay);
+                updateRegistration(2, naviViewModelDay);
                 if (naviViewModelDay != null) {
                     naviViewModelDayGet = naviViewModelDay.get();
                 }
             }
-            if (!((dirtyFlags & 24) == 0 || naviViewModel == null)) {
+            if ((dirtyFlags & 24) != 0 && naviViewModel != null) {
                 naviViewModelPhoneViewFocusChangeListener = naviViewModel.phoneViewFocusChangeListener;
             }
         }
@@ -181,9 +188,11 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
         LauncherViewModel naviViewModel = this.mNaviViewModel;
-        if (naviViewModel != null) {
+        boolean naviViewModelJavaLangObjectNull = naviViewModel != null;
+        if (naviViewModelJavaLangObjectNull) {
             naviViewModel.openBtApp(callbackArg_0);
         }
     }

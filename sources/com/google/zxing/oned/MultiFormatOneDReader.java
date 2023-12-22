@@ -12,73 +12,71 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class MultiFormatOneDReader extends OneDReader {
     private final OneDReader[] readers;
 
     public MultiFormatOneDReader(Map<DecodeHintType, ?> hints) {
-        Collection<BarcodeFormat> possibleFormats;
-        if (hints == null) {
-            possibleFormats = null;
-        } else {
-            possibleFormats = (Collection) hints.get(DecodeHintType.POSSIBLE_FORMATS);
-        }
+        Collection<BarcodeFormat> possibleFormats = hints == null ? null : (Collection) hints.get(DecodeHintType.POSSIBLE_FORMATS);
         boolean useCode39CheckDigit = (hints == null || hints.get(DecodeHintType.ASSUME_CODE_39_CHECK_DIGIT) == null) ? false : true;
-        Collection<OneDReader> readers2 = new ArrayList<>();
+        Collection<OneDReader> readers = new ArrayList<>();
         if (possibleFormats != null) {
             if (possibleFormats.contains(BarcodeFormat.EAN_13) || possibleFormats.contains(BarcodeFormat.UPC_A) || possibleFormats.contains(BarcodeFormat.EAN_8) || possibleFormats.contains(BarcodeFormat.UPC_E)) {
-                readers2.add(new MultiFormatUPCEANReader(hints));
+                readers.add(new MultiFormatUPCEANReader(hints));
             }
             if (possibleFormats.contains(BarcodeFormat.CODE_39)) {
-                readers2.add(new Code39Reader(useCode39CheckDigit));
+                readers.add(new Code39Reader(useCode39CheckDigit));
             }
             if (possibleFormats.contains(BarcodeFormat.CODE_93)) {
-                readers2.add(new Code93Reader());
+                readers.add(new Code93Reader());
             }
             if (possibleFormats.contains(BarcodeFormat.CODE_128)) {
-                readers2.add(new Code128Reader());
+                readers.add(new Code128Reader());
             }
             if (possibleFormats.contains(BarcodeFormat.ITF)) {
-                readers2.add(new ITFReader());
+                readers.add(new ITFReader());
             }
             if (possibleFormats.contains(BarcodeFormat.CODABAR)) {
-                readers2.add(new CodaBarReader());
+                readers.add(new CodaBarReader());
             }
             if (possibleFormats.contains(BarcodeFormat.RSS_14)) {
-                readers2.add(new RSS14Reader());
+                readers.add(new RSS14Reader());
             }
             if (possibleFormats.contains(BarcodeFormat.RSS_EXPANDED)) {
-                readers2.add(new RSSExpandedReader());
+                readers.add(new RSSExpandedReader());
             }
         }
-        if (readers2.isEmpty()) {
-            readers2.add(new MultiFormatUPCEANReader(hints));
-            readers2.add(new Code39Reader());
-            readers2.add(new CodaBarReader());
-            readers2.add(new Code93Reader());
-            readers2.add(new Code128Reader());
-            readers2.add(new ITFReader());
-            readers2.add(new RSS14Reader());
-            readers2.add(new RSSExpandedReader());
+        if (readers.isEmpty()) {
+            readers.add(new MultiFormatUPCEANReader(hints));
+            readers.add(new Code39Reader());
+            readers.add(new CodaBarReader());
+            readers.add(new Code93Reader());
+            readers.add(new Code128Reader());
+            readers.add(new ITFReader());
+            readers.add(new RSS14Reader());
+            readers.add(new RSSExpandedReader());
         }
-        this.readers = (OneDReader[]) readers2.toArray(new OneDReader[readers2.size()]);
+        this.readers = (OneDReader[]) readers.toArray(new OneDReader[readers.size()]);
     }
 
+    @Override // com.google.zxing.oned.OneDReader
     public Result decodeRow(int rowNumber, BitArray row, Map<DecodeHintType, ?> hints) throws NotFoundException {
         OneDReader[] oneDReaderArr = this.readers;
-        int i = 0;
-        while (i < oneDReaderArr.length) {
+        int length = oneDReaderArr.length;
+        for (int i = 0; i < length; i++) {
+            OneDReader reader = oneDReaderArr[i];
             try {
-                return oneDReaderArr[i].decodeRow(rowNumber, row, hints);
+                return reader.decodeRow(rowNumber, row, hints);
             } catch (ReaderException e) {
-                i++;
             }
         }
         throw NotFoundException.getNotFoundInstance();
     }
 
+    @Override // com.google.zxing.oned.OneDReader, com.google.zxing.Reader
     public void reset() {
-        for (OneDReader reset : this.readers) {
-            reset.reset();
+        for (OneDReader oneDReader : this.readers) {
+            oneDReader.reset();
         }
     }
 }

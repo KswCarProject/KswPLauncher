@@ -4,54 +4,47 @@ import com.google.zxing.NotFoundException;
 import com.google.zxing.common.detector.MathUtils;
 import com.google.zxing.oned.OneDReader;
 
+/* loaded from: classes.dex */
 public abstract class AbstractRSSReader extends OneDReader {
     private static final float MAX_AVG_VARIANCE = 0.2f;
     private static final float MAX_FINDER_PATTERN_RATIO = 0.89285713f;
     private static final float MAX_INDIVIDUAL_VARIANCE = 0.45f;
     private static final float MIN_FINDER_PATTERN_RATIO = 0.7916667f;
     private final int[] dataCharacterCounters;
-    private final int[] decodeFinderCounters = new int[4];
     private final int[] evenCounts;
-    private final float[] evenRoundingErrors;
     private final int[] oddCounts;
-    private final float[] oddRoundingErrors;
+    private final int[] decodeFinderCounters = new int[4];
+    private final float[] oddRoundingErrors = new float[4];
+    private final float[] evenRoundingErrors = new float[4];
 
     protected AbstractRSSReader() {
         int[] iArr = new int[8];
         this.dataCharacterCounters = iArr;
-        this.oddRoundingErrors = new float[4];
-        this.evenRoundingErrors = new float[4];
-        this.oddCounts = new int[(iArr.length / 2)];
-        this.evenCounts = new int[(iArr.length / 2)];
+        this.oddCounts = new int[iArr.length / 2];
+        this.evenCounts = new int[iArr.length / 2];
     }
 
-    /* access modifiers changed from: protected */
-    public final int[] getDecodeFinderCounters() {
+    protected final int[] getDecodeFinderCounters() {
         return this.decodeFinderCounters;
     }
 
-    /* access modifiers changed from: protected */
-    public final int[] getDataCharacterCounters() {
+    protected final int[] getDataCharacterCounters() {
         return this.dataCharacterCounters;
     }
 
-    /* access modifiers changed from: protected */
-    public final float[] getOddRoundingErrors() {
+    protected final float[] getOddRoundingErrors() {
         return this.oddRoundingErrors;
     }
 
-    /* access modifiers changed from: protected */
-    public final float[] getEvenRoundingErrors() {
+    protected final float[] getEvenRoundingErrors() {
         return this.evenRoundingErrors;
     }
 
-    /* access modifiers changed from: protected */
-    public final int[] getOddCounts() {
+    protected final int[] getOddCounts() {
         return this.oddCounts;
     }
 
-    /* access modifiers changed from: protected */
-    public final int[] getEvenCounts() {
+    protected final int[] getEvenCounts() {
         return this.evenCounts;
     }
 
@@ -78,7 +71,8 @@ public abstract class AbstractRSSReader extends OneDReader {
                 index = i;
             }
         }
-        array[index] = array[index] + 1;
+        int i2 = array[index];
+        array[index] = i2 + 1;
     }
 
     protected static void decrement(int[] array, float[] errors) {
@@ -90,21 +84,21 @@ public abstract class AbstractRSSReader extends OneDReader {
                 index = i;
             }
         }
-        array[index] = array[index] - 1;
+        int i2 = array[index];
+        array[index] = i2 - 1;
     }
 
     protected static boolean isFinderPattern(int[] counters) {
         int firstTwoSum = counters[0] + counters[1];
-        float f = ((float) firstTwoSum) / ((float) ((firstTwoSum + counters[2]) + counters[3]));
-        float ratio = f;
-        if (f < MIN_FINDER_PATTERN_RATIO || ratio > MAX_FINDER_PATTERN_RATIO) {
+        int sum = firstTwoSum + counters[2] + counters[3];
+        float ratio = firstTwoSum / sum;
+        if (ratio < MIN_FINDER_PATTERN_RATIO || ratio > MAX_FINDER_PATTERN_RATIO) {
             return false;
         }
         int minCounter = Integer.MAX_VALUE;
         int maxCounter = Integer.MIN_VALUE;
-        for (int i : counters) {
-            int counter = i;
-            if (i > maxCounter) {
+        for (int counter : counters) {
+            if (counter > maxCounter) {
                 maxCounter = counter;
             }
             if (counter < minCounter) {

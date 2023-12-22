@@ -8,19 +8,20 @@ import java.util.concurrent.atomic.AtomicReference;
 import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public class SubscriptionArbiter extends AtomicInteger implements Subscription {
     private static final long serialVersionUID = -2189523197179400958L;
     Subscription actual;
     final boolean cancelOnReplace;
     volatile boolean cancelled;
-    final AtomicLong missedProduced = new AtomicLong();
-    final AtomicLong missedRequested = new AtomicLong();
-    final AtomicReference<Subscription> missedSubscription = new AtomicReference<>();
     long requested;
     protected boolean unbounded;
+    final AtomicReference<Subscription> missedSubscription = new AtomicReference<>();
+    final AtomicLong missedRequested = new AtomicLong();
+    final AtomicLong missedProduced = new AtomicLong();
 
-    public SubscriptionArbiter(boolean cancelOnReplace2) {
-        this.cancelOnReplace = cancelOnReplace2;
+    public SubscriptionArbiter(boolean cancelOnReplace) {
+        this.cancelOnReplace = cancelOnReplace;
     }
 
     public final void setSubscription(Subscription s) {
@@ -29,35 +30,35 @@ public class SubscriptionArbiter extends AtomicInteger implements Subscription {
             return;
         }
         ObjectHelper.requireNonNull(s, "s is null");
-        if (get() != 0 || !compareAndSet(0, 1)) {
-            Subscription a = this.missedSubscription.getAndSet(s);
+        if (get() == 0 && compareAndSet(0, 1)) {
+            Subscription a = this.actual;
             if (a != null && this.cancelOnReplace) {
                 a.cancel();
             }
-            drain();
+            this.actual = s;
+            long r = this.requested;
+            if (decrementAndGet() != 0) {
+                drainLoop();
+            }
+            if (r != 0) {
+                s.request(r);
+                return;
+            }
             return;
         }
-        Subscription a2 = this.actual;
+        Subscription a2 = this.missedSubscription.getAndSet(s);
         if (a2 != null && this.cancelOnReplace) {
             a2.cancel();
         }
-        this.actual = s;
-        long r = this.requested;
-        if (decrementAndGet() != 0) {
-            drainLoop();
-        }
-        if (r != 0) {
-            s.request(r);
-        }
+        drain();
     }
 
+    @Override // org.reactivestreams.Subscription
     public final void request(long n) {
-        if (SubscriptionHelper.validate(n) && !this.unbounded) {
-            if (get() != 0 || !compareAndSet(0, 1)) {
-                BackpressureHelper.add(this.missedRequested, n);
-                drain();
-                return;
-            }
+        if (!SubscriptionHelper.validate(n) || this.unbounded) {
+            return;
+        }
+        if (get() == 0 && compareAndSet(0, 1)) {
             long r = this.requested;
             if (r != LongCompanionObject.MAX_VALUE) {
                 long r2 = BackpressureHelper.addCap(r, n);
@@ -72,17 +73,19 @@ public class SubscriptionArbiter extends AtomicInteger implements Subscription {
             }
             if (a != null) {
                 a.request(n);
+                return;
             }
+            return;
         }
+        BackpressureHelper.add(this.missedRequested, n);
+        drain();
     }
 
     public final void produced(long n) {
-        if (!this.unbounded) {
-            if (get() != 0 || !compareAndSet(0, 1)) {
-                BackpressureHelper.add(this.missedProduced, n);
-                drain();
-                return;
-            }
+        if (this.unbounded) {
+            return;
+        }
+        if (get() == 0 && compareAndSet(0, 1)) {
             long r = this.requested;
             if (r != LongCompanionObject.MAX_VALUE) {
                 long u = r - n;
@@ -92,10 +95,14 @@ public class SubscriptionArbiter extends AtomicInteger implements Subscription {
                 }
                 this.requested = u;
             }
-            if (decrementAndGet() != 0) {
-                drainLoop();
+            if (decrementAndGet() == 0) {
+                return;
             }
+            drainLoop();
+            return;
         }
+        BackpressureHelper.add(this.missedProduced, n);
+        drain();
     }
 
     public void cancel() {
@@ -105,30 +112,29 @@ public class SubscriptionArbiter extends AtomicInteger implements Subscription {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public final void drain() {
-        if (getAndIncrement() == 0) {
-            drainLoop();
+    final void drain() {
+        if (getAndIncrement() != 0) {
+            return;
         }
+        drainLoop();
     }
 
-    /* access modifiers changed from: package-private */
-    public final void drainLoop() {
+    final void drainLoop() {
         int missed = 1;
         long requestAmount = 0;
         Subscription requestTarget = null;
         do {
             Subscription ms = this.missedSubscription.get();
             if (ms != null) {
-                ms = this.missedSubscription.getAndSet((Object) null);
+                ms = this.missedSubscription.getAndSet(null);
             }
             long mr = this.missedRequested.get();
             if (mr != 0) {
-                mr = this.missedRequested.getAndSet(0);
+                mr = this.missedRequested.getAndSet(0L);
             }
             long mp = this.missedProduced.get();
             if (mp != 0) {
-                mp = this.missedProduced.getAndSet(0);
+                mp = this.missedProduced.getAndSet(0L);
             }
             Subscription a = this.actual;
             if (this.cancelled) {
@@ -164,7 +170,7 @@ public class SubscriptionArbiter extends AtomicInteger implements Subscription {
                         requestAmount = BackpressureHelper.addCap(requestAmount, r);
                         requestTarget = ms;
                     }
-                } else if (!(a == null || mr == 0)) {
+                } else if (a != null && mr != 0) {
                     requestAmount = BackpressureHelper.addCap(requestAmount, mr);
                     requestTarget = a;
                 }

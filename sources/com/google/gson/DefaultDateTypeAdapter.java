@@ -14,18 +14,20 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+/* loaded from: classes.dex */
 final class DefaultDateTypeAdapter extends TypeAdapter<Date> {
     private static final String SIMPLE_NAME = "DefaultDateTypeAdapter";
     private final List<DateFormat> dateFormats;
     private final Class<? extends Date> dateType;
 
-    DefaultDateTypeAdapter(Class<? extends Date> dateType2) {
+    DefaultDateTypeAdapter(Class<? extends Date> dateType) {
         ArrayList arrayList = new ArrayList();
         this.dateFormats = arrayList;
-        this.dateType = verifyDateType(dateType2);
+        this.dateType = verifyDateType(dateType);
         arrayList.add(DateFormat.getDateTimeInstance(2, 2, Locale.US));
         if (!Locale.getDefault().equals(Locale.US)) {
             arrayList.add(DateFormat.getDateTimeInstance(2, 2));
@@ -35,20 +37,20 @@ final class DefaultDateTypeAdapter extends TypeAdapter<Date> {
         }
     }
 
-    DefaultDateTypeAdapter(Class<? extends Date> dateType2, String datePattern) {
+    DefaultDateTypeAdapter(Class<? extends Date> dateType, String datePattern) {
         ArrayList arrayList = new ArrayList();
         this.dateFormats = arrayList;
-        this.dateType = verifyDateType(dateType2);
+        this.dateType = verifyDateType(dateType);
         arrayList.add(new SimpleDateFormat(datePattern, Locale.US));
         if (!Locale.getDefault().equals(Locale.US)) {
             arrayList.add(new SimpleDateFormat(datePattern));
         }
     }
 
-    DefaultDateTypeAdapter(Class<? extends Date> dateType2, int style) {
+    DefaultDateTypeAdapter(Class<? extends Date> dateType, int style) {
         ArrayList arrayList = new ArrayList();
         this.dateFormats = arrayList;
-        this.dateType = verifyDateType(dateType2);
+        this.dateType = verifyDateType(dateType);
         arrayList.add(DateFormat.getDateInstance(style, Locale.US));
         if (!Locale.getDefault().equals(Locale.US)) {
             arrayList.add(DateFormat.getDateInstance(style));
@@ -62,10 +64,10 @@ final class DefaultDateTypeAdapter extends TypeAdapter<Date> {
         this(Date.class, dateStyle, timeStyle);
     }
 
-    public DefaultDateTypeAdapter(Class<? extends Date> dateType2, int dateStyle, int timeStyle) {
+    public DefaultDateTypeAdapter(Class<? extends Date> dateType, int dateStyle, int timeStyle) {
         ArrayList arrayList = new ArrayList();
         this.dateFormats = arrayList;
-        this.dateType = verifyDateType(dateType2);
+        this.dateType = verifyDateType(dateType);
         arrayList.add(DateFormat.getDateTimeInstance(dateStyle, timeStyle, Locale.US));
         if (!Locale.getDefault().equals(Locale.US)) {
             arrayList.add(DateFormat.getDateTimeInstance(dateStyle, timeStyle));
@@ -75,23 +77,26 @@ final class DefaultDateTypeAdapter extends TypeAdapter<Date> {
         }
     }
 
-    private static Class<? extends Date> verifyDateType(Class<? extends Date> dateType2) {
-        if (dateType2 == Date.class || dateType2 == java.sql.Date.class || dateType2 == Timestamp.class) {
-            return dateType2;
+    private static Class<? extends Date> verifyDateType(Class<? extends Date> dateType) {
+        if (dateType != Date.class && dateType != java.sql.Date.class && dateType != Timestamp.class) {
+            throw new IllegalArgumentException("Date type must be one of " + Date.class + ", " + Timestamp.class + ", or " + java.sql.Date.class + " but was " + dateType);
         }
-        throw new IllegalArgumentException("Date type must be one of " + Date.class + ", " + Timestamp.class + ", or " + java.sql.Date.class + " but was " + dateType2);
+        return dateType;
     }
 
+    @Override // com.google.gson.TypeAdapter
     public void write(JsonWriter out, Date value) throws IOException {
         if (value == null) {
             out.nullValue();
             return;
         }
         synchronized (this.dateFormats) {
-            out.value(this.dateFormats.get(0).format(value));
+            String dateFormatAsString = this.dateFormats.get(0).format(value);
+            out.value(dateFormatAsString);
         }
     }
 
+    @Override // com.google.gson.TypeAdapter
     public Date read(JsonReader in) throws IOException {
         if (in.peek() == JsonToken.NULL) {
             in.nextNull();
@@ -113,16 +118,16 @@ final class DefaultDateTypeAdapter extends TypeAdapter<Date> {
 
     private Date deserializeToDate(String s) {
         synchronized (this.dateFormats) {
-            for (DateFormat dateFormat : this.dateFormats) {
+            Iterator<DateFormat> it = this.dateFormats.iterator();
+            while (it.hasNext()) {
+                DateFormat dateFormat = it.next();
                 try {
-                    Date parse = dateFormat.parse(s);
-                    return parse;
+                    return dateFormat.parse(s);
                 } catch (ParseException e) {
                 }
             }
             try {
-                Date parse2 = ISO8601Utils.parse(s, new ParsePosition(0));
-                return parse2;
+                return ISO8601Utils.parse(s, new ParsePosition(0));
             } catch (ParseException e2) {
                 throw new JsonSyntaxException(s, e2);
             }

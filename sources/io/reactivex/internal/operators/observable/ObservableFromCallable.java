@@ -8,31 +8,36 @@ import io.reactivex.internal.observers.DeferredScalarDisposable;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.Callable;
 
+/* loaded from: classes.dex */
 public final class ObservableFromCallable<T> extends Observable<T> implements Callable<T> {
     final Callable<? extends T> callable;
 
-    public ObservableFromCallable(Callable<? extends T> callable2) {
-        this.callable = callable2;
+    public ObservableFromCallable(Callable<? extends T> callable) {
+        this.callable = callable;
     }
 
+    /* JADX WARN: Multi-variable type inference failed */
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super T> observer) {
-        DeferredScalarDisposable<T> d = new DeferredScalarDisposable<>(observer);
-        observer.onSubscribe(d);
-        if (!d.isDisposed()) {
-            try {
-                d.complete(ObjectHelper.requireNonNull(this.callable.call(), "Callable returned null"));
-            } catch (Throwable e) {
-                Exceptions.throwIfFatal(e);
-                if (!d.isDisposed()) {
-                    observer.onError(e);
-                } else {
-                    RxJavaPlugins.onError(e);
-                }
+        DeferredScalarDisposable deferredScalarDisposable = new DeferredScalarDisposable(observer);
+        observer.onSubscribe(deferredScalarDisposable);
+        if (deferredScalarDisposable.isDisposed()) {
+            return;
+        }
+        try {
+            deferredScalarDisposable.complete(ObjectHelper.requireNonNull(this.callable.call(), "Callable returned null"));
+        } catch (Throwable e) {
+            Exceptions.throwIfFatal(e);
+            if (!deferredScalarDisposable.isDisposed()) {
+                observer.onError(e);
+            } else {
+                RxJavaPlugins.onError(e);
             }
         }
     }
 
+    @Override // java.util.concurrent.Callable
     public T call() throws Exception {
-        return ObjectHelper.requireNonNull(this.callable.call(), "The callable returned a null value");
+        return (T) ObjectHelper.requireNonNull(this.callable.call(), "The callable returned a null value");
     }
 }

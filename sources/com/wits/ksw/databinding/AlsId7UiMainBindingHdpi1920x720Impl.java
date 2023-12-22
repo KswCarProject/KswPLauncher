@@ -1,20 +1,26 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.content.res.AppCompatResources;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Guideline;
+import android.support.p001v4.media.session.PlaybackStateCompat;
+import android.support.p004v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.launcher.als_id7_ui.view.CustomViewpager;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.view.MarqueeTextView;
 
+/* loaded from: classes7.dex */
 public class AlsId7UiMainBindingHdpi1920x720Impl extends AlsId7UiMainBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -25,25 +31,25 @@ public class AlsId7UiMainBindingHdpi1920x720Impl extends AlsId7UiMainBinding {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.guideline, 5);
-        sparseIntArray.put(R.id.imageView1, 6);
-        sparseIntArray.put(R.id.itemViewSkin_default, 7);
-        sparseIntArray.put(R.id.skin_ll, 8);
-        sparseIntArray.put(R.id.blue_iv, 9);
-        sparseIntArray.put(R.id.yellow_iv, 10);
-        sparseIntArray.put(R.id.red_iv, 11);
-        sparseIntArray.put(R.id.imageView4, 12);
-        sparseIntArray.put(R.id.imageView3, 13);
-        sparseIntArray.put(R.id.viewPage, 14);
-        sparseIntArray.put(R.id.menuConstraintLayout, 15);
-        sparseIntArray.put(R.id.menu_button1, 16);
-        sparseIntArray.put(R.id.menu_button2, 17);
-        sparseIntArray.put(R.id.menu_button3, 18);
-        sparseIntArray.put(R.id.btn_3_iv, 19);
-        sparseIntArray.put(R.id.menu_button4, 20);
-        sparseIntArray.put(R.id.btn_4_iv, 21);
-        sparseIntArray.put(R.id.menu_button5, 22);
-        sparseIntArray.put(R.id.btn_5_iv, 23);
+        sparseIntArray.put(C0899R.C0901id.guideline, 5);
+        sparseIntArray.put(C0899R.C0901id.imageView1, 6);
+        sparseIntArray.put(C0899R.C0901id.itemViewSkin_default, 7);
+        sparseIntArray.put(C0899R.C0901id.skin_ll, 8);
+        sparseIntArray.put(C0899R.C0901id.blue_iv, 9);
+        sparseIntArray.put(C0899R.C0901id.yellow_iv, 10);
+        sparseIntArray.put(C0899R.C0901id.red_iv, 11);
+        sparseIntArray.put(C0899R.C0901id.imageView4, 12);
+        sparseIntArray.put(C0899R.C0901id.imageView3, 13);
+        sparseIntArray.put(C0899R.C0901id.viewPage, 14);
+        sparseIntArray.put(C0899R.C0901id.menuConstraintLayout, 15);
+        sparseIntArray.put(C0899R.C0901id.menu_button1, 16);
+        sparseIntArray.put(C0899R.C0901id.menu_button2, 17);
+        sparseIntArray.put(C0899R.C0901id.menu_button3, 18);
+        sparseIntArray.put(C0899R.C0901id.btn_3_iv, 19);
+        sparseIntArray.put(C0899R.C0901id.menu_button4, 20);
+        sparseIntArray.put(C0899R.C0901id.btn_4_iv, 21);
+        sparseIntArray.put(C0899R.C0901id.menu_button5, 22);
+        sparseIntArray.put(C0899R.C0901id.btn_5_iv, 23);
     }
 
     public AlsId7UiMainBindingHdpi1920x720Impl(DataBindingComponent bindingComponent, View root) {
@@ -51,28 +57,30 @@ public class AlsId7UiMainBindingHdpi1920x720Impl extends AlsId7UiMainBinding {
     }
 
     private AlsId7UiMainBindingHdpi1920x720Impl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 4, bindings[0], bindings[9], bindings[1], bindings[3], bindings[19], bindings[21], bindings[23], bindings[5], bindings[6], bindings[13], bindings[12], bindings[7], bindings[16], bindings[17], bindings[18], bindings[20], bindings[22], bindings[15], bindings[11], bindings[8], bindings[14], bindings[10]);
-        this.mDirtyFlags = -1;
-        this.alsRoot.setTag((Object) null);
-        this.btn1Iv.setTag((Object) null);
-        this.btn2Iv.setTag((Object) null);
-        MarqueeTextView marqueeTextView = bindings[2];
+        super(bindingComponent, root, 4, (ConstraintLayout) bindings[0], (ImageView) bindings[9], (ImageView) bindings[1], (ImageView) bindings[3], (ImageView) bindings[19], (ImageView) bindings[21], (ImageView) bindings[23], (Guideline) bindings[5], (ImageView) bindings[6], (ImageView) bindings[13], (ImageView) bindings[12], (ImageView) bindings[7], (RelativeLayout) bindings[16], (RelativeLayout) bindings[17], (RelativeLayout) bindings[18], (RelativeLayout) bindings[20], (RelativeLayout) bindings[22], (LinearLayout) bindings[15], (ImageView) bindings[11], (RelativeLayout) bindings[8], (CustomViewpager) bindings[14], (ImageView) bindings[10]);
+        this.mDirtyFlags = -1L;
+        this.alsRoot.setTag(null);
+        this.btn1Iv.setTag(null);
+        this.btn2Iv.setTag(null);
+        MarqueeTextView marqueeTextView = (MarqueeTextView) bindings[2];
         this.mboundView2 = marqueeTextView;
-        marqueeTextView.setTag((Object) null);
-        MarqueeTextView marqueeTextView2 = bindings[4];
+        marqueeTextView.setTag(null);
+        MarqueeTextView marqueeTextView2 = (MarqueeTextView) bindings[4];
         this.mboundView4 = marqueeTextView2;
-        marqueeTextView2.setTag((Object) null);
+        marqueeTextView2.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 32;
+            this.mDirtyFlags = 32L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -82,14 +90,16 @@ public class AlsId7UiMainBindingHdpi1920x720Impl extends AlsId7UiMainBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (7 != variableId) {
-            return false;
+        if (7 == variableId) {
+            setLauncherViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setLauncherViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AlsId7UiMainBinding
     public void setLauncherViewModel(LauncherViewModel LauncherViewModel) {
         this.mLauncherViewModel = LauncherViewModel;
         synchronized (this) {
@@ -99,8 +109,8 @@ public class AlsId7UiMainBindingHdpi1920x720Impl extends AlsId7UiMainBinding {
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeLauncherViewModelShortCutIcon2((ObservableField) object, fieldId);
@@ -115,53 +125,53 @@ public class AlsId7UiMainBindingHdpi1920x720Impl extends AlsId7UiMainBinding {
         }
     }
 
-    private boolean onChangeLauncherViewModelShortCutIcon2(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeLauncherViewModelShortCutIcon2(ObservableField<Drawable> LauncherViewModelShortCutIcon2, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeLauncherViewModelShortCutIcon1(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeLauncherViewModelShortCutIcon1(ObservableField<Drawable> LauncherViewModelShortCutIcon1, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeLauncherViewModelShortCutName1(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeLauncherViewModelShortCutName1(ObservableField<String> LauncherViewModelShortCutName1, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeLauncherViewModelShortCutName2(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeLauncherViewModelShortCutName2(ObservableField<String> LauncherViewModelShortCutName2, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         String launcherViewModelShortCutName2JavaLangObjectNullMboundView4AndroidStringKswId7NaviLauncherViewModelShortCutName2;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         Drawable launcherViewModelShortCutIcon2Get = null;
         ObservableField<Drawable> launcherViewModelShortCutIcon2 = null;
@@ -183,7 +193,7 @@ public class AlsId7UiMainBindingHdpi1920x720Impl extends AlsId7UiMainBinding {
                 if (launcherViewModel != null) {
                     launcherViewModelShortCutIcon2 = launcherViewModel.shortCutIcon2;
                 }
-                updateRegistration(0, (Observable) launcherViewModelShortCutIcon2);
+                updateRegistration(0, launcherViewModelShortCutIcon2);
                 if (launcherViewModelShortCutIcon2 != null) {
                     launcherViewModelShortCutIcon2Get = launcherViewModelShortCutIcon2.get();
                 }
@@ -196,7 +206,7 @@ public class AlsId7UiMainBindingHdpi1920x720Impl extends AlsId7UiMainBinding {
                 if (launcherViewModel != null) {
                     launcherViewModelShortCutIcon1 = launcherViewModel.shortCutIcon1;
                 }
-                updateRegistration(1, (Observable) launcherViewModelShortCutIcon1);
+                updateRegistration(1, launcherViewModelShortCutIcon1);
                 if (launcherViewModelShortCutIcon1 != null) {
                     launcherViewModelShortCutIcon1Get = launcherViewModelShortCutIcon1.get();
                 }
@@ -213,7 +223,7 @@ public class AlsId7UiMainBindingHdpi1920x720Impl extends AlsId7UiMainBinding {
                 if (launcherViewModel != null) {
                     launcherViewModelShortCutName1 = launcherViewModel.shortCutName1;
                 }
-                updateRegistration(2, (Observable) launcherViewModelShortCutName1);
+                updateRegistration(2, launcherViewModelShortCutName1);
                 if (launcherViewModelShortCutName1 != null) {
                     launcherViewModelShortCutName1Get = launcherViewModelShortCutName1.get();
                 }
@@ -230,7 +240,7 @@ public class AlsId7UiMainBindingHdpi1920x720Impl extends AlsId7UiMainBinding {
                 if (launcherViewModel != null) {
                     launcherViewModelShortCutName2 = launcherViewModel.shortCutName2;
                 }
-                updateRegistration(3, (Observable) launcherViewModelShortCutName2);
+                updateRegistration(3, launcherViewModelShortCutName2);
                 if (launcherViewModelShortCutName2 != null) {
                     launcherViewModelShortCutName2Get = launcherViewModelShortCutName2.get();
                 }
@@ -245,24 +255,20 @@ public class AlsId7UiMainBindingHdpi1920x720Impl extends AlsId7UiMainBinding {
             }
         }
         if ((dirtyFlags & 50) != 0) {
-            launcherViewModelShortCutIcon1JavaLangObjectNullBtn1IvAndroidDrawableAlsSpId7MainLeftIconMusicLauncherViewModelShortCutIcon1 = launcherViewModelShortCutIcon1JavaLangObjectNull ? AppCompatResources.getDrawable(this.btn1Iv.getContext(), R.drawable.als_sp_id7_main_left_icon_music) : launcherViewModelShortCutIcon1Get;
+            launcherViewModelShortCutIcon1JavaLangObjectNullBtn1IvAndroidDrawableAlsSpId7MainLeftIconMusicLauncherViewModelShortCutIcon1 = launcherViewModelShortCutIcon1JavaLangObjectNull ? AppCompatResources.getDrawable(this.btn1Iv.getContext(), C0899R.C0900drawable.als_sp_id7_main_left_icon_music) : launcherViewModelShortCutIcon1Get;
         }
         if ((dirtyFlags & 52) != 0) {
-            launcherViewModelShortCutName1JavaLangObjectNullMboundView2AndroidStringKswId7MusicLauncherViewModelShortCutName1 = launcherViewModelShortCutName1JavaLangObjectNull ? this.mboundView2.getResources().getString(R.string.ksw_id7_music) : launcherViewModelShortCutName1Get;
+            launcherViewModelShortCutName1JavaLangObjectNullMboundView2AndroidStringKswId7MusicLauncherViewModelShortCutName1 = launcherViewModelShortCutName1JavaLangObjectNull ? this.mboundView2.getResources().getString(C0899R.string.ksw_id7_music) : launcherViewModelShortCutName1Get;
         }
-        if ((dirtyFlags & 56) != 0) {
-            launcherViewModelShortCutName2JavaLangObjectNullMboundView4AndroidStringKswId7NaviLauncherViewModelShortCutName2 = launcherViewModelShortCutName2JavaLangObjectNull ? this.mboundView4.getResources().getString(R.string.ksw_id7_navi) : launcherViewModelShortCutName2Get;
-        } else {
+        if ((dirtyFlags & 56) == 0) {
             launcherViewModelShortCutName2JavaLangObjectNullMboundView4AndroidStringKswId7NaviLauncherViewModelShortCutName2 = null;
-        }
-        if ((dirtyFlags & 49) != 0) {
-            if (launcherViewModelShortCutIcon2JavaLangObjectNull) {
-                Drawable drawable = launcherViewModelShortCutIcon2Get;
-                launcherViewModelShortCutIcon2Get = AppCompatResources.getDrawable(this.btn2Iv.getContext(), R.drawable.als_sp_id7_main_left_icon_navi);
-            }
-            Drawable launcherViewModelShortCutIcon2JavaLangObjectNullBtn2IvAndroidDrawableAlsSpId7MainLeftIconNaviLauncherViewModelShortCutIcon2 = launcherViewModelShortCutIcon2Get;
         } else {
+            launcherViewModelShortCutName2JavaLangObjectNullMboundView4AndroidStringKswId7NaviLauncherViewModelShortCutName2 = launcherViewModelShortCutName2JavaLangObjectNull ? this.mboundView4.getResources().getString(C0899R.string.ksw_id7_navi) : launcherViewModelShortCutName2Get;
+        }
+        if ((dirtyFlags & 49) == 0) {
             launcherViewModelShortCutIcon2Get = null;
+        } else if (launcherViewModelShortCutIcon2JavaLangObjectNull) {
+            launcherViewModelShortCutIcon2Get = AppCompatResources.getDrawable(this.btn2Iv.getContext(), C0899R.C0900drawable.als_sp_id7_main_left_icon_navi);
         }
         if ((dirtyFlags & 50) != 0) {
             ImageViewBindingAdapter.setImageDrawable(this.btn1Iv, launcherViewModelShortCutIcon1JavaLangObjectNullBtn1IvAndroidDrawableAlsSpId7MainLeftIconMusicLauncherViewModelShortCutIcon1);

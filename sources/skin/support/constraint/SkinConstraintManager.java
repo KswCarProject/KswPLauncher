@@ -4,6 +4,7 @@ import android.content.Context;
 import skin.support.SkinCompatManager;
 import skin.support.constraint.app.SkinConstraintViewInflater;
 
+/* loaded from: classes.dex */
 public class SkinConstraintManager {
     private static volatile SkinConstraintManager sInstance;
 

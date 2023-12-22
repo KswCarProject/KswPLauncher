@@ -10,17 +10,18 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.widget.LinearLayout;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.MainActivity;
-import com.wits.ksw.R;
 import com.wits.ksw.launcher.utils.KswUtils;
 
+/* loaded from: classes16.dex */
 public class CusLinearLayout extends LinearLayout implements View.OnFocusChangeListener {
     private static final String TAG = "CusLinearLayout";
     private int itemRightPostionX;
     int leftX;
 
     public CusLinearLayout(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public CusLinearLayout(Context context, AttributeSet attrs) {
@@ -30,6 +31,7 @@ public class CusLinearLayout extends LinearLayout implements View.OnFocusChangeL
         setDefaultFocusHighlightEnabled(false);
     }
 
+    @Override // android.view.ViewGroup, android.view.View
     public boolean dispatchKeyEvent(KeyEvent event) {
         int keyCode = event.getKeyCode();
         Log.i(TAG, "dispatchKeyEvent: keyCode=" + keyCode);
@@ -54,11 +56,14 @@ public class CusLinearLayout extends LinearLayout implements View.OnFocusChangeL
     }
 
     public static void sendKeyDownUpSync(final int key) {
-        new Handler().post(new Runnable() {
+        new Handler().post(new Runnable() { // from class: com.wits.ksw.launcher.view.CusLinearLayout.1
+            @Override // java.lang.Runnable
             public void run() {
-                new Thread(new Runnable() {
+                new Thread(new Runnable() { // from class: com.wits.ksw.launcher.view.CusLinearLayout.1.1
+                    @Override // java.lang.Runnable
                     public void run() {
-                        new Instrumentation().sendKeyDownUpSync(key);
+                        Instrumentation instrumentation = new Instrumentation();
+                        instrumentation.sendKeyDownUpSync(key);
                     }
                 }).start();
             }
@@ -66,13 +71,16 @@ public class CusLinearLayout extends LinearLayout implements View.OnFocusChangeL
     }
 
     public void scaleSmail(View view) {
-        view.startAnimation((ScaleAnimation) AnimationUtils.loadAnimation(view.getContext(), R.anim.scale_out));
+        ScaleAnimation scaleAnimation = (ScaleAnimation) AnimationUtils.loadAnimation(view.getContext(), C0899R.anim.scale_out);
+        view.startAnimation(scaleAnimation);
     }
 
     public void scaleBig(View view) {
-        view.startAnimation((ScaleAnimation) AnimationUtils.loadAnimation(view.getContext(), R.anim.scale_in));
+        ScaleAnimation scaleAnimation = (ScaleAnimation) AnimationUtils.loadAnimation(view.getContext(), C0899R.anim.scale_in);
+        view.startAnimation(scaleAnimation);
     }
 
+    @Override // android.view.View.OnFocusChangeListener
     public void onFocusChange(View view, boolean hasFocus) {
         Log.i(TAG, "onFocusChange: ");
         if (hasFocus) {
@@ -93,7 +101,7 @@ public class CusLinearLayout extends LinearLayout implements View.OnFocusChangeL
         int itemPostionX = itemPostionX(itemLocationOnScreenX);
         Log.i(TAG, "translationX: itemPostionX=" + itemPostionX);
         if (itemPostionX >= this.itemRightPostionX) {
-            Log.i(TAG, "translationX: 最右端");
+            Log.i(TAG, "translationX: \u6700\u53f3\u7aef");
             itemPostionX = this.itemRightPostionX;
         } else if (itemLocationOnScreenX <= this.leftX) {
             itemPostionX = itemPostionX(itemLocationOnScreenX);

@@ -3,8 +3,8 @@ package skin.support.app;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.view.LayoutInflaterCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.p001v4.view.LayoutInflaterCompat;
+import android.support.p004v7.app.AppCompatActivity;
 import skin.support.SkinCompatManager;
 import skin.support.content.res.SkinCompatResources;
 import skin.support.content.res.SkinCompatThemeUtils;
@@ -13,11 +13,12 @@ import skin.support.observe.SkinObserver;
 import skin.support.widget.SkinCompatHelper;
 
 @Deprecated
+/* loaded from: classes.dex */
 public class SkinCompatActivity extends AppCompatActivity implements SkinObserver {
     private SkinCompatDelegate mSkinDelegate;
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity
+    protected void onCreate(Bundle savedInstanceState) {
         LayoutInflaterCompat.setFactory(getLayoutInflater(), getSkinDelegate());
         super.onCreate(savedInstanceState);
         updateStatusBarColor();
@@ -31,25 +32,23 @@ public class SkinCompatActivity extends AppCompatActivity implements SkinObserve
         return this.mSkinDelegate;
     }
 
-    /* access modifiers changed from: protected */
-    public void onResume() {
+    @Override // android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onResume() {
         super.onResume();
         SkinCompatManager.getInstance().addObserver(this);
     }
 
-    /* access modifiers changed from: protected */
-    public void onDestroy() {
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onDestroy() {
         super.onDestroy();
         SkinCompatManager.getInstance().deleteObserver(this);
     }
 
-    /* access modifiers changed from: protected */
-    public boolean skinStatusBarColorEnable() {
+    protected boolean skinStatusBarColorEnable() {
         return true;
     }
 
-    /* access modifiers changed from: protected */
-    public void updateStatusBarColor() {
+    protected void updateStatusBarColor() {
         if (skinStatusBarColorEnable() && Build.VERSION.SDK_INT >= 21) {
             int statusBarColorResId = SkinCompatThemeUtils.getStatusBarColorResId(this);
             int colorPrimaryDarkResId = SkinCompatThemeUtils.getColorPrimaryDarkResId(this);
@@ -61,8 +60,7 @@ public class SkinCompatActivity extends AppCompatActivity implements SkinObserve
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void updateWindowBackground() {
+    protected void updateWindowBackground() {
         Drawable drawable;
         int windowBackgroundResId = SkinCompatThemeUtils.getWindowBackgroundResId(this);
         if (SkinCompatHelper.checkResourceId(windowBackgroundResId) != 0 && (drawable = SkinCompatResources.getDrawableCompat(this, windowBackgroundResId)) != null) {
@@ -70,6 +68,7 @@ public class SkinCompatActivity extends AppCompatActivity implements SkinObserve
         }
     }
 
+    @Override // skin.support.observe.SkinObserver
     public void updateSkin(SkinObservable observable, Object o) {
         updateStatusBarColor();
         updateWindowBackground();

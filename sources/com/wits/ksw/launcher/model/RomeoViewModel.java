@@ -1,20 +1,21 @@
 package com.wits.ksw.launcher.model;
 
 import android.view.View;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.databinding.ActivityRomeoBinding;
 
+/* loaded from: classes9.dex */
 public class RomeoViewModel extends LauncherViewModel implements View.OnFocusChangeListener {
     private ActivityRomeoBinding romeoBinding;
 
-    public void setRomeoBinding(ActivityRomeoBinding romeoBinding2) {
-        this.romeoBinding = romeoBinding2;
-        romeoBinding2.romeoNavi.setOnFocusChangeListener(this);
-        romeoBinding2.romeoMusic.setOnFocusChangeListener(this);
-        romeoBinding2.romeoVideo.setOnFocusChangeListener(this);
-        romeoBinding2.romeoPhone.setOnFocusChangeListener(this);
-        romeoBinding2.romeoSetting.setOnFocusChangeListener(this);
-        romeoBinding2.romeoApp.setOnFocusChangeListener(this);
+    public void setRomeoBinding(ActivityRomeoBinding romeoBinding) {
+        this.romeoBinding = romeoBinding;
+        romeoBinding.romeoNavi.setOnFocusChangeListener(this);
+        romeoBinding.romeoMusic.setOnFocusChangeListener(this);
+        romeoBinding.romeoVideo.setOnFocusChangeListener(this);
+        romeoBinding.romeoPhone.setOnFocusChangeListener(this);
+        romeoBinding.romeoSetting.setOnFocusChangeListener(this);
+        romeoBinding.romeoApp.setOnFocusChangeListener(this);
     }
 
     private void changeIndicatorFocus(int type) {
@@ -48,24 +49,25 @@ public class RomeoViewModel extends LauncherViewModel implements View.OnFocusCha
         }
     }
 
+    @Override // android.view.View.OnFocusChangeListener
     public void onFocusChange(View v, boolean hasFocus) {
         switch (v.getId()) {
-            case R.id.romeo_app /*2131297617*/:
+            case C0899R.C0901id.romeo_app /* 2131297664 */:
                 changeIndicatorFocus(5);
                 return;
-            case R.id.romeo_music /*2131297636*/:
+            case C0899R.C0901id.romeo_music /* 2131297683 */:
                 changeIndicatorFocus(2);
                 return;
-            case R.id.romeo_navi /*2131297637*/:
+            case C0899R.C0901id.romeo_navi /* 2131297684 */:
                 changeIndicatorFocus(1);
                 return;
-            case R.id.romeo_phone /*2131297638*/:
+            case C0899R.C0901id.romeo_phone /* 2131297685 */:
                 changeIndicatorFocus(4);
                 return;
-            case R.id.romeo_setting /*2131297639*/:
+            case C0899R.C0901id.romeo_setting /* 2131297686 */:
                 changeIndicatorFocus(6);
                 return;
-            case R.id.romeo_video /*2131297655*/:
+            case C0899R.C0901id.romeo_video /* 2131297702 */:
                 changeIndicatorFocus(3);
                 return;
             default:

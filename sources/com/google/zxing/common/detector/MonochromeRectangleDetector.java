@@ -5,12 +5,13 @@ import com.google.zxing.ResultPoint;
 import com.google.zxing.common.BitMatrix;
 
 @Deprecated
+/* loaded from: classes.dex */
 public final class MonochromeRectangleDetector {
     private static final int MAX_MODULES = 32;
     private final BitMatrix image;
 
-    public MonochromeRectangleDetector(BitMatrix image2) {
-        this.image = image2;
+    public MonochromeRectangleDetector(BitMatrix image) {
+        this.image = image;
     }
 
     public ResultPoint[] detect() throws NotFoundException {
@@ -19,113 +20,93 @@ public final class MonochromeRectangleDetector {
         int halfHeight = height / 2;
         int halfWidth = width / 2;
         int deltaY = Math.max(1, height / 256);
-        int i = halfWidth;
-        int i2 = width;
-        int i3 = halfHeight;
         int deltaX = Math.max(1, width / 256);
-        int deltaX2 = height;
-        int deltaY2 = deltaY;
-        int top = ((int) findCornerFromCenter(i, 0, 0, i2, i3, -deltaY, 0, deltaX2, halfWidth / 2).getY()) - 1;
-        int deltaX3 = deltaX;
-        int i4 = top;
-        ResultPoint findCornerFromCenter = findCornerFromCenter(i, -deltaX3, 0, i2, i3, 0, i4, deltaX2, halfHeight / 2);
-        ResultPoint pointB = findCornerFromCenter;
-        int x = ((int) findCornerFromCenter.getX()) - 1;
-        ResultPoint findCornerFromCenter2 = findCornerFromCenter(halfWidth, deltaX3, x, i2, i3, 0, i4, deltaX2, halfHeight / 2);
-        ResultPoint pointC = findCornerFromCenter2;
-        int x2 = ((int) findCornerFromCenter2.getX()) + 1;
-        ResultPoint pointD = findCornerFromCenter(halfWidth, 0, x, x2, i3, deltaY2, i4, deltaX2, halfWidth / 2);
-        int deltaY3 = deltaY2;
-        int i5 = deltaY3;
-        return new ResultPoint[]{findCornerFromCenter(halfWidth, 0, x, x2, i3, -deltaY3, i4, ((int) pointD.getY()) + 1, halfWidth / 4), pointB, pointC, pointD};
+        int top = ((int) findCornerFromCenter(halfWidth, 0, 0, width, halfHeight, -deltaY, 0, height, halfWidth / 2).getY()) - 1;
+        ResultPoint pointB = findCornerFromCenter(halfWidth, -deltaX, 0, width, halfHeight, 0, top, height, halfHeight / 2);
+        int left = ((int) pointB.getX()) - 1;
+        ResultPoint pointC = findCornerFromCenter(halfWidth, deltaX, left, width, halfHeight, 0, top, height, halfHeight / 2);
+        int right = ((int) pointC.getX()) + 1;
+        ResultPoint pointD = findCornerFromCenter(halfWidth, 0, left, right, halfHeight, deltaY, top, height, halfWidth / 2);
+        int bottom = ((int) pointD.getY()) + 1;
+        ResultPoint pointA = findCornerFromCenter(halfWidth, 0, left, right, halfHeight, -deltaY, top, bottom, halfWidth / 4);
+        return new ResultPoint[]{pointA, pointB, pointC, pointD};
     }
 
     private ResultPoint findCornerFromCenter(int centerX, int deltaX, int left, int right, int centerY, int deltaY, int top, int bottom, int maxWhiteRun) throws NotFoundException {
         int[] range;
-        int i = centerX;
-        int i2 = centerY;
         int[] lastRange = null;
         int y = centerY;
         int x = centerX;
-        while (true) {
-            if (y < bottom) {
-                if (y >= top) {
-                    if (x < right) {
-                        if (x < left) {
-                            break;
-                        }
-                        if (deltaX == 0) {
-                            range = blackWhiteRange(y, maxWhiteRun, left, right, true);
-                        } else {
-                            range = blackWhiteRange(x, maxWhiteRun, top, bottom, false);
-                        }
-                        if (range != null) {
-                            lastRange = range;
-                            y += deltaY;
-                            x += deltaX;
-                        } else if (lastRange != null) {
-                            char c = 1;
-                            if (deltaX == 0) {
-                                int lastY = y - deltaY;
-                                if (lastRange[0] >= i) {
-                                    return new ResultPoint((float) lastRange[1], (float) lastY);
-                                }
-                                if (lastRange[1] <= i) {
-                                    return new ResultPoint((float) lastRange[0], (float) lastY);
-                                }
-                                if (deltaY > 0) {
-                                    c = 0;
-                                }
-                                return new ResultPoint((float) lastRange[c], (float) lastY);
-                            }
-                            int lastY2 = x - deltaX;
-                            if (lastRange[0] >= i2) {
-                                return new ResultPoint((float) lastY2, (float) lastRange[1]);
-                            }
-                            if (lastRange[1] <= i2) {
-                                return new ResultPoint((float) lastY2, (float) lastRange[0]);
-                            }
-                            float f = (float) lastY2;
-                            if (deltaX < 0) {
-                                c = 0;
-                            }
-                            return new ResultPoint(f, (float) lastRange[c]);
-                        } else {
-                            throw NotFoundException.getNotFoundInstance();
-                        }
-                    } else {
-                        int i3 = left;
-                        break;
-                    }
-                } else {
-                    int i4 = left;
-                    int i5 = right;
-                    break;
-                }
+        while (y < bottom && y >= top && x < right && x >= left) {
+            if (deltaX == 0) {
+                range = blackWhiteRange(y, maxWhiteRun, left, right, true);
             } else {
-                int i6 = left;
-                int i7 = right;
-                int i8 = top;
-                break;
+                range = blackWhiteRange(x, maxWhiteRun, top, bottom, false);
             }
+            if (range == null) {
+                if (lastRange != null) {
+                    if (deltaX == 0) {
+                        int lastY = y - deltaY;
+                        if (lastRange[0] < centerX) {
+                            if (lastRange[1] > centerX) {
+                                return new ResultPoint(lastRange[deltaY > 0 ? (char) 0 : (char) 1], lastY);
+                            }
+                            return new ResultPoint(lastRange[0], lastY);
+                        }
+                        return new ResultPoint(lastRange[1], lastY);
+                    }
+                    int lastY2 = x - deltaX;
+                    if (lastRange[0] < centerY) {
+                        if (lastRange[1] > centerY) {
+                            return new ResultPoint(lastY2, lastRange[deltaX < 0 ? (char) 0 : (char) 1]);
+                        }
+                        return new ResultPoint(lastY2, lastRange[0]);
+                    }
+                    return new ResultPoint(lastY2, lastRange[1]);
+                }
+                throw NotFoundException.getNotFoundInstance();
+            }
+            lastRange = range;
+            y += deltaY;
+            x += deltaX;
         }
         throw NotFoundException.getNotFoundInstance();
     }
 
+    /* JADX WARN: Removed duplicated region for block: B:15:0x0022  */
+    /* JADX WARN: Removed duplicated region for block: B:41:0x0059  */
+    /* JADX WARN: Removed duplicated region for block: B:70:0x0033 A[EDGE_INSN: B:70:0x0033->B:22:0x0033 ?: BREAK  , SYNTHETIC] */
+    /* JADX WARN: Removed duplicated region for block: B:89:0x006a A[EDGE_INSN: B:89:0x006a->B:48:0x006a ?: BREAK  , SYNTHETIC] */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
     private int[] blackWhiteRange(int fixedDimension, int maxWhiteRun, int minDim, int maxDim, boolean horizontal) {
-        int whiteRunStart;
         int start = (minDim + maxDim) / 2;
-        int center = start;
-        while (true) {
-            if (start < minDim) {
-                break;
-            }
+        while (start >= minDim) {
             BitMatrix bitMatrix = this.image;
-            if (!horizontal ? !bitMatrix.get(fixedDimension, start) : !bitMatrix.get(start, fixedDimension)) {
-                whiteRunStart = start;
+            if (!horizontal) {
+                if (bitMatrix.get(fixedDimension, start)) {
+                    start--;
+                } else {
+                    int whiteRunStart = start;
+                    while (true) {
+                        start--;
+                        if (start >= minDim) {
+                        }
+                    }
+                    int whiteRunSize = whiteRunStart - start;
+                    if (start >= minDim) {
+                    }
+                    start = whiteRunStart;
+                    break;
+                }
+            } else if (bitMatrix.get(start, fixedDimension)) {
+                start--;
+            } else {
+                int whiteRunStart2 = start;
                 while (true) {
                     start--;
-                    if (start < minDim) {
+                    if (start >= minDim) {
                         break;
                     }
                     BitMatrix bitMatrix2 = this.image;
@@ -137,27 +118,40 @@ public final class MonochromeRectangleDetector {
                         break;
                     }
                 }
-                int whiteRunSize = whiteRunStart - start;
-                if (start < minDim || whiteRunSize > maxWhiteRun) {
-                    start = whiteRunStart;
+                int whiteRunSize2 = whiteRunStart2 - start;
+                if (start >= minDim || whiteRunSize2 > maxWhiteRun) {
+                    start = whiteRunStart2;
+                    break;
                 }
-            } else {
-                start--;
             }
         }
-        start = whiteRunStart;
         int start2 = start + 1;
-        int end = center;
-        while (true) {
-            if (end >= maxDim) {
-                break;
-            }
+        int end = start;
+        while (end < maxDim) {
             BitMatrix bitMatrix3 = this.image;
-            if (!horizontal ? !bitMatrix3.get(fixedDimension, end) : !bitMatrix3.get(end, fixedDimension)) {
-                int whiteRunStart2 = end;
+            if (!horizontal) {
+                if (bitMatrix3.get(fixedDimension, end)) {
+                    end++;
+                } else {
+                    int whiteRunStart3 = end;
+                    while (true) {
+                        end++;
+                        if (end < maxDim) {
+                        }
+                    }
+                    int whiteRunSize3 = end - whiteRunStart3;
+                    if (end < maxDim) {
+                    }
+                    end = whiteRunStart3;
+                    break;
+                }
+            } else if (bitMatrix3.get(end, fixedDimension)) {
+                end++;
+            } else {
+                int whiteRunStart32 = end;
                 while (true) {
                     end++;
-                    if (end >= maxDim) {
+                    if (end < maxDim) {
                         break;
                     }
                     BitMatrix bitMatrix4 = this.image;
@@ -169,18 +163,17 @@ public final class MonochromeRectangleDetector {
                         break;
                     }
                 }
-                int whiteRunSize2 = end - whiteRunStart2;
-                if (end >= maxDim || whiteRunSize2 > maxWhiteRun) {
-                    end = whiteRunStart2;
+                int whiteRunSize32 = end - whiteRunStart32;
+                if (end < maxDim || whiteRunSize32 > maxWhiteRun) {
+                    end = whiteRunStart32;
+                    break;
                 }
-            } else {
-                end++;
             }
         }
         int end2 = end - 1;
-        if (end2 <= start2) {
-            return null;
+        if (end2 > start2) {
+            return new int[]{start2, end2};
         }
-        return new int[]{start2, end2};
+        return null;
     }
 }

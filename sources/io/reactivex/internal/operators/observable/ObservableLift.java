@@ -7,17 +7,20 @@ import io.reactivex.exceptions.Exceptions;
 import io.reactivex.internal.functions.ObjectHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 
+/* loaded from: classes.dex */
 public final class ObservableLift<R, T> extends AbstractObservableWithUpstream<T, R> {
     final ObservableOperator<? extends R, ? super T> operator;
 
-    public ObservableLift(ObservableSource<T> source, ObservableOperator<? extends R, ? super T> operator2) {
+    public ObservableLift(ObservableSource<T> source, ObservableOperator<? extends R, ? super T> operator) {
         super(source);
-        this.operator = operator2;
+        this.operator = operator;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super R> observer) {
         try {
-            this.source.subscribe((Observer) ObjectHelper.requireNonNull(this.operator.apply(observer), "Operator " + this.operator + " returned a null Observer"));
+            Observer<? super T> liftedObserver = (Observer) ObjectHelper.requireNonNull(this.operator.apply(observer), "Operator " + this.operator + " returned a null Observer");
+            this.source.subscribe(liftedObserver);
         } catch (NullPointerException e) {
             throw e;
         } catch (Throwable e2) {

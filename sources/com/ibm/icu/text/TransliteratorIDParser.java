@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 class TransliteratorIDParser {
     private static final String ANY = "Any";
     private static final char CLOSE_REV = ')';
@@ -24,6 +25,7 @@ class TransliteratorIDParser {
     TransliteratorIDParser() {
     }
 
+    /* loaded from: classes.dex */
     private static class Specs {
         public String filter;
         public boolean sawSource;
@@ -40,6 +42,7 @@ class TransliteratorIDParser {
         }
     }
 
+    /* loaded from: classes.dex */
     static class SingleID {
         public String basicID;
         public String canonID;
@@ -52,11 +55,10 @@ class TransliteratorIDParser {
         }
 
         SingleID(String c, String b) {
-            this(c, b, (String) null);
+            this(c, b, null);
         }
 
-        /* access modifiers changed from: package-private */
-        public Transliterator getInstance() {
+        Transliterator getInstance() {
             Transliterator t;
             String str = this.basicID;
             if (str == null || str.length() == 0) {
@@ -64,7 +66,7 @@ class TransliteratorIDParser {
             } else {
                 t = Transliterator.getBasicInstance(this.basicID, this.canonID);
             }
-            if (!(t == null || this.filter == null)) {
+            if (t != null && this.filter != null) {
                 t.setFilter(new UnicodeSet(this.filter));
             }
             return t;
@@ -96,40 +98,42 @@ class TransliteratorIDParser {
             } else if (pass == 2 && (specsA = parseFilterID(id, pos, true)) == null) {
                 pos[0] = start;
                 return null;
-            } else if (Utility.parseChar(id, pos, OPEN_REV)) {
+            } else if (!Utility.parseChar(id, pos, (char) OPEN_REV)) {
+                pass++;
+            } else {
                 sawParen = true;
-                if (!Utility.parseChar(id, pos, CLOSE_REV) && ((specsB = parseFilterID(id, pos, true)) == null || !Utility.parseChar(id, pos, CLOSE_REV))) {
+                if (!Utility.parseChar(id, pos, (char) CLOSE_REV) && ((specsB = parseFilterID(id, pos, true)) == null || !Utility.parseChar(id, pos, (char) CLOSE_REV))) {
                     pos[0] = start;
                     return null;
                 }
-            } else {
-                pass++;
             }
         }
-        if (!sawParen) {
+        if (sawParen) {
+            if (dir == 0) {
+                single = specsToID(specsA, 0);
+                single.canonID += OPEN_REV + specsToID(specsB, 0).canonID + CLOSE_REV;
+                if (specsA != null) {
+                    single.filter = specsA.filter;
+                }
+            } else {
+                single = specsToID(specsB, 0);
+                single.canonID += OPEN_REV + specsToID(specsA, 0).canonID + CLOSE_REV;
+                if (specsB != null) {
+                    single.filter = specsB.filter;
+                }
+            }
+        } else {
             if (dir == 0) {
                 single = specsToID(specsA, 0);
             } else {
                 SingleID single2 = specsToSpecialInverse(specsA);
-                if (single2 == null) {
-                    single = specsToID(specsA, 1);
-                } else {
+                if (single2 != null) {
                     single = single2;
+                } else {
+                    single = specsToID(specsA, 1);
                 }
             }
             single.filter = specsA.filter;
-        } else if (dir == 0) {
-            single = specsToID(specsA, 0);
-            single.canonID += OPEN_REV + specsToID(specsB, 0).canonID + CLOSE_REV;
-            if (specsA != null) {
-                single.filter = specsA.filter;
-            }
-        } else {
-            single = specsToID(specsB, 0);
-            single.canonID += OPEN_REV + specsToID(specsA, 0).canonID + CLOSE_REV;
-            if (specsB != null) {
-                single.filter = specsB.filter;
-            }
         }
         return single;
     }
@@ -138,8 +142,8 @@ class TransliteratorIDParser {
         UnicodeSet filter = null;
         int start = pos[0];
         if (withParens[0] == -1) {
-            withParens[0] = Utility.parseChar(id, pos, OPEN_REV);
-        } else if (withParens[0] == 1 && !Utility.parseChar(id, pos, OPEN_REV)) {
+            withParens[0] = Utility.parseChar(id, pos, (char) OPEN_REV) ? 1 : 0;
+        } else if (withParens[0] == 1 && !Utility.parseChar(id, pos, (char) OPEN_REV)) {
             pos[0] = start;
             return null;
         }
@@ -147,21 +151,21 @@ class TransliteratorIDParser {
         if (UnicodeSet.resemblesPattern(id, pos[0])) {
             ParsePosition ppos = new ParsePosition(pos[0]);
             try {
-                filter = new UnicodeSet(id, ppos, (SymbolTable) null);
+                filter = new UnicodeSet(id, ppos, null);
                 String pattern = id.substring(pos[0], ppos.getIndex());
                 pos[0] = ppos.getIndex();
-                if (withParens[0] == 1 && !Utility.parseChar(id, pos, CLOSE_REV)) {
+                if (withParens[0] == 1 && !Utility.parseChar(id, pos, (char) CLOSE_REV)) {
                     pos[0] = start;
                     return null;
                 } else if (canonID != null) {
                     if (dir == 0) {
                         if (withParens[0] == 1) {
-                            pattern = String.valueOf(OPEN_REV) + pattern + CLOSE_REV;
+                            pattern = String.valueOf((char) OPEN_REV) + pattern + CLOSE_REV;
                         }
                         canonID.append(pattern + ID_DELIM);
                     } else {
                         if (withParens[0] == 0) {
-                            pattern = String.valueOf(OPEN_REV) + pattern + CLOSE_REV;
+                            pattern = String.valueOf((char) OPEN_REV) + pattern + CLOSE_REV;
                         }
                         canonID.insert(0, pattern + ID_DELIM);
                     }
@@ -182,7 +186,7 @@ class TransliteratorIDParser {
         int[] withParens = {0};
         UnicodeSet filter = parseGlobalFilter(id, pos, dir, withParens, canonID);
         if (filter != null) {
-            if (!Utility.parseChar(id, pos, ID_DELIM)) {
+            if (!Utility.parseChar(id, pos, (char) ID_DELIM)) {
                 canonID.setLength(0);
                 pos[0] = 0;
             }
@@ -201,7 +205,7 @@ class TransliteratorIDParser {
             } else {
                 list.add(0, single);
             }
-            if (!Utility.parseChar(id, pos, ID_DELIM)) {
+            if (!Utility.parseChar(id, pos, (char) ID_DELIM)) {
                 sawDelimiter = false;
                 break;
             }
@@ -219,7 +223,7 @@ class TransliteratorIDParser {
             withParens[0] = 1;
             UnicodeSet filter2 = parseGlobalFilter(id, pos, dir, withParens, canonID);
             if (filter2 != null) {
-                Utility.parseChar(id, pos, ID_DELIM);
+                Utility.parseChar(id, pos, (char) ID_DELIM);
                 if (dir == 1) {
                     globalFilter[0] = filter2;
                 }
@@ -234,20 +238,18 @@ class TransliteratorIDParser {
         for (SingleID single : ids) {
             if (single.basicID.length() != 0) {
                 Transliterator t = single.getInstance();
-                if (t != null) {
-                    translits.add(t);
-                } else {
+                if (t == null) {
                     throw new IllegalArgumentException("Illegal ID " + single.canonID);
                 }
+                translits.add(t);
             }
         }
         if (translits.size() == 0) {
-            Transliterator t2 = Transliterator.getBasicInstance("Any-Null", (String) null);
-            if (t2 != null) {
-                translits.add(t2);
-            } else {
+            Transliterator t2 = Transliterator.getBasicInstance("Any-Null", null);
+            if (t2 == null) {
                 throw new IllegalArgumentException("Internal error; cannot instantiate Any-Null");
             }
+            translits.add(t2);
         }
         return translits;
     }
@@ -277,10 +279,8 @@ class TransliteratorIDParser {
                 source = id.substring(0, var);
                 isSourcePresent = true;
             }
-            int sep2 = sep + 1;
             variant = id.substring(var, sep);
-            target = id.substring(sep2);
-            int i = sep2;
+            target = id.substring(sep + 1);
         }
         if (variant.length() > 0) {
             variant = variant.substring(1);
@@ -299,7 +299,7 @@ class TransliteratorIDParser {
             id.append(ANY);
         }
         id.append(TARGET_SEP).append(target);
-        if (!(variant == null || variant.length() == 0)) {
+        if (variant != null && variant.length() != 0) {
             id.append(VARIANT_SEP).append(variant);
         }
         return id.toString();
@@ -313,10 +313,30 @@ class TransliteratorIDParser {
         }
     }
 
+    /* JADX WARN: Code restructure failed: missing block: B:12:0x0049, code lost:
+        r10 = r17.charAt(r18[0]);
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:13:0x0051, code lost:
+        if (r10 != '-') goto L17;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:14:0x0053, code lost:
+        if (r3 == null) goto L13;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:16:0x0057, code lost:
+        if (r10 != '/') goto L50;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:17:0x0059, code lost:
+        if (r4 != null) goto L20;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:18:0x005b, code lost:
+        r6 = r10;
+        r18[0] = r18[0] + 1;
+     */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
     private static Specs parseFilterID(String id, int[] pos, boolean allowFilter) {
         String spec;
-        char c;
-        String str = id;
         String first = null;
         String source = null;
         String target = null;
@@ -326,16 +346,13 @@ class TransliteratorIDParser {
         int specCount = 0;
         int start = pos[0];
         while (true) {
-            pos[0] = PatternProps.skipWhiteSpace(str, pos[0]);
+            pos[0] = PatternProps.skipWhiteSpace(id, pos[0]);
             if (pos[0] != id.length()) {
-                if (allowFilter && filter == null && UnicodeSet.resemblesPattern(str, pos[0])) {
+                if (allowFilter && filter == null && UnicodeSet.resemblesPattern(id, pos[0])) {
                     ParsePosition ppos = new ParsePosition(pos[0]);
-                    new UnicodeSet(str, ppos, (SymbolTable) null);
-                    filter = str.substring(pos[0], ppos.getIndex());
+                    new UnicodeSet(id, ppos, null);
+                    filter = id.substring(pos[0], ppos.getIndex());
                     pos[0] = ppos.getIndex();
-                } else if (delimiter == 0 && (((c = str.charAt(pos[0])) == '-' && target == null) || (c == '/' && variant == null))) {
-                    delimiter = c;
-                    pos[0] = pos[0] + 1;
                 } else if ((delimiter != 0 || specCount <= 0) && (spec = Utility.parseUnicodeIdentifier(id, pos)) != null) {
                     switch (delimiter) {
                         case 0:
@@ -381,15 +398,15 @@ class TransliteratorIDParser {
         String basicPrefix = "";
         if (specs != null) {
             StringBuilder buf = new StringBuilder();
-            if (dir == 0) {
+            if (dir != 0) {
+                buf.append(specs.target).append(TARGET_SEP).append(specs.source);
+            } else {
                 if (specs.sawSource) {
                     buf.append(specs.source).append(TARGET_SEP);
                 } else {
                     basicPrefix = specs.source + TARGET_SEP;
                 }
                 buf.append(specs.target);
-            } else {
-                buf.append(specs.target).append(TARGET_SEP).append(specs.source);
             }
             if (specs.variant != null) {
                 buf.append(VARIANT_SEP).append(specs.variant);
@@ -405,22 +422,22 @@ class TransliteratorIDParser {
 
     private static SingleID specsToSpecialInverse(Specs specs) {
         String inverseTarget;
-        if (!specs.source.equalsIgnoreCase(ANY) || (inverseTarget = SPECIAL_INVERSES.get(new CaseInsensitiveString(specs.target))) == null) {
-            return null;
+        if (specs.source.equalsIgnoreCase(ANY) && (inverseTarget = SPECIAL_INVERSES.get(new CaseInsensitiveString(specs.target))) != null) {
+            StringBuilder buf = new StringBuilder();
+            if (specs.filter != null) {
+                buf.append(specs.filter);
+            }
+            if (specs.sawSource) {
+                buf.append(ANY).append(TARGET_SEP);
+            }
+            buf.append(inverseTarget);
+            String basicID = "Any-" + inverseTarget;
+            if (specs.variant != null) {
+                buf.append(VARIANT_SEP).append(specs.variant);
+                basicID = basicID + VARIANT_SEP + specs.variant;
+            }
+            return new SingleID(buf.toString(), basicID);
         }
-        StringBuilder buf = new StringBuilder();
-        if (specs.filter != null) {
-            buf.append(specs.filter);
-        }
-        if (specs.sawSource) {
-            buf.append(ANY).append(TARGET_SEP);
-        }
-        buf.append(inverseTarget);
-        String basicID = "Any-" + inverseTarget;
-        if (specs.variant != null) {
-            buf.append(VARIANT_SEP).append(specs.variant);
-            basicID = basicID + VARIANT_SEP + specs.variant;
-        }
-        return new SingleID(buf.toString(), basicID);
+        return null;
     }
 }

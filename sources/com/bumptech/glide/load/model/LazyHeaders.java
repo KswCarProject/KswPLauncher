@@ -7,14 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class LazyHeaders implements Headers {
     private volatile Map<String, String> combinedHeaders;
     private final Map<String, List<LazyHeaderFactory>> headers;
 
-    LazyHeaders(Map<String, List<LazyHeaderFactory>> headers2) {
-        this.headers = Collections.unmodifiableMap(headers2);
+    LazyHeaders(Map<String, List<LazyHeaderFactory>> headers) {
+        this.headers = Collections.unmodifiableMap(headers);
     }
 
+    @Override // com.bumptech.glide.load.model.Headers
     public Map<String, String> getHeaders() {
         if (this.combinedHeaders == null) {
             synchronized (this) {
@@ -27,21 +29,22 @@ public final class LazyHeaders implements Headers {
     }
 
     private Map<String, String> generateHeaders() {
-        Map<String, String> combinedHeaders2 = new HashMap<>();
+        Map<String, String> combinedHeaders = new HashMap<>();
         for (Map.Entry<String, List<LazyHeaderFactory>> entry : this.headers.entrySet()) {
             String values = buildHeaderValue(entry.getValue());
             if (!TextUtils.isEmpty(values)) {
-                combinedHeaders2.put(entry.getKey(), values);
+                combinedHeaders.put(entry.getKey(), values);
             }
         }
-        return combinedHeaders2;
+        return combinedHeaders;
     }
 
     private String buildHeaderValue(List<LazyHeaderFactory> factories) {
         StringBuilder sb = new StringBuilder();
         int size = factories.size();
         for (int i = 0; i < size; i++) {
-            String header = factories.get(i).buildHeader();
+            LazyHeaderFactory factory = factories.get(i);
+            String header = factory.buildHeader();
             if (!TextUtils.isEmpty(header)) {
                 sb.append(header);
                 if (i != factories.size() - 1) {
@@ -58,7 +61,8 @@ public final class LazyHeaders implements Headers {
 
     public boolean equals(Object o) {
         if (o instanceof LazyHeaders) {
-            return this.headers.equals(((LazyHeaders) o).headers);
+            LazyHeaders other = (LazyHeaders) o;
+            return this.headers.equals(other.headers);
         }
         return false;
     }
@@ -67,6 +71,7 @@ public final class LazyHeaders implements Headers {
         return this.headers.hashCode();
     }
 
+    /* loaded from: classes.dex */
     public static final class Builder {
         private static final Map<String, List<LazyHeaderFactory>> DEFAULT_HEADERS;
         private static final String DEFAULT_USER_AGENT;
@@ -86,7 +91,7 @@ public final class LazyHeaders implements Headers {
         }
 
         public Builder addHeader(String key, String value) {
-            return addHeader(key, (LazyHeaderFactory) new StringHeaderFactory(value));
+            return addHeader(key, new StringHeaderFactory(value));
         }
 
         public Builder addHeader(String key, LazyHeaderFactory factory) {
@@ -99,7 +104,7 @@ public final class LazyHeaders implements Headers {
         }
 
         public Builder setHeader(String key, String value) {
-            return setHeader(key, (LazyHeaderFactory) value == null ? null : new StringHeaderFactory(value));
+            return setHeader(key, value == null ? null : new StringHeaderFactory(value));
         }
 
         public Builder setHeader(String key, LazyHeaderFactory factory) {
@@ -119,12 +124,12 @@ public final class LazyHeaders implements Headers {
 
         private List<LazyHeaderFactory> getFactories(String key) {
             List<LazyHeaderFactory> factories = this.headers.get(key);
-            if (factories != null) {
-                return factories;
+            if (factories == null) {
+                List<LazyHeaderFactory> factories2 = new ArrayList<>();
+                this.headers.put(key, factories2);
+                return factories2;
             }
-            List<LazyHeaderFactory> factories2 = new ArrayList<>();
-            this.headers.put(key, factories2);
-            return factories2;
+            return factories;
         }
 
         private void copyIfNecessary() {
@@ -142,7 +147,8 @@ public final class LazyHeaders implements Headers {
         private Map<String, List<LazyHeaderFactory>> copyHeaders() {
             Map<String, List<LazyHeaderFactory>> result = new HashMap<>(this.headers.size());
             for (Map.Entry<String, List<LazyHeaderFactory>> entry : this.headers.entrySet()) {
-                result.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+                List<LazyHeaderFactory> valueCopy = new ArrayList<>(entry.getValue());
+                result.put(entry.getKey(), valueCopy);
             }
             return result;
         }
@@ -156,7 +162,7 @@ public final class LazyHeaders implements Headers {
             StringBuilder sb = new StringBuilder(defaultUserAgent.length());
             for (int i = 0; i < length; i++) {
                 char c = defaultUserAgent.charAt(i);
-                if ((c > 31 || c == 9) && c < 127) {
+                if ((c > 31 || c == '\t') && c < '\u007f') {
                     sb.append(c);
                 } else {
                     sb.append('?');
@@ -166,24 +172,27 @@ public final class LazyHeaders implements Headers {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class StringHeaderFactory implements LazyHeaderFactory {
         private final String value;
 
-        StringHeaderFactory(String value2) {
-            this.value = value2;
+        StringHeaderFactory(String value) {
+            this.value = value;
         }
 
+        @Override // com.bumptech.glide.load.model.LazyHeaderFactory
         public String buildHeader() {
             return this.value;
         }
 
         public String toString() {
-            return "StringHeaderFactory{value='" + this.value + '\'' + '}';
+            return "StringHeaderFactory{value='" + this.value + "'}";
         }
 
         public boolean equals(Object o) {
             if (o instanceof StringHeaderFactory) {
-                return this.value.equals(((StringHeaderFactory) o).value);
+                StringHeaderFactory other = (StringHeaderFactory) o;
+                return this.value.equals(other.value);
             }
             return false;
         }

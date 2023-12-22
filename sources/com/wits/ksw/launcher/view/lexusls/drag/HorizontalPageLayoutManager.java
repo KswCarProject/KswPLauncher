@@ -2,43 +2,51 @@ package com.wits.ksw.launcher.view.lexusls.drag;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.v7.widget.RecyclerView;
+import android.support.p004v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
 
+/* loaded from: classes13.dex */
 public class HorizontalPageLayoutManager extends RecyclerView.LayoutManager {
     private static final String TAG = "HorizontalPageLayoutManager";
-    private SparseArray<Rect> allItemFrames = new SparseArray<>();
-    private int columns = 0;
+    private int columns;
     private final Context context;
-    int itemHeight = 0;
     int itemHeightUsed;
-    int itemWidth = 0;
     int itemWidthUsed;
-    private int lineWidth = 0;
-    private DragLayer mDragLayer = null;
-    private int offsetX = 0;
-    private int onePageSize = 0;
+    private int lineWidth;
+    private int onePageSize;
+    private int rows;
+    int itemWidth = 0;
+    int itemHeight = 0;
     int pageSize = 0;
-    private int rows = 0;
+    private int offsetX = 0;
     private int totalWidth = 0;
+    private SparseArray<Rect> allItemFrames = new SparseArray<>();
+    private DragLayer mDragLayer = null;
 
-    public HorizontalPageLayoutManager(int rows2, int columns2, int lineWidth2, Context context2) {
-        this.rows = rows2;
-        this.columns = columns2;
-        this.onePageSize = rows2 * columns2;
-        this.context = context2;
-        this.lineWidth = lineWidth2;
+    public HorizontalPageLayoutManager(int rows, int columns, int lineWidth, Context context) {
+        this.rows = 0;
+        this.columns = 0;
+        this.onePageSize = 0;
+        this.lineWidth = 0;
+        this.rows = rows;
+        this.columns = columns;
+        this.onePageSize = rows * columns;
+        this.context = context;
+        this.lineWidth = lineWidth;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public RecyclerView.LayoutParams generateDefaultLayoutParams() {
         return new RecyclerView.LayoutParams(-1, -1);
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public boolean canScrollHorizontally() {
         return true;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public int scrollHorizontallyBy(int dx, RecyclerView.Recycler recycler, RecyclerView.State state) {
         detachAndScrapAttachedViews(recycler);
         int i = this.offsetX;
@@ -56,11 +64,13 @@ public class HorizontalPageLayoutManager extends RecyclerView.LayoutManager {
         return result;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         int itemCount = getItemCount();
         if (itemCount == 0) {
             removeAndRecycleAllViews(recycler);
-        } else if (!state.isPreLayout()) {
+        } else if (state.isPreLayout()) {
+        } else {
             int usableWidth = getUsableWidth();
             int i = this.columns;
             this.itemWidth = (usableWidth - ((i + 1) * this.lineWidth)) / i;
@@ -70,9 +80,9 @@ public class HorizontalPageLayoutManager extends RecyclerView.LayoutManager {
             this.itemHeight = i3;
             this.itemWidthUsed = (this.columns - 1) * this.itemWidth;
             this.itemHeightUsed = (i2 - 1) * i3;
-            int pageSize2 = getPageSize(itemCount);
-            this.pageSize = pageSize2;
-            this.totalWidth = (pageSize2 - 1) * getWidth();
+            int pageSize = getPageSize(itemCount);
+            this.pageSize = pageSize;
+            this.totalWidth = (pageSize - 1) * getWidth();
             detachAndScrapAttachedViews(recycler);
             if (itemCount > 0) {
                 int width = this.itemWidth;
@@ -118,54 +128,51 @@ public class HorizontalPageLayoutManager extends RecyclerView.LayoutManager {
 
     public int getPageSize(int itemCount) {
         int i = this.onePageSize;
-        int i2 = 0;
-        if (i == 0) {
-            new Exception("行和列不能为空").printStackTrace();
-            return 0;
+        if (i != 0) {
+            return (itemCount / i) + (itemCount % i != 0 ? 1 : 0);
         }
-        int i3 = itemCount / i;
-        if (itemCount % i != 0) {
-            i2 = 1;
-        }
-        return i3 + i2;
+        Exception e = new Exception("\u884c\u548c\u5217\u4e0d\u80fd\u4e3a\u7a7a");
+        e.printStackTrace();
+        return 0;
     }
 
-    /* access modifiers changed from: protected */
-    public boolean shouldLayoutChildren() {
+    protected boolean shouldLayoutChildren() {
         return this.context.getResources().getConfiguration().orientation == 2 && getWidth() > getHeight();
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public void onDetachedFromWindow(RecyclerView view, RecyclerView.Recycler recycler) {
         super.onDetachedFromWindow(view, recycler);
         this.offsetX = 0;
     }
 
     private void recycleAndFillItems(RecyclerView.Recycler recycler, RecyclerView.State state) {
-        if (!state.isPreLayout()) {
-            Rect displayRect = new Rect(getPaddingLeft() + this.offsetX, getPaddingTop(), ((getWidth() - getPaddingLeft()) - getPaddingRight()) + this.offsetX, (getHeight() - getPaddingTop()) - getPaddingBottom());
-            Rect childRect = new Rect();
-            for (int i = 0; i < getChildCount(); i++) {
-                View child = getChildAt(i);
-                childRect.left = getDecoratedLeft(child);
-                childRect.top = getDecoratedTop(child);
-                childRect.right = getDecoratedRight(child);
-                childRect.bottom = getDecoratedBottom(child);
-                if (!Rect.intersects(displayRect, childRect)) {
-                    removeAndRecycleView(child, recycler);
-                }
+        if (state.isPreLayout()) {
+            return;
+        }
+        Rect displayRect = new Rect(getPaddingLeft() + this.offsetX, getPaddingTop(), ((getWidth() - getPaddingLeft()) - getPaddingRight()) + this.offsetX, (getHeight() - getPaddingTop()) - getPaddingBottom());
+        Rect childRect = new Rect();
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            childRect.left = getDecoratedLeft(child);
+            childRect.top = getDecoratedTop(child);
+            childRect.right = getDecoratedRight(child);
+            childRect.bottom = getDecoratedBottom(child);
+            if (!Rect.intersects(displayRect, childRect)) {
+                removeAndRecycleView(child, recycler);
             }
-            int i2 = getItemCount();
-            for (int i3 = 0; i3 < i2; i3++) {
-                if (Rect.intersects(displayRect, this.allItemFrames.get(i3))) {
-                    View view = recycler.getViewForPosition(i3);
-                    addView(view);
-                    measureChildWithMargins(view, this.itemWidthUsed, this.itemHeightUsed);
-                    Rect rect = this.allItemFrames.get(i3);
-                    layoutDecorated(view, rect.left - this.offsetX, rect.top, rect.right - this.offsetX, rect.bottom);
-                    DragLayer dragLayer = this.mDragLayer;
-                    if (dragLayer != null) {
-                        dragLayer.loadChildView(view);
-                    }
+        }
+        int itemCount = getItemCount();
+        for (int i2 = 0; i2 < itemCount; i2++) {
+            if (Rect.intersects(displayRect, this.allItemFrames.get(i2))) {
+                View view = recycler.getViewForPosition(i2);
+                addView(view);
+                measureChildWithMargins(view, this.itemWidthUsed, this.itemHeightUsed);
+                Rect rect = this.allItemFrames.get(i2);
+                layoutDecorated(view, rect.left - this.offsetX, rect.top, rect.right - this.offsetX, rect.bottom);
+                DragLayer dragLayer = this.mDragLayer;
+                if (dragLayer != null) {
+                    dragLayer.loadChildView(view);
                 }
             }
         }

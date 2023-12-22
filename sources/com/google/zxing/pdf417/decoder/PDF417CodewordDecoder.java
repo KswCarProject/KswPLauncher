@@ -4,15 +4,11 @@ import com.google.zxing.common.detector.MathUtils;
 import com.google.zxing.pdf417.PDF417Common;
 import java.lang.reflect.Array;
 
+/* loaded from: classes.dex */
 final class PDF417CodewordDecoder {
-    private static final float[][] RATIOS_TABLE;
+    private static final float[][] RATIOS_TABLE = (float[][]) Array.newInstance(float.class, PDF417Common.SYMBOL_TABLE.length, 8);
 
     static {
-        int length = PDF417Common.SYMBOL_TABLE.length;
-        int[] iArr = new int[2];
-        iArr[1] = 8;
-        iArr[0] = length;
-        RATIOS_TABLE = (float[][]) Array.newInstance(float.class, iArr);
         for (int i = 0; i < PDF417Common.SYMBOL_TABLE.length; i++) {
             int i2 = PDF417Common.SYMBOL_TABLE[i];
             int currentSymbol = i2;
@@ -33,21 +29,21 @@ final class PDF417CodewordDecoder {
     }
 
     static int getDecodedValue(int[] moduleBitCount) {
-        int decodedCodewordValue = getDecodedCodewordValue(sampleBitCounts(moduleBitCount));
-        int decodedValue = decodedCodewordValue;
-        if (decodedCodewordValue != -1) {
+        int decodedValue = getDecodedCodewordValue(sampleBitCounts(moduleBitCount));
+        if (decodedValue != -1) {
             return decodedValue;
         }
         return getClosestDecodedValue(moduleBitCount);
     }
 
     private static int[] sampleBitCounts(int[] moduleBitCount) {
-        float bitCountSum = (float) MathUtils.sum(moduleBitCount);
+        float bitCountSum = MathUtils.sum(moduleBitCount);
         int[] result = new int[8];
         int bitCountIndex = 0;
         int sumPreviousBits = 0;
         for (int i = 0; i < 17; i++) {
-            if (((float) (moduleBitCount[bitCountIndex] + sumPreviousBits)) <= (bitCountSum / 34.0f) + ((((float) i) * bitCountSum) / 17.0f)) {
+            float sampleIndex = (bitCountSum / 34.0f) + ((i * bitCountSum) / 17.0f);
+            if (moduleBitCount[bitCountIndex] + sumPreviousBits <= sampleIndex) {
                 sumPreviousBits += moduleBitCount[bitCountIndex];
                 bitCountIndex++;
             }
@@ -57,9 +53,8 @@ final class PDF417CodewordDecoder {
     }
 
     private static int getDecodedCodewordValue(int[] moduleBitCount) {
-        int bitValue = getBitValue(moduleBitCount);
-        int decodedValue = bitValue;
-        if (PDF417Common.getCodeword(bitValue) == -1) {
+        int decodedValue = getBitValue(moduleBitCount);
+        if (PDF417Common.getCodeword(decodedValue) == -1) {
             return -1;
         }
         return decodedValue;
@@ -74,10 +69,11 @@ final class PDF417CodewordDecoder {
                 if (i % 2 != 0) {
                     i2 = 0;
                 }
-                result = j | ((long) i2);
+                result = j | i2;
             }
         }
-        return (int) result;
+        int i3 = (int) result;
+        return i3;
     }
 
     private static int getClosestDecodedValue(int[] moduleBitCount) {
@@ -85,7 +81,7 @@ final class PDF417CodewordDecoder {
         float[] bitCountRatios = new float[8];
         if (bitCountSum > 1) {
             for (int i = 0; i < 8; i++) {
-                bitCountRatios[i] = ((float) moduleBitCount[i]) / ((float) bitCountSum);
+                bitCountRatios[i] = moduleBitCount[i] / bitCountSum;
             }
         }
         float bestMatchError = Float.MAX_VALUE;
@@ -93,24 +89,26 @@ final class PDF417CodewordDecoder {
         int j = 0;
         while (true) {
             float[][] fArr = RATIOS_TABLE;
-            if (j >= fArr.length) {
+            if (j < fArr.length) {
+                float error = 0.0f;
+                float[] ratioTableRow = fArr[j];
+                for (int k = 0; k < 8; k++) {
+                    float diff = ratioTableRow[k] - bitCountRatios[k];
+                    float f = (diff * diff) + error;
+                    error = f;
+                    if (f >= bestMatchError) {
+                        break;
+                    }
+                }
+                int k2 = (error > bestMatchError ? 1 : (error == bestMatchError ? 0 : -1));
+                if (k2 < 0) {
+                    bestMatchError = error;
+                    bestMatch = PDF417Common.SYMBOL_TABLE[j];
+                }
+                j++;
+            } else {
                 return bestMatch;
             }
-            float error = 0.0f;
-            float[] ratioTableRow = fArr[j];
-            for (int k = 0; k < 8; k++) {
-                float diff = ratioTableRow[k] - bitCountRatios[k];
-                float f = (diff * diff) + error;
-                error = f;
-                if (f >= bestMatchError) {
-                    break;
-                }
-            }
-            if (error < bestMatchError) {
-                bestMatchError = error;
-                bestMatch = PDF417Common.SYMBOL_TABLE[j];
-            }
-            j++;
         }
     }
 }

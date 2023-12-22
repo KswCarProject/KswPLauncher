@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class PhoneDataBinding extends ViewDataBinding {
     public final ImageView ivMask;
     public final RelativeLayout llContainer;
@@ -19,13 +20,13 @@ public abstract class PhoneDataBinding extends ViewDataBinding {
     protected LauncherViewModel mBtViewModel;
     public final TextView tvDesc;
 
-    public abstract void setBtViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setBtViewModel(LauncherViewModel BtViewModel);
 
-    protected PhoneDataBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivMask2, RelativeLayout llContainer2, TextView tvDesc2) {
+    protected PhoneDataBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivMask, RelativeLayout llContainer, TextView tvDesc) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.ivMask = ivMask2;
-        this.llContainer = llContainer2;
-        this.tvDesc = tvDesc2;
+        this.ivMask = ivMask;
+        this.llContainer = llContainer;
+        this.tvDesc = tvDesc;
     }
 
     public LauncherViewModel getBtViewModel() {
@@ -38,7 +39,7 @@ public abstract class PhoneDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static PhoneDataBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (PhoneDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_phone, root, attachToRoot, component);
+        return (PhoneDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_phone, root, attachToRoot, component);
     }
 
     public static PhoneDataBinding inflate(LayoutInflater inflater) {
@@ -47,7 +48,7 @@ public abstract class PhoneDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static PhoneDataBinding inflate(LayoutInflater inflater, Object component) {
-        return (PhoneDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_phone, (ViewGroup) null, false, component);
+        return (PhoneDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_phone, null, false, component);
     }
 
     public static PhoneDataBinding bind(View view) {
@@ -56,6 +57,6 @@ public abstract class PhoneDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static PhoneDataBinding bind(View view, Object component) {
-        return (PhoneDataBinding) bind(component, view, R.layout.fragment_phone);
+        return (PhoneDataBinding) bind(component, view, C0899R.C0902layout.fragment_phone);
     }
 }

@@ -1,13 +1,15 @@
 package com.wits.ksw.launcher.utils;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+/* loaded from: classes11.dex */
 public class CustomFontTextView extends TextView {
     public CustomFontTextView(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public CustomFontTextView(Context context, AttributeSet attrs) {
@@ -20,6 +22,8 @@ public class CustomFontTextView extends TextView {
     }
 
     private void init(Context context) {
-        setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Light.ttf"));
+        AssetManager asm = context.getAssets();
+        Typeface typeface = Typeface.createFromAsset(asm, "fonts/Roboto-Light.ttf");
+        setTypeface(typeface);
     }
 }

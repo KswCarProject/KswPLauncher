@@ -1,6 +1,6 @@
 package com.bumptech.glide;
 
-import android.support.v4.util.Pools;
+import android.support.p001v4.util.Pools;
 import com.bumptech.glide.load.Encoder;
 import com.bumptech.glide.load.ImageHeaderParser;
 import com.bumptech.glide.load.ResourceDecoder;
@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public class Registry {
     private static final String BUCKET_APPEND_ALL = "legacy_append";
     public static final String BUCKET_BITMAP = "Bitmap";
@@ -37,12 +38,12 @@ public class Registry {
     private final ResourceDecoderRegistry decoderRegistry;
     private final EncoderRegistry encoderRegistry;
     private final ImageHeaderParserRegistry imageHeaderParserRegistry;
-    private final LoadPathCache loadPathCache = new LoadPathCache();
     private final ModelLoaderRegistry modelLoaderRegistry;
-    private final ModelToResourceClassCache modelToResourceClassCache = new ModelToResourceClassCache();
     private final ResourceEncoderRegistry resourceEncoderRegistry;
     private final Pools.Pool<List<Throwable>> throwableListPool;
     private final TranscoderRegistry transcoderRegistry;
+    private final ModelToResourceClassCache modelToResourceClassCache = new ModelToResourceClassCache();
+    private final LoadPathCache loadPathCache = new LoadPathCache();
 
     public Registry() {
         Pools.Pool<List<Throwable>> threadSafeList = FactoryPools.threadSafeList();
@@ -54,7 +55,7 @@ public class Registry {
         this.dataRewinderRegistry = new DataRewinderRegistry();
         this.transcoderRegistry = new TranscoderRegistry();
         this.imageHeaderParserRegistry = new ImageHeaderParserRegistry();
-        setResourceDecoderBucketPriorityList(Arrays.asList(new String[]{BUCKET_GIF, BUCKET_BITMAP, BUCKET_BITMAP_DRAWABLE}));
+        setResourceDecoderBucketPriorityList(Arrays.asList(BUCKET_GIF, BUCKET_BITMAP, BUCKET_BITMAP_DRAWABLE));
     }
 
     @Deprecated
@@ -103,7 +104,7 @@ public class Registry {
 
     @Deprecated
     public <TResource> Registry register(Class<TResource> resourceClass, ResourceEncoder<TResource> encoder) {
-        return append(resourceClass, encoder);
+        return append((Class) resourceClass, (ResourceEncoder) encoder);
     }
 
     public <TResource> Registry append(Class<TResource> resourceClass, ResourceEncoder<TResource> encoder) {
@@ -164,25 +165,30 @@ public class Registry {
     }
 
     private <Data, TResource, Transcode> List<DecodePath<Data, TResource, Transcode>> getDecodePaths(Class<Data> dataClass, Class<TResource> resourceClass, Class<Transcode> transcodeClass) {
-        Class<Data> cls = dataClass;
         List<DecodePath<Data, TResource, Transcode>> decodePaths = new ArrayList<>();
-        for (Class<TResource> registeredResourceClass : this.decoderRegistry.getResourceClasses(cls, resourceClass)) {
-            for (Class<Transcode> registeredTranscodeClass : this.transcoderRegistry.getTranscodeClasses(registeredResourceClass, transcodeClass)) {
-                Class<Transcode> cls2 = registeredTranscodeClass;
-                decodePaths.add(new DecodePath<>(dataClass, registeredResourceClass, registeredTranscodeClass, this.decoderRegistry.getDecoders(cls, registeredResourceClass), this.transcoderRegistry.get(registeredResourceClass, registeredTranscodeClass), this.throwableListPool));
+        List<Class<TResource>> registeredResourceClasses = this.decoderRegistry.getResourceClasses(dataClass, resourceClass);
+        for (Class<TResource> registeredResourceClass : registeredResourceClasses) {
+            List<Class<Transcode>> registeredTranscodeClasses = this.transcoderRegistry.getTranscodeClasses(registeredResourceClass, transcodeClass);
+            for (Class<Transcode> registeredTranscodeClass : registeredTranscodeClasses) {
+                List<ResourceDecoder<Data, TResource>> decoders = this.decoderRegistry.getDecoders(dataClass, registeredResourceClass);
+                ResourceTranscoder<TResource, Transcode> transcoder = this.transcoderRegistry.get(registeredResourceClass, registeredTranscodeClass);
+                DecodePath<Data, TResource, Transcode> path = new DecodePath<>(dataClass, registeredResourceClass, registeredTranscodeClass, decoders, transcoder, this.throwableListPool);
+                decodePaths.add(path);
             }
         }
-        Class<Transcode> cls3 = transcodeClass;
         return decodePaths;
     }
 
     public <Model, TResource, Transcode> List<Class<?>> getRegisteredResourceClasses(Class<Model> modelClass, Class<TResource> resourceClass, Class<Transcode> transcodeClass) {
         List<Class<?>> result = this.modelToResourceClassCache.get(modelClass, resourceClass, transcodeClass);
         if (result == null) {
-            result = new ArrayList<>();
-            for (Class<?> dataClass : this.modelLoaderRegistry.getDataClasses(modelClass)) {
-                for (Class<?> registeredResourceClass : this.decoderRegistry.getResourceClasses(dataClass, resourceClass)) {
-                    if (!this.transcoderRegistry.getTranscodeClasses(registeredResourceClass, transcodeClass).isEmpty() && !result.contains(registeredResourceClass)) {
+            result = new ArrayList();
+            List<Class<?>> dataClasses = this.modelLoaderRegistry.getDataClasses(modelClass);
+            for (Class<?> dataClass : dataClasses) {
+                List<? extends Class<?>> registeredResourceClasses = this.decoderRegistry.getResourceClasses(dataClass, resourceClass);
+                for (Class<?> registeredResourceClass : registeredResourceClasses) {
+                    List<Class<Transcode>> registeredTranscodeClasses = this.transcoderRegistry.getTranscodeClasses(registeredResourceClass, transcodeClass);
+                    if (!registeredTranscodeClasses.isEmpty() && !result.contains(registeredResourceClass)) {
                         result.add(registeredResourceClass);
                     }
                 }
@@ -218,20 +224,21 @@ public class Registry {
 
     public <Model> List<ModelLoader<Model, ?>> getModelLoaders(Model model) {
         List<ModelLoader<Model, ?>> result = this.modelLoaderRegistry.getModelLoaders(model);
-        if (!result.isEmpty()) {
-            return result;
+        if (result.isEmpty()) {
+            throw new NoModelLoaderAvailableException(model);
         }
-        throw new NoModelLoaderAvailableException(model);
+        return result;
     }
 
     public List<ImageHeaderParser> getImageHeaderParsers() {
         List<ImageHeaderParser> result = this.imageHeaderParserRegistry.getParsers();
-        if (!result.isEmpty()) {
-            return result;
+        if (result.isEmpty()) {
+            throw new NoImageHeaderParserException();
         }
-        throw new NoImageHeaderParserException();
+        return result;
     }
 
+    /* loaded from: classes.dex */
     public static class NoModelLoaderAvailableException extends MissingComponentException {
         public NoModelLoaderAvailableException(Object model) {
             super("Failed to find any ModelLoaders for model: " + model);
@@ -242,24 +249,28 @@ public class Registry {
         }
     }
 
+    /* loaded from: classes.dex */
     public static class NoResultEncoderAvailableException extends MissingComponentException {
         public NoResultEncoderAvailableException(Class<?> resourceClass) {
             super("Failed to find result encoder for resource class: " + resourceClass + ", you may need to consider registering a new Encoder for the requested type or DiskCacheStrategy.DATA/DiskCacheStrategy.NONE if caching your transformed resource is unnecessary.");
         }
     }
 
+    /* loaded from: classes.dex */
     public static class NoSourceEncoderAvailableException extends MissingComponentException {
         public NoSourceEncoderAvailableException(Class<?> dataClass) {
             super("Failed to find source encoder for data class: " + dataClass);
         }
     }
 
+    /* loaded from: classes.dex */
     public static class MissingComponentException extends RuntimeException {
         public MissingComponentException(String message) {
             super(message);
         }
     }
 
+    /* loaded from: classes.dex */
     public static final class NoImageHeaderParserException extends MissingComponentException {
         public NoImageHeaderParserException() {
             super("Failed to find image header parser.");

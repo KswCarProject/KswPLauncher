@@ -19,9 +19,11 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 import org.reactivestreams.Subscriber;
 
+/* loaded from: classes.dex */
 public final class MaybeMergeArray<T> extends Flowable<T> {
     final MaybeSource<? extends T>[] sources;
 
+    /* loaded from: classes.dex */
     interface SimpleQueueWithConsumerIndex<T> extends SimpleQueue<T> {
         int consumerIndex();
 
@@ -29,17 +31,18 @@ public final class MaybeMergeArray<T> extends Flowable<T> {
 
         T peek();
 
+        @Override // java.util.Queue, io.reactivex.internal.operators.maybe.MaybeMergeArray.SimpleQueueWithConsumerIndex, io.reactivex.internal.fuseable.SimpleQueue
         T poll();
 
         int producerIndex();
     }
 
-    public MaybeMergeArray(MaybeSource<? extends T>[] sources2) {
-        this.sources = sources2;
+    public MaybeMergeArray(MaybeSource<? extends T>[] sources) {
+        this.sources = sources;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
         SimpleQueueWithConsumerIndex<Object> queue;
         MaybeSource<? extends T>[] maybes = this.sources;
         int n = maybes.length;
@@ -51,61 +54,62 @@ public final class MaybeMergeArray<T> extends Flowable<T> {
         MergeMaybeObserver<T> parent = new MergeMaybeObserver<>(s, n, queue);
         s.onSubscribe(parent);
         AtomicThrowable e = parent.error;
-        int length = maybes.length;
-        int i = 0;
-        while (i < length) {
-            MaybeSource<? extends T> source = maybes[i];
-            if (!parent.isCancelled() && e.get() == null) {
-                source.subscribe(parent);
-                i++;
-            } else {
+        for (MaybeSource<? extends T> source : maybes) {
+            if (parent.isCancelled() || e.get() != null) {
                 return;
             }
+            source.subscribe(parent);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class MergeMaybeObserver<T> extends BasicIntQueueSubscription<T> implements MaybeObserver<T> {
         private static final long serialVersionUID = -660395290758764731L;
         volatile boolean cancelled;
         long consumed;
         final Subscriber<? super T> downstream;
-        final AtomicThrowable error = new AtomicThrowable();
         boolean outputFused;
         final SimpleQueueWithConsumerIndex<Object> queue;
-        final AtomicLong requested = new AtomicLong();
-        final CompositeDisposable set = new CompositeDisposable();
         final int sourceCount;
+        final CompositeDisposable set = new CompositeDisposable();
+        final AtomicLong requested = new AtomicLong();
+        final AtomicThrowable error = new AtomicThrowable();
 
-        MergeMaybeObserver(Subscriber<? super T> actual, int sourceCount2, SimpleQueueWithConsumerIndex<Object> queue2) {
+        MergeMaybeObserver(Subscriber<? super T> actual, int sourceCount, SimpleQueueWithConsumerIndex<Object> queue) {
             this.downstream = actual;
-            this.sourceCount = sourceCount2;
-            this.queue = queue2;
+            this.sourceCount = sourceCount;
+            this.queue = queue;
         }
 
+        @Override // io.reactivex.internal.fuseable.QueueFuseable
         public int requestFusion(int mode) {
-            if ((mode & 2) == 0) {
-                return 0;
+            if ((mode & 2) != 0) {
+                this.outputFused = true;
+                return 2;
             }
-            this.outputFused = true;
-            return 2;
+            return 0;
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public T poll() throws Exception {
-            Object o;
+            T t;
             do {
-                o = this.queue.poll();
-            } while (o == NotificationLite.COMPLETE);
-            return o;
+                t = (T) this.queue.poll();
+            } while (t == NotificationLite.COMPLETE);
+            return t;
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public boolean isEmpty() {
             return this.queue.isEmpty();
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public void clear() {
             this.queue.clear();
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             if (SubscriptionHelper.validate(n)) {
                 BackpressureHelper.add(this.requested, n);
@@ -113,6 +117,7 @@ public final class MaybeMergeArray<T> extends Flowable<T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             if (!this.cancelled) {
                 this.cancelled = true;
@@ -123,15 +128,18 @@ public final class MaybeMergeArray<T> extends Flowable<T> {
             }
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSubscribe(Disposable d) {
             this.set.add(d);
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSuccess(T value) {
             this.queue.offer(value);
             drain();
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onError(Throwable e) {
             if (this.error.addThrowable(e)) {
                 this.set.dispose();
@@ -142,18 +150,17 @@ public final class MaybeMergeArray<T> extends Flowable<T> {
             RxJavaPlugins.onError(e);
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onComplete() {
             this.queue.offer(NotificationLite.COMPLETE);
             drain();
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean isCancelled() {
+        boolean isCancelled() {
             return this.cancelled;
         }
 
-        /* access modifiers changed from: package-private */
-        public void drainNormal() {
+        void drainNormal() {
             int missed = 1;
             Subscriber<? super T> a = this.downstream;
             SimpleQueueWithConsumerIndex<Object> q = this.queue;
@@ -164,7 +171,9 @@ public final class MaybeMergeArray<T> extends Flowable<T> {
                     if (this.cancelled) {
                         q.clear();
                         return;
-                    } else if (((Throwable) this.error.get()) != null) {
+                    }
+                    Throwable ex = this.error.get();
+                    if (ex != null) {
                         q.clear();
                         a.onError(this.error.terminate());
                         return;
@@ -182,7 +191,8 @@ public final class MaybeMergeArray<T> extends Flowable<T> {
                     }
                 }
                 if (e == r) {
-                    if (((Throwable) this.error.get()) != null) {
+                    Throwable ex2 = this.error.get();
+                    if (ex2 != null) {
                         q.clear();
                         a.onError(this.error.terminate());
                         return;
@@ -200,13 +210,12 @@ public final class MaybeMergeArray<T> extends Flowable<T> {
             } while (missed != 0);
         }
 
-        /* access modifiers changed from: package-private */
-        public void drainFused() {
+        void drainFused() {
             int missed = 1;
             Subscriber<? super T> a = this.downstream;
             SimpleQueueWithConsumerIndex<Object> q = this.queue;
             while (!this.cancelled) {
-                Throwable ex = (Throwable) this.error.get();
+                Throwable ex = this.error.get();
                 if (ex != null) {
                     q.clear();
                     a.onError(ex);
@@ -228,41 +237,46 @@ public final class MaybeMergeArray<T> extends Flowable<T> {
             q.clear();
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
-            if (getAndIncrement() == 0) {
-                if (this.outputFused) {
-                    drainFused();
-                } else {
-                    drainNormal();
-                }
+        void drain() {
+            if (getAndIncrement() != 0) {
+                return;
+            }
+            if (this.outputFused) {
+                drainFused();
+            } else {
+                drainNormal();
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class MpscFillOnceSimpleQueue<T> extends AtomicReferenceArray<T> implements SimpleQueueWithConsumerIndex<T> {
         private static final long serialVersionUID = -7969063454040569579L;
         int consumerIndex;
-        final AtomicInteger producerIndex = new AtomicInteger();
+        final AtomicInteger producerIndex;
 
         MpscFillOnceSimpleQueue(int length) {
             super(length);
+            this.producerIndex = new AtomicInteger();
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public boolean offer(T value) {
             ObjectHelper.requireNonNull(value, "value is null");
             int idx = this.producerIndex.getAndIncrement();
-            if (idx >= length()) {
-                return false;
+            if (idx < length()) {
+                lazySet(idx, value);
+                return true;
             }
-            lazySet(idx, value);
-            return true;
+            return false;
         }
 
-        public boolean offer(T t, T t2) {
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
+        public boolean offer(T v1, T v2) {
             throw new UnsupportedOperationException();
         }
 
+        @Override // io.reactivex.internal.operators.maybe.MaybeMergeArray.SimpleQueueWithConsumerIndex, java.util.Queue, io.reactivex.internal.fuseable.SimpleQueue
         public T poll() {
             int ci = this.consumerIndex;
             if (ci == length()) {
@@ -273,13 +287,14 @@ public final class MaybeMergeArray<T> extends Flowable<T> {
                 T v = get(ci);
                 if (v != null) {
                     this.consumerIndex = ci + 1;
-                    lazySet(ci, (Object) null);
+                    lazySet(ci, null);
                     return v;
                 }
             } while (pi.get() != ci);
             return null;
         }
 
+        @Override // io.reactivex.internal.operators.maybe.MaybeMergeArray.SimpleQueueWithConsumerIndex
         public T peek() {
             int ci = this.consumerIndex;
             if (ci == length()) {
@@ -288,42 +303,36 @@ public final class MaybeMergeArray<T> extends Flowable<T> {
             return get(ci);
         }
 
+        @Override // io.reactivex.internal.operators.maybe.MaybeMergeArray.SimpleQueueWithConsumerIndex
         public void drop() {
             int ci = this.consumerIndex;
-            lazySet(ci, (Object) null);
+            lazySet(ci, null);
             this.consumerIndex = ci + 1;
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public boolean isEmpty() {
             return this.consumerIndex == producerIndex();
         }
 
-        /* JADX WARNING: Removed duplicated region for block: B:0:0x0000 A[LOOP:0: B:0:0x0000->B:3:0x000a, LOOP_START, MTH_ENTER_BLOCK] */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public void clear() {
-            /*
-                r1 = this;
-            L_0x0000:
-                java.lang.Object r0 = r1.poll()
-                if (r0 == 0) goto L_0x000d
-                boolean r0 = r1.isEmpty()
-                if (r0 != 0) goto L_0x000d
-                goto L_0x0000
-            L_0x000d:
-                return
-            */
-            throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.operators.maybe.MaybeMergeArray.MpscFillOnceSimpleQueue.clear():void");
+            while (poll() != null && !isEmpty()) {
+            }
         }
 
+        @Override // io.reactivex.internal.operators.maybe.MaybeMergeArray.SimpleQueueWithConsumerIndex
         public int consumerIndex() {
             return this.consumerIndex;
         }
 
+        @Override // io.reactivex.internal.operators.maybe.MaybeMergeArray.SimpleQueueWithConsumerIndex
         public int producerIndex() {
             return this.producerIndex.get();
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ClqSimpleQueue<T> extends ConcurrentLinkedQueue<T> implements SimpleQueueWithConsumerIndex<T> {
         private static final long serialVersionUID = -4025173261791142821L;
         int consumerIndex;
@@ -332,31 +341,37 @@ public final class MaybeMergeArray<T> extends Flowable<T> {
         ClqSimpleQueue() {
         }
 
-        public boolean offer(T t, T t2) {
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
+        public boolean offer(T v1, T v2) {
             throw new UnsupportedOperationException();
         }
 
+        @Override // java.util.concurrent.ConcurrentLinkedQueue, java.util.Queue, io.reactivex.internal.fuseable.SimpleQueue
         public boolean offer(T e) {
             this.producerIndex.getAndIncrement();
             return super.offer(e);
         }
 
+        @Override // java.util.concurrent.ConcurrentLinkedQueue, java.util.Queue, io.reactivex.internal.operators.maybe.MaybeMergeArray.SimpleQueueWithConsumerIndex, io.reactivex.internal.fuseable.SimpleQueue
         public T poll() {
-            T v = super.poll();
+            T v = (T) super.poll();
             if (v != null) {
                 this.consumerIndex++;
             }
             return v;
         }
 
+        @Override // io.reactivex.internal.operators.maybe.MaybeMergeArray.SimpleQueueWithConsumerIndex
         public int consumerIndex() {
             return this.consumerIndex;
         }
 
+        @Override // io.reactivex.internal.operators.maybe.MaybeMergeArray.SimpleQueueWithConsumerIndex
         public int producerIndex() {
             return this.producerIndex.get();
         }
 
+        @Override // io.reactivex.internal.operators.maybe.MaybeMergeArray.SimpleQueueWithConsumerIndex
         public void drop() {
             poll();
         }

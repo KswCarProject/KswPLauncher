@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:scrollbars="none" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
+        <TextView android:textSize="25sp" android:textColor="#ffffff" android:gravity="center_vertical" android:id="@+id/tv_navihy" android:background="@drawable/ksw_id7_seting_mp_bg" android:paddingLeft="40dp" android:focusable="true" android:visibility="gone" android:nextFocusUp="@+id/tv_navihy" android:layout_width="600dp" android:layout_height="77dp" android:text="@string/set_text8"/>
+        <ImageView android:background="@mipmap/id7_mp_line" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <TextView android:textSize="25sp" android:textColor="#ffffff" android:gravity="center_vertical" android:id="@+id/tv_naviapp" android:background="@drawable/ksw_id7_seting_mp_bg" android:paddingLeft="40dp" android:focusable="true" android:nextFocusDown="@+id/tv_naviapp" android:layout_width="600dp" android:layout_height="77dp" android:text="@string/set_text9"/>
+        <ImageView android:background="@mipmap/id7_mp_line" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+    </LinearLayout>
+</ScrollView>

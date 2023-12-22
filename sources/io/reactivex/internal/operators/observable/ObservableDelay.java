@@ -8,46 +8,53 @@ import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.observers.SerializedObserver;
 import java.util.concurrent.TimeUnit;
 
+/* loaded from: classes.dex */
 public final class ObservableDelay<T> extends AbstractObservableWithUpstream<T, T> {
     final long delay;
     final boolean delayError;
     final Scheduler scheduler;
     final TimeUnit unit;
 
-    public ObservableDelay(ObservableSource<T> source, long delay2, TimeUnit unit2, Scheduler scheduler2, boolean delayError2) {
+    public ObservableDelay(ObservableSource<T> source, long delay, TimeUnit unit, Scheduler scheduler, boolean delayError) {
         super(source);
-        this.delay = delay2;
-        this.unit = unit2;
-        this.scheduler = scheduler2;
-        this.delayError = delayError2;
+        this.delay = delay;
+        this.unit = unit;
+        this.scheduler = scheduler;
+        this.delayError = delayError;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super T> t) {
-        Observer<? super T> observer;
+        Observer<? super T> serializedObserver;
         if (this.delayError) {
-            observer = t;
+            serializedObserver = t;
         } else {
-            observer = new SerializedObserver<>(t);
+            serializedObserver = new SerializedObserver<>(t);
         }
-        this.source.subscribe(new DelayObserver(observer, this.delay, this.unit, this.scheduler.createWorker(), this.delayError));
+        Scheduler.Worker w = this.scheduler.createWorker();
+        this.source.subscribe(new DelayObserver(serializedObserver, this.delay, this.unit, w, this.delayError));
     }
 
+    /* loaded from: classes.dex */
     static final class DelayObserver<T> implements Observer<T>, Disposable {
         final long delay;
         final boolean delayError;
         final Observer<? super T> downstream;
         final TimeUnit unit;
         Disposable upstream;
-        final Scheduler.Worker w;
 
-        DelayObserver(Observer<? super T> actual, long delay2, TimeUnit unit2, Scheduler.Worker w2, boolean delayError2) {
+        /* renamed from: w */
+        final Scheduler.Worker f315w;
+
+        DelayObserver(Observer<? super T> actual, long delay, TimeUnit unit, Scheduler.Worker w, boolean delayError) {
             this.downstream = actual;
-            this.delay = delay2;
-            this.unit = unit2;
-            this.w = w2;
-            this.delayError = delayError2;
+            this.delay = delay;
+            this.unit = unit;
+            this.f315w = w;
+            this.delayError = delayError;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -55,64 +62,77 @@ public final class ObservableDelay<T> extends AbstractObservableWithUpstream<T, 
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
-            this.w.schedule(new OnNext(t), this.delay, this.unit);
+            this.f315w.schedule(new OnNext(t), this.delay, this.unit);
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
-            this.w.schedule(new OnError(t), this.delayError ? this.delay : 0, this.unit);
+            this.f315w.schedule(new OnError(t), this.delayError ? this.delay : 0L, this.unit);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
-            this.w.schedule(new OnComplete(), this.delay, this.unit);
+            this.f315w.schedule(new OnComplete(), this.delay, this.unit);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
-            this.w.dispose();
+            this.f315w.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return this.w.isDisposed();
+            return this.f315w.isDisposed();
         }
 
+        /* loaded from: classes.dex */
         final class OnNext implements Runnable {
-            private final T t;
 
-            OnNext(T t2) {
-                this.t = t2;
+            /* renamed from: t */
+            private final T f316t;
+
+            OnNext(T t) {
+                this.f316t = t;
             }
 
+            @Override // java.lang.Runnable
             public void run() {
-                DelayObserver.this.downstream.onNext(this.t);
+                DelayObserver.this.downstream.onNext((T) this.f316t);
             }
         }
 
+        /* loaded from: classes.dex */
         final class OnError implements Runnable {
             private final Throwable throwable;
 
-            OnError(Throwable throwable2) {
-                this.throwable = throwable2;
+            OnError(Throwable throwable) {
+                this.throwable = throwable;
             }
 
+            @Override // java.lang.Runnable
             public void run() {
                 try {
                     DelayObserver.this.downstream.onError(this.throwable);
                 } finally {
-                    DelayObserver.this.w.dispose();
+                    DelayObserver.this.f315w.dispose();
                 }
             }
         }
 
+        /* loaded from: classes.dex */
         final class OnComplete implements Runnable {
             OnComplete() {
             }
 
+            @Override // java.lang.Runnable
             public void run() {
                 try {
                     DelayObserver.this.downstream.onComplete();
                 } finally {
-                    DelayObserver.this.w.dispose();
+                    DelayObserver.this.f315w.dispose();
                 }
             }
         }

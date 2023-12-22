@@ -1,24 +1,37 @@
 package com.wits.ksw.launcher.base;
 
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.KswApplication;
+import com.wits.ksw.launcher.bean.AppInfo;
+import com.wits.ksw.launcher.model.LauncherViewModel;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 import java.util.List;
 
+/* loaded from: classes14.dex */
 public class BaseListAdpater<T> extends BaseAdapter {
     private LayoutInflater mInflater = LayoutInflater.from(KswApplication.appContext);
     private List<T> mlist;
     private int resId;
 
-    public BaseListAdpater(List<T> mlist2, int resId2) {
-        this.mlist = mlist2;
-        this.resId = resId2;
+    public BaseListAdpater(List<T> mlist, int resId) {
+        this.mlist = mlist;
+        this.resId = resId;
     }
 
-    public void setData(List<T> mlist2) {
-        this.mlist = mlist2;
+    public void setData(List<T> mlist) {
+        this.mlist = mlist;
     }
 
+    @Override // android.widget.Adapter
     public int getCount() {
         List<T> list = this.mlist;
         if (list == null || list.isEmpty()) {
@@ -27,6 +40,7 @@ public class BaseListAdpater<T> extends BaseAdapter {
         return this.mlist.size();
     }
 
+    @Override // android.widget.Adapter
     public Object getItem(int i) {
         List<T> list = this.mlist;
         if (list == null || list.isEmpty()) {
@@ -35,56 +49,49 @@ public class BaseListAdpater<T> extends BaseAdapter {
         return this.mlist.get(i);
     }
 
+    @Override // android.widget.Adapter
     public long getItemId(int i) {
-        return (long) i;
+        return i;
     }
 
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v9, resolved type: java.lang.Object} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v2, resolved type: android.databinding.ViewDataBinding} */
-    /* JADX WARNING: Multi-variable type inference failed */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public android.view.View getView(int r6, android.view.View r7, android.view.ViewGroup r8) {
-        /*
-            r5 = this;
-            r0 = 0
-            if (r7 != 0) goto L_0x0014
-            android.view.LayoutInflater r1 = r5.mInflater
-            int r2 = r5.resId
-            r3 = 0
-            android.databinding.ViewDataBinding r0 = android.databinding.DataBindingUtil.inflate(r1, r2, r8, r3)
-            android.view.View r7 = r0.getRoot()
-            r7.setTag(r0)
-            goto L_0x001b
-        L_0x0014:
-            java.lang.Object r1 = r7.getTag()
-            r0 = r1
-            android.databinding.ViewDataBinding r0 = (android.databinding.ViewDataBinding) r0
-        L_0x001b:
-            android.content.Context r1 = com.wits.ksw.KswApplication.appContext
-            boolean r1 = com.wits.ksw.launcher.utils.UiThemeUtils.isBMW_ID8_UI(r1)
-            if (r1 != 0) goto L_0x002b
-            android.content.Context r1 = com.wits.ksw.KswApplication.appContext
-            boolean r1 = com.wits.ksw.launcher.utils.UiThemeUtils.isUI_GS_ID8(r1)
-            if (r1 == 0) goto L_0x0046
-        L_0x002b:
-            android.view.View r1 = r0.getRoot()
-            r2 = 2131297773(0x7f0905ed, float:1.82135E38)
-            android.view.View r1 = r1.findViewById(r2)
-            android.widget.TextView r1 = (android.widget.TextView) r1
-            if (r1 == 0) goto L_0x0046
-            r2 = 0
-            java.lang.String r3 = "#bf000000"
-            int r3 = android.graphics.Color.parseColor(r3)
-            r4 = 1077936128(0x40400000, float:3.0)
-            r1.setShadowLayer(r4, r2, r4, r3)
-        L_0x0046:
-            r1 = 20
-            java.util.List<T> r2 = r5.mlist
-            java.lang.Object r2 = r2.get(r6)
-            r0.setVariable(r1, r2)
-            android.view.View r1 = r0.getRoot()
-            return r1
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.launcher.base.BaseListAdpater.getView(int, android.view.View, android.view.ViewGroup):android.view.View");
+    @Override // android.widget.Adapter
+    public View getView(int position, View convertView, ViewGroup viewGroup) {
+        ViewDataBinding binding;
+        TextView appName;
+        String text;
+        if (convertView == null) {
+            binding = DataBindingUtil.inflate(this.mInflater, this.resId, viewGroup, false);
+            binding.getRoot().setTag(binding);
+        } else {
+            binding = (ViewDataBinding) convertView.getTag();
+        }
+        if ((UiThemeUtils.isBMW_ID8_UI(KswApplication.appContext) || UiThemeUtils.isUI_GS_ID8(KswApplication.appContext) || UiThemeUtils.isUI_PEMP_ID8(KswApplication.appContext)) && (appName = (TextView) binding.getRoot().findViewById(C0899R.C0901id.textView)) != null) {
+            appName.setShadowLayer(3.0f, 0.0f, 3.0f, Color.parseColor("#bf000000"));
+        }
+        AppInfo appInfo = (AppInfo) this.mlist.get(position);
+        TextView badgeNumber = (TextView) binding.getRoot().findViewById(C0899R.C0901id.badge_number);
+        if (badgeNumber == null) {
+            binding.setVariable(20, this.mlist.get(position));
+            return binding.getRoot();
+        }
+        if (LauncherViewModel.mBubbleUnreadCountMap.containsKey(appInfo.apppkg)) {
+            Integer unreadCount = LauncherViewModel.mBubbleUnreadCountMap.get(appInfo.apppkg);
+            if (unreadCount == null || unreadCount.intValue() == 0) {
+                badgeNumber.setVisibility(4);
+            } else {
+                if (unreadCount.intValue() > 99) {
+                    text = "99+";
+                } else {
+                    text = String.valueOf(unreadCount);
+                }
+                badgeNumber.setText(text);
+                badgeNumber.setVisibility(0);
+            }
+        } else {
+            badgeNumber.setVisibility(4);
+        }
+        Log.d("boo2er", "getView: mlist=" + this.mlist.get(position).toString() + " position=" + position);
+        binding.setVariable(20, this.mlist.get(position));
+        return binding.getRoot();
     }
 }

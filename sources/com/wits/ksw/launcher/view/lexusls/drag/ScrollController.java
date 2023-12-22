@@ -1,20 +1,21 @@
 package com.wits.ksw.launcher.view.lexusls.drag;
 
-import android.support.v7.widget.RecyclerView;
+import android.support.p004v7.widget.RecyclerView;
 import android.util.Log;
 
+/* loaded from: classes13.dex */
 public class ScrollController {
-    private int lastPageIndex = -1;
     private RecyclerView.LayoutManager layoutManager;
-    private MyOnScollListener mMyOnScollListener = new MyOnScollListener();
-    private MyOnFlingListener mOnFlingListener = new MyOnFlingListener();
     private OnPageChangeListener mOnPageChangeListener;
-    /* access modifiers changed from: private */
-    public RecyclerView mRecyclerView = null;
+    private RecyclerView mRecyclerView = null;
+    private int lastPageIndex = -1;
     private int offsetX = 0;
+    private MyOnFlingListener mOnFlingListener = new MyOnFlingListener();
+    private MyOnScollListener mMyOnScollListener = new MyOnScollListener();
 
+    /* loaded from: classes13.dex */
     public interface OnPageChangeListener {
-        void onPageChange(int i);
+        void onPageChange(int index);
     }
 
     static /* synthetic */ int access$212(ScrollController x0, int x1) {
@@ -24,19 +25,17 @@ public class ScrollController {
     }
 
     public void setUpRecycleView(RecyclerView recycleView) {
-        if (recycleView != null) {
-            this.mRecyclerView = recycleView;
-            recycleView.setOnFlingListener(this.mOnFlingListener);
-            recycleView.addOnScrollListener(this.mMyOnScollListener);
-            RecyclerView.LayoutManager layoutManager2 = this.mRecyclerView.getLayoutManager();
-            this.layoutManager = layoutManager2;
-            if (layoutManager2 != null) {
-                this.offsetX = 0;
-                return;
-            }
-            return;
+        if (recycleView == null) {
+            throw new IllegalArgumentException("recycleView must be not null");
         }
-        throw new IllegalArgumentException("recycleView must be not null");
+        this.mRecyclerView = recycleView;
+        recycleView.setOnFlingListener(this.mOnFlingListener);
+        recycleView.addOnScrollListener(this.mMyOnScollListener);
+        RecyclerView.LayoutManager layoutManager = this.mRecyclerView.getLayoutManager();
+        this.layoutManager = layoutManager;
+        if (layoutManager != null) {
+            this.offsetX = 0;
+        }
     }
 
     public int getCurrentPageIndex() {
@@ -75,7 +74,7 @@ public class ScrollController {
         }
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void notifyPageIndexChange() {
         if (getCurrentPageIndex() != this.lastPageIndex) {
             this.lastPageIndex = getCurrentPageIndex();
@@ -86,17 +85,19 @@ public class ScrollController {
         }
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void animateToCenter() {
         if (this.offsetX != this.mRecyclerView.getWidth() * getCurrentPageIndex()) {
             smoothScrollToOffset(this.mRecyclerView.getWidth() * getCurrentPageIndex(), true);
         }
     }
 
+    /* loaded from: classes13.dex */
     class MyOnFlingListener extends RecyclerView.OnFlingListener {
         MyOnFlingListener() {
         }
 
+        @Override // android.support.p004v7.widget.RecyclerView.OnFlingListener
         public boolean onFling(int velocityX, int velocityY) {
             if (ScrollController.this.mRecyclerView.getScrollState() == 0) {
                 return true;
@@ -117,10 +118,12 @@ public class ScrollController {
         }
     }
 
+    /* loaded from: classes13.dex */
     class MyOnScollListener extends RecyclerView.OnScrollListener {
         MyOnScollListener() {
         }
 
+        @Override // android.support.p004v7.widget.RecyclerView.OnScrollListener
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             Log.e("", "onScrollStateChanged() called with: newState = [" + newState + "]");
             if (newState == 0) {
@@ -128,6 +131,7 @@ public class ScrollController {
             }
         }
 
+        @Override // android.support.p004v7.widget.RecyclerView.OnScrollListener
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             ScrollController.access$212(ScrollController.this, dx);
             ScrollController.this.notifyPageIndexChange();

@@ -8,9 +8,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+/* loaded from: classes.dex */
 public class ByteBufferEncoder implements Encoder<ByteBuffer> {
     private static final String TAG = "ByteBufferEncoder";
 
+    @Override // com.bumptech.glide.load.Encoder
     public boolean encode(ByteBuffer data, File file, Options options) {
         try {
             ByteBufferUtil.toFile(data, file);

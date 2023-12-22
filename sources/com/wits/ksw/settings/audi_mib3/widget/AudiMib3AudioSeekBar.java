@@ -10,10 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Space;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 
+/* loaded from: classes6.dex */
 public class AudiMib3AudioSeekBar extends LinearLayout {
-    private static final String TAG = ("KswApplication." + AudiMib3AudioSeekBar.class.getSimpleName());
+    private static final String TAG = "KswApplication." + AudiMib3AudioSeekBar.class.getSimpleName();
     private static final int[] VISIBILITY_FLAGS = {0, 4, 8};
     private TextView ltextView;
     private TextView rtextView;
@@ -22,42 +23,47 @@ public class AudiMib3AudioSeekBar extends LinearLayout {
     private TextView titleView;
 
     public AudiMib3AudioSeekBar(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public AudiMib3AudioSeekBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AudioSeekBar);
-        View view = LayoutInflater.from(context).inflate(R.layout.audi_mib3_seekbar, this);
-        this.space = (Space) view.findViewById(R.id.space);
-        this.titleView = (TextView) view.findViewById(R.id.audio_seekbar_title);
-        this.ltextView = (TextView) view.findViewById(R.id.audio_seekbar_left_text);
-        this.rtextView = (TextView) view.findViewById(R.id.audio_seekbar_right_text);
-        this.seekBar = (SeekBar) view.findViewById(R.id.audio_seekbar);
+        TypedArray a = context.obtainStyledAttributes(attrs, C0899R.styleable.AudioSeekBar);
+        View view = LayoutInflater.from(context).inflate(C0899R.C0902layout.audi_mib3_seekbar, this);
+        this.space = (Space) view.findViewById(C0899R.C0901id.space);
+        this.titleView = (TextView) view.findViewById(C0899R.C0901id.audio_seekbar_title);
+        this.ltextView = (TextView) view.findViewById(C0899R.C0901id.audio_seekbar_left_text);
+        this.rtextView = (TextView) view.findViewById(C0899R.C0901id.audio_seekbar_right_text);
+        this.seekBar = (SeekBar) view.findViewById(C0899R.C0901id.audio_seekbar);
         int N = a.getIndexCount();
         for (int i = 0; i < N; i++) {
             int attr = a.getIndex(i);
             switch (attr) {
                 case 0:
-                    setMax(a.getInt(attr, 100));
+                    int max = a.getInt(attr, 100);
+                    setMax(max);
                     break;
                 case 1:
-                    int space2 = a.getInt(attr, 0);
-                    setProgress(space2);
-                    setLText(space2);
-                    setRText(space2);
+                    int progress = a.getInt(attr, 0);
+                    setProgress(progress);
+                    setLText(progress);
+                    setRText(progress);
                     break;
                 case 2:
-                    setSpace(a.getInt(attr, 0));
+                    int space = a.getInt(attr, 0);
+                    setSpace(space);
                     break;
                 case 3:
-                    setTitle(a.getResourceId(attr, 0));
+                    int resid = a.getResourceId(attr, 0);
+                    setTitle(resid);
                     break;
                 case 4:
-                    setLVisibility(VISIBILITY_FLAGS[a.getInt(attr, 0)]);
+                    int lvisibility = a.getInt(attr, 0);
+                    setLVisibility(VISIBILITY_FLAGS[lvisibility]);
                     break;
                 case 5:
-                    setRVisibility(VISIBILITY_FLAGS[a.getInt(attr, 0)]);
+                    int rvisibility = a.getInt(attr, 0);
+                    setRVisibility(VISIBILITY_FLAGS[rvisibility]);
                     break;
             }
         }
@@ -65,28 +71,32 @@ public class AudiMib3AudioSeekBar extends LinearLayout {
     }
 
     public void setOnSeekBarChangeListener(SeekBar.OnSeekBarChangeListener listener) {
-        if (listener != null) {
-            this.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    AudiMib3AudioSeekBar.this.setRText(progress);
-                    AudiMib3AudioSeekBar.this.setLText(progress);
-                }
-
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                }
-
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                }
-            });
+        if (listener == null) {
+            return;
         }
+        this.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { // from class: com.wits.ksw.settings.audi_mib3.widget.AudiMib3AudioSeekBar.1
+            @Override // android.widget.SeekBar.OnSeekBarChangeListener
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                AudiMib3AudioSeekBar.this.setRText(progress);
+                AudiMib3AudioSeekBar.this.setLText(progress);
+            }
+
+            @Override // android.widget.SeekBar.OnSeekBarChangeListener
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override // android.widget.SeekBar.OnSeekBarChangeListener
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void setRText(int progress) {
         this.rtextView.setText("" + progress);
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void setLText(int progress) {
         this.ltextView.setText("" + progress);
     }

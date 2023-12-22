@@ -5,11 +5,11 @@ import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 import com.bumptech.glide.request.transition.Transition;
 
+/* loaded from: classes.dex */
 public abstract class ImageViewTarget<Z> extends ViewTarget<ImageView, Z> implements Transition.ViewAdapter {
     private Animatable animatable;
 
-    /* access modifiers changed from: protected */
-    public abstract void setResource(Z z);
+    protected abstract void setResource(Z z);
 
     public ImageViewTarget(ImageView view) {
         super(view);
@@ -20,36 +20,42 @@ public abstract class ImageViewTarget<Z> extends ViewTarget<ImageView, Z> implem
         super(view, waitForLayout);
     }
 
+    @Override // com.bumptech.glide.request.transition.Transition.ViewAdapter
     public Drawable getCurrentDrawable() {
         return ((ImageView) this.view).getDrawable();
     }
 
+    @Override // com.bumptech.glide.request.transition.Transition.ViewAdapter
     public void setDrawable(Drawable drawable) {
         ((ImageView) this.view).setImageDrawable(drawable);
     }
 
+    @Override // com.bumptech.glide.request.target.ViewTarget, com.bumptech.glide.request.target.BaseTarget, com.bumptech.glide.request.target.Target
     public void onLoadStarted(Drawable placeholder) {
         super.onLoadStarted(placeholder);
-        setResourceInternal((Object) null);
+        setResourceInternal(null);
         setDrawable(placeholder);
     }
 
+    @Override // com.bumptech.glide.request.target.BaseTarget, com.bumptech.glide.request.target.Target
     public void onLoadFailed(Drawable errorDrawable) {
         super.onLoadFailed(errorDrawable);
-        setResourceInternal((Object) null);
+        setResourceInternal(null);
         setDrawable(errorDrawable);
     }
 
+    @Override // com.bumptech.glide.request.target.ViewTarget, com.bumptech.glide.request.target.BaseTarget, com.bumptech.glide.request.target.Target
     public void onLoadCleared(Drawable placeholder) {
         super.onLoadCleared(placeholder);
-        Animatable animatable2 = this.animatable;
-        if (animatable2 != null) {
-            animatable2.stop();
+        Animatable animatable = this.animatable;
+        if (animatable != null) {
+            animatable.stop();
         }
-        setResourceInternal((Object) null);
+        setResourceInternal(null);
         setDrawable(placeholder);
     }
 
+    @Override // com.bumptech.glide.request.target.Target
     public void onResourceReady(Z resource, Transition<? super Z> transition) {
         if (transition == null || !transition.transition(resource, this)) {
             setResourceInternal(resource);
@@ -58,17 +64,19 @@ public abstract class ImageViewTarget<Z> extends ViewTarget<ImageView, Z> implem
         }
     }
 
+    @Override // com.bumptech.glide.request.target.BaseTarget, com.bumptech.glide.manager.LifecycleListener
     public void onStart() {
-        Animatable animatable2 = this.animatable;
-        if (animatable2 != null) {
-            animatable2.start();
+        Animatable animatable = this.animatable;
+        if (animatable != null) {
+            animatable.start();
         }
     }
 
+    @Override // com.bumptech.glide.request.target.BaseTarget, com.bumptech.glide.manager.LifecycleListener
     public void onStop() {
-        Animatable animatable2 = this.animatable;
-        if (animatable2 != null) {
-            animatable2.stop();
+        Animatable animatable = this.animatable;
+        if (animatable != null) {
+            animatable.stop();
         }
     }
 
@@ -79,9 +87,9 @@ public abstract class ImageViewTarget<Z> extends ViewTarget<ImageView, Z> implem
 
     private void maybeUpdateAnimatable(Z resource) {
         if (resource instanceof Animatable) {
-            Animatable animatable2 = (Animatable) resource;
-            this.animatable = animatable2;
-            animatable2.start();
+            Animatable animatable = (Animatable) resource;
+            this.animatable = animatable;
+            animatable.start();
             return;
         }
         this.animatable = null;

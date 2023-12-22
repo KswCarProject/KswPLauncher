@@ -16,43 +16,49 @@ import java.util.concurrent.Callable;
 import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableCollectSingle<T, U> extends Single<U> implements FuseToFlowable<U> {
     final BiConsumer<? super U, ? super T> collector;
     final Callable<? extends U> initialSupplier;
     final Flowable<T> source;
 
-    public FlowableCollectSingle(Flowable<T> source2, Callable<? extends U> initialSupplier2, BiConsumer<? super U, ? super T> collector2) {
-        this.source = source2;
-        this.initialSupplier = initialSupplier2;
-        this.collector = collector2;
+    public FlowableCollectSingle(Flowable<T> source, Callable<? extends U> initialSupplier, BiConsumer<? super U, ? super T> collector) {
+        this.source = source;
+        this.initialSupplier = initialSupplier;
+        this.collector = collector;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super U> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super U> observer) {
         try {
-            this.source.subscribe(new CollectSubscriber(observer, ObjectHelper.requireNonNull(this.initialSupplier.call(), "The initialSupplier returned a null value"), this.collector));
+            this.source.subscribe((FlowableSubscriber) new CollectSubscriber(observer, ObjectHelper.requireNonNull(this.initialSupplier.call(), "The initialSupplier returned a null value"), this.collector));
         } catch (Throwable e) {
-            EmptyDisposable.error(e, (SingleObserver<?>) observer);
+            EmptyDisposable.error(e, observer);
         }
     }
 
+    @Override // io.reactivex.internal.fuseable.FuseToFlowable
     public Flowable<U> fuseToFlowable() {
         return RxJavaPlugins.onAssembly(new FlowableCollect(this.source, this.initialSupplier, this.collector));
     }
 
+    /* loaded from: classes.dex */
     static final class CollectSubscriber<T, U> implements FlowableSubscriber<T>, Disposable {
         final BiConsumer<? super U, ? super T> collector;
         boolean done;
         final SingleObserver<? super U> downstream;
-        final U u;
+
+        /* renamed from: u */
+        final U f281u;
         Subscription upstream;
 
-        CollectSubscriber(SingleObserver<? super U> actual, U u2, BiConsumer<? super U, ? super T> collector2) {
+        CollectSubscriber(SingleObserver<? super U> actual, U u, BiConsumer<? super U, ? super T> collector) {
             this.downstream = actual;
-            this.collector = collector2;
-            this.u = u2;
+            this.collector = collector;
+            this.f281u = u;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -61,18 +67,21 @@ public final class FlowableCollectSingle<T, U> extends Single<U> implements Fuse
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            if (!this.done) {
-                try {
-                    this.collector.accept(this.u, t);
-                } catch (Throwable e) {
-                    Exceptions.throwIfFatal(e);
-                    this.upstream.cancel();
-                    onError(e);
-                }
+            if (this.done) {
+                return;
+            }
+            try {
+                this.collector.accept((U) this.f281u, t);
+            } catch (Throwable e) {
+                Exceptions.throwIfFatal(e);
+                this.upstream.cancel();
+                onError(e);
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -83,19 +92,23 @@ public final class FlowableCollectSingle<T, U> extends Single<U> implements Fuse
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                this.upstream = SubscriptionHelper.CANCELLED;
-                this.downstream.onSuccess(this.u);
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            this.upstream = SubscriptionHelper.CANCELLED;
+            this.downstream.onSuccess((U) this.f281u);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.cancel();
             this.upstream = SubscriptionHelper.CANCELLED;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream == SubscriptionHelper.CANCELLED;
         }

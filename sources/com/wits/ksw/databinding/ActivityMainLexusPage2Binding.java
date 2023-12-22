@@ -6,20 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityMainLexusPage2Binding extends ViewDataBinding {
     public final Button lexusBtDash;
     public final Button lexusBtFile;
     public final Button lexusBtMusic;
     public final Button lexusBtVedio;
 
-    protected ActivityMainLexusPage2Binding(Object _bindingComponent, View _root, int _localFieldCount, Button lexusBtDash2, Button lexusBtFile2, Button lexusBtMusic2, Button lexusBtVedio2) {
+    protected ActivityMainLexusPage2Binding(Object _bindingComponent, View _root, int _localFieldCount, Button lexusBtDash, Button lexusBtFile, Button lexusBtMusic, Button lexusBtVedio) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.lexusBtDash = lexusBtDash2;
-        this.lexusBtFile = lexusBtFile2;
-        this.lexusBtMusic = lexusBtMusic2;
-        this.lexusBtVedio = lexusBtVedio2;
+        this.lexusBtDash = lexusBtDash;
+        this.lexusBtFile = lexusBtFile;
+        this.lexusBtMusic = lexusBtMusic;
+        this.lexusBtVedio = lexusBtVedio;
     }
 
     public static ActivityMainLexusPage2Binding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot) {
@@ -28,7 +29,7 @@ public abstract class ActivityMainLexusPage2Binding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainLexusPage2Binding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityMainLexusPage2Binding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_lexus_page2, root, attachToRoot, component);
+        return (ActivityMainLexusPage2Binding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_lexus_page2, root, attachToRoot, component);
     }
 
     public static ActivityMainLexusPage2Binding inflate(LayoutInflater inflater) {
@@ -37,7 +38,7 @@ public abstract class ActivityMainLexusPage2Binding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainLexusPage2Binding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityMainLexusPage2Binding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_lexus_page2, (ViewGroup) null, false, component);
+        return (ActivityMainLexusPage2Binding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_lexus_page2, null, false, component);
     }
 
     public static ActivityMainLexusPage2Binding bind(View view) {
@@ -46,6 +47,6 @@ public abstract class ActivityMainLexusPage2Binding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainLexusPage2Binding bind(View view, Object component) {
-        return (ActivityMainLexusPage2Binding) bind(component, view, R.layout.activity_main_lexus_page2);
+        return (ActivityMainLexusPage2Binding) bind(component, view, C0899R.C0902layout.activity_main_lexus_page2);
     }
 }

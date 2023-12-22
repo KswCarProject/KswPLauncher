@@ -3,16 +3,20 @@ package android.databinding.adapters;
 import android.databinding.InverseBindingListener;
 import android.widget.SeekBar;
 
+/* loaded from: classes.dex */
 public class SeekBarBindingAdapter {
 
+    /* loaded from: classes.dex */
     public interface OnProgressChanged {
         void onProgressChanged(SeekBar seekBar, int i, boolean z);
     }
 
+    /* loaded from: classes.dex */
     public interface OnStartTrackingTouch {
         void onStartTrackingTouch(SeekBar seekBar);
     }
 
+    /* loaded from: classes.dex */
     public interface OnStopTrackingTouch {
         void onStopTrackingTouch(SeekBar seekBar);
     }
@@ -25,11 +29,12 @@ public class SeekBarBindingAdapter {
 
     public static void setOnSeekBarChangeListener(SeekBar view, final OnStartTrackingTouch start, final OnStopTrackingTouch stop, final OnProgressChanged progressChanged, final InverseBindingListener attrChanged) {
         if (start == null && stop == null && progressChanged == null && attrChanged == null) {
-            view.setOnSeekBarChangeListener((SeekBar.OnSeekBarChangeListener) null);
+            view.setOnSeekBarChangeListener(null);
         } else {
-            view.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            view.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { // from class: android.databinding.adapters.SeekBarBindingAdapter.1
+                @Override // android.widget.SeekBar.OnSeekBarChangeListener
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    OnProgressChanged onProgressChanged = progressChanged;
+                    OnProgressChanged onProgressChanged = OnProgressChanged.this;
                     if (onProgressChanged != null) {
                         onProgressChanged.onProgressChanged(seekBar, progress, fromUser);
                     }
@@ -39,6 +44,7 @@ public class SeekBarBindingAdapter {
                     }
                 }
 
+                @Override // android.widget.SeekBar.OnSeekBarChangeListener
                 public void onStartTrackingTouch(SeekBar seekBar) {
                     OnStartTrackingTouch onStartTrackingTouch = start;
                     if (onStartTrackingTouch != null) {
@@ -46,6 +52,7 @@ public class SeekBarBindingAdapter {
                     }
                 }
 
+                @Override // android.widget.SeekBar.OnSeekBarChangeListener
                 public void onStopTrackingTouch(SeekBar seekBar) {
                     OnStopTrackingTouch onStopTrackingTouch = stop;
                     if (onStopTrackingTouch != null) {

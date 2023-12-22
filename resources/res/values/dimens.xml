@@ -75,6 +75,27 @@
     <dimen name="abc_text_size_subtitle_material_toolbar">16dp</dimen>
     <dimen name="abc_text_size_title_material">20sp</dimen>
     <dimen name="abc_text_size_title_material_toolbar">20dp</dimen>
+    <dimen name="benz_ViewPager_mgTop">83dp</dimen>
+    <dimen name="benz_color_radio_mgTop">0dp</dimen>
+    <dimen name="benz_color_title_mgTop">25dp</dimen>
+    <dimen name="benz_item_name_mgTop">-20dp</dimen>
+    <dimen name="benz_modus_Type_margin">65dp</dimen>
+    <dimen name="benz_modus_Type_mgLeft_1">260dp</dimen>
+    <dimen name="benz_modus_Type_mgLeft_2">100dp</dimen>
+    <dimen name="benz_modus_bottom">0dp</dimen>
+    <dimen name="benz_modus_height">409dp</dimen>
+    <dimen name="benz_modus_radio_mgTop">-20dp</dimen>
+    <dimen name="benz_modus_style_mgTop">-12dp</dimen>
+    <dimen name="benz_modus_title_mgright">9dp</dimen>
+    <dimen name="benz_modus_width">1192dp</dimen>
+    <dimen name="benz_music_album_h">179dp</dimen>
+    <dimen name="benz_music_album_icon_h">121dp</dimen>
+    <dimen name="benz_music_album_icon_w">121dp</dimen>
+    <dimen name="benz_music_album_w">210dp</dimen>
+    <dimen name="benz_music_icon_mgleft">-1.5dp</dimen>
+    <dimen name="benz_tv_modus_mgStart">0dp</dimen>
+    <dimen name="benz_tv_modus_mgbottom">6dp</dimen>
+    <dimen name="benz_weather_icon_mgstart">15dp</dimen>
     <dimen name="cardview_compat_inset_shadow">1dp</dimen>
     <dimen name="cardview_default_elevation">2dp</dimen>
     <dimen name="cardview_default_radius">2dp</dimen>
@@ -167,5 +188,9 @@
     <dimen name="tooltip_vertical_padding">6.5dp</dimen>
     <dimen name="tooltip_y_offset_non_touch">0dp</dimen>
     <dimen name="tooltip_y_offset_touch">16dp</dimen>
+    <dimen name="tv_item_details">21sp</dimen>
+    <dimen name="tv_item_name">26sp</dimen>
+    <dimen name="tv_modus_title">23sp</dimen>
+    <dimen name="tv_modus_type">21sp</dimen>
     <dimen name="width_main_item">35dp</dimen>
 </resources>

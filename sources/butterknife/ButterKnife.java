@@ -12,17 +12,20 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class ButterKnife {
-    static final Map<Class<?>, Method> INJECTORS = new LinkedHashMap();
-    static final Method NO_OP = null;
-    static final Map<Class<?>, Method> RESETTERS = new LinkedHashMap();
     private static final String TAG = "ButterKnife";
     private static boolean debug = false;
+    static final Map<Class<?>, Method> INJECTORS = new LinkedHashMap();
+    static final Map<Class<?>, Method> RESETTERS = new LinkedHashMap();
+    static final Method NO_OP = null;
 
+    /* loaded from: classes.dex */
     public interface Action<T extends View> {
         void apply(T t, int i);
     }
 
+    /* loaded from: classes.dex */
     public interface Setter<T extends View, V> {
         void set(T t, V v, int i);
     }
@@ -31,18 +34,22 @@ public final class ButterKnife {
         throw new AssertionError("No instances.");
     }
 
+    /* loaded from: classes.dex */
     public enum Finder {
-        VIEW {
+        VIEW { // from class: butterknife.ButterKnife.Finder.1
+            @Override // butterknife.ButterKnife.Finder
             public View findOptionalView(Object source, int id) {
                 return ((View) source).findViewById(id);
             }
         },
-        ACTIVITY {
+        ACTIVITY { // from class: butterknife.ButterKnife.Finder.2
+            @Override // butterknife.ButterKnife.Finder
             public View findOptionalView(Object source, int id) {
                 return ((Activity) source).findViewById(id);
             }
         },
-        DIALOG {
+        DIALOG { // from class: butterknife.ButterKnife.Finder.3
+            @Override // butterknife.ButterKnife.Finder
             public View findOptionalView(Object source, int id) {
                 return ((Dialog) source).findViewById(id);
             }
@@ -60,10 +67,10 @@ public final class ButterKnife {
 
         public View findRequiredView(Object source, int id, String who) {
             View view = findOptionalView(source, id);
-            if (view != null) {
-                return view;
+            if (view == null) {
+                throw new IllegalStateException("Required view with id '" + id + "' for " + who + " was not found. If this view is optional add '@Optional' annotation.");
             }
-            throw new IllegalStateException("Required view with id '" + id + "' for " + who + " was not found. If this view is optional add '@Optional' annotation.");
+            return view;
         }
     }
 
@@ -103,7 +110,7 @@ public final class ButterKnife {
             }
             Method reset = findResettersForClass(targetClass);
             if (reset != null) {
-                reset.invoke((Object) null, new Object[]{target});
+                reset.invoke(null, target);
             }
         } catch (RuntimeException e) {
             throw e;
@@ -124,7 +131,7 @@ public final class ButterKnife {
             }
             Method inject = findInjectorForClass(targetClass);
             if (inject != null) {
-                inject.invoke((Object) null, new Object[]{finder, target, source});
+                inject.invoke(null, finder, target, source);
             }
         } catch (RuntimeException e) {
             throw e;
@@ -154,7 +161,8 @@ public final class ButterKnife {
             return NO_OP;
         }
         try {
-            inject = Class.forName(clsName + ButterKnifeProcessor.SUFFIX).getMethod("inject", new Class[]{Finder.class, cls, Object.class});
+            Class<?> injector = Class.forName(clsName + ButterKnifeProcessor.SUFFIX);
+            inject = injector.getMethod("inject", Finder.class, cls, Object.class);
             if (debug) {
                 Log.d(TAG, "HIT: Class loaded injection class.");
             }
@@ -185,7 +193,8 @@ public final class ButterKnife {
             return NO_OP;
         }
         try {
-            inject = Class.forName(clsName + ButterKnifeProcessor.SUFFIX).getMethod("reset", new Class[]{cls});
+            Class<?> injector = Class.forName(clsName + ButterKnifeProcessor.SUFFIX);
+            inject = injector.getMethod("reset", cls);
             if (debug) {
                 Log.d(TAG, "HIT: Class loaded injection class.");
             }
@@ -202,14 +211,14 @@ public final class ButterKnife {
     public static <T extends View> void apply(List<T> list, Action<? super T> action) {
         int count = list.size();
         for (int i = 0; i < count; i++) {
-            action.apply((View) list.get(i), i);
+            action.apply(list.get(i), i);
         }
     }
 
     public static <T extends View, V> void apply(List<T> list, Setter<? super T, V> setter, V value) {
         int count = list.size();
         for (int i = 0; i < count; i++) {
-            setter.set((View) list.get(i), value, i);
+            setter.set(list.get(i), value, i);
         }
     }
 
@@ -221,10 +230,10 @@ public final class ButterKnife {
     }
 
     public static <T extends View> T findById(View view, int id) {
-        return view.findViewById(id);
+        return (T) view.findViewById(id);
     }
 
     public static <T extends View> T findById(Activity activity, int id) {
-        return activity.findViewById(id);
+        return (T) activity.findViewById(id);
     }
 }

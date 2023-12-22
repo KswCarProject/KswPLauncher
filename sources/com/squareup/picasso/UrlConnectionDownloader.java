@@ -10,31 +10,33 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/* loaded from: classes.dex */
 public class UrlConnectionDownloader implements Downloader {
-    private static final ThreadLocal<StringBuilder> CACHE_HEADER_BUILDER = new ThreadLocal<StringBuilder>() {
-        /* access modifiers changed from: protected */
+    private static final String FORCE_CACHE = "only-if-cached,max-age=2147483647";
+    static final String RESPONSE_SOURCE = "X-Android-Response-Source";
+    static volatile Object cache;
+    private final Context context;
+    private static final Object lock = new Object();
+    private static final ThreadLocal<StringBuilder> CACHE_HEADER_BUILDER = new ThreadLocal<StringBuilder>() { // from class: com.squareup.picasso.UrlConnectionDownloader.1
+        /* JADX INFO: Access modifiers changed from: protected */
+        @Override // java.lang.ThreadLocal
         public StringBuilder initialValue() {
             return new StringBuilder();
         }
     };
-    private static final String FORCE_CACHE = "only-if-cached,max-age=2147483647";
-    static final String RESPONSE_SOURCE = "X-Android-Response-Source";
-    static volatile Object cache;
-    private static final Object lock = new Object();
-    private final Context context;
 
-    public UrlConnectionDownloader(Context context2) {
-        this.context = context2.getApplicationContext();
+    public UrlConnectionDownloader(Context context) {
+        this.context = context.getApplicationContext();
     }
 
-    /* access modifiers changed from: protected */
-    public HttpURLConnection openConnection(Uri path) throws IOException {
+    protected HttpURLConnection openConnection(Uri path) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(path.toString()).openConnection();
         connection.setConnectTimeout(15000);
         connection.setReadTimeout(20000);
         return connection;
     }
 
+    @Override // com.squareup.picasso.Downloader
     public Downloader.Response load(Uri uri, int networkPolicy) throws IOException {
         String headerValue;
         if (Build.VERSION.SDK_INT >= 14) {
@@ -62,26 +64,28 @@ public class UrlConnectionDownloader implements Downloader {
             connection.setRequestProperty("Cache-Control", headerValue);
         }
         int responseCode = connection.getResponseCode();
-        if (responseCode < 300) {
-            boolean fromCache = Utils.parseResponseSourceHeader(connection.getHeaderField(RESPONSE_SOURCE));
-            return new Downloader.Response(connection.getInputStream(), fromCache, (long) connection.getHeaderFieldInt("Content-Length", -1));
+        if (responseCode >= 300) {
+            connection.disconnect();
+            throw new Downloader.ResponseException(responseCode + " " + connection.getResponseMessage(), networkPolicy, responseCode);
         }
-        connection.disconnect();
-        throw new Downloader.ResponseException(responseCode + " " + connection.getResponseMessage(), networkPolicy, responseCode);
+        long contentLength = connection.getHeaderFieldInt("Content-Length", -1);
+        boolean fromCache = Utils.parseResponseSourceHeader(connection.getHeaderField(RESPONSE_SOURCE));
+        return new Downloader.Response(connection.getInputStream(), fromCache, contentLength);
     }
 
+    @Override // com.squareup.picasso.Downloader
     public void shutdown() {
         if (Build.VERSION.SDK_INT >= 14 && cache != null) {
             ResponseCacheIcs.close(cache);
         }
     }
 
-    private static void installCacheIfNeeded(Context context2) {
+    private static void installCacheIfNeeded(Context context) {
         if (cache == null) {
             try {
                 synchronized (lock) {
                     if (cache == null) {
-                        cache = ResponseCacheIcs.install(context2);
+                        cache = ResponseCacheIcs.install(context);
                     }
                 }
             } catch (IOException e) {
@@ -89,6 +93,7 @@ public class UrlConnectionDownloader implements Downloader {
         }
     }
 
+    /* loaded from: classes.dex */
     private static class ResponseCacheIcs {
         private ResponseCacheIcs() {
         }
@@ -97,7 +102,8 @@ public class UrlConnectionDownloader implements Downloader {
             File cacheDir = Utils.createDefaultCacheDir(context);
             HttpResponseCache cache = HttpResponseCache.getInstalled();
             if (cache == null) {
-                return HttpResponseCache.install(cacheDir, Utils.calculateDiskCacheSize(cacheDir));
+                long maxSize = Utils.calculateDiskCacheSize(cacheDir);
+                return HttpResponseCache.install(cacheDir, maxSize);
             }
             return cache;
         }

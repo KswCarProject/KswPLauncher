@@ -5,13 +5,16 @@ import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.text.DictionaryBreakEngine;
 import java.text.CharacterIterator;
 
+/* loaded from: classes.dex */
 final class UnhandledBreakEngine implements LanguageBreakEngine {
     volatile UnicodeSet fHandled = new UnicodeSet();
 
+    @Override // com.ibm.icu.text.LanguageBreakEngine
     public boolean handles(int c) {
         return this.fHandled.contains(c);
     }
 
+    @Override // com.ibm.icu.text.LanguageBreakEngine
     public int findBreaks(CharacterIterator text, int startPos, int endPos, DictionaryBreakEngine.DequeI foundBreaks) {
         UnicodeSet uniset = this.fHandled;
         int c = CharacterIteration.current32(text);

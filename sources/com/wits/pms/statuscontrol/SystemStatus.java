@@ -5,74 +5,86 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public class SystemStatus {
     public static final int TYPE_SYSTEM_STATUS = 1;
-    public int acc;
     public int ccd;
     public boolean dormant;
     public int epb;
     public KeyEvent event;
     public int ill;
-    public int lastMode;
     public int llight;
-    public String realCurrentApp;
     public int rlight;
-    public int screenSwitch;
     public String topApp;
+    public int screenSwitch = 2;
+    public int acc = 2;
+    public String realCurrentApp = "";
+    public int lastMode = -1;
 
+    /* loaded from: classes.dex */
     public static final class ACC {
         public static final int NORMAL = 2;
         public static final int OFF = 0;
         public static final int OFF_READY = -1;
-        public static final int ON = 1;
+
+        /* renamed from: ON */
+        public static final int f249ON = 1;
     }
 
+    /* loaded from: classes.dex */
     public static final class CCD {
         public static final int NORMAL = 0;
         public static final int REVER = 1;
     }
 
+    /* loaded from: classes.dex */
     public static final class EPB {
         public static final int TURN_OFF = 0;
         public static final int TURN_ON = 1;
     }
 
+    /* loaded from: classes.dex */
     public static final class ILL {
         public static final int TURN_OFF = 0;
         public static final int TURN_ON = 1;
     }
 
+    /* loaded from: classes.dex */
     public static final class MODE {
         public static final int AUX = 4;
         public static final int BT_CALL = 7;
         public static final int BT_MUSIC = 6;
         public static final int DVD = 10;
-        public static final int FM = 0;
+
+        /* renamed from: FM */
+        public static final int f250FM = 0;
         public static final int MUSIC = 1;
         public static final int NAVI = 5;
         public static final int PIC = 3;
         public static final int REVER = 8;
-        public static final int TV = 9;
+
+        /* renamed from: TV */
+        public static final int f251TV = 9;
         public static final int VIDEO = 2;
     }
 
+    /* loaded from: classes.dex */
     public static final class RLIGHT {
         public static final int NORMAL = 0;
         public static final int OPEN = 1;
     }
 
+    /* loaded from: classes.dex */
     public static final class SCREEN {
         public static final int NORMAL = 2;
         public static final int OFF = 0;
-        public static final int ON = 1;
+
+        /* renamed from: ON */
+        public static final int f252ON = 1;
     }
 
     public SystemStatus() {
-        this.screenSwitch = 2;
-        this.acc = 2;
         this.topApp = "";
-        this.realCurrentApp = "";
-        this.lastMode = -1;
         this.topApp = "";
     }
 
@@ -116,48 +128,48 @@ public class SystemStatus {
         return this.acc;
     }
 
-    public void setAcc(int acc2) {
-        this.acc = acc2;
+    public void setAcc(int acc) {
+        this.acc = acc;
     }
 
     public KeyEvent getEvent() {
         return this.event;
     }
 
-    public void setEvent(KeyEvent event2) {
-        this.event = event2;
+    public void setEvent(KeyEvent event) {
+        this.event = event;
     }
 
     public String getTopApp() {
         return this.topApp;
     }
 
-    public void setTopApp(String topApp2) {
-        this.topApp = topApp2;
+    public void setTopApp(String topApp) {
+        this.topApp = topApp;
     }
 
     public boolean isDormant() {
         return this.dormant;
     }
 
-    public void setDormant(boolean dormant2) {
-        this.dormant = dormant2;
+    public void setDormant(boolean dormant) {
+        this.dormant = dormant;
     }
 
     public int getLastMode() {
         return this.lastMode;
     }
 
-    public void setLastMode(int lastMode2) {
-        this.lastMode = lastMode2;
+    public void setLastMode(int lastMode) {
+        this.lastMode = lastMode;
     }
 
-    public void setScreenSwitch(int screenSwitch2) {
-        this.screenSwitch = screenSwitch2;
+    public void setScreenSwitch(int screenSwitch) {
+        this.screenSwitch = screenSwitch;
     }
 
     public static SystemStatus getStatusFormJson(String jsonArg) {
-        return (SystemStatus) new Gson().fromJson(jsonArg, SystemStatus.class);
+        return (SystemStatus) new Gson().fromJson(jsonArg, (Class<Object>) SystemStatus.class);
     }
 
     public boolean isRlightOpen() {
@@ -184,32 +196,32 @@ public class SystemStatus {
         return this.rlight;
     }
 
-    public void setRlight(int rlight2) {
-        this.rlight = rlight2;
+    public void setRlight(int rlight) {
+        this.rlight = rlight;
     }
 
     public int getCcd() {
         return this.ccd;
     }
 
-    public void setCcd(int ccd2) {
-        this.ccd = ccd2;
+    public void setCcd(int ccd) {
+        this.ccd = ccd;
     }
 
     public int getIll() {
         return this.ill;
     }
 
-    public void setIll(int ill2) {
-        this.ill = ill2;
+    public void setIll(int ill) {
+        this.ill = ill;
     }
 
     public int getEpb() {
         return this.epb;
     }
 
-    public void setEpb(int epb2) {
-        this.epb = epb2;
+    public void setEpb(int epb) {
+        this.epb = epb;
     }
 
     public boolean isAcc() {

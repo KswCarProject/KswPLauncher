@@ -12,19 +12,23 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class BlockingObservableLatest<T> implements Iterable<T> {
     final ObservableSource<T> source;
 
-    public BlockingObservableLatest(ObservableSource<T> source2) {
-        this.source = source2;
+    public BlockingObservableLatest(ObservableSource<T> source) {
+        this.source = source;
     }
 
+    @Override // java.lang.Iterable
     public Iterator<T> iterator() {
         BlockingObservableLatestIterator<T> lio = new BlockingObservableLatestIterator<>();
-        Observable.wrap(this.source).materialize().subscribe(lio);
+        Observable<Notification<T>> materialized = Observable.wrap(this.source).materialize();
+        materialized.subscribe(lio);
         return lio;
     }
 
+    /* loaded from: classes.dex */
     static final class BlockingObservableLatestIterator<T> extends DisposableObserver<Notification<T>> implements Iterator<T> {
         Notification<T> iteratorNotification;
         final Semaphore notify = new Semaphore(0);
@@ -33,42 +37,52 @@ public final class BlockingObservableLatest<T> implements Iterable<T> {
         BlockingObservableLatestIterator() {
         }
 
+        @Override // io.reactivex.Observer
+        public /* bridge */ /* synthetic */ void onNext(Object obj) {
+            onNext((Notification) ((Notification) obj));
+        }
+
         public void onNext(Notification<T> args) {
-            if (this.value.getAndSet(args) == null) {
+            boolean wasNotAvailable = this.value.getAndSet(args) == null;
+            if (wasNotAvailable) {
                 this.notify.release();
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable e) {
             RxJavaPlugins.onError(e);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
         }
 
+        @Override // java.util.Iterator
         public boolean hasNext() {
             Notification<T> notification = this.iteratorNotification;
-            if (notification == null || !notification.isOnError()) {
-                if (this.iteratorNotification == null) {
-                    try {
-                        BlockingHelper.verifyNonBlocking();
-                        this.notify.acquire();
-                        Notification<T> n = this.value.getAndSet((Object) null);
-                        this.iteratorNotification = n;
-                        if (n.isOnError()) {
-                            throw ExceptionHelper.wrapOrThrow(n.getError());
-                        }
-                    } catch (InterruptedException ex) {
-                        dispose();
-                        this.iteratorNotification = Notification.createOnError(ex);
-                        throw ExceptionHelper.wrapOrThrow(ex);
-                    }
-                }
-                return this.iteratorNotification.isOnNext();
+            if (notification != null && notification.isOnError()) {
+                throw ExceptionHelper.wrapOrThrow(this.iteratorNotification.getError());
             }
-            throw ExceptionHelper.wrapOrThrow(this.iteratorNotification.getError());
+            if (this.iteratorNotification == null) {
+                try {
+                    BlockingHelper.verifyNonBlocking();
+                    this.notify.acquire();
+                    Notification<T> n = this.value.getAndSet(null);
+                    this.iteratorNotification = n;
+                    if (n.isOnError()) {
+                        throw ExceptionHelper.wrapOrThrow(n.getError());
+                    }
+                } catch (InterruptedException ex) {
+                    dispose();
+                    this.iteratorNotification = Notification.createOnError(ex);
+                    throw ExceptionHelper.wrapOrThrow(ex);
+                }
+            }
+            return this.iteratorNotification.isOnNext();
         }
 
+        @Override // java.util.Iterator
         public T next() {
             if (hasNext()) {
                 T v = this.iteratorNotification.getValue();
@@ -78,6 +92,7 @@ public final class BlockingObservableLatest<T> implements Iterable<T> {
             throw new NoSuchElementException();
         }
 
+        @Override // java.util.Iterator
         public void remove() {
             throw new UnsupportedOperationException("Read-only iterator.");
         }

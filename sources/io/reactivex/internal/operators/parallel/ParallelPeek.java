@@ -14,6 +14,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class ParallelPeek<T> extends ParallelFlowable<T> {
     final Consumer<? super T> onAfterNext;
     final Action onAfterTerminated;
@@ -25,44 +26,49 @@ public final class ParallelPeek<T> extends ParallelFlowable<T> {
     final Consumer<? super Subscription> onSubscribe;
     final ParallelFlowable<T> source;
 
-    public ParallelPeek(ParallelFlowable<T> source2, Consumer<? super T> onNext2, Consumer<? super T> onAfterNext2, Consumer<? super Throwable> onError2, Action onComplete2, Action onAfterTerminated2, Consumer<? super Subscription> onSubscribe2, LongConsumer onRequest2, Action onCancel2) {
-        this.source = source2;
-        this.onNext = (Consumer) ObjectHelper.requireNonNull(onNext2, "onNext is null");
-        this.onAfterNext = (Consumer) ObjectHelper.requireNonNull(onAfterNext2, "onAfterNext is null");
-        this.onError = (Consumer) ObjectHelper.requireNonNull(onError2, "onError is null");
-        this.onComplete = (Action) ObjectHelper.requireNonNull(onComplete2, "onComplete is null");
-        this.onAfterTerminated = (Action) ObjectHelper.requireNonNull(onAfterTerminated2, "onAfterTerminated is null");
-        this.onSubscribe = (Consumer) ObjectHelper.requireNonNull(onSubscribe2, "onSubscribe is null");
-        this.onRequest = (LongConsumer) ObjectHelper.requireNonNull(onRequest2, "onRequest is null");
-        this.onCancel = (Action) ObjectHelper.requireNonNull(onCancel2, "onCancel is null");
+    public ParallelPeek(ParallelFlowable<T> source, Consumer<? super T> onNext, Consumer<? super T> onAfterNext, Consumer<? super Throwable> onError, Action onComplete, Action onAfterTerminated, Consumer<? super Subscription> onSubscribe, LongConsumer onRequest, Action onCancel) {
+        this.source = source;
+        this.onNext = (Consumer) ObjectHelper.requireNonNull(onNext, "onNext is null");
+        this.onAfterNext = (Consumer) ObjectHelper.requireNonNull(onAfterNext, "onAfterNext is null");
+        this.onError = (Consumer) ObjectHelper.requireNonNull(onError, "onError is null");
+        this.onComplete = (Action) ObjectHelper.requireNonNull(onComplete, "onComplete is null");
+        this.onAfterTerminated = (Action) ObjectHelper.requireNonNull(onAfterTerminated, "onAfterTerminated is null");
+        this.onSubscribe = (Consumer) ObjectHelper.requireNonNull(onSubscribe, "onSubscribe is null");
+        this.onRequest = (LongConsumer) ObjectHelper.requireNonNull(onRequest, "onRequest is null");
+        this.onCancel = (Action) ObjectHelper.requireNonNull(onCancel, "onCancel is null");
     }
 
+    @Override // io.reactivex.parallel.ParallelFlowable
     public void subscribe(Subscriber<? super T>[] subscribers) {
-        if (validate(subscribers)) {
-            int n = subscribers.length;
-            Subscriber<? super T>[] parents = new Subscriber[n];
-            for (int i = 0; i < n; i++) {
-                parents[i] = new ParallelPeekSubscriber<>(subscribers[i], this);
-            }
-            this.source.subscribe(parents);
+        if (!validate(subscribers)) {
+            return;
         }
+        int n = subscribers.length;
+        Subscriber<? super T>[] parents = new Subscriber[n];
+        for (int i = 0; i < n; i++) {
+            parents[i] = new ParallelPeekSubscriber(subscribers[i], this);
+        }
+        this.source.subscribe(parents);
     }
 
+    @Override // io.reactivex.parallel.ParallelFlowable
     public int parallelism() {
         return this.source.parallelism();
     }
 
+    /* loaded from: classes.dex */
     static final class ParallelPeekSubscriber<T> implements FlowableSubscriber<T>, Subscription {
         boolean done;
         final Subscriber<? super T> downstream;
         final ParallelPeek<T> parent;
         Subscription upstream;
 
-        ParallelPeekSubscriber(Subscriber<? super T> actual, ParallelPeek<T> parent2) {
+        ParallelPeekSubscriber(Subscriber<? super T> actual, ParallelPeek<T> parent) {
             this.downstream = actual;
-            this.parent = parent2;
+            this.parent = parent;
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             try {
                 this.parent.onRequest.accept(n);
@@ -73,6 +79,7 @@ public final class ParallelPeek<T> extends ParallelFlowable<T> {
             this.upstream.request(n);
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             try {
                 this.parent.onCancel.run();
@@ -83,6 +90,7 @@ public final class ParallelPeek<T> extends ParallelFlowable<T> {
             this.upstream.cancel();
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -98,6 +106,7 @@ public final class ParallelPeek<T> extends ParallelFlowable<T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             if (!this.done) {
                 try {
@@ -116,6 +125,7 @@ public final class ParallelPeek<T> extends ParallelFlowable<T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -137,6 +147,7 @@ public final class ParallelPeek<T> extends ParallelFlowable<T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             if (!this.done) {
                 this.done = true;

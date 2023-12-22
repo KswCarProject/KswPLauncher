@@ -7,16 +7,18 @@ import android.provider.Settings;
 import android.view.View;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes5.dex */
 public class BmwId6gsViewMode extends LauncherViewModel {
-    private ContentObserver contentObserver = new ContentObserver(new Handler()) {
+    public ObservableInt pageIndex = new ObservableInt();
+    public ObservableInt index = new ObservableInt();
+    private ContentObserver contentObserver = new ContentObserver(new Handler()) { // from class: com.wits.ksw.launcher.view.bmwevoid6gs.BmwId6gsViewMode.1
+        @Override // android.database.ContentObserver
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
             BmwId6gsViewMode bmwId6gsViewMode = BmwId6gsViewMode.this;
             bmwId6gsViewMode.setIndex(BmwId6GsConfig.getIndex(bmwId6gsViewMode.context));
         }
     };
-    public ObservableInt index = new ObservableInt();
-    public ObservableInt pageIndex = new ObservableInt();
 
     public BmwId6gsViewMode() {
         setPageIndex(0);
@@ -37,9 +39,9 @@ public class BmwId6gsViewMode extends LauncherViewModel {
         setPageIndex(item);
     }
 
-    public void onClick(View view, int index2) {
-        BmwId6GsConfig.saveIndex(this.context, index2);
-        switch (index2) {
+    public void onClick(View view, int index) {
+        BmwId6GsConfig.saveIndex(this.context, index);
+        switch (index) {
             case 0:
                 openNaviApp(view);
                 return;

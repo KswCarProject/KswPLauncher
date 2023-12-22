@@ -1,21 +1,22 @@
 package skin.support.widget;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatRadioButton;
+import android.support.p004v7.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
-import skin.support.R;
+import skin.support.C1899R;
 
+/* loaded from: classes.dex */
 public class SkinCompatRadioButton extends AppCompatRadioButton implements SkinCompatSupportable {
     private SkinCompatBackgroundHelper mBackgroundTintHelper;
     private SkinCompatCompoundButtonHelper mCompoundButtonHelper;
     private SkinCompatTextHelper mTextHelper;
 
     public SkinCompatRadioButton(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public SkinCompatRadioButton(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.radioButtonStyle);
+        this(context, attrs, C1899R.attr.radioButtonStyle);
     }
 
     public SkinCompatRadioButton(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -31,6 +32,7 @@ public class SkinCompatRadioButton extends AppCompatRadioButton implements SkinC
         skinCompatBackgroundHelper.loadFromAttributes(attrs, defStyleAttr);
     }
 
+    @Override // android.support.p004v7.widget.AppCompatRadioButton, android.widget.CompoundButton
     public void setButtonDrawable(int resId) {
         super.setButtonDrawable(resId);
         SkinCompatCompoundButtonHelper skinCompatCompoundButtonHelper = this.mCompoundButtonHelper;
@@ -39,10 +41,12 @@ public class SkinCompatRadioButton extends AppCompatRadioButton implements SkinC
         }
     }
 
+    @Override // android.widget.TextView
     public void setTextAppearance(int resId) {
         setTextAppearance(getContext(), resId);
     }
 
+    @Override // android.widget.TextView
     public void setTextAppearance(Context context, int resId) {
         super.setTextAppearance(context, resId);
         SkinCompatTextHelper skinCompatTextHelper = this.mTextHelper;
@@ -51,6 +55,7 @@ public class SkinCompatRadioButton extends AppCompatRadioButton implements SkinC
         }
     }
 
+    @Override // android.widget.TextView
     public void setCompoundDrawablesRelativeWithIntrinsicBounds(int start, int top, int end, int bottom) {
         super.setCompoundDrawablesRelativeWithIntrinsicBounds(start, top, end, bottom);
         SkinCompatTextHelper skinCompatTextHelper = this.mTextHelper;
@@ -59,6 +64,7 @@ public class SkinCompatRadioButton extends AppCompatRadioButton implements SkinC
         }
     }
 
+    @Override // android.widget.TextView
     public void setCompoundDrawablesWithIntrinsicBounds(int left, int top, int right, int bottom) {
         super.setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom);
         SkinCompatTextHelper skinCompatTextHelper = this.mTextHelper;
@@ -67,6 +73,7 @@ public class SkinCompatRadioButton extends AppCompatRadioButton implements SkinC
         }
     }
 
+    @Override // android.view.View
     public void setBackgroundResource(int resId) {
         super.setBackgroundResource(resId);
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
@@ -75,6 +82,7 @@ public class SkinCompatRadioButton extends AppCompatRadioButton implements SkinC
         }
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
         if (skinCompatBackgroundHelper != null) {

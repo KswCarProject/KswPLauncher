@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:scrollbars="none" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:scrollbars="none" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
     <ImageView android:id="@+id/img_twoDefaul" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="50dp" android:src="@drawable/romeo_settings_icon3"/>
     <LinearLayout android:orientation="vertical" android:id="@+id/ll_bv" android:paddingLeft="80dp" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <RelativeLayout android:id="@+id/relate_beigld" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content">

@@ -1,24 +1,25 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
+import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.generated.callback.OnClickListener;
-import com.wits.ksw.launcher.bean.CarInfo;
 import com.wits.ksw.launcher.model.LauncherViewModel;
+import com.wits.ksw.launcher.view.p006ug.UgHomeImageView;
 
+/* loaded from: classes7.dex */
 public class KswmbuxHomeThreeBindingImpl extends KswmbuxHomeThreeBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback148;
-    private final View.OnClickListener mCallback149;
-    private final View.OnClickListener mCallback150;
+    private final View.OnClickListener mCallback231;
+    private final View.OnClickListener mCallback232;
+    private final View.OnClickListener mCallback233;
     private long mDirtyFlags;
     private final TextView mboundView2;
 
@@ -27,29 +28,31 @@ public class KswmbuxHomeThreeBindingImpl extends KswmbuxHomeThreeBinding impleme
     }
 
     private KswmbuxHomeThreeBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 1, bindings[0], bindings[3], bindings[1], bindings[4]);
-        this.mDirtyFlags = -1;
-        this.carConstraintLayout.setTag((Object) null);
-        this.kswmbuxHomeCarVaiw.setTag((Object) null);
-        this.kswmbuxHomeDashboradVaiw.setTag((Object) null);
-        this.kswmbuxHomeEasyVaiw.setTag((Object) null);
-        TextView textView = bindings[2];
+        super(bindingComponent, root, 1, (ConstraintLayout) bindings[0], (UgHomeImageView) bindings[3], (UgHomeImageView) bindings[1], (UgHomeImageView) bindings[4]);
+        this.mDirtyFlags = -1L;
+        this.carConstraintLayout.setTag(null);
+        this.kswmbuxHomeCarVaiw.setTag(null);
+        this.kswmbuxHomeDashboradVaiw.setTag(null);
+        this.kswmbuxHomeEasyVaiw.setTag(null);
+        TextView textView = (TextView) bindings[2];
         this.mboundView2 = textView;
-        textView.setTag((Object) null);
+        textView.setTag(null);
         setRootTag(root);
-        this.mCallback148 = new OnClickListener(this, 1);
-        this.mCallback149 = new OnClickListener(this, 2);
-        this.mCallback150 = new OnClickListener(this, 3);
+        this.mCallback232 = new OnClickListener(this, 2);
+        this.mCallback233 = new OnClickListener(this, 3);
+        this.mCallback231 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 4;
+            this.mDirtyFlags = 4L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -59,14 +62,16 @@ public class KswmbuxHomeThreeBindingImpl extends KswmbuxHomeThreeBinding impleme
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (25 != variableId) {
-            return false;
+        if (25 == variableId) {
+            setViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.KswmbuxHomeThreeBinding
     public void setViewModel(LauncherViewModel ViewModel) {
         this.mViewModel = ViewModel;
         synchronized (this) {
@@ -76,8 +81,8 @@ public class KswmbuxHomeThreeBindingImpl extends KswmbuxHomeThreeBinding impleme
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeViewModelCarInfoOilValue((ObservableField) object, fieldId);
@@ -86,56 +91,56 @@ public class KswmbuxHomeThreeBindingImpl extends KswmbuxHomeThreeBinding impleme
         }
     }
 
-    private boolean onChangeViewModelCarInfoOilValue(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelCarInfoOilValue(ObservableField<String> ViewModelCarInfoOilValue, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         ObservableField<String> viewModelCarInfoOilValue = null;
         String mboundView2AndroidStringOilSizeViewModelCarInfoOilValue = null;
         LauncherViewModel launcherViewModel = this.mViewModel;
         String viewModelCarInfoOilValueGet = null;
         if ((dirtyFlags & 5) != 0) {
-            CarInfo viewModelCarInfo = LauncherViewModel.carInfo;
+            com.wits.ksw.launcher.bean.CarInfo viewModelCarInfo = LauncherViewModel.carInfo;
             if (viewModelCarInfo != null) {
                 viewModelCarInfoOilValue = viewModelCarInfo.oilValue;
             }
-            updateRegistration(0, (Observable) viewModelCarInfoOilValue);
+            updateRegistration(0, viewModelCarInfoOilValue);
             if (viewModelCarInfoOilValue != null) {
-                viewModelCarInfoOilValueGet = viewModelCarInfoOilValue.get();
+                String viewModelCarInfoOilValueGet2 = viewModelCarInfoOilValue.get();
+                viewModelCarInfoOilValueGet = viewModelCarInfoOilValueGet2;
             }
-            mboundView2AndroidStringOilSizeViewModelCarInfoOilValue = this.mboundView2.getResources().getString(R.string.oil_size, new Object[]{viewModelCarInfoOilValueGet});
+            mboundView2AndroidStringOilSizeViewModelCarInfoOilValue = this.mboundView2.getResources().getString(C0899R.string.oil_size, viewModelCarInfoOilValueGet);
         }
         if ((4 & dirtyFlags) != 0) {
-            this.kswmbuxHomeCarVaiw.setOnClickListener(this.mCallback149);
-            this.kswmbuxHomeDashboradVaiw.setOnClickListener(this.mCallback148);
-            this.kswmbuxHomeEasyVaiw.setOnClickListener(this.mCallback150);
+            this.kswmbuxHomeCarVaiw.setOnClickListener(this.mCallback232);
+            this.kswmbuxHomeDashboradVaiw.setOnClickListener(this.mCallback231);
+            this.kswmbuxHomeEasyVaiw.setOnClickListener(this.mCallback233);
         }
         if ((5 & dirtyFlags) != 0) {
             TextViewBindingAdapter.setText(this.mboundView2, mboundView2AndroidStringOilSizeViewModelCarInfoOilValue);
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean viewModelJavaLangObjectNull = true;
+        boolean viewModelJavaLangObjectNull;
         switch (sourceId) {
             case 1:
                 LauncherViewModel viewModel = this.mViewModel;
-                if (viewModel == null) {
-                    viewModelJavaLangObjectNull = false;
-                }
+                viewModelJavaLangObjectNull = viewModel != null;
                 if (viewModelJavaLangObjectNull) {
                     viewModel.openDashboard(callbackArg_0);
                     return;
@@ -143,9 +148,7 @@ public class KswmbuxHomeThreeBindingImpl extends KswmbuxHomeThreeBinding impleme
                 return;
             case 2:
                 LauncherViewModel viewModel2 = this.mViewModel;
-                if (viewModel2 == null) {
-                    viewModelJavaLangObjectNull = false;
-                }
+                viewModelJavaLangObjectNull = viewModel2 != null;
                 if (viewModelJavaLangObjectNull) {
                     viewModel2.openCar(callbackArg_0);
                     return;
@@ -153,9 +156,7 @@ public class KswmbuxHomeThreeBindingImpl extends KswmbuxHomeThreeBinding impleme
                 return;
             case 3:
                 LauncherViewModel viewModel3 = this.mViewModel;
-                if (viewModel3 == null) {
-                    viewModelJavaLangObjectNull = false;
-                }
+                viewModelJavaLangObjectNull = viewModel3 != null;
                 if (viewModelJavaLangObjectNull) {
                     viewModel3.openShouJiHuLian(callbackArg_0);
                     return;

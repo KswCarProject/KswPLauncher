@@ -4,6 +4,7 @@ import com.google.zxing.DecodeHintType;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class StringUtils {
     private static final boolean ASSUME_SHIFT_JIS;
     private static final String EUC_JP = "EUC_JP";
@@ -25,9 +26,8 @@ public final class StringUtils {
     public static String guessEncoding(byte[] bytes, Map<DecodeHintType, ?> hints) {
         int length;
         byte[] bArr = bytes;
-        Map<DecodeHintType, ?> map = hints;
-        if (map != null && map.containsKey(DecodeHintType.CHARACTER_SET)) {
-            return map.get(DecodeHintType.CHARACTER_SET).toString();
+        if (hints != null && hints.containsKey(DecodeHintType.CHARACTER_SET)) {
+            return hints.get(DecodeHintType.CHARACTER_SET).toString();
         }
         int length2 = bArr.length;
         boolean canBeShiftJIS = true;
@@ -51,18 +51,22 @@ public final class StringUtils {
         boolean utf8bom = z;
         int i = 0;
         while (true) {
-            if (i < length2) {
-                if (!canBeISO88591 && !canBeShiftJIS && !canBeUTF8) {
-                    length = length2;
-                    break;
-                }
+            if (i >= length2) {
+                length = length2;
+                break;
+            } else if (!canBeISO88591 && !canBeShiftJIS && !canBeUTF8) {
+                length = length2;
+                break;
+            } else {
                 int length3 = length2;
-                int value = bArr[i] & 255;
+                int length4 = bArr[i];
+                int value = length4 & 255;
                 if (canBeUTF8) {
                     if (utf8BytesLeft > 0) {
                         if ((value & 128) != 0) {
                             utf8BytesLeft--;
                         }
+                        canBeUTF8 = false;
                     } else if ((value & 128) != 0) {
                         if ((value & 64) != 0) {
                             utf8BytesLeft++;
@@ -80,8 +84,8 @@ public final class StringUtils {
                                 }
                             }
                         }
+                        canBeUTF8 = false;
                     }
-                    canBeUTF8 = false;
                 }
                 if (canBeISO88591) {
                     if (value > 127 && value < 160) {
@@ -102,19 +106,19 @@ public final class StringUtils {
                     } else if (value > 160 && value < 224) {
                         sjisKatakanaChars++;
                         sjisCurKatakanaWordLength++;
-                        if (sjisCurKatakanaWordLength > sjisMaxKatakanaWordLength) {
-                            sjisMaxKatakanaWordLength = sjisCurKatakanaWordLength;
+                        if (sjisCurKatakanaWordLength <= sjisMaxKatakanaWordLength) {
                             sjisCurDoubleBytesWordLength = 0;
                         } else {
+                            sjisMaxKatakanaWordLength = sjisCurKatakanaWordLength;
                             sjisCurDoubleBytesWordLength = 0;
                         }
                     } else if (value > 127) {
                         sjisBytesLeft++;
                         sjisCurDoubleBytesWordLength++;
-                        if (sjisCurDoubleBytesWordLength > sjisMaxDoubleBytesWordLength) {
-                            sjisMaxDoubleBytesWordLength = sjisCurDoubleBytesWordLength;
+                        if (sjisCurDoubleBytesWordLength <= sjisMaxDoubleBytesWordLength) {
                             sjisCurKatakanaWordLength = 0;
                         } else {
+                            sjisMaxDoubleBytesWordLength = sjisCurDoubleBytesWordLength;
                             sjisCurKatakanaWordLength = 0;
                         }
                     } else {
@@ -125,9 +129,6 @@ public final class StringUtils {
                 i++;
                 bArr = bytes;
                 length2 = length3;
-            } else {
-                length = length2;
-                break;
             }
         }
         if (canBeUTF8 && utf8BytesLeft > 0) {
@@ -136,35 +137,27 @@ public final class StringUtils {
         if (canBeShiftJIS && sjisBytesLeft > 0) {
             canBeShiftJIS = false;
         }
-        if (canBeUTF8 && (utf8bom || utf2BytesChars + utf3BytesChars + utf4BytesChars > 0)) {
-            return UTF8;
-        }
-        if (canBeShiftJIS && (ASSUME_SHIFT_JIS || sjisMaxKatakanaWordLength >= 3 || sjisMaxDoubleBytesWordLength >= 3)) {
+        if (!canBeUTF8 || (!utf8bom && utf2BytesChars + utf3BytesChars + utf4BytesChars <= 0)) {
+            if (!canBeShiftJIS || (!ASSUME_SHIFT_JIS && sjisMaxKatakanaWordLength < 3 && sjisMaxDoubleBytesWordLength < 3)) {
+                if (canBeISO88591 && canBeShiftJIS) {
+                    if ((sjisMaxKatakanaWordLength == 2 && sjisKatakanaChars == 2) || isoHighOther * 10 >= length) {
+                        return SHIFT_JIS;
+                    }
+                    return ISO88591;
+                } else if (canBeISO88591) {
+                    return ISO88591;
+                } else {
+                    if (canBeShiftJIS) {
+                        return SHIFT_JIS;
+                    }
+                    if (canBeUTF8) {
+                        return UTF8;
+                    }
+                    return PLATFORM_DEFAULT_ENCODING;
+                }
+            }
             return SHIFT_JIS;
         }
-        if (!canBeISO88591 || !canBeShiftJIS) {
-            int i2 = length;
-            if (canBeISO88591) {
-                return ISO88591;
-            }
-            if (canBeShiftJIS) {
-                return SHIFT_JIS;
-            }
-            if (canBeUTF8) {
-                return UTF8;
-            }
-            return PLATFORM_DEFAULT_ENCODING;
-        }
-        if (sjisMaxKatakanaWordLength == 2 && sjisKatakanaChars == 2) {
-            boolean z2 = utf8bom;
-            int i3 = length;
-        } else {
-            boolean z3 = utf8bom;
-            if (isoHighOther * 10 >= length) {
-                return SHIFT_JIS;
-            }
-            return ISO88591;
-        }
-        return SHIFT_JIS;
+        return UTF8;
     }
 }

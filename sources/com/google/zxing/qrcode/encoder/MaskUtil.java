@@ -1,10 +1,19 @@
 package com.google.zxing.qrcode.encoder;
 
+/* loaded from: classes.dex */
 final class MaskUtil {
-    private static final int N1 = 3;
-    private static final int N2 = 3;
-    private static final int N3 = 40;
-    private static final int N4 = 10;
+
+    /* renamed from: N1 */
+    private static final int f120N1 = 3;
+
+    /* renamed from: N2 */
+    private static final int f121N2 = 3;
+
+    /* renamed from: N3 */
+    private static final int f122N3 = 40;
+
+    /* renamed from: N4 */
+    private static final int f123N4 = 10;
 
     private MaskUtil() {
     }
@@ -21,14 +30,14 @@ final class MaskUtil {
         for (int y = 0; y < height - 1; y++) {
             byte[] arrayY = array[y];
             for (int x = 0; x < width - 1; x++) {
-                byte b = arrayY[x];
-                int value = b;
-                if (b == arrayY[x + 1] && value == array[y + 1][x] && value == array[y + 1][x + 1]) {
+                int value = arrayY[x];
+                if (value == arrayY[x + 1] && value == array[y + 1][x] && value == array[y + 1][x + 1]) {
                     penalty++;
                 }
             }
         }
-        return penalty * 3;
+        int y2 = penalty * 3;
+        return y2;
     }
 
     static int applyMaskPenaltyRule3(ByteMatrix matrix) {
@@ -47,7 +56,8 @@ final class MaskUtil {
                 }
             }
         }
-        return numPenalties * 40;
+        int y2 = numPenalties * 40;
+        return y2;
     }
 
     private static boolean isWhiteHorizontal(byte[] rowArray, int from, int to) {
@@ -93,7 +103,8 @@ final class MaskUtil {
         int intermediate;
         switch (maskPattern) {
             case 0:
-                intermediate = (y + x) & 1;
+                int intermediate2 = y + x;
+                intermediate = intermediate2 & 1;
                 break;
             case 1:
                 intermediate = y & 1;
@@ -102,18 +113,20 @@ final class MaskUtil {
                 intermediate = x % 3;
                 break;
             case 3:
-                intermediate = (y + x) % 3;
+                int intermediate3 = y + x;
+                intermediate = intermediate3 % 3;
                 break;
             case 4:
-                intermediate = ((y / 2) + (x / 3)) & 1;
+                int intermediate4 = y / 2;
+                intermediate = (intermediate4 + (x / 3)) & 1;
                 break;
             case 5:
-                int intermediate2 = y * x;
-                intermediate = (intermediate2 & 1) + (intermediate2 % 3);
+                int intermediate5 = y * x;
+                intermediate = (intermediate5 & 1) + (intermediate5 % 3);
                 break;
             case 6:
-                int intermediate3 = y * x;
-                intermediate = ((intermediate3 & 1) + (intermediate3 % 3)) & 1;
+                int intermediate6 = y * x;
+                intermediate = ((intermediate6 & 1) + (intermediate6 % 3)) & 1;
                 break;
             case 7:
                 intermediate = (((y * x) % 3) + ((y + x) & 1)) & 1;
@@ -121,10 +134,7 @@ final class MaskUtil {
             default:
                 throw new IllegalArgumentException("Invalid mask pattern: ".concat(String.valueOf(maskPattern)));
         }
-        if (intermediate == 0) {
-            return true;
-        }
-        return false;
+        return intermediate == 0;
     }
 
     private static int applyMaskPenaltyRule1Internal(ByteMatrix matrix, boolean isHorizontal) {

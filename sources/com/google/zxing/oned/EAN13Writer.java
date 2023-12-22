@@ -7,41 +7,44 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class EAN13Writer extends UPCEANWriter {
     private static final int CODE_WIDTH = 95;
 
+    @Override // com.google.zxing.oned.OneDimensionalCodeWriter, com.google.zxing.Writer
     public BitMatrix encode(String contents, BarcodeFormat format, int width, int height, Map<EncodeHintType, ?> hints) throws WriterException {
-        if (format == BarcodeFormat.EAN_13) {
-            return super.encode(contents, format, width, height, hints);
+        if (format != BarcodeFormat.EAN_13) {
+            throw new IllegalArgumentException("Can only encode EAN_13, but got ".concat(String.valueOf(format)));
         }
-        throw new IllegalArgumentException("Can only encode EAN_13, but got ".concat(String.valueOf(format)));
+        return super.encode(contents, format, width, height, hints);
     }
 
+    @Override // com.google.zxing.oned.OneDimensionalCodeWriter
     public boolean[] encode(String contents) {
         int length = contents.length();
-        int length2 = length;
         switch (length) {
             case 12:
                 try {
-                    contents = contents + UPCEANReader.getStandardUPCEANChecksum(contents);
+                    int check = UPCEANReader.getStandardUPCEANChecksum(contents);
+                    contents = contents + check;
                     break;
                 } catch (FormatException fe) {
                     throw new IllegalArgumentException(fe);
                 }
             case 13:
                 try {
-                    if (UPCEANReader.checkStandardUPCEANChecksum(contents)) {
-                        break;
-                    } else {
+                    if (!UPCEANReader.checkStandardUPCEANChecksum(contents)) {
                         throw new IllegalArgumentException("Contents do not pass checksum");
                     }
+                    break;
                 } catch (FormatException e) {
                     throw new IllegalArgumentException("Illegal contents");
                 }
             default:
-                throw new IllegalArgumentException("Requested contents should be 12 or 13 digits long, but got ".concat(String.valueOf(length2)));
+                throw new IllegalArgumentException("Requested contents should be 12 or 13 digits long, but got ".concat(String.valueOf(length)));
         }
-        int parities = EAN13Reader.FIRST_DIGIT_ENCODINGS[Character.digit(contents.charAt(0), 10)];
+        int firstDigit = Character.digit(contents.charAt(0), 10);
+        int parities = EAN13Reader.FIRST_DIGIT_ENCODINGS[firstDigit];
         boolean[] result = new boolean[95];
         int pos = appendPattern(result, 0, UPCEANReader.START_END_PATTERN, true) + 0;
         for (int i = 1; i <= 6; i++) {

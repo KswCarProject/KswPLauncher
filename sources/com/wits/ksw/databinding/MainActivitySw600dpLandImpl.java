@@ -3,66 +3,72 @@ package com.wits.ksw.databinding;
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Guideline;
+import android.support.p001v4.view.ViewPager;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
+import android.widget.Button;
+import android.widget.ImageView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public class MainActivitySw600dpLandImpl extends MainActivity implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback323;
-    private final View.OnClickListener mCallback324;
-    private final View.OnClickListener mCallback325;
-    private final View.OnClickListener mCallback326;
-    private final View.OnClickListener mCallback327;
+    private final View.OnClickListener mCallback467;
+    private final View.OnClickListener mCallback468;
+    private final View.OnClickListener mCallback469;
+    private final View.OnClickListener mCallback470;
+    private final View.OnClickListener mCallback471;
     private long mDirtyFlags;
     private final ConstraintLayout mboundView0;
 
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.guideline, 6);
-        sparseIntArray.put(R.id.imageView1, 7);
-        sparseIntArray.put(R.id.imageView4, 8);
-        sparseIntArray.put(R.id.imageView3, 9);
-        sparseIntArray.put(R.id.viewPage, 10);
-        sparseIntArray.put(R.id.menuConstraintLayout, 11);
+        sparseIntArray.put(C0899R.C0901id.guideline, 6);
+        sparseIntArray.put(C0899R.C0901id.imageView1, 7);
+        sparseIntArray.put(C0899R.C0901id.imageView4, 8);
+        sparseIntArray.put(C0899R.C0901id.imageView3, 9);
+        sparseIntArray.put(C0899R.C0901id.viewPage, 10);
+        sparseIntArray.put(C0899R.C0901id.menuConstraintLayout, 11);
     }
 
     public MainActivitySw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 12, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private MainActivitySw600dpLandImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[6], bindings[7], bindings[9], bindings[8], bindings[3], bindings[2], bindings[1], bindings[4], bindings[5], bindings[11], bindings[10]);
-        this.mDirtyFlags = -1;
-        ConstraintLayout constraintLayout = bindings[0];
+        super(bindingComponent, root, 0, (Guideline) bindings[6], (ImageView) bindings[7], (ImageView) bindings[9], (ImageView) bindings[8], (Button) bindings[3], (Button) bindings[2], (Button) bindings[1], (Button) bindings[4], (Button) bindings[5], (ConstraintLayout) bindings[11], (ViewPager) bindings[10]);
+        this.mDirtyFlags = -1L;
+        ConstraintLayout constraintLayout = (ConstraintLayout) bindings[0];
         this.mboundView0 = constraintLayout;
-        constraintLayout.setTag((Object) null);
-        this.menuButton1.setTag((Object) null);
-        this.menuButton2.setTag((Object) null);
-        this.menuButton3.setTag((Object) null);
-        this.menuButton4.setTag((Object) null);
-        this.menuButton5.setTag((Object) null);
+        constraintLayout.setTag(null);
+        this.menuButton1.setTag(null);
+        this.menuButton2.setTag(null);
+        this.menuButton3.setTag(null);
+        this.menuButton4.setTag(null);
+        this.menuButton5.setTag(null);
         setRootTag(root);
-        this.mCallback325 = new OnClickListener(this, 3);
-        this.mCallback324 = new OnClickListener(this, 2);
-        this.mCallback327 = new OnClickListener(this, 5);
-        this.mCallback326 = new OnClickListener(this, 4);
-        this.mCallback323 = new OnClickListener(this, 1);
+        this.mCallback468 = new OnClickListener(this, 2);
+        this.mCallback467 = new OnClickListener(this, 1);
+        this.mCallback469 = new OnClickListener(this, 3);
+        this.mCallback471 = new OnClickListener(this, 5);
+        this.mCallback470 = new OnClickListener(this, 4);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 2;
+            this.mDirtyFlags = 2L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -72,14 +78,16 @@ public class MainActivitySw600dpLandImpl extends MainActivity implements OnClick
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (7 != variableId) {
-            return false;
+        if (7 == variableId) {
+            setLauncherViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setLauncherViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.MainActivity
     public void setLauncherViewModel(LauncherViewModel LauncherViewModel) {
         this.mLauncherViewModel = LauncherViewModel;
         synchronized (this) {
@@ -89,36 +97,35 @@ public class MainActivitySw600dpLandImpl extends MainActivity implements OnClick
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         LauncherViewModel launcherViewModel = this.mLauncherViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.menuButton1.setOnClickListener(this.mCallback325);
-            this.menuButton2.setOnClickListener(this.mCallback324);
-            this.menuButton3.setOnClickListener(this.mCallback323);
-            this.menuButton4.setOnClickListener(this.mCallback326);
-            this.menuButton5.setOnClickListener(this.mCallback327);
+            this.menuButton1.setOnClickListener(this.mCallback469);
+            this.menuButton2.setOnClickListener(this.mCallback468);
+            this.menuButton3.setOnClickListener(this.mCallback467);
+            this.menuButton4.setOnClickListener(this.mCallback470);
+            this.menuButton5.setOnClickListener(this.mCallback471);
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean launcherViewModelJavaLangObjectNull = true;
+        boolean launcherViewModelJavaLangObjectNull;
         switch (sourceId) {
             case 1:
                 LauncherViewModel launcherViewModel = this.mLauncherViewModel;
-                if (launcherViewModel == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel.openSettings(callbackArg_0);
                     return;
@@ -126,9 +133,7 @@ public class MainActivitySw600dpLandImpl extends MainActivity implements OnClick
                 return;
             case 2:
                 LauncherViewModel launcherViewModel2 = this.mLauncherViewModel;
-                if (launcherViewModel2 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel2 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel2.openNaviApp(callbackArg_0);
                     return;
@@ -136,9 +141,7 @@ public class MainActivitySw600dpLandImpl extends MainActivity implements OnClick
                 return;
             case 3:
                 LauncherViewModel launcherViewModel3 = this.mLauncherViewModel;
-                if (launcherViewModel3 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel3 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel3.openChoseMusic(callbackArg_0);
                     return;
@@ -146,9 +149,7 @@ public class MainActivitySw600dpLandImpl extends MainActivity implements OnClick
                 return;
             case 4:
                 LauncherViewModel launcherViewModel4 = this.mLauncherViewModel;
-                if (launcherViewModel4 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel4 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel4.openCar(callbackArg_0);
                     return;
@@ -156,9 +157,7 @@ public class MainActivitySw600dpLandImpl extends MainActivity implements OnClick
                 return;
             case 5:
                 LauncherViewModel launcherViewModel5 = this.mLauncherViewModel;
-                if (launcherViewModel5 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel5 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel5.openApps(callbackArg_0);
                     return;

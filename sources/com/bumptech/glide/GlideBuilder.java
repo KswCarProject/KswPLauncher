@@ -1,7 +1,7 @@
 package com.bumptech.glide;
 
 import android.content.Context;
-import android.support.v4.util.ArrayMap;
+import android.support.p001v4.util.ArrayMap;
 import com.bumptech.glide.load.engine.Engine;
 import com.bumptech.glide.load.engine.bitmap_recycle.ArrayPool;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
@@ -24,42 +24,43 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class GlideBuilder {
     private GlideExecutor animationExecutor;
     private ArrayPool arrayPool;
     private BitmapPool bitmapPool;
     private ConnectivityMonitorFactory connectivityMonitorFactory;
     private List<RequestListener<Object>> defaultRequestListeners;
-    private RequestOptions defaultRequestOptions = new RequestOptions();
-    private final Map<Class<?>, TransitionOptions<?, ?>> defaultTransitionOptions = new ArrayMap();
     private GlideExecutor diskCacheExecutor;
     private DiskCache.Factory diskCacheFactory;
     private Engine engine;
     private boolean isActiveResourceRetentionAllowed;
     private boolean isLoggingRequestOriginsEnabled;
-    private int logLevel = 4;
     private MemoryCache memoryCache;
     private MemorySizeCalculator memorySizeCalculator;
     private RequestManagerRetriever.RequestManagerFactory requestManagerFactory;
     private GlideExecutor sourceExecutor;
+    private final Map<Class<?>, TransitionOptions<?, ?>> defaultTransitionOptions = new ArrayMap();
+    private int logLevel = 4;
+    private RequestOptions defaultRequestOptions = new RequestOptions();
 
-    public GlideBuilder setBitmapPool(BitmapPool bitmapPool2) {
-        this.bitmapPool = bitmapPool2;
+    public GlideBuilder setBitmapPool(BitmapPool bitmapPool) {
+        this.bitmapPool = bitmapPool;
         return this;
     }
 
-    public GlideBuilder setArrayPool(ArrayPool arrayPool2) {
-        this.arrayPool = arrayPool2;
+    public GlideBuilder setArrayPool(ArrayPool arrayPool) {
+        this.arrayPool = arrayPool;
         return this;
     }
 
-    public GlideBuilder setMemoryCache(MemoryCache memoryCache2) {
-        this.memoryCache = memoryCache2;
+    public GlideBuilder setMemoryCache(MemoryCache memoryCache) {
+        this.memoryCache = memoryCache;
         return this;
     }
 
-    public GlideBuilder setDiskCache(DiskCache.Factory diskCacheFactory2) {
-        this.diskCacheFactory = diskCacheFactory2;
+    public GlideBuilder setDiskCache(DiskCache.Factory diskCacheFactory) {
+        this.diskCacheFactory = diskCacheFactory;
         return this;
     }
 
@@ -107,16 +108,16 @@ public final class GlideBuilder {
         return this;
     }
 
-    public GlideBuilder setLogLevel(int logLevel2) {
-        if (logLevel2 < 2 || logLevel2 > 6) {
+    public GlideBuilder setLogLevel(int logLevel) {
+        if (logLevel < 2 || logLevel > 6) {
             throw new IllegalArgumentException("Log level must be one of Log.VERBOSE, Log.DEBUG, Log.INFO, Log.WARN, or Log.ERROR");
         }
-        this.logLevel = logLevel2;
+        this.logLevel = logLevel;
         return this;
     }
 
-    public GlideBuilder setIsActiveResourceRetentionAllowed(boolean isActiveResourceRetentionAllowed2) {
-        this.isActiveResourceRetentionAllowed = isActiveResourceRetentionAllowed2;
+    public GlideBuilder setIsActiveResourceRetentionAllowed(boolean isActiveResourceRetentionAllowed) {
+        this.isActiveResourceRetentionAllowed = isActiveResourceRetentionAllowed;
         return this;
     }
 
@@ -133,19 +134,16 @@ public final class GlideBuilder {
         return this;
     }
 
-    /* access modifiers changed from: package-private */
-    public void setRequestManagerFactory(RequestManagerRetriever.RequestManagerFactory factory) {
+    void setRequestManagerFactory(RequestManagerRetriever.RequestManagerFactory factory) {
         this.requestManagerFactory = factory;
     }
 
-    /* access modifiers changed from: package-private */
-    public GlideBuilder setEngine(Engine engine2) {
-        this.engine = engine2;
+    GlideBuilder setEngine(Engine engine) {
+        this.engine = engine;
         return this;
     }
 
-    /* access modifiers changed from: package-private */
-    public Glide build(Context context) {
+    Glide build(Context context) {
         if (this.sourceExecutor == null) {
             this.sourceExecutor = GlideExecutor.newSourceExecutor();
         }
@@ -164,7 +162,7 @@ public final class GlideBuilder {
         if (this.bitmapPool == null) {
             int size = this.memorySizeCalculator.getBitmapPoolSize();
             if (size > 0) {
-                this.bitmapPool = new LruBitmapPool((long) size);
+                this.bitmapPool = new LruBitmapPool(size);
             } else {
                 this.bitmapPool = new BitmapPoolAdapter();
             }
@@ -173,7 +171,7 @@ public final class GlideBuilder {
             this.arrayPool = new LruArrayPool(this.memorySizeCalculator.getArrayPoolSizeInBytes());
         }
         if (this.memoryCache == null) {
-            this.memoryCache = new LruResourceCache((long) this.memorySizeCalculator.getMemoryCacheSize());
+            this.memoryCache = new LruResourceCache(this.memorySizeCalculator.getMemoryCacheSize());
         }
         if (this.diskCacheFactory == null) {
             this.diskCacheFactory = new InternalCacheDiskCacheFactory(context);
@@ -187,6 +185,7 @@ public final class GlideBuilder {
         } else {
             this.defaultRequestListeners = Collections.unmodifiableList(list);
         }
-        return new Glide(context, this.engine, this.memoryCache, this.bitmapPool, this.arrayPool, new RequestManagerRetriever(this.requestManagerFactory), this.connectivityMonitorFactory, this.logLevel, (RequestOptions) this.defaultRequestOptions.lock(), this.defaultTransitionOptions, this.defaultRequestListeners, this.isLoggingRequestOriginsEnabled);
+        RequestManagerRetriever requestManagerRetriever = new RequestManagerRetriever(this.requestManagerFactory);
+        return new Glide(context, this.engine, this.memoryCache, this.bitmapPool, this.arrayPool, requestManagerRetriever, this.connectivityMonitorFactory, this.logLevel, this.defaultRequestOptions.lock(), this.defaultTransitionOptions, this.defaultRequestListeners, this.isLoggingRequestOriginsEnabled);
     }
 }

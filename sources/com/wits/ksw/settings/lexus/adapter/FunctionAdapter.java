@@ -2,8 +2,8 @@ package com.wits.ksw.settings.lexus.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
+import android.support.p001v4.content.ContextCompat;
+import android.support.p004v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -11,45 +11,46 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.ksw.settings.id7.bean.FunctionBean;
 import java.util.List;
 
+/* loaded from: classes11.dex */
 public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
-    /* access modifiers changed from: private */
-    public static final String TAG = FunctionAdapter.class.getName();
+    private static final String TAG = FunctionAdapter.class.getName();
     private Context context;
-    /* access modifiers changed from: private */
-    public List<FunctionBean> data;
-    /* access modifiers changed from: private */
-    public OnFunctionClickListener functionClickListener;
-    /* access modifiers changed from: private */
-    public boolean isFinish = false;
+    private List<FunctionBean> data;
+    private OnFunctionClickListener functionClickListener;
+    private boolean isFinish = false;
 
+    /* loaded from: classes11.dex */
     public interface OnFunctionClickListener {
-        void functonClick(int i);
+        void functonClick(int pos);
     }
 
     public void registOnFunctionClickListener(OnFunctionClickListener clickListener) {
         this.functionClickListener = clickListener;
     }
 
-    public FunctionAdapter(Context context2, List<FunctionBean> appInfoList) {
-        this.context = context2;
+    public FunctionAdapter(Context context, List<FunctionBean> appInfoList) {
+        this.context = context;
         this.data = appInfoList;
         Log.i(TAG, "FunctionAdapter: ");
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.Adapter
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        return new ViewHolder(LayoutInflater.from(this.context).inflate(R.layout.lexus_list_settings_function, viewGroup, false));
+        ViewHolder holder = new ViewHolder(LayoutInflater.from(this.context).inflate(C0899R.C0902layout.lexus_list_settings_function, viewGroup, false));
+        return holder;
     }
 
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    @Override // android.support.p004v7.widget.RecyclerView.Adapter
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (this.data.get(position).getIcon() != 0) {
             Drawable drawable = ContextCompat.getDrawable(this.context, this.data.get(position).getIcon());
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            holder.tv_functionItem.setBackgroundResource(R.drawable.lexus_left_icon_selector);
+            holder.tv_functionItem.setBackgroundResource(C0899R.C0900drawable.lexus_left_icon_selector);
             holder.tv_functionItem.setImageDrawable(drawable);
         }
         if (this.data.get(position).isIscheck()) {
@@ -57,7 +58,8 @@ public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
         } else {
             holder.tv_functionItem.setSelected(false);
         }
-        holder.tv_functionItem.setOnClickListener(new View.OnClickListener() {
+        holder.tv_functionItem.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.settings.lexus.adapter.FunctionAdapter.1
+            @Override // android.view.View.OnClickListener
             public void onClick(View v) {
                 Log.d(FunctionAdapter.TAG, "tv_functionItem onClick");
                 if (FunctionAdapter.this.functionClickListener != null) {
@@ -65,30 +67,26 @@ public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
                 }
             }
         });
-        holder.tv_functionItem.setOnKeyListener(new View.OnKeyListener() {
+        holder.tv_functionItem.setOnKeyListener(new View.OnKeyListener() { // from class: com.wits.ksw.settings.lexus.adapter.FunctionAdapter.2
+            @Override // android.view.View.OnKeyListener
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 Log.i(FunctionAdapter.TAG, "onKey: position=" + position + " action=" + event.getAction() + " keyCode =" + keyCode + " isFinish=" + FunctionAdapter.this.isFinish);
                 if (event.getKeyCode() == 20) {
-                    if (FunctionAdapter.this.data.size() - 1 == position) {
-                        return true;
-                    }
-                    return false;
-                } else if (keyCode != 19) {
+                    return FunctionAdapter.this.data.size() - 1 == position;
+                } else if (keyCode == 19) {
+                    return position == 0;
+                } else {
                     if (keyCode != 21) {
-                        boolean unused = FunctionAdapter.this.isFinish = false;
+                        FunctionAdapter.this.isFinish = false;
                     }
                     FunctionAdapter.this.onBackPressed(keyCode, event);
-                    return false;
-                } else if (position == 0) {
-                    return true;
-                } else {
                     return false;
                 }
             }
         });
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void onBackPressed(int keyCode, KeyEvent event) {
         if (event.getAction() == 1 && keyCode == 21) {
             if (this.isFinish) {
@@ -99,6 +97,7 @@ public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
         }
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.Adapter
     public int getItemCount() {
         List<FunctionBean> list = this.data;
         if (list == null) {
@@ -107,14 +106,15 @@ public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
         return list.size();
     }
 
+    /* loaded from: classes11.dex */
     class ViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout relat_functionItem;
         ImageView tv_functionItem;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.tv_functionItem = (ImageView) itemView.findViewById(R.id.tv_functionItem);
-            this.relat_functionItem = (RelativeLayout) itemView.findViewById(R.id.relat_functionItem);
+            this.tv_functionItem = (ImageView) itemView.findViewById(C0899R.C0901id.tv_functionItem);
+            this.relat_functionItem = (RelativeLayout) itemView.findViewById(C0899R.C0901id.relat_functionItem);
         }
     }
 }

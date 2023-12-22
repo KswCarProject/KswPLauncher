@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="horizontal" android:tag="layout/activity_pemp_id8_launcher_main_0" android:background="@drawable/id8_main_bg" android:layout_width="match_parent" android:layout_height="match_parent">
+    <HorizontalScrollView android:id="@+id/scrollView" android:scrollbars="none" android:layout_width="match_parent" android:layout_height="match_parent" android:paddingEnd="2dp" android:layout_marginStart="112dp">
+        <LinearLayout android:orientation="horizontal" android:id="@+id/ll_container" android:layout_width="wrap_content" android:layout_height="match_parent"/>
+    </HorizontalScrollView>
+    <include android:id="@+id/ll_left_container" layout="@layout/id8_pemp_launcher_left_bar"/>
+</RelativeLayout>

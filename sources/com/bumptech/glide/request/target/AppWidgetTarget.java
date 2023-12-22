@@ -8,6 +8,7 @@ import android.widget.RemoteViews;
 import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.util.Preconditions;
 
+/* loaded from: classes.dex */
 public class AppWidgetTarget extends SimpleTarget<Bitmap> {
     private final ComponentName componentName;
     private final Context context;
@@ -15,41 +16,45 @@ public class AppWidgetTarget extends SimpleTarget<Bitmap> {
     private final int viewId;
     private final int[] widgetIds;
 
-    public AppWidgetTarget(Context context2, int width, int height, int viewId2, RemoteViews remoteViews2, int... widgetIds2) {
+    @Override // com.bumptech.glide.request.target.Target
+    public /* bridge */ /* synthetic */ void onResourceReady(Object obj, Transition transition) {
+        onResourceReady((Bitmap) obj, (Transition<? super Bitmap>) transition);
+    }
+
+    public AppWidgetTarget(Context context, int width, int height, int viewId, RemoteViews remoteViews, int... widgetIds) {
         super(width, height);
-        if (widgetIds2.length != 0) {
-            this.context = (Context) Preconditions.checkNotNull(context2, "Context can not be null!");
-            this.remoteViews = (RemoteViews) Preconditions.checkNotNull(remoteViews2, "RemoteViews object can not be null!");
-            this.widgetIds = (int[]) Preconditions.checkNotNull(widgetIds2, "WidgetIds can not be null!");
-            this.viewId = viewId2;
-            this.componentName = null;
-            return;
+        if (widgetIds.length == 0) {
+            throw new IllegalArgumentException("WidgetIds must have length > 0");
         }
-        throw new IllegalArgumentException("WidgetIds must have length > 0");
+        this.context = (Context) Preconditions.checkNotNull(context, "Context can not be null!");
+        this.remoteViews = (RemoteViews) Preconditions.checkNotNull(remoteViews, "RemoteViews object can not be null!");
+        this.widgetIds = (int[]) Preconditions.checkNotNull(widgetIds, "WidgetIds can not be null!");
+        this.viewId = viewId;
+        this.componentName = null;
     }
 
-    public AppWidgetTarget(Context context2, int viewId2, RemoteViews remoteViews2, int... widgetIds2) {
-        this(context2, Integer.MIN_VALUE, Integer.MIN_VALUE, viewId2, remoteViews2, widgetIds2);
+    public AppWidgetTarget(Context context, int viewId, RemoteViews remoteViews, int... widgetIds) {
+        this(context, Integer.MIN_VALUE, Integer.MIN_VALUE, viewId, remoteViews, widgetIds);
     }
 
-    public AppWidgetTarget(Context context2, int width, int height, int viewId2, RemoteViews remoteViews2, ComponentName componentName2) {
+    public AppWidgetTarget(Context context, int width, int height, int viewId, RemoteViews remoteViews, ComponentName componentName) {
         super(width, height);
-        this.context = (Context) Preconditions.checkNotNull(context2, "Context can not be null!");
-        this.remoteViews = (RemoteViews) Preconditions.checkNotNull(remoteViews2, "RemoteViews object can not be null!");
-        this.componentName = (ComponentName) Preconditions.checkNotNull(componentName2, "ComponentName can not be null!");
-        this.viewId = viewId2;
+        this.context = (Context) Preconditions.checkNotNull(context, "Context can not be null!");
+        this.remoteViews = (RemoteViews) Preconditions.checkNotNull(remoteViews, "RemoteViews object can not be null!");
+        this.componentName = (ComponentName) Preconditions.checkNotNull(componentName, "ComponentName can not be null!");
+        this.viewId = viewId;
         this.widgetIds = null;
     }
 
-    public AppWidgetTarget(Context context2, int viewId2, RemoteViews remoteViews2, ComponentName componentName2) {
-        this(context2, Integer.MIN_VALUE, Integer.MIN_VALUE, viewId2, remoteViews2, componentName2);
+    public AppWidgetTarget(Context context, int viewId, RemoteViews remoteViews, ComponentName componentName) {
+        this(context, Integer.MIN_VALUE, Integer.MIN_VALUE, viewId, remoteViews, componentName);
     }
 
     private void update() {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this.context);
-        ComponentName componentName2 = this.componentName;
-        if (componentName2 != null) {
-            appWidgetManager.updateAppWidget(componentName2, this.remoteViews);
+        ComponentName componentName = this.componentName;
+        if (componentName != null) {
+            appWidgetManager.updateAppWidget(componentName, this.remoteViews);
         } else {
             appWidgetManager.updateAppWidget(this.widgetIds, this.remoteViews);
         }

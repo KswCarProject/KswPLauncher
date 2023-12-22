@@ -2,6 +2,7 @@ package android.support.constraint.motion.utils;
 
 import java.util.Arrays;
 
+/* loaded from: classes.dex */
 public class Oscillator {
     public static final int BOUNCE = 6;
     public static final int COS_WAVE = 5;
@@ -11,12 +12,12 @@ public class Oscillator {
     public static final int SQUARE_WAVE = 1;
     public static String TAG = "Oscillator";
     public static final int TRIANGLE_WAVE = 2;
-    double PI2 = 6.283185307179586d;
     double[] mArea;
-    private boolean mNormalized = false;
+    int mType;
     float[] mPeriod = new float[0];
     double[] mPosition = new double[0];
-    int mType;
+    double PI2 = 6.283185307179586d;
+    private boolean mNormalized = false;
 
     public String toString() {
         return "pos =" + Arrays.toString(this.mPosition) + " period=" + Arrays.toString(this.mPeriod);
@@ -51,7 +52,7 @@ public class Oscillator {
             if (i >= fArr.length) {
                 break;
             }
-            totalCount += (double) fArr[i];
+            totalCount += fArr[i];
             i++;
         }
         int i2 = 1;
@@ -60,8 +61,10 @@ public class Oscillator {
             if (i2 >= fArr2.length) {
                 break;
             }
+            float h = (fArr2[i2 - 1] + fArr2[i2]) / 2.0f;
             double[] dArr = this.mPosition;
-            totalArea += ((double) ((fArr2[i2 - 1] + fArr2[i2]) / 2.0f)) * (dArr[i2] - dArr[i2 - 1]);
+            double w = dArr[i2] - dArr[i2 - 1];
+            totalArea += h * w;
             i2++;
         }
         int i3 = 0;
@@ -70,7 +73,7 @@ public class Oscillator {
             if (i3 >= fArr3.length) {
                 break;
             }
-            fArr3[i3] = (float) (((double) fArr3[i3]) * (totalCount / totalArea));
+            fArr3[i3] = (float) (fArr3[i3] * (totalCount / totalArea));
             i3++;
         }
         this.mArea[0] = 0.0d;
@@ -78,10 +81,11 @@ public class Oscillator {
         while (true) {
             float[] fArr4 = this.mPeriod;
             if (i4 < fArr4.length) {
+                float h2 = (fArr4[i4 - 1] + fArr4[i4]) / 2.0f;
                 double[] dArr2 = this.mPosition;
-                double w = dArr2[i4] - dArr2[i4 - 1];
+                double w2 = dArr2[i4] - dArr2[i4 - 1];
                 double[] dArr3 = this.mArea;
-                dArr3[i4] = dArr3[i4 - 1] + (((double) ((fArr4[i4 - 1] + fArr4[i4]) / 2.0f)) * w);
+                dArr3[i4] = dArr3[i4 - 1] + (h2 * w2);
                 i4++;
             } else {
                 this.mNormalized = true;
@@ -90,31 +94,29 @@ public class Oscillator {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public double getP(double time) {
+    double getP(double time) {
         double time2;
         if (time < 0.0d) {
             time2 = 0.0d;
-        } else if (time > 1.0d) {
-            time2 = 1.0d;
-        } else {
+        } else if (time <= 1.0d) {
             time2 = time;
+        } else {
+            time2 = 1.0d;
         }
         int index = Arrays.binarySearch(this.mPosition, time2);
         if (index > 0) {
-            double d = time2;
             return 1.0d;
-        } else if (index != 0) {
-            int index2 = (-index) - 1;
-            double t = time2;
-            float[] fArr = this.mPeriod;
-            double[] dArr = this.mPosition;
-            double m = ((double) (fArr[index2] - fArr[index2 - 1])) / (dArr[index2] - dArr[index2 - 1]);
-            double d2 = time2;
-            return this.mArea[index2 - 1] + ((((double) fArr[index2 - 1]) - (dArr[index2 - 1] * m)) * (t - dArr[index2 - 1])) + ((((t * t) - (dArr[index2 - 1] * dArr[index2 - 1])) * m) / 2.0d);
-        } else {
+        }
+        if (index == 0) {
             return 0.0d;
         }
+        int index2 = (-index) - 1;
+        double t = time2;
+        float[] fArr = this.mPeriod;
+        double[] dArr = this.mPosition;
+        double m = (fArr[index2] - fArr[index2 - 1]) / (dArr[index2] - dArr[index2 - 1]);
+        double p = this.mArea[index2 - 1] + ((fArr[index2 - 1] - (dArr[index2 - 1] * m)) * (t - dArr[index2 - 1])) + ((((t * t) - (dArr[index2 - 1] * dArr[index2 - 1])) * m) / 2.0d);
+        return p;
     }
 
     public double getValue(double time) {
@@ -137,25 +139,26 @@ public class Oscillator {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public double getDP(double time) {
+    double getDP(double time) {
         double time2;
         if (time <= 0.0d) {
             time2 = 1.0E-5d;
-        } else if (time >= 1.0d) {
-            time2 = 0.999999d;
-        } else {
+        } else if (time < 1.0d) {
             time2 = time;
+        } else {
+            time2 = 0.999999d;
         }
         int index = Arrays.binarySearch(this.mPosition, time2);
         if (index > 0 || index == 0) {
             return 0.0d;
         }
         int index2 = (-index) - 1;
+        double t = time2;
         float[] fArr = this.mPeriod;
         double[] dArr = this.mPosition;
-        double m = ((double) (fArr[index2] - fArr[index2 - 1])) / (dArr[index2] - dArr[index2 - 1]);
-        return (m * time2) + (((double) fArr[index2 - 1]) - (dArr[index2 - 1] * m));
+        double m = (fArr[index2] - fArr[index2 - 1]) / (dArr[index2] - dArr[index2 - 1]);
+        double p = (m * t) + (fArr[index2 - 1] - (dArr[index2 - 1] * m));
+        return p;
     }
 
     public double getSlope(double time) {

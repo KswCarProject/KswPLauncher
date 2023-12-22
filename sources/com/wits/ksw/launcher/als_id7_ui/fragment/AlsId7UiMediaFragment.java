@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.Settings;
-import android.support.v4.app.Fragment;
+import android.support.p001v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,9 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import com.wits.ksw.BuildConfig;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.KswApplication;
 import com.wits.ksw.MainActivity;
-import com.wits.ksw.R;
 import com.wits.ksw.databinding.AlsId7UiMediaBinding;
 import com.wits.ksw.launcher.bmw_id8_ui.ID8LauncherConstants;
 import com.wits.ksw.launcher.model.LauncherViewModel;
@@ -29,31 +29,34 @@ import com.wits.pms.IContentObserver;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import skin.support.content.res.SkinCompatResources;
 
+/* loaded from: classes11.dex */
 public class AlsId7UiMediaFragment extends Fragment {
     private static final String TAG = "AlsId7UiMediaFragment";
     private Animation animation;
-    /* access modifiers changed from: private */
-    public AlsId7UiMediaBinding binding;
-    public ContentObserver contentObserver = new ContentObserver(new Handler()) {
+    private AlsId7UiMediaBinding binding;
+    private MainActivity mainActivity;
+    private LauncherViewModel viewModel;
+    public ContentObserver contentObserver = new ContentObserver(new Handler()) { // from class: com.wits.ksw.launcher.als_id7_ui.fragment.AlsId7UiMediaFragment.1
+        @Override // android.database.ContentObserver
         public void onChange(boolean selfChange, Uri uri) {
             Log.d(AlsId7UiMediaFragment.TAG, "onChange:");
             if (uri.equals(Settings.System.getUriFor(KswApplication.SKIN_NAME))) {
                 String skinName = Settings.System.getString(KswApplication.appContext.getContentResolver(), KswApplication.SKIN_NAME);
                 if (ID8LauncherConstants.ID8_SKIN_SPORT.equals(skinName)) {
-                    AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setThumb(KswApplication.appContext.getDrawable(R.drawable.als_sp_id7_main_btn_music_red_progress_bar_slider));
-                    AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setCircleProgressColor(KswApplication.appContext.getColor(R.color.als_id7_ui_status_red_text_color));
+                    AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setThumb(KswApplication.appContext.getDrawable(C0899R.C0900drawable.als_sp_id7_main_btn_music_red_progress_bar_slider));
+                    AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setCircleProgressColor(KswApplication.appContext.getColor(C0899R.color.als_id7_ui_status_red_text_color));
                 } else if (ID8LauncherConstants.ID8_SKIN_PERSONAL.equals(skinName)) {
-                    AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setThumb(KswApplication.appContext.getDrawable(R.drawable.als_sp_id7_main_btn_music_yellow_progress_bar_slider));
-                    AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setCircleProgressColor(KswApplication.appContext.getColor(R.color.als_id7_ui_status_yellow_text_color));
+                    AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setThumb(KswApplication.appContext.getDrawable(C0899R.C0900drawable.als_sp_id7_main_btn_music_yellow_progress_bar_slider));
+                    AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setCircleProgressColor(KswApplication.appContext.getColor(C0899R.color.als_id7_ui_status_yellow_text_color));
                 } else {
-                    AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setThumb(KswApplication.appContext.getDrawable(R.drawable.als_sp_id7_main_btn_music_progress_bar_slider));
-                    AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setCircleProgressColor(KswApplication.appContext.getColor(R.color.als_id7_ui_text_color));
+                    AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setThumb(KswApplication.appContext.getDrawable(C0899R.C0900drawable.als_sp_id7_main_btn_music_progress_bar_slider));
+                    AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setCircleProgressColor(KswApplication.appContext.getColor(C0899R.color.als_id7_ui_text_color));
                 }
             }
         }
     };
-    private MainActivity mainActivity;
-    private IContentObserver.Stub topAppContentObserver = new IContentObserver.Stub() {
+    private IContentObserver.Stub topAppContentObserver = new IContentObserver.Stub() { // from class: com.wits.ksw.launcher.als_id7_ui.fragment.AlsId7UiMediaFragment.2
+        @Override // com.wits.pms.IContentObserver
         public void onChange() throws RemoteException {
             try {
                 String topApp = PowerManagerApp.getStatusString("topApp");
@@ -66,22 +69,24 @@ public class AlsId7UiMediaFragment extends Fragment {
             }
         }
     };
-    private LauncherViewModel viewModel;
 
+    @Override // android.support.p001v4.app.Fragment
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.mainActivity = (MainActivity) activity;
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate: MediaFragment");
-        this.viewModel = (LauncherViewModel) ViewModelProviders.of(getActivity()).get(LauncherViewModel.class);
+        this.viewModel = (LauncherViewModel) ViewModelProviders.m59of(getActivity()).get(LauncherViewModel.class);
         getActivity().getContentResolver().registerContentObserver(Settings.System.getUriFor(KswApplication.SKIN_NAME), true, this.contentObserver);
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.binding = (AlsId7UiMediaBinding) DataBindingUtil.inflate(inflater, R.layout.fragment_als_id7_ui_media, (ViewGroup) null, false);
+        this.binding = (AlsId7UiMediaBinding) DataBindingUtil.inflate(inflater, C0899R.C0902layout.fragment_als_id7_ui_media, null, false);
         String skinName = Settings.System.getString(KswApplication.appContext.getContentResolver(), KswApplication.SKIN_NAME);
         if (skinName == null || "".equals(skinName)) {
             skinName = ID8LauncherConstants.ID8_SKIN_EFFICIENT;
@@ -92,7 +97,7 @@ public class AlsId7UiMediaFragment extends Fragment {
 
     private void initProcess(String skin2) {
         if (this.binding != null) {
-            char c = 65535;
+            char c = '\uffff';
             switch (skin2.hashCode()) {
                 case -734239628:
                     if (skin2.equals(ID8LauncherConstants.ID8_SKIN_PERSONAL)) {
@@ -109,21 +114,22 @@ public class AlsId7UiMediaFragment extends Fragment {
             }
             switch (c) {
                 case 0:
-                    this.binding.musicInclude.alsProcess.setThumb(SkinCompatResources.getDrawable(getActivity(), R.drawable.als_sp_id7_main_btn_music_red_progress_bar_slider));
-                    this.binding.musicInclude.alsProcess.setCircleProgressColor(SkinCompatResources.getColor(getActivity(), R.color.als_id7_ui_status_red_text_color));
+                    this.binding.musicInclude.alsProcess.setThumb(SkinCompatResources.getDrawable(getActivity(), C0899R.C0900drawable.als_sp_id7_main_btn_music_red_progress_bar_slider));
+                    this.binding.musicInclude.alsProcess.setCircleProgressColor(SkinCompatResources.getColor(getActivity(), C0899R.color.als_id7_ui_status_red_text_color));
                     return;
                 case 1:
-                    this.binding.musicInclude.alsProcess.setThumb(SkinCompatResources.getDrawable(getActivity(), R.drawable.als_sp_id7_main_btn_music_yellow_progress_bar_slider));
-                    this.binding.musicInclude.alsProcess.setCircleProgressColor(SkinCompatResources.getColor(getActivity(), R.color.als_id7_ui_status_yellow_text_color));
+                    this.binding.musicInclude.alsProcess.setThumb(SkinCompatResources.getDrawable(getActivity(), C0899R.C0900drawable.als_sp_id7_main_btn_music_yellow_progress_bar_slider));
+                    this.binding.musicInclude.alsProcess.setCircleProgressColor(SkinCompatResources.getColor(getActivity(), C0899R.color.als_id7_ui_status_yellow_text_color));
                     return;
                 default:
-                    this.binding.musicInclude.alsProcess.setThumb(SkinCompatResources.getDrawable(getActivity(), R.drawable.als_sp_id7_main_btn_music_progress_bar_slider));
-                    this.binding.musicInclude.alsProcess.setCircleProgressColor(SkinCompatResources.getColor(getActivity(), R.color.als_id7_ui_text_color));
+                    this.binding.musicInclude.alsProcess.setThumb(SkinCompatResources.getDrawable(getActivity(), C0899R.C0900drawable.als_sp_id7_main_btn_music_progress_bar_slider));
+                    this.binding.musicInclude.alsProcess.setCircleProgressColor(SkinCompatResources.getColor(getActivity(), C0899R.color.als_id7_ui_text_color));
                     return;
             }
         }
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: ");
@@ -141,8 +147,8 @@ public class AlsId7UiMediaFragment extends Fragment {
     }
 
     public void setPlayOrPause(boolean isThreeMusic) {
-        String firstPackName = Settings.System.getString(KswApplication.appContext.getContentResolver(), LauncherViewModel.KEY_SHORTCUT_CLS_1);
-        String secondPackName = Settings.System.getString(KswApplication.appContext.getContentResolver(), LauncherViewModel.KEY_SHORTCUT_CLS_2);
+        String firstPackName = Settings.System.getString(KswApplication.appContext.getContentResolver(), LauncherViewModel.ALS_KEY_SHORTCUT_CLS_1);
+        String secondPackName = Settings.System.getString(KswApplication.appContext.getContentResolver(), LauncherViewModel.ALS_KEY_SHORTCUT_CLS_2);
         if (!"".equals(firstPackName) && firstPackName != null && !"".equals(secondPackName) && secondPackName != null && !KeyConfig.CLS_LOCAL_MUSIC.equals(firstPackName) && !KeyConfig.CLS_LOCAL_MUSIC.equals(secondPackName)) {
             try {
                 boolean isPlaying = PowerManagerApp.getManager().getStatusBoolean("play");
@@ -199,6 +205,7 @@ public class AlsId7UiMediaFragment extends Fragment {
         }
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.binding.setMediaViewModel(this.viewModel);
@@ -206,6 +213,7 @@ public class AlsId7UiMediaFragment extends Fragment {
         Log.i(TAG, "onActivityCreated: registerIContentObserver topApp ");
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onDestroy() {
         super.onDestroy();
         PowerManagerApp.unRegisterIContentObserver(this.topAppContentObserver);

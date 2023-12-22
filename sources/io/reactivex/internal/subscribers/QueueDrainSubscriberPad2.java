@@ -1,6 +1,7 @@
 package io.reactivex.internal.subscribers;
 
-/* compiled from: QueueDrainSubscriber */
+/* compiled from: QueueDrainSubscriber.java */
+/* loaded from: classes.dex */
 class QueueDrainSubscriberPad2 extends QueueDrainSubscriberWip {
     volatile long p10a;
     volatile long p11a;

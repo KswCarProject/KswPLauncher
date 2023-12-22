@@ -1,5 +1,6 @@
 package com.ibm.icu.text;
 
+import com.ibm.icu.impl.number.AffixUtils;
 import com.ibm.icu.impl.number.DecimalFormatProperties;
 import com.ibm.icu.impl.number.Padder;
 import com.ibm.icu.impl.number.PatternStringParser;
@@ -27,6 +28,7 @@ import java.text.AttributedCharacterIterator;
 import java.text.FieldPosition;
 import java.text.ParsePosition;
 
+/* loaded from: classes.dex */
 public class DecimalFormat extends NumberFormat {
     static final /* synthetic */ boolean $assertionsDisabled = false;
     public static final int PAD_AFTER_PREFIX = 1;
@@ -44,6 +46,7 @@ public class DecimalFormat extends NumberFormat {
     volatile transient DecimalFormatSymbols symbols;
 
     @Deprecated
+    /* loaded from: classes.dex */
     public interface PropertySetter {
         @Deprecated
         void set(DecimalFormatProperties decimalFormatProperties);
@@ -52,7 +55,8 @@ public class DecimalFormat extends NumberFormat {
     public DecimalFormat() {
         this.serialVersionOnStream = 5;
         this.icuMathContextForm = 0;
-        String pattern = getPattern(ULocale.getDefault(ULocale.Category.FORMAT), 0);
+        ULocale def = ULocale.getDefault(ULocale.Category.FORMAT);
+        String pattern = getPattern(def, 0);
         this.symbols = getDefaultSymbols();
         this.properties = new DecimalFormatProperties();
         this.exportedProperties = new DecimalFormatProperties();
@@ -70,26 +74,26 @@ public class DecimalFormat extends NumberFormat {
         refreshFormatter();
     }
 
-    public DecimalFormat(String pattern, DecimalFormatSymbols symbols2) {
+    public DecimalFormat(String pattern, DecimalFormatSymbols symbols) {
         this.serialVersionOnStream = 5;
         this.icuMathContextForm = 0;
-        this.symbols = (DecimalFormatSymbols) symbols2.clone();
+        this.symbols = (DecimalFormatSymbols) symbols.clone();
         this.properties = new DecimalFormatProperties();
         this.exportedProperties = new DecimalFormatProperties();
         setPropertiesFromPattern(pattern, 1);
         refreshFormatter();
     }
 
-    public DecimalFormat(String pattern, DecimalFormatSymbols symbols2, CurrencyPluralInfo infoInput, int style) {
-        this(pattern, symbols2, style);
+    public DecimalFormat(String pattern, DecimalFormatSymbols symbols, CurrencyPluralInfo infoInput, int style) {
+        this(pattern, symbols, style);
         this.properties.setCurrencyPluralInfo(infoInput);
         refreshFormatter();
     }
 
-    DecimalFormat(String pattern, DecimalFormatSymbols symbols2, int choice) {
+    DecimalFormat(String pattern, DecimalFormatSymbols symbols, int choice) {
         this.serialVersionOnStream = 5;
         this.icuMathContextForm = 0;
-        this.symbols = (DecimalFormatSymbols) symbols2.clone();
+        this.symbols = (DecimalFormatSymbols) symbols.clone();
         this.properties = new DecimalFormatProperties();
         this.exportedProperties = new DecimalFormatProperties();
         if (choice == 1 || choice == 5 || choice == 7 || choice == 8 || choice == 9 || choice == 6) {
@@ -115,9 +119,11 @@ public class DecimalFormat extends NumberFormat {
     }
 
     public synchronized void applyLocalizedPattern(String localizedPattern) {
-        applyPattern(PatternStringUtils.convertLocalized(localizedPattern, this.symbols, false));
+        String pattern = PatternStringUtils.convertLocalized(localizedPattern, this.symbols, false);
+        applyPattern(pattern);
     }
 
+    @Override // com.ibm.icu.text.NumberFormat, java.text.Format
     public Object clone() {
         DecimalFormat other = (DecimalFormat) super.clone();
         other.symbols = (DecimalFormatSymbols) this.symbols.clone();
@@ -141,20 +147,22 @@ public class DecimalFormat extends NumberFormat {
         int serialVersion = fieldGetter.get("serialVersionOnStream", -1);
         if (serialVersion > 5) {
             throw new IOException("Cannot deserialize newer com.ibm.icu.text.DecimalFormat (v" + serialVersion + ")");
-        } else if (serialVersion != 5) {
+        }
+        if (serialVersion != 5) {
             this.properties = new DecimalFormatProperties();
             int length = serializedFields2.length;
             String nsp = null;
+            String nsp2 = null;
             String ns = null;
             String npp = null;
             String np = null;
             String psp = null;
             String ps = null;
             String ppp = null;
-            String pp = null;
             int i = 0;
             while (i < length) {
-                String name = serializedFields2[i].getName();
+                ObjectStreamField field = serializedFields2[i];
+                String name = field.getName();
                 if (name.equals("decimalSeparatorAlwaysShown")) {
                     serializedFields = serializedFields2;
                     setDecimalSeparatorAlwaysShown(fieldGetter.get("decimalSeparatorAlwaysShown", false));
@@ -195,21 +203,21 @@ public class DecimalFormat extends NumberFormat {
                     } else if (name.equals("mathContext")) {
                         setMathContextICU((MathContext) fieldGetter.get("mathContext", (Object) null));
                     } else if (name.equals("negPrefixPattern")) {
-                        npp = (String) fieldGetter.get("negPrefixPattern", (Object) null);
+                        ns = (String) fieldGetter.get("negPrefixPattern", (Object) null);
                     } else if (name.equals("negSuffixPattern")) {
                         nsp = (String) fieldGetter.get("negSuffixPattern", (Object) null);
                     } else if (name.equals("negativePrefix")) {
-                        np = (String) fieldGetter.get("negativePrefix", (Object) null);
+                        npp = (String) fieldGetter.get("negativePrefix", (Object) null);
                     } else if (name.equals("negativeSuffix")) {
-                        ns = (String) fieldGetter.get("negativeSuffix", (Object) null);
+                        nsp2 = (String) fieldGetter.get("negativeSuffix", (Object) null);
                     } else if (name.equals("posPrefixPattern")) {
-                        ppp = (String) fieldGetter.get("posPrefixPattern", (Object) null);
+                        ps = (String) fieldGetter.get("posPrefixPattern", (Object) null);
                     } else if (name.equals("posSuffixPattern")) {
-                        psp = (String) fieldGetter.get("posSuffixPattern", (Object) null);
+                        np = (String) fieldGetter.get("posSuffixPattern", (Object) null);
                     } else if (name.equals("positivePrefix")) {
-                        pp = (String) fieldGetter.get("positivePrefix", (Object) null);
+                        ppp = (String) fieldGetter.get("positivePrefix", (Object) null);
                     } else if (name.equals("positiveSuffix")) {
-                        ps = (String) fieldGetter.get("positiveSuffix", (Object) null);
+                        psp = (String) fieldGetter.get("positiveSuffix", (Object) null);
                     } else if (name.equals("roundingIncrement")) {
                         setRoundingIncrement((BigDecimal) fieldGetter.get("roundingIncrement", (Object) null));
                     } else if (name.equals("symbols")) {
@@ -219,25 +227,25 @@ public class DecimalFormat extends NumberFormat {
                 i++;
                 serializedFields2 = serializedFields;
             }
-            if (npp == null) {
-                this.properties.setNegativePrefix(np);
+            if (ns == null) {
+                this.properties.setNegativePrefix(npp);
             } else {
-                this.properties.setNegativePrefixPattern(npp);
+                this.properties.setNegativePrefixPattern(ns);
             }
             if (nsp == null) {
-                this.properties.setNegativeSuffix(ns);
+                this.properties.setNegativeSuffix(nsp2);
             } else {
                 this.properties.setNegativeSuffixPattern(nsp);
             }
-            if (ppp == null) {
-                this.properties.setPositivePrefix(pp);
+            if (ps == null) {
+                this.properties.setPositivePrefix(ppp);
             } else {
-                this.properties.setPositivePrefixPattern(ppp);
+                this.properties.setPositivePrefixPattern(ps);
             }
-            if (psp == null) {
-                this.properties.setPositiveSuffix(ps);
+            if (np == null) {
+                this.properties.setPositiveSuffix(psp);
             } else {
-                this.properties.setPositiveSuffixPattern(psp);
+                this.properties.setPositiveSuffixPattern(np);
             }
             try {
                 Field getter = NumberFormat.class.getDeclaredField("groupingUsed");
@@ -269,16 +277,18 @@ public class DecimalFormat extends NumberFormat {
                 }
                 this.exportedProperties = new DecimalFormatProperties();
                 refreshFormatter();
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalAccessException e) {
                 throw new IOException(e);
-            } catch (IllegalAccessException e2) {
+            } catch (IllegalArgumentException e2) {
                 throw new IOException(e2);
             } catch (NoSuchFieldException e3) {
                 throw new IOException(e3);
             } catch (SecurityException e4) {
                 throw new IOException(e4);
             }
-        } else if (serializedFields2.length <= 1) {
+        } else if (serializedFields2.length > 1) {
+            throw new IOException("Too many fields when reading serial version 5");
+        } else {
             ois.readInt();
             Object serializedProperties = ois.readObject();
             if (serializedProperties instanceof DecimalFormatProperties) {
@@ -289,12 +299,10 @@ public class DecimalFormat extends NumberFormat {
             this.symbols = (DecimalFormatSymbols) ois.readObject();
             this.exportedProperties = new DecimalFormatProperties();
             refreshFormatter();
-            ObjectStreamField[] objectStreamFieldArr = serializedFields2;
-        } else {
-            throw new IOException("Too many fields when reading serial version 5");
         }
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public StringBuffer format(double number, StringBuffer result, FieldPosition fieldPosition) {
         FormattedNumber output = this.formatter.format(number);
         fieldPositionHelper(output, fieldPosition, result.length());
@@ -302,6 +310,7 @@ public class DecimalFormat extends NumberFormat {
         return result;
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public StringBuffer format(long number, StringBuffer result, FieldPosition fieldPosition) {
         FormattedNumber output = this.formatter.format(number);
         fieldPositionHelper(output, fieldPosition, result.length());
@@ -309,6 +318,7 @@ public class DecimalFormat extends NumberFormat {
         return result;
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public StringBuffer format(BigInteger number, StringBuffer result, FieldPosition fieldPosition) {
         FormattedNumber output = this.formatter.format(number);
         fieldPositionHelper(output, fieldPosition, result.length());
@@ -316,6 +326,7 @@ public class DecimalFormat extends NumberFormat {
         return result;
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public StringBuffer format(BigDecimal number, StringBuffer result, FieldPosition fieldPosition) {
         FormattedNumber output = this.formatter.format(number);
         fieldPositionHelper(output, fieldPosition, result.length());
@@ -323,6 +334,7 @@ public class DecimalFormat extends NumberFormat {
         return result;
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public StringBuffer format(com.ibm.icu.math.BigDecimal number, StringBuffer result, FieldPosition fieldPosition) {
         FormattedNumber output = this.formatter.format(number);
         fieldPositionHelper(output, fieldPosition, result.length());
@@ -330,13 +342,17 @@ public class DecimalFormat extends NumberFormat {
         return result;
     }
 
+    @Override // java.text.Format
     public AttributedCharacterIterator formatToCharacterIterator(Object obj) {
-        if (obj instanceof Number) {
-            return this.formatter.format((Number) obj).getFieldIterator();
+        if (!(obj instanceof Number)) {
+            throw new IllegalArgumentException();
         }
-        throw new IllegalArgumentException();
+        Number number = (Number) obj;
+        FormattedNumber output = this.formatter.format(number);
+        return output.getFieldIterator();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public StringBuffer format(CurrencyAmount currAmt, StringBuffer result, FieldPosition fieldPosition) {
         FormattedNumber output = this.formatter.format(currAmt);
         fieldPositionHelper(output, fieldPosition, result.length());
@@ -344,64 +360,65 @@ public class DecimalFormat extends NumberFormat {
         return result;
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public Number parse(String text, ParsePosition parsePosition) {
-        if (text != null) {
-            if (parsePosition == null) {
-                parsePosition = new ParsePosition(0);
-            }
-            if (parsePosition.getIndex() < 0) {
-                throw new IllegalArgumentException("Cannot start parsing at a negative offset");
-            } else if (parsePosition.getIndex() >= text.length()) {
-                return null;
-            } else {
-                ParsedNumber result = new ParsedNumber();
-                int startIndex = parsePosition.getIndex();
-                NumberParserImpl parser2 = getParser();
-                parser2.parse(text, startIndex, true, result);
-                if (result.success()) {
-                    parsePosition.setIndex(result.charEnd);
-                    Number number = result.getNumber(parser2.getParseFlags());
-                    if (number instanceof BigDecimal) {
-                        return safeConvertBigDecimal((BigDecimal) number);
-                    }
-                    return number;
-                }
-                parsePosition.setErrorIndex(result.charEnd + startIndex);
-                return null;
-            }
-        } else {
+        if (text == null) {
             throw new IllegalArgumentException("Text cannot be null");
         }
+        if (parsePosition == null) {
+            parsePosition = new ParsePosition(0);
+        }
+        if (parsePosition.getIndex() < 0) {
+            throw new IllegalArgumentException("Cannot start parsing at a negative offset");
+        }
+        if (parsePosition.getIndex() >= text.length()) {
+            return null;
+        }
+        ParsedNumber result = new ParsedNumber();
+        int startIndex = parsePosition.getIndex();
+        NumberParserImpl parser = getParser();
+        parser.parse(text, startIndex, true, result);
+        if (result.success()) {
+            parsePosition.setIndex(result.charEnd);
+            Number number = result.getNumber(parser.getParseFlags());
+            if (number instanceof BigDecimal) {
+                return safeConvertBigDecimal((BigDecimal) number);
+            }
+            return number;
+        }
+        parsePosition.setErrorIndex(result.charEnd + startIndex);
+        return null;
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public CurrencyAmount parseCurrency(CharSequence text, ParsePosition parsePosition) {
-        if (text != null) {
-            if (parsePosition == null) {
-                parsePosition = new ParsePosition(0);
-            }
-            if (parsePosition.getIndex() < 0) {
-                throw new IllegalArgumentException("Cannot start parsing at a negative offset");
-            } else if (parsePosition.getIndex() >= text.length()) {
-                return null;
-            } else {
-                ParsedNumber result = new ParsedNumber();
-                int startIndex = parsePosition.getIndex();
-                NumberParserImpl parser2 = getCurrencyParser();
-                parser2.parse(text.toString(), startIndex, true, result);
-                if (result.success()) {
-                    parsePosition.setIndex(result.charEnd);
-                    Number number = result.getNumber(parser2.getParseFlags());
-                    if (number instanceof BigDecimal) {
-                        number = safeConvertBigDecimal((BigDecimal) number);
-                    }
-                    return new CurrencyAmount(number, Currency.getInstance(result.currencyCode));
-                }
-                parsePosition.setErrorIndex(result.charEnd + startIndex);
-                return null;
-            }
-        } else {
+        if (text == null) {
             throw new IllegalArgumentException("Text cannot be null");
         }
+        if (parsePosition == null) {
+            parsePosition = new ParsePosition(0);
+        }
+        if (parsePosition.getIndex() < 0) {
+            throw new IllegalArgumentException("Cannot start parsing at a negative offset");
+        }
+        if (parsePosition.getIndex() >= text.length()) {
+            return null;
+        }
+        ParsedNumber result = new ParsedNumber();
+        int startIndex = parsePosition.getIndex();
+        NumberParserImpl parser = getCurrencyParser();
+        parser.parse(text.toString(), startIndex, true, result);
+        if (result.success()) {
+            parsePosition.setIndex(result.charEnd);
+            Number number = result.getNumber(parser.getParseFlags());
+            if (number instanceof BigDecimal) {
+                number = safeConvertBigDecimal((BigDecimal) number);
+            }
+            Currency currency = Currency.getInstance(result.currencyCode);
+            return new CurrencyAmount(number, currency);
+        }
+        parsePosition.setErrorIndex(result.charEnd + startIndex);
+        return null;
     }
 
     public synchronized DecimalFormatSymbols getDecimalFormatSymbols() {
@@ -418,12 +435,11 @@ public class DecimalFormat extends NumberFormat {
     }
 
     public synchronized void setPositivePrefix(String prefix) {
-        if (prefix != null) {
-            this.properties.setPositivePrefix(prefix);
-            refreshFormatter();
-        } else {
+        if (prefix == null) {
             throw new NullPointerException();
         }
+        this.properties.setPositivePrefix(prefix);
+        refreshFormatter();
     }
 
     public synchronized String getNegativePrefix() {
@@ -431,12 +447,11 @@ public class DecimalFormat extends NumberFormat {
     }
 
     public synchronized void setNegativePrefix(String prefix) {
-        if (prefix != null) {
-            this.properties.setNegativePrefix(prefix);
-            refreshFormatter();
-        } else {
+        if (prefix == null) {
             throw new NullPointerException();
         }
+        this.properties.setNegativePrefix(prefix);
+        refreshFormatter();
     }
 
     public synchronized String getPositiveSuffix() {
@@ -444,12 +459,11 @@ public class DecimalFormat extends NumberFormat {
     }
 
     public synchronized void setPositiveSuffix(String suffix) {
-        if (suffix != null) {
-            this.properties.setPositiveSuffix(suffix);
-            refreshFormatter();
-        } else {
+        if (suffix == null) {
             throw new NullPointerException();
         }
+        this.properties.setPositiveSuffix(suffix);
+        refreshFormatter();
     }
 
     public synchronized String getNegativeSuffix() {
@@ -457,12 +471,11 @@ public class DecimalFormat extends NumberFormat {
     }
 
     public synchronized void setNegativeSuffix(String suffix) {
-        if (suffix != null) {
-            this.properties.setNegativeSuffix(suffix);
-            refreshFormatter();
-        } else {
+        if (suffix == null) {
             throw new NullPointerException();
         }
+        this.properties.setNegativeSuffix(suffix);
+        refreshFormatter();
     }
 
     @Deprecated
@@ -480,36 +493,35 @@ public class DecimalFormat extends NumberFormat {
         if (this.properties.getMultiplier() != null) {
             return this.properties.getMultiplier().intValue();
         }
-        return (int) Math.pow(10.0d, (double) this.properties.getMagnitudeMultiplier());
+        return (int) Math.pow(10.0d, this.properties.getMagnitudeMultiplier());
     }
 
     public synchronized void setMultiplier(int multiplier) {
-        if (multiplier != 0) {
-            int delta = 0;
-            int value = multiplier;
-            while (true) {
-                if (value == 1) {
-                    break;
-                }
-                delta++;
-                int temp = value / 10;
-                if (temp * 10 != value) {
-                    delta = -1;
-                    break;
-                }
-                value = temp;
-            }
-            if (delta != -1) {
-                this.properties.setMagnitudeMultiplier(delta);
-                this.properties.setMultiplier((BigDecimal) null);
-            } else {
-                this.properties.setMagnitudeMultiplier(0);
-                this.properties.setMultiplier(BigDecimal.valueOf((long) multiplier));
-            }
-            refreshFormatter();
-        } else {
+        if (multiplier == 0) {
             throw new IllegalArgumentException("Multiplier must be nonzero.");
         }
+        int delta = 0;
+        int value = multiplier;
+        while (true) {
+            if (value == 1) {
+                break;
+            }
+            delta++;
+            int temp = value / 10;
+            if (temp * 10 != value) {
+                delta = -1;
+                break;
+            }
+            value = temp;
+        }
+        if (delta != -1) {
+            this.properties.setMagnitudeMultiplier(delta);
+            this.properties.setMultiplier((BigDecimal) null);
+        } else {
+            this.properties.setMagnitudeMultiplier(0);
+            this.properties.setMultiplier(BigDecimal.valueOf(multiplier));
+        }
+        refreshFormatter();
     }
 
     public synchronized BigDecimal getRoundingIncrement() {
@@ -528,23 +540,27 @@ public class DecimalFormat extends NumberFormat {
     }
 
     public synchronized void setRoundingIncrement(com.ibm.icu.math.BigDecimal increment) {
-        setRoundingIncrement(increment == null ? null : increment.toBigDecimal());
+        BigDecimal javaBigDecimal = increment == null ? null : increment.toBigDecimal();
+        setRoundingIncrement(javaBigDecimal);
     }
 
     public synchronized void setRoundingIncrement(double increment) {
         if (increment == 0.0d) {
             setRoundingIncrement((BigDecimal) null);
         } else {
-            setRoundingIncrement(BigDecimal.valueOf(increment));
+            BigDecimal javaBigDecimal = BigDecimal.valueOf(increment);
+            setRoundingIncrement(javaBigDecimal);
         }
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized int getRoundingMode() {
         RoundingMode mode;
         mode = this.exportedProperties.getRoundingMode();
         return mode == null ? 0 : mode.ordinal();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized void setRoundingMode(int roundingMode) {
         this.properties.setRoundingMode(RoundingMode.valueOf(roundingMode));
         refreshFormatter();
@@ -581,10 +597,12 @@ public class DecimalFormat extends NumberFormat {
         setMathContext(mathContext);
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized int getMinimumIntegerDigits() {
         return this.exportedProperties.getMinimumIntegerDigits();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized void setMinimumIntegerDigits(int value) {
         int max = this.properties.getMaximumIntegerDigits();
         if (max >= 0 && max < value) {
@@ -594,10 +612,12 @@ public class DecimalFormat extends NumberFormat {
         refreshFormatter();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized int getMaximumIntegerDigits() {
         return this.exportedProperties.getMaximumIntegerDigits();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized void setMaximumIntegerDigits(int value) {
         int min = this.properties.getMinimumIntegerDigits();
         if (min >= 0 && min > value) {
@@ -607,10 +627,12 @@ public class DecimalFormat extends NumberFormat {
         refreshFormatter();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized int getMinimumFractionDigits() {
         return this.exportedProperties.getMinimumFractionDigits();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized void setMinimumFractionDigits(int value) {
         int max = this.properties.getMaximumFractionDigits();
         if (max >= 0 && max < value) {
@@ -620,10 +642,12 @@ public class DecimalFormat extends NumberFormat {
         refreshFormatter();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized int getMaximumFractionDigits() {
         return this.exportedProperties.getMaximumFractionDigits();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized void setMaximumFractionDigits(int value) {
         int min = this.properties.getMinimumFractionDigits();
         if (min >= 0 && min > value) {
@@ -634,56 +658,28 @@ public class DecimalFormat extends NumberFormat {
     }
 
     public synchronized boolean areSignificantDigitsUsed() {
-        return (this.properties.getMinimumSignificantDigits() == -1 && this.properties.getMaximumSignificantDigits() == -1) ? false : true;
+        boolean z;
+        if (this.properties.getMinimumSignificantDigits() == -1) {
+            z = this.properties.getMaximumSignificantDigits() != -1;
+        }
+        return z;
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:8:0x0015, code lost:
-        return;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public synchronized void setSignificantDigitsUsed(boolean r6) {
-        /*
-            r5 = this;
-            monitor-enter(r5)
-            com.ibm.icu.impl.number.DecimalFormatProperties r0 = r5.properties     // Catch:{ all -> 0x0033 }
-            int r0 = r0.getMinimumSignificantDigits()     // Catch:{ all -> 0x0033 }
-            com.ibm.icu.impl.number.DecimalFormatProperties r1 = r5.properties     // Catch:{ all -> 0x0033 }
-            int r1 = r1.getMaximumSignificantDigits()     // Catch:{ all -> 0x0033 }
-            r2 = -1
-            if (r6 == 0) goto L_0x0016
-            if (r0 != r2) goto L_0x0014
-            if (r1 == r2) goto L_0x001c
-        L_0x0014:
-            monitor-exit(r5)
-            return
-        L_0x0016:
-            if (r0 != r2) goto L_0x001c
-            if (r1 != r2) goto L_0x001c
-            monitor-exit(r5)
-            return
-        L_0x001c:
-            if (r6 == 0) goto L_0x0020
-            r3 = 1
-            goto L_0x0021
-        L_0x0020:
-            r3 = r2
-        L_0x0021:
-            if (r6 == 0) goto L_0x0024
-            r2 = 6
-        L_0x0024:
-            com.ibm.icu.impl.number.DecimalFormatProperties r4 = r5.properties     // Catch:{ all -> 0x0033 }
-            r4.setMinimumSignificantDigits(r3)     // Catch:{ all -> 0x0033 }
-            com.ibm.icu.impl.number.DecimalFormatProperties r4 = r5.properties     // Catch:{ all -> 0x0033 }
-            r4.setMaximumSignificantDigits(r2)     // Catch:{ all -> 0x0033 }
-            r5.refreshFormatter()     // Catch:{ all -> 0x0033 }
-            monitor-exit(r5)
-            return
-        L_0x0033:
-            r6 = move-exception
-            monitor-exit(r5)
-            throw r6
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.DecimalFormat.setSignificantDigitsUsed(boolean):void");
+    public synchronized void setSignificantDigitsUsed(boolean useSignificantDigits) {
+        int oldMinSig = this.properties.getMinimumSignificantDigits();
+        int oldMaxSig = this.properties.getMaximumSignificantDigits();
+        if (useSignificantDigits) {
+            if (oldMinSig != -1 || oldMaxSig != -1) {
+                return;
+            }
+        } else if (oldMinSig == -1 && oldMaxSig == -1) {
+            return;
+        }
+        int minSig = useSignificantDigits ? 1 : -1;
+        int maxSig = useSignificantDigits ? 6 : -1;
+        this.properties.setMinimumSignificantDigits(minSig);
+        this.properties.setMaximumSignificantDigits(maxSig);
+        refreshFormatter();
     }
 
     public synchronized int getMinimumSignificantDigits() {
@@ -776,10 +772,12 @@ public class DecimalFormat extends NumberFormat {
         refreshFormatter();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized boolean isGroupingUsed() {
         return this.properties.getGroupingUsed();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized void setGroupingUsed(boolean enabled) {
         this.properties.setGroupingUsed(enabled);
         refreshFormatter();
@@ -812,10 +810,10 @@ public class DecimalFormat extends NumberFormat {
 
     @Deprecated
     public synchronized int getMinimumGroupingDigits() {
-        if (this.properties.getMinimumGroupingDigits() <= 0) {
-            return 1;
+        if (this.properties.getMinimumGroupingDigits() > 0) {
+            return this.properties.getMinimumGroupingDigits();
         }
-        return this.properties.getMinimumGroupingDigits();
+        return 1;
     }
 
     @Deprecated
@@ -833,15 +831,18 @@ public class DecimalFormat extends NumberFormat {
         refreshFormatter();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized Currency getCurrency() {
         return this.exportedProperties.getCurrency();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized void setCurrency(Currency currency) {
         this.properties.setCurrency(currency);
         if (currency != null) {
             this.symbols.setCurrency(currency);
-            this.symbols.setCurrencySymbol(currency.getName(this.symbols.getULocale(), 0, (boolean[]) null));
+            String symbol = currency.getName(this.symbols.getULocale(), 0, (boolean[]) null);
+            this.symbols.setCurrencySymbol(symbol);
         }
         refreshFormatter();
     }
@@ -887,19 +888,24 @@ public class DecimalFormat extends NumberFormat {
     public void setParseMaxDigits(int maxDigits) {
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized boolean isParseStrict() {
         return this.properties.getParseMode() == DecimalFormatProperties.ParseMode.STRICT;
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized void setParseStrict(boolean parseStrict) {
-        this.properties.setParseMode(parseStrict ? DecimalFormatProperties.ParseMode.STRICT : DecimalFormatProperties.ParseMode.LENIENT);
+        DecimalFormatProperties.ParseMode mode = parseStrict ? DecimalFormatProperties.ParseMode.STRICT : DecimalFormatProperties.ParseMode.LENIENT;
+        this.properties.setParseMode(mode);
         refreshFormatter();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized boolean isParseIntegerOnly() {
         return this.properties.getParseIntegerOnly();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized void setParseIntegerOnly(boolean parseIntegerOnly) {
         this.properties.setParseIntegerOnly(parseIntegerOnly);
         refreshFormatter();
@@ -936,51 +942,28 @@ public class DecimalFormat extends NumberFormat {
         refreshFormatter();
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:22:0x002a, code lost:
-        return r0;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public synchronized boolean equals(java.lang.Object r6) {
-        /*
-            r5 = this;
-            monitor-enter(r5)
-            r0 = 0
-            if (r6 != 0) goto L_0x0006
-            monitor-exit(r5)
-            return r0
-        L_0x0006:
-            r1 = 1
-            if (r6 != r5) goto L_0x000b
-            monitor-exit(r5)
-            return r1
-        L_0x000b:
-            boolean r2 = r6 instanceof com.ibm.icu.text.DecimalFormat     // Catch:{ all -> 0x002b }
-            if (r2 != 0) goto L_0x0011
-            monitor-exit(r5)
-            return r0
-        L_0x0011:
-            r2 = r6
-            com.ibm.icu.text.DecimalFormat r2 = (com.ibm.icu.text.DecimalFormat) r2     // Catch:{ all -> 0x002b }
-            com.ibm.icu.impl.number.DecimalFormatProperties r3 = r5.properties     // Catch:{ all -> 0x002b }
-            com.ibm.icu.impl.number.DecimalFormatProperties r4 = r2.properties     // Catch:{ all -> 0x002b }
-            boolean r3 = r3.equals(r4)     // Catch:{ all -> 0x002b }
-            if (r3 == 0) goto L_0x0029
-            com.ibm.icu.text.DecimalFormatSymbols r3 = r5.symbols     // Catch:{ all -> 0x002b }
-            com.ibm.icu.text.DecimalFormatSymbols r4 = r2.symbols     // Catch:{ all -> 0x002b }
-            boolean r3 = r3.equals(r4)     // Catch:{ all -> 0x002b }
-            if (r3 == 0) goto L_0x0029
-            r0 = r1
-        L_0x0029:
-            monitor-exit(r5)
-            return r0
-        L_0x002b:
-            r6 = move-exception
-            monitor-exit(r5)
-            throw r6
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.DecimalFormat.equals(java.lang.Object):boolean");
+    @Override // com.ibm.icu.text.NumberFormat
+    public synchronized boolean equals(Object obj) {
+        boolean z = false;
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof DecimalFormat)) {
+            return false;
+        }
+        DecimalFormat other = (DecimalFormat) obj;
+        if (this.properties.equals(other.properties)) {
+            if (this.symbols.equals(other.symbols)) {
+                z = true;
+            }
+        }
+        return z;
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public synchronized int hashCode() {
         return this.properties.hashCode() ^ this.symbols.hashCode();
     }
@@ -999,65 +982,32 @@ public class DecimalFormat extends NumberFormat {
         return result.toString();
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:20:0x004c  */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public synchronized java.lang.String toPattern() {
-        /*
-            r3 = this;
-            monitor-enter(r3)
-            com.ibm.icu.impl.number.DecimalFormatProperties r0 = new com.ibm.icu.impl.number.DecimalFormatProperties     // Catch:{ all -> 0x006d }
-            r0.<init>()     // Catch:{ all -> 0x006d }
-            com.ibm.icu.impl.number.DecimalFormatProperties r1 = r3.properties     // Catch:{ all -> 0x006d }
-            com.ibm.icu.impl.number.DecimalFormatProperties r0 = r0.copyFrom(r1)     // Catch:{ all -> 0x006d }
-            com.ibm.icu.util.Currency r1 = r0.getCurrency()     // Catch:{ all -> 0x006d }
-            if (r1 != 0) goto L_0x0049
-            com.ibm.icu.text.CurrencyPluralInfo r1 = r0.getCurrencyPluralInfo()     // Catch:{ all -> 0x006d }
-            if (r1 != 0) goto L_0x0049
-            com.ibm.icu.util.Currency$CurrencyUsage r1 = r0.getCurrencyUsage()     // Catch:{ all -> 0x006d }
-            if (r1 != 0) goto L_0x0049
-            java.lang.String r1 = r0.getPositivePrefixPattern()     // Catch:{ all -> 0x006d }
-            boolean r1 = com.ibm.icu.impl.number.AffixUtils.hasCurrencySymbols(r1)     // Catch:{ all -> 0x006d }
-            if (r1 != 0) goto L_0x0049
-            java.lang.String r1 = r0.getPositiveSuffixPattern()     // Catch:{ all -> 0x006d }
-            boolean r1 = com.ibm.icu.impl.number.AffixUtils.hasCurrencySymbols(r1)     // Catch:{ all -> 0x006d }
-            if (r1 != 0) goto L_0x0049
-            java.lang.String r1 = r0.getNegativePrefixPattern()     // Catch:{ all -> 0x006d }
-            boolean r1 = com.ibm.icu.impl.number.AffixUtils.hasCurrencySymbols(r1)     // Catch:{ all -> 0x006d }
-            if (r1 != 0) goto L_0x0049
-            java.lang.String r1 = r0.getNegativeSuffixPattern()     // Catch:{ all -> 0x006d }
-            boolean r1 = com.ibm.icu.impl.number.AffixUtils.hasCurrencySymbols(r1)     // Catch:{ all -> 0x006d }
-            if (r1 == 0) goto L_0x0047
-            goto L_0x0049
-        L_0x0047:
-            r1 = 0
-            goto L_0x004a
-        L_0x0049:
-            r1 = 1
-        L_0x004a:
-            if (r1 == 0) goto L_0x0067
-            com.ibm.icu.impl.number.DecimalFormatProperties r2 = r3.exportedProperties     // Catch:{ all -> 0x006d }
-            int r2 = r2.getMinimumFractionDigits()     // Catch:{ all -> 0x006d }
-            r0.setMinimumFractionDigits(r2)     // Catch:{ all -> 0x006d }
-            com.ibm.icu.impl.number.DecimalFormatProperties r2 = r3.exportedProperties     // Catch:{ all -> 0x006d }
-            int r2 = r2.getMaximumFractionDigits()     // Catch:{ all -> 0x006d }
-            r0.setMaximumFractionDigits(r2)     // Catch:{ all -> 0x006d }
-            com.ibm.icu.impl.number.DecimalFormatProperties r2 = r3.exportedProperties     // Catch:{ all -> 0x006d }
-            java.math.BigDecimal r2 = r2.getRoundingIncrement()     // Catch:{ all -> 0x006d }
-            r0.setRoundingIncrement(r2)     // Catch:{ all -> 0x006d }
-        L_0x0067:
-            java.lang.String r2 = com.ibm.icu.impl.number.PatternStringUtils.propertiesToPatternString(r0)     // Catch:{ all -> 0x006d }
-            monitor-exit(r3)
-            return r2
-        L_0x006d:
-            r0 = move-exception
-            monitor-exit(r3)
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.DecimalFormat.toPattern():java.lang.String");
+    /* JADX WARN: Removed duplicated region for block: B:21:0x004c A[Catch: all -> 0x006d, TryCatch #0 {, blocks: (B:3:0x0001, B:5:0x0012, B:7:0x0018, B:9:0x001e, B:11:0x0028, B:13:0x0032, B:15:0x003c, B:21:0x004c, B:22:0x0067), top: B:28:0x0001 }] */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    public synchronized String toPattern() {
+        DecimalFormatProperties tprops;
+        boolean useCurrency;
+        tprops = new DecimalFormatProperties().copyFrom(this.properties);
+        if (tprops.getCurrency() == null && tprops.getCurrencyPluralInfo() == null && tprops.getCurrencyUsage() == null && !AffixUtils.hasCurrencySymbols(tprops.getPositivePrefixPattern()) && !AffixUtils.hasCurrencySymbols(tprops.getPositiveSuffixPattern()) && !AffixUtils.hasCurrencySymbols(tprops.getNegativePrefixPattern()) && !AffixUtils.hasCurrencySymbols(tprops.getNegativeSuffixPattern())) {
+            useCurrency = false;
+            if (useCurrency) {
+                tprops.setMinimumFractionDigits(this.exportedProperties.getMinimumFractionDigits());
+                tprops.setMaximumFractionDigits(this.exportedProperties.getMaximumFractionDigits());
+                tprops.setRoundingIncrement(this.exportedProperties.getRoundingIncrement());
+            }
+        }
+        useCurrency = true;
+        if (useCurrency) {
+        }
+        return PatternStringUtils.propertiesToPatternString(tprops);
     }
 
     public synchronized String toLocalizedPattern() {
-        return PatternStringUtils.convertLocalized(toPattern(), this.symbols, true);
+        String pattern;
+        pattern = toPattern();
+        return PatternStringUtils.convertLocalized(pattern, this.symbols, true);
     }
 
     public LocalizedNumberFormatter toNumberFormatter() {
@@ -1069,36 +1019,33 @@ public class DecimalFormat extends NumberFormat {
         return this.formatter.format(number).getFixedDecimal();
     }
 
-    /* access modifiers changed from: package-private */
-    public void refreshFormatter() {
-        if (this.exportedProperties != null) {
-            ULocale locale = getLocale(ULocale.ACTUAL_LOCALE);
-            if (locale == null) {
-                locale = this.symbols.getLocale(ULocale.ACTUAL_LOCALE);
-            }
-            if (locale == null) {
-                locale = this.symbols.getULocale();
-            }
-            if (locale != null) {
-                this.formatter = NumberFormatter.fromDecimalFormat(this.properties, this.symbols, this.exportedProperties).locale(locale);
-                this.parser = null;
-                this.currencyParser = null;
-                return;
-            }
+    void refreshFormatter() {
+        if (this.exportedProperties == null) {
+            return;
+        }
+        ULocale locale = getLocale(ULocale.ACTUAL_LOCALE);
+        if (locale == null) {
+            locale = this.symbols.getLocale(ULocale.ACTUAL_LOCALE);
+        }
+        if (locale == null) {
+            locale = this.symbols.getULocale();
+        }
+        if (locale == null) {
             throw new AssertionError();
         }
+        this.formatter = NumberFormatter.fromDecimalFormat(this.properties, this.symbols, this.exportedProperties).locale(locale);
+        this.parser = null;
+        this.currencyParser = null;
     }
 
-    /* access modifiers changed from: package-private */
-    public NumberParserImpl getParser() {
+    NumberParserImpl getParser() {
         if (this.parser == null) {
             this.parser = NumberParserImpl.createParserFromProperties(this.properties, this.symbols, false);
         }
         return this.parser;
     }
 
-    /* access modifiers changed from: package-private */
-    public NumberParserImpl getCurrencyParser() {
+    NumberParserImpl getCurrencyParser() {
         if (this.currencyParser == null) {
             this.currencyParser = NumberParserImpl.createParserFromProperties(this.properties, this.symbols, true);
         }
@@ -1122,19 +1069,18 @@ public class DecimalFormat extends NumberFormat {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void setPropertiesFromPattern(String pattern, int ignoreRounding) {
-        if (pattern != null) {
-            PatternStringParser.parseToExistingProperties(pattern, this.properties, ignoreRounding);
-            return;
+    void setPropertiesFromPattern(String pattern, int ignoreRounding) {
+        if (pattern == null) {
+            throw new NullPointerException();
         }
-        throw new NullPointerException();
+        PatternStringParser.parseToExistingProperties(pattern, this.properties, ignoreRounding);
     }
 
     static void fieldPositionHelper(FormattedNumber formatted, FieldPosition fieldPosition, int offset) {
         fieldPosition.setBeginIndex(0);
         fieldPosition.setEndIndex(0);
-        if (formatted.nextFieldPosition(fieldPosition) && offset != 0) {
+        boolean found = formatted.nextFieldPosition(fieldPosition);
+        if (found && offset != 0) {
             fieldPosition.setBeginIndex(fieldPosition.getBeginIndex() + offset);
             fieldPosition.setEndIndex(fieldPosition.getEndIndex() + offset);
         }

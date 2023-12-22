@@ -21,29 +21,31 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ObservableFlatMap<T, U> extends AbstractObservableWithUpstream<T, U> {
     final int bufferSize;
     final boolean delayErrors;
     final Function<? super T, ? extends ObservableSource<? extends U>> mapper;
     final int maxConcurrency;
 
-    public ObservableFlatMap(ObservableSource<T> source, Function<? super T, ? extends ObservableSource<? extends U>> mapper2, boolean delayErrors2, int maxConcurrency2, int bufferSize2) {
+    public ObservableFlatMap(ObservableSource<T> source, Function<? super T, ? extends ObservableSource<? extends U>> mapper, boolean delayErrors, int maxConcurrency, int bufferSize) {
         super(source);
-        this.mapper = mapper2;
-        this.delayErrors = delayErrors2;
-        this.maxConcurrency = maxConcurrency2;
-        this.bufferSize = bufferSize2;
+        this.mapper = mapper;
+        this.delayErrors = delayErrors;
+        this.maxConcurrency = maxConcurrency;
+        this.bufferSize = bufferSize;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super U> t) {
-        if (!ObservableScalarXMap.tryScalarXMapSubscribe(this.source, t, this.mapper)) {
-            this.source.subscribe(new MergeObserver(t, this.mapper, this.delayErrors, this.maxConcurrency, this.bufferSize));
+        if (ObservableScalarXMap.tryScalarXMapSubscribe(this.source, t, this.mapper)) {
+            return;
         }
+        this.source.subscribe(new MergeObserver(t, this.mapper, this.delayErrors, this.maxConcurrency, this.bufferSize));
     }
 
+    /* loaded from: classes.dex */
     static final class MergeObserver<T, U> extends AtomicInteger implements Disposable, Observer<T> {
-        static final InnerObserver<?, ?>[] CANCELLED = new InnerObserver[0];
-        static final InnerObserver<?, ?>[] EMPTY = new InnerObserver[0];
         private static final long serialVersionUID = -2117620485640801370L;
         final int bufferSize;
         volatile boolean cancelled;
@@ -61,19 +63,22 @@ public final class ObservableFlatMap<T, U> extends AbstractObservableWithUpstrea
         long uniqueId;
         Disposable upstream;
         int wip;
+        static final InnerObserver<?, ?>[] EMPTY = new InnerObserver[0];
+        static final InnerObserver<?, ?>[] CANCELLED = new InnerObserver[0];
 
-        MergeObserver(Observer<? super U> actual, Function<? super T, ? extends ObservableSource<? extends U>> mapper2, boolean delayErrors2, int maxConcurrency2, int bufferSize2) {
+        MergeObserver(Observer<? super U> actual, Function<? super T, ? extends ObservableSource<? extends U>> mapper, boolean delayErrors, int maxConcurrency, int bufferSize) {
             this.downstream = actual;
-            this.mapper = mapper2;
-            this.delayErrors = delayErrors2;
-            this.maxConcurrency = maxConcurrency2;
-            this.bufferSize = bufferSize2;
-            if (maxConcurrency2 != Integer.MAX_VALUE) {
-                this.sources = new ArrayDeque(maxConcurrency2);
+            this.mapper = mapper;
+            this.delayErrors = delayErrors;
+            this.maxConcurrency = maxConcurrency;
+            this.bufferSize = bufferSize;
+            if (maxConcurrency != Integer.MAX_VALUE) {
+                this.sources = new ArrayDeque(maxConcurrency);
             }
             this.observers = new AtomicReference<>(EMPTY);
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -81,31 +86,32 @@ public final class ObservableFlatMap<T, U> extends AbstractObservableWithUpstrea
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
-            if (!this.done) {
-                try {
-                    ObservableSource<? extends U> p = (ObservableSource) ObjectHelper.requireNonNull(this.mapper.apply(t), "The mapper returned a null ObservableSource");
-                    if (this.maxConcurrency != Integer.MAX_VALUE) {
-                        synchronized (this) {
-                            int i = this.wip;
-                            if (i == this.maxConcurrency) {
-                                this.sources.offer(p);
-                                return;
-                            }
-                            this.wip = i + 1;
+            if (this.done) {
+                return;
+            }
+            try {
+                ObservableSource<? extends U> p = (ObservableSource) ObjectHelper.requireNonNull(this.mapper.apply(t), "The mapper returned a null ObservableSource");
+                if (this.maxConcurrency != Integer.MAX_VALUE) {
+                    synchronized (this) {
+                        int i = this.wip;
+                        if (i == this.maxConcurrency) {
+                            this.sources.offer(p);
+                            return;
                         }
+                        this.wip = i + 1;
                     }
-                    subscribeInner(p);
-                } catch (Throwable e) {
-                    Exceptions.throwIfFatal(e);
-                    this.upstream.dispose();
-                    onError(e);
                 }
+                subscribeInner(p);
+            } catch (Throwable e) {
+                Exceptions.throwIfFatal(e);
+                this.upstream.dispose();
+                onError(e);
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void subscribeInner(ObservableSource<? extends U> p) {
+        void subscribeInner(ObservableSource<? extends U> p) {
             while (p instanceof Callable) {
                 if (tryEmitScalar((Callable) p) && this.maxConcurrency != Integer.MAX_VALUE) {
                     boolean empty = false;
@@ -132,74 +138,75 @@ public final class ObservableFlatMap<T, U> extends AbstractObservableWithUpstrea
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean addInner(InnerObserver<T, U> inner) {
+        /* JADX WARN: Multi-variable type inference failed */
+        boolean addInner(InnerObserver<T, U> inner) {
             InnerObserver<?, ?>[] a;
-            InnerObserver<?, ?>[] b;
+            InnerObserver[] innerObserverArr;
             do {
-                a = (InnerObserver[]) this.observers.get();
+                a = this.observers.get();
                 if (a == CANCELLED) {
                     inner.dispose();
                     return false;
                 }
                 int n = a.length;
-                b = new InnerObserver[(n + 1)];
-                System.arraycopy(a, 0, b, 0, n);
-                b[n] = inner;
-            } while (!this.observers.compareAndSet(a, b));
+                innerObserverArr = new InnerObserver[n + 1];
+                System.arraycopy(a, 0, innerObserverArr, 0, n);
+                innerObserverArr[n] = inner;
+            } while (!this.observers.compareAndSet(a, innerObserverArr));
             return true;
         }
 
-        /* access modifiers changed from: package-private */
-        public void removeInner(InnerObserver<T, U> inner) {
+        void removeInner(InnerObserver<T, U> inner) {
             InnerObserver<?, ?>[] a;
             InnerObserver<?, ?>[] b;
             do {
-                a = (InnerObserver[]) this.observers.get();
+                a = this.observers.get();
                 int n = a.length;
-                if (n != 0) {
-                    int j = -1;
-                    int i = 0;
-                    while (true) {
-                        if (i >= n) {
-                            break;
-                        } else if (a[i] == inner) {
-                            j = i;
-                            break;
-                        } else {
-                            i++;
-                        }
-                    }
-                    if (j >= 0) {
-                        if (n == 1) {
-                            b = EMPTY;
-                        } else {
-                            InnerObserver<?, ?>[] b2 = new InnerObserver[(n - 1)];
-                            System.arraycopy(a, 0, b2, 0, j);
-                            System.arraycopy(a, j + 1, b2, j, (n - j) - 1);
-                            b = b2;
-                        }
-                    } else {
-                        return;
-                    }
-                } else {
+                if (n == 0) {
                     return;
+                }
+                int j = -1;
+                int i = 0;
+                while (true) {
+                    if (i >= n) {
+                        break;
+                    } else if (a[i] != inner) {
+                        i++;
+                    } else {
+                        j = i;
+                        break;
+                    }
+                }
+                if (j < 0) {
+                    return;
+                }
+                if (n == 1) {
+                    b = EMPTY;
+                } else {
+                    InnerObserver<?, ?>[] b2 = new InnerObserver[n - 1];
+                    System.arraycopy(a, 0, b2, 0, j);
+                    System.arraycopy(a, j + 1, b2, j, (n - j) - 1);
+                    b = b2;
                 }
             } while (!this.observers.compareAndSet(a, b));
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean tryEmitScalar(Callable<? extends U> value) {
+        boolean tryEmitScalar(Callable<? extends U> value) {
             try {
                 U u = value.call();
                 if (u == null) {
                     return true;
                 }
-                if (get() != 0 || !compareAndSet(0, 1)) {
+                if (get() == 0 && compareAndSet(0, 1)) {
+                    this.downstream.onNext(u);
+                    if (decrementAndGet() == 0) {
+                        return true;
+                    }
+                } else {
                     SimplePlainQueue<U> q = this.queue;
                     if (q == null) {
                         if (this.maxConcurrency == Integer.MAX_VALUE) {
-                            q = new SpscLinkedArrayQueue<>(this.bufferSize);
+                            q = new SpscLinkedArrayQueue(this.bufferSize);
                         } else {
                             q = new SpscArrayQueue<>(this.maxConcurrency);
                         }
@@ -210,11 +217,6 @@ public final class ObservableFlatMap<T, U> extends AbstractObservableWithUpstrea
                         return true;
                     } else if (getAndIncrement() != 0) {
                         return false;
-                    }
-                } else {
-                    this.downstream.onNext(u);
-                    if (decrementAndGet() == 0) {
-                        return true;
                     }
                 }
                 drainLoop();
@@ -227,27 +229,27 @@ public final class ObservableFlatMap<T, U> extends AbstractObservableWithUpstrea
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void tryEmit(U value, InnerObserver<T, U> inner) {
-            if (get() != 0 || !compareAndSet(0, 1)) {
+        void tryEmit(U value, InnerObserver<T, U> inner) {
+            if (get() == 0 && compareAndSet(0, 1)) {
+                this.downstream.onNext(value);
+                if (decrementAndGet() == 0) {
+                    return;
+                }
+            } else {
                 SimpleQueue<U> q = inner.queue;
                 if (q == null) {
-                    q = new SpscLinkedArrayQueue<>(this.bufferSize);
+                    q = new SpscLinkedArrayQueue(this.bufferSize);
                     inner.queue = q;
                 }
                 q.offer(value);
                 if (getAndIncrement() != 0) {
                     return;
                 }
-            } else {
-                this.downstream.onNext(value);
-                if (decrementAndGet() == 0) {
-                    return;
-                }
             }
             drainLoop();
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -259,13 +261,16 @@ public final class ObservableFlatMap<T, U> extends AbstractObservableWithUpstrea
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                drain();
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            drain();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             Throwable ex;
             if (!this.cancelled) {
@@ -276,45 +281,52 @@ public final class ObservableFlatMap<T, U> extends AbstractObservableWithUpstrea
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.cancelled;
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
+        void drain() {
             if (getAndIncrement() == 0) {
                 drainLoop();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drainLoop() {
-            int innerCompleted;
+        void drainLoop() {
+            int j;
             Observer<? super U> child;
             int index;
             Observer<? super U> child2;
             Observer<? super U> child3 = this.downstream;
             int missed = 1;
             while (!checkTerminate()) {
-                int innerCompleted2 = 0;
+                int innerCompleted = 0;
                 SimplePlainQueue<U> svq = this.queue;
-                if (svq != null) {
+                if (svq == null) {
+                    j = 0;
+                } else {
                     while (!checkTerminate()) {
-                        U o = svq.poll();
-                        if (o == null) {
-                            innerCompleted = innerCompleted2;
+                        Object obj = (U) svq.poll();
+                        if (obj == null) {
+                            j = innerCompleted;
                         } else {
-                            child3.onNext(o);
-                            innerCompleted2++;
+                            child3.onNext(obj);
+                            innerCompleted++;
                         }
                     }
                     return;
                 }
-                innerCompleted = 0;
-                if (innerCompleted == 0) {
+                if (j != 0) {
+                    if (this.maxConcurrency == Integer.MAX_VALUE) {
+                        child = child3;
+                    } else {
+                        subscribeMore(j);
+                        child = child3;
+                    }
+                } else {
                     boolean d = this.done;
                     SimplePlainQueue<U> svq2 = this.queue;
-                    InnerObserver<T, U>[] inner = (InnerObserver[]) this.observers.get();
+                    InnerObserver<?, ?>[] inner = this.observers.get();
                     int n = inner.length;
                     int nSources = 0;
                     if (this.maxConcurrency != Integer.MAX_VALUE) {
@@ -322,141 +334,125 @@ public final class ObservableFlatMap<T, U> extends AbstractObservableWithUpstrea
                             nSources = this.sources.size();
                         }
                     }
-                    if (!d || !((svq2 == null || svq2.isEmpty()) && n == 0 && nSources == 0)) {
-                        if (n != 0) {
-                            long startId = this.lastId;
-                            int index2 = this.lastIndex;
-                            if (n <= index2 || inner[index2].id != startId) {
-                                if (n <= index2) {
-                                    index2 = 0;
-                                }
-                                int j = index2;
-                                int i = 0;
-                                while (true) {
-                                    if (i >= n) {
-                                        break;
-                                    }
-                                    boolean d2 = d;
-                                    if (inner[j].id == startId) {
-                                        break;
-                                    }
-                                    j++;
-                                    if (j == n) {
-                                        j = 0;
-                                    }
-                                    i++;
-                                    d = d2;
-                                }
-                                this.lastIndex = j;
-                                this.lastId = inner[j].id;
-                                index = j;
+                    if (d && ((svq2 == null || svq2.isEmpty()) && n == 0 && nSources == 0)) {
+                        Throwable ex = this.errors.terminate();
+                        if (ex != ExceptionHelper.TERMINATED) {
+                            if (ex == null) {
+                                child3.onComplete();
+                                return;
                             } else {
-                                index = index2;
-                                boolean z = d;
-                            }
-                            int i2 = 0;
-                            int innerCompleted3 = innerCompleted;
-                            int j2 = index;
-                            while (i2 < n) {
-                                if (!checkTerminate()) {
-                                    InnerObserver<T, U> is = inner[j2];
-                                    SimpleQueue<U> q = is.queue;
-                                    if (q != null) {
-                                        while (true) {
-                                            try {
-                                                U o2 = q.poll();
-                                                if (o2 == null) {
-                                                    child2 = child3;
-                                                    break;
-                                                }
-                                                child3.onNext(o2);
-                                                if (checkTerminate()) {
-                                                    return;
-                                                }
-                                            } catch (Throwable th) {
-                                                Throwable ex = th;
-                                                Exceptions.throwIfFatal(ex);
-                                                is.dispose();
-                                                child2 = child3;
-                                                this.errors.addThrowable(ex);
-                                                if (!checkTerminate()) {
-                                                    removeInner(is);
-                                                    innerCompleted3++;
-                                                    j2++;
-                                                    if (j2 == n) {
-                                                        j2 = 0;
-                                                    }
-                                                } else {
-                                                    return;
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        child2 = child3;
-                                    }
-                                    boolean innerDone = is.done;
-                                    SimpleQueue<U> innerQueue = is.queue;
-                                    if (innerDone && (innerQueue == null || innerQueue.isEmpty())) {
-                                        removeInner(is);
-                                        if (!checkTerminate()) {
-                                            innerCompleted3++;
-                                        } else {
-                                            return;
-                                        }
-                                    }
-                                    j2++;
-                                    if (j2 == n) {
-                                        j2 = 0;
-                                    }
-                                    i2++;
-                                    child3 = child2;
-                                } else {
-                                    return;
-                                }
-                            }
-                            child = child3;
-                            this.lastIndex = j2;
-                            this.lastId = inner[j2].id;
-                            innerCompleted = innerCompleted3;
-                        } else {
-                            child = child3;
-                            boolean z2 = d;
-                        }
-                        if (innerCompleted == 0) {
-                            missed = addAndGet(-missed);
-                            if (missed != 0) {
-                                child3 = child;
-                            } else {
+                                child3.onError(ex);
                                 return;
                             }
-                        } else if (this.maxConcurrency != Integer.MAX_VALUE) {
-                            subscribeMore(innerCompleted);
                         }
-                    } else {
-                        Throwable ex2 = this.errors.terminate();
-                        if (ex2 == ExceptionHelper.TERMINATED) {
-                            return;
-                        }
-                        if (ex2 == null) {
-                            child3.onComplete();
-                            return;
-                        } else {
-                            child3.onError(ex2);
-                            return;
-                        }
+                        return;
                     }
-                } else if (this.maxConcurrency != Integer.MAX_VALUE) {
-                    subscribeMore(innerCompleted);
-                    child = child3;
-                } else {
-                    child = child3;
+                    if (n == 0) {
+                        child = child3;
+                    } else {
+                        long startId = this.lastId;
+                        int index2 = this.lastIndex;
+                        if (n <= index2 || inner[index2].f318id != startId) {
+                            if (n <= index2) {
+                                index2 = 0;
+                            }
+                            int j2 = index2;
+                            int i = 0;
+                            while (i < n) {
+                                boolean d2 = d;
+                                if (inner[j2].f318id == startId) {
+                                    break;
+                                }
+                                j2++;
+                                if (j2 == n) {
+                                    j2 = 0;
+                                }
+                                i++;
+                                d = d2;
+                            }
+                            this.lastIndex = j2;
+                            this.lastId = inner[j2].f318id;
+                            index = j2;
+                        } else {
+                            index = index2;
+                        }
+                        int i2 = 0;
+                        int innerCompleted2 = j;
+                        int j3 = index;
+                        while (i2 < n) {
+                            if (checkTerminate()) {
+                                return;
+                            }
+                            InnerObserver<T, U> is = inner[j3];
+                            SimpleQueue<U> q = is.queue;
+                            if (q != null) {
+                                while (true) {
+                                    try {
+                                        Object obj2 = (U) q.poll();
+                                        if (obj2 == null) {
+                                            child2 = child3;
+                                            break;
+                                        }
+                                        child3.onNext(obj2);
+                                        if (checkTerminate()) {
+                                            return;
+                                        }
+                                    } catch (Throwable ex2) {
+                                        Exceptions.throwIfFatal(ex2);
+                                        is.dispose();
+                                        child2 = child3;
+                                        this.errors.addThrowable(ex2);
+                                        if (checkTerminate()) {
+                                            return;
+                                        }
+                                        removeInner(is);
+                                        innerCompleted2++;
+                                        j3++;
+                                        if (j3 == n) {
+                                            j3 = 0;
+                                        }
+                                    }
+                                }
+                            } else {
+                                child2 = child3;
+                            }
+                            boolean innerDone = is.done;
+                            SimpleQueue<U> innerQueue = is.queue;
+                            if (innerDone && (innerQueue == null || innerQueue.isEmpty())) {
+                                removeInner(is);
+                                if (checkTerminate()) {
+                                    return;
+                                }
+                                innerCompleted2++;
+                            }
+                            j3++;
+                            if (j3 == n) {
+                                j3 = 0;
+                            }
+                            i2++;
+                            child3 = child2;
+                        }
+                        child = child3;
+                        this.lastIndex = j3;
+                        this.lastId = inner[j3].f318id;
+                        j = innerCompleted2;
+                    }
+                    if (j == 0) {
+                        missed = addAndGet(-missed);
+                        if (missed != 0) {
+                            child3 = child;
+                        } else {
+                            return;
+                        }
+                    } else if (this.maxConcurrency != Integer.MAX_VALUE) {
+                        subscribeMore(j);
+                    }
                 }
                 child3 = child;
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void subscribeMore(int innerCompleted) {
+        void subscribeMore(int innerCompleted) {
             while (true) {
                 int innerCompleted2 = innerCompleted - 1;
                 if (innerCompleted != 0) {
@@ -473,56 +469,59 @@ public final class ObservableFlatMap<T, U> extends AbstractObservableWithUpstrea
                     return;
                 }
             }
-            while (true) {
-            }
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean checkTerminate() {
+        boolean checkTerminate() {
             if (this.cancelled) {
                 return true;
             }
-            Throwable e = (Throwable) this.errors.get();
-            if (this.delayErrors || e == null) {
-                return false;
+            Throwable e = this.errors.get();
+            if (!this.delayErrors && e != null) {
+                disposeAll();
+                Throwable e2 = this.errors.terminate();
+                if (e2 != ExceptionHelper.TERMINATED) {
+                    this.downstream.onError(e2);
+                }
+                return true;
             }
-            disposeAll();
-            Throwable e2 = this.errors.terminate();
-            if (e2 != ExceptionHelper.TERMINATED) {
-                this.downstream.onError(e2);
-            }
-            return true;
+            return false;
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean disposeAll() {
-            InnerObserver<?, ?>[] a;
+        boolean disposeAll() {
             this.upstream.dispose();
-            InnerObserver<?, ?>[] a2 = (InnerObserver[]) this.observers.get();
+            InnerObserver<?, ?>[] a = this.observers.get();
             InnerObserver<?, ?>[] innerObserverArr = CANCELLED;
-            if (a2 == innerObserverArr || (a = (InnerObserver[]) this.observers.getAndSet(innerObserverArr)) == innerObserverArr) {
-                return false;
+            if (a != innerObserverArr) {
+                InnerObserver<?, ?>[] a2 = this.observers.getAndSet(innerObserverArr);
+                InnerObserver<?, ?>[] a3 = a2;
+                if (a3 != innerObserverArr) {
+                    for (InnerObserver<?, ?> inner : a3) {
+                        inner.dispose();
+                    }
+                    return true;
+                }
             }
-            for (InnerObserver<?, ?> inner : a) {
-                inner.dispose();
-            }
-            return true;
+            return false;
         }
     }
 
+    /* loaded from: classes.dex */
     static final class InnerObserver<T, U> extends AtomicReference<Disposable> implements Observer<U> {
         private static final long serialVersionUID = -4606175640614850599L;
         volatile boolean done;
         int fusionMode;
-        final long id;
+
+        /* renamed from: id */
+        final long f318id;
         final MergeObserver<T, U> parent;
         volatile SimpleQueue<U> queue;
 
-        InnerObserver(MergeObserver<T, U> parent2, long id2) {
-            this.id = id2;
-            this.parent = parent2;
+        InnerObserver(MergeObserver<T, U> parent, long id) {
+            this.f318id = id;
+            this.parent = parent;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.setOnce(this, d) && (d instanceof QueueDisposable)) {
                 QueueDisposable<U> qd = (QueueDisposable) d;
@@ -539,6 +538,7 @@ public final class ObservableFlatMap<T, U> extends AbstractObservableWithUpstrea
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(U t) {
             if (this.fusionMode == 0) {
                 this.parent.tryEmit(t, this);
@@ -547,6 +547,7 @@ public final class ObservableFlatMap<T, U> extends AbstractObservableWithUpstrea
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             if (this.parent.errors.addThrowable(t)) {
                 if (!this.parent.delayErrors) {
@@ -559,6 +560,7 @@ public final class ObservableFlatMap<T, U> extends AbstractObservableWithUpstrea
             RxJavaPlugins.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             this.done = true;
             this.parent.drain();

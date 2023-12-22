@@ -11,22 +11,26 @@ import io.reactivex.internal.disposables.SequentialDisposable;
 import java.util.concurrent.atomic.AtomicInteger;
 import kotlin.jvm.internal.LongCompanionObject;
 
+/* loaded from: classes.dex */
 public final class ObservableRetryPredicate<T> extends AbstractObservableWithUpstream<T, T> {
     final long count;
     final Predicate<? super Throwable> predicate;
 
-    public ObservableRetryPredicate(Observable<T> source, long count2, Predicate<? super Throwable> predicate2) {
+    public ObservableRetryPredicate(Observable<T> source, long count, Predicate<? super Throwable> predicate) {
         super(source);
-        this.predicate = predicate2;
-        this.count = count2;
+        this.predicate = predicate;
+        this.count = count;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super T> observer) {
         SequentialDisposable sa = new SequentialDisposable();
         observer.onSubscribe(sa);
-        new RepeatObserver<>(observer, this.count, this.predicate, sa, this.source).subscribeNext();
+        RepeatObserver<T> rs = new RepeatObserver<>(observer, this.count, this.predicate, sa, this.source);
+        rs.subscribeNext();
     }
 
+    /* loaded from: classes.dex */
     static final class RepeatObserver<T> extends AtomicInteger implements Observer<T> {
         private static final long serialVersionUID = -7098360935104053232L;
         final Observer<? super T> downstream;
@@ -35,22 +39,25 @@ public final class ObservableRetryPredicate<T> extends AbstractObservableWithUps
         final ObservableSource<? extends T> source;
         final SequentialDisposable upstream;
 
-        RepeatObserver(Observer<? super T> actual, long count, Predicate<? super Throwable> predicate2, SequentialDisposable sa, ObservableSource<? extends T> source2) {
+        RepeatObserver(Observer<? super T> actual, long count, Predicate<? super Throwable> predicate, SequentialDisposable sa, ObservableSource<? extends T> source) {
             this.downstream = actual;
             this.upstream = sa;
-            this.source = source2;
-            this.predicate = predicate2;
+            this.source = source;
+            this.predicate = predicate;
             this.remaining = count;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             this.upstream.replace(d);
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             this.downstream.onNext(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             long r = this.remaining;
             if (r != LongCompanionObject.MAX_VALUE) {
@@ -61,7 +68,8 @@ public final class ObservableRetryPredicate<T> extends AbstractObservableWithUps
                 return;
             }
             try {
-                if (!this.predicate.test(t)) {
+                boolean b = this.predicate.test(t);
+                if (!b) {
                     this.downstream.onError(t);
                 } else {
                     subscribeNext();
@@ -72,12 +80,12 @@ public final class ObservableRetryPredicate<T> extends AbstractObservableWithUps
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             this.downstream.onComplete();
         }
 
-        /* access modifiers changed from: package-private */
-        public void subscribeNext() {
+        void subscribeNext() {
             if (getAndIncrement() == 0) {
                 int missed = 1;
                 while (!this.upstream.isDisposed()) {

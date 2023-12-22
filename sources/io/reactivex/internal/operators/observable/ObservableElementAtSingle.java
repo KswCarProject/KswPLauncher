@@ -11,25 +11,29 @@ import io.reactivex.internal.fuseable.FuseToObservable;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.NoSuchElementException;
 
+/* loaded from: classes.dex */
 public final class ObservableElementAtSingle<T> extends Single<T> implements FuseToObservable<T> {
     final T defaultValue;
     final long index;
     final ObservableSource<T> source;
 
-    public ObservableElementAtSingle(ObservableSource<T> source2, long index2, T defaultValue2) {
-        this.source = source2;
-        this.index = index2;
-        this.defaultValue = defaultValue2;
+    public ObservableElementAtSingle(ObservableSource<T> source, long index, T defaultValue) {
+        this.source = source;
+        this.index = index;
+        this.defaultValue = defaultValue;
     }
 
+    @Override // io.reactivex.Single
     public void subscribeActual(SingleObserver<? super T> t) {
         this.source.subscribe(new ElementAtObserver(t, this.index, this.defaultValue));
     }
 
+    @Override // io.reactivex.internal.fuseable.FuseToObservable
     public Observable<T> fuseToObservable() {
         return RxJavaPlugins.onAssembly(new ObservableElementAt(this.source, this.index, this.defaultValue, true));
     }
 
+    /* loaded from: classes.dex */
     static final class ElementAtObserver<T> implements Observer<T>, Disposable {
         long count;
         final T defaultValue;
@@ -38,12 +42,13 @@ public final class ObservableElementAtSingle<T> extends Single<T> implements Fus
         final long index;
         Disposable upstream;
 
-        ElementAtObserver(SingleObserver<? super T> actual, long index2, T defaultValue2) {
+        ElementAtObserver(SingleObserver<? super T> actual, long index, T defaultValue) {
             this.downstream = actual;
-            this.index = index2;
-            this.defaultValue = defaultValue2;
+            this.index = index;
+            this.defaultValue = defaultValue;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -51,27 +56,32 @@ public final class ObservableElementAtSingle<T> extends Single<T> implements Fus
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
-            if (!this.done) {
-                long c = this.count;
-                if (c == this.index) {
-                    this.done = true;
-                    this.upstream.dispose();
-                    this.downstream.onSuccess(t);
-                    return;
-                }
-                this.count = 1 + c;
+            if (this.done) {
+                return;
             }
+            long c = this.count;
+            if (c == this.index) {
+                this.done = true;
+                this.upstream.dispose();
+                this.downstream.onSuccess(t);
+                return;
+            }
+            this.count = 1 + c;
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -81,6 +91,7 @@ public final class ObservableElementAtSingle<T> extends Single<T> implements Fus
             this.downstream.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             if (!this.done) {
                 this.done = true;

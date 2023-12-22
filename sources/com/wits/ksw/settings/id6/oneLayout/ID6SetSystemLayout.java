@@ -17,15 +17,17 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.utils.ExceptionPrint;
 import com.wits.ksw.settings.BrightnessUtils;
 import com.wits.ksw.settings.id7.interfaces.IUpdateTwoLayout;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
+import java.lang.reflect.Method;
 import java.text.NumberFormat;
 
+/* loaded from: classes7.dex */
 public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private int beiguangValue;
     private CheckBox cbox_sysDcgj;
@@ -33,31 +35,20 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
     private CheckBox cbox_sysDcld;
     private CheckBox cbox_sysHjs;
     private CheckBox cbox_sysXcjz;
-    private int cheVideo = 0;
-    /* access modifiers changed from: private */
-    public Context context;
-    private int dcgj = 0;
-    private int dcjy = 0;
-    private int dcld = 0;
-    private int housi = 0;
+    private int cheVideo;
+    private Context context;
+    private int dcgj;
+    private int dcjy;
+    private int dcld;
+    private int housi;
     private TextView id6SysFuelUnit;
     private TextView id6SysTempUnit;
-    /* access modifiers changed from: private */
-    public Handler mBackgroundHandler;
+    private Handler mBackgroundHandler;
     private BrightnessObserver mBrightnessObserver;
-    /* access modifiers changed from: private */
-    public int mMaxBrightness;
-    /* access modifiers changed from: private */
-    public int mMinBrightness;
-    /* access modifiers changed from: private */
-    public final Runnable mUpdateSliderRunnable = new Runnable() {
-        public void run() {
-            int brightness = Settings.System.getInt(ID6SetSystemLayout.this.context.getContentResolver(), "screen_brightness", 255);
-            ID6SetSystemLayout.this.setProgressText(brightness);
-            ID6SetSystemLayout.this.setProgress(brightness);
-        }
-    };
-    private int nbauxsw = 0;
+    private int mMaxBrightness;
+    private int mMinBrightness;
+    private final Runnable mUpdateSliderRunnable;
+    private int nbauxsw;
     private SeekBar seekbar_brightness;
     private TextView tv_beigSize;
     private TextView tv_music_app;
@@ -70,10 +61,24 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
         this.updateTwoLayout = twoLayout;
     }
 
-    public ID6SetSystemLayout(Context context2) {
-        super(context2);
-        this.context = context2;
-        View view = LayoutInflater.from(context2).inflate(R.layout.layout_id6_set_system, (ViewGroup) null);
+    public ID6SetSystemLayout(Context context) {
+        super(context);
+        this.housi = 0;
+        this.cheVideo = 0;
+        this.dcgj = 0;
+        this.dcld = 0;
+        this.dcjy = 0;
+        this.nbauxsw = 0;
+        this.mUpdateSliderRunnable = new Runnable() { // from class: com.wits.ksw.settings.id6.oneLayout.ID6SetSystemLayout.2
+            @Override // java.lang.Runnable
+            public void run() {
+                int brightness = Settings.System.getInt(ID6SetSystemLayout.this.context.getContentResolver(), "screen_brightness", 255);
+                ID6SetSystemLayout.this.setProgressText(brightness);
+                ID6SetSystemLayout.this.setProgress(brightness);
+            }
+        };
+        this.context = context;
+        View view = LayoutInflater.from(context).inflate(C0899R.C0902layout.layout_id6_set_system, (ViewGroup) null);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(-1, -1);
         initData();
         initView(view);
@@ -102,25 +107,20 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
     }
 
     private void initView(View view) {
-        this.id6SysTempUnit = (TextView) view.findViewById(R.id.id6_sysTempUnit);
-        this.id6SysFuelUnit = (TextView) view.findViewById(R.id.id6_sysFuelUnit);
-        this.tv_sysDcsxt = (TextView) view.findViewById(R.id.tv_sysDcsxt);
-        this.cbox_sysHjs = (CheckBox) view.findViewById(R.id.cbox_sysHjs);
-        this.cbox_sysXcjz = (CheckBox) view.findViewById(R.id.cbox_sysXcjz);
-        this.cbox_sysDcgj = (CheckBox) view.findViewById(R.id.cbox_sysDcgj);
-        this.cbox_sysDcld = (CheckBox) view.findViewById(R.id.cbox_sysDcld);
-        this.tv_sysCaux = (TextView) view.findViewById(R.id.tv_sysCaux);
-        this.cbox_sysDcjy = (CheckBox) view.findViewById(R.id.cbox_sysDcjy);
-        boolean z = true;
+        this.id6SysTempUnit = (TextView) view.findViewById(C0899R.C0901id.id6_sysTempUnit);
+        this.id6SysFuelUnit = (TextView) view.findViewById(C0899R.C0901id.id6_sysFuelUnit);
+        this.tv_sysDcsxt = (TextView) view.findViewById(C0899R.C0901id.tv_sysDcsxt);
+        this.cbox_sysHjs = (CheckBox) view.findViewById(C0899R.C0901id.cbox_sysHjs);
+        this.cbox_sysXcjz = (CheckBox) view.findViewById(C0899R.C0901id.cbox_sysXcjz);
+        this.cbox_sysDcgj = (CheckBox) view.findViewById(C0899R.C0901id.cbox_sysDcgj);
+        this.cbox_sysDcld = (CheckBox) view.findViewById(C0899R.C0901id.cbox_sysDcld);
+        this.tv_sysCaux = (TextView) view.findViewById(C0899R.C0901id.tv_sysCaux);
+        this.cbox_sysDcjy = (CheckBox) view.findViewById(C0899R.C0901id.cbox_sysDcjy);
         this.cbox_sysHjs.setChecked(this.housi != 0);
         this.cbox_sysXcjz.setChecked(this.cheVideo != 0);
         this.cbox_sysDcgj.setChecked(this.dcgj != 0);
         this.cbox_sysDcld.setChecked(this.dcld != 0);
-        CheckBox checkBox = this.cbox_sysDcjy;
-        if (this.dcjy == 0) {
-            z = false;
-        }
-        checkBox.setChecked(z);
+        this.cbox_sysDcjy.setChecked(this.dcjy != 0);
         this.tv_sysDcsxt.setOnClickListener(this);
         this.tv_sysCaux.setOnClickListener(this);
         this.id6SysTempUnit.setOnClickListener(this);
@@ -135,14 +135,15 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
         } else {
             this.tv_sysCaux.setVisibility(8);
         }
-        this.tv_beigSize = (TextView) view.findViewById(R.id.tv_beigSize);
-        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekbar_brightness);
+        this.tv_beigSize = (TextView) view.findViewById(C0899R.C0901id.tv_beigSize);
+        SeekBar seekBar = (SeekBar) view.findViewById(C0899R.C0901id.seekbar_brightness);
         this.seekbar_brightness = seekBar;
         seekBar.setMax(BrightnessUtils.GAMMA_SPACE_MAX);
         setProgress(this.beiguangValue);
         setProgressText(this.beiguangValue);
-        this.seekbar_brightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        this.seekbar_brightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { // from class: com.wits.ksw.settings.id6.oneLayout.ID6SetSystemLayout.1
+            @Override // android.widget.SeekBar.OnSeekBarChangeListener
+            public void onProgressChanged(SeekBar seekBar2, int progress, boolean fromUser) {
                 if (fromUser) {
                     int val = BrightnessUtils.convertGammaToLinear(progress, ID6SetSystemLayout.this.mMinBrightness, ID6SetSystemLayout.this.mMaxBrightness);
                     Log.e("SetSystemTwo", "onProgressChanged: fromUser=" + fromUser + " : progress=" + progress + " : val=" + val);
@@ -152,65 +153,70 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
                 }
             }
 
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            @Override // android.widget.SeekBar.OnSeekBarChangeListener
+            public void onStartTrackingTouch(SeekBar seekBar2) {
             }
 
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            @Override // android.widget.SeekBar.OnSeekBarChangeListener
+            public void onStopTrackingTouch(SeekBar seekBar2) {
             }
         });
-        this.tv_music_app = (TextView) view.findViewById(R.id.tv_music_app);
-        this.tv_video_app = (TextView) view.findViewById(R.id.tv_video_app);
+        this.tv_music_app = (TextView) view.findViewById(C0899R.C0901id.tv_music_app);
+        this.tv_video_app = (TextView) view.findViewById(C0899R.C0901id.tv_video_app);
         this.tv_music_app.setOnClickListener(this);
         this.tv_video_app.setOnClickListener(this);
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void setSystemBrightness(int brightness) {
         Log.i("SetSystemTwo", " setSystemBrightness=" + brightness);
         Settings.System.putInt(this.context.getContentResolver(), "screen_brightness", brightness);
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void setProgressText(int progress) {
         int value = BrightnessUtils.convertLinearToGamma(progress, this.mMinBrightness, this.mMaxBrightness);
-        double b = BrightnessUtils.getPercentage((double) value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
-        Log.i("SetSystemTwo", "setProgressText run: brightness=" + progress + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + NumberFormat.getPercentInstance().format(b));
+        double b = BrightnessUtils.getPercentage(value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
+        String aaa = NumberFormat.getPercentInstance().format(b);
+        Log.i("SetSystemTwo", "setProgressText run: brightness=" + progress + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + aaa);
         this.tv_beigSize.setText("" + ((int) Math.round(100.0d * b)));
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void setProgress(int brightness) {
         this.mMinBrightness = getMinimumScreenBrightnessSetting();
         int maximumScreenBrightnessSetting = getMaximumScreenBrightnessSetting();
         this.mMaxBrightness = maximumScreenBrightnessSetting;
         int value = BrightnessUtils.convertLinearToGamma(brightness, this.mMinBrightness, maximumScreenBrightnessSetting);
-        double b = BrightnessUtils.getPercentage((double) value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
-        Log.i("SetSystemTwo", "run: brightness=" + brightness + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + NumberFormat.getPercentInstance().format(b));
+        double b = BrightnessUtils.getPercentage(value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
+        String aaa = NumberFormat.getPercentInstance().format(b);
+        Log.i("SetSystemTwo", "run: brightness=" + brightness + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + aaa);
         this.seekbar_brightness.setProgress(value);
     }
 
+    @Override // android.view.View.OnClickListener
     public void onClick(View v) {
         if (this.updateTwoLayout == null) {
             ExceptionPrint.print("updateTwoLayout is null");
             return;
         }
         switch (v.getId()) {
-            case R.id.id6_sysFuelUnit:
+            case C0899R.C0901id.id6_sysFuelUnit /* 2131297023 */:
                 this.updateTwoLayout.updateTwoLayout(1, 4);
                 return;
-            case R.id.id6_sysTempUnit:
+            case C0899R.C0901id.id6_sysTempUnit /* 2131297024 */:
                 this.updateTwoLayout.updateTwoLayout(1, 3);
                 return;
-            case R.id.tv_music_app:
+            case C0899R.C0901id.tv_music_app /* 2131297952 */:
                 this.updateTwoLayout.updateTwoLayout(1, 5);
                 return;
-            case R.id.tv_sysCaux:
+            case C0899R.C0901id.tv_sysCaux /* 2131297982 */:
                 this.updateTwoLayout.updateTwoLayout(1, 2);
                 return;
-            case R.id.tv_sysDcsxt:
+            case C0899R.C0901id.tv_sysDcsxt /* 2131297983 */:
                 this.updateTwoLayout.updateTwoLayout(1, 1);
                 return;
-            case R.id.tv_video_app:
+            case C0899R.C0901id.tv_video_app /* 2131298003 */:
                 this.updateTwoLayout.updateTwoLayout(1, 6);
                 return;
             default:
@@ -218,21 +224,22 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
         }
     }
 
+    @Override // android.widget.CompoundButton.OnCheckedChangeListener
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
-            case R.id.cbox_sysDcgj:
+            case C0899R.C0901id.cbox_sysDcgj /* 2131296756 */:
                 FileUtils.savaData(KeyConfig.DAO_CHE_GJ, isChecked);
                 return;
-            case R.id.cbox_sysDcjy:
+            case C0899R.C0901id.cbox_sysDcjy /* 2131296757 */:
                 FileUtils.savaData(KeyConfig.DAO_CHE_JY, isChecked);
                 return;
-            case R.id.cbox_sysDcld:
+            case C0899R.C0901id.cbox_sysDcld /* 2131296758 */:
                 FileUtils.savaData(KeyConfig.DAO_CHE_LD, isChecked);
                 return;
-            case R.id.cbox_sysHjs:
+            case C0899R.C0901id.cbox_sysHjs /* 2131296759 */:
                 FileUtils.savaData(KeyConfig.HOU_SHI_SX, isChecked);
                 return;
-            case R.id.cbox_sysXcjz:
+            case C0899R.C0901id.cbox_sysXcjz /* 2131296760 */:
                 FileUtils.savaData(KeyConfig.XING_CHE_JZSP, isChecked);
                 return;
             default:
@@ -240,11 +247,13 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
         }
     }
 
+    /* loaded from: classes7.dex */
     private class BrightnessObserver extends ContentObserver {
-        private Uri BRIGHTNESS_URI = Settings.System.getUriFor("screen_brightness");
+        private Uri BRIGHTNESS_URI;
 
         public BrightnessObserver(Handler handler) {
             super(handler);
+            this.BRIGHTNESS_URI = Settings.System.getUriFor("screen_brightness");
         }
 
         public void startObserving() {
@@ -258,10 +267,12 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
             Log.i("SetSystemTwo", "stopObserving: unregisterContentObserver");
         }
 
+        @Override // android.database.ContentObserver
         public void onChange(boolean selfChange) {
-            onChange(selfChange, (Uri) null);
+            onChange(selfChange, null);
         }
 
+        @Override // android.database.ContentObserver
         public void onChange(boolean selfChange, Uri uri) {
             if (!selfChange && this.BRIGHTNESS_URI.equals(uri)) {
                 Log.i("SetSystemTwo", "onChange: " + uri);
@@ -278,9 +289,12 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
         return 255;
     }
 
-    public void setBrightnessValueBg(Context context2, int key) {
+    public void setBrightnessValueBg(Context context, int key) {
         try {
-            Class.forName("android.hardware.display.DisplayManager").getMethod("setTemporaryBrightness", new Class[]{Integer.TYPE}).invoke((DisplayManager) context2.getSystemService("display"), new Object[]{Integer.valueOf(key)});
+            DisplayManager displayManager = (DisplayManager) context.getSystemService("display");
+            Class<?> dmclass = Class.forName("android.hardware.display.DisplayManager");
+            Method set = dmclass.getMethod("setTemporaryBrightness", Integer.TYPE);
+            set.invoke(displayManager, Integer.valueOf(key));
             Log.i("SetSystemTwo", "setBrightnessValueBg: " + key);
         } catch (Exception e) {
             e.printStackTrace();

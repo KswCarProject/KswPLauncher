@@ -13,6 +13,7 @@ import kotlin.reflect.KType;
 import kotlin.reflect.KTypeParameter;
 import kotlin.reflect.KVisibility;
 
+/* loaded from: classes.dex */
 public abstract class CallableReference implements KCallable, Serializable {
     public static final Object NO_RECEIVER = NoReceiver.INSTANCE;
     private final boolean isTopLevel;
@@ -22,12 +23,11 @@ public abstract class CallableReference implements KCallable, Serializable {
     private transient KCallable reflected;
     private final String signature;
 
-    /* access modifiers changed from: protected */
-    public abstract KCallable computeReflected();
+    protected abstract KCallable computeReflected();
 
+    /* loaded from: classes.dex */
     private static class NoReceiver implements Serializable {
-        /* access modifiers changed from: private */
-        public static final NoReceiver INSTANCE = new NoReceiver();
+        private static final NoReceiver INSTANCE = new NoReceiver();
 
         private NoReceiver() {
         }
@@ -41,16 +41,16 @@ public abstract class CallableReference implements KCallable, Serializable {
         this(NO_RECEIVER);
     }
 
-    protected CallableReference(Object receiver2) {
-        this(receiver2, (Class) null, (String) null, (String) null, false);
+    protected CallableReference(Object receiver) {
+        this(receiver, null, null, null, false);
     }
 
-    protected CallableReference(Object receiver2, Class owner2, String name2, String signature2, boolean isTopLevel2) {
-        this.receiver = receiver2;
-        this.owner = owner2;
-        this.name = name2;
-        this.signature = signature2;
-        this.isTopLevel = isTopLevel2;
+    protected CallableReference(Object receiver, Class owner, String name, String signature, boolean isTopLevel) {
+        this.receiver = receiver;
+        this.owner = owner;
+        this.name = name;
+        this.signature = signature;
+        this.isTopLevel = isTopLevel;
     }
 
     public Object getBoundReceiver() {
@@ -59,21 +59,20 @@ public abstract class CallableReference implements KCallable, Serializable {
 
     public KCallable compute() {
         KCallable result = this.reflected;
-        if (result != null) {
-            return result;
+        if (result == null) {
+            KCallable result2 = computeReflected();
+            this.reflected = result2;
+            return result2;
         }
-        KCallable result2 = computeReflected();
-        this.reflected = result2;
-        return result2;
+        return result;
     }
 
-    /* access modifiers changed from: protected */
-    public KCallable getReflected() {
+    protected KCallable getReflected() {
         KCallable result = compute();
-        if (result != this) {
-            return result;
+        if (result == this) {
+            throw new KotlinReflectionNotSupportedError();
         }
-        throw new KotlinReflectionNotSupportedError();
+        return result;
     }
 
     public KDeclarationContainer getOwner() {
@@ -84,6 +83,7 @@ public abstract class CallableReference implements KCallable, Serializable {
         return this.isTopLevel ? Reflection.getOrCreateKotlinPackage(cls) : Reflection.getOrCreateKotlinClass(cls);
     }
 
+    @Override // kotlin.reflect.KCallable
     public String getName() {
         return this.name;
     }
@@ -92,46 +92,57 @@ public abstract class CallableReference implements KCallable, Serializable {
         return this.signature;
     }
 
+    @Override // kotlin.reflect.KCallable
     public List<KParameter> getParameters() {
         return getReflected().getParameters();
     }
 
+    @Override // kotlin.reflect.KCallable
     public KType getReturnType() {
         return getReflected().getReturnType();
     }
 
+    @Override // kotlin.reflect.KAnnotatedElement
     public List<Annotation> getAnnotations() {
         return getReflected().getAnnotations();
     }
 
+    @Override // kotlin.reflect.KCallable
     public List<KTypeParameter> getTypeParameters() {
         return getReflected().getTypeParameters();
     }
 
+    @Override // kotlin.reflect.KCallable
     public Object call(Object... args) {
         return getReflected().call(args);
     }
 
+    @Override // kotlin.reflect.KCallable
     public Object callBy(Map args) {
         return getReflected().callBy(args);
     }
 
+    @Override // kotlin.reflect.KCallable
     public KVisibility getVisibility() {
         return getReflected().getVisibility();
     }
 
+    @Override // kotlin.reflect.KCallable
     public boolean isFinal() {
         return getReflected().isFinal();
     }
 
+    @Override // kotlin.reflect.KCallable
     public boolean isOpen() {
         return getReflected().isOpen();
     }
 
+    @Override // kotlin.reflect.KCallable
     public boolean isAbstract() {
         return getReflected().isAbstract();
     }
 
+    @Override // kotlin.reflect.KCallable
     public boolean isSuspend() {
         return getReflected().isSuspend();
     }

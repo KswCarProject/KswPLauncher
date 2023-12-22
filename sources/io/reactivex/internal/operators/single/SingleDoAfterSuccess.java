@@ -9,30 +9,33 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 
+/* loaded from: classes.dex */
 public final class SingleDoAfterSuccess<T> extends Single<T> {
     final Consumer<? super T> onAfterSuccess;
     final SingleSource<T> source;
 
-    public SingleDoAfterSuccess(SingleSource<T> source2, Consumer<? super T> onAfterSuccess2) {
-        this.source = source2;
-        this.onAfterSuccess = onAfterSuccess2;
+    public SingleDoAfterSuccess(SingleSource<T> source, Consumer<? super T> onAfterSuccess) {
+        this.source = source;
+        this.onAfterSuccess = onAfterSuccess;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         this.source.subscribe(new DoAfterObserver(observer, this.onAfterSuccess));
     }
 
+    /* loaded from: classes.dex */
     static final class DoAfterObserver<T> implements SingleObserver<T>, Disposable {
         final SingleObserver<? super T> downstream;
         final Consumer<? super T> onAfterSuccess;
         Disposable upstream;
 
-        DoAfterObserver(SingleObserver<? super T> actual, Consumer<? super T> onAfterSuccess2) {
+        DoAfterObserver(SingleObserver<? super T> actual, Consumer<? super T> onAfterSuccess) {
             this.downstream = actual;
-            this.onAfterSuccess = onAfterSuccess2;
+            this.onAfterSuccess = onAfterSuccess;
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -40,6 +43,7 @@ public final class SingleDoAfterSuccess<T> extends Single<T> {
             }
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSuccess(T t) {
             this.downstream.onSuccess(t);
             try {
@@ -50,14 +54,17 @@ public final class SingleDoAfterSuccess<T> extends Single<T> {
             }
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
             this.downstream.onError(e);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }

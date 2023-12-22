@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import skin.support.exception.SkinCompatException;
 import skin.support.utils.Slog;
 
+/* loaded from: classes.dex */
 public final class ColorState {
     private static final String TAG = "ColorState";
     String colorAccelerated;
@@ -29,31 +30,31 @@ public final class ColorState {
     String colorWindowFocused;
     boolean onlyDefaultColor;
 
-    ColorState(String colorWindowFocused2, String colorSelected2, String colorFocused2, String colorEnabled2, String colorPressed2, String colorChecked2, String colorActivated2, String colorAccelerated2, String colorHovered2, String colorDragCanAccept2, String colorDragHovered2, String colorDefault2) {
-        this.colorWindowFocused = colorWindowFocused2;
-        this.colorSelected = colorSelected2;
-        this.colorFocused = colorFocused2;
-        this.colorEnabled = colorEnabled2;
-        this.colorPressed = colorPressed2;
-        this.colorChecked = colorChecked2;
-        this.colorActivated = colorActivated2;
-        this.colorAccelerated = colorAccelerated2;
-        this.colorHovered = colorHovered2;
-        this.colorDragCanAccept = colorDragCanAccept2;
-        this.colorDragHovered = colorDragHovered2;
-        this.colorDefault = colorDefault2;
-        boolean z = TextUtils.isEmpty(colorWindowFocused2) && TextUtils.isEmpty(colorSelected2) && TextUtils.isEmpty(colorFocused2) && TextUtils.isEmpty(colorEnabled2) && TextUtils.isEmpty(colorPressed2) && TextUtils.isEmpty(colorChecked2) && TextUtils.isEmpty(colorActivated2) && TextUtils.isEmpty(colorAccelerated2) && TextUtils.isEmpty(colorHovered2) && TextUtils.isEmpty(colorDragCanAccept2) && TextUtils.isEmpty(colorDragHovered2);
+    ColorState(String colorWindowFocused, String colorSelected, String colorFocused, String colorEnabled, String colorPressed, String colorChecked, String colorActivated, String colorAccelerated, String colorHovered, String colorDragCanAccept, String colorDragHovered, String colorDefault) {
+        this.colorWindowFocused = colorWindowFocused;
+        this.colorSelected = colorSelected;
+        this.colorFocused = colorFocused;
+        this.colorEnabled = colorEnabled;
+        this.colorPressed = colorPressed;
+        this.colorChecked = colorChecked;
+        this.colorActivated = colorActivated;
+        this.colorAccelerated = colorAccelerated;
+        this.colorHovered = colorHovered;
+        this.colorDragCanAccept = colorDragCanAccept;
+        this.colorDragHovered = colorDragHovered;
+        this.colorDefault = colorDefault;
+        boolean z = TextUtils.isEmpty(colorWindowFocused) && TextUtils.isEmpty(colorSelected) && TextUtils.isEmpty(colorFocused) && TextUtils.isEmpty(colorEnabled) && TextUtils.isEmpty(colorPressed) && TextUtils.isEmpty(colorChecked) && TextUtils.isEmpty(colorActivated) && TextUtils.isEmpty(colorAccelerated) && TextUtils.isEmpty(colorHovered) && TextUtils.isEmpty(colorDragCanAccept) && TextUtils.isEmpty(colorDragHovered);
         this.onlyDefaultColor = z;
-        if (z && !colorDefault2.startsWith("#")) {
+        if (z && !colorDefault.startsWith("#")) {
             throw new SkinCompatException("Default color cannot be a reference, when only default color is available!");
         }
     }
 
-    ColorState(String colorName2, String colorDefault2) {
-        this.colorName = colorName2;
-        this.colorDefault = colorDefault2;
+    ColorState(String colorName, String colorDefault) {
+        this.colorName = colorName;
+        this.colorDefault = colorDefault;
         this.onlyDefaultColor = true;
-        if (!colorDefault2.startsWith("#")) {
+        if (!colorDefault.startsWith("#")) {
             throw new SkinCompatException("Default color cannot be a reference, when only default color is available!");
         }
     }
@@ -114,10 +115,10 @@ public final class ColorState {
         return this.colorDefault;
     }
 
-    /* access modifiers changed from: package-private */
-    public ColorStateList parse() {
+    ColorStateList parse() {
         if (this.onlyDefaultColor) {
-            return ColorStateList.valueOf(Color.parseColor(this.colorDefault));
+            int defaultColor = Color.parseColor(this.colorDefault);
+            return ColorStateList.valueOf(defaultColor);
         }
         return parseAll();
     }
@@ -266,7 +267,7 @@ public final class ColorState {
                 stateColorList.add(Integer.valueOf(baseColor));
                 stateColorCount++;
             }
-            int[][] states = new int[stateColorCount][];
+            int[][] states = new int[stateColorCount];
             int[] colors = new int[stateColorCount];
             for (int index = 0; index < stateColorCount; index++) {
                 states[index] = stateSetList.get(index);
@@ -275,35 +276,35 @@ public final class ColorState {
             return new ColorStateList(states, colors);
         } catch (Exception e12) {
             if (Slog.DEBUG) {
-                Slog.i(TAG, this.colorName + " parse failure.");
+                Slog.m2i(TAG, this.colorName + " parse failure.");
             }
             SkinCompatUserThemeManager.get().removeColorState(this.colorName);
             return null;
         }
     }
 
-    private String getColorStr(String colorName2) {
-        if (colorName2.startsWith("#")) {
-            return colorName2;
+    private String getColorStr(String colorName) {
+        if (colorName.startsWith("#")) {
+            return colorName;
         }
-        ColorState stateRef = SkinCompatUserThemeManager.get().getColorState(colorName2);
-        if (stateRef == null) {
+        ColorState stateRef = SkinCompatUserThemeManager.get().getColorState(colorName);
+        if (stateRef != null) {
+            if (stateRef.isOnlyDefaultColor()) {
+                return stateRef.colorDefault;
+            }
+            if (Slog.DEBUG) {
+                Slog.m2i(TAG, colorName + " cannot reference " + stateRef.colorName);
+                return null;
+            }
             return null;
         }
-        if (stateRef.isOnlyDefaultColor()) {
-            return stateRef.colorDefault;
-        }
-        if (!Slog.DEBUG) {
-            return null;
-        }
-        Slog.i(TAG, colorName2 + " cannot reference " + stateRef.colorName);
         return null;
     }
 
     static boolean checkColorValid(String name, String color) {
         boolean colorValid = !TextUtils.isEmpty(color) && (!color.startsWith("#") || color.length() == 7 || color.length() == 9);
         if (Slog.DEBUG && !colorValid) {
-            Slog.i(TAG, "Invalid color -> " + name + PluralRules.KEYWORD_RULE_SEPARATOR + color);
+            Slog.m2i(TAG, "Invalid color -> " + name + PluralRules.KEYWORD_RULE_SEPARATOR + color);
         }
         return colorValid;
     }
@@ -319,61 +320,61 @@ public final class ColorState {
     }
 
     static ColorState fromJSONObject(JSONObject jsonObject) {
-        JSONObject jSONObject = jsonObject;
-        if (!jSONObject.has("colorName") || !jSONObject.has("colorDefault") || !jSONObject.has("onlyDefaultColor")) {
-            return null;
+        if (jsonObject.has("colorName") && jsonObject.has("colorDefault") && jsonObject.has("onlyDefaultColor")) {
+            try {
+                boolean onlyDefaultColor = jsonObject.getBoolean("onlyDefaultColor");
+                String colorName = jsonObject.getString("colorName");
+                String colorDefault = jsonObject.getString("colorDefault");
+                if (onlyDefaultColor) {
+                    return new ColorState(colorName, colorDefault);
+                }
+                ColorBuilder builder = new ColorBuilder();
+                builder.setColorDefault(colorDefault);
+                if (jsonObject.has("colorWindowFocused")) {
+                    builder.setColorWindowFocused(jsonObject.getString("colorWindowFocused"));
+                }
+                if (jsonObject.has("colorSelected")) {
+                    builder.setColorSelected(jsonObject.getString("colorSelected"));
+                }
+                if (jsonObject.has("colorFocused")) {
+                    builder.setColorFocused(jsonObject.getString("colorFocused"));
+                }
+                if (jsonObject.has("colorEnabled")) {
+                    builder.setColorEnabled(jsonObject.getString("colorEnabled"));
+                }
+                if (jsonObject.has("colorPressed")) {
+                    builder.setColorPressed(jsonObject.getString("colorPressed"));
+                }
+                if (jsonObject.has("colorChecked")) {
+                    builder.setColorChecked(jsonObject.getString("colorChecked"));
+                }
+                if (jsonObject.has("colorActivated")) {
+                    builder.setColorActivated(jsonObject.getString("colorActivated"));
+                }
+                if (jsonObject.has("colorAccelerated")) {
+                    builder.setColorAccelerated(jsonObject.getString("colorAccelerated"));
+                }
+                if (jsonObject.has("colorHovered")) {
+                    builder.setColorHovered(jsonObject.getString("colorHovered"));
+                }
+                if (jsonObject.has("colorDragCanAccept")) {
+                    builder.setColorDragCanAccept(jsonObject.getString("colorDragCanAccept"));
+                }
+                if (jsonObject.has("colorDragHovered")) {
+                    builder.setColorDragHovered(jsonObject.getString("colorDragHovered"));
+                }
+                ColorState state = builder.build();
+                state.colorName = colorName;
+                return state;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
-        try {
-            boolean onlyDefaultColor2 = jSONObject.getBoolean("onlyDefaultColor");
-            String colorName2 = jSONObject.getString("colorName");
-            String colorDefault2 = jSONObject.getString("colorDefault");
-            if (onlyDefaultColor2) {
-                return new ColorState(colorName2, colorDefault2);
-            }
-            ColorBuilder builder = new ColorBuilder();
-            builder.setColorDefault(colorDefault2);
-            if (jSONObject.has("colorWindowFocused")) {
-                builder.setColorWindowFocused(jSONObject.getString("colorWindowFocused"));
-            }
-            if (jSONObject.has("colorSelected")) {
-                builder.setColorSelected(jSONObject.getString("colorSelected"));
-            }
-            if (jSONObject.has("colorFocused")) {
-                builder.setColorFocused(jSONObject.getString("colorFocused"));
-            }
-            if (jSONObject.has("colorEnabled")) {
-                builder.setColorEnabled(jSONObject.getString("colorEnabled"));
-            }
-            if (jSONObject.has("colorPressed")) {
-                builder.setColorPressed(jSONObject.getString("colorPressed"));
-            }
-            if (jSONObject.has("colorChecked")) {
-                builder.setColorChecked(jSONObject.getString("colorChecked"));
-            }
-            if (jSONObject.has("colorActivated")) {
-                builder.setColorActivated(jSONObject.getString("colorActivated"));
-            }
-            if (jSONObject.has("colorAccelerated")) {
-                builder.setColorAccelerated(jSONObject.getString("colorAccelerated"));
-            }
-            if (jSONObject.has("colorHovered")) {
-                builder.setColorHovered(jSONObject.getString("colorHovered"));
-            }
-            if (jSONObject.has("colorDragCanAccept")) {
-                builder.setColorDragCanAccept(jSONObject.getString("colorDragCanAccept"));
-            }
-            if (jSONObject.has("colorDragHovered")) {
-                builder.setColorDragHovered(jSONObject.getString("colorDragHovered"));
-            }
-            ColorState state = builder.build();
-            state.colorName = colorName2;
-            return state;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return null;
     }
 
+    /* loaded from: classes.dex */
     public static class ColorBuilder {
         String colorAccelerated;
         String colorActivated;
@@ -406,9 +407,9 @@ public final class ColorState {
             this.colorDefault = state.colorDefault;
         }
 
-        public ColorBuilder setColorWindowFocused(String colorWindowFocused2) {
-            if (ColorState.checkColorValid("colorWindowFocused", colorWindowFocused2)) {
-                this.colorWindowFocused = colorWindowFocused2;
+        public ColorBuilder setColorWindowFocused(String colorWindowFocused) {
+            if (ColorState.checkColorValid("colorWindowFocused", colorWindowFocused)) {
+                this.colorWindowFocused = colorWindowFocused;
             }
             return this;
         }
@@ -418,9 +419,9 @@ public final class ColorState {
             return this;
         }
 
-        public ColorBuilder setColorSelected(String colorSelected2) {
-            if (ColorState.checkColorValid("colorSelected", colorSelected2)) {
-                this.colorSelected = colorSelected2;
+        public ColorBuilder setColorSelected(String colorSelected) {
+            if (ColorState.checkColorValid("colorSelected", colorSelected)) {
+                this.colorSelected = colorSelected;
             }
             return this;
         }
@@ -430,9 +431,9 @@ public final class ColorState {
             return this;
         }
 
-        public ColorBuilder setColorFocused(String colorFocused2) {
-            if (ColorState.checkColorValid("colorFocused", colorFocused2)) {
-                this.colorFocused = colorFocused2;
+        public ColorBuilder setColorFocused(String colorFocused) {
+            if (ColorState.checkColorValid("colorFocused", colorFocused)) {
+                this.colorFocused = colorFocused;
             }
             return this;
         }
@@ -442,9 +443,9 @@ public final class ColorState {
             return this;
         }
 
-        public ColorBuilder setColorEnabled(String colorEnabled2) {
-            if (ColorState.checkColorValid("colorEnabled", colorEnabled2)) {
-                this.colorEnabled = colorEnabled2;
+        public ColorBuilder setColorEnabled(String colorEnabled) {
+            if (ColorState.checkColorValid("colorEnabled", colorEnabled)) {
+                this.colorEnabled = colorEnabled;
             }
             return this;
         }
@@ -454,9 +455,9 @@ public final class ColorState {
             return this;
         }
 
-        public ColorBuilder setColorChecked(String colorChecked2) {
-            if (ColorState.checkColorValid("colorChecked", colorChecked2)) {
-                this.colorChecked = colorChecked2;
+        public ColorBuilder setColorChecked(String colorChecked) {
+            if (ColorState.checkColorValid("colorChecked", colorChecked)) {
+                this.colorChecked = colorChecked;
             }
             return this;
         }
@@ -466,9 +467,9 @@ public final class ColorState {
             return this;
         }
 
-        public ColorBuilder setColorPressed(String colorPressed2) {
-            if (ColorState.checkColorValid("colorPressed", colorPressed2)) {
-                this.colorPressed = colorPressed2;
+        public ColorBuilder setColorPressed(String colorPressed) {
+            if (ColorState.checkColorValid("colorPressed", colorPressed)) {
+                this.colorPressed = colorPressed;
             }
             return this;
         }
@@ -478,9 +479,9 @@ public final class ColorState {
             return this;
         }
 
-        public ColorBuilder setColorActivated(String colorActivated2) {
-            if (ColorState.checkColorValid("colorActivated", colorActivated2)) {
-                this.colorActivated = colorActivated2;
+        public ColorBuilder setColorActivated(String colorActivated) {
+            if (ColorState.checkColorValid("colorActivated", colorActivated)) {
+                this.colorActivated = colorActivated;
             }
             return this;
         }
@@ -490,9 +491,9 @@ public final class ColorState {
             return this;
         }
 
-        public ColorBuilder setColorAccelerated(String colorAccelerated2) {
-            if (ColorState.checkColorValid("colorAccelerated", colorAccelerated2)) {
-                this.colorAccelerated = colorAccelerated2;
+        public ColorBuilder setColorAccelerated(String colorAccelerated) {
+            if (ColorState.checkColorValid("colorAccelerated", colorAccelerated)) {
+                this.colorAccelerated = colorAccelerated;
             }
             return this;
         }
@@ -502,9 +503,9 @@ public final class ColorState {
             return this;
         }
 
-        public ColorBuilder setColorHovered(String colorHovered2) {
-            if (ColorState.checkColorValid("colorHovered", colorHovered2)) {
-                this.colorHovered = colorHovered2;
+        public ColorBuilder setColorHovered(String colorHovered) {
+            if (ColorState.checkColorValid("colorHovered", colorHovered)) {
+                this.colorHovered = colorHovered;
             }
             return this;
         }
@@ -514,9 +515,9 @@ public final class ColorState {
             return this;
         }
 
-        public ColorBuilder setColorDragCanAccept(String colorDragCanAccept2) {
-            if (ColorState.checkColorValid("colorDragCanAccept", colorDragCanAccept2)) {
-                this.colorDragCanAccept = colorDragCanAccept2;
+        public ColorBuilder setColorDragCanAccept(String colorDragCanAccept) {
+            if (ColorState.checkColorValid("colorDragCanAccept", colorDragCanAccept)) {
+                this.colorDragCanAccept = colorDragCanAccept;
             }
             return this;
         }
@@ -526,9 +527,9 @@ public final class ColorState {
             return this;
         }
 
-        public ColorBuilder setColorDragHovered(String colorDragHovered2) {
-            if (ColorState.checkColorValid("colorDragHovered", colorDragHovered2)) {
-                this.colorDragHovered = colorDragHovered2;
+        public ColorBuilder setColorDragHovered(String colorDragHovered) {
+            if (ColorState.checkColorValid("colorDragHovered", colorDragHovered)) {
+                this.colorDragHovered = colorDragHovered;
             }
             return this;
         }
@@ -538,9 +539,9 @@ public final class ColorState {
             return this;
         }
 
-        public ColorBuilder setColorDefault(String colorDefault2) {
-            if (ColorState.checkColorValid("colorDefault", colorDefault2)) {
-                this.colorDefault = colorDefault2;
+        public ColorBuilder setColorDefault(String colorDefault) {
+            if (ColorState.checkColorValid("colorDefault", colorDefault)) {
+                this.colorDefault = colorDefault;
             }
             return this;
         }
@@ -551,10 +552,10 @@ public final class ColorState {
         }
 
         public ColorState build() {
-            if (!TextUtils.isEmpty(this.colorDefault)) {
-                return new ColorState(this.colorWindowFocused, this.colorSelected, this.colorFocused, this.colorEnabled, this.colorPressed, this.colorChecked, this.colorActivated, this.colorAccelerated, this.colorHovered, this.colorDragCanAccept, this.colorDragHovered, this.colorDefault);
+            if (TextUtils.isEmpty(this.colorDefault)) {
+                throw new SkinCompatException("Default color can not empty!");
             }
-            throw new SkinCompatException("Default color can not empty!");
+            return new ColorState(this.colorWindowFocused, this.colorSelected, this.colorFocused, this.colorEnabled, this.colorPressed, this.colorChecked, this.colorActivated, this.colorAccelerated, this.colorHovered, this.colorDragCanAccept, this.colorDragHovered, this.colorDefault);
         }
     }
 }

@@ -244,10 +244,17 @@
     <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">خطأ كلمة المرور!</string>
     <string name="mcu_file_corrupted">تلف ملف الترقية!</string>
+    <string name="mic_control">هيئة التصنيع العسكري تبديل خارجي</string>
+    <string name="mic_external">خارجي</string>
+    <string name="mic_internal">مدمجة</string>
     <string name="mic_text">MIC ربح</string>
     <string name="music_app_sel">اختر تطبيق موسيقى</string>
+    <string name="music_player">مشغل موسيقى</string>
     <string name="ntg6_dvr_toast">لا أجهزة!</string>
     <string name="oil_size">بنزين: %s</string>
+    <string name="original_radar_reverse">عرض الرادار الأصلي عكس</string>
+    <string name="radar_normal">نموذجي</string>
+    <string name="radar_reverse">رأسا على عقب</string>
     <string name="raw_car_text1">كامل الشاشة</string>
     <string name="raw_car_text2">الإختيار الحالي:</string>
     <string name="reverse_exit_time_agreement">الخروج بموجب اتفاق السيارة الأصلي</string>
@@ -324,6 +331,8 @@
     <string name="text_logo_two">الصفحة 2</string>
     <string name="text_ram">RAM: %s</string>
     <string name="touch_continuous_send">اتصال البيانات المرسلة باستمرار</string>
+    <string name="tv_id8_brake">المكابح</string>
+    <string name="tv_id8_seat_belt">حزام الأمان</string>
     <string name="txz_oil_text">نفس الكمية من النفط وضع تحذير</string>
     <string name="txz_speed_text">سرعة التنبيه إعدادات المسافر</string>
     <string name="txz_temp_text">درجة الحرارة المحيطة إنذار الإعداد</string>

@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
+/* loaded from: classes16.dex */
 public class CustomRelativeLayout extends RelativeLayout {
     public CustomRelativeLayout(Context context) {
         super(context);
@@ -22,6 +23,7 @@ public class CustomRelativeLayout extends RelativeLayout {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    @Override // android.view.ViewGroup, android.view.View
     public boolean dispatchTouchEvent(MotionEvent ev) {
         super.onTouchEvent(ev);
         return true;

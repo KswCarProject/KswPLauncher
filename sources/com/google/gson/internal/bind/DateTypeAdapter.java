@@ -17,11 +17,14 @@ import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+/* loaded from: classes.dex */
 public final class DateTypeAdapter extends TypeAdapter<Date> {
-    public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() {
+    public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() { // from class: com.google.gson.internal.bind.DateTypeAdapter.1
+        @Override // com.google.gson.TypeAdapterFactory
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
             if (typeToken.getRawType() == Date.class) {
                 return new DateTypeAdapter();
@@ -43,16 +46,19 @@ public final class DateTypeAdapter extends TypeAdapter<Date> {
         }
     }
 
+    @Override // com.google.gson.TypeAdapter
     public Date read(JsonReader in) throws IOException {
-        if (in.peek() != JsonToken.NULL) {
-            return deserializeToDate(in.nextString());
+        if (in.peek() == JsonToken.NULL) {
+            in.nextNull();
+            return null;
         }
-        in.nextNull();
-        return null;
+        return deserializeToDate(in.nextString());
     }
 
     private synchronized Date deserializeToDate(String json) {
-        for (DateFormat dateFormat : this.dateFormats) {
+        Iterator<DateFormat> it = this.dateFormats.iterator();
+        while (it.hasNext()) {
+            DateFormat dateFormat = it.next();
             try {
                 return dateFormat.parse(json);
             } catch (ParseException e) {
@@ -65,11 +71,13 @@ public final class DateTypeAdapter extends TypeAdapter<Date> {
         }
     }
 
+    @Override // com.google.gson.TypeAdapter
     public synchronized void write(JsonWriter out, Date value) throws IOException {
         if (value == null) {
             out.nullValue();
-        } else {
-            out.value(this.dateFormats.get(0).format(value));
+            return;
         }
+        String dateFormatAsString = this.dateFormats.get(0).format(value);
+        out.value(dateFormatAsString);
     }
 }

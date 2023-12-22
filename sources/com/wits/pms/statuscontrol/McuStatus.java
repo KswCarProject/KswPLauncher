@@ -6,16 +6,18 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public class McuStatus {
     public static final int ANDROID_MODE = 1;
     public static final int CAR_MODE = 2;
     public static final int TYPE_MCU_STATUS = 5;
-    public ACData acData = new ACData();
-    public BenzData benzData = new BenzData();
-    public CarData carData = new CarData();
     public String mcuVerison;
     public int systemMode;
+    public CarData carData = new CarData();
+    public ACData acData = new ACData();
+    public BenzData benzData = new BenzData();
 
+    /* loaded from: classes.dex */
     public static final class MediaType {
         public static final int SRC_ALL_APP = 13;
         public static final int SRC_AUX = 6;
@@ -36,13 +38,13 @@ public class McuStatus {
     public McuStatus() {
     }
 
-    public McuStatus(int systemMode2, String mcuVerison2) {
-        this.systemMode = systemMode2;
-        this.mcuVerison = mcuVerison2;
+    public McuStatus(int systemMode, String mcuVerison) {
+        this.systemMode = systemMode;
+        this.mcuVerison = mcuVerison;
     }
 
     public static McuStatus getStatusFromJson(String jsonArg) {
-        return (McuStatus) new Gson().fromJson(jsonArg, McuStatus.class);
+        return (McuStatus) new Gson().fromJson(jsonArg, (Class<Object>) McuStatus.class);
     }
 
     public List<String> compare(McuStatus mcuStatus) {
@@ -97,7 +99,7 @@ public class McuStatus {
 
     public static void main(String... arg) {
         try {
-            new String("yA��".getBytes(), "Unicode");
+            new String("yA\ufffd\ufffd".getBytes(), "Unicode");
         } catch (UnsupportedEncodingException e) {
         }
     }
@@ -106,34 +108,35 @@ public class McuStatus {
         return this.systemMode;
     }
 
-    public void setSystemMode(int systemMode2) {
-        this.systemMode = systemMode2;
+    public void setSystemMode(int systemMode) {
+        this.systemMode = systemMode;
     }
 
     public String getMcuVerison() {
         return this.mcuVerison;
     }
 
-    public void setMcuVerison(String mcuVerison2) {
-        this.mcuVerison = mcuVerison2;
+    public void setMcuVerison(String mcuVerison) {
+        this.mcuVerison = mcuVerison;
     }
 
     public CarData getCarData() {
         return this.carData;
     }
 
-    public void setCarData(CarData carData2) {
-        this.carData = carData2;
+    public void setCarData(CarData carData) {
+        this.carData = carData;
     }
 
     public ACData getAcData() {
         return this.acData;
     }
 
-    public void setAcData(ACData acData2) {
-        this.acData = acData2;
+    public void setAcData(ACData acData) {
+        this.acData = acData;
     }
 
+    /* loaded from: classes.dex */
     public class CarData {
         public static final int AHEAD_COVER = 8;
         public static final int BACK_COVER = 4;
@@ -166,107 +169,108 @@ public class McuStatus {
             return this.carDoor;
         }
 
-        public void setCarDoor(int carDoor2) {
-            this.carDoor = carDoor2;
+        public void setCarDoor(int carDoor) {
+            this.carDoor = carDoor;
         }
 
         public boolean isHandbrake() {
             return this.handbrake;
         }
 
-        public void setHandbrake(boolean handbrake2) {
-            this.handbrake = handbrake2;
+        public void setHandbrake(boolean handbrake) {
+            this.handbrake = handbrake;
         }
 
         public boolean isSafetyBelt() {
             return this.safetyBelt;
         }
 
-        public void setSafetyBelt(boolean safetyBelt2) {
-            this.safetyBelt = safetyBelt2;
+        public void setSafetyBelt(boolean safetyBelt) {
+            this.safetyBelt = safetyBelt;
         }
 
         public int getMileage() {
             return this.mileage;
         }
 
-        public void setMileage(int mileage2) {
-            this.mileage = mileage2;
+        public void setMileage(int mileage) {
+            this.mileage = mileage;
         }
 
         public float getOilWear() {
             return this.oilWear;
         }
 
-        public void setOilWear(float oilWear2) {
-            this.oilWear = oilWear2;
+        public void setOilWear(float oilWear) {
+            this.oilWear = oilWear;
         }
 
         public int getOilSum() {
             return this.oilSum;
         }
 
-        public void setOilSum(int oilSum2) {
-            this.oilSum = oilSum2;
+        public void setOilSum(int oilSum) {
+            this.oilSum = oilSum;
         }
 
         public float getAverSpeed() {
             return this.averSpeed;
         }
 
-        public void setAverSpeed(float averSpeed2) {
-            this.averSpeed = averSpeed2;
+        public void setAverSpeed(float averSpeed) {
+            this.averSpeed = averSpeed;
         }
 
         public int getSpeed() {
             return this.speed;
         }
 
-        public void setSpeed(int speed2) {
-            this.speed = speed2;
+        public void setSpeed(int speed) {
+            this.speed = speed;
         }
 
         public int getEngineTurnS() {
             return this.engineTurnS;
         }
 
-        public void setEngineTurnS(int engineTurnS2) {
-            this.engineTurnS = engineTurnS2;
+        public void setEngineTurnS(int engineTurnS) {
+            this.engineTurnS = engineTurnS;
         }
 
         public float getAirTemperature() {
             return this.airTemperature;
         }
 
-        public void setAirTemperature(float airTemperature2) {
-            this.airTemperature = airTemperature2;
+        public void setAirTemperature(float airTemperature) {
+            this.airTemperature = airTemperature;
         }
 
         public int getDistanceUnitType() {
             return this.distanceUnitType;
         }
 
-        public void setDistanceUnitType(int distanceUnitType2) {
-            this.distanceUnitType = distanceUnitType2;
+        public void setDistanceUnitType(int distanceUnitType) {
+            this.distanceUnitType = distanceUnitType;
         }
 
         public int getTemperatureUnitType() {
             return this.temperatureUnitType;
         }
 
-        public void setTemperatureUnitType(int temperatureUnitType2) {
-            this.temperatureUnitType = temperatureUnitType2;
+        public void setTemperatureUnitType(int temperatureUnitType) {
+            this.temperatureUnitType = temperatureUnitType;
         }
 
         public int getOilUnitType() {
             return this.oilUnitType;
         }
 
-        public void setOilUnitType(int oilUnitType2) {
-            this.oilUnitType = oilUnitType2;
+        public void setOilUnitType(int oilUnitType) {
+            this.oilUnitType = oilUnitType;
         }
     }
 
+    /* loaded from: classes.dex */
     public static class BenzData {
         public static final int AIR_MATIC_STATUS = 2;
         public static final int AUXILIARY_RADAR = 3;
@@ -284,64 +288,64 @@ public class McuStatus {
             return this.highChassisSwitch;
         }
 
-        public void setHighChassisSwitch(boolean highChassisSwitch2) {
-            this.highChassisSwitch = highChassisSwitch2;
+        public void setHighChassisSwitch(boolean highChassisSwitch) {
+            this.highChassisSwitch = highChassisSwitch;
         }
 
         public int getAirMaticStatus() {
             return this.airMaticStatus;
         }
 
-        public void setAirMaticStatus(int airMaticStatus2) {
-            this.airMaticStatus = airMaticStatus2;
+        public void setAirMaticStatus(int airMaticStatus) {
+            this.airMaticStatus = airMaticStatus;
         }
 
         public boolean isAuxiliaryRadar() {
             return this.auxiliaryRadar;
         }
 
-        public void setAuxiliaryRadar(boolean auxiliaryRadar2) {
-            this.auxiliaryRadar = auxiliaryRadar2;
+        public void setAuxiliaryRadar(boolean auxiliaryRadar) {
+            this.auxiliaryRadar = auxiliaryRadar;
         }
 
         public int getLight1() {
             return this.light1;
         }
 
-        public void setLight1(int light12) {
-            this.light1 = light12;
+        public void setLight1(int light1) {
+            this.light1 = light1;
         }
 
         public int getLight2() {
             return this.light2;
         }
 
-        public void setLight2(int light22) {
-            this.light2 = light22;
+        public void setLight2(int light2) {
+            this.light2 = light2;
         }
 
         public int getKey3() {
             return this.key3;
         }
 
-        public void setKey3(int key32) {
-            this.key3 = key32;
+        public void setKey3(int key3) {
+            this.key3 = key3;
         }
 
         public boolean isAirBagSystem() {
             return this.airBagSystem;
         }
 
-        public void setAirBagSystem(boolean airBagSystem2) {
-            this.airBagSystem = airBagSystem2;
+        public void setAirBagSystem(boolean airBagSystem) {
+            this.airBagSystem = airBagSystem;
         }
 
         public int getPressButton() {
             return this.pressButton;
         }
 
-        public void setPressButton(int pressButton2) {
-            this.pressButton = pressButton2;
+        public void setPressButton(int pressButton) {
+            this.pressButton = pressButton;
         }
 
         public void pressButton(int which) {
@@ -351,28 +355,30 @@ public class McuStatus {
         }
 
         public static BenzData getStatusFromJson(String jsonArg) {
-            return (BenzData) new Gson().fromJson(jsonArg, BenzData.class);
+            return (BenzData) new Gson().fromJson(jsonArg, (Class<Object>) BenzData.class);
         }
 
         public String getJson() {
-            return new Gson().toJson((Object) this);
+            return new Gson().toJson(this);
         }
     }
 
+    /* loaded from: classes.dex */
     public static final class KswMcuMsg {
         public int cmdType;
         public byte[] data;
 
-        public KswMcuMsg(int cmdType2, byte... data2) {
-            this.cmdType = cmdType2;
-            this.data = data2;
+        public KswMcuMsg(int cmdType, byte... data) {
+            this.cmdType = cmdType;
+            this.data = data;
         }
 
         public static KswMcuMsg getMsgFormJson(String jsonArg) {
-            return (KswMcuMsg) new Gson().fromJson(jsonArg, KswMcuMsg.class);
+            return (KswMcuMsg) new Gson().fromJson(jsonArg, (Class<Object>) KswMcuMsg.class);
         }
     }
 
+    /* loaded from: classes.dex */
     public static class EqData {
         public int BAL;
         public int BAS;
@@ -383,20 +389,22 @@ public class McuStatus {
         public int volume;
 
         public static EqData parseDataFromJson(String jsonArg) {
-            return (EqData) new Gson().fromJson(jsonArg, EqData.class);
+            return (EqData) new Gson().fromJson(jsonArg, (Class<Object>) EqData.class);
         }
     }
 
+    /* loaded from: classes.dex */
     public static class DiscStatus {
         public boolean[] discInsert;
         public int range;
         public String status;
 
         public static DiscStatus parseInfoFromJson(String json) {
-            return (DiscStatus) new Gson().fromJson(json, DiscStatus.class);
+            return (DiscStatus) new Gson().fromJson(json, (Class<Object>) DiscStatus.class);
         }
     }
 
+    /* loaded from: classes.dex */
     public static class MediaPlayStatus {
         public static final int TYPE_AM = 1;
         public static final int TYPE_AUX = 20;
@@ -409,15 +417,18 @@ public class McuStatus {
         public boolean RAND;
         public boolean RPT;
         public boolean SCAN;
-        public boolean ST;
+
+        /* renamed from: ST */
+        public boolean f248ST;
         public String status;
         public int type;
 
         public static MediaPlayStatus parseInfoFromJson(String json) {
-            return (MediaPlayStatus) new Gson().fromJson(json, MediaPlayStatus.class);
+            return (MediaPlayStatus) new Gson().fromJson(json, (Class<Object>) MediaPlayStatus.class);
         }
     }
 
+    /* loaded from: classes.dex */
     public static class MediaStringInfo {
         public String album;
         public String artist;
@@ -427,10 +438,11 @@ public class McuStatus {
         public int sec;
 
         public static MediaStringInfo parseInfoFromJson(String json) {
-            return (MediaStringInfo) new Gson().fromJson(json, MediaStringInfo.class);
+            return (MediaStringInfo) new Gson().fromJson(json, (Class<Object>) MediaStringInfo.class);
         }
     }
 
+    /* loaded from: classes.dex */
     public static class MediaData {
         public static final int TYPE_AUX = 20;
         public static final int TYPE_BT = 21;
@@ -443,16 +455,21 @@ public class McuStatus {
         public boolean RAND;
         public boolean RPT;
         public boolean SCAN;
-        public boolean ST;
-        public Disc disc = new Disc();
-        public DVD dvd = new DVD();
-        public Fm fm = new Fm();
-        public MODE mode = new MODE();
-        public MP3 mp3 = new MP3();
+
+        /* renamed from: ST */
+        public boolean f245ST;
         public String status;
         public int type;
-        public Usb usb = new Usb();
 
+        /* renamed from: fm */
+        public C1874Fm f246fm = new C1874Fm();
+        public Disc disc = new Disc();
+        public Usb usb = new Usb();
+        public DVD dvd = new DVD();
+        public MODE mode = new MODE();
+        public MP3 mp3 = new MP3();
+
+        /* loaded from: classes.dex */
         public static class DVD extends BaseMediaInfo {
             public int chapterNumber;
             public int min;
@@ -460,6 +477,7 @@ public class McuStatus {
             public int totalChapter;
         }
 
+        /* loaded from: classes.dex */
         public static class Disc extends BaseMediaInfo {
             public int min;
             public int number;
@@ -467,21 +485,27 @@ public class McuStatus {
             public int track;
         }
 
-        public static class Fm {
+        /* renamed from: com.wits.pms.statuscontrol.McuStatus$MediaData$Fm */
+        /* loaded from: classes.dex */
+        public static class C1874Fm {
             public String freq;
             public String name;
             public int preFreq;
         }
 
+        /* loaded from: classes.dex */
         public static class MODE extends BaseMediaInfo {
             public boolean ASL;
             public boolean PAUSE;
             public boolean RAND;
             public boolean RPT;
             public boolean SCAN;
-            public boolean ST;
+
+            /* renamed from: ST */
+            public boolean f247ST;
         }
 
+        /* loaded from: classes.dex */
         public static class MP3 extends BaseMediaInfo {
             public int fileNumber;
             public int folderNumber;
@@ -489,6 +513,7 @@ public class McuStatus {
             public int sec;
         }
 
+        /* loaded from: classes.dex */
         public static class Usb extends BaseMediaInfo {
             public int fileNumber;
             public int folderNumber;
@@ -518,14 +543,15 @@ public class McuStatus {
         }
 
         public static MediaData parseDataFromJson(String json) {
-            return (MediaData) new Gson().fromJson(json, MediaData.class);
+            return (MediaData) new Gson().fromJson(json, (Class<Object>) MediaData.class);
         }
 
+        /* loaded from: classes.dex */
         public static class BaseMediaInfo {
-            public String album = "";
-            public String artist = "";
-            public String folderName = "";
             public String name = "";
+            public String artist = "";
+            public String album = "";
+            public String folderName = "";
 
             public void reset() {
                 this.name = "";
@@ -536,6 +562,7 @@ public class McuStatus {
         }
     }
 
+    /* loaded from: classes.dex */
     public static class CarBluetoothStatus {
         public int batteryStatus;
         public int callSignal;
@@ -548,10 +575,11 @@ public class McuStatus {
         public int times;
 
         public static CarBluetoothStatus parseInfoFromJson(String json) {
-            return (CarBluetoothStatus) new Gson().fromJson(json, CarBluetoothStatus.class);
+            return (CarBluetoothStatus) new Gson().fromJson(json, (Class<Object>) CarBluetoothStatus.class);
         }
     }
 
+    /* loaded from: classes.dex */
     public static class ACData {
         public static final int LEFT_ABOVE = 128;
         public static final int LEFT_AUTO = 16;
@@ -561,7 +589,9 @@ public class McuStatus {
         public static final int RIGHT_AUTO = 1;
         public static final int RIGHT_BELOW = 2;
         public static final int RIGHT_FRONT = 4;
-        public static int i = 0;
+
+        /* renamed from: i */
+        public static int f244i = 0;
         public boolean AC_Switch;
         public boolean autoSwitch;
         public boolean backMistSwitch;
@@ -587,114 +617,112 @@ public class McuStatus {
             return this.AC_Switch;
         }
 
-        public void setAC_Switch(boolean AC_Switch2) {
-            this.AC_Switch = AC_Switch2;
+        public void setAC_Switch(boolean AC_Switch) {
+            this.AC_Switch = AC_Switch;
         }
 
         public int getLoop() {
             return this.loop;
         }
 
-        public void setLoop(int loop2) {
-            this.loop = loop2;
+        public void setLoop(int loop) {
+            this.loop = loop;
         }
 
         public boolean isFrontMistSwitch() {
             return this.frontMistSwitch;
         }
 
-        public void setFrontMistSwitch(boolean frontMistSwitch2) {
-            this.frontMistSwitch = frontMistSwitch2;
+        public void setFrontMistSwitch(boolean frontMistSwitch) {
+            this.frontMistSwitch = frontMistSwitch;
         }
 
         public boolean isBackMistSwitch() {
             return this.backMistSwitch;
         }
 
-        public void setBackMistSwitch(boolean backMistSwitch2) {
-            this.backMistSwitch = backMistSwitch2;
+        public void setBackMistSwitch(boolean backMistSwitch) {
+            this.backMistSwitch = backMistSwitch;
         }
 
         public boolean isSync() {
             return this.sync;
         }
 
-        public void setSync(boolean sync2) {
-            this.sync = sync2;
+        public void setSync(boolean sync) {
+            this.sync = sync;
         }
 
         public int getMode() {
             return this.mode;
         }
 
-        public void setMode(int mode2) {
-            this.mode = mode2;
+        public void setMode(int mode) {
+            this.mode = mode;
         }
 
         public float getLeftTmp() {
             return this.leftTmp;
         }
 
-        public void setLeftTmp(float leftTmp2) {
-            this.leftTmp = leftTmp2;
+        public void setLeftTmp(float leftTmp) {
+            this.leftTmp = leftTmp;
         }
 
         public float getRightTmp() {
             return this.rightTmp;
         }
 
-        public void setRightTmp(float rightTmp2) {
-            this.rightTmp = rightTmp2;
+        public void setRightTmp(float rightTmp) {
+            this.rightTmp = rightTmp;
         }
 
         public boolean isEco() {
             return this.eco;
         }
 
-        public void setEco(boolean eco2) {
-            this.eco = eco2;
+        public void setEco(boolean eco) {
+            this.eco = eco;
         }
 
         public boolean isAutoSwitch() {
             return this.autoSwitch;
         }
 
-        public void setAutoSwitch(boolean autoSwitch2) {
-            this.autoSwitch = autoSwitch2;
+        public void setAutoSwitch(boolean autoSwitch) {
+            this.autoSwitch = autoSwitch;
         }
 
         public float getSpeed() {
             return this.speed;
         }
 
-        public void setSpeed(float speed2) {
-            this.speed = speed2;
+        public void setSpeed(float speed) {
+            this.speed = speed;
         }
 
         public boolean isOpen(int type) {
             return (this.mode & type) != 0;
         }
 
-        public static String getModeBinaryString(int mode2) {
-            int i2 = 0;
-            StringBuilder append = new StringBuilder().append((((((("" + ((mode2 & 128) != 0 ? 1 : 0)) + ((mode2 & 64) != 0 ? 1 : 0)) + ((mode2 & 32) != 0 ? 1 : 0)) + ((mode2 & 16) != 0 ? 1 : 0)) + ((mode2 & 8) != 0 ? 1 : 0)) + ((mode2 & 4) != 0 ? 1 : 0)) + ((mode2 & 2) != 0 ? 1 : 0));
-            if ((mode2 & 1) != 0) {
-                i2 = 1;
-            }
-            return append.append(i2).toString();
+        public static String getModeBinaryString(int mode) {
+            String binaryString = "" + ((mode & 128) != 0 ? 1 : 0);
+            return ((((((binaryString + ((mode & 64) != 0 ? 1 : 0)) + ((mode & 32) != 0 ? 1 : 0)) + ((mode & 16) != 0 ? 1 : 0)) + ((mode & 8) != 0 ? 1 : 0)) + ((mode & 4) != 0 ? 1 : 0)) + ((mode & 2) != 0 ? 1 : 0)) + ((mode & 1) != 0 ? 1 : 0);
         }
 
         public static ACData getStatusFromJson(String jsonArg) {
-            return (ACData) new Gson().fromJson(jsonArg, ACData.class);
+            return (ACData) new Gson().fromJson(jsonArg, (Class<Object>) ACData.class);
         }
 
         public String getJson() {
-            return new Gson().toJson((Object) this);
+            return new Gson().toJson(this);
         }
     }
 
+    /* loaded from: classes.dex */
     public static class AirControl {
 
+        /* loaded from: classes.dex */
         public enum AcKeyType {
             dual,
             backMistSwitch,
@@ -718,12 +746,12 @@ public class McuStatus {
             byte data1 = 0;
             byte data2 = 0;
             int index = type.ordinal();
-            if (index >= 8) {
-                data2 = (byte) ((1 << (index - 8)) + 0);
-            } else {
+            if (index < 8) {
                 data1 = (byte) ((1 << index) + 0);
+            } else {
+                data2 = (byte) ((1 << (index - 8)) + 0);
             }
-            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.AIRCON_CONTROL, data1 + "," + data2);
+            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.AIRCON_CONTROL, ((int) data1) + "," + ((int) data2));
         }
     }
 }

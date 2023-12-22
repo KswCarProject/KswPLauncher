@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import com.wits.ksw.settings.id7.bean.MapBean;
 import java.util.ArrayList;
@@ -11,19 +12,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/* loaded from: classes10.dex */
 public class ScanNaviList {
-    /* access modifiers changed from: private */
-    public boolean isScanNavi;
-    /* access modifiers changed from: private */
-    public List<MapBean> mapList;
-    /* access modifiers changed from: private */
-    public OnMapListScanListener mapListScanListener;
+    private boolean isScanNavi;
+    private List<MapBean> mapList;
+    private OnMapListScanListener mapListScanListener;
     private String naviDefual;
-    /* access modifiers changed from: private */
-    public List<MapBean> tempList;
+    private List<MapBean> tempList;
 
+    /* loaded from: classes10.dex */
     public interface OnMapListScanListener {
-        void onScanFinish(List<MapBean> list);
+        void onScanFinish(List<MapBean> mapList);
     }
 
     private ScanNaviList() {
@@ -31,9 +30,9 @@ public class ScanNaviList {
         this.isScanNavi = false;
     }
 
+    /* loaded from: classes10.dex */
     private static class SingletonInstance {
-        /* access modifiers changed from: private */
-        public static final ScanNaviList INSTANCE = new ScanNaviList();
+        private static final ScanNaviList INSTANCE = new ScanNaviList();
 
         private SingletonInstance() {
         }
@@ -51,17 +50,19 @@ public class ScanNaviList {
         return list;
     }
 
-    public synchronized void scanList(final List<String> naviList, String naviDefual2, final Context context) {
+    public synchronized void scanList(final List<String> naviList, String naviDefual, final Context context) {
         this.tempList = new ArrayList();
-        this.naviDefual = naviDefual2;
-        new Thread(new Runnable() {
+        this.naviDefual = naviDefual;
+        new Thread(new Runnable() { // from class: com.wits.ksw.settings.utlis_view.ScanNaviList.1
+            @Override // java.lang.Runnable
             public void run() {
                 if (!ScanNaviList.this.isScanNavi) {
-                    boolean unused = ScanNaviList.this.isScanNavi = true;
+                    ScanNaviList.this.isScanNavi = true;
                     Intent intent = new Intent("android.intent.action.MAIN", (Uri) null);
                     intent.addCategory("android.intent.category.LAUNCHER");
                     List<ResolveInfo> apps = context.getPackageManager().queryIntentActivities(intent, 0);
-                    Collections.sort(apps, new Comparator<ResolveInfo>() {
+                    Collections.sort(apps, new Comparator<ResolveInfo>() { // from class: com.wits.ksw.settings.utlis_view.ScanNaviList.1.1
+                        @Override // java.util.Comparator
                         public int compare(ResolveInfo a, ResolveInfo b) {
                             return String.CASE_INSENSITIVE_ORDER.compare(a.loadLabel(context.getPackageManager()).toString(), b.loadLabel(context.getPackageManager()).toString());
                         }
@@ -73,39 +74,43 @@ public class ScanNaviList {
                         scanNaviList.isAvilible(context, paca, scanNaviList.tempList, apps);
                     }
                     ScanNaviList scanNaviList2 = ScanNaviList.this;
-                    List unused2 = scanNaviList2.mapList = scanNaviList2.tempList;
+                    scanNaviList2.mapList = scanNaviList2.tempList;
                     Log.i("naviSCAN", "run: map size " + ScanNaviList.this.tempList.size());
                     if (ScanNaviList.this.mapListScanListener != null) {
                         ScanNaviList.this.mapListScanListener.onScanFinish(ScanNaviList.this.tempList);
                     }
                 }
-                boolean unused3 = ScanNaviList.this.isScanNavi = false;
+                ScanNaviList.this.isScanNavi = false;
             }
         }).start();
     }
 
-    /* access modifiers changed from: private */
-    public void isAvilible(Context context, String packageName, List<MapBean> mbList, List<ResolveInfo> apps) {
+    /* JADX INFO: Access modifiers changed from: private */
+    public void isAvilible(final Context context, String packageName, final List<MapBean> mbList, List<ResolveInfo> apps) {
         for (int i = 0; i < apps.size(); i++) {
-            ResolveInfo info = apps.get(i);
-            String packName = info.activityInfo.packageName;
-            if (packageName.equals(packName)) {
-                MapBean mapBean = new MapBean();
-                mapBean.setPackageName(packName);
-                mapBean.setName(info.activityInfo.loadLabel(context.getPackageManager()).toString());
-                mapBean.setMapicon(info.activityInfo.loadIcon(context.getPackageManager()));
-                mapBean.setCheck(packName.equals(this.naviDefual));
-                if (mbList.isEmpty() || !mbList.contains(mapBean)) {
+            try {
+                ResolveInfo info = apps.get(i);
+                String packName = info.activityInfo.packageName;
+                if (!TextUtils.isEmpty(packageName) && packageName.equals(packName)) {
+                    MapBean mapBean = new MapBean();
+                    mapBean.setPackageName(packName);
+                    mapBean.setName(info.activityInfo.loadLabel(context.getPackageManager()).toString());
+                    mapBean.setMapicon(info.activityInfo.loadIcon(context.getPackageManager()));
+                    mapBean.setCheck(packName.equals(this.naviDefual));
+                    if (!mbList.isEmpty() && mbList.contains(mapBean)) {
+                        return;
+                    }
                     Log.d("naviSCAN", "===appPackage===" + packName);
                     mbList.add(mapBean);
-                } else {
-                    return;
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
             }
         }
     }
 
-    public void setMapListScanListener(OnMapListScanListener mapListScanListener2) {
-        this.mapListScanListener = mapListScanListener2;
+    public void setMapListScanListener(OnMapListScanListener mapListScanListener) {
+        this.mapListScanListener = mapListScanListener;
     }
 }

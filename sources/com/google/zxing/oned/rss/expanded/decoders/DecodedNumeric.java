@@ -2,47 +2,42 @@ package com.google.zxing.oned.rss.expanded.decoders;
 
 import com.google.zxing.FormatException;
 
+/* loaded from: classes.dex */
 final class DecodedNumeric extends DecodedObject {
     static final int FNC1 = 10;
     private final int firstDigit;
     private final int secondDigit;
 
-    DecodedNumeric(int newPosition, int firstDigit2, int secondDigit2) throws FormatException {
+    DecodedNumeric(int newPosition, int firstDigit, int secondDigit) throws FormatException {
         super(newPosition);
-        if (firstDigit2 < 0 || firstDigit2 > 10 || secondDigit2 < 0 || secondDigit2 > 10) {
+        if (firstDigit < 0 || firstDigit > 10 || secondDigit < 0 || secondDigit > 10) {
             throw FormatException.getFormatInstance();
         }
-        this.firstDigit = firstDigit2;
-        this.secondDigit = secondDigit2;
+        this.firstDigit = firstDigit;
+        this.secondDigit = secondDigit;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getFirstDigit() {
+    int getFirstDigit() {
         return this.firstDigit;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getSecondDigit() {
+    int getSecondDigit() {
         return this.secondDigit;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getValue() {
+    int getValue() {
         return (this.firstDigit * 10) + this.secondDigit;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isFirstDigitFNC1() {
+    boolean isFirstDigitFNC1() {
         return this.firstDigit == 10;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isSecondDigitFNC1() {
+    boolean isSecondDigitFNC1() {
         return this.secondDigit == 10;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isAnyFNC1() {
+    boolean isAnyFNC1() {
         return this.firstDigit == 10 || this.secondDigit == 10;
     }
 }

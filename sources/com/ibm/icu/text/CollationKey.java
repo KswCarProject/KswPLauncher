@@ -2,6 +2,7 @@ package com.ibm.icu.text;
 
 import kotlin.UByte;
 
+/* loaded from: classes.dex */
 public final class CollationKey implements Comparable<CollationKey> {
     static final /* synthetic */ boolean $assertionsDisabled = false;
     private static final int MERGE_SEPERATOR_ = 2;
@@ -10,6 +11,7 @@ public final class CollationKey implements Comparable<CollationKey> {
     private int m_length_;
     private String m_source_;
 
+    /* loaded from: classes.dex */
     public static final class BoundMode {
         @Deprecated
         public static final int COUNT = 3;
@@ -37,11 +39,10 @@ public final class CollationKey implements Comparable<CollationKey> {
         this.m_length_ = key.size - 1;
         byte[] releaseBytes = key.releaseBytes();
         this.m_key_ = releaseBytes;
-        if (releaseBytes[this.m_length_] == 0) {
-            this.m_hashCode_ = 0;
-            return;
+        if (releaseBytes[this.m_length_] != 0) {
+            throw new AssertionError();
         }
-        throw new AssertionError();
+        this.m_hashCode_ = 0;
     }
 
     public String getSourceString() {
@@ -55,21 +56,23 @@ public final class CollationKey implements Comparable<CollationKey> {
         return result;
     }
 
+    @Override // java.lang.Comparable
     public int compareTo(CollationKey target) {
         int i = 0;
         while (true) {
-            int l = this.m_key_[i] & 255;
-            int r = target.m_key_[i] & 255;
+            int l = this.m_key_[i] & UByte.MAX_VALUE;
+            int r = target.m_key_[i] & UByte.MAX_VALUE;
             if (l < r) {
                 return -1;
             }
             if (l > r) {
                 return 1;
             }
-            if (l == 0) {
+            if (l != 0) {
+                i++;
+            } else {
                 return 0;
             }
-            i++;
         }
     }
 
@@ -87,11 +90,10 @@ public final class CollationKey implements Comparable<CollationKey> {
         if (target == null) {
             return false;
         }
-        CollationKey other = target;
         int i = 0;
         while (true) {
             byte[] bArr = this.m_key_;
-            if (bArr[i] != other.m_key_[i]) {
+            if (bArr[i] != target.m_key_[i]) {
                 return false;
             }
             if (bArr[i] == 0) {
@@ -108,14 +110,16 @@ public final class CollationKey implements Comparable<CollationKey> {
             if (bArr2 == null) {
                 this.m_hashCode_ = 1;
             } else {
-                StringBuilder key = new StringBuilder(bArr2.length >> 1);
+                int size = bArr2.length >> 1;
+                StringBuilder key = new StringBuilder(size);
                 int i = 0;
                 while (true) {
                     bArr = this.m_key_;
-                    if (bArr[i] != 0 && bArr[i + 1] != 0) {
-                        key.append((char) ((bArr[i + 1] & UByte.MAX_VALUE) | (bArr[i] << 8)));
-                        i += 2;
+                    if (bArr[i] == 0 || bArr[i + 1] == 0) {
+                        break;
                     }
+                    key.append((char) ((bArr[i + 1] & UByte.MAX_VALUE) | (bArr[i] << 8)));
+                    i += 2;
                 }
                 if (bArr[i] != 0) {
                     key.append((char) (bArr[i] << 8));
@@ -123,7 +127,8 @@ public final class CollationKey implements Comparable<CollationKey> {
                 this.m_hashCode_ = key.toString().hashCode();
             }
         }
-        return this.m_hashCode_;
+        int size2 = this.m_hashCode_;
+        return size2;
     }
 
     public CollationKey getBound(int boundType, int noOfLevels) {
@@ -137,43 +142,42 @@ public final class CollationKey implements Comparable<CollationKey> {
                     break;
                 }
                 offset = offset2 + 1;
-                if (bArr[offset2] == 1) {
+                if (bArr[offset2] != 1) {
+                    offset2 = offset;
+                } else {
                     keystrength++;
                     noOfLevels--;
                     if (noOfLevels == 0 || offset == bArr.length || bArr[offset] == 0) {
-                        offset2 = offset - 1;
-                    } else {
-                        offset2 = offset;
+                        break;
                     }
-                } else {
                     offset2 = offset;
                 }
             }
             offset2 = offset - 1;
         }
-        if (noOfLevels <= 0) {
-            byte[] resultkey = new byte[(offset2 + boundType + 1)];
-            System.arraycopy(this.m_key_, 0, resultkey, 0, offset2);
-            switch (boundType) {
-                case 0:
-                    break;
-                case 1:
-                    resultkey[offset2] = 2;
-                    offset2++;
-                    break;
-                case 2:
-                    int offset3 = offset2 + 1;
-                    resultkey[offset2] = -1;
-                    offset2 = offset3 + 1;
-                    resultkey[offset3] = -1;
-                    break;
-                default:
-                    throw new IllegalArgumentException("Illegal boundType argument");
-            }
-            resultkey[offset2] = 0;
-            return new CollationKey((String) null, resultkey, offset2);
+        if (noOfLevels > 0) {
+            throw new IllegalArgumentException("Source collation key has only " + keystrength + " strength level. Call getBound() again  with noOfLevels < " + keystrength);
         }
-        throw new IllegalArgumentException("Source collation key has only " + keystrength + " strength level. Call getBound() again  with noOfLevels < " + keystrength);
+        byte[] resultkey = new byte[offset2 + boundType + 1];
+        System.arraycopy(this.m_key_, 0, resultkey, 0, offset2);
+        switch (boundType) {
+            case 0:
+                break;
+            case 1:
+                resultkey[offset2] = 2;
+                offset2++;
+                break;
+            case 2:
+                int offset3 = offset2 + 1;
+                resultkey[offset2] = -1;
+                offset2 = offset3 + 1;
+                resultkey[offset3] = -1;
+                break;
+            default:
+                throw new IllegalArgumentException("Illegal boundType argument");
+        }
+        resultkey[offset2] = 0;
+        return new CollationKey(null, resultkey, offset2);
     }
 
     public CollationKey merge(CollationKey source) {
@@ -183,7 +187,7 @@ public final class CollationKey implements Comparable<CollationKey> {
         if (source == null || source.getLength() == 0) {
             throw new IllegalArgumentException("CollationKey argument can not be null or of 0 length");
         }
-        byte[] result = new byte[(getLength() + source.getLength() + 2)];
+        byte[] result = new byte[getLength() + source.getLength() + 2];
         int rindex2 = 0;
         int index = 0;
         int sourceindex = 0;
@@ -206,35 +210,31 @@ public final class CollationKey implements Comparable<CollationKey> {
                     sourceindex++;
                 }
                 bArr2 = this.m_key_;
-                if (bArr2[index] == 1 && bArr[sourceindex] == 1) {
-                    index++;
-                    sourceindex++;
-                    rindex2 = rindex + 1;
-                    result[rindex] = 1;
-                } else {
-                    int i = this.m_length_ - index;
-                    int remainingLength = i;
+                if (bArr2[index] != 1 || bArr[sourceindex] != 1) {
+                    break;
                 }
+                index++;
+                sourceindex++;
+                rindex2 = rindex + 1;
+                result[rindex] = 1;
             }
         }
-        int i2 = this.m_length_ - index;
-        int remainingLength2 = i2;
-        if (i2 > 0) {
-            System.arraycopy(bArr2, index, result, rindex, remainingLength2);
-            rindex += remainingLength2;
+        int remainingLength = this.m_length_ - index;
+        if (remainingLength > 0) {
+            System.arraycopy(bArr2, index, result, rindex, remainingLength);
+            rindex += remainingLength;
         } else {
-            int i3 = source.m_length_ - sourceindex;
-            int remainingLength3 = i3;
-            if (i3 > 0) {
-                System.arraycopy(bArr, sourceindex, result, rindex, remainingLength3);
-                rindex += remainingLength3;
+            int remainingLength2 = source.m_length_ - sourceindex;
+            if (remainingLength2 > 0) {
+                System.arraycopy(bArr, sourceindex, result, rindex, remainingLength2);
+                rindex += remainingLength2;
             }
         }
         result[rindex] = 0;
-        if (rindex == result.length - 1) {
-            return new CollationKey((String) null, result, rindex);
+        if (rindex != result.length - 1) {
+            throw new AssertionError();
         }
-        throw new AssertionError();
+        return new CollationKey(null, result, rindex);
     }
 
     private int getLength() {
@@ -247,11 +247,11 @@ public final class CollationKey implements Comparable<CollationKey> {
         while (true) {
             if (index >= length) {
                 break;
-            } else if (this.m_key_[index] == 0) {
+            } else if (this.m_key_[index] != 0) {
+                index++;
+            } else {
                 length = index;
                 break;
-            } else {
-                index++;
             }
         }
         this.m_length_ = length;

@@ -3,18 +3,16 @@ package com.google.zxing.qrcode.encoder;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
+/* loaded from: classes.dex */
 public final class ByteMatrix {
     private final byte[][] bytes;
     private final int height;
     private final int width;
 
-    public ByteMatrix(int width2, int height2) {
-        int[] iArr = new int[2];
-        iArr[1] = width2;
-        iArr[0] = height2;
-        this.bytes = (byte[][]) Array.newInstance(byte.class, iArr);
-        this.width = width2;
-        this.height = height2;
+    public ByteMatrix(int width, int height) {
+        this.bytes = (byte[][]) Array.newInstance(byte.class, height, width);
+        this.width = width;
+        this.height = height;
     }
 
     public int getHeight() {
@@ -42,12 +40,12 @@ public final class ByteMatrix {
     }
 
     public void set(int x, int y, boolean value) {
-        this.bytes[y][x] = value ? (byte) 1 : 0;
+        this.bytes[y][x] = value ? (byte) 1 : (byte) 0;
     }
 
     public void clear(byte value) {
-        for (byte[] fill : this.bytes) {
-            Arrays.fill(fill, value);
+        for (byte[] bArr : this.bytes) {
+            Arrays.fill(bArr, value);
         }
     }
 
@@ -68,7 +66,7 @@ public final class ByteMatrix {
                         break;
                 }
             }
-            result.append(10);
+            result.append('\n');
         }
         return result.toString();
     }

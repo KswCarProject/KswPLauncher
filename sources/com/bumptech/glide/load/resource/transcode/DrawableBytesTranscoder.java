@@ -9,17 +9,19 @@ import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapResource;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 
+/* loaded from: classes.dex */
 public final class DrawableBytesTranscoder implements ResourceTranscoder<Drawable, byte[]> {
     private final ResourceTranscoder<Bitmap, byte[]> bitmapBytesTranscoder;
     private final BitmapPool bitmapPool;
     private final ResourceTranscoder<GifDrawable, byte[]> gifDrawableBytesTranscoder;
 
-    public DrawableBytesTranscoder(BitmapPool bitmapPool2, ResourceTranscoder<Bitmap, byte[]> bitmapBytesTranscoder2, ResourceTranscoder<GifDrawable, byte[]> gifDrawableBytesTranscoder2) {
-        this.bitmapPool = bitmapPool2;
-        this.bitmapBytesTranscoder = bitmapBytesTranscoder2;
-        this.gifDrawableBytesTranscoder = gifDrawableBytesTranscoder2;
+    public DrawableBytesTranscoder(BitmapPool bitmapPool, ResourceTranscoder<Bitmap, byte[]> bitmapBytesTranscoder, ResourceTranscoder<GifDrawable, byte[]> gifDrawableBytesTranscoder) {
+        this.bitmapPool = bitmapPool;
+        this.bitmapBytesTranscoder = bitmapBytesTranscoder;
+        this.gifDrawableBytesTranscoder = gifDrawableBytesTranscoder;
     }
 
+    @Override // com.bumptech.glide.load.resource.transcode.ResourceTranscoder
     public Resource<byte[]> transcode(Resource<Drawable> toTranscode, Options options) {
         Drawable drawable = toTranscode.get();
         if (drawable instanceof BitmapDrawable) {
@@ -31,6 +33,7 @@ public final class DrawableBytesTranscoder implements ResourceTranscoder<Drawabl
         return null;
     }
 
+    /* JADX WARN: Multi-variable type inference failed */
     private static Resource<GifDrawable> toGifDrawableResource(Resource<Drawable> resource) {
         return resource;
     }

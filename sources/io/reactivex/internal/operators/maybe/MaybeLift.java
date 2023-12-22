@@ -7,21 +7,23 @@ import io.reactivex.exceptions.Exceptions;
 import io.reactivex.internal.disposables.EmptyDisposable;
 import io.reactivex.internal.functions.ObjectHelper;
 
+/* loaded from: classes.dex */
 public final class MaybeLift<T, R> extends AbstractMaybeWithUpstream<T, R> {
     final MaybeOperator<? extends R, ? super T> operator;
 
-    public MaybeLift(MaybeSource<T> source, MaybeOperator<? extends R, ? super T> operator2) {
+    public MaybeLift(MaybeSource<T> source, MaybeOperator<? extends R, ? super T> operator) {
         super(source);
-        this.operator = operator2;
+        this.operator = operator;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super R> observer) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super R> observer) {
         try {
-            this.source.subscribe((MaybeObserver) ObjectHelper.requireNonNull(this.operator.apply(observer), "The operator returned a null MaybeObserver"));
+            MaybeObserver<? super T> lifted = (MaybeObserver) ObjectHelper.requireNonNull(this.operator.apply(observer), "The operator returned a null MaybeObserver");
+            this.source.subscribe(lifted);
         } catch (Throwable ex) {
             Exceptions.throwIfFatal(ex);
-            EmptyDisposable.error(ex, (MaybeObserver<?>) observer);
+            EmptyDisposable.error(ex, observer);
         }
     }
 }

@@ -1,6 +1,7 @@
 package android.support.constraint.motion;
 
-/* compiled from: DesignTool */
+/* compiled from: DesignTool.java */
+/* loaded from: classes.dex */
 interface ProxyInterface {
     int designAccess(int i, String str, Object obj, float[] fArr, int i2, float[] fArr2, int i3);
 

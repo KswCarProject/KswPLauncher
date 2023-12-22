@@ -2,18 +2,18 @@ package android.arch.persistence.room;
 
 import android.app.ActivityManager;
 import android.arch.core.executor.ArchTaskExecutor;
-import android.arch.persistence.db.SimpleSQLiteQuery;
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.db.SupportSQLiteOpenHelper;
-import android.arch.persistence.db.SupportSQLiteQuery;
-import android.arch.persistence.db.SupportSQLiteStatement;
-import android.arch.persistence.db.framework.FrameworkSQLiteOpenHelperFactory;
+import android.arch.persistence.p000db.SimpleSQLiteQuery;
+import android.arch.persistence.p000db.SupportSQLiteDatabase;
+import android.arch.persistence.p000db.SupportSQLiteOpenHelper;
+import android.arch.persistence.p000db.SupportSQLiteQuery;
+import android.arch.persistence.p000db.SupportSQLiteStatement;
+import android.arch.persistence.p000db.framework.FrameworkSQLiteOpenHelperFactory;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
-import android.support.v4.app.ActivityManagerCompat;
-import android.support.v4.util.SparseArrayCompat;
+import android.support.p001v4.app.ActivityManagerCompat;
+import android.support.p001v4.util.SparseArrayCompat;
 import android.util.Log;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,29 +24,25 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/* loaded from: classes.dex */
 public abstract class RoomDatabase {
     private static final String DB_IMPL_SUFFIX = "_Impl";
     public static final int MAX_BIND_PARAMETER_CNT = 999;
     private boolean mAllowMainThreadQueries;
-    /* access modifiers changed from: protected */
-    public List<Callback> mCallbacks;
-    private final ReentrantLock mCloseLock = new ReentrantLock();
-    /* access modifiers changed from: protected */
-    public volatile SupportSQLiteDatabase mDatabase;
-    private final InvalidationTracker mInvalidationTracker = createInvalidationTracker();
+    protected List<Callback> mCallbacks;
+    protected volatile SupportSQLiteDatabase mDatabase;
     private SupportSQLiteOpenHelper mOpenHelper;
     boolean mWriteAheadLoggingEnabled;
+    private final ReentrantLock mCloseLock = new ReentrantLock();
+    private final InvalidationTracker mInvalidationTracker = createInvalidationTracker();
 
     public abstract void clearAllTables();
 
-    /* access modifiers changed from: protected */
-    public abstract InvalidationTracker createInvalidationTracker();
+    protected abstract InvalidationTracker createInvalidationTracker();
 
-    /* access modifiers changed from: protected */
-    public abstract SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration databaseConfiguration);
+    protected abstract SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration databaseConfiguration);
 
-    /* access modifiers changed from: package-private */
-    public Lock getCloseLock() {
+    Lock getCloseLock() {
         return this.mCloseLock;
     }
 
@@ -89,7 +85,7 @@ public abstract class RoomDatabase {
     }
 
     public Cursor query(String query, Object[] args) {
-        return this.mOpenHelper.getWritableDatabase().query((SupportSQLiteQuery) new SimpleSQLiteQuery(query, args));
+        return this.mOpenHelper.getWritableDatabase().query(new SimpleSQLiteQuery(query, args));
     }
 
     public Cursor query(SupportSQLiteQuery query) {
@@ -133,22 +129,21 @@ public abstract class RoomDatabase {
     public <V> V runInTransaction(Callable<V> body) {
         beginTransaction();
         try {
-            V result = body.call();
-            setTransactionSuccessful();
+            try {
+                V result = body.call();
+                setTransactionSuccessful();
+                return result;
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e2) {
+                throw new RuntimeException("Exception in transaction", e2);
+            }
+        } finally {
             endTransaction();
-            return result;
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e2) {
-            throw new RuntimeException("Exception in transaction", e2);
-        } catch (Throwable result2) {
-            endTransaction();
-            throw result2;
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void internalInitInvalidationTracker(SupportSQLiteDatabase db) {
+    protected void internalInitInvalidationTracker(SupportSQLiteDatabase db) {
         this.mInvalidationTracker.internalInit(db);
     }
 
@@ -160,36 +155,37 @@ public abstract class RoomDatabase {
         return this.mOpenHelper.getWritableDatabase().inTransaction();
     }
 
+    /* loaded from: classes.dex */
     public enum JournalMode {
         AUTOMATIC,
         TRUNCATE,
         WRITE_AHEAD_LOGGING;
 
-        /* access modifiers changed from: package-private */
-        public JournalMode resolve(Context context) {
+        JournalMode resolve(Context context) {
             ActivityManager manager;
             if (this != AUTOMATIC) {
                 return this;
             }
-            if (Build.VERSION.SDK_INT < 16 || (manager = (ActivityManager) context.getSystemService("activity")) == null || ActivityManagerCompat.isLowRamDevice(manager)) {
-                return TRUNCATE;
+            if (Build.VERSION.SDK_INT >= 16 && (manager = (ActivityManager) context.getSystemService("activity")) != null && !ActivityManagerCompat.isLowRamDevice(manager)) {
+                return WRITE_AHEAD_LOGGING;
             }
-            return WRITE_AHEAD_LOGGING;
+            return TRUNCATE;
         }
     }
 
+    /* loaded from: classes.dex */
     public static class Builder<T extends RoomDatabase> {
         private boolean mAllowMainThreadQueries;
         private ArrayList<Callback> mCallbacks;
         private final Context mContext;
         private final Class<T> mDatabaseClass;
         private SupportSQLiteOpenHelper.Factory mFactory;
-        private JournalMode mJournalMode = JournalMode.AUTOMATIC;
-        private final MigrationContainer mMigrationContainer = new MigrationContainer();
         private Set<Integer> mMigrationStartAndEndVersions;
         private Set<Integer> mMigrationsNotRequiredFrom;
         private final String mName;
+        private JournalMode mJournalMode = JournalMode.AUTOMATIC;
         private boolean mRequireMigration = true;
+        private final MigrationContainer mMigrationContainer = new MigrationContainer();
 
         Builder(Context context, Class<T> klass, String name) {
             this.mContext = context;
@@ -250,29 +246,30 @@ public abstract class RoomDatabase {
         public T build() {
             if (this.mContext == null) {
                 throw new IllegalArgumentException("Cannot provide null context for the database.");
-            } else if (this.mDatabaseClass != null) {
-                Set<Integer> set = this.mMigrationStartAndEndVersions;
-                if (!(set == null || this.mMigrationsNotRequiredFrom == null)) {
-                    for (Integer version : set) {
-                        if (this.mMigrationsNotRequiredFrom.contains(version)) {
-                            throw new IllegalArgumentException("Inconsistency detected. A Migration was supplied to addMigration(Migration... migrations) that has a start or end version equal to a start version supplied to fallbackToDestructiveMigrationFrom(int... startVersions). Start version: " + version);
-                        }
-                    }
-                }
-                if (this.mFactory == null) {
-                    this.mFactory = new FrameworkSQLiteOpenHelperFactory();
-                }
-                Context context = this.mContext;
-                T db = new DatabaseConfiguration(context, this.mName, this.mFactory, this.mMigrationContainer, this.mCallbacks, this.mAllowMainThreadQueries, this.mJournalMode.resolve(context), this.mRequireMigration, this.mMigrationsNotRequiredFrom);
-                T db2 = (RoomDatabase) Room.getGeneratedImplementation(this.mDatabaseClass, RoomDatabase.DB_IMPL_SUFFIX);
-                db2.init(db);
-                return db2;
-            } else {
+            }
+            if (this.mDatabaseClass == null) {
                 throw new IllegalArgumentException("Must provide an abstract class that extends RoomDatabase");
             }
+            Set<Integer> set = this.mMigrationStartAndEndVersions;
+            if (set != null && this.mMigrationsNotRequiredFrom != null) {
+                for (Integer version : set) {
+                    if (this.mMigrationsNotRequiredFrom.contains(version)) {
+                        throw new IllegalArgumentException("Inconsistency detected. A Migration was supplied to addMigration(Migration... migrations) that has a start or end version equal to a start version supplied to fallbackToDestructiveMigrationFrom(int... startVersions). Start version: " + version);
+                    }
+                }
+            }
+            if (this.mFactory == null) {
+                this.mFactory = new FrameworkSQLiteOpenHelperFactory();
+            }
+            Context context = this.mContext;
+            DatabaseConfiguration configuration = new DatabaseConfiguration(context, this.mName, this.mFactory, this.mMigrationContainer, this.mCallbacks, this.mAllowMainThreadQueries, this.mJournalMode.resolve(context), this.mRequireMigration, this.mMigrationsNotRequiredFrom);
+            T db = (T) Room.getGeneratedImplementation(this.mDatabaseClass, RoomDatabase.DB_IMPL_SUFFIX);
+            db.init(configuration);
+            return db;
         }
     }
 
+    /* loaded from: classes.dex */
     public static class MigrationContainer {
         private SparseArrayCompat<SparseArrayCompat<Migration>> mMigrations = new SparseArrayCompat<>();
 
@@ -301,27 +298,32 @@ public abstract class RoomDatabase {
             if (start == end) {
                 return Collections.emptyList();
             }
-            return findUpMigrationPath(new ArrayList<>(), end > start, start, end);
+            boolean migrateUp = end > start;
+            List<Migration> result = new ArrayList<>();
+            return findUpMigrationPath(result, migrateUp, start, end);
         }
 
+        /* JADX WARN: Removed duplicated region for block: B:15:0x0024  */
+        /* JADX WARN: Removed duplicated region for block: B:38:0x0023 A[SYNTHETIC] */
+        /*
+            Code decompiled incorrectly, please refer to instructions dump.
+        */
         private List<Migration> findUpMigrationPath(List<Migration> result, boolean upgrade, int start, int end) {
-            int lastIndex;
+            SparseArrayCompat<Migration> targetNodes;
             int firstIndex;
+            int lastIndex;
             boolean found;
-            List<Migration> list = result;
-            int i = end;
             int searchDirection = upgrade ? -1 : 1;
             int start2 = start;
             do {
                 if (upgrade) {
-                    if (start2 >= i) {
-                        return list;
+                    if (start2 >= end) {
+                        return result;
                     }
-                } else if (start2 <= i) {
-                    return list;
-                }
-                SparseArrayCompat<Migration> targetNodes = this.mMigrations.get(start2);
-                if (targetNodes != null) {
+                    targetNodes = this.mMigrations.get(start2);
+                    if (targetNodes != null) {
+                        return null;
+                    }
                     int size = targetNodes.size();
                     if (upgrade) {
                         firstIndex = size - 1;
@@ -331,37 +333,42 @@ public abstract class RoomDatabase {
                         lastIndex = size;
                     }
                     found = false;
-                    int i2 = firstIndex;
+                    int i = firstIndex;
                     while (true) {
-                        if (i2 == lastIndex) {
-                            break;
-                        }
-                        int targetVersion = targetNodes.keyAt(i2);
-                        boolean shouldAddToPath = false;
-                        if (upgrade) {
-                            if (targetVersion <= i && targetVersion > start2) {
+                        if (i != lastIndex) {
+                            int targetVersion = targetNodes.keyAt(i);
+                            boolean shouldAddToPath = false;
+                            if (upgrade) {
+                                if (targetVersion <= end && targetVersion > start2) {
+                                    shouldAddToPath = true;
+                                }
+                            } else if (targetVersion >= end && targetVersion < start2) {
                                 shouldAddToPath = true;
                             }
-                        } else if (targetVersion >= i && targetVersion < start2) {
-                            shouldAddToPath = true;
+                            if (shouldAddToPath) {
+                                result.add(targetNodes.valueAt(i));
+                                start2 = targetVersion;
+                                found = true;
+                                continue;
+                                break;
+                            }
+                            i += searchDirection;
                         }
-                        if (shouldAddToPath) {
-                            list.add(targetNodes.valueAt(i2));
-                            start2 = targetVersion;
-                            found = true;
-                            continue;
-                            break;
-                        }
-                        i2 += searchDirection;
                     }
                 } else {
-                    return null;
+                    if (start2 <= end) {
+                        return result;
+                    }
+                    targetNodes = this.mMigrations.get(start2);
+                    if (targetNodes != null) {
+                    }
                 }
             } while (found);
             return null;
         }
     }
 
+    /* loaded from: classes.dex */
     public static abstract class Callback {
         public void onCreate(SupportSQLiteDatabase db) {
         }

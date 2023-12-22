@@ -11,25 +11,28 @@ import io.reactivex.internal.functions.ObjectHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.Callable;
 
+/* loaded from: classes.dex */
 public final class ObservableScanSeed<T, R> extends AbstractObservableWithUpstream<T, R> {
     final BiFunction<R, ? super T, R> accumulator;
     final Callable<R> seedSupplier;
 
-    public ObservableScanSeed(ObservableSource<T> source, Callable<R> seedSupplier2, BiFunction<R, ? super T, R> accumulator2) {
+    public ObservableScanSeed(ObservableSource<T> source, Callable<R> seedSupplier, BiFunction<R, ? super T, R> accumulator) {
         super(source);
-        this.accumulator = accumulator2;
-        this.seedSupplier = seedSupplier2;
+        this.accumulator = accumulator;
+        this.seedSupplier = seedSupplier;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super R> t) {
         try {
             this.source.subscribe(new ScanSeedObserver(t, this.accumulator, ObjectHelper.requireNonNull(this.seedSupplier.call(), "The seed supplied is null")));
         } catch (Throwable e) {
             Exceptions.throwIfFatal(e);
-            EmptyDisposable.error(e, (Observer<?>) t);
+            EmptyDisposable.error(e, t);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ScanSeedObserver<T, R> implements Observer<T>, Disposable {
         final BiFunction<R, ? super T, R> accumulator;
         boolean done;
@@ -37,42 +40,49 @@ public final class ObservableScanSeed<T, R> extends AbstractObservableWithUpstre
         Disposable upstream;
         R value;
 
-        ScanSeedObserver(Observer<? super R> actual, BiFunction<R, ? super T, R> accumulator2, R value2) {
+        ScanSeedObserver(Observer<? super R> actual, BiFunction<R, ? super T, R> accumulator, R value) {
             this.downstream = actual;
-            this.accumulator = accumulator2;
-            this.value = value2;
+            this.accumulator = accumulator;
+            this.value = value;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
                 this.downstream.onSubscribe(this);
-                this.downstream.onNext(this.value);
+                this.downstream.onNext((R) this.value);
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
-            if (!this.done) {
-                try {
-                    R u = ObjectHelper.requireNonNull(this.accumulator.apply(this.value, t), "The accumulator returned a null value");
-                    this.value = u;
-                    this.downstream.onNext(u);
-                } catch (Throwable e) {
-                    Exceptions.throwIfFatal(e);
-                    this.upstream.dispose();
-                    onError(e);
-                }
+            if (this.done) {
+                return;
+            }
+            R v = this.value;
+            try {
+                R u = (R) ObjectHelper.requireNonNull(this.accumulator.apply(v, t), "The accumulator returned a null value");
+                this.value = u;
+                this.downstream.onNext(u);
+            } catch (Throwable e) {
+                Exceptions.throwIfFatal(e);
+                this.upstream.dispose();
+                onError(e);
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -82,11 +92,13 @@ public final class ObservableScanSeed<T, R> extends AbstractObservableWithUpstre
             this.downstream.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                this.downstream.onComplete();
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            this.downstream.onComplete();
         }
     }
 }

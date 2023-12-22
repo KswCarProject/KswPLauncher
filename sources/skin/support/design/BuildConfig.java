@@ -1,5 +1,6 @@
 package skin.support.design;
 
+/* loaded from: classes.dex */
 public final class BuildConfig {
     public static final String APPLICATION_ID = "skin.support.design";
     public static final String BUILD_TYPE = "release";

@@ -11,6 +11,7 @@ import com.squareup.picasso.RequestHandler;
 import java.io.IOException;
 import java.io.InputStream;
 
+/* loaded from: classes.dex */
 class ContactsPhotoRequestHandler extends RequestHandler {
     private static final int ID_CONTACT = 3;
     private static final int ID_DISPLAY_PHOTO = 4;
@@ -29,15 +30,17 @@ class ContactsPhotoRequestHandler extends RequestHandler {
         uriMatcher.addURI("com.android.contacts", "display_photo/#", 4);
     }
 
-    ContactsPhotoRequestHandler(Context context2) {
-        this.context = context2;
+    ContactsPhotoRequestHandler(Context context) {
+        this.context = context;
     }
 
+    @Override // com.squareup.picasso.RequestHandler
     public boolean canHandleRequest(Request data) {
         Uri uri = data.uri;
         return "content".equals(uri.getScheme()) && ContactsContract.Contacts.CONTENT_URI.getHost().equals(uri.getHost()) && matcher.match(data.uri) != -1;
     }
 
+    @Override // com.squareup.picasso.RequestHandler
     public RequestHandler.Result load(Request request, int networkPolicy) throws IOException {
         InputStream is = getInputStream(request);
         if (is != null) {
@@ -46,6 +49,7 @@ class ContactsPhotoRequestHandler extends RequestHandler {
         return null;
     }
 
+    /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
     private InputStream getInputStream(Request data) throws IOException {
         ContentResolver contentResolver = this.context.getContentResolver();
         Uri uri = data.uri;
@@ -70,6 +74,7 @@ class ContactsPhotoRequestHandler extends RequestHandler {
         return ContactPhotoStreamIcs.get(contentResolver, uri);
     }
 
+    /* loaded from: classes.dex */
     private static class ContactPhotoStreamIcs {
         private ContactPhotoStreamIcs() {
         }

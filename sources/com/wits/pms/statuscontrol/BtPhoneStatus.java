@@ -6,6 +6,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/* loaded from: classes.dex */
 public class BtPhoneStatus {
     public static final int CALL_CALLOUT = 4;
     public static final int CALL_HANDUP = 7;
@@ -29,8 +30,8 @@ public class BtPhoneStatus {
         this.isConnected = connected;
     }
 
-    public void setBtSwitch(boolean btSwitch2) {
-        this.btSwitch = btSwitch2;
+    public void setBtSwitch(boolean btSwitch) {
+        this.btSwitch = btSwitch;
     }
 
     public boolean isBtSwitch() {
@@ -49,40 +50,40 @@ public class BtPhoneStatus {
         return this.devAddr;
     }
 
-    public void setDevAddr(String devAddr2) {
-        this.devAddr = devAddr2;
+    public void setDevAddr(String devAddr) {
+        this.devAddr = devAddr;
     }
 
     public int getCallStatus() {
         return this.callStatus;
     }
 
-    public void setCallStatus(int callStatus2) {
-        this.callStatus = callStatus2;
+    public void setCallStatus(int callStatus) {
+        this.callStatus = callStatus;
     }
 
     public int getVoiceStatus() {
         return this.voiceStatus;
     }
 
-    public void setVoiceStatus(int voiceStatus2) {
-        this.voiceStatus = voiceStatus2;
+    public void setVoiceStatus(int voiceStatus) {
+        this.voiceStatus = voiceStatus;
     }
 
-    public BtPhoneStatus(boolean isConnected2, boolean isPlayingMusic2, String devAddr2, int callStatus2, int voiceStatus2, boolean btSwitch2) {
-        this.isConnected = isConnected2;
-        this.isPlayingMusic = isPlayingMusic2;
-        this.devAddr = devAddr2;
-        this.callStatus = callStatus2;
-        this.voiceStatus = voiceStatus2;
-        this.btSwitch = btSwitch2;
+    public BtPhoneStatus(boolean isConnected, boolean isPlayingMusic, String devAddr, int callStatus, int voiceStatus, boolean btSwitch) {
+        this.isConnected = isConnected;
+        this.isPlayingMusic = isPlayingMusic;
+        this.devAddr = devAddr;
+        this.callStatus = callStatus;
+        this.voiceStatus = voiceStatus;
+        this.btSwitch = btSwitch;
     }
 
     public BtPhoneStatus() {
     }
 
     public static BtPhoneStatus getStatusForJson(String jsonArg) {
-        return (BtPhoneStatus) new Gson().fromJson(jsonArg, BtPhoneStatus.class);
+        return (BtPhoneStatus) new Gson().fromJson(jsonArg, (Class<Object>) BtPhoneStatus.class);
     }
 
     public List<String> compare(BtPhoneStatus btPhoneStatus) {
@@ -109,8 +110,8 @@ public class BtPhoneStatus {
         return keys;
     }
 
-    public static boolean isCalling(int callStatus2) {
-        return callStatus2 >= 4 && callStatus2 <= 6;
+    public static boolean isCalling(int callStatus) {
+        return callStatus >= 4 && callStatus <= 6;
     }
 
     public static List<PhoneBookBean> getContactsByJson(String json) {
@@ -127,29 +128,30 @@ public class BtPhoneStatus {
         }
     }
 
+    /* loaded from: classes.dex */
     public static class PhoneBookBean {
         private String name;
         private String number;
 
-        public PhoneBookBean(String name2, String number2) {
-            this.name = name2;
-            this.number = number2;
+        public PhoneBookBean(String name, String number) {
+            this.name = name;
+            this.number = number;
         }
 
         public String getName() {
             return this.name;
         }
 
-        public void setName(String name2) {
-            this.name = name2;
+        public void setName(String name) {
+            this.name = name;
         }
 
         public String getNumber() {
             return this.number;
         }
 
-        public void setNumber(String number2) {
-            this.number = number2;
+        public void setNumber(String number) {
+            this.number = number;
         }
     }
 }

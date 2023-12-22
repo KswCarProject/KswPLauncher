@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.CLASS)
+/* loaded from: classes.dex */
 public @interface ColumnInfo {
     public static final int BINARY = 2;
     public static final int BLOB = 5;
@@ -21,9 +22,11 @@ public @interface ColumnInfo {
     public static final int UNICODE = 6;
     public static final int UNSPECIFIED = 1;
 
+    /* loaded from: classes.dex */
     public @interface Collate {
     }
 
+    /* loaded from: classes.dex */
     public @interface SQLiteTypeAffinity {
     }
 

@@ -7,25 +7,28 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.databinding.LexusLsBottomFragmentTwo;
 
+/* loaded from: classes14.dex */
 public class FragmentLexusLsBottomTwo extends LexusLsBaseBottomFragment implements View.OnKeyListener {
     private static final String TAG = "KswApplication";
     private LexusLsBottomFragmentTwo binding;
     IAddAppClickListener mAddAppListener;
 
+    /* loaded from: classes14.dex */
     public interface IAddAppClickListener {
         void onClick(View view);
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LexusLsBottomFragmentTwo lexusLsBottomFragmentTwo = (LexusLsBottomFragmentTwo) DataBindingUtil.inflate(inflater, R.layout.lexus_ls_bottom_fragment_two, (ViewGroup) null, false);
+        LexusLsBottomFragmentTwo lexusLsBottomFragmentTwo = (LexusLsBottomFragmentTwo) DataBindingUtil.inflate(inflater, C0899R.C0902layout.lexus_ls_bottom_fragment_two, null, false);
         this.binding = lexusLsBottomFragmentTwo;
         return lexusLsBottomFragmentTwo.getRoot();
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.binding.setViewModel(this.viewModel);
@@ -34,7 +37,8 @@ public class FragmentLexusLsBottomTwo extends LexusLsBaseBottomFragment implemen
         this.binding.ivLexusLsPhonelink.setOnKeyListener(this);
         this.binding.ivLexusLsFile.setOnKeyListener(this);
         this.binding.ivLexusLsAdd.setOnKeyListener(this);
-        this.binding.ivLexusLsDvr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        this.binding.ivLexusLsDvr.setOnFocusChangeListener(new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.view.lexusls.FragmentLexusLsBottomTwo.1
+            @Override // android.view.View.OnFocusChangeListener
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus && FragmentLexusLsBottomTwo.this.mainActivity.lexusLsVpagerBottom != null && FragmentLexusLsBottomTwo.this.mainActivity.lexusLsVpagerBottom.getCurrentItem() != 1) {
                     Log.e("liuhao", "two lexusLsVpagerBottom");
@@ -43,31 +47,36 @@ public class FragmentLexusLsBottomTwo extends LexusLsBaseBottomFragment implemen
                 }
             }
         });
-        this.binding.ivLexusLsDvr.setOnClickListener(new View.OnClickListener() {
+        this.binding.ivLexusLsDvr.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.launcher.view.lexusls.FragmentLexusLsBottomTwo.2
+            @Override // android.view.View.OnClickListener
             public void onClick(View v) {
                 FragmentLexusLsBottomTwo.this.viewModel.openDvr(v);
                 FragmentLexusLsBottomTwo.this.setItemSelected(v);
             }
         });
-        this.binding.ivLexusLsDashboard.setOnClickListener(new View.OnClickListener() {
+        this.binding.ivLexusLsDashboard.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.launcher.view.lexusls.FragmentLexusLsBottomTwo.3
+            @Override // android.view.View.OnClickListener
             public void onClick(View v) {
                 FragmentLexusLsBottomTwo.this.viewModel.openDashboard(v);
                 FragmentLexusLsBottomTwo.this.setItemSelected(v);
             }
         });
-        this.binding.ivLexusLsPhonelink.setOnClickListener(new View.OnClickListener() {
+        this.binding.ivLexusLsPhonelink.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.launcher.view.lexusls.FragmentLexusLsBottomTwo.4
+            @Override // android.view.View.OnClickListener
             public void onClick(View v) {
                 FragmentLexusLsBottomTwo.this.viewModel.openShouJiHuLian(v);
                 FragmentLexusLsBottomTwo.this.setItemSelected(v);
             }
         });
-        this.binding.ivLexusLsFile.setOnClickListener(new View.OnClickListener() {
+        this.binding.ivLexusLsFile.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.launcher.view.lexusls.FragmentLexusLsBottomTwo.5
+            @Override // android.view.View.OnClickListener
             public void onClick(View v) {
                 FragmentLexusLsBottomTwo.this.viewModel.openFileManager(v);
                 FragmentLexusLsBottomTwo.this.setItemSelected(v);
             }
         });
-        this.binding.ivLexusLsAdd.setOnClickListener(new View.OnClickListener() {
+        this.binding.ivLexusLsAdd.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.launcher.view.lexusls.FragmentLexusLsBottomTwo.6
+            @Override // android.view.View.OnClickListener
             public void onClick(View v) {
                 FragmentLexusLsBottomTwo.this.mAddAppListener.onClick(v);
                 FragmentLexusLsBottomTwo.this.setItemSelected(v);
@@ -77,16 +86,11 @@ public class FragmentLexusLsBottomTwo extends LexusLsBaseBottomFragment implemen
     }
 
     public void setItemSelected(View view) {
-        boolean z = true;
         this.binding.ivLexusLsDvr.setSelected(this.binding.ivLexusLsDvr == view);
         this.binding.ivLexusLsDashboard.setSelected(this.binding.ivLexusLsDashboard == view);
         this.binding.ivLexusLsPhonelink.setSelected(this.binding.ivLexusLsPhonelink == view);
         this.binding.ivLexusLsFile.setSelected(this.binding.ivLexusLsFile == view);
-        ImageView imageView = this.binding.ivLexusLsAdd;
-        if (this.binding.ivLexusLsAdd != view) {
-            z = false;
-        }
-        imageView.setSelected(z);
+        this.binding.ivLexusLsAdd.setSelected(this.binding.ivLexusLsAdd == view);
     }
 
     public void setDefaultSelected() {
@@ -97,6 +101,7 @@ public class FragmentLexusLsBottomTwo extends LexusLsBaseBottomFragment implemen
         }
     }
 
+    @Override // android.view.View.OnKeyListener
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (event.getAction() == 0) {
             Log.i("KswApplication", "Fragmentid6CuspTwo onKey: " + keyCode);

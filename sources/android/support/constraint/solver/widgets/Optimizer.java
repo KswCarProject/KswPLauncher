@@ -3,6 +3,7 @@ package android.support.constraint.solver.widgets;
 import android.support.constraint.solver.LinearSystem;
 import android.support.constraint.solver.widgets.ConstraintWidget;
 
+/* loaded from: classes.dex */
 public class Optimizer {
     static final int FLAG_CHAIN_DANGLING = 1;
     static final int FLAG_RECOMPUTE_BOUNDS = 2;

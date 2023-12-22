@@ -12,23 +12,25 @@ import io.reactivex.plugins.RxJavaPlugins;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableDoOnLifecycle<T> extends AbstractFlowableWithUpstream<T, T> {
     private final Action onCancel;
     private final LongConsumer onRequest;
     private final Consumer<? super Subscription> onSubscribe;
 
-    public FlowableDoOnLifecycle(Flowable<T> source, Consumer<? super Subscription> onSubscribe2, LongConsumer onRequest2, Action onCancel2) {
+    public FlowableDoOnLifecycle(Flowable<T> source, Consumer<? super Subscription> onSubscribe, LongConsumer onRequest, Action onCancel) {
         super(source);
-        this.onSubscribe = onSubscribe2;
-        this.onRequest = onRequest2;
-        this.onCancel = onCancel2;
+        this.onSubscribe = onSubscribe;
+        this.onRequest = onRequest;
+        this.onCancel = onCancel;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
-        this.source.subscribe(new SubscriptionLambdaSubscriber(s, this.onSubscribe, this.onRequest, this.onCancel));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
+        this.source.subscribe((FlowableSubscriber) new SubscriptionLambdaSubscriber(s, this.onSubscribe, this.onRequest, this.onCancel));
     }
 
+    /* loaded from: classes.dex */
     static final class SubscriptionLambdaSubscriber<T> implements FlowableSubscriber<T>, Subscription {
         final Subscriber<? super T> downstream;
         final Action onCancel;
@@ -36,13 +38,14 @@ public final class FlowableDoOnLifecycle<T> extends AbstractFlowableWithUpstream
         final Consumer<? super Subscription> onSubscribe;
         Subscription upstream;
 
-        SubscriptionLambdaSubscriber(Subscriber<? super T> actual, Consumer<? super Subscription> onSubscribe2, LongConsumer onRequest2, Action onCancel2) {
+        SubscriptionLambdaSubscriber(Subscriber<? super T> actual, Consumer<? super Subscription> onSubscribe, LongConsumer onRequest, Action onCancel) {
             this.downstream = actual;
-            this.onSubscribe = onSubscribe2;
-            this.onCancel = onCancel2;
-            this.onRequest = onRequest2;
+            this.onSubscribe = onSubscribe;
+            this.onCancel = onCancel;
+            this.onRequest = onRequest;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             try {
                 this.onSubscribe.accept(s);
@@ -58,10 +61,12 @@ public final class FlowableDoOnLifecycle<T> extends AbstractFlowableWithUpstream
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             this.downstream.onNext(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.upstream != SubscriptionHelper.CANCELLED) {
                 this.downstream.onError(t);
@@ -70,12 +75,14 @@ public final class FlowableDoOnLifecycle<T> extends AbstractFlowableWithUpstream
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             if (this.upstream != SubscriptionHelper.CANCELLED) {
                 this.downstream.onComplete();
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             try {
                 this.onRequest.accept(n);
@@ -86,6 +93,7 @@ public final class FlowableDoOnLifecycle<T> extends AbstractFlowableWithUpstream
             this.upstream.request(n);
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             Subscription s = this.upstream;
             if (s != SubscriptionHelper.CANCELLED) {

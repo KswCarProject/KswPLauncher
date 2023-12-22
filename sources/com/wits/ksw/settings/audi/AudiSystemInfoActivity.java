@@ -6,22 +6,22 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.databinding.AudiSysinfoBinding;
 import com.wits.ksw.settings.TxzMessage;
-import com.wits.ksw.settings.audi.vm.AudiSettingViewModel;
+import com.wits.ksw.settings.audi.p007vm.AudiSettingViewModel;
 import com.wits.ksw.settings.utlis_view.DialogViews;
 import com.wits.ksw.settings.utlis_view.UtilsInfo;
 
+/* loaded from: classes13.dex */
 public class AudiSystemInfoActivity extends AudiSubActivity {
     private AudiSysinfoBinding binding;
     private DialogViews dialogViews;
-    Handler handler = new Handler() {
+    Handler handler = new Handler() { // from class: com.wits.ksw.settings.audi.AudiSystemInfoActivity.1
+        @Override // android.os.Handler
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 0) {
@@ -37,16 +37,16 @@ public class AudiSystemInfoActivity extends AudiSubActivity {
             }
         }
     };
-    /* access modifiers changed from: private */
-    public AudiSettingViewModel viewModel;
+    private AudiSettingViewModel viewModel;
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override // com.wits.ksw.settings.audi.AudiSubActivity, com.wits.ksw.settings.BaseActivity, android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AudiSysinfoBinding audiSysinfoBinding = (AudiSysinfoBinding) DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.audi_sysinfo, (ViewGroup) null, false);
+        AudiSysinfoBinding audiSysinfoBinding = (AudiSysinfoBinding) DataBindingUtil.inflate(LayoutInflater.from(this), C0899R.C0902layout.audi_sysinfo, null, false);
         this.binding = audiSysinfoBinding;
-        this.contentLayout.addView(audiSysinfoBinding.getRoot(), -1, -1);
-        AudiSettingViewModel audiSettingViewModel = (AudiSettingViewModel) ViewModelProviders.of((FragmentActivity) this).get(AudiSettingViewModel.class);
+        View view = audiSysinfoBinding.getRoot();
+        this.contentLayout.addView(view, -1, -1);
+        AudiSettingViewModel audiSettingViewModel = (AudiSettingViewModel) ViewModelProviders.m59of(this).get(AudiSettingViewModel.class);
         this.viewModel = audiSettingViewModel;
         this.binding.setVm(audiSettingViewModel);
         this.dialogViews = new DialogViews(this);
@@ -54,30 +54,32 @@ public class AudiSystemInfoActivity extends AudiSubActivity {
         for (int i = 0; i < count; i++) {
             View childView = this.binding.audiSysInfParentPanel.getChildAt(i);
             if (childView instanceof TextView) {
-                childView.setOnClickListener(new View.OnClickListener() {
-                    public final void onClick(View view) {
-                        AudiSystemInfoActivity.this.onClick(view);
+                childView.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.settings.audi.-$$Lambda$QMfPLHNrIFj5KFMgiBKHHiAYGRY
+                    @Override // android.view.View.OnClickListener
+                    public final void onClick(View view2) {
+                        AudiSystemInfoActivity.this.onClick(view2);
                     }
                 });
             }
         }
-        this.tv_title_set.setText(getResources().getString(R.string.item7));
+        this.tv_title_set.setText(getResources().getString(C0899R.string.item7));
     }
 
     public void onClick(View v) {
         this.binding.audiSysInfParentPanel.setSeleted(v);
         switch (v.getId()) {
-            case R.id.audiSysInfoSysVer /*2131296374*/:
+            case C0899R.C0901id.audiSysInfoSysVer /* 2131296377 */:
                 UtilsInfo.showQRCode(this);
                 return;
-            case R.id.audioSysInfoMcuUpdata /*2131296415*/:
-                this.dialogViews.updateMcu(getString(R.string.update_mcu_file));
+            case C0899R.C0901id.audioSysInfoMcuUpdata /* 2131296418 */:
+                this.dialogViews.updateMcu(getString(C0899R.string.update_mcu_file));
                 return;
-            case R.id.audioSysInfoRestoreFactory /*2131296417*/:
-                this.dialogViews.isQuestView(getString(R.string.update_reset_all), this.handler);
+            case C0899R.C0901id.audioSysInfoRestoreFactory /* 2131296420 */:
+                this.dialogViews.isQuestView(getString(C0899R.string.update_reset_all), this.handler);
                 return;
-            case R.id.audioSysInfoUpDateFactory /*2131296418*/:
-                new TxzMessage(2070, "system.ota.check", (Bundle) null).sendBroadCast(this);
+            case C0899R.C0901id.audioSysInfoUpDateFactory /* 2131296421 */:
+                TxzMessage txzMessage = new TxzMessage(2070, "system.ota.check", null);
+                txzMessage.sendBroadCast(this);
                 return;
             default:
                 return;

@@ -1,12 +1,13 @@
 package com.bumptech.glide.load.model;
 
-import android.support.v4.util.Pools;
+import android.support.p001v4.util.Pools;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public class ModelLoaderRegistry {
     private final ModelLoaderCache cache;
     private final MultiModelLoaderFactory multiModelLoaderFactory;
@@ -15,9 +16,9 @@ public class ModelLoaderRegistry {
         this(new MultiModelLoaderFactory(throwableListPool));
     }
 
-    private ModelLoaderRegistry(MultiModelLoaderFactory multiModelLoaderFactory2) {
+    private ModelLoaderRegistry(MultiModelLoaderFactory multiModelLoaderFactory) {
         this.cache = new ModelLoaderCache();
-        this.multiModelLoaderFactory = multiModelLoaderFactory2;
+        this.multiModelLoaderFactory = multiModelLoaderFactory;
     }
 
     public synchronized <Model, Data> void append(Class<Model> modelClass, Class<Data> dataClass, ModelLoaderFactory<? extends Model, ? extends Data> factory) {
@@ -55,7 +56,7 @@ public class ModelLoaderRegistry {
             ModelLoader<A, ?> loader = modelLoaders.get(i);
             if (loader.handles(model)) {
                 if (isEmpty) {
-                    filteredLoaders = new ArrayList<>(size - i);
+                    filteredLoaders = new ArrayList(size - i);
                     isEmpty = false;
                 }
                 filteredLoaders.add(loader);
@@ -83,9 +84,10 @@ public class ModelLoaderRegistry {
     }
 
     private static <A> Class<A> getClass(A model) {
-        return model.getClass();
+        return (Class<A>) model.getClass();
     }
 
+    /* loaded from: classes.dex */
     private static class ModelLoaderCache {
         private final Map<Class<?>, Entry<?>> cachedModelLoaders = new HashMap();
 
@@ -97,24 +99,26 @@ public class ModelLoaderRegistry {
         }
 
         public <Model> void put(Class<Model> modelClass, List<ModelLoader<Model, ?>> loaders) {
-            if (this.cachedModelLoaders.put(modelClass, new Entry(loaders)) != null) {
+            Entry<?> previous = this.cachedModelLoaders.put(modelClass, new Entry<>(loaders));
+            if (previous != null) {
                 throw new IllegalStateException("Already cached loaders for model: " + modelClass);
             }
         }
 
         public <Model> List<ModelLoader<Model, ?>> get(Class<Model> modelClass) {
-            Entry<Model> entry = this.cachedModelLoaders.get(modelClass);
+            Entry<?> entry = this.cachedModelLoaders.get(modelClass);
             if (entry == null) {
                 return null;
             }
-            return entry.loaders;
+            return (List<ModelLoader<Model, ?>>) entry.loaders;
         }
 
+        /* loaded from: classes.dex */
         private static class Entry<Model> {
             final List<ModelLoader<Model, ?>> loaders;
 
-            public Entry(List<ModelLoader<Model, ?>> loaders2) {
-                this.loaders = loaders2;
+            public Entry(List<ModelLoader<Model, ?>> loaders) {
+                this.loaders = loaders;
             }
         }
     }

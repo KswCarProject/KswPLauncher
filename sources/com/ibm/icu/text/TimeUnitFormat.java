@@ -1,13 +1,18 @@
 package com.ibm.icu.text;
 
+import com.ibm.icu.impl.ICUResourceBundle;
 import com.ibm.icu.impl.UResource;
 import com.ibm.icu.number.LocalizedNumberFormatter;
 import com.ibm.icu.text.MeasureFormat;
 import com.ibm.icu.util.TimeUnit;
+import com.ibm.icu.util.TimeUnitAmount;
 import com.ibm.icu.util.ULocale;
 import com.ibm.icu.util.UResourceBundle;
 import java.io.ObjectStreamException;
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -15,6 +20,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 @Deprecated
+/* loaded from: classes.dex */
 public class TimeUnitFormat extends MeasureFormat {
     @Deprecated
     public static final int ABBREVIATED_NAME = 1;
@@ -42,57 +48,56 @@ public class TimeUnitFormat extends MeasureFormat {
     }
 
     @Deprecated
-    public TimeUnitFormat(ULocale locale2) {
-        this(locale2, 0);
+    public TimeUnitFormat(ULocale locale) {
+        this(locale, 0);
     }
 
     @Deprecated
-    public TimeUnitFormat(Locale locale2) {
-        this(locale2, 0);
+    public TimeUnitFormat(Locale locale) {
+        this(locale, 0);
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     @Deprecated
-    public TimeUnitFormat(ULocale locale2, int style2) {
-        super(locale2, style2 == 0 ? MeasureFormat.FormatWidth.WIDE : MeasureFormat.FormatWidth.SHORT);
+    public TimeUnitFormat(ULocale locale, int style) {
+        super(locale, style == 0 ? MeasureFormat.FormatWidth.WIDE : MeasureFormat.FormatWidth.SHORT);
         this.format = super.getNumberFormatInternal();
-        if (style2 < 0 || style2 >= 2) {
+        if (style < 0 || style >= 2) {
             throw new IllegalArgumentException("style should be either FULL_NAME or ABBREVIATED_NAME style");
         }
-        this.style = style2;
+        this.style = style;
         this.isReady = false;
     }
 
-    private TimeUnitFormat(ULocale locale2, int style2, NumberFormat numberFormat) {
-        this(locale2, style2);
+    private TimeUnitFormat(ULocale locale, int style, NumberFormat numberFormat) {
+        this(locale, style);
         if (numberFormat != null) {
             setNumberFormat((NumberFormat) numberFormat.clone());
         }
     }
 
     @Deprecated
-    public TimeUnitFormat(Locale locale2, int style2) {
-        this(ULocale.forLocale(locale2), style2);
+    public TimeUnitFormat(Locale locale, int style) {
+        this(ULocale.forLocale(locale), style);
     }
 
     @Deprecated
-    public TimeUnitFormat setLocale(ULocale locale2) {
-        setLocale(locale2, locale2);
+    public TimeUnitFormat setLocale(ULocale locale) {
+        setLocale(locale, locale);
         clearCache();
         return this;
     }
 
     @Deprecated
-    public TimeUnitFormat setLocale(Locale locale2) {
-        return setLocale(ULocale.forLocale(locale2));
+    public TimeUnitFormat setLocale(Locale locale) {
+        return setLocale(ULocale.forLocale(locale));
     }
 
     @Deprecated
-    public TimeUnitFormat setNumberFormat(NumberFormat format2) {
-        if (format2 == this.format) {
+    public TimeUnitFormat setNumberFormat(NumberFormat format) {
+        if (format == this.format) {
             return this;
         }
-        if (format2 == null) {
+        if (format == null) {
             ULocale uLocale = this.locale;
             if (uLocale == null) {
                 this.isReady = false;
@@ -100,208 +105,136 @@ public class TimeUnitFormat extends MeasureFormat {
                 this.format = NumberFormat.getNumberInstance(uLocale);
             }
         } else {
-            this.format = format2;
+            this.format = format;
         }
         clearCache();
         return this;
     }
 
+    @Override // com.ibm.icu.text.MeasureFormat
     @Deprecated
     public NumberFormat getNumberFormat() {
         return (NumberFormat) this.format.clone();
     }
 
-    /* access modifiers changed from: package-private */
-    public NumberFormat getNumberFormatInternal() {
+    @Override // com.ibm.icu.text.MeasureFormat
+    NumberFormat getNumberFormatInternal() {
         return this.format;
     }
 
-    /* access modifiers changed from: package-private */
-    public LocalizedNumberFormatter getNumberFormatter() {
+    @Override // com.ibm.icu.text.MeasureFormat
+    LocalizedNumberFormatter getNumberFormatter() {
         return ((DecimalFormat) this.format).toNumberFormatter();
     }
 
-    /* JADX WARNING: type inference failed for: r0v27, types: [java.lang.Number] */
-    /* JADX WARNING: type inference failed for: r0v29, types: [java.lang.Number] */
-    /* JADX WARNING: Multi-variable type inference failed */
-    @java.lang.Deprecated
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public com.ibm.icu.util.TimeUnitAmount parseObject(java.lang.String r23, java.text.ParsePosition r24) {
-        /*
-            r22 = this;
-            r1 = r22
-            r2 = r24
-            boolean r0 = r1.isReady
-            if (r0 != 0) goto L_0x000b
-            r22.setup()
-        L_0x000b:
-            r0 = 0
-            r3 = 0
-            int r4 = r24.getIndex()
-            r5 = -1
-            r6 = 0
-            r7 = 0
-            java.util.Map<com.ibm.icu.util.TimeUnit, java.util.Map<java.lang.String, java.lang.Object[]>> r8 = r1.timeUnitToCountToPatterns
-            java.util.Set r8 = r8.keySet()
-            java.util.Iterator r8 = r8.iterator()
-        L_0x001e:
-            boolean r9 = r8.hasNext()
-            r10 = 2
-            r12 = -1
-            if (r9 == 0) goto L_0x00e1
-            java.lang.Object r9 = r8.next()
-            com.ibm.icu.util.TimeUnit r9 = (com.ibm.icu.util.TimeUnit) r9
-            java.util.Map<com.ibm.icu.util.TimeUnit, java.util.Map<java.lang.String, java.lang.Object[]>> r13 = r1.timeUnitToCountToPatterns
-            java.lang.Object r13 = r13.get(r9)
-            java.util.Map r13 = (java.util.Map) r13
-            java.util.Set r14 = r13.entrySet()
-            java.util.Iterator r14 = r14.iterator()
-        L_0x003c:
-            boolean r15 = r14.hasNext()
-            if (r15 == 0) goto L_0x00db
-            java.lang.Object r15 = r14.next()
-            java.util.Map$Entry r15 = (java.util.Map.Entry) r15
-            java.lang.Object r16 = r15.getKey()
-            java.lang.String r16 = (java.lang.String) r16
-            r17 = 0
-            r11 = r17
-            r17 = r7
-            r7 = r6
-            r6 = r5
-            r5 = r3
-            r3 = r0
-        L_0x0058:
-            if (r11 >= r10) goto L_0x00ca
-            java.lang.Object r0 = r15.getValue()
-            java.lang.Object[] r0 = (java.lang.Object[]) r0
-            r0 = r0[r11]
-            r10 = r0
-            com.ibm.icu.text.MessageFormat r10 = (com.ibm.icu.text.MessageFormat) r10
-            r2.setErrorIndex(r12)
-            r2.setIndex(r4)
-            r12 = r23
-            java.lang.Object r19 = r10.parseObject(r12, r2)
-            int r0 = r24.getErrorIndex()
-            r20 = r3
-            r3 = -1
-            if (r0 != r3) goto L_0x00c1
-            int r0 = r24.getIndex()
-            if (r0 != r4) goto L_0x0081
-            goto L_0x00c1
-        L_0x0081:
-            r3 = 0
-            r0 = r19
-            java.lang.Object[] r0 = (java.lang.Object[]) r0
-            java.lang.Object[] r0 = (java.lang.Object[]) r0
-            int r0 = r0.length
-            if (r0 == 0) goto L_0x00ae
-            r0 = r19
-            java.lang.Object[] r0 = (java.lang.Object[]) r0
-            java.lang.Object[] r0 = (java.lang.Object[]) r0
-            r21 = r3
-            r18 = 0
-            r3 = r0[r18]
-            boolean r0 = r3 instanceof java.lang.Number
-            if (r0 == 0) goto L_0x00a0
-            r0 = r3
-            java.lang.Number r0 = (java.lang.Number) r0
-            r3 = r0
-            goto L_0x00b0
-        L_0x00a0:
-            com.ibm.icu.text.NumberFormat r0 = r1.format     // Catch:{ ParseException -> 0x00ac }
-            java.lang.String r1 = r3.toString()     // Catch:{ ParseException -> 0x00ac }
-            java.lang.Number r0 = r0.parse(r1)     // Catch:{ ParseException -> 0x00ac }
-            r3 = r0
-            goto L_0x00b0
-        L_0x00ac:
-            r0 = move-exception
-            goto L_0x00c1
-        L_0x00ae:
-            r21 = r3
-        L_0x00b0:
-            int r0 = r24.getIndex()
-            int r0 = r0 - r4
-            if (r0 <= r7) goto L_0x00c1
-            r1 = r3
-            r5 = r9
-            int r6 = r24.getIndex()
-            r7 = r0
-            r17 = r16
-            goto L_0x00c3
-        L_0x00c1:
-            r3 = r20
-        L_0x00c3:
-            int r11 = r11 + 1
-            r10 = 2
-            r12 = -1
-            r1 = r22
-            goto L_0x0058
-        L_0x00ca:
-            r12 = r23
-            r20 = r3
-            r3 = r5
-            r5 = r6
-            r6 = r7
-            r7 = r17
-            r0 = r20
-            r10 = 2
-            r12 = -1
-            r1 = r22
-            goto L_0x003c
-        L_0x00db:
-            r12 = r23
-            r1 = r22
-            goto L_0x001e
-        L_0x00e1:
-            r12 = r23
-            if (r0 != 0) goto L_0x0118
-            if (r6 == 0) goto L_0x0118
-            java.lang.String r1 = "zero"
-            boolean r1 = r7.equals(r1)
-            if (r1 == 0) goto L_0x00f6
-            r1 = 0
-            java.lang.Integer r0 = java.lang.Integer.valueOf(r1)
-            goto L_0x0118
-        L_0x00f6:
-            java.lang.String r1 = "one"
-            boolean r1 = r7.equals(r1)
-            if (r1 == 0) goto L_0x0104
-            r1 = 1
-            java.lang.Integer r0 = java.lang.Integer.valueOf(r1)
-            goto L_0x0118
-        L_0x0104:
-            java.lang.String r1 = "two"
-            boolean r1 = r7.equals(r1)
-            if (r1 == 0) goto L_0x0113
-            r1 = 2
-            java.lang.Integer r0 = java.lang.Integer.valueOf(r1)
-            goto L_0x0118
-        L_0x0113:
-            r1 = 3
-            java.lang.Integer r0 = java.lang.Integer.valueOf(r1)
-        L_0x0118:
-            if (r6 != 0) goto L_0x0123
-            r2.setIndex(r4)
-            r1 = 0
-            r2.setErrorIndex(r1)
-            r1 = 0
-            return r1
-        L_0x0123:
-            r2.setIndex(r5)
-            r1 = -1
-            r2.setErrorIndex(r1)
-            com.ibm.icu.util.TimeUnitAmount r1 = new com.ibm.icu.util.TimeUnitAmount
-            r1.<init>(r0, r3)
-            return r1
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.TimeUnitFormat.parseObject(java.lang.String, java.text.ParsePosition):com.ibm.icu.util.TimeUnitAmount");
+    /* JADX WARN: Multi-variable type inference failed */
+    /* JADX WARN: Type inference failed for: r0v29, types: [java.lang.Number] */
+    @Override // com.ibm.icu.text.MeasureFormat, java.text.Format
+    @Deprecated
+    public TimeUnitAmount parseObject(String source, ParsePosition pos) {
+        TimeUnitFormat timeUnitFormat = this;
+        if (!timeUnitFormat.isReady) {
+            setup();
+        }
+        Number resultNumber = null;
+        TimeUnit resultTimeUnit = null;
+        int oldPos = pos.getIndex();
+        int newPos = -1;
+        int newPos2 = 0;
+        String countOfLongestMatch = null;
+        Iterator<TimeUnit> it = timeUnitFormat.timeUnitToCountToPatterns.keySet().iterator();
+        while (true) {
+            int i = 2;
+            int i2 = -1;
+            if (!it.hasNext()) {
+                break;
+            }
+            TimeUnit timeUnit = it.next();
+            Map<String, Object[]> countToPattern = timeUnitFormat.timeUnitToCountToPatterns.get(timeUnit);
+            for (Map.Entry<String, Object[]> patternEntry : countToPattern.entrySet()) {
+                String count = patternEntry.getKey();
+                int styl = 0;
+                String countOfLongestMatch2 = countOfLongestMatch;
+                int longestParseDistance = newPos2;
+                int newPos3 = newPos;
+                TimeUnit resultTimeUnit2 = resultTimeUnit;
+                Number temp = resultNumber;
+                while (styl < i) {
+                    MessageFormat pattern = (MessageFormat) patternEntry.getValue()[styl];
+                    pos.setErrorIndex(i2);
+                    pos.setIndex(oldPos);
+                    Object parsed = pattern.parseObject(source, pos);
+                    Number resultNumber2 = temp;
+                    if (pos.getErrorIndex() == -1 && pos.getIndex() != oldPos) {
+                        temp = null;
+                        if (((Object[]) parsed).length != 0) {
+                            Object tempObj = ((Object[]) parsed)[0];
+                            if (tempObj instanceof Number) {
+                                temp = (Number) tempObj;
+                            } else {
+                                try {
+                                    Number temp2 = timeUnitFormat.format.parse(tempObj.toString());
+                                    temp = temp2;
+                                } catch (ParseException e) {
+                                }
+                            }
+                        }
+                        int parseDistance = pos.getIndex() - oldPos;
+                        if (parseDistance > longestParseDistance) {
+                            resultTimeUnit2 = timeUnit;
+                            newPos3 = pos.getIndex();
+                            longestParseDistance = parseDistance;
+                            countOfLongestMatch2 = count;
+                            styl++;
+                            i = 2;
+                            i2 = -1;
+                            timeUnitFormat = this;
+                        }
+                    }
+                    temp = resultNumber2;
+                    styl++;
+                    i = 2;
+                    i2 = -1;
+                    timeUnitFormat = this;
+                }
+                Number resultNumber3 = temp;
+                resultTimeUnit = resultTimeUnit2;
+                newPos = newPos3;
+                newPos2 = longestParseDistance;
+                countOfLongestMatch = countOfLongestMatch2;
+                resultNumber = resultNumber3;
+                i = 2;
+                i2 = -1;
+                timeUnitFormat = this;
+            }
+            timeUnitFormat = this;
+        }
+        if (resultNumber == null && newPos2 != 0) {
+            if (countOfLongestMatch.equals(PluralRules.KEYWORD_ZERO)) {
+                resultNumber = 0;
+            } else if (countOfLongestMatch.equals(PluralRules.KEYWORD_ONE)) {
+                resultNumber = 1;
+            } else if (countOfLongestMatch.equals(PluralRules.KEYWORD_TWO)) {
+                resultNumber = 2;
+            } else {
+                resultNumber = 3;
+            }
+        }
+        if (newPos2 == 0) {
+            pos.setIndex(oldPos);
+            pos.setErrorIndex(0);
+            return null;
+        }
+        pos.setIndex(newPos);
+        pos.setErrorIndex(-1);
+        return new TimeUnitAmount(resultNumber, resultTimeUnit);
     }
 
     private void setup() {
         if (this.locale == null) {
             NumberFormat numberFormat = this.format;
             if (numberFormat != null) {
-                this.locale = numberFormat.getLocale((ULocale.Type) null);
+                this.locale = numberFormat.getLocale(null);
             } else {
                 this.locale = ULocale.getDefault(ULocale.Category.FORMAT);
             }
@@ -319,6 +252,7 @@ public class TimeUnitFormat extends MeasureFormat {
         this.isReady = true;
     }
 
+    /* loaded from: classes.dex */
     private static final class TimeUnitFormatSetupSink extends UResource.Sink {
         boolean beenHere = false;
         ULocale locale;
@@ -326,52 +260,55 @@ public class TimeUnitFormat extends MeasureFormat {
         int style;
         Map<TimeUnit, Map<String, Object[]>> timeUnitToCountToPatterns;
 
-        TimeUnitFormatSetupSink(Map<TimeUnit, Map<String, Object[]>> timeUnitToCountToPatterns2, int style2, Set<String> pluralKeywords2, ULocale locale2) {
-            this.timeUnitToCountToPatterns = timeUnitToCountToPatterns2;
-            this.style = style2;
-            this.pluralKeywords = pluralKeywords2;
-            this.locale = locale2;
+        TimeUnitFormatSetupSink(Map<TimeUnit, Map<String, Object[]>> timeUnitToCountToPatterns, int style, Set<String> pluralKeywords, ULocale locale) {
+            this.timeUnitToCountToPatterns = timeUnitToCountToPatterns;
+            this.style = style;
+            this.pluralKeywords = pluralKeywords;
+            this.locale = locale;
         }
 
         public void put(UResource.Key key, UResource.Value value, boolean noFallback) {
             TimeUnit timeUnit;
-            if (!this.beenHere) {
-                this.beenHere = true;
-                UResource.Table units = value.getTable();
-                for (int i = 0; units.getKeyAndValue(i, key, value); i++) {
-                    String timeUnitName = key.toString();
-                    if (timeUnitName.equals("year")) {
-                        timeUnit = TimeUnit.YEAR;
-                    } else if (timeUnitName.equals("month")) {
-                        timeUnit = TimeUnit.MONTH;
-                    } else if (timeUnitName.equals("day")) {
-                        timeUnit = TimeUnit.DAY;
-                    } else if (timeUnitName.equals("hour")) {
-                        timeUnit = TimeUnit.HOUR;
-                    } else if (timeUnitName.equals("minute")) {
-                        timeUnit = TimeUnit.MINUTE;
-                    } else if (timeUnitName.equals("second")) {
-                        timeUnit = TimeUnit.SECOND;
-                    } else if (timeUnitName.equals("week")) {
-                        timeUnit = TimeUnit.WEEK;
-                    }
-                    Map<String, Object[]> countToPatterns = this.timeUnitToCountToPatterns.get(timeUnit);
-                    if (countToPatterns == null) {
-                        countToPatterns = new TreeMap<>();
-                        this.timeUnitToCountToPatterns.put(timeUnit, countToPatterns);
-                    }
-                    UResource.Table countsToPatternTable = value.getTable();
-                    for (int j = 0; countsToPatternTable.getKeyAndValue(j, key, value); j++) {
-                        String pluralCount = key.toString();
-                        if (this.pluralKeywords.contains(pluralCount)) {
-                            Object[] pair = countToPatterns.get(pluralCount);
-                            if (pair == null) {
-                                pair = new Object[2];
-                                countToPatterns.put(pluralCount, pair);
-                            }
-                            if (pair[this.style] == null) {
-                                pair[this.style] = new MessageFormat(value.getString(), this.locale);
-                            }
+            if (this.beenHere) {
+                return;
+            }
+            this.beenHere = true;
+            UResource.Table units = value.getTable();
+            for (int i = 0; units.getKeyAndValue(i, key, value); i++) {
+                String timeUnitName = key.toString();
+                if (timeUnitName.equals("year")) {
+                    timeUnit = TimeUnit.YEAR;
+                } else if (timeUnitName.equals("month")) {
+                    timeUnit = TimeUnit.MONTH;
+                } else if (timeUnitName.equals("day")) {
+                    timeUnit = TimeUnit.DAY;
+                } else if (timeUnitName.equals("hour")) {
+                    timeUnit = TimeUnit.HOUR;
+                } else if (timeUnitName.equals("minute")) {
+                    timeUnit = TimeUnit.MINUTE;
+                } else if (timeUnitName.equals("second")) {
+                    timeUnit = TimeUnit.SECOND;
+                } else if (timeUnitName.equals("week")) {
+                    timeUnit = TimeUnit.WEEK;
+                }
+                Map<String, Object[]> countToPatterns = this.timeUnitToCountToPatterns.get(timeUnit);
+                if (countToPatterns == null) {
+                    countToPatterns = new TreeMap();
+                    this.timeUnitToCountToPatterns.put(timeUnit, countToPatterns);
+                }
+                UResource.Table countsToPatternTable = value.getTable();
+                for (int j = 0; countsToPatternTable.getKeyAndValue(j, key, value); j++) {
+                    String pluralCount = key.toString();
+                    if (this.pluralKeywords.contains(pluralCount)) {
+                        Object[] pair = countToPatterns.get(pluralCount);
+                        if (pair == null) {
+                            pair = new Object[2];
+                            countToPatterns.put(pluralCount, pair);
+                        }
+                        if (pair[this.style] == null) {
+                            String pattern = value.getString();
+                            MessageFormat messageFormat = new MessageFormat(pattern, this.locale);
+                            pair[this.style] = messageFormat;
                         }
                     }
                 }
@@ -379,40 +316,36 @@ public class TimeUnitFormat extends MeasureFormat {
         }
     }
 
-    private void setup(String resourceKey, Map<TimeUnit, Map<String, Object[]>> timeUnitToCountToPatterns2, int style2, Set<String> pluralKeywords) {
+    private void setup(String resourceKey, Map<TimeUnit, Map<String, Object[]>> timeUnitToCountToPatterns, int style, Set<String> pluralKeywords) {
         Map<String, Object[]> countToPatterns;
         Map<String, Object[]> countToPatterns2;
-        Map<TimeUnit, Map<String, Object[]>> map = timeUnitToCountToPatterns2;
-        int i = style2;
         try {
+            ICUResourceBundle resource = UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b/unit", this.locale);
             try {
+                TimeUnitFormatSetupSink sink = new TimeUnitFormatSetupSink(timeUnitToCountToPatterns, style, pluralKeywords, this.locale);
                 try {
-                    UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b/unit", this.locale).getAllItemsWithFallback(resourceKey, new TimeUnitFormatSetupSink(map, i, pluralKeywords, this.locale));
+                    resource.getAllItemsWithFallback(resourceKey, sink);
                 } catch (MissingResourceException e) {
                 }
             } catch (MissingResourceException e2) {
-                String str = resourceKey;
             }
         } catch (MissingResourceException e3) {
-            String str2 = resourceKey;
-            Set<String> set = pluralKeywords;
         }
         TimeUnit[] timeUnits = TimeUnit.values();
         Set<String> keywords = this.pluralRules.getKeywords();
         for (TimeUnit timeUnit : timeUnits) {
-            Map<String, Object[]> countToPatterns3 = map.get(timeUnit);
-            if (countToPatterns3 == null) {
-                Map<String, Object[]> countToPatterns4 = new TreeMap<>();
-                map.put(timeUnit, countToPatterns4);
-                countToPatterns = countToPatterns4;
-            } else {
+            Map<String, Object[]> countToPatterns3 = timeUnitToCountToPatterns.get(timeUnit);
+            if (countToPatterns3 != null) {
                 countToPatterns = countToPatterns3;
+            } else {
+                Map<String, Object[]> treeMap = new TreeMap<>();
+                timeUnitToCountToPatterns.put(timeUnit, treeMap);
+                countToPatterns = treeMap;
             }
             for (String pluralCount : keywords) {
-                if (countToPatterns.get(pluralCount) == null || countToPatterns.get(pluralCount)[i] == null) {
-                    String str3 = pluralCount;
+                if (countToPatterns.get(pluralCount) == null || countToPatterns.get(pluralCount)[style] == null) {
                     countToPatterns2 = countToPatterns;
-                    searchInTree(resourceKey, style2, timeUnit, pluralCount, pluralCount, countToPatterns);
+                    searchInTree(resourceKey, style, timeUnit, pluralCount, pluralCount, countToPatterns);
                 } else {
                     countToPatterns2 = countToPatterns;
                 }
@@ -422,21 +355,19 @@ public class TimeUnitFormat extends MeasureFormat {
     }
 
     private void searchInTree(String resourceKey, int styl, TimeUnit timeUnit, String srcPluralCount, String searchPluralCount, Map<String, Object[]> countToPatterns) {
-        String str = resourceKey;
-        TimeUnit timeUnit2 = timeUnit;
-        String str2 = srcPluralCount;
-        String str3 = searchPluralCount;
-        Map<String, Object[]> map = countToPatterns;
         ULocale parentLocale = this.locale;
         String srcTimeUnitName = timeUnit.toString();
         ULocale parentLocale2 = parentLocale;
         while (parentLocale2 != null) {
             try {
-                MessageFormat messageFormat = new MessageFormat(UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b/unit", parentLocale2).getWithFallback(str).getWithFallback(srcTimeUnitName).getStringWithFallback(str3), this.locale);
-                Object[] pair = map.get(str2);
+                ICUResourceBundle unitsRes = UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b/unit", parentLocale2);
+                ICUResourceBundle oneUnitRes = unitsRes.getWithFallback(resourceKey).getWithFallback(srcTimeUnitName);
+                String pattern = oneUnitRes.getStringWithFallback(searchPluralCount);
+                MessageFormat messageFormat = new MessageFormat(pattern, this.locale);
+                Object[] pair = countToPatterns.get(srcPluralCount);
                 if (pair == null) {
                     pair = new Object[2];
-                    map.put(str2, pair);
+                    countToPatterns.put(srcPluralCount, pair);
                 }
                 pair[styl] = messageFormat;
                 return;
@@ -444,33 +375,33 @@ public class TimeUnitFormat extends MeasureFormat {
                 parentLocale2 = parentLocale2.getFallback();
             }
         }
-        if (parentLocale2 == null && str.equals("unitsShort")) {
+        if (parentLocale2 == null && resourceKey.equals("unitsShort")) {
             searchInTree("units", styl, timeUnit, srcPluralCount, searchPluralCount, countToPatterns);
-            if (!(map.get(str2) == null || map.get(str2)[styl] == null)) {
+            if (countToPatterns.get(srcPluralCount) != null && countToPatterns.get(srcPluralCount)[styl] != null) {
                 return;
             }
         }
-        if (str3.equals(PluralRules.KEYWORD_OTHER)) {
+        if (searchPluralCount.equals(PluralRules.KEYWORD_OTHER)) {
             MessageFormat messageFormat2 = null;
-            if (timeUnit2 == TimeUnit.SECOND) {
+            if (timeUnit == TimeUnit.SECOND) {
                 messageFormat2 = new MessageFormat(DEFAULT_PATTERN_FOR_SECOND, this.locale);
-            } else if (timeUnit2 == TimeUnit.MINUTE) {
+            } else if (timeUnit == TimeUnit.MINUTE) {
                 messageFormat2 = new MessageFormat(DEFAULT_PATTERN_FOR_MINUTE, this.locale);
-            } else if (timeUnit2 == TimeUnit.HOUR) {
+            } else if (timeUnit == TimeUnit.HOUR) {
                 messageFormat2 = new MessageFormat(DEFAULT_PATTERN_FOR_HOUR, this.locale);
-            } else if (timeUnit2 == TimeUnit.WEEK) {
+            } else if (timeUnit == TimeUnit.WEEK) {
                 messageFormat2 = new MessageFormat(DEFAULT_PATTERN_FOR_WEEK, this.locale);
-            } else if (timeUnit2 == TimeUnit.DAY) {
+            } else if (timeUnit == TimeUnit.DAY) {
                 messageFormat2 = new MessageFormat(DEFAULT_PATTERN_FOR_DAY, this.locale);
-            } else if (timeUnit2 == TimeUnit.MONTH) {
+            } else if (timeUnit == TimeUnit.MONTH) {
                 messageFormat2 = new MessageFormat(DEFAULT_PATTERN_FOR_MONTH, this.locale);
-            } else if (timeUnit2 == TimeUnit.YEAR) {
+            } else if (timeUnit == TimeUnit.YEAR) {
                 messageFormat2 = new MessageFormat(DEFAULT_PATTERN_FOR_YEAR, this.locale);
             }
-            Object[] pair2 = map.get(str2);
+            Object[] pair2 = countToPatterns.get(srcPluralCount);
             if (pair2 == null) {
                 pair2 = new Object[2];
-                map.put(str2, pair2);
+                countToPatterns.put(srcPluralCount, pair2);
             }
             pair2[styl] = messageFormat2;
             return;
@@ -478,6 +409,7 @@ public class TimeUnitFormat extends MeasureFormat {
         searchInTree(resourceKey, styl, timeUnit, srcPluralCount, PluralRules.KEYWORD_OTHER, countToPatterns);
     }
 
+    @Override // java.text.Format
     @Deprecated
     public Object clone() {
         TimeUnitFormat result = (TimeUnitFormat) super.clone();

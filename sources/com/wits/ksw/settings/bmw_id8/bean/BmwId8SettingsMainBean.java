@@ -1,5 +1,6 @@
 package com.wits.ksw.settings.bmw_id8.bean;
 
+/* loaded from: classes8.dex */
 public class BmwId8SettingsMainBean {
     private int mBgId;
     private String mContent;
@@ -46,6 +47,6 @@ public class BmwId8SettingsMainBean {
     }
 
     public String toString() {
-        return "BmwId8SettingsMainBean{mTitle='" + this.mTitle + '\'' + ", mContent='" + this.mContent + '\'' + ", mBgId=" + this.mBgId + ", mIconId=" + this.mIconId + '}';
+        return "BmwId8SettingsMainBean{mTitle='" + this.mTitle + "', mContent='" + this.mContent + "', mBgId=" + this.mBgId + ", mIconId=" + this.mIconId + '}';
     }
 }

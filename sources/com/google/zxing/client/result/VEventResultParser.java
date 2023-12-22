@@ -3,9 +3,11 @@ package com.google.zxing.client.result;
 import com.google.zxing.Result;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public final class VEventResultParser extends ResultParser {
+    @Override // com.google.zxing.client.result.ResultParser
     public CalendarParsedResult parse(Result result) {
-        double d;
+        double parseDouble;
         String massagedText = getMassagedText(result);
         if (massagedText.indexOf("BEGIN:VEVENT") < 0) {
             return null;
@@ -27,58 +29,55 @@ public final class VEventResultParser extends ResultParser {
         }
         String matchSingleVCardPrefixedField6 = matchSingleVCardPrefixedField("DESCRIPTION", massagedText, true);
         String matchSingleVCardPrefixedField7 = matchSingleVCardPrefixedField("GEO", massagedText, true);
-        double d2 = Double.NaN;
+        double d = Double.NaN;
         if (matchSingleVCardPrefixedField7 == null) {
-            d = Double.NaN;
+            parseDouble = Double.NaN;
         } else {
             int indexOf = matchSingleVCardPrefixedField7.indexOf(59);
             if (indexOf < 0) {
                 return null;
             }
             try {
-                d2 = Double.parseDouble(matchSingleVCardPrefixedField7.substring(0, indexOf));
-                d = Double.parseDouble(matchSingleVCardPrefixedField7.substring(indexOf + 1));
+                d = Double.parseDouble(matchSingleVCardPrefixedField7.substring(0, indexOf));
+                parseDouble = Double.parseDouble(matchSingleVCardPrefixedField7.substring(indexOf + 1));
             } catch (NumberFormatException e) {
                 return null;
             }
         }
         try {
-            return new CalendarParsedResult(matchSingleVCardPrefixedField, matchSingleVCardPrefixedField2, matchSingleVCardPrefixedField3, matchSingleVCardPrefixedField4, matchSingleVCardPrefixedField5, stripMailto, matchVCardPrefixedField, matchSingleVCardPrefixedField6, d2, d);
+            return new CalendarParsedResult(matchSingleVCardPrefixedField, matchSingleVCardPrefixedField2, matchSingleVCardPrefixedField3, matchSingleVCardPrefixedField4, matchSingleVCardPrefixedField5, stripMailto, matchVCardPrefixedField, matchSingleVCardPrefixedField6, d, parseDouble);
         } catch (IllegalArgumentException e2) {
             return null;
         }
     }
 
     private static String matchSingleVCardPrefixedField(CharSequence prefix, String rawText, boolean trim) {
-        List<String> matchSingleVCardPrefixedField = VCardResultParser.matchSingleVCardPrefixedField(prefix, rawText, trim, false);
-        List<String> values = matchSingleVCardPrefixedField;
-        if (matchSingleVCardPrefixedField == null || values.isEmpty()) {
+        List<String> values = VCardResultParser.matchSingleVCardPrefixedField(prefix, rawText, trim, false);
+        if (values == null || values.isEmpty()) {
             return null;
         }
         return values.get(0);
     }
 
     private static String[] matchVCardPrefixedField(CharSequence prefix, String rawText, boolean trim) {
-        List<List<String>> matchVCardPrefixedField = VCardResultParser.matchVCardPrefixedField(prefix, rawText, trim, false);
-        List<List<String>> values = matchVCardPrefixedField;
-        if (matchVCardPrefixedField == null || values.isEmpty()) {
+        List<List<String>> values = VCardResultParser.matchVCardPrefixedField(prefix, rawText, trim, false);
+        if (values == null || values.isEmpty()) {
             return null;
         }
         int size = values.size();
-        int size2 = size;
         String[] result = new String[size];
-        for (int i = 0; i < size2; i++) {
-            result[i] = (String) values.get(i).get(0);
+        for (int i = 0; i < size; i++) {
+            result[i] = values.get(i).get(0);
         }
         return result;
     }
 
     private static String stripMailto(String s) {
-        if (s == null) {
+        if (s != null) {
+            if (s.startsWith("mailto:") || s.startsWith("MAILTO:")) {
+                return s.substring(7);
+            }
             return s;
-        }
-        if (s.startsWith("mailto:") || s.startsWith("MAILTO:")) {
-            return s.substring(7);
         }
         return s;
     }

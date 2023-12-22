@@ -245,10 +245,17 @@
     <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Błędne hasło!</string>
     <string name="mcu_file_corrupted">Plik aktualizacji jest uszkodzony!</string>
+    <string name="mic_control">Wbudowany zewnętrzny przełącznik MIC</string>
+    <string name="mic_external">Zewnętrzny</string>
+    <string name="mic_internal">Wbudowany</string>
     <string name="mic_text">MIC Osiągać</string>
     <string name="music_app_sel">Wybierz aplikację muzyczną</string>
+    <string name="music_player">Odtwarzacz muzyki</string>
     <string name="ntg6_dvr_toast">Brak urządzeń!</string>
     <string name="oil_size">Paliwo: %s</string>
+    <string name="original_radar_reverse">Oryginalny odwrócony wyświetlacz radaru</string>
+    <string name="radar_normal">Normalny</string>
+    <string name="radar_reverse">Odwrócony</string>
     <string name="raw_car_text1">Pełny ekran</string>
     <string name="raw_car_text2">Aktualny wybór:</string>
     <string name="reverse_exit_time_agreement">Wyjazd zgodnie z pierwotną umową pojazdu</string>
@@ -325,6 +332,8 @@
     <string name="text_logo_two">Strona 2</string>
     <string name="text_ram">RAM: %s</string>
     <string name="touch_continuous_send">Dane dotykowe wysyłane w sposób ciągły</string>
+    <string name="tv_id8_brake">Hamulec</string>
+    <string name="tv_id8_seat_belt">Pasów</string>
     <string name="txz_oil_text">Ustawienie alarmu objętości paliwa</string>
     <string name="txz_speed_text">Ustawienie alarmu prędkości współpodróżnego</string>
     <string name="txz_temp_text">Ustawienie alarmu temperatury otoczenia towarzyszącego</string>

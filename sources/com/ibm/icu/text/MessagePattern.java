@@ -5,16 +5,15 @@ import com.ibm.icu.impl.PatternProps;
 import com.ibm.icu.util.Freezable;
 import com.ibm.icu.util.ICUCloneNotSupportedException;
 import java.util.ArrayList;
+import java.util.Locale;
 
+/* loaded from: classes.dex */
 public final class MessagePattern implements Cloneable, Freezable<MessagePattern> {
     static final /* synthetic */ boolean $assertionsDisabled = false;
     public static final int ARG_NAME_NOT_NUMBER = -1;
     public static final int ARG_NAME_NOT_VALID = -2;
     private static final int MAX_PREFIX_LENGTH = 24;
     public static final double NO_NUMERIC_VALUE = -1.23456789E8d;
-    /* access modifiers changed from: private */
-    public static final ArgType[] argTypes = ArgType.values();
-    private static final ApostropheMode defaultAposMode = ApostropheMode.valueOf(ICUConfig.get("com.ibm.icu.text.MessagePattern.ApostropheMode", "DOUBLE_OPTIONAL"));
     private ApostropheMode aposMode;
     private volatile boolean frozen;
     private boolean hasArgNames;
@@ -23,7 +22,10 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
     private boolean needsAutoQuoting;
     private ArrayList<Double> numericValues;
     private ArrayList<Part> parts;
+    private static final ApostropheMode defaultAposMode = ApostropheMode.valueOf(ICUConfig.get("com.ibm.icu.text.MessagePattern.ApostropheMode", "DOUBLE_OPTIONAL"));
+    private static final ArgType[] argTypes = ArgType.values();
 
+    /* loaded from: classes.dex */
     public enum ApostropheMode {
         DOUBLE_OPTIONAL,
         DOUBLE_REQUIRED
@@ -74,20 +76,18 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
     }
 
     public void clear() {
-        if (!isFrozen()) {
-            this.msg = null;
-            this.hasArgNumbers = false;
-            this.hasArgNames = false;
-            this.needsAutoQuoting = false;
-            this.parts.clear();
-            ArrayList<Double> arrayList = this.numericValues;
-            if (arrayList != null) {
-                arrayList.clear();
-                return;
-            }
-            return;
+        if (isFrozen()) {
+            throw new UnsupportedOperationException("Attempt to clear() a frozen MessagePattern instance.");
         }
-        throw new UnsupportedOperationException("Attempt to clear() a frozen MessagePattern instance.");
+        this.msg = null;
+        this.hasArgNumbers = false;
+        this.hasArgNames = false;
+        this.needsAutoQuoting = false;
+        this.parts.clear();
+        ArrayList<Double> arrayList = this.numericValues;
+        if (arrayList != null) {
+            arrayList.clear();
+        }
     }
 
     public void clearPatternAndSetApostropheMode(ApostropheMode mode) {
@@ -104,10 +104,10 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
             return false;
         }
         MessagePattern o = (MessagePattern) other;
-        if (!this.aposMode.equals(o.aposMode) || ((str = this.msg) != null ? !str.equals(o.msg) : o.msg != null) || !this.parts.equals(o.parts)) {
-            return false;
+        if (this.aposMode.equals(o.aposMode) && ((str = this.msg) != null ? str.equals(o.msg) : o.msg == null) && this.parts.equals(o.parts)) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     public int hashCode() {
@@ -120,8 +120,7 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
         return this.aposMode;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean jdkAposMode() {
+    boolean jdkAposMode() {
         return this.aposMode == ApostropheMode.DOUBLE_REQUIRED;
     }
 
@@ -153,16 +152,16 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
             return this.msg;
         }
         StringBuilder modified = null;
-        int i = countParts();
+        int count = countParts();
+        int i = count;
         while (i > 0) {
             i--;
             Part part = getPart(i);
-            Part part2 = part;
             if (part.getType() == Part.Type.INSERT_CHAR) {
                 if (modified == null) {
                     modified = new StringBuilder(this.msg.length() + 10).append(this.msg);
                 }
-                modified.insert(part2.index, (char) part2.value);
+                modified.insert(part.index, (char) part.value);
             }
         }
         if (modified == null) {
@@ -198,13 +197,13 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
 
     public double getNumericValue(Part part) {
         Part.Type type = part.type;
-        if (type == Part.Type.ARG_INT) {
-            return (double) part.value;
-        }
-        if (type == Part.Type.ARG_DOUBLE) {
+        if (type != Part.Type.ARG_INT) {
+            if (type != Part.Type.ARG_DOUBLE) {
+                return -1.23456789E8d;
+            }
             return this.numericValues.get(part.value).doubleValue();
         }
-        return -1.23456789E8d;
+        return part.value;
     }
 
     public double getPluralOffset(int pluralStart) {
@@ -223,19 +222,15 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
         return limit;
     }
 
+    /* loaded from: classes.dex */
     public static final class Part {
         private static final int MAX_LENGTH = 65535;
         private static final int MAX_VALUE = 32767;
-        /* access modifiers changed from: private */
-        public final int index;
-        /* access modifiers changed from: private */
-        public final char length;
-        /* access modifiers changed from: private */
-        public int limitPartIndex;
-        /* access modifiers changed from: private */
-        public final Type type;
-        /* access modifiers changed from: private */
-        public short value;
+        private final int index;
+        private final char length;
+        private int limitPartIndex;
+        private final Type type;
+        private short value;
 
         private Part(Type t, int i, int l, int v) {
             this.type = t;
@@ -265,13 +260,14 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
         }
 
         public ArgType getArgType() {
-            Type type2 = getType();
-            if (type2 == Type.ARG_START || type2 == Type.ARG_LIMIT) {
+            Type type = getType();
+            if (type == Type.ARG_START || type == Type.ARG_LIMIT) {
                 return MessagePattern.argTypes[this.value];
             }
             return ArgType.NONE;
         }
 
+        /* loaded from: classes.dex */
         public enum Type {
             MSG_START,
             MSG_LIMIT,
@@ -294,7 +290,8 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
         }
 
         public String toString() {
-            return this.type.name() + "(" + ((this.type == Type.ARG_START || this.type == Type.ARG_LIMIT) ? getArgType().name() : Integer.toString(this.value)) + ")@" + this.index;
+            String valueString = (this.type == Type.ARG_START || this.type == Type.ARG_LIMIT) ? getArgType().name() : Integer.toString(this.value);
+            return this.type.name() + "(" + valueString + ")@" + this.index;
         }
 
         public boolean equals(Object other) {
@@ -316,6 +313,7 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
         }
     }
 
+    /* loaded from: classes.dex */
     public enum ArgType {
         NONE,
         SIMPLE,
@@ -333,10 +331,11 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
         if (isFrozen()) {
             return this;
         }
-        return cloneAsThawed();
+        return m79cloneAsThawed();
     }
 
-    public MessagePattern cloneAsThawed() {
+    /* renamed from: cloneAsThawed */
+    public MessagePattern m79cloneAsThawed() {
         try {
             MessagePattern newMsg = (MessagePattern) super.clone();
             newMsg.parts = (ArrayList) this.parts.clone();
@@ -351,7 +350,8 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
         }
     }
 
-    public MessagePattern freeze() {
+    /* renamed from: freeze */
+    public MessagePattern m80freeze() {
         this.frozen = true;
         return this;
     }
@@ -361,20 +361,18 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
     }
 
     private void preParse(String pattern) {
-        if (!isFrozen()) {
-            this.msg = pattern;
-            this.hasArgNumbers = false;
-            this.hasArgNames = false;
-            this.needsAutoQuoting = false;
-            this.parts.clear();
-            ArrayList<Double> arrayList = this.numericValues;
-            if (arrayList != null) {
-                arrayList.clear();
-                return;
-            }
-            return;
+        if (isFrozen()) {
+            throw new UnsupportedOperationException("Attempt to parse(" + prefix(pattern) + ") on frozen MessagePattern instance.");
         }
-        throw new UnsupportedOperationException("Attempt to parse(" + prefix(pattern) + ") on frozen MessagePattern instance.");
+        this.msg = pattern;
+        this.hasArgNumbers = false;
+        this.hasArgNames = false;
+        this.needsAutoQuoting = false;
+        this.parts.clear();
+        ArrayList<Double> arrayList = this.numericValues;
+        if (arrayList != null) {
+            arrayList.clear();
+        }
     }
 
     private void postParse() {
@@ -382,53 +380,58 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
 
     private int parseMessage(int index, int msgStartLength, int nestingLevel, ArgType parentType) {
         int index2;
-        if (nestingLevel <= 32767) {
-            int msgStart = this.parts.size();
-            addPart(Part.Type.MSG_START, index, msgStartLength, nestingLevel);
-            int index3 = index + msgStartLength;
-            while (index3 < this.msg.length()) {
-                int index4 = index3 + 1;
-                char c = this.msg.charAt(index3);
-                if (c == '\'') {
-                    if (index4 == this.msg.length()) {
+        if (nestingLevel > 32767) {
+            throw new IndexOutOfBoundsException();
+        }
+        int msgStart = this.parts.size();
+        addPart(Part.Type.MSG_START, index, msgStartLength, nestingLevel);
+        int index3 = index + msgStartLength;
+        while (index3 < this.msg.length()) {
+            int index4 = index3 + 1;
+            char c = this.msg.charAt(index3);
+            if (c == '\'') {
+                if (index4 == this.msg.length()) {
+                    addPart(Part.Type.INSERT_CHAR, index4, 0, 39);
+                    this.needsAutoQuoting = true;
+                } else {
+                    char c2 = this.msg.charAt(index4);
+                    if (c2 == '\'') {
+                        addPart(Part.Type.SKIP_SYNTAX, index4, 1, 0);
+                        index3 = index4 + 1;
+                    } else if (this.aposMode == ApostropheMode.DOUBLE_REQUIRED || c2 == '{' || c2 == '}' || ((parentType == ArgType.CHOICE && c2 == '|') || (parentType.hasPluralStyle() && c2 == '#'))) {
+                        addPart(Part.Type.SKIP_SYNTAX, index4 - 1, 1, 0);
+                        while (true) {
+                            index2 = this.msg.indexOf(39, index4 + 1);
+                            if (index2 >= 0) {
+                                if (index2 + 1 >= this.msg.length() || this.msg.charAt(index2 + 1) != '\'') {
+                                    break;
+                                }
+                                index4 = index2 + 1;
+                                addPart(Part.Type.SKIP_SYNTAX, index4, 1, 0);
+                            } else {
+                                int index5 = this.msg.length();
+                                addPart(Part.Type.INSERT_CHAR, index5, 0, 39);
+                                this.needsAutoQuoting = true;
+                                index3 = index5;
+                                break;
+                            }
+                        }
+                        addPart(Part.Type.SKIP_SYNTAX, index2, 1, 0);
+                        index3 = index2 + 1;
+                    } else {
                         addPart(Part.Type.INSERT_CHAR, index4, 0, 39);
                         this.needsAutoQuoting = true;
-                    } else {
-                        char c2 = this.msg.charAt(index4);
-                        if (c2 == '\'') {
-                            addPart(Part.Type.SKIP_SYNTAX, index4, 1, 0);
-                            index3 = index4 + 1;
-                        } else if (this.aposMode == ApostropheMode.DOUBLE_REQUIRED || c2 == '{' || c2 == '}' || ((parentType == ArgType.CHOICE && c2 == '|') || (parentType.hasPluralStyle() && c2 == '#'))) {
-                            addPart(Part.Type.SKIP_SYNTAX, index4 - 1, 1, 0);
-                            while (true) {
-                                index2 = this.msg.indexOf(39, index4 + 1);
-                                if (index2 < 0) {
-                                    int index5 = this.msg.length();
-                                    addPart(Part.Type.INSERT_CHAR, index5, 0, 39);
-                                    this.needsAutoQuoting = true;
-                                    index3 = index5;
-                                    break;
-                                } else if (index2 + 1 >= this.msg.length() || this.msg.charAt(index2 + 1) != '\'') {
-                                    addPart(Part.Type.SKIP_SYNTAX, index2, 1, 0);
-                                    index3 = index2 + 1;
-                                } else {
-                                    index4 = index2 + 1;
-                                    addPart(Part.Type.SKIP_SYNTAX, index4, 1, 0);
-                                }
-                            }
-                            addPart(Part.Type.SKIP_SYNTAX, index2, 1, 0);
-                            index3 = index2 + 1;
-                        } else {
-                            addPart(Part.Type.INSERT_CHAR, index4, 0, 39);
-                            this.needsAutoQuoting = true;
-                        }
                     }
-                } else if (parentType.hasPluralStyle() && c == '#') {
+                }
+                index3 = index4;
+            } else {
+                if (parentType.hasPluralStyle() && c == '#') {
                     addPart(Part.Type.REPLACE_NUMBER, index4 - 1, 1, 0);
                 } else if (c == '{') {
                     index3 = parseArg(index4 - 1, 1, nestingLevel);
                 } else if ((nestingLevel > 0 && c == '}') || (parentType == ArgType.CHOICE && c == '|')) {
-                    addLimitPart(msgStart, Part.Type.MSG_LIMIT, index4 - 1, (parentType == ArgType.CHOICE && c == '}') ? 0 : 1, nestingLevel);
+                    int limitLength = (parentType == ArgType.CHOICE && c == '}') ? 0 : 1;
+                    addLimitPart(msgStart, Part.Type.MSG_LIMIT, index4 - 1, limitLength, nestingLevel);
                     if (parentType == ArgType.CHOICE) {
                         return index4 - 1;
                     }
@@ -436,139 +439,122 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
                 }
                 index3 = index4;
             }
-            if (nestingLevel <= 0 || inTopLevelChoiceMessage(nestingLevel, parentType)) {
-                addLimitPart(msgStart, Part.Type.MSG_LIMIT, index3, 0, nestingLevel);
-                return index3;
-            }
+        }
+        if (nestingLevel > 0 && !inTopLevelChoiceMessage(nestingLevel, parentType)) {
             throw new IllegalArgumentException("Unmatched '{' braces in message " + prefix());
         }
-        throw new IndexOutOfBoundsException();
+        addLimitPart(msgStart, Part.Type.MSG_LIMIT, index3, 0, nestingLevel);
+        return index3;
     }
 
     private int parseArg(int index, int argStartLength, int nestingLevel) {
+        char c;
         ArgType argType;
         int index2;
-        int i = index;
-        int i2 = argStartLength;
-        int i3 = nestingLevel;
         int argStart = this.parts.size();
         ArgType argType2 = ArgType.NONE;
-        addPart(Part.Type.ARG_START, i, i2, argType2.ordinal());
-        int skipWhiteSpace = skipWhiteSpace(i + i2);
-        int index3 = skipWhiteSpace;
-        int nameIndex = skipWhiteSpace;
-        if (index3 != this.msg.length()) {
-            int index4 = skipIdentifier(index3);
-            int number = parseArgNumber(nameIndex, index4);
-            if (number >= 0) {
-                int length = index4 - nameIndex;
-                if (length > 65535 || number > 32767) {
-                    throw new IndexOutOfBoundsException("Argument number too large: " + prefix(nameIndex));
-                }
-                this.hasArgNumbers = true;
-                addPart(Part.Type.ARG_NUMBER, nameIndex, length, number);
-            } else if (number == -1) {
-                int length2 = index4 - nameIndex;
-                if (length2 <= 65535) {
-                    this.hasArgNames = true;
-                    addPart(Part.Type.ARG_NAME, nameIndex, length2, 0);
-                } else {
-                    throw new IndexOutOfBoundsException("Argument name too long: " + prefix(nameIndex));
-                }
-            } else {
-                throw new IllegalArgumentException("Bad argument syntax: " + prefix(nameIndex));
-            }
-            int index5 = skipWhiteSpace(index4);
-            if (index5 != this.msg.length()) {
-                char c = this.msg.charAt(index5);
-                if (c == '}') {
-                    argType = argType2;
-                    char c2 = c;
-                    index2 = index5;
-                } else if (c == ',') {
-                    int typeIndex = skipWhiteSpace(index5 + 1);
-                    int index6 = typeIndex;
-                    while (index6 < this.msg.length() && isArgTypeChar(this.msg.charAt(index6))) {
-                        index6++;
-                    }
-                    int length3 = index6 - typeIndex;
-                    int index7 = skipWhiteSpace(index6);
-                    if (index7 != this.msg.length()) {
-                        if (length3 != 0) {
-                            char charAt = this.msg.charAt(index7);
-                            char c3 = charAt;
-                            if (charAt == ',' || c3 == '}') {
-                                if (length3 <= 65535) {
-                                    ArgType argType3 = ArgType.SIMPLE;
-                                    if (length3 == 6) {
-                                        if (isChoice(typeIndex)) {
-                                            argType3 = ArgType.CHOICE;
-                                        } else if (isPlural(typeIndex)) {
-                                            argType3 = ArgType.PLURAL;
-                                        } else if (isSelect(typeIndex)) {
-                                            argType3 = ArgType.SELECT;
-                                        }
-                                    } else if (length3 == 13 && isSelect(typeIndex) && isOrdinal(typeIndex + 6)) {
-                                        argType3 = ArgType.SELECTORDINAL;
-                                    }
-                                    short unused = this.parts.get(argStart).value = (short) argType3.ordinal();
-                                    if (argType3 == ArgType.SIMPLE) {
-                                        addPart(Part.Type.ARG_TYPE, typeIndex, length3, 0);
-                                    }
-                                    if (c3 != '}') {
-                                        int index8 = index7 + 1;
-                                        if (argType3 == ArgType.SIMPLE) {
-                                            argType = argType3;
-                                            char c4 = c3;
-                                            index2 = parseSimpleStyle(index8);
-                                        } else if (argType3 == ArgType.CHOICE) {
-                                            argType = argType3;
-                                            char c5 = c3;
-                                            index2 = parseChoiceStyle(index8, i3);
-                                        } else {
-                                            argType = argType3;
-                                            char c6 = c3;
-                                            index2 = parsePluralOrSelectStyle(argType3, index8, i3);
-                                        }
-                                    } else if (argType3 == ArgType.SIMPLE) {
-                                        argType = argType3;
-                                        char c7 = c3;
-                                        index2 = index7;
-                                    } else {
-                                        throw new IllegalArgumentException("No style field for complex argument: " + prefix(nameIndex));
-                                    }
-                                } else {
-                                    throw new IndexOutOfBoundsException("Argument type name too long: " + prefix(nameIndex));
-                                }
-                            }
-                        }
-                        throw new IllegalArgumentException("Bad argument syntax: " + prefix(nameIndex));
-                    }
-                    throw new IllegalArgumentException("Unmatched '{' braces in message " + prefix());
-                } else {
-                    throw new IllegalArgumentException("Bad argument syntax: " + prefix(nameIndex));
-                }
-                addLimitPart(argStart, Part.Type.ARG_LIMIT, index2, 1, argType.ordinal());
-                return index2 + 1;
-            }
+        addPart(Part.Type.ARG_START, index, argStartLength, argType2.ordinal());
+        int index3 = skipWhiteSpace(index + argStartLength);
+        if (index3 == this.msg.length()) {
             throw new IllegalArgumentException("Unmatched '{' braces in message " + prefix());
         }
-        throw new IllegalArgumentException("Unmatched '{' braces in message " + prefix());
+        int index4 = skipIdentifier(index3);
+        int number = parseArgNumber(index3, index4);
+        if (number >= 0) {
+            int length = index4 - index3;
+            if (length > 65535 || number > 32767) {
+                throw new IndexOutOfBoundsException("Argument number too large: " + prefix(index3));
+            }
+            this.hasArgNumbers = true;
+            addPart(Part.Type.ARG_NUMBER, index3, length, number);
+        } else if (number == -1) {
+            int length2 = index4 - index3;
+            if (length2 > 65535) {
+                throw new IndexOutOfBoundsException("Argument name too long: " + prefix(index3));
+            }
+            this.hasArgNames = true;
+            addPart(Part.Type.ARG_NAME, index3, length2, 0);
+        } else {
+            throw new IllegalArgumentException("Bad argument syntax: " + prefix(index3));
+        }
+        int index5 = skipWhiteSpace(index4);
+        if (index5 == this.msg.length()) {
+            throw new IllegalArgumentException("Unmatched '{' braces in message " + prefix());
+        }
+        char c2 = this.msg.charAt(index5);
+        if (c2 == '}') {
+            argType = argType2;
+            index2 = index5;
+        } else if (c2 == ',') {
+            int typeIndex = skipWhiteSpace(index5 + 1);
+            int index6 = typeIndex;
+            while (index6 < this.msg.length() && isArgTypeChar(this.msg.charAt(index6))) {
+                index6++;
+            }
+            int length3 = index6 - typeIndex;
+            int index7 = skipWhiteSpace(index6);
+            if (index7 == this.msg.length()) {
+                throw new IllegalArgumentException("Unmatched '{' braces in message " + prefix());
+            }
+            if (length3 == 0 || ((c = this.msg.charAt(index7)) != ',' && c != '}')) {
+                throw new IllegalArgumentException("Bad argument syntax: " + prefix(index3));
+            }
+            if (length3 > 65535) {
+                throw new IndexOutOfBoundsException("Argument type name too long: " + prefix(index3));
+            }
+            ArgType argType3 = ArgType.SIMPLE;
+            if (length3 == 6) {
+                if (isChoice(typeIndex)) {
+                    argType3 = ArgType.CHOICE;
+                } else if (isPlural(typeIndex)) {
+                    argType3 = ArgType.PLURAL;
+                } else if (isSelect(typeIndex)) {
+                    argType3 = ArgType.SELECT;
+                }
+            } else if (length3 == 13 && isSelect(typeIndex) && isOrdinal(typeIndex + 6)) {
+                argType3 = ArgType.SELECTORDINAL;
+            }
+            this.parts.get(argStart).value = (short) argType3.ordinal();
+            if (argType3 == ArgType.SIMPLE) {
+                addPart(Part.Type.ARG_TYPE, typeIndex, length3, 0);
+            }
+            if (c == '}') {
+                if (argType3 != ArgType.SIMPLE) {
+                    throw new IllegalArgumentException("No style field for complex argument: " + prefix(index3));
+                }
+                argType = argType3;
+                index2 = index7;
+            } else {
+                int index8 = index7 + 1;
+                if (argType3 == ArgType.SIMPLE) {
+                    argType = argType3;
+                    index2 = parseSimpleStyle(index8);
+                } else if (argType3 == ArgType.CHOICE) {
+                    argType = argType3;
+                    index2 = parseChoiceStyle(index8, nestingLevel);
+                } else {
+                    argType = argType3;
+                    index2 = parsePluralOrSelectStyle(argType3, index8, nestingLevel);
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("Bad argument syntax: " + prefix(index3));
+        }
+        addLimitPart(argStart, Part.Type.ARG_LIMIT, index2, 1, argType.ordinal());
+        return index2 + 1;
     }
 
     private int parseSimpleStyle(int index) {
-        int start = index;
         int nestedBraces = 0;
         while (index < this.msg.length()) {
             int index2 = index + 1;
             char c = this.msg.charAt(index);
             if (c == '\'') {
                 int index3 = this.msg.indexOf(39, index2);
-                if (index3 >= 0) {
-                    index = index3 + 1;
-                } else {
-                    throw new IllegalArgumentException("Quoted literal argument style text reaches to the end of the message: " + prefix(start));
+                if (index3 < 0) {
+                    throw new IllegalArgumentException("Quoted literal argument style text reaches to the end of the message: " + prefix(index));
                 }
+                index = index3 + 1;
             } else if (c == '{') {
                 nestedBraces++;
                 index = index2;
@@ -579,19 +565,18 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
                 index = index2;
             } else {
                 int index4 = index2 - 1;
-                int length = index4 - start;
+                int length = index4 - index;
                 if (length <= 65535) {
-                    addPart(Part.Type.ARG_STYLE, start, length, 0);
+                    addPart(Part.Type.ARG_STYLE, index, length, 0);
                     return index4;
                 }
-                throw new IndexOutOfBoundsException("Argument style text too long: " + prefix(start));
+                throw new IndexOutOfBoundsException("Argument style text too long: " + prefix(index));
             }
         }
         throw new IllegalArgumentException("Unmatched '{' braces in message " + prefix());
     }
 
     private int parseChoiceStyle(int index, int nestingLevel) {
-        int start = index;
         int index2 = skipWhiteSpace(index);
         if (index2 == this.msg.length() || this.msg.charAt(index2) == '}') {
             throw new IllegalArgumentException("Missing choice argument pattern in " + prefix());
@@ -601,291 +586,124 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
             int index3 = skipDouble(index2);
             int length = index3 - numberIndex;
             if (length == 0) {
-                throw new IllegalArgumentException("Bad choice pattern syntax: " + prefix(start));
-            } else if (length <= 65535) {
-                parseDouble(numberIndex, index3, true);
-                int index4 = skipWhiteSpace(index3);
-                if (index4 != this.msg.length()) {
-                    char c = this.msg.charAt(index4);
-                    if (c == '#' || c == '<' || c == 8804) {
-                        addPart(Part.Type.ARG_SELECTOR, index4, 1, 0);
-                        int index5 = parseMessage(index4 + 1, 0, nestingLevel + 1, ArgType.CHOICE);
-                        if (index5 == this.msg.length()) {
-                            return index5;
-                        }
-                        if (this.msg.charAt(index5) != '}') {
-                            index2 = skipWhiteSpace(index5 + 1);
-                        } else if (inMessageFormatPattern(nestingLevel)) {
-                            return index5;
-                        } else {
-                            throw new IllegalArgumentException("Bad choice pattern syntax: " + prefix(start));
-                        }
-                    } else {
-                        throw new IllegalArgumentException("Expected choice separator (#<≤) instead of '" + c + "' in choice pattern " + prefix(start));
-                    }
-                } else {
-                    throw new IllegalArgumentException("Bad choice pattern syntax: " + prefix(start));
-                }
-            } else {
+                throw new IllegalArgumentException("Bad choice pattern syntax: " + prefix(index));
+            }
+            if (length > 65535) {
                 throw new IndexOutOfBoundsException("Choice number too long: " + prefix(numberIndex));
+            }
+            parseDouble(numberIndex, index3, true);
+            int index4 = skipWhiteSpace(index3);
+            if (index4 == this.msg.length()) {
+                throw new IllegalArgumentException("Bad choice pattern syntax: " + prefix(index));
+            }
+            char c = this.msg.charAt(index4);
+            if (c == '#' || c == '<' || c == '\u2264') {
+                addPart(Part.Type.ARG_SELECTOR, index4, 1, 0);
+                int index5 = parseMessage(index4 + 1, 0, nestingLevel + 1, ArgType.CHOICE);
+                if (index5 == this.msg.length()) {
+                    return index5;
+                }
+                if (this.msg.charAt(index5) == '}') {
+                    if (!inMessageFormatPattern(nestingLevel)) {
+                        throw new IllegalArgumentException("Bad choice pattern syntax: " + prefix(index));
+                    }
+                    return index5;
+                }
+                index2 = skipWhiteSpace(index5 + 1);
+            } else {
+                throw new IllegalArgumentException("Expected choice separator (#<\u2264) instead of '" + c + "' in choice pattern " + prefix(index));
             }
         }
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:54:0x019f, code lost:
-        throw new java.lang.IllegalArgumentException("No message fragment after " + r17.toString().toLowerCase(java.util.Locale.ENGLISH) + " selector: " + prefix(r11));
+    /* JADX WARN: Code restructure failed: missing block: B:47:0x013c, code lost:
+        addPart(com.ibm.icu.text.MessagePattern.Part.Type.ARG_SELECTOR, r3, r12, 0);
      */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private int parsePluralOrSelectStyle(com.ibm.icu.text.MessagePattern.ArgType r17, int r18, int r19) {
-        /*
-            r16 = this;
-            r0 = r16
-            r1 = r19
-            r2 = r18
-            r3 = 1
-            r4 = 0
-            r5 = r4
-            r4 = r3
-            r3 = r18
-        L_0x000c:
-            int r3 = r0.skipWhiteSpace(r3)
-            java.lang.String r6 = r0.msg
-            int r6 = r6.length()
-            r7 = 1
-            r8 = 0
-            if (r3 != r6) goto L_0x001c
-            r6 = r7
-            goto L_0x001d
-        L_0x001c:
-            r6 = r8
-        L_0x001d:
-            java.lang.String r9 = " pattern syntax: "
-            java.lang.String r10 = "Bad "
-            if (r6 != 0) goto L_0x01ec
-            java.lang.String r11 = r0.msg
-            char r11 = r11.charAt(r3)
-            r12 = 125(0x7d, float:1.75E-43)
-            if (r11 != r12) goto L_0x0031
-            r14 = r17
-            goto L_0x01ee
-        L_0x0031:
-            r11 = r3
-            boolean r12 = r17.hasPluralStyle()
-            java.lang.String r13 = "Argument selector too long: "
-            r14 = 65535(0xffff, float:9.1834E-41)
-            if (r12 == 0) goto L_0x00a7
-            java.lang.String r12 = r0.msg
-            char r12 = r12.charAt(r11)
-            r15 = 61
-            if (r12 != r15) goto L_0x00a7
-            int r12 = r3 + 1
-            int r3 = r0.skipDouble(r12)
-            int r12 = r3 - r11
-            if (r12 == r7) goto L_0x007a
-            if (r12 > r14) goto L_0x005f
-            com.ibm.icu.text.MessagePattern$Part$Type r9 = com.ibm.icu.text.MessagePattern.Part.Type.ARG_SELECTOR
-            r0.addPart(r9, r11, r12, r8)
-            int r9 = r11 + 1
-            r0.parseDouble(r9, r3, r8)
-            goto L_0x014c
-        L_0x005f:
-            java.lang.IndexOutOfBoundsException r7 = new java.lang.IndexOutOfBoundsException
-            java.lang.StringBuilder r8 = new java.lang.StringBuilder
-            r8.<init>()
-            java.lang.StringBuilder r8 = r8.append(r13)
-            java.lang.String r9 = r0.prefix((int) r11)
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r8 = r8.toString()
-            r7.<init>(r8)
-            throw r7
-        L_0x007a:
-            java.lang.IllegalArgumentException r7 = new java.lang.IllegalArgumentException
-            java.lang.StringBuilder r8 = new java.lang.StringBuilder
-            r8.<init>()
-            java.lang.StringBuilder r8 = r8.append(r10)
-            java.lang.String r10 = r17.toString()
-            java.util.Locale r13 = java.util.Locale.ENGLISH
-            java.lang.String r10 = r10.toLowerCase(r13)
-            java.lang.StringBuilder r8 = r8.append(r10)
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r9 = r0.prefix((int) r2)
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r8 = r8.toString()
-            r7.<init>(r8)
-            throw r7
-        L_0x00a7:
-            int r3 = r0.skipIdentifier(r3)
-            int r12 = r3 - r11
-            if (r12 == 0) goto L_0x01bd
-            boolean r9 = r17.hasPluralStyle()
-            if (r9 == 0) goto L_0x013a
-            r9 = 6
-            if (r12 != r9) goto L_0x013a
-            java.lang.String r9 = r0.msg
-            int r9 = r9.length()
-            if (r3 >= r9) goto L_0x013a
-            java.lang.String r9 = r0.msg
-            r10 = 7
-            java.lang.String r15 = "offset:"
-            boolean r9 = r9.regionMatches(r11, r15, r8, r10)
-            if (r9 == 0) goto L_0x013a
-            if (r4 == 0) goto L_0x011d
-            int r7 = r3 + 1
-            int r7 = r0.skipWhiteSpace(r7)
-            int r3 = r0.skipDouble(r7)
-            if (r3 == r7) goto L_0x0100
-            int r9 = r3 - r7
-            if (r9 > r14) goto L_0x00e3
-            r0.parseDouble(r7, r3, r8)
-            r4 = 0
-            goto L_0x000c
-        L_0x00e3:
-            java.lang.IndexOutOfBoundsException r8 = new java.lang.IndexOutOfBoundsException
-            java.lang.StringBuilder r9 = new java.lang.StringBuilder
-            r9.<init>()
-            java.lang.String r10 = "Plural offset value too long: "
-            java.lang.StringBuilder r9 = r9.append(r10)
-            java.lang.String r10 = r0.prefix((int) r7)
-            java.lang.StringBuilder r9 = r9.append(r10)
-            java.lang.String r9 = r9.toString()
-            r8.<init>(r9)
-            throw r8
-        L_0x0100:
-            java.lang.IllegalArgumentException r8 = new java.lang.IllegalArgumentException
-            java.lang.StringBuilder r9 = new java.lang.StringBuilder
-            r9.<init>()
-            java.lang.String r10 = "Missing value for plural 'offset:' "
-            java.lang.StringBuilder r9 = r9.append(r10)
-            java.lang.String r10 = r0.prefix((int) r2)
-            java.lang.StringBuilder r9 = r9.append(r10)
-            java.lang.String r9 = r9.toString()
-            r8.<init>(r9)
-            throw r8
-        L_0x011d:
-            java.lang.IllegalArgumentException r7 = new java.lang.IllegalArgumentException
-            java.lang.StringBuilder r8 = new java.lang.StringBuilder
-            r8.<init>()
-            java.lang.String r9 = "Plural argument 'offset:' (if present) must precede key-message pairs: "
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r9 = r0.prefix((int) r2)
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r8 = r8.toString()
-            r7.<init>(r8)
-            throw r7
-        L_0x013a:
-            if (r12 > r14) goto L_0x01a0
-            com.ibm.icu.text.MessagePattern$Part$Type r9 = com.ibm.icu.text.MessagePattern.Part.Type.ARG_SELECTOR
-            r0.addPart(r9, r11, r12, r8)
-            java.lang.String r9 = r0.msg
-            java.lang.String r10 = "other"
-            boolean r8 = r9.regionMatches(r11, r10, r8, r12)
-            if (r8 == 0) goto L_0x014c
-            r5 = 1
-        L_0x014c:
-            int r3 = r0.skipWhiteSpace(r3)
-            java.lang.String r8 = r0.msg
-            int r8 = r8.length()
-            if (r3 == r8) goto L_0x016d
-            java.lang.String r8 = r0.msg
-            char r8 = r8.charAt(r3)
-            r9 = 123(0x7b, float:1.72E-43)
-            if (r8 != r9) goto L_0x016d
-            int r8 = r1 + 1
-            r14 = r17
-            int r3 = r0.parseMessage(r3, r7, r8, r14)
-            r4 = 0
-            goto L_0x000c
-        L_0x016d:
-            r14 = r17
-            java.lang.IllegalArgumentException r7 = new java.lang.IllegalArgumentException
-            java.lang.StringBuilder r8 = new java.lang.StringBuilder
-            r8.<init>()
-            java.lang.String r9 = "No message fragment after "
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r9 = r17.toString()
-            java.util.Locale r10 = java.util.Locale.ENGLISH
-            java.lang.String r9 = r9.toLowerCase(r10)
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r9 = " selector: "
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r9 = r0.prefix((int) r11)
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r8 = r8.toString()
-            r7.<init>(r8)
-            throw r7
-        L_0x01a0:
-            r14 = r17
-            java.lang.IndexOutOfBoundsException r7 = new java.lang.IndexOutOfBoundsException
-            java.lang.StringBuilder r8 = new java.lang.StringBuilder
-            r8.<init>()
-            java.lang.StringBuilder r8 = r8.append(r13)
-            java.lang.String r9 = r0.prefix((int) r11)
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r8 = r8.toString()
-            r7.<init>(r8)
-            throw r7
-        L_0x01bd:
-            r14 = r17
-            java.lang.IllegalArgumentException r7 = new java.lang.IllegalArgumentException
-            java.lang.StringBuilder r8 = new java.lang.StringBuilder
-            r8.<init>()
-            java.lang.StringBuilder r8 = r8.append(r10)
-            java.lang.String r10 = r17.toString()
-            java.util.Locale r13 = java.util.Locale.ENGLISH
-            java.lang.String r10 = r10.toLowerCase(r13)
-            java.lang.StringBuilder r8 = r8.append(r10)
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r9 = r0.prefix((int) r2)
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r8 = r8.toString()
-            r7.<init>(r8)
-            throw r7
-        L_0x01ec:
-            r14 = r17
-        L_0x01ee:
-            boolean r7 = r0.inMessageFormatPattern(r1)
-            if (r6 == r7) goto L_0x0228
-            if (r5 == 0) goto L_0x01f7
-            return r3
-        L_0x01f7:
-            java.lang.IllegalArgumentException r7 = new java.lang.IllegalArgumentException
-            java.lang.StringBuilder r8 = new java.lang.StringBuilder
-            r8.<init>()
-            java.lang.String r9 = "Missing 'other' keyword in "
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r9 = r17.toString()
-            java.util.Locale r10 = java.util.Locale.ENGLISH
-            java.lang.String r9 = r9.toLowerCase(r10)
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r9 = " pattern in "
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r9 = r16.prefix()
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r8 = r8.toString()
-            r7.<init>(r8)
-            throw r7
-        L_0x0228:
-            java.lang.IllegalArgumentException r7 = new java.lang.IllegalArgumentException
-            java.lang.StringBuilder r8 = new java.lang.StringBuilder
-            r8.<init>()
-            java.lang.StringBuilder r8 = r8.append(r10)
-            java.lang.String r10 = r17.toString()
-            java.util.Locale r11 = java.util.Locale.ENGLISH
-            java.lang.String r10 = r10.toLowerCase(r11)
-            java.lang.StringBuilder r8 = r8.append(r10)
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r9 = r0.prefix((int) r2)
-            java.lang.StringBuilder r8 = r8.append(r9)
-            java.lang.String r8 = r8.toString()
-            r7.<init>(r8)
-            throw r7
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.MessagePattern.parsePluralOrSelectStyle(com.ibm.icu.text.MessagePattern$ArgType, int, int):int");
+    /* JADX WARN: Code restructure failed: missing block: B:48:0x0149, code lost:
+        if (r16.msg.regionMatches(r3, com.ibm.icu.text.PluralRules.KEYWORD_OTHER, 0, r12) == false) goto L18;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:49:0x014b, code lost:
+        r5 = true;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:63:0x01f2, code lost:
+        if (r6 == inMessageFormatPattern(r19)) goto L85;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:64:0x01f4, code lost:
+        if (r5 == false) goto L83;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:65:0x01f6, code lost:
+        return r3;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:67:0x0227, code lost:
+        throw new java.lang.IllegalArgumentException("Missing 'other' keyword in " + r17.toString().toLowerCase(java.util.Locale.ENGLISH) + " pattern in " + prefix());
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:69:0x0254, code lost:
+        throw new java.lang.IllegalArgumentException("Bad " + r17.toString().toLowerCase(java.util.Locale.ENGLISH) + " pattern syntax: " + prefix(r18));
+     */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    private int parsePluralOrSelectStyle(ArgType argType, int index, int nestingLevel) {
+        int index2;
+        int index3;
+        boolean hasOther = false;
+        boolean isEmpty = true;
+        int index4 = index;
+        while (true) {
+            index2 = skipWhiteSpace(index4);
+            boolean eos = index2 == this.msg.length();
+            if (!eos && this.msg.charAt(index2) != '}') {
+                if (argType.hasPluralStyle() && this.msg.charAt(index2) == '=') {
+                    index3 = skipDouble(index2 + 1);
+                    int length = index3 - index2;
+                    if (length == 1) {
+                        throw new IllegalArgumentException("Bad " + argType.toString().toLowerCase(Locale.ENGLISH) + " pattern syntax: " + prefix(index));
+                    }
+                    if (length <= 65535) {
+                        addPart(Part.Type.ARG_SELECTOR, index2, length, 0);
+                        parseDouble(index2 + 1, index3, false);
+                    } else {
+                        throw new IndexOutOfBoundsException("Argument selector too long: " + prefix(index2));
+                    }
+                } else {
+                    index3 = skipIdentifier(index2);
+                    int length2 = index3 - index2;
+                    if (length2 == 0) {
+                        throw new IllegalArgumentException("Bad " + argType.toString().toLowerCase(Locale.ENGLISH) + " pattern syntax: " + prefix(index));
+                    }
+                    if (argType.hasPluralStyle() && length2 == 6 && index3 < this.msg.length() && this.msg.regionMatches(index2, "offset:", 0, 7)) {
+                        if (isEmpty) {
+                            int valueIndex = skipWhiteSpace(index3 + 1);
+                            index4 = skipDouble(valueIndex);
+                            if (index4 == valueIndex) {
+                                throw new IllegalArgumentException("Missing value for plural 'offset:' " + prefix(index));
+                            }
+                            if (index4 - valueIndex > 65535) {
+                                throw new IndexOutOfBoundsException("Plural offset value too long: " + prefix(valueIndex));
+                            }
+                            parseDouble(valueIndex, index4, false);
+                            isEmpty = false;
+                        } else {
+                            throw new IllegalArgumentException("Plural argument 'offset:' (if present) must precede key-message pairs: " + prefix(index));
+                        }
+                    } else {
+                        throw new IndexOutOfBoundsException("Argument selector too long: " + prefix(index2));
+                    }
+                }
+                int index5 = skipWhiteSpace(index3);
+                if (index5 == this.msg.length() || this.msg.charAt(index5) != '{') {
+                    break;
+                }
+                index4 = parseMessage(index5, 1, nestingLevel + 1, argType);
+                isEmpty = false;
+            }
+        }
+        throw new IllegalArgumentException("No message fragment after " + argType.toString().toLowerCase(Locale.ENGLISH) + " selector: " + prefix(index2));
     }
 
     private static int parseArgNumber(CharSequence s, int start, int limit) {
-        boolean badNumber;
         int number;
+        boolean badNumber;
         if (start >= limit) {
             return -2;
         }
@@ -925,47 +743,58 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
         return parseArgNumber(this.msg, start, limit);
     }
 
+    /* JADX WARN: Removed duplicated region for block: B:16:0x0034  */
+    /* JADX WARN: Removed duplicated region for block: B:25:0x0064 A[LOOP:0: B:25:0x0064->B:39:0x0086, LOOP_START, PHI: r0 r2 r4 
+      PHI: (r0v3 'value' int) = (r0v1 'value' int), (r0v4 'value' int) binds: [B:15:0x0032, B:39:0x0086] A[DONT_GENERATE, DONT_INLINE]
+      PHI: (r2v7 'c' char) = (r2v6 'c' char), (r2v8 'c' char) binds: [B:15:0x0032, B:39:0x0086] A[DONT_GENERATE, DONT_INLINE]
+      PHI: (r4v3 'index' int) = (r4v2 'index' int), (r4v4 'index' int) binds: [B:15:0x0032, B:39:0x0086] A[DONT_GENERATE, DONT_INLINE]] */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
     private void parseDouble(int start, int limit, boolean allowInfinity) {
-        if (start < limit) {
-            int value = 0;
-            int isNegative = 0;
-            int index = start;
-            int index2 = index + 1;
-            char c = this.msg.charAt(index);
-            if (c == '-') {
-                isNegative = 1;
-                if (index2 != limit) {
-                    c = this.msg.charAt(index2);
-                    index2++;
-                }
-                throw new NumberFormatException("Bad syntax for numeric value: " + this.msg.substring(start, limit));
-            } else if (c == '+') {
-                if (index2 != limit) {
-                    c = this.msg.charAt(index2);
-                    index2++;
-                }
-                throw new NumberFormatException("Bad syntax for numeric value: " + this.msg.substring(start, limit));
-            }
-            if (c == 8734) {
-                if (allowInfinity && index2 == limit) {
-                    addArgDoublePart(isNegative != 0 ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY, start, limit - start);
-                    return;
-                }
-                throw new NumberFormatException("Bad syntax for numeric value: " + this.msg.substring(start, limit));
-            }
-            while ('0' <= c && c <= '9' && (value = (value * 10) + (c - '0')) <= isNegative + 32767) {
-                if (index2 == limit) {
-                    addPart(Part.Type.ARG_INT, start, limit - start, isNegative != 0 ? -value : value);
-                    return;
-                } else {
-                    c = this.msg.charAt(index2);
-                    index2++;
-                }
-            }
-            addArgDoublePart(Double.parseDouble(this.msg.substring(start, limit)), start, limit - start);
-            return;
+        if (start >= limit) {
+            throw new AssertionError();
         }
-        throw new AssertionError();
+        int value = 0;
+        int isNegative = 0;
+        int index = start + 1;
+        char c = this.msg.charAt(start);
+        if (c == '-') {
+            isNegative = 1;
+            if (index != limit) {
+                c = this.msg.charAt(index);
+                index++;
+                if (c != '\u221e') {
+                    if (allowInfinity && index == limit) {
+                        addArgDoublePart(isNegative != 0 ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY, start, limit - start);
+                        return;
+                    }
+                } else {
+                    while ('0' <= c && c <= '9' && (value = (value * 10) + (c - '0')) <= isNegative + 32767) {
+                        if (index == limit) {
+                            addPart(Part.Type.ARG_INT, start, limit - start, isNegative != 0 ? -value : value);
+                            return;
+                        } else {
+                            c = this.msg.charAt(index);
+                            index++;
+                        }
+                    }
+                    double numericValue = Double.parseDouble(this.msg.substring(start, limit));
+                    addArgDoublePart(numericValue, start, limit - start);
+                    return;
+                }
+            }
+            throw new NumberFormatException("Bad syntax for numeric value: " + this.msg.substring(start, limit));
+        }
+        if (c == '+') {
+            if (index != limit) {
+                c = this.msg.charAt(index);
+                index++;
+            }
+            throw new NumberFormatException("Bad syntax for numeric value: " + this.msg.substring(start, limit));
+        }
+        if (c != '\u221e') {
+        }
     }
 
     static void appendReducedApostrophes(String s, int start, int limit, StringBuilder sb) {
@@ -973,19 +802,19 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
         while (true) {
             int i = s.indexOf(39, start);
             if (i < 0 || i >= limit) {
-                sb.append(s, start, limit);
+                break;
             } else if (i == doubleApos) {
                 sb.append('\'');
                 start++;
                 doubleApos = -1;
             } else {
-                sb.append(s, start, i);
+                sb.append((CharSequence) s, start, i);
                 int i2 = i + 1;
                 start = i2;
                 doubleApos = i2;
             }
         }
-        sb.append(s, start, limit);
+        sb.append((CharSequence) s, start, limit);
     }
 
     private int skipWhiteSpace(int index) {
@@ -997,7 +826,8 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
     }
 
     private int skipDouble(int index) {
-        while (index < this.msg.length() && (((c = this.msg.charAt(index)) >= '0' || "+-.".indexOf(c) >= 0) && (c <= '9' || c == 'e' || c == 'E' || c == 8734))) {
+        char c;
+        while (index < this.msg.length() && (((c = this.msg.charAt(index)) >= '0' || "+-.".indexOf(c) >= 0) && (c <= '9' || c == 'e' || c == 'E' || c == '\u221e'))) {
             index++;
         }
         return index;
@@ -1008,38 +838,26 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
     }
 
     private boolean isChoice(int index) {
+        char c;
         int index2 = index + 1;
-        char index3 = this.msg.charAt(index);
-        char c = index3;
-        if (index3 == 'c' || c == 'C') {
-            int index4 = index2 + 1;
-            char charAt = this.msg.charAt(index2);
-            char c2 = charAt;
-            if (charAt == 'h' || c2 == 'H') {
-                int index5 = index4 + 1;
-                char charAt2 = this.msg.charAt(index4);
-                char c3 = charAt2;
-                if (charAt2 == 'o' || c3 == 'O') {
-                    int index6 = index5 + 1;
-                    char charAt3 = this.msg.charAt(index5);
-                    char c4 = charAt3;
-                    if (charAt3 == 'i' || c4 == 'I') {
-                        int index7 = index6 + 1;
-                        char charAt4 = this.msg.charAt(index6);
-                        char c5 = charAt4;
-                        if (charAt4 == 'c' || c5 == 'C') {
-                            char charAt5 = this.msg.charAt(index7);
-                            char c6 = charAt5;
-                            if (charAt5 == 'e' || c6 == 'E') {
-                                return true;
-                            }
+        char c2 = this.msg.charAt(index);
+        if (c2 == 'c' || c2 == 'C') {
+            int index3 = index2 + 1;
+            char c3 = this.msg.charAt(index2);
+            if (c3 == 'h' || c3 == 'H') {
+                int index4 = index3 + 1;
+                char c4 = this.msg.charAt(index3);
+                if (c4 == 'o' || c4 == 'O') {
+                    int index5 = index4 + 1;
+                    char c5 = this.msg.charAt(index4);
+                    if (c5 == 'i' || c5 == 'I') {
+                        int index6 = index5 + 1;
+                        char c6 = this.msg.charAt(index5);
+                        if ((c6 == 'c' || c6 == 'C') && ((c = this.msg.charAt(index6)) == 'e' || c == 'E')) {
+                            return true;
                         }
-                    } else {
-                        int i = index6;
                     }
                 }
-            } else {
-                int i2 = index4;
             }
         }
         return false;
@@ -1047,83 +865,62 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
 
     private boolean isPlural(int index) {
         int index2 = index + 1;
-        char index3 = this.msg.charAt(index);
-        char c = index3;
-        if (index3 == 'p' || c == 'P') {
-            int index4 = index2 + 1;
-            char charAt = this.msg.charAt(index2);
-            char c2 = charAt;
-            if (charAt == 'l' || c2 == 'L') {
-                int index5 = index4 + 1;
-                char charAt2 = this.msg.charAt(index4);
-                char c3 = charAt2;
-                if (charAt2 == 'u' || c3 == 'U') {
-                    int index6 = index5 + 1;
-                    char charAt3 = this.msg.charAt(index5);
-                    char c4 = charAt3;
-                    if (charAt3 == 'r' || c4 == 'R') {
-                        int index7 = index6 + 1;
-                        char charAt4 = this.msg.charAt(index6);
-                        char c5 = charAt4;
-                        if (charAt4 == 'a' || c5 == 'A') {
-                            char charAt5 = this.msg.charAt(index7);
-                            char c6 = charAt5;
-                            if (charAt5 == 'l' || c6 == 'L') {
+        char c = this.msg.charAt(index);
+        if (c == 'p' || c == 'P') {
+            int index3 = index2 + 1;
+            char c2 = this.msg.charAt(index2);
+            if (c2 == 'l' || c2 == 'L') {
+                int index4 = index3 + 1;
+                char c3 = this.msg.charAt(index3);
+                if (c3 == 'u' || c3 == 'U') {
+                    int index5 = index4 + 1;
+                    char c4 = this.msg.charAt(index4);
+                    if (c4 == 'r' || c4 == 'R') {
+                        int index6 = index5 + 1;
+                        char c5 = this.msg.charAt(index5);
+                        if (c5 == 'a' || c5 == 'A') {
+                            char c6 = this.msg.charAt(index6);
+                            if (c6 == 'l' || c6 == 'L') {
                                 return true;
                             }
-                            index2 = index7;
+                            index2 = index6;
                         } else {
-                            index2 = index7;
+                            index2 = index6;
                         }
                     } else {
-                        index2 = index6;
+                        index2 = index5;
                     }
                 } else {
-                    index2 = index5;
+                    index2 = index4;
                 }
             } else {
-                index2 = index4;
+                index2 = index3;
             }
         }
-        int i = index2;
         return false;
     }
 
     private boolean isSelect(int index) {
+        char c;
         int index2 = index + 1;
-        char index3 = this.msg.charAt(index);
-        char c = index3;
-        if (index3 == 's' || c == 'S') {
-            int index4 = index2 + 1;
-            char charAt = this.msg.charAt(index2);
-            char c2 = charAt;
-            if (charAt == 'e' || c2 == 'E') {
-                int index5 = index4 + 1;
-                char charAt2 = this.msg.charAt(index4);
-                char c3 = charAt2;
-                if (charAt2 == 'l' || c3 == 'L') {
-                    int index6 = index5 + 1;
-                    char charAt3 = this.msg.charAt(index5);
-                    char c4 = charAt3;
-                    if (charAt3 == 'e' || c4 == 'E') {
-                        int index7 = index6 + 1;
-                        char charAt4 = this.msg.charAt(index6);
-                        char c5 = charAt4;
-                        if (charAt4 == 'c' || c5 == 'C') {
-                            char charAt5 = this.msg.charAt(index7);
-                            char c6 = charAt5;
-                            if (charAt5 == 't' || c6 == 'T') {
-                                return true;
-                            }
+        char c2 = this.msg.charAt(index);
+        if (c2 == 's' || c2 == 'S') {
+            int index3 = index2 + 1;
+            char c3 = this.msg.charAt(index2);
+            if (c3 == 'e' || c3 == 'E') {
+                int index4 = index3 + 1;
+                char c4 = this.msg.charAt(index3);
+                if (c4 == 'l' || c4 == 'L') {
+                    int index5 = index4 + 1;
+                    char c5 = this.msg.charAt(index4);
+                    if (c5 == 'e' || c5 == 'E') {
+                        int index6 = index5 + 1;
+                        char c6 = this.msg.charAt(index5);
+                        if ((c6 == 'c' || c6 == 'C') && ((c = this.msg.charAt(index6)) == 't' || c == 'T')) {
+                            return true;
                         }
-                    } else {
-                        int i = index6;
                     }
-                } else {
-                    int i2 = index5;
                 }
-            } else {
-                int i3 = index4;
             }
         }
         return false;
@@ -1131,48 +928,40 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
 
     private boolean isOrdinal(int index) {
         int index2 = index + 1;
-        char index3 = this.msg.charAt(index);
-        char c = index3;
-        if (index3 == 'o' || c == 'O') {
-            int index4 = index2 + 1;
-            char charAt = this.msg.charAt(index2);
-            char c2 = charAt;
-            if (charAt == 'r' || c2 == 'R') {
-                index2 = index4 + 1;
-                char charAt2 = this.msg.charAt(index4);
-                char c3 = charAt2;
-                if (charAt2 == 'd' || c3 == 'D') {
-                    int index5 = index2 + 1;
-                    char charAt3 = this.msg.charAt(index2);
-                    char c4 = charAt3;
-                    if (charAt3 == 'i' || c4 == 'I') {
-                        index2 = index5 + 1;
-                        char charAt4 = this.msg.charAt(index5);
-                        char c5 = charAt4;
-                        if (charAt4 == 'n' || c5 == 'N') {
-                            int index6 = index2 + 1;
-                            char charAt5 = this.msg.charAt(index2);
-                            char c6 = charAt5;
-                            if (charAt5 == 'a' || c6 == 'A') {
-                                char charAt6 = this.msg.charAt(index6);
-                                char c7 = charAt6;
-                                if (charAt6 == 'l' || c7 == 'L') {
+        char c = this.msg.charAt(index);
+        if (c == 'o' || c == 'O') {
+            int index3 = index2 + 1;
+            char c2 = this.msg.charAt(index2);
+            if (c2 == 'r' || c2 == 'R') {
+                index2 = index3 + 1;
+                char c3 = this.msg.charAt(index3);
+                if (c3 == 'd' || c3 == 'D') {
+                    int index4 = index2 + 1;
+                    char c4 = this.msg.charAt(index2);
+                    if (c4 == 'i' || c4 == 'I') {
+                        index2 = index4 + 1;
+                        char c5 = this.msg.charAt(index4);
+                        if (c5 == 'n' || c5 == 'N') {
+                            int index5 = index2 + 1;
+                            char c6 = this.msg.charAt(index2);
+                            if (c6 == 'a' || c6 == 'A') {
+                                char c7 = this.msg.charAt(index5);
+                                if (c7 == 'l' || c7 == 'L') {
                                     return true;
                                 }
-                                index2 = index6;
+                                index2 = index5;
                             } else {
-                                index2 = index6;
+                                index2 = index5;
                             }
                         }
                     } else {
-                        index2 = index5;
+                        index2 = index4;
                     }
                 }
             } else {
-                index2 = index4;
+                index2 = index3;
             }
         }
-        int i = index2;
         return false;
     }
 
@@ -1181,10 +970,7 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
     }
 
     private boolean inTopLevelChoiceMessage(int nestingLevel, ArgType parentType) {
-        if (nestingLevel == 1 && parentType == ArgType.CHOICE && this.parts.get(0).type != Part.Type.MSG_START) {
-            return true;
-        }
-        return false;
+        return nestingLevel == 1 && parentType == ArgType.CHOICE && this.parts.get(0).type != Part.Type.MSG_START;
     }
 
     private void addPart(Part.Type type, int index, int length, int value) {
@@ -1192,7 +978,7 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
     }
 
     private void addLimitPart(int start, Part.Type type, int index, int length, int value) {
-        int unused = this.parts.get(start).limitPartIndex = this.parts.size();
+        this.parts.get(start).limitPartIndex = this.parts.size();
         addPart(type, index, length, value);
     }
 
@@ -1219,14 +1005,15 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
         } else {
             prefix.append("[at pattern index ").append(start).append("] \"");
         }
-        if (s.length() - start <= 24) {
+        int substringLength = s.length() - start;
+        if (substringLength <= 24) {
             prefix.append(start == 0 ? s : s.substring(start));
         } else {
             int limit = (start + 24) - 4;
             if (Character.isHighSurrogate(s.charAt(limit - 1))) {
                 limit--;
             }
-            prefix.append(s, start, limit).append(" ...");
+            prefix.append((CharSequence) s, start, limit).append(" ...");
         }
         return prefix.append("\"").toString();
     }

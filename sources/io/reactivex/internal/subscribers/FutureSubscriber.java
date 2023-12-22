@@ -16,15 +16,18 @@ import java.util.concurrent.atomic.AtomicReference;
 import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FutureSubscriber<T> extends CountDownLatch implements FlowableSubscriber<T>, Future<T>, Subscription {
     Throwable error;
-    final AtomicReference<Subscription> upstream = new AtomicReference<>();
+    final AtomicReference<Subscription> upstream;
     T value;
 
     public FutureSubscriber() {
         super(1);
+        this.upstream = new AtomicReference<>();
     }
 
+    @Override // java.util.concurrent.Future
     public boolean cancel(boolean mayInterruptIfRunning) {
         Subscription a;
         do {
@@ -40,29 +43,33 @@ public final class FutureSubscriber<T> extends CountDownLatch implements Flowabl
         return true;
     }
 
+    @Override // java.util.concurrent.Future
     public boolean isCancelled() {
         return this.upstream.get() == SubscriptionHelper.CANCELLED;
     }
 
+    @Override // java.util.concurrent.Future
     public boolean isDone() {
         return getCount() == 0;
     }
 
+    @Override // java.util.concurrent.Future
     public T get() throws InterruptedException, ExecutionException {
         if (getCount() != 0) {
             BlockingHelper.verifyNonBlocking();
             await();
         }
-        if (!isCancelled()) {
-            Throwable ex = this.error;
-            if (ex == null) {
-                return this.value;
-            }
+        if (isCancelled()) {
+            throw new CancellationException();
+        }
+        Throwable ex = this.error;
+        if (ex != null) {
             throw new ExecutionException(ex);
         }
-        throw new CancellationException();
+        return this.value;
     }
 
+    @Override // java.util.concurrent.Future
     public T get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
         if (getCount() != 0) {
             BlockingHelper.verifyNonBlocking();
@@ -70,20 +77,22 @@ public final class FutureSubscriber<T> extends CountDownLatch implements Flowabl
                 throw new TimeoutException(ExceptionHelper.timeoutMessage(timeout, unit));
             }
         }
-        if (!isCancelled()) {
-            Throwable ex = this.error;
-            if (ex == null) {
-                return this.value;
-            }
+        if (isCancelled()) {
+            throw new CancellationException();
+        }
+        Throwable ex = this.error;
+        if (ex != null) {
             throw new ExecutionException(ex);
         }
-        throw new CancellationException();
+        return this.value;
     }
 
+    @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
     public void onSubscribe(Subscription s) {
         SubscriptionHelper.setOnce(this.upstream, s, LongCompanionObject.MAX_VALUE);
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onNext(T t) {
         if (this.value != null) {
             this.upstream.get().cancel();
@@ -93,6 +102,7 @@ public final class FutureSubscriber<T> extends CountDownLatch implements Flowabl
         this.value = t;
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onError(Throwable t) {
         Subscription a;
         do {
@@ -106,6 +116,7 @@ public final class FutureSubscriber<T> extends CountDownLatch implements Flowabl
         countDown();
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onComplete() {
         Subscription a;
         if (this.value == null) {
@@ -121,9 +132,11 @@ public final class FutureSubscriber<T> extends CountDownLatch implements Flowabl
         countDown();
     }
 
+    @Override // org.reactivestreams.Subscription
     public void cancel() {
     }
 
+    @Override // org.reactivestreams.Subscription
     public void request(long n) {
     }
 }

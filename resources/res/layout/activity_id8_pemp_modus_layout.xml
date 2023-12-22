@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="horizontal" android:tag="layout/activity_id8_pemp_modus_layout_0" android:background="@drawable/id8_main_bg" android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout android:orientation="horizontal" android:id="@+id/rl_modus_container" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginStart="120dp">
+        <TextView android:textSize="21sp" android:textColor="@color/id8_main_style_color" android:id="@+id/tv_change_modus_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:layout_marginBottom="20dp" android:text="@string/ksw_id8_change_modus_title" android:layout_marginStart="20dp" android:layout_marginEnd="20dp"/>
+        <RelativeLayout android:id="@+id/ll_modus_personal" android:background="@drawable/id8_main_edit_icon_modus_personal" style="@style/id8_change_modus_container">
+            <ImageView android:id="@+id/ll_modus_personal_img" android:tag="binding_1" android:background="@drawable/bmw_id8_main_edit_icon_weather_mask_yellow" android:nextFocusLeft="@+id/ll_left_4" android:nextFocusUp="@+id/ll_modus_personal_img" android:nextFocusDown="@+id/ll_modus_sport_img" android:layout_width="match_parent" android:layout_height="match_parent"/>
+            <LinearLayout android:orientation="vertical" android:paddingTop="30dp" android:layout_width="match_parent" android:layout_height="match_parent" android:paddingStart="12dp" android:paddingEnd="12dp">
+                <TextView android:textSize="21sp" android:textColor="@color/id8_main_style_color_yellow" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/ksw_id8_personal" android:layout_marginStart="4dp" style="@style/bmw_id8_text_shadow"/>
+                <ImageView android:tag="binding_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:layout_marginBottom="8dp" android:src="@drawable/id8_settings_line_y"/>
+                <TextView android:textSize="21sp" android:textColor="@color/id8_font_white" android:tag="binding_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/ksw_id8_current" android:layout_marginStart="4dp" style="@style/bmw_id8_text_shadow"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout android:id="@+id/ll_modus_sport" android:background="@drawable/id8_main_edit_icon_modus_sport" android:layout_toRightOf="@+id/ll_modus_personal" style="@style/id8_change_modus_container">
+            <ImageView android:id="@+id/ll_modus_sport_img" android:tag="binding_4" android:background="@drawable/bmw_id8_main_edit_icon_weather_mask_red" android:nextFocusUp="@+id/ll_modus_personal_img" android:nextFocusDown="@+id/ll_modus_efficient_img" android:layout_width="match_parent" android:layout_height="match_parent"/>
+            <LinearLayout android:orientation="vertical" android:paddingTop="30dp" android:layout_width="match_parent" android:layout_height="match_parent" android:paddingStart="12dp" android:paddingEnd="12dp">
+                <TextView android:textSize="21sp" android:textColor="@color/id8_main_style_color_red" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/ksw_id8_sport" android:layout_marginStart="4dp" style="@style/bmw_id8_text_shadow"/>
+                <ImageView android:tag="binding_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:layout_marginBottom="8dp" android:src="@drawable/id8_settings_line_y"/>
+                <TextView android:textSize="21sp" android:textColor="@color/id8_font_white" android:tag="binding_6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/ksw_id8_current" android:layout_marginStart="4dp" style="@style/bmw_id8_text_shadow"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout android:id="@+id/ll_modus_efficient" android:background="@drawable/id8_main_edit_icon_modus_efficient" android:layout_toRightOf="@+id/ll_modus_sport" style="@style/id8_change_modus_container">
+            <ImageView android:id="@+id/ll_modus_efficient_img" android:tag="binding_7" android:background="@drawable/bmw_id8_main_edit_icon_weather_mask_blue" android:nextFocusUp="@+id/ll_modus_sport_img" android:nextFocusDown="@+id/ll_modus_efficient_img" android:layout_width="match_parent" android:layout_height="match_parent"/>
+            <LinearLayout android:orientation="vertical" android:paddingTop="30dp" android:layout_width="match_parent" android:layout_height="match_parent" android:paddingStart="12dp" android:paddingEnd="12dp">
+                <TextView android:textSize="21sp" android:textColor="@color/id8_main_style_color_blue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/ksw_id8_efficient" android:layout_marginStart="4dp" style="@style/bmw_id8_text_shadow"/>
+                <ImageView android:tag="binding_8" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:layout_marginBottom="8dp" android:src="@drawable/id8_settings_line_y"/>
+                <TextView android:textSize="21sp" android:textColor="@color/id8_font_white" android:tag="binding_9" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/ksw_id8_current" android:layout_marginStart="4dp" style="@style/bmw_id8_text_shadow"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+    <include android:id="@+id/bmw_id8_pemp_modus_main_left_bar" layout="@layout/id8_pemp_launcher_left_bar"/>
+</RelativeLayout>

@@ -11,10 +11,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView;
 
+/* loaded from: classes7.dex */
 public abstract class Benz2021FragmentTwo extends ViewDataBinding {
     public final TextView btTip;
     public final RelativeLayout carRl;
@@ -41,33 +42,32 @@ public abstract class Benz2021FragmentTwo extends ViewDataBinding {
     public final RelativeLayout videoRl;
     public final TextView videoTv;
 
-    public abstract void setViewModel(BcVieModel bcVieModel);
+    public abstract void setViewModel(BcVieModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected Benz2021FragmentTwo(Object _bindingComponent, View _root, int _localFieldCount, TextView btTip2, RelativeLayout carRl2, LinearLayout fragmentTwoLl2, ImageView ivMusic12, ImageView ivMusic22, ImageView ivSet12, ImageView ivSet22, ImageView ivVideo12, ImageView ivVideo22, FrameLayout musicItemview2, RelativeLayout musicRl2, TextView musicTip2, TextView musicTv2, BenzMbuxItemView setItemview2, TextView setTip2, TextView setTv2, View space3, View space12, View space22, BenzMbuxItemView videoItemview2, RelativeLayout videoRl2, TextView videoTv2) {
+    protected Benz2021FragmentTwo(Object _bindingComponent, View _root, int _localFieldCount, TextView btTip, RelativeLayout carRl, LinearLayout fragmentTwoLl, ImageView ivMusic1, ImageView ivMusic2, ImageView ivSet1, ImageView ivSet2, ImageView ivVideo1, ImageView ivVideo2, FrameLayout musicItemview, RelativeLayout musicRl, TextView musicTip, TextView musicTv, BenzMbuxItemView setItemview, TextView setTip, TextView setTv, View space, View space1, View space2, BenzMbuxItemView videoItemview, RelativeLayout videoRl, TextView videoTv) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.btTip = btTip2;
-        this.carRl = carRl2;
-        this.fragmentTwoLl = fragmentTwoLl2;
-        this.ivMusic1 = ivMusic12;
-        this.ivMusic2 = ivMusic22;
-        this.ivSet1 = ivSet12;
-        this.ivSet2 = ivSet22;
-        this.ivVideo1 = ivVideo12;
-        this.ivVideo2 = ivVideo22;
-        this.musicItemview = musicItemview2;
-        this.musicRl = musicRl2;
-        this.musicTip = musicTip2;
-        this.musicTv = musicTv2;
-        this.setItemview = setItemview2;
-        this.setTip = setTip2;
-        this.setTv = setTv2;
-        this.space = space3;
-        this.space1 = space12;
-        this.space2 = space22;
-        this.videoItemview = videoItemview2;
-        this.videoRl = videoRl2;
-        this.videoTv = videoTv2;
+        this.btTip = btTip;
+        this.carRl = carRl;
+        this.fragmentTwoLl = fragmentTwoLl;
+        this.ivMusic1 = ivMusic1;
+        this.ivMusic2 = ivMusic2;
+        this.ivSet1 = ivSet1;
+        this.ivSet2 = ivSet2;
+        this.ivVideo1 = ivVideo1;
+        this.ivVideo2 = ivVideo2;
+        this.musicItemview = musicItemview;
+        this.musicRl = musicRl;
+        this.musicTip = musicTip;
+        this.musicTv = musicTv;
+        this.setItemview = setItemview;
+        this.setTip = setTip;
+        this.setTv = setTv;
+        this.space = space;
+        this.space1 = space1;
+        this.space2 = space2;
+        this.videoItemview = videoItemview;
+        this.videoRl = videoRl;
+        this.videoTv = videoTv;
     }
 
     public BcVieModel getViewModel() {
@@ -80,7 +80,7 @@ public abstract class Benz2021FragmentTwo extends ViewDataBinding {
 
     @Deprecated
     public static Benz2021FragmentTwo inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (Benz2021FragmentTwo) ViewDataBinding.inflateInternal(inflater, R.layout.benz_mbux_2021_fragment_two, root, attachToRoot, component);
+        return (Benz2021FragmentTwo) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.benz_mbux_2021_fragment_two, root, attachToRoot, component);
     }
 
     public static Benz2021FragmentTwo inflate(LayoutInflater inflater) {
@@ -89,7 +89,7 @@ public abstract class Benz2021FragmentTwo extends ViewDataBinding {
 
     @Deprecated
     public static Benz2021FragmentTwo inflate(LayoutInflater inflater, Object component) {
-        return (Benz2021FragmentTwo) ViewDataBinding.inflateInternal(inflater, R.layout.benz_mbux_2021_fragment_two, (ViewGroup) null, false, component);
+        return (Benz2021FragmentTwo) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.benz_mbux_2021_fragment_two, null, false, component);
     }
 
     public static Benz2021FragmentTwo bind(View view) {
@@ -98,6 +98,6 @@ public abstract class Benz2021FragmentTwo extends ViewDataBinding {
 
     @Deprecated
     public static Benz2021FragmentTwo bind(View view, Object component) {
-        return (Benz2021FragmentTwo) bind(component, view, R.layout.benz_mbux_2021_fragment_two);
+        return (Benz2021FragmentTwo) bind(component, view, C0899R.C0902layout.benz_mbux_2021_fragment_two);
     }
 }

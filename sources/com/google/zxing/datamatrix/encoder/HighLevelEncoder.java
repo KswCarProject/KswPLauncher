@@ -1,48 +1,49 @@
 package com.google.zxing.datamatrix.encoder;
 
 import com.google.zxing.Dimension;
+import com.ibm.icu.text.SCSU;
 import java.util.Arrays;
 
+/* loaded from: classes.dex */
 public final class HighLevelEncoder {
     static final int ASCII_ENCODATION = 0;
     static final int BASE256_ENCODATION = 5;
     static final int C40_ENCODATION = 1;
-    static final char C40_UNLATCH = 'þ';
+    static final char C40_UNLATCH = '\u00fe';
     static final int EDIFACT_ENCODATION = 4;
-    static final char LATCH_TO_ANSIX12 = 'î';
-    static final char LATCH_TO_BASE256 = 'ç';
-    static final char LATCH_TO_C40 = 'æ';
-    static final char LATCH_TO_EDIFACT = 'ð';
-    static final char LATCH_TO_TEXT = 'ï';
-    private static final char MACRO_05 = 'ì';
+    static final char LATCH_TO_ANSIX12 = '\u00ee';
+    static final char LATCH_TO_BASE256 = '\u00e7';
+    static final char LATCH_TO_C40 = '\u00e6';
+    static final char LATCH_TO_EDIFACT = '\u00f0';
+    static final char LATCH_TO_TEXT = '\u00ef';
+    private static final char MACRO_05 = '\u00ec';
     private static final String MACRO_05_HEADER = "[)>\u001e05\u001d";
-    private static final char MACRO_06 = 'í';
+    private static final char MACRO_06 = '\u00ed';
     private static final String MACRO_06_HEADER = "[)>\u001e06\u001d";
     private static final String MACRO_TRAILER = "\u001e\u0004";
-    private static final char PAD = '';
+    private static final char PAD = '\u0081';
     static final int TEXT_ENCODATION = 2;
-    static final char UPPER_SHIFT = 'ë';
+    static final char UPPER_SHIFT = '\u00eb';
     static final int X12_ENCODATION = 3;
-    static final char X12_UNLATCH = 'þ';
+    static final char X12_UNLATCH = '\u00fe';
 
     private HighLevelEncoder() {
     }
 
     private static char randomize253State(char ch, int codewordPosition) {
-        int i = ch + ((codewordPosition * 149) % SCSU.HIRAGANAINDEX) + 1;
-        int tempVariable = i;
-        return (char) (i <= 254 ? tempVariable : tempVariable - 254);
+        int pseudoRandom = ((codewordPosition * 149) % SCSU.HIRAGANAINDEX) + 1;
+        int tempVariable = ch + pseudoRandom;
+        return (char) (tempVariable <= 254 ? tempVariable : tempVariable - 254);
     }
 
     public static String encodeHighLevel(String msg) {
-        return encodeHighLevel(msg, SymbolShapeHint.FORCE_NONE, (Dimension) null, (Dimension) null);
+        return encodeHighLevel(msg, SymbolShapeHint.FORCE_NONE, null, null);
     }
 
     public static String encodeHighLevel(String msg, SymbolShapeHint shape, Dimension minSize, Dimension maxSize) {
         Encoder[] encoders = {new ASCIIEncoder(), new C40Encoder(), new TextEncoder(), new X12Encoder(), new EdifactEncoder(), new Base256Encoder()};
-        EncoderContext encoderContext = new EncoderContext(msg);
-        EncoderContext context = encoderContext;
-        encoderContext.setSymbolShape(shape);
+        EncoderContext context = new EncoderContext(msg);
+        context.setSymbolShape(shape);
         context.setSizeConstraints(minSize, maxSize);
         if (msg.startsWith(MACRO_05_HEADER) && msg.endsWith(MACRO_TRAILER)) {
             context.writeCodeword(MACRO_05);
@@ -64,28 +65,25 @@ public final class HighLevelEncoder {
         int len = context.getCodewordCount();
         context.updateSymbolInfo();
         int capacity = context.getSymbolInfo().getDataCapacity();
-        if (!(len >= capacity || encodingMode == 0 || encodingMode == 5 || encodingMode == 4)) {
-            context.writeCodeword(254);
+        if (len < capacity && encodingMode != 0 && encodingMode != 5 && encodingMode != 4) {
+            context.writeCodeword('\u00fe');
         }
         StringBuilder codewords = context.getCodewords();
-        StringBuilder codewords2 = codewords;
         if (codewords.length() < capacity) {
-            codewords2.append(PAD);
+            codewords.append(PAD);
         }
-        while (codewords2.length() < capacity) {
-            codewords2.append(randomize253State(PAD, codewords2.length() + 1));
+        while (codewords.length() < capacity) {
+            codewords.append(randomize253State(PAD, codewords.length() + 1));
         }
         return context.getCodewords().toString();
     }
 
     static int lookAheadTest(CharSequence msg, int startpos, int currentMode) {
         float[] charCounts;
-        CharSequence charSequence = msg;
-        int i = startpos;
-        if (i >= msg.length()) {
+        if (startpos >= msg.length()) {
             return currentMode;
         }
-        int i2 = 6;
+        int i = 6;
         if (currentMode == 0) {
             charCounts = new float[]{0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.25f};
         } else {
@@ -93,16 +91,17 @@ public final class HighLevelEncoder {
             charCounts[currentMode] = 0.0f;
         }
         int charsProcessed = 0;
-        while (i + charsProcessed != msg.length()) {
-            char c = charSequence.charAt(i + charsProcessed);
+        while (startpos + charsProcessed != msg.length()) {
+            int min = startpos + charsProcessed;
+            char c = msg.charAt(min);
             charsProcessed++;
             if (isDigit(c)) {
                 charCounts[0] = charCounts[0] + 0.5f;
             } else if (isExtendedASCII(c)) {
-                charCounts[0] = (float) Math.ceil((double) charCounts[0]);
+                charCounts[0] = (float) Math.ceil(charCounts[0]);
                 charCounts[0] = charCounts[0] + 2.0f;
             } else {
-                charCounts[0] = (float) Math.ceil((double) charCounts[0]);
+                charCounts[0] = (float) Math.ceil(charCounts[0]);
                 charCounts[0] = charCounts[0] + 1.0f;
             }
             if (isNativeC40(c)) {
@@ -139,8 +138,8 @@ public final class HighLevelEncoder {
                 charCounts[5] = charCounts[5] + 1.0f;
             }
             if (charsProcessed >= 4) {
-                int[] intCharCounts = new int[i2];
-                byte[] mins = new byte[i2];
+                int[] intCharCounts = new int[i];
+                byte[] mins = new byte[i];
                 findMinimums(charCounts, intCharCounts, Integer.MAX_VALUE, mins);
                 int minCount = getMinimumCount(mins);
                 if (intCharCounts[0] < intCharCounts[5] && intCharCounts[0] < intCharCounts[1] && intCharCounts[0] < intCharCounts[2] && intCharCounts[0] < intCharCounts[3] && intCharCounts[0] < intCharCounts[4]) {
@@ -163,48 +162,44 @@ public final class HighLevelEncoder {
                         return 1;
                     }
                     if (intCharCounts[1] == intCharCounts[3]) {
-                        int p = i + charsProcessed + 1;
-                        while (p < msg.length()) {
-                            char charAt = charSequence.charAt(p);
-                            char tc = charAt;
-                            if (!isX12TermSep(charAt)) {
-                                if (!isNativeX12(tc)) {
-                                    break;
-                                }
-                                p++;
-                            } else {
+                        for (int p = startpos + charsProcessed + 1; p < msg.length(); p++) {
+                            char tc = msg.charAt(p);
+                            if (isX12TermSep(tc)) {
                                 return 3;
+                            }
+                            if (!isNativeX12(tc)) {
+                                break;
                             }
                         }
                         return 1;
                     }
                 }
             }
-            i2 = 6;
+            i = 6;
         }
-        byte[] mins2 = new byte[i2];
-        int[] intCharCounts2 = new int[i2];
-        int min = findMinimums(charCounts, intCharCounts2, Integer.MAX_VALUE, mins2);
+        byte[] mins2 = new byte[i];
+        int[] intCharCounts2 = new int[i];
+        int min2 = findMinimums(charCounts, intCharCounts2, Integer.MAX_VALUE, mins2);
         int minCount2 = getMinimumCount(mins2);
-        if (intCharCounts2[0] == min) {
+        if (intCharCounts2[0] == min2) {
             return 0;
         }
-        if (minCount2 == 1 && mins2[5] > 0) {
-            return 5;
-        }
-        if (minCount2 == 1 && mins2[4] > 0) {
+        if (minCount2 != 1 || mins2[5] <= 0) {
+            if (minCount2 != 1 || mins2[4] <= 0) {
+                if (minCount2 != 1 || mins2[2] <= 0) {
+                    return (minCount2 != 1 || mins2[3] <= 0) ? 1 : 3;
+                }
+                return 2;
+            }
             return 4;
         }
-        if (minCount2 != 1 || mins2[2] <= 0) {
-            return (minCount2 != 1 || mins2[3] <= 0) ? 1 : 3;
-        }
-        return 2;
+        return 5;
     }
 
     private static int findMinimums(float[] charCounts, int[] intCharCounts, int min, byte[] mins) {
         Arrays.fill(mins, (byte) 0);
         for (int i = 0; i < 6; i++) {
-            intCharCounts[i] = (int) Math.ceil((double) charCounts[i]);
+            intCharCounts[i] = (int) Math.ceil(charCounts[i]);
             int current = intCharCounts[i];
             if (min > current) {
                 min = current;
@@ -230,25 +225,25 @@ public final class HighLevelEncoder {
     }
 
     static boolean isExtendedASCII(char ch) {
-        return ch >= 128 && ch <= 255;
+        return ch >= '\u0080' && ch <= '\u00ff';
     }
 
     private static boolean isNativeC40(char ch) {
-        if (ch == ' ') {
+        if (ch != ' ') {
+            if (ch < '0' || ch > '9') {
+                return ch >= 'A' && ch <= 'Z';
+            }
             return true;
-        }
-        if (ch < '0' || ch > '9') {
-            return ch >= 'A' && ch <= 'Z';
         }
         return true;
     }
 
     private static boolean isNativeText(char ch) {
-        if (ch == ' ') {
+        if (ch != ' ') {
+            if (ch < '0' || ch > '9') {
+                return ch >= 'a' && ch <= 'z';
+            }
             return true;
-        }
-        if (ch < '0' || ch > '9') {
-            return ch >= 'a' && ch <= 'z';
         }
         return true;
     }
@@ -264,7 +259,7 @@ public final class HighLevelEncoder {
     }
 
     private static boolean isX12TermSep(char ch) {
-        return ch == 13 || ch == '*' || ch == '>';
+        return ch == '\r' || ch == '*' || ch == '>';
     }
 
     private static boolean isNativeEDIFACT(char ch) {

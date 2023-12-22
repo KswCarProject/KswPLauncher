@@ -10,9 +10,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class BmwId8SettingsSystemLayoutBinding extends ViewDataBinding {
     public final RelativeLayout bmwId8SettingsSystemBrightness;
     public final RelativeLayout bmwId8SettingsSystemCamera;
@@ -33,27 +34,26 @@ public abstract class BmwId8SettingsSystemLayoutBinding extends ViewDataBinding 
     @Bindable
     protected BmwId8SettingsViewModel mViewModel;
 
-    public abstract void setViewModel(BmwId8SettingsViewModel bmwId8SettingsViewModel);
+    public abstract void setViewModel(BmwId8SettingsViewModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected BmwId8SettingsSystemLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout bmwId8SettingsSystemBrightness2, RelativeLayout bmwId8SettingsSystemCamera2, FrameLayout bmwId8SettingsSystemFramelay2, RelativeLayout bmwId8SettingsSystemFuel2, ImageView bmwId8SettingsSystemImg2, ImageView bmwId8SettingsSystemLeftArrow2, RelativeLayout bmwId8SettingsSystemLines2, RelativeLayout bmwId8SettingsSystemMirror2, RelativeLayout bmwId8SettingsSystemMotion2, RelativeLayout bmwId8SettingsSystemMusic2, RelativeLayout bmwId8SettingsSystemMute2, RelativeLayout bmwId8SettingsSystemRadar2, ImageView bmwId8SettingsSystemRightArrow2, ScrollView bmwId8SettingsSystemScroll2, RelativeLayout bmwId8SettingsSystemTemp2, RelativeLayout bmwId8SettingsSystemVideo2) {
+    protected BmwId8SettingsSystemLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout bmwId8SettingsSystemBrightness, RelativeLayout bmwId8SettingsSystemCamera, FrameLayout bmwId8SettingsSystemFramelay, RelativeLayout bmwId8SettingsSystemFuel, ImageView bmwId8SettingsSystemImg, ImageView bmwId8SettingsSystemLeftArrow, RelativeLayout bmwId8SettingsSystemLines, RelativeLayout bmwId8SettingsSystemMirror, RelativeLayout bmwId8SettingsSystemMotion, RelativeLayout bmwId8SettingsSystemMusic, RelativeLayout bmwId8SettingsSystemMute, RelativeLayout bmwId8SettingsSystemRadar, ImageView bmwId8SettingsSystemRightArrow, ScrollView bmwId8SettingsSystemScroll, RelativeLayout bmwId8SettingsSystemTemp, RelativeLayout bmwId8SettingsSystemVideo) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.bmwId8SettingsSystemBrightness = bmwId8SettingsSystemBrightness2;
-        this.bmwId8SettingsSystemCamera = bmwId8SettingsSystemCamera2;
-        this.bmwId8SettingsSystemFramelay = bmwId8SettingsSystemFramelay2;
-        this.bmwId8SettingsSystemFuel = bmwId8SettingsSystemFuel2;
-        this.bmwId8SettingsSystemImg = bmwId8SettingsSystemImg2;
-        this.bmwId8SettingsSystemLeftArrow = bmwId8SettingsSystemLeftArrow2;
-        this.bmwId8SettingsSystemLines = bmwId8SettingsSystemLines2;
-        this.bmwId8SettingsSystemMirror = bmwId8SettingsSystemMirror2;
-        this.bmwId8SettingsSystemMotion = bmwId8SettingsSystemMotion2;
-        this.bmwId8SettingsSystemMusic = bmwId8SettingsSystemMusic2;
-        this.bmwId8SettingsSystemMute = bmwId8SettingsSystemMute2;
-        this.bmwId8SettingsSystemRadar = bmwId8SettingsSystemRadar2;
-        this.bmwId8SettingsSystemRightArrow = bmwId8SettingsSystemRightArrow2;
-        this.bmwId8SettingsSystemScroll = bmwId8SettingsSystemScroll2;
-        this.bmwId8SettingsSystemTemp = bmwId8SettingsSystemTemp2;
-        this.bmwId8SettingsSystemVideo = bmwId8SettingsSystemVideo2;
+        this.bmwId8SettingsSystemBrightness = bmwId8SettingsSystemBrightness;
+        this.bmwId8SettingsSystemCamera = bmwId8SettingsSystemCamera;
+        this.bmwId8SettingsSystemFramelay = bmwId8SettingsSystemFramelay;
+        this.bmwId8SettingsSystemFuel = bmwId8SettingsSystemFuel;
+        this.bmwId8SettingsSystemImg = bmwId8SettingsSystemImg;
+        this.bmwId8SettingsSystemLeftArrow = bmwId8SettingsSystemLeftArrow;
+        this.bmwId8SettingsSystemLines = bmwId8SettingsSystemLines;
+        this.bmwId8SettingsSystemMirror = bmwId8SettingsSystemMirror;
+        this.bmwId8SettingsSystemMotion = bmwId8SettingsSystemMotion;
+        this.bmwId8SettingsSystemMusic = bmwId8SettingsSystemMusic;
+        this.bmwId8SettingsSystemMute = bmwId8SettingsSystemMute;
+        this.bmwId8SettingsSystemRadar = bmwId8SettingsSystemRadar;
+        this.bmwId8SettingsSystemRightArrow = bmwId8SettingsSystemRightArrow;
+        this.bmwId8SettingsSystemScroll = bmwId8SettingsSystemScroll;
+        this.bmwId8SettingsSystemTemp = bmwId8SettingsSystemTemp;
+        this.bmwId8SettingsSystemVideo = bmwId8SettingsSystemVideo;
     }
 
     public BmwId8SettingsViewModel getViewModel() {
@@ -66,7 +66,7 @@ public abstract class BmwId8SettingsSystemLayoutBinding extends ViewDataBinding 
 
     @Deprecated
     public static BmwId8SettingsSystemLayoutBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BmwId8SettingsSystemLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_system_layout, root, attachToRoot, component);
+        return (BmwId8SettingsSystemLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_system_layout, root, attachToRoot, component);
     }
 
     public static BmwId8SettingsSystemLayoutBinding inflate(LayoutInflater inflater) {
@@ -75,7 +75,7 @@ public abstract class BmwId8SettingsSystemLayoutBinding extends ViewDataBinding 
 
     @Deprecated
     public static BmwId8SettingsSystemLayoutBinding inflate(LayoutInflater inflater, Object component) {
-        return (BmwId8SettingsSystemLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_system_layout, (ViewGroup) null, false, component);
+        return (BmwId8SettingsSystemLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_system_layout, null, false, component);
     }
 
     public static BmwId8SettingsSystemLayoutBinding bind(View view) {
@@ -84,6 +84,6 @@ public abstract class BmwId8SettingsSystemLayoutBinding extends ViewDataBinding 
 
     @Deprecated
     public static BmwId8SettingsSystemLayoutBinding bind(View view, Object component) {
-        return (BmwId8SettingsSystemLayoutBinding) bind(component, view, R.layout.bmw_id8_settings_system_layout);
+        return (BmwId8SettingsSystemLayoutBinding) bind(component, view, C0899R.C0902layout.bmw_id8_settings_system_layout);
     }
 }

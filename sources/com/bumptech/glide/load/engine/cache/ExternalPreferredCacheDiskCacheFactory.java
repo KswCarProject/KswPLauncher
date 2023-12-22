@@ -5,9 +5,10 @@ import com.bumptech.glide.load.engine.cache.DiskCache;
 import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory;
 import java.io.File;
 
+/* loaded from: classes.dex */
 public final class ExternalPreferredCacheDiskCacheFactory extends DiskLruCacheFactory {
     public ExternalPreferredCacheDiskCacheFactory(Context context) {
-        this(context, DiskCache.Factory.DEFAULT_DISK_CACHE_DIR, 262144000);
+        this(context, DiskCache.Factory.DEFAULT_DISK_CACHE_DIR, 262144000L);
     }
 
     public ExternalPreferredCacheDiskCacheFactory(Context context, long diskCacheSize) {
@@ -15,7 +16,7 @@ public final class ExternalPreferredCacheDiskCacheFactory extends DiskLruCacheFa
     }
 
     public ExternalPreferredCacheDiskCacheFactory(final Context context, final String diskCacheName, long diskCacheSize) {
-        super((DiskLruCacheFactory.CacheDirectoryGetter) new DiskLruCacheFactory.CacheDirectoryGetter() {
+        super(new DiskLruCacheFactory.CacheDirectoryGetter() { // from class: com.bumptech.glide.load.engine.cache.ExternalPreferredCacheDiskCacheFactory.1
             private File getInternalCacheDirectory() {
                 File cacheDirectory = context.getCacheDir();
                 if (cacheDirectory == null) {
@@ -27,10 +28,14 @@ public final class ExternalPreferredCacheDiskCacheFactory extends DiskLruCacheFa
                 return cacheDirectory;
             }
 
+            @Override // com.bumptech.glide.load.engine.cache.DiskLruCacheFactory.CacheDirectoryGetter
             public File getCacheDirectory() {
-                File cacheDirectory;
                 File internalCacheDirectory = getInternalCacheDirectory();
-                if ((internalCacheDirectory != null && internalCacheDirectory.exists()) || (cacheDirectory = context.getExternalCacheDir()) == null || !cacheDirectory.canWrite()) {
+                if (internalCacheDirectory != null && internalCacheDirectory.exists()) {
+                    return internalCacheDirectory;
+                }
+                File cacheDirectory = context.getExternalCacheDir();
+                if (cacheDirectory == null || !cacheDirectory.canWrite()) {
                     return internalCacheDirectory;
                 }
                 if (diskCacheName != null) {

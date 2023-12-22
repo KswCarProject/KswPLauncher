@@ -16,6 +16,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+/* loaded from: classes.dex */
 public final class GlideExecutor implements ExecutorService {
     private static final String ANIMATION_EXECUTOR_NAME = "animation";
     private static final String DEFAULT_DISK_CACHE_EXECUTOR_NAME = "disk-cache";
@@ -37,7 +38,7 @@ public final class GlideExecutor implements ExecutorService {
     }
 
     public static GlideExecutor newDiskCacheExecutor(int threadCount, String name, UncaughtThrowableStrategy uncaughtThrowableStrategy) {
-        return new GlideExecutor(new ThreadPoolExecutor(threadCount, threadCount, 0, TimeUnit.MILLISECONDS, new PriorityBlockingQueue(), new DefaultThreadFactory(name, uncaughtThrowableStrategy, true)));
+        return new GlideExecutor(new ThreadPoolExecutor(threadCount, threadCount, 0L, TimeUnit.MILLISECONDS, new PriorityBlockingQueue(), new DefaultThreadFactory(name, uncaughtThrowableStrategy, true)));
     }
 
     public static GlideExecutor newSourceExecutor() {
@@ -49,7 +50,7 @@ public final class GlideExecutor implements ExecutorService {
     }
 
     public static GlideExecutor newSourceExecutor(int threadCount, String name, UncaughtThrowableStrategy uncaughtThrowableStrategy) {
-        return new GlideExecutor(new ThreadPoolExecutor(threadCount, threadCount, 0, TimeUnit.MILLISECONDS, new PriorityBlockingQueue(), new DefaultThreadFactory(name, uncaughtThrowableStrategy, false)));
+        return new GlideExecutor(new ThreadPoolExecutor(threadCount, threadCount, 0L, TimeUnit.MILLISECONDS, new PriorityBlockingQueue(), new DefaultThreadFactory(name, uncaughtThrowableStrategy, false)));
     }
 
     public static GlideExecutor newUnlimitedSourceExecutor() {
@@ -57,65 +58,80 @@ public final class GlideExecutor implements ExecutorService {
     }
 
     public static GlideExecutor newAnimationExecutor() {
-        return newAnimationExecutor(calculateBestThreadCount() >= 4 ? 2 : 1, UncaughtThrowableStrategy.DEFAULT);
+        int bestThreadCount2 = calculateBestThreadCount();
+        int maximumPoolSize = bestThreadCount2 >= 4 ? 2 : 1;
+        return newAnimationExecutor(maximumPoolSize, UncaughtThrowableStrategy.DEFAULT);
     }
 
     public static GlideExecutor newAnimationExecutor(int threadCount, UncaughtThrowableStrategy uncaughtThrowableStrategy) {
         return new GlideExecutor(new ThreadPoolExecutor(0, threadCount, KEEP_ALIVE_TIME_MS, TimeUnit.MILLISECONDS, new PriorityBlockingQueue(), new DefaultThreadFactory(ANIMATION_EXECUTOR_NAME, uncaughtThrowableStrategy, true)));
     }
 
-    GlideExecutor(ExecutorService delegate2) {
-        this.delegate = delegate2;
+    GlideExecutor(ExecutorService delegate) {
+        this.delegate = delegate;
     }
 
+    @Override // java.util.concurrent.Executor
     public void execute(Runnable command) {
         this.delegate.execute(command);
     }
 
+    @Override // java.util.concurrent.ExecutorService
     public Future<?> submit(Runnable task) {
         return this.delegate.submit(task);
     }
 
+    @Override // java.util.concurrent.ExecutorService
     public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException {
         return this.delegate.invokeAll(tasks);
     }
 
+    @Override // java.util.concurrent.ExecutorService
     public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException {
         return this.delegate.invokeAll(tasks, timeout, unit);
     }
 
+    @Override // java.util.concurrent.ExecutorService
     public <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
-        return this.delegate.invokeAny(tasks);
+        return (T) this.delegate.invokeAny(tasks);
     }
 
+    @Override // java.util.concurrent.ExecutorService
     public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-        return this.delegate.invokeAny(tasks, timeout, unit);
+        return (T) this.delegate.invokeAny(tasks, timeout, unit);
     }
 
+    @Override // java.util.concurrent.ExecutorService
     public <T> Future<T> submit(Runnable task, T result) {
         return this.delegate.submit(task, result);
     }
 
+    @Override // java.util.concurrent.ExecutorService
     public <T> Future<T> submit(Callable<T> task) {
         return this.delegate.submit(task);
     }
 
+    @Override // java.util.concurrent.ExecutorService
     public void shutdown() {
         this.delegate.shutdown();
     }
 
+    @Override // java.util.concurrent.ExecutorService
     public List<Runnable> shutdownNow() {
         return this.delegate.shutdownNow();
     }
 
+    @Override // java.util.concurrent.ExecutorService
     public boolean isShutdown() {
         return this.delegate.isShutdown();
     }
 
+    @Override // java.util.concurrent.ExecutorService
     public boolean isTerminated() {
         return this.delegate.isTerminated();
     }
 
+    @Override // java.util.concurrent.ExecutorService
     public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
         return this.delegate.awaitTermination(timeout, unit);
     }
@@ -131,36 +147,42 @@ public final class GlideExecutor implements ExecutorService {
         return bestThreadCount;
     }
 
+    /* loaded from: classes.dex */
     public interface UncaughtThrowableStrategy {
         public static final UncaughtThrowableStrategy DEFAULT;
-        public static final UncaughtThrowableStrategy IGNORE = new UncaughtThrowableStrategy() {
+        public static final UncaughtThrowableStrategy IGNORE = new UncaughtThrowableStrategy() { // from class: com.bumptech.glide.load.engine.executor.GlideExecutor.UncaughtThrowableStrategy.1
+            @Override // com.bumptech.glide.load.engine.executor.GlideExecutor.UncaughtThrowableStrategy
             public void handle(Throwable t) {
             }
         };
         public static final UncaughtThrowableStrategy LOG;
-        public static final UncaughtThrowableStrategy THROW = new UncaughtThrowableStrategy() {
-            public void handle(Throwable t) {
-                if (t != null) {
-                    throw new RuntimeException("Request threw uncaught throwable", t);
-                }
-            }
-        };
+        public static final UncaughtThrowableStrategy THROW;
 
         void handle(Throwable th);
 
         static {
-            AnonymousClass2 r0 = new UncaughtThrowableStrategy() {
+            UncaughtThrowableStrategy uncaughtThrowableStrategy = new UncaughtThrowableStrategy() { // from class: com.bumptech.glide.load.engine.executor.GlideExecutor.UncaughtThrowableStrategy.2
+                @Override // com.bumptech.glide.load.engine.executor.GlideExecutor.UncaughtThrowableStrategy
                 public void handle(Throwable t) {
                     if (t != null && Log.isLoggable(GlideExecutor.TAG, 6)) {
                         Log.e(GlideExecutor.TAG, "Request threw uncaught throwable", t);
                     }
                 }
             };
-            LOG = r0;
-            DEFAULT = r0;
+            LOG = uncaughtThrowableStrategy;
+            THROW = new UncaughtThrowableStrategy() { // from class: com.bumptech.glide.load.engine.executor.GlideExecutor.UncaughtThrowableStrategy.3
+                @Override // com.bumptech.glide.load.engine.executor.GlideExecutor.UncaughtThrowableStrategy
+                public void handle(Throwable t) {
+                    if (t != null) {
+                        throw new RuntimeException("Request threw uncaught throwable", t);
+                    }
+                }
+            };
+            DEFAULT = uncaughtThrowableStrategy;
         }
     }
 
+    /* loaded from: classes.dex */
     private static final class DefaultThreadFactory implements ThreadFactory {
         private static final int DEFAULT_PRIORITY = 9;
         private final String name;
@@ -168,15 +190,17 @@ public final class GlideExecutor implements ExecutorService {
         private int threadNum;
         final UncaughtThrowableStrategy uncaughtThrowableStrategy;
 
-        DefaultThreadFactory(String name2, UncaughtThrowableStrategy uncaughtThrowableStrategy2, boolean preventNetworkOperations2) {
-            this.name = name2;
-            this.uncaughtThrowableStrategy = uncaughtThrowableStrategy2;
-            this.preventNetworkOperations = preventNetworkOperations2;
+        DefaultThreadFactory(String name, UncaughtThrowableStrategy uncaughtThrowableStrategy, boolean preventNetworkOperations) {
+            this.name = name;
+            this.uncaughtThrowableStrategy = uncaughtThrowableStrategy;
+            this.preventNetworkOperations = preventNetworkOperations;
         }
 
+        @Override // java.util.concurrent.ThreadFactory
         public synchronized Thread newThread(Runnable runnable) {
             Thread result;
-            result = new Thread(runnable, "glide-" + this.name + "-thread-" + this.threadNum) {
+            result = new Thread(runnable, "glide-" + this.name + "-thread-" + this.threadNum) { // from class: com.bumptech.glide.load.engine.executor.GlideExecutor.DefaultThreadFactory.1
+                @Override // java.lang.Thread, java.lang.Runnable
                 public void run() {
                     Process.setThreadPriority(9);
                     if (DefaultThreadFactory.this.preventNetworkOperations) {

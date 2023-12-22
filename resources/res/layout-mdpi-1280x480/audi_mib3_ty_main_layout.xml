@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="horizontal" android:tag="layout-mdpi-1280x480/audi_mib3_ty_main_layout_0" android:background="@drawable/audi_mib3_ty_main_bk" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:id="@+id/include_ll" android:tag="binding_1" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <include android:id="@+id/include" android:layout_width="120dp" android:layout_height="match_parent" android:layout_marginTop="70dp" android:layout_marginBottom="14dp" layout="@layout/audi_mib3_ty_main_left"/>
+    </LinearLayout>
+    <RelativeLayout android:orientation="vertical" android:layout_width="0dp" android:layout_height="match_parent" android:layout_marginTop="84dp" android:layout_weight="1">
+        <android.support.p001v4.view.ViewPager android:id="@+id/viewPage_audiMib3_ty" android:focusable="true" android:focusableInTouchMode="true" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="14dp" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:layout_alignParentBottom="true" android:overScrollMode="never" android:focusedByDefault="true"/>
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@+id/indicator_audiMib3_ty" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="20dp" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+</LinearLayout>

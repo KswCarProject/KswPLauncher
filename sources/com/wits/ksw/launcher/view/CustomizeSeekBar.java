@@ -3,17 +3,18 @@ package com.wits.ksw.launcher.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.LinearLayoutCompat;
+import android.support.p004v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import skin.support.content.res.SkinCompatResources;
 import skin.support.widget.SkinCompatSupportable;
 
+/* loaded from: classes16.dex */
 public class CustomizeSeekBar extends FrameLayout implements SkinCompatSupportable {
     private static final String TAG = CustomizeSeekBar.class.getSimpleName();
     private Drawable background;
@@ -21,28 +22,33 @@ public class CustomizeSeekBar extends FrameLayout implements SkinCompatSupportab
     private Drawable bgProgress;
     private LinearLayoutCompat linearLayoutCompat;
     private Context mContext;
-    private int mProgress = 0;
-    private float mx;
+    private int mProgress;
+
+    /* renamed from: mx */
+    private float f194mx;
     private MySeekBarChangeListener seekBarChangeListener;
     private float splitWidth;
     private TypedArray typedArray;
 
+    /* loaded from: classes16.dex */
     public interface MySeekBarChangeListener {
-        void onProgressChanged(CustomizeSeekBar customizeSeekBar);
+        void onProgressChanged(CustomizeSeekBar seekBar);
 
-        void onStopTrackingTouch(CustomizeSeekBar customizeSeekBar);
+        void onStopTrackingTouch(CustomizeSeekBar seekBar);
     }
 
     public CustomizeSeekBar(Context context) {
         super(context);
+        this.mProgress = 0;
         this.mContext = context;
     }
 
     public CustomizeSeekBar(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.mProgress = 0;
         this.mContext = context;
         setClickable(true);
-        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attrs, R.styleable.CustomizeSeekBar);
+        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attrs, C0899R.styleable.CustomizeSeekBar);
         this.typedArray = obtainStyledAttributes;
         this.background = obtainStyledAttributes.getDrawable(0);
         this.bgProgress = this.typedArray.getDrawable(2);
@@ -53,7 +59,8 @@ public class CustomizeSeekBar extends FrameLayout implements SkinCompatSupportab
             this.bgIndicator = SkinCompatResources.getInstance().getDrawable(this.typedArray.getResourceId(1, 1));
         }
         Log.e(TAG, "background =" + this.background + " bgProgress=" + this.bgProgress + " bgIndicator=" + this.bgIndicator + " mProgress" + this.mProgress);
-        this.splitWidth = ((float) this.bgProgress.getIntrinsicWidth()) / 100.0f;
+        int bgProgressWidth = this.bgProgress.getIntrinsicWidth();
+        this.splitWidth = bgProgressWidth / 100.0f;
         this.mProgress = 0;
         initView();
     }
@@ -71,7 +78,8 @@ public class CustomizeSeekBar extends FrameLayout implements SkinCompatSupportab
     private void addBackground() {
         removeAllViews();
         ImageView bgIv = new ImageView(this.mContext);
-        bgIv.setLayoutParams(new FrameLayout.LayoutParams(this.background.getIntrinsicWidth(), this.background.getIntrinsicHeight()));
+        ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(this.background.getIntrinsicWidth(), this.background.getIntrinsicHeight());
+        bgIv.setLayoutParams(params);
         bgIv.setBackground(this.background);
         addView(bgIv);
     }
@@ -79,59 +87,62 @@ public class CustomizeSeekBar extends FrameLayout implements SkinCompatSupportab
     public void addProgress(int progress) {
         ViewGroup.LayoutParams paramsLinerLayout;
         ViewGroup.LayoutParams paramsProgress;
-        if (this.bgProgress != null && this.bgIndicator != null) {
-            LinearLayoutCompat linearLayoutCompat2 = this.linearLayoutCompat;
-            if (linearLayoutCompat2 != null) {
-                removeView(linearLayoutCompat2);
-            }
-            this.mProgress = progress;
-            int width = (int) (this.splitWidth * ((float) progress));
-            if (width > this.bgProgress.getIntrinsicWidth()) {
-                width = this.bgProgress.getIntrinsicWidth();
-            }
-            this.linearLayoutCompat = new LinearLayoutCompat(this.mContext);
-            if (this.mProgress == 99) {
-                paramsLinerLayout = new FrameLayout.LayoutParams(this.bgProgress.getIntrinsicWidth(), this.bgProgress.getIntrinsicHeight());
-            } else {
-                paramsLinerLayout = new FrameLayout.LayoutParams(this.bgIndicator.getIntrinsicWidth() + width, this.bgProgress.getIntrinsicHeight());
-            }
-            this.linearLayoutCompat.setLayoutParams(paramsLinerLayout);
-            this.linearLayoutCompat.setOrientation(0);
-            if (width != 0) {
-                ImageView ivProgress = new ImageView(this.mContext);
-                if (this.mProgress == 99) {
-                    paramsProgress = new FrameLayout.LayoutParams(this.bgProgress.getIntrinsicWidth(), this.bgProgress.getIntrinsicHeight());
-                } else {
-                    paramsProgress = new FrameLayout.LayoutParams(width, this.bgProgress.getIntrinsicHeight());
-                }
-                ivProgress.setLayoutParams(paramsProgress);
-                ivProgress.setBackground(this.bgProgress);
-                ivProgress.setScaleType(ImageView.ScaleType.FIT_XY);
-                this.linearLayoutCompat.addView(ivProgress);
-            }
-            int i = this.mProgress;
-            if (i > 0 && i < 99) {
-                ImageView ivIndicator = new ImageView(this.mContext);
-                ivIndicator.setLayoutParams(new FrameLayout.LayoutParams(this.bgIndicator.getIntrinsicWidth(), this.bgIndicator.getIntrinsicHeight()));
-                ivIndicator.setBackground(this.bgIndicator);
-                this.linearLayoutCompat.addView(ivIndicator);
-            }
-            addView(this.linearLayoutCompat);
-            invalidate();
+        if (this.bgProgress == null || this.bgIndicator == null) {
+            return;
         }
+        LinearLayoutCompat linearLayoutCompat = this.linearLayoutCompat;
+        if (linearLayoutCompat != null) {
+            removeView(linearLayoutCompat);
+        }
+        this.mProgress = progress;
+        int width = (int) (this.splitWidth * progress);
+        if (width > this.bgProgress.getIntrinsicWidth()) {
+            width = this.bgProgress.getIntrinsicWidth();
+        }
+        this.linearLayoutCompat = new LinearLayoutCompat(this.mContext);
+        if (this.mProgress == 99) {
+            paramsLinerLayout = new FrameLayout.LayoutParams(this.bgProgress.getIntrinsicWidth(), this.bgProgress.getIntrinsicHeight());
+        } else {
+            paramsLinerLayout = new FrameLayout.LayoutParams(this.bgIndicator.getIntrinsicWidth() + width, this.bgProgress.getIntrinsicHeight());
+        }
+        this.linearLayoutCompat.setLayoutParams(paramsLinerLayout);
+        this.linearLayoutCompat.setOrientation(0);
+        if (width != 0) {
+            ImageView ivProgress = new ImageView(this.mContext);
+            if (this.mProgress == 99) {
+                paramsProgress = new FrameLayout.LayoutParams(this.bgProgress.getIntrinsicWidth(), this.bgProgress.getIntrinsicHeight());
+            } else {
+                paramsProgress = new FrameLayout.LayoutParams(width, this.bgProgress.getIntrinsicHeight());
+            }
+            ivProgress.setLayoutParams(paramsProgress);
+            ivProgress.setBackground(this.bgProgress);
+            ivProgress.setScaleType(ImageView.ScaleType.FIT_XY);
+            this.linearLayoutCompat.addView(ivProgress);
+        }
+        int i = this.mProgress;
+        if (i > 0 && i < 99) {
+            ImageView ivIndicator = new ImageView(this.mContext);
+            ViewGroup.LayoutParams paramsProgress2 = new FrameLayout.LayoutParams(this.bgIndicator.getIntrinsicWidth(), this.bgIndicator.getIntrinsicHeight());
+            ivIndicator.setLayoutParams(paramsProgress2);
+            ivIndicator.setBackground(this.bgIndicator);
+            this.linearLayoutCompat.addView(ivIndicator);
+        }
+        addView(this.linearLayoutCompat);
+        invalidate();
     }
 
-    public static void setProgress(CustomizeSeekBar seekBar, int progress) {
+    public static void setProgress(final CustomizeSeekBar seekBar, int progress) {
         Log.e(TAG, "setProgress progress" + progress);
         if (seekBar != null) {
             seekBar.addProgress(progress);
         }
     }
 
-    public void setOnSeekBarChangeListener(MySeekBarChangeListener seekBarChangeListener2) {
-        this.seekBarChangeListener = seekBarChangeListener2;
+    public void setOnSeekBarChangeListener(MySeekBarChangeListener seekBarChangeListener) {
+        this.seekBarChangeListener = seekBarChangeListener;
     }
 
+    @Override // android.view.ViewGroup, android.view.View
     public boolean dispatchTouchEvent(MotionEvent ev) {
         Log.e(TAG, "--dispatchTouchEvent---->" + ev.getAction());
         if (this.seekBarChangeListener == null) {
@@ -148,9 +159,9 @@ public class CustomizeSeekBar extends FrameLayout implements SkinCompatSupportab
 
     private void calculateTouchEvent(MotionEvent ev) {
         float x = ev.getX();
-        this.mx = x;
+        this.f194mx = x;
         int progress = (int) (x / this.splitWidth);
-        Log.e(TAG, " calculateTouchEvent progress" + progress + " mx=" + this.mx + " splitWidth=" + this.splitWidth);
+        Log.e(TAG, " calculateTouchEvent progress" + progress + " mx=" + this.f194mx + " splitWidth=" + this.splitWidth);
         addProgress(progress);
         if (ev.getAction() == 2) {
             this.seekBarChangeListener.onProgressChanged(this);
@@ -162,6 +173,7 @@ public class CustomizeSeekBar extends FrameLayout implements SkinCompatSupportab
         }
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         Log.e(TAG, "applySkin");
         if (SkinCompatResources.getInstance() != null && this.typedArray != null) {
@@ -172,11 +184,13 @@ public class CustomizeSeekBar extends FrameLayout implements SkinCompatSupportab
         }
     }
 
+    @Override // android.view.ViewGroup
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         Log.e(TAG, "--onInterceptTouchEvent---->" + ev.getAction());
         return super.onInterceptTouchEvent(ev);
     }
 
+    @Override // android.view.View
     public boolean onTouchEvent(MotionEvent event) {
         Log.e(TAG, "--onTouchEvent---->" + event.getAction());
         return super.onTouchEvent(event);

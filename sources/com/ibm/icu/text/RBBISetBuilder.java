@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 class RBBISetBuilder {
     static final /* synthetic */ boolean $assertionsDisabled = false;
     static final int DICT_BIT = 16384;
@@ -19,6 +20,7 @@ class RBBISetBuilder {
     boolean fSawBOF;
     Trie2Writable fTrie;
 
+    /* loaded from: classes.dex */
     static class RangeDescriptor {
         int fEndChar;
         List<RBBINode> fIncludesSets;
@@ -37,8 +39,7 @@ class RBBISetBuilder {
             this.fIncludesSets = new ArrayList(other.fIncludesSets);
         }
 
-        /* access modifiers changed from: package-private */
-        public void split(int where) {
+        void split(int where) {
             Assert.assrt(where > this.fStartChar && where <= this.fEndChar);
             RangeDescriptor nr = new RangeDescriptor(this);
             nr.fStartChar = where;
@@ -47,13 +48,13 @@ class RBBISetBuilder {
             this.fNext = nr;
         }
 
-        /* access modifiers changed from: package-private */
-        public void setDictionaryFlag() {
+        void setDictionaryFlag() {
             RBBINode varRef;
             for (int i = 0; i < this.fIncludesSets.size(); i++) {
+                RBBINode usetNode = this.fIncludesSets.get(i);
                 String setName = "";
-                RBBINode setRef = this.fIncludesSets.get(i).fParent;
-                if (!(setRef == null || (varRef = setRef.fParent) == null || varRef.fType != 2)) {
+                RBBINode setRef = usetNode.fParent;
+                if (setRef != null && (varRef = setRef.fParent) != null && varRef.fType == 2) {
                     setName = varRef.fText;
                 }
                 if (setName.equals("dictionary")) {
@@ -68,8 +69,7 @@ class RBBISetBuilder {
         this.fRB = rb;
     }
 
-    /* access modifiers changed from: package-private */
-    public void buildRanges() {
+    void buildRanges() {
         if (this.fRB.fDebugEnv != null && this.fRB.fDebugEnv.indexOf("usets") >= 0) {
             printSets();
         }
@@ -110,13 +110,15 @@ class RBBISetBuilder {
         for (RangeDescriptor rlRange2 = this.fRangeList; rlRange2 != null; rlRange2 = rlRange2.fNext) {
             RangeDescriptor rlSearchRange = this.fRangeList;
             while (true) {
-                if (rlSearchRange == rlRange2) {
-                    break;
-                } else if (rlRange2.fIncludesSets.equals(rlSearchRange.fIncludesSets)) {
-                    rlRange2.fNum = rlSearchRange.fNum;
-                    break;
+                if (rlSearchRange != rlRange2) {
+                    if (!rlRange2.fIncludesSets.equals(rlSearchRange.fIncludesSets)) {
+                        rlSearchRange = rlSearchRange.fNext;
+                    } else {
+                        rlRange2.fNum = rlSearchRange.fNum;
+                        break;
+                    }
                 } else {
-                    rlSearchRange = rlSearchRange.fNext;
+                    break;
                 }
             }
             if (rlRange2.fNum == 0) {
@@ -129,10 +131,10 @@ class RBBISetBuilder {
         }
         for (RBBINode usetNode2 : this.fRB.fUSetNodes) {
             UnicodeSet inputSet2 = usetNode2.fInputSet;
-            if (inputSet2.contains((CharSequence) "eof")) {
+            if (inputSet2.contains("eof")) {
                 addValToSet(usetNode2, 1);
             }
-            if (inputSet2.contains((CharSequence) "bof")) {
+            if (inputSet2.contains("bof")) {
                 addValToSet(usetNode2, 2);
                 this.fSawBOF = true;
             }
@@ -140,41 +142,39 @@ class RBBISetBuilder {
         if (this.fRB.fDebugEnv != null && this.fRB.fDebugEnv.indexOf("rgroup") >= 0) {
             printRangeGroups();
         }
-        if (this.fRB.fDebugEnv != null && this.fRB.fDebugEnv.indexOf("esets") >= 0) {
-            printSets();
+        if (this.fRB.fDebugEnv == null || this.fRB.fDebugEnv.indexOf("esets") < 0) {
+            return;
         }
+        printSets();
     }
 
-    /* access modifiers changed from: package-private */
-    public void buildTrie() {
+    void buildTrie() {
         this.fTrie = new Trie2Writable(0, 0);
         for (RangeDescriptor rlRange = this.fRangeList; rlRange != null; rlRange = rlRange.fNext) {
             this.fTrie.setRange(rlRange.fStartChar, rlRange.fEndChar, rlRange.fNum, true);
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void mergeCategories(RBBIRuleBuilder.IntPair categories) {
+    void mergeCategories(RBBIRuleBuilder.IntPair categories) {
         if (categories.first < 1) {
             throw new AssertionError();
-        } else if (categories.second > categories.first) {
-            for (RangeDescriptor rd = this.fRangeList; rd != null; rd = rd.fNext) {
-                int rangeNum = rd.fNum & -16385;
-                int rangeDict = rd.fNum & 16384;
-                if (rangeNum == categories.second) {
-                    rd.fNum = categories.first | rangeDict;
-                } else if (rangeNum > categories.second) {
-                    rd.fNum--;
-                }
-            }
-            this.fGroupCount--;
-        } else {
+        }
+        if (categories.second <= categories.first) {
             throw new AssertionError();
         }
+        for (RangeDescriptor rd = this.fRangeList; rd != null; rd = rd.fNext) {
+            int rangeNum = rd.fNum & (-16385);
+            int rangeDict = rd.fNum & 16384;
+            if (rangeNum == categories.second) {
+                rd.fNum = categories.first | rangeDict;
+            } else if (rangeNum > categories.second) {
+                rd.fNum--;
+            }
+        }
+        this.fGroupCount--;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getTrieSize() {
+    int getTrieSize() {
         if (this.fFrozenTrie == null) {
             this.fFrozenTrie = this.fTrie.toTrie2_16();
             this.fTrie = null;
@@ -182,8 +182,7 @@ class RBBISetBuilder {
         return this.fFrozenTrie.getSerializedLength();
     }
 
-    /* access modifiers changed from: package-private */
-    public void serializeTrie(OutputStream os) throws IOException {
+    void serializeTrie(OutputStream os) throws IOException {
         if (this.fFrozenTrie == null) {
             this.fFrozenTrie = this.fTrie.toTrie2_16();
             this.fTrie = null;
@@ -191,15 +190,13 @@ class RBBISetBuilder {
         this.fFrozenTrie.serialize(os);
     }
 
-    /* access modifiers changed from: package-private */
-    public void addValToSets(List<RBBINode> sets, int val) {
+    void addValToSets(List<RBBINode> sets, int val) {
         for (RBBINode usetNode : sets) {
             addValToSet(usetNode, val);
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void addValToSet(RBBINode usetNode, int val) {
+    void addValToSet(RBBINode usetNode, int val) {
         RBBINode leafNode = new RBBINode(3);
         leafNode.fVal = val;
         if (usetNode.fLeftChild == null) {
@@ -216,36 +213,34 @@ class RBBISetBuilder {
         orNode.fParent = usetNode;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getNumCharCategories() {
+    int getNumCharCategories() {
         return this.fGroupCount + 3;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean sawBOF() {
+    boolean sawBOF() {
         return this.fSawBOF;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getFirstChar(int category) {
+    int getFirstChar(int category) {
         for (RangeDescriptor rlRange = this.fRangeList; rlRange != null; rlRange = rlRange.fNext) {
             if (rlRange.fNum == category) {
-                return rlRange.fStartChar;
+                int retVal = rlRange.fStartChar;
+                return retVal;
             }
         }
         return -1;
     }
 
-    /* access modifiers changed from: package-private */
-    public void printRanges() {
+    void printRanges() {
         RBBINode varRef;
         System.out.print("\n\n Nonoverlapping Ranges ...\n");
         for (RangeDescriptor rlRange = this.fRangeList; rlRange != null; rlRange = rlRange.fNext) {
             System.out.print(" " + rlRange.fNum + "   " + rlRange.fStartChar + "-" + rlRange.fEndChar);
             for (int i = 0; i < rlRange.fIncludesSets.size(); i++) {
+                RBBINode usetNode = rlRange.fIncludesSets.get(i);
                 String setName = "anon";
-                RBBINode setRef = rlRange.fIncludesSets.get(i).fParent;
-                if (!(setRef == null || (varRef = setRef.fParent) == null || varRef.fType != 2)) {
+                RBBINode setRef = usetNode.fParent;
+                if (setRef != null && (varRef = setRef.fParent) != null && varRef.fType == 2) {
                     setName = varRef.fText;
                 }
                 System.out.print(setName);
@@ -255,8 +250,7 @@ class RBBISetBuilder {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void printRangeGroups() {
+    void printRangeGroups() {
         RBBINode varRef;
         int lastPrintedGroupNum = 0;
         System.out.print("\nRanges grouped by Unicode Set Membership...\n");
@@ -272,9 +266,10 @@ class RBBISetBuilder {
                     System.out.print(" <DICT> ");
                 }
                 for (int i = 0; i < rlRange.fIncludesSets.size(); i++) {
+                    RBBINode usetNode = rlRange.fIncludesSets.get(i);
                     String setName = "anon";
-                    RBBINode setRef = rlRange.fIncludesSets.get(i).fParent;
-                    if (!(setRef == null || (varRef = setRef.fParent) == null || varRef.fType != 2)) {
+                    RBBINode setRef = usetNode.fParent;
+                    if (setRef != null && (varRef = setRef.fParent) != null && varRef.fType == 2) {
                         setName = varRef.fText;
                     }
                     System.out.print(setName);
@@ -299,8 +294,7 @@ class RBBISetBuilder {
         System.out.print("\n");
     }
 
-    /* access modifiers changed from: package-private */
-    public void printSets() {
+    void printSets() {
         RBBINode varRef;
         System.out.print("\n\nUnicode Sets List\n------------------\n");
         for (int i = 0; i < this.fRB.fUSetNodes.size(); i++) {
@@ -308,7 +302,7 @@ class RBBISetBuilder {
             RBBINode.printInt(2, i);
             String setName = "anonymous";
             RBBINode setRef = usetNode.fParent;
-            if (!(setRef == null || (varRef = setRef.fParent) == null || varRef.fType != 2)) {
+            if (setRef != null && (varRef = setRef.fParent) != null && varRef.fType == 2) {
                 setName = varRef.fText;
             }
             System.out.print("  " + setName);

@@ -3,6 +3,7 @@ package android.support.constraint.motion;
 import android.os.Build;
 import android.support.constraint.ConstraintAttribute;
 import android.support.constraint.motion.utils.CurveFit;
+import android.support.p001v4.app.NotificationCompat;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
@@ -12,12 +13,13 @@ import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
+/* loaded from: classes.dex */
 public abstract class SplineSet {
     private static final String TAG = "SplineSet";
     private int count;
     protected CurveFit mCurveFit;
-    protected int[] mTimePoints = new int[10];
     private String mType;
+    protected int[] mTimePoints = new int[10];
     protected float[] mValues = new float[10];
 
     public abstract void setProperty(View view, float f);
@@ -26,7 +28,7 @@ public abstract class SplineSet {
         String str = this.mType;
         DecimalFormat df = new DecimalFormat("##.##");
         for (int i = 0; i < this.count; i++) {
-            str = str + "[" + this.mTimePoints[i] + " , " + df.format((double) this.mValues[i]) + "] ";
+            str = str + "[" + this.mTimePoints[i] + " , " + df.format(this.mValues[i]) + "] ";
         }
         return str;
     }
@@ -36,11 +38,11 @@ public abstract class SplineSet {
     }
 
     public float get(float t) {
-        return (float) this.mCurveFit.getPos((double) t, 0);
+        return (float) this.mCurveFit.getPos(t, 0);
     }
 
     public float getSlope(float t) {
-        return (float) this.mCurveFit.getSlope((double) t, 0);
+        return (float) this.mCurveFit.getSlope(t, 0);
     }
 
     public CurveFit getCurveFit() {
@@ -51,219 +53,162 @@ public abstract class SplineSet {
         return new CustomSet(str, attrList);
     }
 
-    /* JADX WARNING: Can't fix incorrect switch cases order */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    static android.support.constraint.motion.SplineSet makeSpline(java.lang.String r1) {
-        /*
-            int r0 = r1.hashCode()
-            switch(r0) {
-                case -1249320806: goto L_0x00b6;
-                case -1249320805: goto L_0x00ac;
-                case -1225497657: goto L_0x00a0;
-                case -1225497656: goto L_0x0094;
-                case -1225497655: goto L_0x0088;
-                case -1001078227: goto L_0x007d;
-                case -908189618: goto L_0x0072;
-                case -908189617: goto L_0x0067;
-                case -797520672: goto L_0x005b;
-                case -760884510: goto L_0x004f;
-                case -760884509: goto L_0x0043;
-                case -40300674: goto L_0x0038;
-                case -4379043: goto L_0x002d;
-                case 37232917: goto L_0x0021;
-                case 92909918: goto L_0x0016;
-                case 156108012: goto L_0x0009;
-                default: goto L_0x0007;
-            }
-        L_0x0007:
-            goto L_0x00c0
-        L_0x0009:
-            java.lang.String r0 = "waveOffset"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 10
-            goto L_0x00c1
-        L_0x0016:
-            java.lang.String r0 = "alpha"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 0
-            goto L_0x00c1
-        L_0x0021:
-            java.lang.String r0 = "transitionPathRotate"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 7
-            goto L_0x00c1
-        L_0x002d:
-            java.lang.String r0 = "elevation"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 1
-            goto L_0x00c1
-        L_0x0038:
-            java.lang.String r0 = "rotation"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 2
-            goto L_0x00c1
-        L_0x0043:
-            java.lang.String r0 = "transformPivotY"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 6
-            goto L_0x00c1
-        L_0x004f:
-            java.lang.String r0 = "transformPivotX"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 5
-            goto L_0x00c1
-        L_0x005b:
-            java.lang.String r0 = "waveVariesBy"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 11
-            goto L_0x00c1
-        L_0x0067:
-            java.lang.String r0 = "scaleY"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 9
-            goto L_0x00c1
-        L_0x0072:
-            java.lang.String r0 = "scaleX"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 8
-            goto L_0x00c1
-        L_0x007d:
-            java.lang.String r0 = "progress"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 15
-            goto L_0x00c1
-        L_0x0088:
-            java.lang.String r0 = "translationZ"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 14
-            goto L_0x00c1
-        L_0x0094:
-            java.lang.String r0 = "translationY"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 13
-            goto L_0x00c1
-        L_0x00a0:
-            java.lang.String r0 = "translationX"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 12
-            goto L_0x00c1
-        L_0x00ac:
-            java.lang.String r0 = "rotationY"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 4
-            goto L_0x00c1
-        L_0x00b6:
-            java.lang.String r0 = "rotationX"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 3
-            goto L_0x00c1
-        L_0x00c0:
-            r0 = -1
-        L_0x00c1:
-            switch(r0) {
-                case 0: goto L_0x0120;
-                case 1: goto L_0x011a;
-                case 2: goto L_0x0114;
-                case 3: goto L_0x010e;
-                case 4: goto L_0x0108;
-                case 5: goto L_0x0102;
-                case 6: goto L_0x00fc;
-                case 7: goto L_0x00f6;
-                case 8: goto L_0x00f0;
-                case 9: goto L_0x00ea;
-                case 10: goto L_0x00e4;
-                case 11: goto L_0x00de;
-                case 12: goto L_0x00d8;
-                case 13: goto L_0x00d2;
-                case 14: goto L_0x00cc;
-                case 15: goto L_0x00c6;
-                default: goto L_0x00c4;
-            }
-        L_0x00c4:
-            r0 = 0
-            return r0
-        L_0x00c6:
-            android.support.constraint.motion.SplineSet$ProgressSet r0 = new android.support.constraint.motion.SplineSet$ProgressSet
-            r0.<init>()
-            return r0
-        L_0x00cc:
-            android.support.constraint.motion.SplineSet$TranslationZset r0 = new android.support.constraint.motion.SplineSet$TranslationZset
-            r0.<init>()
-            return r0
-        L_0x00d2:
-            android.support.constraint.motion.SplineSet$TranslationYset r0 = new android.support.constraint.motion.SplineSet$TranslationYset
-            r0.<init>()
-            return r0
-        L_0x00d8:
-            android.support.constraint.motion.SplineSet$TranslationXset r0 = new android.support.constraint.motion.SplineSet$TranslationXset
-            r0.<init>()
-            return r0
-        L_0x00de:
-            android.support.constraint.motion.SplineSet$AlphaSet r0 = new android.support.constraint.motion.SplineSet$AlphaSet
-            r0.<init>()
-            return r0
-        L_0x00e4:
-            android.support.constraint.motion.SplineSet$AlphaSet r0 = new android.support.constraint.motion.SplineSet$AlphaSet
-            r0.<init>()
-            return r0
-        L_0x00ea:
-            android.support.constraint.motion.SplineSet$ScaleYset r0 = new android.support.constraint.motion.SplineSet$ScaleYset
-            r0.<init>()
-            return r0
-        L_0x00f0:
-            android.support.constraint.motion.SplineSet$ScaleXset r0 = new android.support.constraint.motion.SplineSet$ScaleXset
-            r0.<init>()
-            return r0
-        L_0x00f6:
-            android.support.constraint.motion.SplineSet$PathRotate r0 = new android.support.constraint.motion.SplineSet$PathRotate
-            r0.<init>()
-            return r0
-        L_0x00fc:
-            android.support.constraint.motion.SplineSet$PivotYset r0 = new android.support.constraint.motion.SplineSet$PivotYset
-            r0.<init>()
-            return r0
-        L_0x0102:
-            android.support.constraint.motion.SplineSet$PivotXset r0 = new android.support.constraint.motion.SplineSet$PivotXset
-            r0.<init>()
-            return r0
-        L_0x0108:
-            android.support.constraint.motion.SplineSet$RotationYset r0 = new android.support.constraint.motion.SplineSet$RotationYset
-            r0.<init>()
-            return r0
-        L_0x010e:
-            android.support.constraint.motion.SplineSet$RotationXset r0 = new android.support.constraint.motion.SplineSet$RotationXset
-            r0.<init>()
-            return r0
-        L_0x0114:
-            android.support.constraint.motion.SplineSet$RotationSet r0 = new android.support.constraint.motion.SplineSet$RotationSet
-            r0.<init>()
-            return r0
-        L_0x011a:
-            android.support.constraint.motion.SplineSet$ElevationSet r0 = new android.support.constraint.motion.SplineSet$ElevationSet
-            r0.<init>()
-            return r0
-        L_0x0120:
-            android.support.constraint.motion.SplineSet$AlphaSet r0 = new android.support.constraint.motion.SplineSet$AlphaSet
-            r0.<init>()
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.support.constraint.motion.SplineSet.makeSpline(java.lang.String):android.support.constraint.motion.SplineSet");
+    /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
+    static SplineSet makeSpline(String str) {
+        char c;
+        switch (str.hashCode()) {
+            case -1249320806:
+                if (str.equals("rotationX")) {
+                    c = 3;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1249320805:
+                if (str.equals("rotationY")) {
+                    c = 4;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1225497657:
+                if (str.equals("translationX")) {
+                    c = '\f';
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1225497656:
+                if (str.equals("translationY")) {
+                    c = '\r';
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1225497655:
+                if (str.equals("translationZ")) {
+                    c = 14;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1001078227:
+                if (str.equals(NotificationCompat.CATEGORY_PROGRESS)) {
+                    c = 15;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -908189618:
+                if (str.equals("scaleX")) {
+                    c = '\b';
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -908189617:
+                if (str.equals("scaleY")) {
+                    c = '\t';
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -797520672:
+                if (str.equals("waveVariesBy")) {
+                    c = 11;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -760884510:
+                if (str.equals("transformPivotX")) {
+                    c = 5;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -760884509:
+                if (str.equals("transformPivotY")) {
+                    c = 6;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -40300674:
+                if (str.equals("rotation")) {
+                    c = 2;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -4379043:
+                if (str.equals("elevation")) {
+                    c = 1;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 37232917:
+                if (str.equals("transitionPathRotate")) {
+                    c = 7;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 92909918:
+                if (str.equals("alpha")) {
+                    c = 0;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 156108012:
+                if (str.equals("waveOffset")) {
+                    c = '\n';
+                    break;
+                }
+                c = '\uffff';
+                break;
+            default:
+                c = '\uffff';
+                break;
+        }
+        switch (c) {
+            case 0:
+                return new AlphaSet();
+            case 1:
+                return new ElevationSet();
+            case 2:
+                return new RotationSet();
+            case 3:
+                return new RotationXset();
+            case 4:
+                return new RotationYset();
+            case 5:
+                return new PivotXset();
+            case 6:
+                return new PivotYset();
+            case 7:
+                return new PathRotate();
+            case '\b':
+                return new ScaleXset();
+            case '\t':
+                return new ScaleYset();
+            case '\n':
+                return new AlphaSet();
+            case 11:
+                return new AlphaSet();
+            case '\f':
+                return new TranslationXset();
+            case '\r':
+                return new TranslationYset();
+            case 14:
+                return new TranslationZset();
+            case 15:
+                return new ProgressSet();
+            default:
+                return null;
+        }
     }
 
     public void setPoint(int position, float value) {
@@ -281,40 +226,40 @@ public abstract class SplineSet {
     }
 
     public void setup(int curveType) {
-        int i = this.count;
-        if (i != 0) {
-            Sort.doubleQuickSort(this.mTimePoints, this.mValues, 0, i - 1);
-            int unique = 1;
-            for (int i2 = 1; i2 < this.count; i2++) {
-                int[] iArr = this.mTimePoints;
-                if (iArr[i2 - 1] != iArr[i2]) {
-                    unique++;
-                }
-            }
-            double[] time = new double[unique];
-            int[] iArr2 = new int[2];
-            iArr2[1] = 1;
-            iArr2[0] = unique;
-            double[][] values = (double[][]) Array.newInstance(double.class, iArr2);
-            int k = 0;
-            for (int i3 = 0; i3 < this.count; i3++) {
-                if (i3 > 0) {
-                    int[] iArr3 = this.mTimePoints;
-                    if (iArr3[i3] == iArr3[i3 - 1]) {
-                    }
-                }
-                time[k] = ((double) this.mTimePoints[i3]) * 0.01d;
-                values[k][0] = (double) this.mValues[i3];
-                k++;
-            }
-            this.mCurveFit = CurveFit.get(curveType, time, values);
+        int i;
+        int i2 = this.count;
+        if (i2 == 0) {
+            return;
         }
+        Sort.doubleQuickSort(this.mTimePoints, this.mValues, 0, i2 - 1);
+        int unique = 1;
+        for (int i3 = 1; i3 < this.count; i3++) {
+            int[] iArr = this.mTimePoints;
+            if (iArr[i3 - 1] != iArr[i3]) {
+                unique++;
+            }
+        }
+        double[] time = new double[unique];
+        double[][] values = (double[][]) Array.newInstance(double.class, unique, 1);
+        int k = 0;
+        while (i < this.count) {
+            if (i > 0) {
+                int[] iArr2 = this.mTimePoints;
+                i = iArr2[i] == iArr2[i + (-1)] ? i + 1 : 0;
+            }
+            time[k] = this.mTimePoints[i] * 0.01d;
+            values[k][0] = this.mValues[i];
+            k++;
+        }
+        this.mCurveFit = CurveFit.get(curveType, time, values);
     }
 
+    /* loaded from: classes.dex */
     static class ElevationSet extends SplineSet {
         ElevationSet() {
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setProperty(View view, float t) {
             if (Build.VERSION.SDK_INT >= 21) {
                 view.setElevation(get(t));
@@ -322,64 +267,78 @@ public abstract class SplineSet {
         }
     }
 
+    /* loaded from: classes.dex */
     static class AlphaSet extends SplineSet {
         AlphaSet() {
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setProperty(View view, float t) {
             view.setAlpha(get(t));
         }
     }
 
+    /* loaded from: classes.dex */
     static class RotationSet extends SplineSet {
         RotationSet() {
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setProperty(View view, float t) {
             view.setRotation(get(t));
         }
     }
 
+    /* loaded from: classes.dex */
     static class RotationXset extends SplineSet {
         RotationXset() {
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setProperty(View view, float t) {
             view.setRotationX(get(t));
         }
     }
 
+    /* loaded from: classes.dex */
     static class RotationYset extends SplineSet {
         RotationYset() {
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setProperty(View view, float t) {
             view.setRotationY(get(t));
         }
     }
 
+    /* loaded from: classes.dex */
     static class PivotXset extends SplineSet {
         PivotXset() {
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setProperty(View view, float t) {
             view.setPivotX(get(t));
         }
     }
 
+    /* loaded from: classes.dex */
     static class PivotYset extends SplineSet {
         PivotYset() {
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setProperty(View view, float t) {
             view.setPivotY(get(t));
         }
     }
 
+    /* loaded from: classes.dex */
     static class PathRotate extends SplineSet {
         PathRotate() {
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setProperty(View view, float t) {
         }
 
@@ -388,46 +347,56 @@ public abstract class SplineSet {
         }
     }
 
+    /* loaded from: classes.dex */
     static class ScaleXset extends SplineSet {
         ScaleXset() {
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setProperty(View view, float t) {
             view.setScaleX(get(t));
         }
     }
 
+    /* loaded from: classes.dex */
     static class ScaleYset extends SplineSet {
         ScaleYset() {
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setProperty(View view, float t) {
             view.setScaleY(get(t));
         }
     }
 
+    /* loaded from: classes.dex */
     static class TranslationXset extends SplineSet {
         TranslationXset() {
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setProperty(View view, float t) {
             view.setTranslationX(get(t));
         }
     }
 
+    /* loaded from: classes.dex */
     static class TranslationYset extends SplineSet {
         TranslationYset() {
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setProperty(View view, float t) {
             view.setTranslationY(get(t));
         }
     }
 
+    /* loaded from: classes.dex */
     static class TranslationZset extends SplineSet {
         TranslationZset() {
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setProperty(View view, float t) {
             if (Build.VERSION.SDK_INT >= 21) {
                 view.setTranslationZ(get(t));
@@ -435,6 +404,7 @@ public abstract class SplineSet {
         }
     }
 
+    /* loaded from: classes.dex */
     static class CustomSet extends SplineSet {
         String mAttributeName;
         SparseArray<ConstraintAttribute> mConstraintAttributeList;
@@ -445,31 +415,31 @@ public abstract class SplineSet {
             this.mConstraintAttributeList = attrList;
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setup(int curveType) {
             int size = this.mConstraintAttributeList.size();
             int dimensionality = this.mConstraintAttributeList.valueAt(0).noOfInterpValues();
             double[] time = new double[size];
             this.mTempValues = new float[dimensionality];
-            int[] iArr = new int[2];
-            iArr[1] = dimensionality;
-            iArr[0] = size;
-            double[][] values = (double[][]) Array.newInstance(double.class, iArr);
+            double[][] values = (double[][]) Array.newInstance(double.class, size, dimensionality);
             for (int i = 0; i < size; i++) {
-                time[i] = ((double) this.mConstraintAttributeList.keyAt(i)) * 0.01d;
-                this.mConstraintAttributeList.valueAt(i).getValuesToInterpolate(this.mTempValues);
+                int key = this.mConstraintAttributeList.keyAt(i);
+                ConstraintAttribute ca = this.mConstraintAttributeList.valueAt(i);
+                time[i] = key * 0.01d;
+                ca.getValuesToInterpolate(this.mTempValues);
                 int k = 0;
                 while (true) {
                     float[] fArr = this.mTempValues;
-                    if (k >= fArr.length) {
-                        break;
+                    if (k < fArr.length) {
+                        values[i][k] = fArr[k];
+                        k++;
                     }
-                    values[i][k] = (double) fArr[k];
-                    k++;
                 }
             }
             this.mCurveFit = CurveFit.get(curveType, time, values);
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setPoint(int position, float value) {
             throw new RuntimeException("don't call for custom attribute call setPoint(pos, ConstraintAttribute)");
         }
@@ -478,31 +448,35 @@ public abstract class SplineSet {
             this.mConstraintAttributeList.append(position, value);
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setProperty(View view, float t) {
-            this.mCurveFit.getPos((double) t, this.mTempValues);
+            this.mCurveFit.getPos(t, this.mTempValues);
             this.mConstraintAttributeList.valueAt(0).setInterpolatedValue(view, this.mTempValues);
         }
     }
 
+    /* loaded from: classes.dex */
     static class ProgressSet extends SplineSet {
         boolean mNoMethod = false;
 
         ProgressSet() {
         }
 
+        @Override // android.support.constraint.motion.SplineSet
         public void setProperty(View view, float t) {
             if (view instanceof MotionLayout) {
                 ((MotionLayout) view).setProgress(get(t));
-            } else if (!this.mNoMethod) {
+            } else if (this.mNoMethod) {
+            } else {
                 Method method = null;
                 try {
-                    method = view.getClass().getMethod("setProgress", new Class[]{Float.TYPE});
+                    method = view.getClass().getMethod("setProgress", Float.TYPE);
                 } catch (NoSuchMethodException e) {
                     this.mNoMethod = true;
                 }
                 if (method != null) {
                     try {
-                        method.invoke(view, new Object[]{Float.valueOf(get(t))});
+                        method.invoke(view, Float.valueOf(get(t)));
                     } catch (IllegalAccessException e2) {
                         Log.e(SplineSet.TAG, "unable to setProgress", e2);
                     } catch (InvocationTargetException e3) {
@@ -513,12 +487,13 @@ public abstract class SplineSet {
         }
     }
 
+    /* loaded from: classes.dex */
     private static class Sort {
         private Sort() {
         }
 
         static void doubleQuickSort(int[] key, float[] value, int low, int hi) {
-            int[] stack = new int[(key.length + 10)];
+            int[] stack = new int[key.length + 10];
             int count = 0 + 1;
             stack[0] = hi;
             int count2 = count + 1;

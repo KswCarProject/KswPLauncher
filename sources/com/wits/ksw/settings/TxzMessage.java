@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.UserHandle;
 import android.util.Log;
 
+/* loaded from: classes3.dex */
 public class TxzMessage {
     public static final String TXZ_DISMISS = "0";
     public static final String TXZ_SHOW = "1";
@@ -14,13 +15,13 @@ public class TxzMessage {
     public Bundle bundle;
     public int keyType;
 
-    public TxzMessage(int keyType2, String action2, Bundle bundle2) {
-        bundle2 = bundle2 == null ? new Bundle() : bundle2;
-        this.action = action2;
-        this.keyType = keyType2;
-        bundle2.putInt("key_type", keyType2);
-        bundle2.putString("action", action2);
-        this.bundle = bundle2;
+    public TxzMessage(int keyType, String action, Bundle bundle) {
+        bundle = bundle == null ? new Bundle() : bundle;
+        this.action = action;
+        this.keyType = keyType;
+        bundle.putInt("key_type", keyType);
+        bundle.putString("action", action);
+        this.bundle = bundle;
     }
 
     public TxzMessage(Intent intent) {

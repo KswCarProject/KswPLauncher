@@ -6,11 +6,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@ListenerClass(callbacks = Callback.class, setter = "setOnPageChangeListener", targetType = "android.support.v4.view.ViewPager", type = "android.support.v4.view.ViewPager.OnPageChangeListener")
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.CLASS)
+@ListenerClass(callbacks = Callback.class, setter = "setOnPageChangeListener", targetType = "android.support.v4.view.ViewPager", type = "android.support.v4.view.ViewPager.OnPageChangeListener")
+/* loaded from: classes.dex */
 public @interface OnPageChange {
 
+    /* loaded from: classes.dex */
     public enum Callback {
         PAGE_SELECTED,
         PAGE_SCROLLED,

@@ -13,38 +13,39 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableAmb<T> extends Flowable<T> {
     final Publisher<? extends T>[] sources;
     final Iterable<? extends Publisher<? extends T>> sourcesIterable;
 
-    public FlowableAmb(Publisher<? extends T>[] sources2, Iterable<? extends Publisher<? extends T>> sourcesIterable2) {
-        this.sources = sources2;
-        this.sourcesIterable = sourcesIterable2;
+    public FlowableAmb(Publisher<? extends T>[] sources, Iterable<? extends Publisher<? extends T>> sourcesIterable) {
+        this.sources = sources;
+        this.sourcesIterable = sourcesIterable;
     }
 
+    @Override // io.reactivex.Flowable
     public void subscribeActual(Subscriber<? super T> s) {
-        Publisher<? extends T>[] sources2 = this.sources;
+        Publisher<? extends T>[] sources = this.sources;
         int count = 0;
-        if (sources2 == null) {
-            sources2 = new Publisher[8];
+        if (sources == null) {
+            sources = new Publisher[8];
             try {
                 for (Publisher<? extends T> p : this.sourcesIterable) {
                     if (p == null) {
                         EmptySubscription.error(new NullPointerException("One of the sources is null"), s);
                         return;
                     }
-                    if (count == sources2.length) {
-                        Publisher<? extends T>[] b = new Publisher[((count >> 2) + count)];
-                        System.arraycopy(sources2, 0, b, 0, count);
-                        sources2 = b;
+                    if (count == sources.length) {
+                        Publisher<? extends T>[] b = new Publisher[(count >> 2) + count];
+                        System.arraycopy(sources, 0, b, 0, count);
+                        sources = b;
                     }
                     int count2 = count + 1;
                     try {
-                        sources2[count] = p;
+                        sources[count] = p;
                         count = count2;
                     } catch (Throwable th) {
                         e = th;
-                        int i = count2;
                         Exceptions.throwIfFatal(e);
                         EmptySubscription.error(e, s);
                         return;
@@ -52,22 +53,21 @@ public final class FlowableAmb<T> extends Flowable<T> {
                 }
             } catch (Throwable th2) {
                 e = th2;
-                Exceptions.throwIfFatal(e);
-                EmptySubscription.error(e, s);
-                return;
             }
         } else {
-            count = sources2.length;
+            count = sources.length;
         }
         if (count == 0) {
             EmptySubscription.complete(s);
         } else if (count == 1) {
-            sources2[0].subscribe(s);
+            sources[0].subscribe(s);
         } else {
-            new AmbCoordinator<>(s, count).subscribe(sources2);
+            AmbCoordinator<T> ac = new AmbCoordinator<>(s, count);
+            ac.subscribe(sources);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class AmbCoordinator<T> implements Subscription {
         final Subscriber<? super T> downstream;
         final AmbInnerSubscriber<T>[] subscribers;
@@ -91,7 +91,9 @@ public final class FlowableAmb<T> extends Flowable<T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
+            AmbInnerSubscriber<T>[] ambInnerSubscriberArr;
             if (SubscriptionHelper.validate(n)) {
                 int w = this.winner.get();
                 if (w > 0) {
@@ -105,7 +107,8 @@ public final class FlowableAmb<T> extends Flowable<T> {
         }
 
         public boolean win(int index) {
-            if (this.winner.get() != 0 || !this.winner.compareAndSet(0, index)) {
+            int w = this.winner.get();
+            if (w != 0 || !this.winner.compareAndSet(0, index)) {
                 return false;
             }
             AmbInnerSubscriber<T>[] a = this.subscribers;
@@ -118,7 +121,9 @@ public final class FlowableAmb<T> extends Flowable<T> {
             return true;
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
+            AmbInnerSubscriber<T>[] ambInnerSubscriberArr;
             if (this.winner.get() != -1) {
                 this.winner.lazySet(-1);
                 for (AmbInnerSubscriber<T> a : this.subscribers) {
@@ -128,6 +133,7 @@ public final class FlowableAmb<T> extends Flowable<T> {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class AmbInnerSubscriber<T> extends AtomicReference<Subscription> implements FlowableSubscriber<T>, Subscription {
         private static final long serialVersionUID = -1185974347409665484L;
         final Subscriber<? super T> downstream;
@@ -136,20 +142,23 @@ public final class FlowableAmb<T> extends Flowable<T> {
         final AmbCoordinator<T> parent;
         boolean won;
 
-        AmbInnerSubscriber(AmbCoordinator<T> parent2, int index2, Subscriber<? super T> downstream2) {
-            this.parent = parent2;
-            this.index = index2;
-            this.downstream = downstream2;
+        AmbInnerSubscriber(AmbCoordinator<T> parent, int index, Subscriber<? super T> downstream) {
+            this.parent = parent;
+            this.index = index;
+            this.downstream = downstream;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             SubscriptionHelper.deferredSetOnce(this, this.missedRequested, s);
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             SubscriptionHelper.deferredRequest(this, this.missedRequested, n);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             if (this.won) {
                 this.downstream.onNext(t);
@@ -157,10 +166,11 @@ public final class FlowableAmb<T> extends Flowable<T> {
                 this.won = true;
                 this.downstream.onNext(t);
             } else {
-                ((Subscription) get()).cancel();
+                get().cancel();
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.won) {
                 this.downstream.onError(t);
@@ -168,11 +178,12 @@ public final class FlowableAmb<T> extends Flowable<T> {
                 this.won = true;
                 this.downstream.onError(t);
             } else {
-                ((Subscription) get()).cancel();
+                get().cancel();
                 RxJavaPlugins.onError(t);
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             if (this.won) {
                 this.downstream.onComplete();
@@ -180,10 +191,11 @@ public final class FlowableAmb<T> extends Flowable<T> {
                 this.won = true;
                 this.downstream.onComplete();
             } else {
-                ((Subscription) get()).cancel();
+                get().cancel();
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             SubscriptionHelper.cancel(this);
         }

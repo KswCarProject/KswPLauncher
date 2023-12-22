@@ -9,6 +9,7 @@ import io.reactivex.internal.util.OpenHashSet;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public final class CompositeDisposable implements Disposable, DisposableContainer {
     volatile boolean disposed;
     OpenHashSet<Disposable> resources;
@@ -34,23 +35,28 @@ public final class CompositeDisposable implements Disposable, DisposableContaine
         }
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public void dispose() {
-        if (!this.disposed) {
-            synchronized (this) {
-                if (!this.disposed) {
-                    this.disposed = true;
-                    OpenHashSet<Disposable> set = this.resources;
-                    this.resources = null;
-                    dispose(set);
-                }
+        if (this.disposed) {
+            return;
+        }
+        synchronized (this) {
+            if (this.disposed) {
+                return;
             }
+            this.disposed = true;
+            OpenHashSet<Disposable> set = this.resources;
+            this.resources = null;
+            dispose(set);
         }
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public boolean isDisposed() {
         return this.disposed;
     }
 
+    @Override // io.reactivex.internal.disposables.DisposableContainer
     public boolean add(Disposable disposable) {
         ObjectHelper.requireNonNull(disposable, "disposable is null");
         if (!this.disposed) {
@@ -94,122 +100,84 @@ public final class CompositeDisposable implements Disposable, DisposableContaine
         return false;
     }
 
+    @Override // io.reactivex.internal.disposables.DisposableContainer
     public boolean remove(Disposable disposable) {
-        if (!delete(disposable)) {
-            return false;
+        if (delete(disposable)) {
+            disposable.dispose();
+            return true;
         }
-        disposable.dispose();
-        return true;
+        return false;
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:17:0x0021, code lost:
-        return false;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public boolean delete(io.reactivex.disposables.Disposable r4) {
-        /*
-            r3 = this;
-            java.lang.String r0 = "disposables is null"
-            io.reactivex.internal.functions.ObjectHelper.requireNonNull(r4, (java.lang.String) r0)
-            boolean r0 = r3.disposed
-            r1 = 0
-            if (r0 == 0) goto L_0x000b
-            return r1
-        L_0x000b:
-            monitor-enter(r3)
-            boolean r0 = r3.disposed     // Catch:{ all -> 0x0022 }
-            if (r0 == 0) goto L_0x0012
-            monitor-exit(r3)     // Catch:{ all -> 0x0022 }
-            return r1
-        L_0x0012:
-            io.reactivex.internal.util.OpenHashSet<io.reactivex.disposables.Disposable> r0 = r3.resources     // Catch:{ all -> 0x0022 }
-            if (r0 == 0) goto L_0x0020
-            boolean r2 = r0.remove(r4)     // Catch:{ all -> 0x0022 }
-            if (r2 != 0) goto L_0x001d
-            goto L_0x0020
-        L_0x001d:
-            monitor-exit(r3)     // Catch:{ all -> 0x0022 }
-            r0 = 1
-            return r0
-        L_0x0020:
-            monitor-exit(r3)     // Catch:{ all -> 0x0022 }
-            return r1
-        L_0x0022:
-            r0 = move-exception
-            monitor-exit(r3)     // Catch:{ all -> 0x0022 }
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: io.reactivex.disposables.CompositeDisposable.delete(io.reactivex.disposables.Disposable):boolean");
+    @Override // io.reactivex.internal.disposables.DisposableContainer
+    public boolean delete(Disposable disposable) {
+        ObjectHelper.requireNonNull(disposable, "disposables is null");
+        if (this.disposed) {
+            return false;
+        }
+        synchronized (this) {
+            if (this.disposed) {
+                return false;
+            }
+            OpenHashSet<Disposable> set = this.resources;
+            if (set != null && set.remove(disposable)) {
+                return true;
+            }
+            return false;
+        }
     }
 
     public void clear() {
-        if (!this.disposed) {
-            synchronized (this) {
-                if (!this.disposed) {
-                    OpenHashSet<Disposable> set = this.resources;
-                    this.resources = null;
-                    dispose(set);
-                }
+        if (this.disposed) {
+            return;
+        }
+        synchronized (this) {
+            if (this.disposed) {
+                return;
             }
+            OpenHashSet<Disposable> set = this.resources;
+            this.resources = null;
+            dispose(set);
         }
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:13:0x0016, code lost:
-        return r1;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
     public int size() {
-        /*
-            r2 = this;
-            boolean r0 = r2.disposed
-            r1 = 0
-            if (r0 == 0) goto L_0x0006
-            return r1
-        L_0x0006:
-            monitor-enter(r2)
-            boolean r0 = r2.disposed     // Catch:{ all -> 0x0017 }
-            if (r0 == 0) goto L_0x000d
-            monitor-exit(r2)     // Catch:{ all -> 0x0017 }
-            return r1
-        L_0x000d:
-            io.reactivex.internal.util.OpenHashSet<io.reactivex.disposables.Disposable> r0 = r2.resources     // Catch:{ all -> 0x0017 }
-            if (r0 == 0) goto L_0x0015
-            int r1 = r0.size()     // Catch:{ all -> 0x0017 }
-        L_0x0015:
-            monitor-exit(r2)     // Catch:{ all -> 0x0017 }
-            return r1
-        L_0x0017:
-            r0 = move-exception
-            monitor-exit(r2)     // Catch:{ all -> 0x0017 }
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: io.reactivex.disposables.CompositeDisposable.size():int");
+        if (this.disposed) {
+            return 0;
+        }
+        synchronized (this) {
+            if (this.disposed) {
+                return 0;
+            }
+            OpenHashSet<Disposable> set = this.resources;
+            return set != null ? set.size() : 0;
+        }
     }
 
-    /* access modifiers changed from: package-private */
-    public void dispose(OpenHashSet<Disposable> set) {
-        if (set != null) {
-            List<Throwable> errors = null;
-            for (Object o : set.keys()) {
-                if (o instanceof Disposable) {
-                    try {
-                        ((Disposable) o).dispose();
-                    } catch (Throwable ex) {
-                        Exceptions.throwIfFatal(ex);
-                        if (errors == null) {
-                            errors = new ArrayList<>();
-                        }
-                        errors.add(ex);
+    void dispose(OpenHashSet<Disposable> set) {
+        if (set == null) {
+            return;
+        }
+        List<Throwable> errors = null;
+        Object[] array = set.keys();
+        for (Object o : array) {
+            if (o instanceof Disposable) {
+                try {
+                    ((Disposable) o).dispose();
+                } catch (Throwable ex) {
+                    Exceptions.throwIfFatal(ex);
+                    if (errors == null) {
+                        errors = new ArrayList<>();
                     }
+                    errors.add(ex);
                 }
             }
-            if (errors == null) {
-                return;
-            }
+        }
+        if (errors != null) {
             if (errors.size() == 1) {
                 throw ExceptionHelper.wrapOrThrow(errors.get(0));
             }
-            throw new CompositeException((Iterable<? extends Throwable>) errors);
+            throw new CompositeException(errors);
         }
     }
 }

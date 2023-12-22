@@ -11,10 +11,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.DashboardViewModel;
 import com.wits.ksw.launcher.view.ID7SpeedImageView;
 
+/* loaded from: classes7.dex */
 public abstract class SevenDasoardBind extends ViewDataBinding {
     public final ConstraintLayout alsMenu;
     public final LinearLayout alsRadioGroup;
@@ -37,29 +38,28 @@ public abstract class SevenDasoardBind extends ViewDataBinding {
     public final ImageView zspeedPointerImageView;
     public final TextView zspeedPointerTextView;
 
-    public abstract void setViewModel(DashboardViewModel dashboardViewModel);
+    public abstract void setViewModel(DashboardViewModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected SevenDasoardBind(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout alsMenu2, LinearLayout alsRadioGroup2, ID7SpeedImageView batteryImageView2, ImageView carImageView2, ImageView dorrBackImageView2, ImageView dorrLeftFlImageView2, ImageView dorrLeftFrImageView2, ImageView dorrLeftRlImageView2, ImageView imageView192, ConstraintLayout linearLayout22, ID7SpeedImageView oilImageView2, TextView speedPointerTextView2, ID7SpeedImageView speedometerImageView2, ID7SpeedImageView tachometerImageView2, TextView textView182, TextClock time2, ImageView zspeedPointerImageView2, TextView zspeedPointerTextView2) {
+    protected SevenDasoardBind(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout alsMenu, LinearLayout alsRadioGroup, ID7SpeedImageView batteryImageView, ImageView carImageView, ImageView dorrBackImageView, ImageView dorrLeftFlImageView, ImageView dorrLeftFrImageView, ImageView dorrLeftRlImageView, ImageView imageView19, ConstraintLayout linearLayout2, ID7SpeedImageView oilImageView, TextView speedPointerTextView, ID7SpeedImageView speedometerImageView, ID7SpeedImageView tachometerImageView, TextView textView18, TextClock time, ImageView zspeedPointerImageView, TextView zspeedPointerTextView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.alsMenu = alsMenu2;
-        this.alsRadioGroup = alsRadioGroup2;
-        this.batteryImageView = batteryImageView2;
-        this.carImageView = carImageView2;
-        this.dorrBackImageView = dorrBackImageView2;
-        this.dorrLeftFlImageView = dorrLeftFlImageView2;
-        this.dorrLeftFrImageView = dorrLeftFrImageView2;
-        this.dorrLeftRlImageView = dorrLeftRlImageView2;
-        this.imageView19 = imageView192;
-        this.linearLayout2 = linearLayout22;
-        this.oilImageView = oilImageView2;
-        this.speedPointerTextView = speedPointerTextView2;
-        this.speedometerImageView = speedometerImageView2;
-        this.tachometerImageView = tachometerImageView2;
-        this.textView18 = textView182;
-        this.time = time2;
-        this.zspeedPointerImageView = zspeedPointerImageView2;
-        this.zspeedPointerTextView = zspeedPointerTextView2;
+        this.alsMenu = alsMenu;
+        this.alsRadioGroup = alsRadioGroup;
+        this.batteryImageView = batteryImageView;
+        this.carImageView = carImageView;
+        this.dorrBackImageView = dorrBackImageView;
+        this.dorrLeftFlImageView = dorrLeftFlImageView;
+        this.dorrLeftFrImageView = dorrLeftFrImageView;
+        this.dorrLeftRlImageView = dorrLeftRlImageView;
+        this.imageView19 = imageView19;
+        this.linearLayout2 = linearLayout2;
+        this.oilImageView = oilImageView;
+        this.speedPointerTextView = speedPointerTextView;
+        this.speedometerImageView = speedometerImageView;
+        this.tachometerImageView = tachometerImageView;
+        this.textView18 = textView18;
+        this.time = time;
+        this.zspeedPointerImageView = zspeedPointerImageView;
+        this.zspeedPointerTextView = zspeedPointerTextView;
     }
 
     public DashboardViewModel getViewModel() {
@@ -72,7 +72,7 @@ public abstract class SevenDasoardBind extends ViewDataBinding {
 
     @Deprecated
     public static SevenDasoardBind inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (SevenDasoardBind) ViewDataBinding.inflateInternal(inflater, R.layout.activity_dash_board_seven, root, attachToRoot, component);
+        return (SevenDasoardBind) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_dash_board_seven, root, attachToRoot, component);
     }
 
     public static SevenDasoardBind inflate(LayoutInflater inflater) {
@@ -81,7 +81,7 @@ public abstract class SevenDasoardBind extends ViewDataBinding {
 
     @Deprecated
     public static SevenDasoardBind inflate(LayoutInflater inflater, Object component) {
-        return (SevenDasoardBind) ViewDataBinding.inflateInternal(inflater, R.layout.activity_dash_board_seven, (ViewGroup) null, false, component);
+        return (SevenDasoardBind) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_dash_board_seven, null, false, component);
     }
 
     public static SevenDasoardBind bind(View view) {
@@ -90,6 +90,6 @@ public abstract class SevenDasoardBind extends ViewDataBinding {
 
     @Deprecated
     public static SevenDasoardBind bind(View view, Object component) {
-        return (SevenDasoardBind) bind(component, view, R.layout.activity_dash_board_seven);
+        return (SevenDasoardBind) bind(component, view, C0899R.C0902layout.activity_dash_board_seven);
     }
 }

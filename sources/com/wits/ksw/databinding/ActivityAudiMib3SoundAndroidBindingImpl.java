@@ -1,20 +1,22 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.SeekBarBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
+import android.support.constraint.ConstraintLayout;
+import android.support.p004v7.widget.AppCompatTextView;
 import android.util.SparseIntArray;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi_mib3.vm.AudiMib3VolumeViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi_mib3.p008vm.AudiMib3VolumeViewModel;
 
+/* loaded from: classes7.dex */
 public class ActivityAudiMib3SoundAndroidBindingImpl extends ActivityAudiMib3SoundAndroidBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -26,14 +28,14 @@ public class ActivityAudiMib3SoundAndroidBindingImpl extends ActivityAudiMib3Sou
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.title, 5);
-        sparseIntArray.put(R.id.title_divider, 6);
-        sparseIntArray.put(R.id.sv_sound, 7);
-        sparseIntArray.put(R.id.linearLayout4, 8);
-        sparseIntArray.put(R.id.hzMediaLinearLayout, 9);
-        sparseIntArray.put(R.id.audio_seekbar_title, 10);
-        sparseIntArray.put(R.id.hzCallLinearLayout, 11);
-        sparseIntArray.put(R.id.v_divider, 12);
+        sparseIntArray.put(C0899R.C0901id.title, 5);
+        sparseIntArray.put(C0899R.C0901id.title_divider, 6);
+        sparseIntArray.put(C0899R.C0901id.sv_sound, 7);
+        sparseIntArray.put(C0899R.C0901id.linearLayout4, 8);
+        sparseIntArray.put(C0899R.C0901id.hzMediaLinearLayout, 9);
+        sparseIntArray.put(C0899R.C0901id.audio_seekbar_title, 10);
+        sparseIntArray.put(C0899R.C0901id.hzCallLinearLayout, 11);
+        sparseIntArray.put(C0899R.C0901id.v_divider, 12);
     }
 
     public ActivityAudiMib3SoundAndroidBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -41,30 +43,32 @@ public class ActivityAudiMib3SoundAndroidBindingImpl extends ActivityAudiMib3Sou
     }
 
     private ActivityAudiMib3SoundAndroidBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 2, bindings[1], bindings[2], bindings[10], bindings[11], bindings[9], bindings[8], (ImageView) null, (ImageView) null, (TextView) null, (TextView) null, bindings[7], bindings[5], bindings[6], bindings[12]);
-        this.mDirtyFlags = -1;
-        this.audioSeekbar.setTag((Object) null);
-        this.audioSeekbarRightText.setTag((Object) null);
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 2, (SeekBar) bindings[1], (TextView) bindings[2], (TextView) bindings[10], (View) bindings[11], (View) bindings[9], (ConstraintLayout) bindings[8], null, null, null, null, (ScrollView) bindings[7], (AppCompatTextView) bindings[5], (View) bindings[6], (View) bindings[12]);
+        this.mDirtyFlags = -1L;
+        this.audioSeekbar.setTag(null);
+        this.audioSeekbarRightText.setTag(null);
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
-        SeekBar seekBar = bindings[3];
+        relativeLayout.setTag(null);
+        SeekBar seekBar = (SeekBar) bindings[3];
         this.mboundView3 = seekBar;
-        seekBar.setTag((Object) null);
-        TextView textView = bindings[4];
+        seekBar.setTag(null);
+        TextView textView = (TextView) bindings[4];
         this.mboundView4 = textView;
-        textView.setTag((Object) null);
+        textView.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 8;
+            this.mDirtyFlags = 8L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -74,14 +78,16 @@ public class ActivityAudiMib3SoundAndroidBindingImpl extends ActivityAudiMib3Sou
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((AudiMib3VolumeViewModel) variable);
+            return true;
         }
-        setVm((AudiMib3VolumeViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.ActivityAudiMib3SoundAndroidBinding
     public void setVm(AudiMib3VolumeViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -91,8 +97,8 @@ public class ActivityAudiMib3SoundAndroidBindingImpl extends ActivityAudiMib3Sou
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmHzcallVolume((ObservableInt) object, fieldId);
@@ -104,31 +110,31 @@ public class ActivityAudiMib3SoundAndroidBindingImpl extends ActivityAudiMib3Sou
     }
 
     private boolean onChangeVmHzcallVolume(ObservableInt VmHzcallVolume, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmHzMediaVolume(ObservableInt VmHzMediaVolume, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         int vmHzMediaVolumeGet = 0;
         ObservableInt vmHzcallVolume = null;
@@ -142,7 +148,7 @@ public class ActivityAudiMib3SoundAndroidBindingImpl extends ActivityAudiMib3Sou
                 if (vm != null) {
                     vmHzcallVolume = vm.hzcallVolume;
                 }
-                updateRegistration(0, (Observable) vmHzcallVolume);
+                updateRegistration(0, vmHzcallVolume);
                 if (vmHzcallVolume != null) {
                     vmHzcallVolumeGet = vmHzcallVolume.get();
                 }
@@ -152,7 +158,7 @@ public class ActivityAudiMib3SoundAndroidBindingImpl extends ActivityAudiMib3Sou
                 if (vm != null) {
                     vmHzMediaVolume = vm.hzMediaVolume;
                 }
-                updateRegistration(1, (Observable) vmHzMediaVolume);
+                updateRegistration(1, vmHzMediaVolume);
                 if (vmHzMediaVolume != null) {
                     vmHzMediaVolumeGet = vmHzMediaVolume.get();
                 }

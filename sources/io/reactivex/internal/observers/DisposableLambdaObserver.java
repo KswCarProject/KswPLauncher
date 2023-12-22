@@ -9,18 +9,20 @@ import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.internal.disposables.EmptyDisposable;
 import io.reactivex.plugins.RxJavaPlugins;
 
+/* loaded from: classes.dex */
 public final class DisposableLambdaObserver<T> implements Observer<T>, Disposable {
     final Observer<? super T> downstream;
     final Action onDispose;
     final Consumer<? super Disposable> onSubscribe;
     Disposable upstream;
 
-    public DisposableLambdaObserver(Observer<? super T> actual, Consumer<? super Disposable> onSubscribe2, Action onDispose2) {
+    public DisposableLambdaObserver(Observer<? super T> actual, Consumer<? super Disposable> onSubscribe, Action onDispose) {
         this.downstream = actual;
-        this.onSubscribe = onSubscribe2;
-        this.onDispose = onDispose2;
+        this.onSubscribe = onSubscribe;
+        this.onDispose = onDispose;
     }
 
+    @Override // io.reactivex.Observer
     public void onSubscribe(Disposable d) {
         try {
             this.onSubscribe.accept(d);
@@ -32,14 +34,16 @@ public final class DisposableLambdaObserver<T> implements Observer<T>, Disposabl
             Exceptions.throwIfFatal(e);
             d.dispose();
             this.upstream = DisposableHelper.DISPOSED;
-            EmptyDisposable.error(e, (Observer<?>) this.downstream);
+            EmptyDisposable.error(e, this.downstream);
         }
     }
 
+    @Override // io.reactivex.Observer
     public void onNext(T t) {
         this.downstream.onNext(t);
     }
 
+    @Override // io.reactivex.Observer
     public void onError(Throwable t) {
         if (this.upstream != DisposableHelper.DISPOSED) {
             this.upstream = DisposableHelper.DISPOSED;
@@ -49,6 +53,7 @@ public final class DisposableLambdaObserver<T> implements Observer<T>, Disposabl
         RxJavaPlugins.onError(t);
     }
 
+    @Override // io.reactivex.Observer
     public void onComplete() {
         if (this.upstream != DisposableHelper.DISPOSED) {
             this.upstream = DisposableHelper.DISPOSED;
@@ -56,6 +61,7 @@ public final class DisposableLambdaObserver<T> implements Observer<T>, Disposabl
         }
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public void dispose() {
         Disposable d = this.upstream;
         if (d != DisposableHelper.DISPOSED) {
@@ -70,6 +76,7 @@ public final class DisposableLambdaObserver<T> implements Observer<T>, Disposabl
         }
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public boolean isDisposed() {
         return this.upstream.isDisposed();
     }

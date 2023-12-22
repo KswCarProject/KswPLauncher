@@ -2,14 +2,13 @@ package com.wits.ksw.databinding;
 
 import android.arch.lifecycle.LifecycleOwner;
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.databinding.adapters.ViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.content.res.AppCompatResources;
+import android.support.p001v4.media.session.PlaybackStateCompat;
+import android.support.p004v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,15 +16,16 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.bean.WeatherInfo;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback290;
+    private final View.OnClickListener mCallback419;
     private long mDirtyFlags;
     private final ImageView mboundView1;
     private final TextView mboundView14;
@@ -38,56 +38,56 @@ public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClic
     static {
         ViewDataBinding.IncludedLayouts includedLayouts = new ViewDataBinding.IncludedLayouts(18);
         sIncludes = includedLayouts;
-        includedLayouts.setIncludes(3, new String[]{"include_near_weather"}, new int[]{15}, new int[]{R.layout.include_near_weather});
+        includedLayouts.setIncludes(3, new String[]{"include_near_weather"}, new int[]{15}, new int[]{C0899R.C0902layout.include_near_weather});
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.tv_title, 16);
-        sparseIntArray.put(R.id.iv_divider, 17);
+        sparseIntArray.put(C0899R.C0901id.tv_title, 16);
+        sparseIntArray.put(C0899R.C0901id.iv_divider, 17);
     }
 
     public WeatherDataBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 18, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private WeatherDataBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 15, bindings[8], bindings[9], bindings[10], bindings[17], bindings[11], bindings[2], bindings[0], bindings[12], bindings[4], bindings[16], bindings[13]);
-        this.mDirtyFlags = -1;
-        this.btA.setTag((Object) null);
-        this.btB.setTag((Object) null);
-        this.btC.setTag((Object) null);
-        this.ivIcon.setTag((Object) null);
-        this.ivMask.setTag((Object) null);
-        this.llContainer.setTag((Object) null);
-        ImageView imageView = bindings[1];
+        super(bindingComponent, root, 15, (TextView) bindings[8], (TextView) bindings[9], (TextView) bindings[10], (ImageView) bindings[17], (ImageView) bindings[11], (ImageView) bindings[2], (RelativeLayout) bindings[0], (TextView) bindings[12], (TextView) bindings[4], (TextView) bindings[16], (TextView) bindings[13]);
+        this.mDirtyFlags = -1L;
+        this.btA.setTag(null);
+        this.btB.setTag(null);
+        this.btC.setTag(null);
+        this.ivIcon.setTag(null);
+        this.ivMask.setTag(null);
+        this.llContainer.setTag(null);
+        ImageView imageView = (ImageView) bindings[1];
         this.mboundView1 = imageView;
-        imageView.setTag((Object) null);
-        TextView textView = bindings[14];
+        imageView.setTag(null);
+        TextView textView = (TextView) bindings[14];
         this.mboundView14 = textView;
-        textView.setTag((Object) null);
-        RelativeLayout relativeLayout = bindings[3];
+        textView.setTag(null);
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[3];
         this.mboundView3 = relativeLayout;
-        relativeLayout.setTag((Object) null);
-        IncludeNearWeatherBinding includeNearWeatherBinding = bindings[15];
+        relativeLayout.setTag(null);
+        IncludeNearWeatherBinding includeNearWeatherBinding = (IncludeNearWeatherBinding) bindings[15];
         this.mboundView31 = includeNearWeatherBinding;
         setContainedBinding(includeNearWeatherBinding);
-        ProgressBar progressBar = bindings[5];
+        ProgressBar progressBar = (ProgressBar) bindings[5];
         this.mboundView5 = progressBar;
-        progressBar.setTag((Object) null);
-        LinearLayout linearLayout = bindings[6];
+        progressBar.setTag(null);
+        LinearLayout linearLayout = (LinearLayout) bindings[6];
         this.mboundView6 = linearLayout;
-        linearLayout.setTag((Object) null);
-        TextView textView2 = bindings[7];
+        linearLayout.setTag(null);
+        TextView textView2 = (TextView) bindings[7];
         this.mboundView7 = textView2;
-        textView2.setTag((Object) null);
-        this.temperatureTv.setTag((Object) null);
-        this.tvCity.setTag((Object) null);
-        this.unitWeather.setTag((Object) null);
+        textView2.setTag(null);
+        this.temperatureTv.setTag(null);
+        this.tvCity.setTag(null);
+        this.unitWeather.setTag(null);
         setRootTag(root);
-        this.mCallback290 = new OnClickListener(this, 1);
+        this.mCallback419 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
             this.mDirtyFlags = PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH;
@@ -96,52 +96,26 @@ public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClic
         requestRebind();
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:10:0x0016, code lost:
-        return false;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:8:0x0013, code lost:
-        if (r4.mboundView31.hasPendingBindings() == false) goto L_0x0016;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:9:0x0015, code lost:
-        return true;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
-        /*
-            r4 = this;
-            monitor-enter(r4)
-            long r0 = r4.mDirtyFlags     // Catch:{ all -> 0x0018 }
-            r2 = 0
-            int r0 = (r0 > r2 ? 1 : (r0 == r2 ? 0 : -1))
-            r1 = 1
-            if (r0 == 0) goto L_0x000c
-            monitor-exit(r4)     // Catch:{ all -> 0x0018 }
-            return r1
-        L_0x000c:
-            monitor-exit(r4)     // Catch:{ all -> 0x0018 }
-            com.wits.ksw.databinding.IncludeNearWeatherBinding r0 = r4.mboundView31
-            boolean r0 = r0.hasPendingBindings()
-            if (r0 == 0) goto L_0x0016
-            return r1
-        L_0x0016:
-            r0 = 0
-            return r0
-        L_0x0018:
-            r0 = move-exception
-            monitor-exit(r4)     // Catch:{ all -> 0x0018 }
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.WeatherDataBindingImpl.hasPendingBindings():boolean");
-    }
-
-    public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
-            return false;
+        synchronized (this) {
+            if (this.mDirtyFlags != 0) {
+                return true;
+            }
+            return this.mboundView31.hasPendingBindings();
         }
-        setWeatherViewModel((LauncherViewModel) variable);
-        return true;
     }
 
+    @Override // android.databinding.ViewDataBinding
+    public boolean setVariable(int variableId, Object variable) {
+        if (17 == variableId) {
+            setWeatherViewModel((LauncherViewModel) variable);
+            return true;
+        }
+        return false;
+    }
+
+    @Override // com.wits.ksw.databinding.WeatherDataBinding
     public void setWeatherViewModel(LauncherViewModel WeatherViewModel) {
         this.mWeatherViewModel = WeatherViewModel;
         synchronized (this) {
@@ -151,13 +125,14 @@ public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClic
         super.requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         super.setLifecycleOwner(lifecycleOwner);
         this.mboundView31.setLifecycleOwner(lifecycleOwner);
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeWeatherViewModelWeatherInfoCity((ObservableField) object, fieldId);
@@ -194,176 +169,176 @@ public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClic
         }
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoCity(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoCity(ObservableField<String> WeatherViewModelWeatherInfoCity, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoCardDetailText1(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoCardDetailText1(ObservableField<String> WeatherViewModelWeatherInfoCardDetailText1, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoCardDetailText3(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoCardDetailText3(ObservableField<String> WeatherViewModelWeatherInfoCardDetailText3, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoIsInitFinished(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoIsInitFinished(ObservableField<Boolean> WeatherViewModelWeatherInfoIsInitFinished, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoTemperature(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoTemperature(ObservableField<String> WeatherViewModelWeatherInfoTemperature, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 16;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 16;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoId8CardDetailImg3(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoId8CardDetailImg3(ObservableField<Drawable> WeatherViewModelWeatherInfoId8CardDetailImg3, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 32;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 32;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoId8CardDetailImg1(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoId8CardDetailImg1(ObservableField<Drawable> WeatherViewModelWeatherInfoId8CardDetailImg1, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 64;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 64;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoId8ImageIcon(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoId8ImageIcon(ObservableField<Drawable> WeatherViewModelWeatherInfoId8ImageIcon, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 128;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 128;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoId8ImageBg(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoId8ImageBg(ObservableField<Drawable> WeatherViewModelWeatherInfoId8ImageBg, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 256;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 256;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoErrorMessage(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoErrorMessage(ObservableField<String> WeatherViewModelWeatherInfoErrorMessage, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 512;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 512;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoCardDetailText2(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoCardDetailText2(ObservableField<String> WeatherViewModelWeatherInfoCardDetailText2, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoIsLoadSuccess(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoIsLoadSuccess(ObservableField<Boolean> WeatherViewModelWeatherInfoIsLoadSuccess, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoTemperUnit(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoTemperUnit(ObservableField<String> WeatherViewModelWeatherInfoTemperUnit, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoTemperatureRange(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoTemperatureRange(ObservableField<String> WeatherViewModelWeatherInfoTemperatureRange, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeWeatherViewModelWeatherInfoId8CardDetailImg2(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeWeatherViewModelWeatherInfoId8CardDetailImg2(ObservableField<Drawable> WeatherViewModelWeatherInfoId8CardDetailImg2, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
-        String weatherViewModelWeatherInfoTemperatureGet;
-        String weatherViewModelWeatherInfoErrorMessageGet;
-        String weatherViewModelWeatherInfoCityGet;
-        String weatherViewModelWeatherInfoCardDetailText2Get;
-        int weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE;
-        ObservableField<String> weatherViewModelWeatherInfoCity;
-        Boolean weatherViewModelWeatherInfoIsLoadSuccessGet;
-        Drawable weatherViewModelWeatherInfoId8CardDetailImg2Get;
-        Drawable weatherViewModelWeatherInfoId8CardDetailImg3Get;
-        String weatherViewModelWeatherInfoErrorMessageGet2;
-        Drawable weatherViewModelWeatherInfoId8ImageIconGet;
-        String weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoCityTvCityAndroidStringKswId8Weather;
-        WeatherInfo weatherViewModelWeatherInfo;
-        String weatherViewModelWeatherInfoCardDetailText2Get2;
-        int weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE2;
-        Drawable weatherViewModelWeatherInfoId8CardDetailImg1Get;
         String weatherViewModelWeatherInfoCardDetailText1Get;
+        Drawable weatherViewModelWeatherInfoId8CardDetailImg1Get;
+        Boolean weatherViewModelWeatherInfoIsLoadSuccessGet;
+        int weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE;
+        int weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE2;
+        WeatherInfo weatherViewModelWeatherInfo;
+        Drawable weatherViewModelWeatherInfoId8ImageIconGet;
+        String weatherViewModelWeatherInfoCityGet;
+        Drawable weatherViewModelWeatherInfoId8CardDetailImg3Get;
+        String weatherViewModelWeatherInfoTemperatureGet;
+        ObservableField<String> weatherViewModelWeatherInfoCity;
+        String weatherViewModelWeatherInfoCardDetailText2Get;
+        String weatherViewModelWeatherInfoCardDetailText2Get2;
+        String weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoCityTvCityAndroidStringKswId8Weather;
+        String weatherViewModelWeatherInfoErrorMessageGet;
+        String weatherViewModelWeatherInfoErrorMessageGet2;
+        Drawable weatherViewModelWeatherInfoId8CardDetailImg2Get;
         int weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE3;
         String weatherViewModelWeatherInfoErrorMessageGet3;
         Boolean weatherViewModelWeatherInfoIsLoadSuccessGet2;
@@ -375,7 +350,7 @@ public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClic
         Drawable weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoId8ImageBgMboundView1AndroidDrawableId8MainIconWeather;
         int weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE4;
         String weatherViewModelWeatherInfoErrorMessageGet4;
-        String weatherViewModelWeatherInfoTemperatureGet2;
+        String weatherViewModelWeatherInfoErrorMessageGet5;
         ObservableField<Drawable> weatherViewModelWeatherInfoId8ImageBg;
         ObservableField<Boolean> WeatherViewModelWeatherInfoIsLoadSuccess1;
         String weatherViewModelWeatherInfoTemperatureRangeGet;
@@ -392,7 +367,7 @@ public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClic
         ObservableField<Boolean> weatherViewModelWeatherInfoIsInitFinished;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         String weatherViewModelWeatherInfoTemperatureRangeGet2 = null;
         Boolean weatherViewModelWeatherInfoIsLoadSuccessGet3 = null;
@@ -403,25 +378,43 @@ public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClic
         String weatherViewModelWeatherInfoTemperUnitGet = null;
         String weatherViewModelWeatherInfoCardDetailText1Get2 = null;
         boolean weatherViewModelWeatherInfoIsLoadSuccess = false;
-        String weatherViewModelWeatherInfoTemperatureGet3 = null;
+        String weatherViewModelWeatherInfoTemperatureGet2 = null;
         int weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE5 = 0;
         String weatherViewModelWeatherInfoCardDetailText2Get3 = null;
         String weatherViewModelWeatherInfoCardDetailText3Get = null;
         Drawable weatherViewModelWeatherInfoId8ImageIconGet2 = null;
-        String weatherViewModelWeatherInfoErrorMessageGet5 = null;
+        String weatherViewModelWeatherInfoErrorMessageGet6 = null;
         Drawable weatherViewModelWeatherInfoId8CardDetailImg3Get2 = null;
         ObservableField<Boolean> WeatherViewModelWeatherInfoIsLoadSuccess13 = null;
         Boolean weatherViewModelWeatherInfoIsInitFinishedGet = null;
         Drawable weatherViewModelWeatherInfoId8ImageBgGet = null;
         boolean androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsLoadSuccessGet = false;
         Drawable weatherViewModelWeatherInfoId8CardDetailImg1Get2 = null;
-        if ((dirtyFlags & 98303) != 0) {
+        if ((dirtyFlags & 98303) == 0) {
+            weatherViewModelWeatherInfoCardDetailText1Get = null;
+            weatherViewModelWeatherInfoId8CardDetailImg1Get = null;
+            weatherViewModelWeatherInfoIsLoadSuccessGet = null;
+            weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE = 0;
+            weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE2 = 0;
+            weatherViewModelWeatherInfo = null;
+            weatherViewModelWeatherInfoId8ImageIconGet = null;
+            weatherViewModelWeatherInfoCityGet = null;
+            weatherViewModelWeatherInfoId8CardDetailImg3Get = null;
+            weatherViewModelWeatherInfoTemperatureGet = null;
+            weatherViewModelWeatherInfoCity = null;
+            weatherViewModelWeatherInfoCardDetailText2Get = null;
+            weatherViewModelWeatherInfoCardDetailText2Get2 = null;
+            weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoCityTvCityAndroidStringKswId8Weather = null;
+            weatherViewModelWeatherInfoErrorMessageGet = null;
+            weatherViewModelWeatherInfoErrorMessageGet2 = null;
+            weatherViewModelWeatherInfoId8CardDetailImg2Get = null;
+        } else {
             WeatherInfo weatherViewModelWeatherInfo2 = LauncherViewModel.weatherInfo;
             if ((dirtyFlags & 65538) != 0) {
                 if (weatherViewModelWeatherInfo2 != null) {
                     weatherViewModelWeatherInfoCardDetailText1 = weatherViewModelWeatherInfo2.cardDetailText1;
                 }
-                updateRegistration(1, (Observable) weatherViewModelWeatherInfoCardDetailText1);
+                updateRegistration(1, weatherViewModelWeatherInfoCardDetailText1);
                 if (weatherViewModelWeatherInfoCardDetailText1 != null) {
                     weatherViewModelWeatherInfoCardDetailText1Get2 = weatherViewModelWeatherInfoCardDetailText1.get();
                 }
@@ -430,21 +423,24 @@ public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClic
                 if (weatherViewModelWeatherInfo2 != null) {
                     weatherViewModelWeatherInfoCardDetailText3 = weatherViewModelWeatherInfo2.cardDetailText3;
                 }
-                updateRegistration(2, (Observable) weatherViewModelWeatherInfoCardDetailText3);
+                updateRegistration(2, weatherViewModelWeatherInfoCardDetailText3);
                 if (weatherViewModelWeatherInfoCardDetailText3 != null) {
                     weatherViewModelWeatherInfoCardDetailText3Get = weatherViewModelWeatherInfoCardDetailText3.get();
                 }
             }
-            if ((dirtyFlags & 67592) != 0) {
-                if (weatherViewModelWeatherInfo2 != null) {
-                    weatherViewModelWeatherInfoIsInitFinished = weatherViewModelWeatherInfo2.isInitFinished;
-                } else {
+            if ((dirtyFlags & 67592) == 0) {
+                weatherViewModelWeatherInfoTemperatureRangeGet = null;
+            } else {
+                if (weatherViewModelWeatherInfo2 == null) {
                     weatherViewModelWeatherInfoIsInitFinished = null;
+                } else {
+                    weatherViewModelWeatherInfoIsInitFinished = weatherViewModelWeatherInfo2.isInitFinished;
                 }
                 weatherViewModelWeatherInfoTemperatureRangeGet = null;
-                updateRegistration(3, (Observable) weatherViewModelWeatherInfoIsInitFinished);
+                updateRegistration(3, weatherViewModelWeatherInfoIsInitFinished);
                 if (weatherViewModelWeatherInfoIsInitFinished != null) {
-                    weatherViewModelWeatherInfoIsInitFinishedGet = weatherViewModelWeatherInfoIsInitFinished.get();
+                    Boolean weatherViewModelWeatherInfoIsInitFinishedGet2 = weatherViewModelWeatherInfoIsInitFinished.get();
+                    weatherViewModelWeatherInfoIsInitFinishedGet = weatherViewModelWeatherInfoIsInitFinishedGet2;
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsInitFinishedGet2 = ViewDataBinding.safeUnbox(weatherViewModelWeatherInfoIsInitFinishedGet);
                 if ((dirtyFlags & 67592) != 0) {
@@ -461,108 +457,86 @@ public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClic
                         dirtyFlags |= 134217728;
                     }
                 }
-                if ((dirtyFlags & 65544) != 0) {
+                if ((dirtyFlags & 65544) == 0) {
+                    androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsInitFinishedGet = androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsInitFinishedGet2;
+                } else {
                     weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE5 = androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsInitFinishedGet2 ? 4 : 0;
                     androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsInitFinishedGet = androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsInitFinishedGet2;
-                    ObservableField<Boolean> observableField = weatherViewModelWeatherInfoIsInitFinished;
-                } else {
-                    androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsInitFinishedGet = androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsInitFinishedGet2;
-                    ObservableField<Boolean> observableField2 = weatherViewModelWeatherInfoIsInitFinished;
                 }
-            } else {
-                weatherViewModelWeatherInfoTemperatureRangeGet = null;
             }
             if ((dirtyFlags & 65552) != 0) {
-                if (weatherViewModelWeatherInfo2 != null) {
-                    weatherViewModelWeatherInfoTemperature = weatherViewModelWeatherInfo2.temperature;
-                } else {
+                if (weatherViewModelWeatherInfo2 == null) {
                     weatherViewModelWeatherInfoTemperature = null;
-                }
-                updateRegistration(4, (Observable) weatherViewModelWeatherInfoTemperature);
-                if (weatherViewModelWeatherInfoTemperature != null) {
-                    weatherViewModelWeatherInfoTemperatureGet3 = weatherViewModelWeatherInfoTemperature.get();
-                    ObservableField<String> observableField3 = weatherViewModelWeatherInfoTemperature;
                 } else {
-                    ObservableField<String> observableField4 = weatherViewModelWeatherInfoTemperature;
+                    weatherViewModelWeatherInfoTemperature = weatherViewModelWeatherInfo2.temperature;
+                }
+                updateRegistration(4, weatherViewModelWeatherInfoTemperature);
+                if (weatherViewModelWeatherInfoTemperature != null) {
+                    weatherViewModelWeatherInfoTemperatureGet2 = weatherViewModelWeatherInfoTemperature.get();
                 }
             }
             if ((dirtyFlags & 65568) != 0) {
-                if (weatherViewModelWeatherInfo2 != null) {
-                    weatherViewModelWeatherInfoId8CardDetailImg3 = weatherViewModelWeatherInfo2.id8CardDetailImg3;
-                } else {
+                if (weatherViewModelWeatherInfo2 == null) {
                     weatherViewModelWeatherInfoId8CardDetailImg3 = null;
-                }
-                updateRegistration(5, (Observable) weatherViewModelWeatherInfoId8CardDetailImg3);
-                if (weatherViewModelWeatherInfoId8CardDetailImg3 != null) {
-                    ObservableField<Drawable> observableField5 = weatherViewModelWeatherInfoId8CardDetailImg3;
-                    weatherViewModelWeatherInfoId8CardDetailImg3Get2 = weatherViewModelWeatherInfoId8CardDetailImg3.get();
                 } else {
-                    ObservableField<Drawable> observableField6 = weatherViewModelWeatherInfoId8CardDetailImg3;
+                    weatherViewModelWeatherInfoId8CardDetailImg3 = weatherViewModelWeatherInfo2.id8CardDetailImg3;
+                }
+                updateRegistration(5, weatherViewModelWeatherInfoId8CardDetailImg3);
+                if (weatherViewModelWeatherInfoId8CardDetailImg3 != null) {
+                    weatherViewModelWeatherInfoId8CardDetailImg3Get2 = weatherViewModelWeatherInfoId8CardDetailImg3.get();
                 }
             }
             if ((dirtyFlags & 65600) != 0) {
-                if (weatherViewModelWeatherInfo2 != null) {
-                    weatherViewModelWeatherInfoId8CardDetailImg1 = weatherViewModelWeatherInfo2.id8CardDetailImg1;
-                } else {
+                if (weatherViewModelWeatherInfo2 == null) {
                     weatherViewModelWeatherInfoId8CardDetailImg1 = null;
-                }
-                updateRegistration(6, (Observable) weatherViewModelWeatherInfoId8CardDetailImg1);
-                if (weatherViewModelWeatherInfoId8CardDetailImg1 != null) {
-                    ObservableField<Drawable> observableField7 = weatherViewModelWeatherInfoId8CardDetailImg1;
-                    weatherViewModelWeatherInfoId8CardDetailImg1Get2 = weatherViewModelWeatherInfoId8CardDetailImg1.get();
                 } else {
-                    ObservableField<Drawable> observableField8 = weatherViewModelWeatherInfoId8CardDetailImg1;
+                    weatherViewModelWeatherInfoId8CardDetailImg1 = weatherViewModelWeatherInfo2.id8CardDetailImg1;
+                }
+                updateRegistration(6, weatherViewModelWeatherInfoId8CardDetailImg1);
+                if (weatherViewModelWeatherInfoId8CardDetailImg1 != null) {
+                    weatherViewModelWeatherInfoId8CardDetailImg1Get2 = weatherViewModelWeatherInfoId8CardDetailImg1.get();
                 }
             }
             if ((dirtyFlags & 65664) != 0) {
-                if (weatherViewModelWeatherInfo2 != null) {
-                    weatherViewModelWeatherInfoId8ImageIcon = weatherViewModelWeatherInfo2.id8ImageIcon;
-                } else {
+                if (weatherViewModelWeatherInfo2 == null) {
                     weatherViewModelWeatherInfoId8ImageIcon = null;
-                }
-                updateRegistration(7, (Observable) weatherViewModelWeatherInfoId8ImageIcon);
-                if (weatherViewModelWeatherInfoId8ImageIcon != null) {
-                    ObservableField<Drawable> observableField9 = weatherViewModelWeatherInfoId8ImageIcon;
-                    weatherViewModelWeatherInfoId8ImageIconGet2 = weatherViewModelWeatherInfoId8ImageIcon.get();
                 } else {
-                    ObservableField<Drawable> observableField10 = weatherViewModelWeatherInfoId8ImageIcon;
+                    weatherViewModelWeatherInfoId8ImageIcon = weatherViewModelWeatherInfo2.id8ImageIcon;
+                }
+                updateRegistration(7, weatherViewModelWeatherInfoId8ImageIcon);
+                if (weatherViewModelWeatherInfoId8ImageIcon != null) {
+                    weatherViewModelWeatherInfoId8ImageIconGet2 = weatherViewModelWeatherInfoId8ImageIcon.get();
                 }
             }
             if ((dirtyFlags & 66048) != 0) {
-                if (weatherViewModelWeatherInfo2 != null) {
-                    weatherViewModelWeatherInfoErrorMessage = weatherViewModelWeatherInfo2.errorMessage;
-                } else {
+                if (weatherViewModelWeatherInfo2 == null) {
                     weatherViewModelWeatherInfoErrorMessage = null;
-                }
-                updateRegistration(9, (Observable) weatherViewModelWeatherInfoErrorMessage);
-                if (weatherViewModelWeatherInfoErrorMessage != null) {
-                    weatherViewModelWeatherInfoErrorMessageGet5 = weatherViewModelWeatherInfoErrorMessage.get();
-                    ObservableField<String> observableField11 = weatherViewModelWeatherInfoErrorMessage;
                 } else {
-                    ObservableField<String> observableField12 = weatherViewModelWeatherInfoErrorMessage;
+                    weatherViewModelWeatherInfoErrorMessage = weatherViewModelWeatherInfo2.errorMessage;
+                }
+                updateRegistration(9, weatherViewModelWeatherInfoErrorMessage);
+                if (weatherViewModelWeatherInfoErrorMessage != null) {
+                    weatherViewModelWeatherInfoErrorMessageGet6 = weatherViewModelWeatherInfoErrorMessage.get();
                 }
             }
             if ((dirtyFlags & 66560) != 0) {
-                if (weatherViewModelWeatherInfo2 != null) {
-                    weatherViewModelWeatherInfoCardDetailText2 = weatherViewModelWeatherInfo2.cardDetailText2;
-                } else {
+                if (weatherViewModelWeatherInfo2 == null) {
                     weatherViewModelWeatherInfoCardDetailText2 = null;
-                }
-                updateRegistration(10, (Observable) weatherViewModelWeatherInfoCardDetailText2);
-                if (weatherViewModelWeatherInfoCardDetailText2 != null) {
-                    ObservableField<String> observableField13 = weatherViewModelWeatherInfoCardDetailText2;
-                    weatherViewModelWeatherInfoCardDetailText2Get3 = weatherViewModelWeatherInfoCardDetailText2.get();
                 } else {
-                    ObservableField<String> observableField14 = weatherViewModelWeatherInfoCardDetailText2;
+                    weatherViewModelWeatherInfoCardDetailText2 = weatherViewModelWeatherInfo2.cardDetailText2;
+                }
+                updateRegistration(10, weatherViewModelWeatherInfoCardDetailText2);
+                if (weatherViewModelWeatherInfoCardDetailText2 != null) {
+                    weatherViewModelWeatherInfoCardDetailText2Get3 = weatherViewModelWeatherInfoCardDetailText2.get();
                 }
             }
             if ((dirtyFlags & 67841) != 0) {
-                if (weatherViewModelWeatherInfo2 != null) {
-                    WeatherViewModelWeatherInfoIsLoadSuccess12 = weatherViewModelWeatherInfo2.isLoadSuccess;
-                } else {
+                if (weatherViewModelWeatherInfo2 == null) {
                     WeatherViewModelWeatherInfoIsLoadSuccess12 = null;
+                } else {
+                    WeatherViewModelWeatherInfoIsLoadSuccess12 = weatherViewModelWeatherInfo2.isLoadSuccess;
                 }
-                updateRegistration(11, (Observable) WeatherViewModelWeatherInfoIsLoadSuccess12);
+                updateRegistration(11, WeatherViewModelWeatherInfoIsLoadSuccess12);
                 if (WeatherViewModelWeatherInfoIsLoadSuccess12 != null) {
                     weatherViewModelWeatherInfoIsLoadSuccessGet3 = WeatherViewModelWeatherInfoIsLoadSuccess12.get();
                 }
@@ -588,143 +562,114 @@ public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClic
                 }
             }
             if ((dirtyFlags & 69632) != 0) {
-                if (weatherViewModelWeatherInfo2 != null) {
-                    weatherViewModelWeatherInfoTemperUnit = weatherViewModelWeatherInfo2.temperUnit;
-                } else {
+                if (weatherViewModelWeatherInfo2 == null) {
                     weatherViewModelWeatherInfoTemperUnit = null;
+                } else {
+                    weatherViewModelWeatherInfoTemperUnit = weatherViewModelWeatherInfo2.temperUnit;
                 }
-                updateRegistration(12, (Observable) weatherViewModelWeatherInfoTemperUnit);
+                updateRegistration(12, weatherViewModelWeatherInfoTemperUnit);
                 if (weatherViewModelWeatherInfoTemperUnit != null) {
                     weatherViewModelWeatherInfoTemperUnitGet = weatherViewModelWeatherInfoTemperUnit.get();
-                    ObservableField<String> observableField15 = weatherViewModelWeatherInfoTemperUnit;
-                } else {
-                    ObservableField<String> observableField16 = weatherViewModelWeatherInfoTemperUnit;
                 }
             }
-            if ((dirtyFlags & 73728) != 0) {
-                if (weatherViewModelWeatherInfo2 != null) {
-                    weatherViewModelWeatherInfoTemperatureRange = weatherViewModelWeatherInfo2.temperatureRange;
-                } else {
-                    weatherViewModelWeatherInfoTemperatureRange = null;
-                }
-                updateRegistration(13, (Observable) weatherViewModelWeatherInfoTemperatureRange);
-                if (weatherViewModelWeatherInfoTemperatureRange != null) {
-                    ObservableField<String> observableField17 = weatherViewModelWeatherInfoTemperatureRange;
-                    weatherViewModelWeatherInfoTemperatureRangeGet2 = weatherViewModelWeatherInfoTemperatureRange.get();
-                } else {
-                    ObservableField<String> observableField18 = weatherViewModelWeatherInfoTemperatureRange;
-                    weatherViewModelWeatherInfoTemperatureRangeGet2 = weatherViewModelWeatherInfoTemperatureRangeGet;
-                }
-            } else {
+            if ((dirtyFlags & 73728) == 0) {
                 weatherViewModelWeatherInfoTemperatureRangeGet2 = weatherViewModelWeatherInfoTemperatureRangeGet;
-            }
-            if ((dirtyFlags & 81920) != 0) {
-                if (weatherViewModelWeatherInfo2 != null) {
-                    weatherViewModelWeatherInfoId8CardDetailImg2 = weatherViewModelWeatherInfo2.id8CardDetailImg2;
-                } else {
-                    weatherViewModelWeatherInfoId8CardDetailImg2 = null;
-                }
-                String weatherViewModelWeatherInfoTemperatureRangeGet3 = weatherViewModelWeatherInfoTemperatureRangeGet2;
-                updateRegistration(14, (Observable) weatherViewModelWeatherInfoId8CardDetailImg2);
-                if (weatherViewModelWeatherInfoId8CardDetailImg2 != null) {
-                    ObservableField<Drawable> observableField19 = weatherViewModelWeatherInfoId8CardDetailImg2;
-                    weatherViewModelWeatherInfoTemperatureRangeGet2 = weatherViewModelWeatherInfoTemperatureRangeGet3;
-                    weatherViewModelWeatherInfoId8CardDetailImg1Get = weatherViewModelWeatherInfoId8CardDetailImg1Get2;
-                    ObservableField<String> observableField20 = weatherViewModelWeatherInfoCardDetailText1;
-                    weatherViewModelWeatherInfoId8ImageIconGet = weatherViewModelWeatherInfoId8ImageIconGet2;
-                    weatherViewModelWeatherInfoCityGet = null;
-                    weatherViewModelWeatherInfoId8CardDetailImg3Get = weatherViewModelWeatherInfoId8CardDetailImg3Get2;
-                    weatherViewModelWeatherInfoTemperatureGet = weatherViewModelWeatherInfoTemperatureGet3;
-                    weatherViewModelWeatherInfoCity = null;
-                    weatherViewModelWeatherInfoCardDetailText2Get2 = weatherViewModelWeatherInfoCardDetailText2Get3;
-                    weatherViewModelWeatherInfoCardDetailText2Get = null;
-                    weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoCityTvCityAndroidStringKswId8Weather = weatherViewModelWeatherInfoCardDetailText3Get;
-                    ObservableField<String> observableField21 = weatherViewModelWeatherInfoCardDetailText3;
-                    weatherViewModelWeatherInfoErrorMessageGet2 = weatherViewModelWeatherInfoErrorMessageGet5;
-                    weatherViewModelWeatherInfoErrorMessageGet = weatherViewModelWeatherInfoTemperUnitGet;
-                    weatherViewModelWeatherInfoId8CardDetailImg2Get = weatherViewModelWeatherInfoId8CardDetailImg2.get();
-                    weatherViewModelWeatherInfo = weatherViewModelWeatherInfo2;
-                    weatherViewModelWeatherInfoCardDetailText1Get = weatherViewModelWeatherInfoCardDetailText1Get2;
-                    weatherViewModelWeatherInfoIsLoadSuccessGet = weatherViewModelWeatherInfoIsLoadSuccessGet3;
-                    weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE2 = weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE5;
-                    weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE = 0;
-                } else {
-                    ObservableField<Drawable> observableField22 = weatherViewModelWeatherInfoId8CardDetailImg2;
-                    weatherViewModelWeatherInfoTemperatureRangeGet2 = weatherViewModelWeatherInfoTemperatureRangeGet3;
-                    weatherViewModelWeatherInfoId8CardDetailImg1Get = weatherViewModelWeatherInfoId8CardDetailImg1Get2;
-                    ObservableField<String> observableField23 = weatherViewModelWeatherInfoCardDetailText1;
-                    weatherViewModelWeatherInfoId8ImageIconGet = weatherViewModelWeatherInfoId8ImageIconGet2;
-                    weatherViewModelWeatherInfoCityGet = null;
-                    weatherViewModelWeatherInfoId8CardDetailImg3Get = weatherViewModelWeatherInfoId8CardDetailImg3Get2;
-                    weatherViewModelWeatherInfoTemperatureGet = weatherViewModelWeatherInfoTemperatureGet3;
-                    weatherViewModelWeatherInfoCity = null;
-                    weatherViewModelWeatherInfoCardDetailText2Get2 = weatherViewModelWeatherInfoCardDetailText2Get3;
-                    weatherViewModelWeatherInfoCardDetailText2Get = null;
-                    weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoCityTvCityAndroidStringKswId8Weather = weatherViewModelWeatherInfoCardDetailText3Get;
-                    ObservableField<String> observableField24 = weatherViewModelWeatherInfoCardDetailText3;
-                    weatherViewModelWeatherInfoErrorMessageGet2 = weatherViewModelWeatherInfoErrorMessageGet5;
-                    weatherViewModelWeatherInfoErrorMessageGet = weatherViewModelWeatherInfoTemperUnitGet;
-                    weatherViewModelWeatherInfoId8CardDetailImg2Get = null;
-                    weatherViewModelWeatherInfo = weatherViewModelWeatherInfo2;
-                    weatherViewModelWeatherInfoCardDetailText1Get = weatherViewModelWeatherInfoCardDetailText1Get2;
-                    weatherViewModelWeatherInfoIsLoadSuccessGet = weatherViewModelWeatherInfoIsLoadSuccessGet3;
-                    weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE2 = weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE5;
-                    weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE = 0;
-                }
             } else {
+                if (weatherViewModelWeatherInfo2 == null) {
+                    weatherViewModelWeatherInfoTemperatureRange = null;
+                } else {
+                    weatherViewModelWeatherInfoTemperatureRange = weatherViewModelWeatherInfo2.temperatureRange;
+                }
+                updateRegistration(13, weatherViewModelWeatherInfoTemperatureRange);
+                weatherViewModelWeatherInfoTemperatureRangeGet2 = weatherViewModelWeatherInfoTemperatureRange != null ? weatherViewModelWeatherInfoTemperatureRange.get() : weatherViewModelWeatherInfoTemperatureRangeGet;
+            }
+            if ((dirtyFlags & 81920) == 0) {
                 weatherViewModelWeatherInfoId8CardDetailImg1Get = weatherViewModelWeatherInfoId8CardDetailImg1Get2;
-                ObservableField<String> observableField25 = weatherViewModelWeatherInfoCardDetailText1;
                 weatherViewModelWeatherInfoId8ImageIconGet = weatherViewModelWeatherInfoId8ImageIconGet2;
                 weatherViewModelWeatherInfoCityGet = null;
                 weatherViewModelWeatherInfoId8CardDetailImg3Get = weatherViewModelWeatherInfoId8CardDetailImg3Get2;
-                weatherViewModelWeatherInfoTemperatureGet = weatherViewModelWeatherInfoTemperatureGet3;
+                weatherViewModelWeatherInfoTemperatureGet = weatherViewModelWeatherInfoTemperatureGet2;
                 weatherViewModelWeatherInfoCity = null;
-                weatherViewModelWeatherInfoCardDetailText2Get2 = weatherViewModelWeatherInfoCardDetailText2Get3;
-                weatherViewModelWeatherInfoCardDetailText2Get = null;
+                weatherViewModelWeatherInfoCardDetailText2Get = weatherViewModelWeatherInfoCardDetailText2Get3;
+                weatherViewModelWeatherInfoCardDetailText2Get2 = null;
                 weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoCityTvCityAndroidStringKswId8Weather = weatherViewModelWeatherInfoCardDetailText3Get;
-                ObservableField<String> observableField26 = weatherViewModelWeatherInfoCardDetailText3;
-                weatherViewModelWeatherInfoErrorMessageGet2 = weatherViewModelWeatherInfoErrorMessageGet5;
-                weatherViewModelWeatherInfoErrorMessageGet = weatherViewModelWeatherInfoTemperUnitGet;
+                weatherViewModelWeatherInfoErrorMessageGet = weatherViewModelWeatherInfoErrorMessageGet6;
+                weatherViewModelWeatherInfoErrorMessageGet2 = weatherViewModelWeatherInfoTemperUnitGet;
                 weatherViewModelWeatherInfoId8CardDetailImg2Get = null;
                 weatherViewModelWeatherInfo = weatherViewModelWeatherInfo2;
                 weatherViewModelWeatherInfoCardDetailText1Get = weatherViewModelWeatherInfoCardDetailText1Get2;
                 weatherViewModelWeatherInfoIsLoadSuccessGet = weatherViewModelWeatherInfoIsLoadSuccessGet3;
-                weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE2 = weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE5;
-                weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE = 0;
+                weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE = weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE5;
+                weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE2 = 0;
+            } else {
+                if (weatherViewModelWeatherInfo2 == null) {
+                    weatherViewModelWeatherInfoId8CardDetailImg2 = null;
+                } else {
+                    weatherViewModelWeatherInfoId8CardDetailImg2 = weatherViewModelWeatherInfo2.id8CardDetailImg2;
+                }
+                String weatherViewModelWeatherInfoTemperatureRangeGet3 = weatherViewModelWeatherInfoTemperatureRangeGet2;
+                updateRegistration(14, weatherViewModelWeatherInfoId8CardDetailImg2);
+                if (weatherViewModelWeatherInfoId8CardDetailImg2 == null) {
+                    weatherViewModelWeatherInfoTemperatureRangeGet2 = weatherViewModelWeatherInfoTemperatureRangeGet3;
+                    weatherViewModelWeatherInfoId8CardDetailImg1Get = weatherViewModelWeatherInfoId8CardDetailImg1Get2;
+                    weatherViewModelWeatherInfoId8ImageIconGet = weatherViewModelWeatherInfoId8ImageIconGet2;
+                    weatherViewModelWeatherInfoCityGet = null;
+                    weatherViewModelWeatherInfoId8CardDetailImg3Get = weatherViewModelWeatherInfoId8CardDetailImg3Get2;
+                    weatherViewModelWeatherInfoTemperatureGet = weatherViewModelWeatherInfoTemperatureGet2;
+                    weatherViewModelWeatherInfoCity = null;
+                    weatherViewModelWeatherInfoCardDetailText2Get = weatherViewModelWeatherInfoCardDetailText2Get3;
+                    weatherViewModelWeatherInfoCardDetailText2Get2 = null;
+                    weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoCityTvCityAndroidStringKswId8Weather = weatherViewModelWeatherInfoCardDetailText3Get;
+                    weatherViewModelWeatherInfoErrorMessageGet = weatherViewModelWeatherInfoErrorMessageGet6;
+                    weatherViewModelWeatherInfoErrorMessageGet2 = weatherViewModelWeatherInfoTemperUnitGet;
+                    weatherViewModelWeatherInfoId8CardDetailImg2Get = null;
+                    weatherViewModelWeatherInfo = weatherViewModelWeatherInfo2;
+                    weatherViewModelWeatherInfoCardDetailText1Get = weatherViewModelWeatherInfoCardDetailText1Get2;
+                    weatherViewModelWeatherInfoIsLoadSuccessGet = weatherViewModelWeatherInfoIsLoadSuccessGet3;
+                    weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE = weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE5;
+                    weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE2 = 0;
+                } else {
+                    Drawable weatherViewModelWeatherInfoId8CardDetailImg2Get2 = weatherViewModelWeatherInfoId8CardDetailImg2.get();
+                    Drawable weatherViewModelWeatherInfoId8CardDetailImg2Get3 = weatherViewModelWeatherInfoId8CardDetailImg2Get2;
+                    weatherViewModelWeatherInfoTemperatureRangeGet2 = weatherViewModelWeatherInfoTemperatureRangeGet3;
+                    weatherViewModelWeatherInfoId8CardDetailImg1Get = weatherViewModelWeatherInfoId8CardDetailImg1Get2;
+                    weatherViewModelWeatherInfoId8ImageIconGet = weatherViewModelWeatherInfoId8ImageIconGet2;
+                    weatherViewModelWeatherInfoCityGet = null;
+                    weatherViewModelWeatherInfoId8CardDetailImg3Get = weatherViewModelWeatherInfoId8CardDetailImg3Get2;
+                    weatherViewModelWeatherInfoTemperatureGet = weatherViewModelWeatherInfoTemperatureGet2;
+                    weatherViewModelWeatherInfoCity = null;
+                    weatherViewModelWeatherInfoCardDetailText2Get = weatherViewModelWeatherInfoCardDetailText2Get3;
+                    weatherViewModelWeatherInfoCardDetailText2Get2 = null;
+                    weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoCityTvCityAndroidStringKswId8Weather = weatherViewModelWeatherInfoCardDetailText3Get;
+                    weatherViewModelWeatherInfoErrorMessageGet = weatherViewModelWeatherInfoErrorMessageGet6;
+                    weatherViewModelWeatherInfoErrorMessageGet2 = weatherViewModelWeatherInfoTemperUnitGet;
+                    weatherViewModelWeatherInfoId8CardDetailImg2Get = weatherViewModelWeatherInfoId8CardDetailImg2Get3;
+                    weatherViewModelWeatherInfo = weatherViewModelWeatherInfo2;
+                    weatherViewModelWeatherInfoCardDetailText1Get = weatherViewModelWeatherInfoCardDetailText1Get2;
+                    weatherViewModelWeatherInfoIsLoadSuccessGet = weatherViewModelWeatherInfoIsLoadSuccessGet3;
+                    weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE = weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE5;
+                    weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE2 = 0;
+                }
             }
-        } else {
-            weatherViewModelWeatherInfoCardDetailText1Get = null;
-            weatherViewModelWeatherInfoId8CardDetailImg1Get = null;
-            weatherViewModelWeatherInfoIsLoadSuccessGet = null;
-            weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE2 = 0;
-            weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE = 0;
-            weatherViewModelWeatherInfo = null;
-            weatherViewModelWeatherInfoId8ImageIconGet = null;
-            weatherViewModelWeatherInfoCityGet = null;
-            weatherViewModelWeatherInfoId8CardDetailImg3Get = null;
-            weatherViewModelWeatherInfoTemperatureGet = null;
-            weatherViewModelWeatherInfoCity = null;
-            weatherViewModelWeatherInfoCardDetailText2Get2 = null;
-            weatherViewModelWeatherInfoCardDetailText2Get = null;
-            weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoCityTvCityAndroidStringKswId8Weather = null;
-            weatherViewModelWeatherInfoErrorMessageGet2 = null;
-            weatherViewModelWeatherInfoErrorMessageGet = null;
-            weatherViewModelWeatherInfoId8CardDetailImg2Get = null;
         }
-        if ((dirtyFlags & 71303168) != 0) {
-            if (weatherViewModelWeatherInfo != null) {
-                weatherViewModelWeatherInfoErrorMessageGet3 = weatherViewModelWeatherInfoErrorMessageGet2;
-                WeatherViewModelWeatherInfoIsLoadSuccess1 = weatherViewModelWeatherInfo.isLoadSuccess;
-            } else {
-                weatherViewModelWeatherInfoErrorMessageGet3 = weatherViewModelWeatherInfoErrorMessageGet2;
+        if ((dirtyFlags & 71303168) == 0) {
+            weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE3 = weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE;
+            weatherViewModelWeatherInfoErrorMessageGet3 = weatherViewModelWeatherInfoErrorMessageGet;
+            weatherViewModelWeatherInfoIsLoadSuccessGet2 = weatherViewModelWeatherInfoIsLoadSuccessGet;
+        } else {
+            if (weatherViewModelWeatherInfo == null) {
+                weatherViewModelWeatherInfoErrorMessageGet3 = weatherViewModelWeatherInfoErrorMessageGet;
                 WeatherViewModelWeatherInfoIsLoadSuccess1 = WeatherViewModelWeatherInfoIsLoadSuccess13;
-            }
-            weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE3 = weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE2;
-            updateRegistration(11, (Observable) WeatherViewModelWeatherInfoIsLoadSuccess1);
-            if (WeatherViewModelWeatherInfoIsLoadSuccess1 != null) {
-                weatherViewModelWeatherInfoIsLoadSuccessGet2 = WeatherViewModelWeatherInfoIsLoadSuccess1.get();
             } else {
+                weatherViewModelWeatherInfoErrorMessageGet3 = weatherViewModelWeatherInfoErrorMessageGet;
+                WeatherViewModelWeatherInfoIsLoadSuccess1 = weatherViewModelWeatherInfo.isLoadSuccess;
+            }
+            weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE3 = weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE;
+            updateRegistration(11, WeatherViewModelWeatherInfoIsLoadSuccess1);
+            if (WeatherViewModelWeatherInfoIsLoadSuccess1 == null) {
                 weatherViewModelWeatherInfoIsLoadSuccessGet2 = weatherViewModelWeatherInfoIsLoadSuccessGet;
+            } else {
+                weatherViewModelWeatherInfoIsLoadSuccessGet2 = WeatherViewModelWeatherInfoIsLoadSuccess1.get();
             }
             androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsLoadSuccessGet = ViewDataBinding.safeUnbox(weatherViewModelWeatherInfoIsLoadSuccessGet2);
             if ((dirtyFlags & 67585) != 0) {
@@ -743,16 +688,12 @@ public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClic
             }
             if ((dirtyFlags & 67108864) != 0) {
                 weatherViewModelWeatherInfoIsLoadSuccess = !androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsLoadSuccessGet;
-                ObservableField<Boolean> observableField27 = WeatherViewModelWeatherInfoIsLoadSuccess1;
-            } else {
-                ObservableField<Boolean> observableField28 = WeatherViewModelWeatherInfoIsLoadSuccess1;
             }
-        } else {
-            weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE3 = weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE2;
-            weatherViewModelWeatherInfoErrorMessageGet3 = weatherViewModelWeatherInfoErrorMessageGet2;
-            weatherViewModelWeatherInfoIsLoadSuccessGet2 = weatherViewModelWeatherInfoIsLoadSuccessGet;
         }
-        if ((dirtyFlags & 67592) != 0) {
+        if ((dirtyFlags & 67592) == 0) {
+            weatherViewModelWeatherInfoIsInitFinishedWeatherViewModelWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE = weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE2;
+            WeatherViewModelWeatherInfoIsInitFinishedWeatherViewModelWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE1 = 0;
+        } else {
             boolean weatherViewModelWeatherInfoIsInitFinishedWeatherViewModelWeatherInfoIsLoadSuccessBooleanFalse = androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsInitFinishedGet ? androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsLoadSuccessGet : false;
             boolean WeatherViewModelWeatherInfoIsInitFinishedWeatherViewModelWeatherInfoIsLoadSuccessBooleanFalse1 = androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsInitFinishedGet ? weatherViewModelWeatherInfoIsLoadSuccess : false;
             if ((dirtyFlags & 67592) != 0) {
@@ -770,60 +711,40 @@ public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClic
                 }
             }
             weatherViewModelWeatherInfoIsInitFinishedWeatherViewModelWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE = weatherViewModelWeatherInfoIsInitFinishedWeatherViewModelWeatherInfoIsLoadSuccessBooleanFalse ? 0 : 4;
-            Boolean bool = weatherViewModelWeatherInfoIsLoadSuccessGet2;
-            WeatherViewModelWeatherInfoIsInitFinishedWeatherViewModelWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE1 = WeatherViewModelWeatherInfoIsInitFinishedWeatherViewModelWeatherInfoIsLoadSuccessBooleanFalse1 ? 0 : 4;
-        } else {
-            Boolean bool2 = weatherViewModelWeatherInfoIsLoadSuccessGet2;
-            weatherViewModelWeatherInfoIsInitFinishedWeatherViewModelWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE = weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE;
-            WeatherViewModelWeatherInfoIsInitFinishedWeatherViewModelWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE1 = 0;
+            int WeatherViewModelWeatherInfoIsInitFinishedWeatherViewModelWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE12 = WeatherViewModelWeatherInfoIsInitFinishedWeatherViewModelWeatherInfoIsLoadSuccessBooleanFalse1 ? 0 : 4;
+            WeatherViewModelWeatherInfoIsInitFinishedWeatherViewModelWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE1 = WeatherViewModelWeatherInfoIsInitFinishedWeatherViewModelWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE12;
         }
-        if ((dirtyFlags & PlaybackStateCompat.ACTION_SET_CAPTIONING_ENABLED) != 0) {
-            if (weatherViewModelWeatherInfo != null) {
-                boolean z = androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsInitFinishedGet;
-                weatherViewModelWeatherInfoCity2 = weatherViewModelWeatherInfo.city;
-            } else {
-                weatherViewModelWeatherInfoCity2 = weatherViewModelWeatherInfoCity;
-            }
+        if ((dirtyFlags & PlaybackStateCompat.ACTION_SET_CAPTIONING_ENABLED) == 0) {
             weatherViewModel = weatherViewModel2;
-            updateRegistration(0, (Observable) weatherViewModelWeatherInfoCity2);
+            weatherViewModelWeatherInfoCity2 = weatherViewModelWeatherInfoCity;
+        } else {
+            weatherViewModelWeatherInfoCity2 = weatherViewModelWeatherInfo != null ? weatherViewModelWeatherInfo.city : weatherViewModelWeatherInfoCity;
+            weatherViewModel = weatherViewModel2;
+            updateRegistration(0, weatherViewModelWeatherInfoCity2);
             if (weatherViewModelWeatherInfoCity2 != null) {
                 weatherViewModelWeatherInfoCityGet = weatherViewModelWeatherInfoCity2.get();
             }
-        } else {
-            weatherViewModel = weatherViewModel2;
-            boolean z2 = androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsInitFinishedGet;
-            weatherViewModelWeatherInfoCity2 = weatherViewModelWeatherInfoCity;
         }
         if ((dirtyFlags & 16777216) != 0) {
-            if (weatherViewModelWeatherInfo != null) {
-                weatherViewModelWeatherInfoId8ImageBg = weatherViewModelWeatherInfo.id8ImageBg;
-            } else {
+            if (weatherViewModelWeatherInfo == null) {
                 weatherViewModelWeatherInfoId8ImageBg = null;
+            } else {
+                weatherViewModelWeatherInfoId8ImageBg = weatherViewModelWeatherInfo.id8ImageBg;
             }
-            WeatherInfo weatherInfo = weatherViewModelWeatherInfo;
-            updateRegistration(8, (Observable) weatherViewModelWeatherInfoId8ImageBg);
+            updateRegistration(8, weatherViewModelWeatherInfoId8ImageBg);
             if (weatherViewModelWeatherInfoId8ImageBg != null) {
                 weatherViewModelWeatherInfoId8ImageBgGet = weatherViewModelWeatherInfoId8ImageBg.get();
-                ObservableField<Drawable> observableField29 = weatherViewModelWeatherInfoId8ImageBg;
-            } else {
-                ObservableField<Drawable> observableField30 = weatherViewModelWeatherInfoId8ImageBg;
             }
         }
-        if ((dirtyFlags & 67585) != 0) {
-            weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoCityTvCityAndroidStringKswId8Weather2 = androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsLoadSuccessGet ? weatherViewModelWeatherInfoCityGet : this.tvCity.getResources().getString(R.string.ksw_id8_weather);
+        if ((dirtyFlags & 67585) == 0) {
+            weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoCityTvCityAndroidStringKswId8Weather2 = weatherViewModelWeatherInfoCardDetailText2Get2;
         } else {
-            weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoCityTvCityAndroidStringKswId8Weather2 = weatherViewModelWeatherInfoCardDetailText2Get;
+            weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoCityTvCityAndroidStringKswId8Weather2 = androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsLoadSuccessGet ? weatherViewModelWeatherInfoCityGet : this.tvCity.getResources().getString(C0899R.string.ksw_id8_weather);
         }
-        if ((dirtyFlags & 67840) != 0) {
-            if (androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsLoadSuccessGet) {
-                ObservableField<String> observableField31 = weatherViewModelWeatherInfoCity2;
-                weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoId8ImageBgMboundView1AndroidDrawableId8MainIconWeather = weatherViewModelWeatherInfoId8ImageBgGet;
-            } else {
-                ObservableField<String> observableField32 = weatherViewModelWeatherInfoCity2;
-                weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoId8ImageBgMboundView1AndroidDrawableId8MainIconWeather = AppCompatResources.getDrawable(this.mboundView1.getContext(), R.drawable.id8_main_icon_weather);
-            }
-        } else {
+        if ((dirtyFlags & 67840) == 0) {
             weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoId8ImageBgMboundView1AndroidDrawableId8MainIconWeather = null;
+        } else {
+            weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoId8ImageBgMboundView1AndroidDrawableId8MainIconWeather = androidDatabindingViewDataBindingSafeUnboxWeatherViewModelWeatherInfoIsLoadSuccessGet ? weatherViewModelWeatherInfoId8ImageBgGet : AppCompatResources.getDrawable(this.mboundView1.getContext(), C0899R.C0900drawable.id8_main_icon_weather);
         }
         if ((dirtyFlags & 65600) != 0) {
             TextViewBindingAdapter.setDrawableStart(this.btA, weatherViewModelWeatherInfoId8CardDetailImg1Get);
@@ -847,7 +768,7 @@ public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClic
             TextViewBindingAdapter.setDrawableStart(this.btB, weatherViewModelWeatherInfoId8CardDetailImg2Get);
         }
         if ((dirtyFlags & 66560) != 0) {
-            TextViewBindingAdapter.setText(this.btB, weatherViewModelWeatherInfoCardDetailText2Get2);
+            TextViewBindingAdapter.setText(this.btB, weatherViewModelWeatherInfoCardDetailText2Get);
         }
         if ((dirtyFlags & 65540) != 0) {
             TextViewBindingAdapter.setText(this.btC, weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoCityTvCityAndroidStringKswId8Weather);
@@ -859,8 +780,7 @@ public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClic
             ViewBindingAdapter.setBackground(this.ivIcon, weatherViewModelWeatherInfoId8ImageIconGet);
         }
         if ((dirtyFlags & PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH) != 0) {
-            String str = weatherViewModelWeatherInfoCardDetailText1Get;
-            this.ivMask.setOnClickListener(this.mCallback290);
+            this.ivMask.setOnClickListener(this.mCallback419);
         }
         if ((dirtyFlags & 67840) != 0) {
             ViewBindingAdapter.setBackground(this.mboundView1, weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoId8ImageBgMboundView1AndroidDrawableId8MainIconWeather);
@@ -872,41 +792,37 @@ public class WeatherDataBindingImpl extends WeatherDataBinding implements OnClic
             this.mboundView31.setWeatherViewModel(weatherViewModel);
         }
         if ((dirtyFlags & 65544) != 0) {
-            String str2 = weatherViewModelWeatherInfoTemperatureRangeGet2;
             weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE4 = weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE3;
             this.mboundView5.setVisibility(weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE4);
         } else {
             weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE4 = weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE3;
         }
         if ((dirtyFlags & 66048) != 0) {
-            int i = weatherViewModelWeatherInfoIsInitFinishedViewINVISIBLEViewVISIBLE4;
             weatherViewModelWeatherInfoErrorMessageGet4 = weatherViewModelWeatherInfoErrorMessageGet3;
             TextViewBindingAdapter.setText(this.mboundView7, weatherViewModelWeatherInfoErrorMessageGet4);
         } else {
             weatherViewModelWeatherInfoErrorMessageGet4 = weatherViewModelWeatherInfoErrorMessageGet3;
         }
         if ((dirtyFlags & 65552) != 0) {
-            String str3 = weatherViewModelWeatherInfoErrorMessageGet4;
-            weatherViewModelWeatherInfoTemperatureGet2 = weatherViewModelWeatherInfoTemperatureGet;
-            TextViewBindingAdapter.setText(this.temperatureTv, weatherViewModelWeatherInfoTemperatureGet2);
+            weatherViewModelWeatherInfoErrorMessageGet5 = weatherViewModelWeatherInfoTemperatureGet;
+            TextViewBindingAdapter.setText(this.temperatureTv, weatherViewModelWeatherInfoErrorMessageGet5);
         } else {
-            weatherViewModelWeatherInfoTemperatureGet2 = weatherViewModelWeatherInfoTemperatureGet;
+            weatherViewModelWeatherInfoErrorMessageGet5 = weatherViewModelWeatherInfoTemperatureGet;
         }
         if ((dirtyFlags & 67585) != 0) {
             TextViewBindingAdapter.setText(this.tvCity, weatherViewModelWeatherInfoIsLoadSuccessWeatherViewModelWeatherInfoCityTvCityAndroidStringKswId8Weather2);
         }
         if ((dirtyFlags & 69632) != 0) {
-            String str4 = weatherViewModelWeatherInfoTemperatureGet2;
-            TextViewBindingAdapter.setText(this.unitWeather, weatherViewModelWeatherInfoErrorMessageGet);
-        } else {
-            String weatherViewModelWeatherInfoTemperatureGet4 = weatherViewModelWeatherInfoErrorMessageGet;
+            TextViewBindingAdapter.setText(this.unitWeather, weatherViewModelWeatherInfoErrorMessageGet2);
         }
         executeBindingsOn(this.mboundView31);
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
         LauncherViewModel weatherViewModel = this.mWeatherViewModel;
-        if (weatherViewModel != null) {
+        boolean weatherViewModelJavaLangObjectNull = weatherViewModel != null;
+        if (weatherViewModelJavaLangObjectNull) {
             weatherViewModel.openWeatherApp(callbackArg_0);
         }
     }

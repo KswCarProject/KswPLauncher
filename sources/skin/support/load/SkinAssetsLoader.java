@@ -9,16 +9,19 @@ import java.io.OutputStream;
 import skin.support.utils.SkinConstants;
 import skin.support.utils.SkinFileUtils;
 
+/* loaded from: classes.dex */
 public class SkinAssetsLoader extends SkinSDCardLoader {
-    /* access modifiers changed from: protected */
-    public String getSkinPath(Context context, String skinName) {
+    @Override // skin.support.load.SkinSDCardLoader
+    protected String getSkinPath(Context context, String skinName) {
         return copySkinFromAssets(context, skinName);
     }
 
+    @Override // skin.support.load.SkinSDCardLoader, skin.support.SkinCompatManager.SkinLoaderStrategy
     public String getTargetResourceEntryName(Context context, String skinName, int resId) {
         return null;
     }
 
+    @Override // skin.support.SkinCompatManager.SkinLoaderStrategy
     public int getType() {
         return 0;
     }
@@ -30,9 +33,8 @@ public class SkinAssetsLoader extends SkinSDCardLoader {
             OutputStream os = new FileOutputStream(skinPath);
             byte[] bytes = new byte[1024];
             while (true) {
-                int read = is.read(bytes);
-                int byteCount = read;
-                if (read == -1) {
+                int byteCount = is.read(bytes);
+                if (byteCount == -1) {
                     break;
                 }
                 os.write(bytes, 0, byteCount);

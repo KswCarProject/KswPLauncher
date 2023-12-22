@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="vertical" android:id="@+id/linearLayout" android:tag="layout-sw600dp-land/ntg630_control_popup_0" android:background="@drawable/ntg55_ctrlpanel_ntg30_bk" android:layout_width="wrap_content" android:layout_height="match_parent">
+    <ImageView android:id="@+id/imageView" android:tag="binding_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:layout_marginStart="114dp"/>
+    <ImageView android:id="@+id/controlBtn1" android:tag="binding_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="48dp" android:layout_marginStart="18dp"/>
+    <ImageView android:id="@+id/controlBtn2" android:tag="binding_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="120dp" android:src="@drawable/ntg55_ctrlpanel_ntg30_btn1_selector" android:layout_marginStart="18dp"/>
+    <ImageView android:id="@+id/controlBtn3" android:tag="binding_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="190dp" android:layout_marginStart="18dp"/>
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="266dp" android:layout_marginStart="18dp">
+        <ImageView android:id="@+id/foldLeftBtn" android:tag="binding_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ntg55_ctrlpanel_ntg30_selector"/>
+        <ImageView android:id="@+id/foldRightBtn" android:tag="binding_6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ntg55_ctrlpanel_ntg30_selector" android:layout_marginStart="15dp"/>
+    </LinearLayout>
+    <ImageView android:id="@+id/brightnessBtn_left" android:tag="binding_7" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="13dp" android:layout_marginBottom="5dp" android:src="@drawable/ntg55_ctrlpanel_knob_selector" android:layout_alignParentBottom="true"/>
+    <ImageView android:id="@+id/brightnessBtn_right" android:tag="binding_8" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="13dp" android:layout_marginBottom="5dp" android:src="@drawable/ntg55_ctrlpanel_knob_selector" android:layout_alignParentRight="true" android:layout_alignParentBottom="true"/>
+</RelativeLayout>

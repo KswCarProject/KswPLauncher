@@ -1,17 +1,20 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bean.MediaInfo;
+import com.wits.ksw.launcher.utils.CustomFontTextView;
 import com.wits.ksw.launcher.view.benzgs.BenzGsViewMoel;
 
+/* loaded from: classes7.dex */
 public class FraBenzgsOneBindingImpl extends FraBenzgsOneBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -20,14 +23,14 @@ public class FraBenzgsOneBindingImpl extends FraBenzgsOneBinding {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.benz_gs_home_navi_hint, 8);
-        sparseIntArray.put(R.id.benz_gs_home_navi, 9);
-        sparseIntArray.put(R.id.benz_gs_home_music, 10);
-        sparseIntArray.put(R.id.benz_gs_home_bt, 11);
-        sparseIntArray.put(R.id.benz_gs_home_car_hint, 12);
-        sparseIntArray.put(R.id.benz_gs_home_car, 13);
-        sparseIntArray.put(R.id.benz_gs_home_set_hint, 14);
-        sparseIntArray.put(R.id.benz_gs_home_set, 15);
+        sparseIntArray.put(C0899R.C0901id.benz_gs_home_navi_hint, 8);
+        sparseIntArray.put(C0899R.C0901id.benz_gs_home_navi, 9);
+        sparseIntArray.put(C0899R.C0901id.benz_gs_home_music, 10);
+        sparseIntArray.put(C0899R.C0901id.benz_gs_home_bt, 11);
+        sparseIntArray.put(C0899R.C0901id.benz_gs_home_car_hint, 12);
+        sparseIntArray.put(C0899R.C0901id.benz_gs_home_car, 13);
+        sparseIntArray.put(C0899R.C0901id.benz_gs_home_set_hint, 14);
+        sparseIntArray.put(C0899R.C0901id.benz_gs_home_set, 15);
     }
 
     public FraBenzgsOneBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -35,27 +38,29 @@ public class FraBenzgsOneBindingImpl extends FraBenzgsOneBinding {
     }
 
     private FraBenzgsOneBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 3, bindings[11], bindings[4], bindings[5], bindings[13], bindings[6], bindings[12], bindings[10], bindings[2], bindings[3], bindings[9], bindings[1], bindings[8], bindings[15], bindings[7], bindings[14], bindings[0]);
-        this.mDirtyFlags = -1;
-        this.benzGsHomeBtBtn.setTag((Object) null);
-        this.benzGsHomeBtHint.setTag((Object) null);
-        this.benzGsHomeCarBtn.setTag((Object) null);
-        this.benzGsHomeMusicBtn.setTag((Object) null);
-        this.benzGsHomeMusicHint.setTag((Object) null);
-        this.benzGsHomeNaviBtn.setTag((Object) null);
-        this.benzGsHomeSetBtn.setTag((Object) null);
-        this.benzgsHomeOne.setTag((Object) null);
+        super(bindingComponent, root, 3, (CustomFontTextView) bindings[11], (RelativeLayout) bindings[4], (CustomFontTextView) bindings[5], (CustomFontTextView) bindings[13], (RelativeLayout) bindings[6], (CustomFontTextView) bindings[12], (CustomFontTextView) bindings[10], (RelativeLayout) bindings[2], (CustomFontTextView) bindings[3], (CustomFontTextView) bindings[9], (RelativeLayout) bindings[1], (CustomFontTextView) bindings[8], (CustomFontTextView) bindings[15], (RelativeLayout) bindings[7], (CustomFontTextView) bindings[14], (LinearLayout) bindings[0]);
+        this.mDirtyFlags = -1L;
+        this.benzGsHomeBtBtn.setTag(null);
+        this.benzGsHomeBtHint.setTag(null);
+        this.benzGsHomeCarBtn.setTag(null);
+        this.benzGsHomeMusicBtn.setTag(null);
+        this.benzGsHomeMusicHint.setTag(null);
+        this.benzGsHomeNaviBtn.setTag(null);
+        this.benzGsHomeSetBtn.setTag(null);
+        this.benzgsHomeOne.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 16;
+            this.mDirtyFlags = 16L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -65,14 +70,16 @@ public class FraBenzgsOneBindingImpl extends FraBenzgsOneBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((BenzGsViewMoel) variable);
+            return true;
         }
-        setVm((BenzGsViewMoel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.FraBenzgsOneBinding
     public void setVm(BenzGsViewMoel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -82,8 +89,8 @@ public class FraBenzgsOneBindingImpl extends FraBenzgsOneBinding {
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmIndex((ObservableInt) object, fieldId);
@@ -97,37 +104,37 @@ public class FraBenzgsOneBindingImpl extends FraBenzgsOneBinding {
     }
 
     private boolean onChangeVmIndex(ObservableInt VmIndex, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmPhoneConState(ObservableInt VmPhoneConState, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmMediaInfoMusicName(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmMediaInfoMusicName(ObservableField<String> VmMediaInfoMusicName, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         boolean vmIndexInt1;
         String vmMediaInfoMusicNameJavaLangObjectNullBenzGsHomeMusicHintAndroidStringBenzGsHomeMusicHintVmMediaInfoMusicName;
@@ -136,7 +143,7 @@ public class FraBenzgsOneBindingImpl extends FraBenzgsOneBinding {
         int vmIndexGet;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         boolean vmIndexInt2 = false;
         boolean vmIndexInt0 = false;
@@ -150,32 +157,36 @@ public class FraBenzgsOneBindingImpl extends FraBenzgsOneBinding {
         boolean vmIndexInt32 = false;
         boolean vmIndexInt12 = false;
         boolean vmMediaInfoMusicNameJavaLangObjectNull = false;
-        if ((dirtyFlags & 27) != 0) {
+        if ((dirtyFlags & 27) == 0) {
+            vmIndexInt1 = false;
+        } else {
             if ((dirtyFlags & 25) != 0) {
                 if (vm != null) {
                     vmIndex = vm.index;
                 }
-                updateRegistration(0, (Observable) vmIndex);
-                if (vmIndex != null) {
-                    vmIndexGet = vmIndex.get();
-                } else {
+                updateRegistration(0, vmIndex);
+                if (vmIndex == null) {
                     vmIndexGet = 0;
+                } else {
+                    int vmIndexGet2 = vmIndex.get();
+                    vmIndexGet = vmIndexGet2;
                 }
                 vmIndexInt2 = vmIndexGet == 2;
                 boolean vmIndexInt4 = vmIndexGet == 4;
                 boolean vmIndexInt02 = vmIndexGet == 0;
                 boolean vmIndexInt33 = vmIndexGet == 3;
-                int i = vmIndexGet;
                 vmIndexInt12 = vmIndexGet == 1;
                 vmIndexInt32 = vmIndexInt33;
                 vmIndexInt3 = vmIndexInt02;
                 vmIndexInt0 = vmIndexInt4;
             }
-            if ((dirtyFlags & 26) != 0) {
+            if ((dirtyFlags & 26) == 0) {
+                vmIndexInt1 = vmIndexInt12;
+            } else {
                 if (vm != null) {
                     vmPhoneConState = vm.phoneConState;
                 }
-                updateRegistration(1, (Observable) vmPhoneConState);
+                updateRegistration(1, vmPhoneConState);
                 if (vmPhoneConState != null) {
                     vmPhoneConStateGet = vmPhoneConState.get();
                 }
@@ -187,45 +198,38 @@ public class FraBenzgsOneBindingImpl extends FraBenzgsOneBinding {
                         dirtyFlags |= 128;
                     }
                 }
-                vmPhoneConStateInt0BenzGsHomeBtHintAndroidStringKswId7NotConnectedPhoneBenzGsHomeBtHintAndroidStringKswId7ConnectedPhone = vmPhoneConStateInt0 ? this.benzGsHomeBtHint.getResources().getString(R.string.ksw_id7_not_connected_phone) : this.benzGsHomeBtHint.getResources().getString(R.string.ksw_id7_connected_phone);
-                vmIndexInt1 = vmIndexInt12;
-            } else {
+                vmPhoneConStateInt0BenzGsHomeBtHintAndroidStringKswId7NotConnectedPhoneBenzGsHomeBtHintAndroidStringKswId7ConnectedPhone = vmPhoneConStateInt0 ? this.benzGsHomeBtHint.getResources().getString(C0899R.string.ksw_id7_not_connected_phone) : this.benzGsHomeBtHint.getResources().getString(C0899R.string.ksw_id7_connected_phone);
                 vmIndexInt1 = vmIndexInt12;
             }
-        } else {
-            vmIndexInt1 = false;
         }
-        if ((dirtyFlags & 20) != 0) {
+        if ((dirtyFlags & 20) == 0) {
+            vmMediaInfoMusicNameJavaLangObjectNullBenzGsHomeMusicHintAndroidStringBenzGsHomeMusicHintVmMediaInfoMusicName = null;
+        } else {
             MediaInfo vmMediaInfo = BenzGsViewMoel.mediaInfo;
-            if (vmMediaInfo != null) {
-                vmMediaInfoMusicNameJavaLangObjectNullBenzGsHomeMusicHintAndroidStringBenzGsHomeMusicHintVmMediaInfoMusicName = null;
-                vmMediaInfoMusicName = vmMediaInfo.musicName;
-            } else {
+            if (vmMediaInfo == null) {
                 vmMediaInfoMusicNameJavaLangObjectNullBenzGsHomeMusicHintAndroidStringBenzGsHomeMusicHintVmMediaInfoMusicName = null;
                 vmMediaInfoMusicName = null;
+            } else {
+                vmMediaInfoMusicNameJavaLangObjectNullBenzGsHomeMusicHintAndroidStringBenzGsHomeMusicHintVmMediaInfoMusicName = null;
+                vmMediaInfoMusicName = vmMediaInfo.musicName;
             }
-            MediaInfo mediaInfo = vmMediaInfo;
-            updateRegistration(2, (Observable) vmMediaInfoMusicName);
+            updateRegistration(2, vmMediaInfoMusicName);
             if (vmMediaInfoMusicName != null) {
                 vmMediaInfoMusicNameGet = vmMediaInfoMusicName.get();
             }
             vmMediaInfoMusicNameJavaLangObjectNull = vmMediaInfoMusicNameGet == null;
-            if ((dirtyFlags & 20) == 0) {
-                ObservableField<String> observableField = vmMediaInfoMusicName;
-            } else if (vmMediaInfoMusicNameJavaLangObjectNull) {
-                dirtyFlags |= 64;
-                ObservableField<String> observableField2 = vmMediaInfoMusicName;
-            } else {
-                dirtyFlags |= 32;
-                ObservableField<String> observableField3 = vmMediaInfoMusicName;
+            if ((dirtyFlags & 20) != 0) {
+                if (vmMediaInfoMusicNameJavaLangObjectNull) {
+                    dirtyFlags |= 64;
+                } else {
+                    dirtyFlags |= 32;
+                }
             }
-        } else {
-            vmMediaInfoMusicNameJavaLangObjectNullBenzGsHomeMusicHintAndroidStringBenzGsHomeMusicHintVmMediaInfoMusicName = null;
         }
-        if ((dirtyFlags & 20) != 0) {
-            vmMediaInfoMusicNameJavaLangObjectNullBenzGsHomeMusicHintAndroidStringBenzGsHomeMusicHintVmMediaInfoMusicName2 = vmMediaInfoMusicNameJavaLangObjectNull ? this.benzGsHomeMusicHint.getResources().getString(R.string.benz_gs_home_music_hint) : vmMediaInfoMusicNameGet;
-        } else {
+        if ((dirtyFlags & 20) == 0) {
             vmMediaInfoMusicNameJavaLangObjectNullBenzGsHomeMusicHintAndroidStringBenzGsHomeMusicHintVmMediaInfoMusicName2 = vmMediaInfoMusicNameJavaLangObjectNullBenzGsHomeMusicHintAndroidStringBenzGsHomeMusicHintVmMediaInfoMusicName;
+        } else {
+            vmMediaInfoMusicNameJavaLangObjectNullBenzGsHomeMusicHintAndroidStringBenzGsHomeMusicHintVmMediaInfoMusicName2 = vmMediaInfoMusicNameJavaLangObjectNull ? this.benzGsHomeMusicHint.getResources().getString(C0899R.string.benz_gs_home_music_hint) : vmMediaInfoMusicNameGet;
         }
         if ((dirtyFlags & 25) != 0) {
             this.benzGsHomeBtBtn.setSelected(vmIndexInt2);

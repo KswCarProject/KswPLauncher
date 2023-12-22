@@ -7,5 +7,6 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.LOCAL_VARIABLE, ElementType.FIELD})
 @Retention(RetentionPolicy.SOURCE)
+/* loaded from: classes.dex */
 public @interface ColorLong {
 }

@@ -14,43 +14,49 @@ import io.reactivex.internal.fuseable.FuseToObservable;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.Callable;
 
+/* loaded from: classes.dex */
 public final class ObservableCollectSingle<T, U> extends Single<U> implements FuseToObservable<U> {
     final BiConsumer<? super U, ? super T> collector;
     final Callable<? extends U> initialSupplier;
     final ObservableSource<T> source;
 
-    public ObservableCollectSingle(ObservableSource<T> source2, Callable<? extends U> initialSupplier2, BiConsumer<? super U, ? super T> collector2) {
-        this.source = source2;
-        this.initialSupplier = initialSupplier2;
-        this.collector = collector2;
+    public ObservableCollectSingle(ObservableSource<T> source, Callable<? extends U> initialSupplier, BiConsumer<? super U, ? super T> collector) {
+        this.source = source;
+        this.initialSupplier = initialSupplier;
+        this.collector = collector;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super U> t) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super U> t) {
         try {
             this.source.subscribe(new CollectObserver(t, ObjectHelper.requireNonNull(this.initialSupplier.call(), "The initialSupplier returned a null value"), this.collector));
         } catch (Throwable e) {
-            EmptyDisposable.error(e, (SingleObserver<?>) t);
+            EmptyDisposable.error(e, t);
         }
     }
 
+    @Override // io.reactivex.internal.fuseable.FuseToObservable
     public Observable<U> fuseToObservable() {
         return RxJavaPlugins.onAssembly(new ObservableCollect(this.source, this.initialSupplier, this.collector));
     }
 
+    /* loaded from: classes.dex */
     static final class CollectObserver<T, U> implements Observer<T>, Disposable {
         final BiConsumer<? super U, ? super T> collector;
         boolean done;
         final SingleObserver<? super U> downstream;
-        final U u;
+
+        /* renamed from: u */
+        final U f314u;
         Disposable upstream;
 
-        CollectObserver(SingleObserver<? super U> actual, U u2, BiConsumer<? super U, ? super T> collector2) {
+        CollectObserver(SingleObserver<? super U> actual, U u, BiConsumer<? super U, ? super T> collector) {
             this.downstream = actual;
-            this.collector = collector2;
-            this.u = u2;
+            this.collector = collector;
+            this.f314u = u;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -58,25 +64,30 @@ public final class ObservableCollectSingle<T, U> extends Single<U> implements Fu
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
-            if (!this.done) {
-                try {
-                    this.collector.accept(this.u, t);
-                } catch (Throwable e) {
-                    this.upstream.dispose();
-                    onError(e);
-                }
+            if (this.done) {
+                return;
+            }
+            try {
+                this.collector.accept((U) this.f314u, t);
+            } catch (Throwable e) {
+                this.upstream.dispose();
+                onError(e);
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -86,11 +97,13 @@ public final class ObservableCollectSingle<T, U> extends Single<U> implements Fu
             this.downstream.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                this.downstream.onSuccess(this.u);
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            this.downstream.onSuccess((U) this.f314u);
         }
     }
 }

@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 
+/* loaded from: classes.dex */
 public final class ListFormatter {
     static Cache cache = new Cache();
     private final String end;
@@ -23,6 +24,7 @@ public final class ListFormatter {
     private final String two;
 
     @Deprecated
+    /* loaded from: classes.dex */
     public enum Style {
         STANDARD("standard"),
         DURATION("unit"),
@@ -31,8 +33,8 @@ public final class ListFormatter {
         
         private final String name;
 
-        private Style(String name2) {
-            this.name = name2;
+        Style(String name) {
+            this.name = name;
         }
 
         @Deprecated
@@ -42,34 +44,34 @@ public final class ListFormatter {
     }
 
     @Deprecated
-    public ListFormatter(String two2, String start2, String middle2, String end2) {
-        this(compilePattern(two2, new StringBuilder()), compilePattern(start2, new StringBuilder()), compilePattern(middle2, new StringBuilder()), compilePattern(end2, new StringBuilder()), (ULocale) null);
+    public ListFormatter(String two, String start, String middle, String end) {
+        this(compilePattern(two, new StringBuilder()), compilePattern(start, new StringBuilder()), compilePattern(middle, new StringBuilder()), compilePattern(end, new StringBuilder()), null);
     }
 
-    private ListFormatter(String two2, String start2, String middle2, String end2, ULocale locale2) {
-        this.two = two2;
-        this.start = start2;
-        this.middle = middle2;
-        this.end = end2;
-        this.locale = locale2;
+    private ListFormatter(String two, String start, String middle, String end, ULocale locale) {
+        this.two = two;
+        this.start = start;
+        this.middle = middle;
+        this.end = end;
+        this.locale = locale;
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public static String compilePattern(String pattern, StringBuilder sb) {
         return SimpleFormatterImpl.compileToStringMinMaxArguments(pattern, sb, 2, 2);
     }
 
-    public static ListFormatter getInstance(ULocale locale2) {
-        return getInstance(locale2, Style.STANDARD);
+    public static ListFormatter getInstance(ULocale locale) {
+        return getInstance(locale, Style.STANDARD);
     }
 
-    public static ListFormatter getInstance(Locale locale2) {
-        return getInstance(ULocale.forLocale(locale2), Style.STANDARD);
+    public static ListFormatter getInstance(Locale locale) {
+        return getInstance(ULocale.forLocale(locale), Style.STANDARD);
     }
 
     @Deprecated
-    public static ListFormatter getInstance(ULocale locale2, Style style) {
-        return cache.get(locale2, style.getName());
+    public static ListFormatter getInstance(ULocale locale, Style style) {
+        return cache.get(locale, style.getName());
     }
 
     public static ListFormatter getInstance() {
@@ -77,35 +79,23 @@ public final class ListFormatter {
     }
 
     public String format(Object... items) {
-        return format((Collection<?>) Arrays.asList(items));
+        return format(Arrays.asList(items));
     }
 
     public String format(Collection<?> items) {
         return format(items, -1).toString();
     }
 
-    /* access modifiers changed from: package-private */
-    public FormattedListBuilder format(Collection<?> items, int index) {
+    FormattedListBuilder format(Collection<?> items, int index) {
         Iterator<?> it = items.iterator();
         int count = items.size();
-        boolean z = false;
         switch (count) {
             case 0:
                 return new FormattedListBuilder("", false);
             case 1:
-                Object next = it.next();
-                if (index == 0) {
-                    z = true;
-                }
-                return new FormattedListBuilder(next, z);
+                return new FormattedListBuilder(it.next(), index == 0);
             case 2:
-                FormattedListBuilder formattedListBuilder = new FormattedListBuilder(it.next(), index == 0);
-                String str = this.two;
-                Object next2 = it.next();
-                if (index == 1) {
-                    z = true;
-                }
-                return formattedListBuilder.append(str, next2, z);
+                return new FormattedListBuilder(it.next(), index == 0).append(this.two, it.next(), index == 1);
             default:
                 FormattedListBuilder builder = new FormattedListBuilder(it.next(), index == 0);
                 builder.append(this.start, it.next(), index == 1);
@@ -114,24 +104,19 @@ public final class ListFormatter {
                     builder.append(this.middle, it.next(), index == idx);
                     idx++;
                 }
-                String str2 = this.end;
-                Object next3 = it.next();
-                if (index == count - 1) {
-                    z = true;
-                }
-                return builder.append(str2, next3, z);
+                return builder.append(this.end, it.next(), index == count + (-1));
         }
     }
 
     public String getPatternForNumItems(int count) {
-        if (count > 0) {
-            ArrayList<String> list = new ArrayList<>();
-            for (int i = 0; i < count; i++) {
-                list.add(String.format("{%d}", new Object[]{Integer.valueOf(i)}));
-            }
-            return format((Collection<?>) list);
+        if (count <= 0) {
+            throw new IllegalArgumentException("count must be > 0");
         }
-        throw new IllegalArgumentException("count must be > 0");
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            list.add(String.format("{%d}", Integer.valueOf(i)));
+        }
+        return format(list);
     }
 
     @Deprecated
@@ -139,6 +124,7 @@ public final class ListFormatter {
         return this.locale;
     }
 
+    /* loaded from: classes.dex */
     static class FormattedListBuilder {
         private StringBuilder current;
         private int offset;
@@ -155,7 +141,8 @@ public final class ListFormatter {
             if (offsets != null) {
                 if (offsets[0] == -1 || offsets[1] == -1) {
                     throw new IllegalArgumentException("{0} or {1} missing from pattern " + pattern);
-                } else if (recordOffset) {
+                }
+                if (recordOffset) {
                     this.offset = offsets[1];
                 } else {
                     this.offset += offsets[0];
@@ -185,6 +172,7 @@ public final class ListFormatter {
         }
     }
 
+    /* loaded from: classes.dex */
     private static class Cache {
         private final ICUCache<String, ListFormatter> cache;
 
@@ -193,14 +181,14 @@ public final class ListFormatter {
         }
 
         public ListFormatter get(ULocale locale, String style) {
-            String key = String.format("%s:%s", new Object[]{locale.toString(), style});
+            String key = String.format("%s:%s", locale.toString(), style);
             ListFormatter result = (ListFormatter) this.cache.get(key);
-            if (result != null) {
-                return result;
+            if (result == null) {
+                ListFormatter result2 = load(locale, style);
+                this.cache.put(key, result2);
+                return result2;
             }
-            ListFormatter result2 = load(locale, style);
-            this.cache.put(key, result2);
-            return result2;
+            return result;
         }
 
         private static ListFormatter load(ULocale ulocale, String style) {

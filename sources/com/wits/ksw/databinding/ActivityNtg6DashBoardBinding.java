@@ -9,10 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.DashboardViewModel;
 import com.wits.ksw.launcher.view.ID7SpeedImageView;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityNtg6DashBoardBinding extends ViewDataBinding {
     public final ImageView brakeTextView;
     public final ImageView carImageView;
@@ -33,27 +34,26 @@ public abstract class ActivityNtg6DashBoardBinding extends ViewDataBinding {
     public final TextView temperatureTextView;
     public final ImageView zspeedPointerImageView;
 
-    public abstract void setViewModel(DashboardViewModel dashboardViewModel);
+    public abstract void setViewModel(DashboardViewModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected ActivityNtg6DashBoardBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView brakeTextView2, ImageView carImageView2, ImageView dorrBackImageView2, ImageView dorrLeftFlImageView2, ImageView dorrLeftFrImageView2, ImageView dorrLeftRlImageView2, ImageView imageView192, ConstraintLayout linearLayout22, ImageView ntg55PointerSpeedHighlightImageView2, ImageView ntg55PointerTachometerHighlightImageView2, ImageView seatBeltTextView2, ID7SpeedImageView speedPointerImageView2, ID7SpeedImageView speedometerImageView2, ImageView tachometerImageView2, TextView temperatureTextView2, ImageView zspeedPointerImageView2) {
+    protected ActivityNtg6DashBoardBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView brakeTextView, ImageView carImageView, ImageView dorrBackImageView, ImageView dorrLeftFlImageView, ImageView dorrLeftFrImageView, ImageView dorrLeftRlImageView, ImageView imageView19, ConstraintLayout linearLayout2, ImageView ntg55PointerSpeedHighlightImageView, ImageView ntg55PointerTachometerHighlightImageView, ImageView seatBeltTextView, ID7SpeedImageView speedPointerImageView, ID7SpeedImageView speedometerImageView, ImageView tachometerImageView, TextView temperatureTextView, ImageView zspeedPointerImageView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.brakeTextView = brakeTextView2;
-        this.carImageView = carImageView2;
-        this.dorrBackImageView = dorrBackImageView2;
-        this.dorrLeftFlImageView = dorrLeftFlImageView2;
-        this.dorrLeftFrImageView = dorrLeftFrImageView2;
-        this.dorrLeftRlImageView = dorrLeftRlImageView2;
-        this.imageView19 = imageView192;
-        this.linearLayout2 = linearLayout22;
-        this.ntg55PointerSpeedHighlightImageView = ntg55PointerSpeedHighlightImageView2;
-        this.ntg55PointerTachometerHighlightImageView = ntg55PointerTachometerHighlightImageView2;
-        this.seatBeltTextView = seatBeltTextView2;
-        this.speedPointerImageView = speedPointerImageView2;
-        this.speedometerImageView = speedometerImageView2;
-        this.tachometerImageView = tachometerImageView2;
-        this.temperatureTextView = temperatureTextView2;
-        this.zspeedPointerImageView = zspeedPointerImageView2;
+        this.brakeTextView = brakeTextView;
+        this.carImageView = carImageView;
+        this.dorrBackImageView = dorrBackImageView;
+        this.dorrLeftFlImageView = dorrLeftFlImageView;
+        this.dorrLeftFrImageView = dorrLeftFrImageView;
+        this.dorrLeftRlImageView = dorrLeftRlImageView;
+        this.imageView19 = imageView19;
+        this.linearLayout2 = linearLayout2;
+        this.ntg55PointerSpeedHighlightImageView = ntg55PointerSpeedHighlightImageView;
+        this.ntg55PointerTachometerHighlightImageView = ntg55PointerTachometerHighlightImageView;
+        this.seatBeltTextView = seatBeltTextView;
+        this.speedPointerImageView = speedPointerImageView;
+        this.speedometerImageView = speedometerImageView;
+        this.tachometerImageView = tachometerImageView;
+        this.temperatureTextView = temperatureTextView;
+        this.zspeedPointerImageView = zspeedPointerImageView;
     }
 
     public DashboardViewModel getViewModel() {
@@ -66,7 +66,7 @@ public abstract class ActivityNtg6DashBoardBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityNtg6DashBoardBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityNtg6DashBoardBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_ntg6_dash_board, root, attachToRoot, component);
+        return (ActivityNtg6DashBoardBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_ntg6_dash_board, root, attachToRoot, component);
     }
 
     public static ActivityNtg6DashBoardBinding inflate(LayoutInflater inflater) {
@@ -75,7 +75,7 @@ public abstract class ActivityNtg6DashBoardBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityNtg6DashBoardBinding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityNtg6DashBoardBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_ntg6_dash_board, (ViewGroup) null, false, component);
+        return (ActivityNtg6DashBoardBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_ntg6_dash_board, null, false, component);
     }
 
     public static ActivityNtg6DashBoardBinding bind(View view) {
@@ -84,6 +84,6 @@ public abstract class ActivityNtg6DashBoardBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityNtg6DashBoardBinding bind(View view, Object component) {
-        return (ActivityNtg6DashBoardBinding) bind(component, view, R.layout.activity_ntg6_dash_board);
+        return (ActivityNtg6DashBoardBinding) bind(component, view, C0899R.C0902layout.activity_ntg6_dash_board);
     }
 }

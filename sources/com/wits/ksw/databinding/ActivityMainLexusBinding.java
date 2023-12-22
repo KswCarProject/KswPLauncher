@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityMainLexusBinding extends ViewDataBinding {
     public final LinearLayout idGallery;
     public final Button lexusAir;
@@ -31,26 +32,25 @@ public abstract class ActivityMainLexusBinding extends ViewDataBinding {
     protected LauncherViewModel mViewModel;
     public final LinearLayout mainMenu;
 
-    public abstract void setViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setViewModel(LauncherViewModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected ActivityMainLexusBinding(Object _bindingComponent, View _root, int _localFieldCount, LinearLayout idGallery2, Button lexusAir2, Button lexusBtApp2, Button lexusBtCar2, Button lexusBtDash2, Button lexusBtDvr2, Button lexusBtFile2, Button lexusBtLink2, Button lexusBtMusic2, Button lexusBtNavi2, Button lexusBtPhone2, Button lexusBtSet2, Button lexusBtVedio2, HorizontalScrollView lexusMainSv2, LinearLayout mainMenu2) {
+    protected ActivityMainLexusBinding(Object _bindingComponent, View _root, int _localFieldCount, LinearLayout idGallery, Button lexusAir, Button lexusBtApp, Button lexusBtCar, Button lexusBtDash, Button lexusBtDvr, Button lexusBtFile, Button lexusBtLink, Button lexusBtMusic, Button lexusBtNavi, Button lexusBtPhone, Button lexusBtSet, Button lexusBtVedio, HorizontalScrollView lexusMainSv, LinearLayout mainMenu) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.idGallery = idGallery2;
-        this.lexusAir = lexusAir2;
-        this.lexusBtApp = lexusBtApp2;
-        this.lexusBtCar = lexusBtCar2;
-        this.lexusBtDash = lexusBtDash2;
-        this.lexusBtDvr = lexusBtDvr2;
-        this.lexusBtFile = lexusBtFile2;
-        this.lexusBtLink = lexusBtLink2;
-        this.lexusBtMusic = lexusBtMusic2;
-        this.lexusBtNavi = lexusBtNavi2;
-        this.lexusBtPhone = lexusBtPhone2;
-        this.lexusBtSet = lexusBtSet2;
-        this.lexusBtVedio = lexusBtVedio2;
-        this.lexusMainSv = lexusMainSv2;
-        this.mainMenu = mainMenu2;
+        this.idGallery = idGallery;
+        this.lexusAir = lexusAir;
+        this.lexusBtApp = lexusBtApp;
+        this.lexusBtCar = lexusBtCar;
+        this.lexusBtDash = lexusBtDash;
+        this.lexusBtDvr = lexusBtDvr;
+        this.lexusBtFile = lexusBtFile;
+        this.lexusBtLink = lexusBtLink;
+        this.lexusBtMusic = lexusBtMusic;
+        this.lexusBtNavi = lexusBtNavi;
+        this.lexusBtPhone = lexusBtPhone;
+        this.lexusBtSet = lexusBtSet;
+        this.lexusBtVedio = lexusBtVedio;
+        this.lexusMainSv = lexusMainSv;
+        this.mainMenu = mainMenu;
     }
 
     public LauncherViewModel getViewModel() {
@@ -63,7 +63,7 @@ public abstract class ActivityMainLexusBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainLexusBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityMainLexusBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_lexus, root, attachToRoot, component);
+        return (ActivityMainLexusBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_lexus, root, attachToRoot, component);
     }
 
     public static ActivityMainLexusBinding inflate(LayoutInflater inflater) {
@@ -72,7 +72,7 @@ public abstract class ActivityMainLexusBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainLexusBinding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityMainLexusBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_lexus, (ViewGroup) null, false, component);
+        return (ActivityMainLexusBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_lexus, null, false, component);
     }
 
     public static ActivityMainLexusBinding bind(View view) {
@@ -81,6 +81,6 @@ public abstract class ActivityMainLexusBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainLexusBinding bind(View view, Object component) {
-        return (ActivityMainLexusBinding) bind(component, view, R.layout.activity_main_lexus);
+        return (ActivityMainLexusBinding) bind(component, view, C0899R.C0902layout.activity_main_lexus);
     }
 }

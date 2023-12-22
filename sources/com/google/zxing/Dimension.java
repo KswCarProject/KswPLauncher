@@ -1,15 +1,16 @@
 package com.google.zxing;
 
+/* loaded from: classes.dex */
 public final class Dimension {
     private final int height;
     private final int width;
 
-    public Dimension(int width2, int height2) {
-        if (width2 < 0 || height2 < 0) {
+    public Dimension(int width, int height) {
+        if (width < 0 || height < 0) {
             throw new IllegalArgumentException();
         }
-        this.width = width2;
-        this.height = height2;
+        this.width = width;
+        this.height = height;
     }
 
     public int getWidth() {
@@ -21,12 +22,9 @@ public final class Dimension {
     }
 
     public boolean equals(Object other) {
-        if (!(other instanceof Dimension)) {
-            return false;
-        }
-        Dimension d = (Dimension) other;
-        if (this.width == d.width && this.height == d.height) {
-            return true;
+        if (other instanceof Dimension) {
+            Dimension d = (Dimension) other;
+            return this.width == d.width && this.height == d.height;
         }
         return false;
     }

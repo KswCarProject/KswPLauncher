@@ -5,8 +5,9 @@ import android.support.constraint.solver.state.HelperReference;
 import android.support.constraint.solver.state.State;
 import java.util.Iterator;
 
+/* loaded from: classes.dex */
 public class AlignVerticallyReference extends HelperReference {
-    private float mBias = 0.5f;
+    private float mBias;
     private Object mBottomToBottom;
     private Object mBottomToTop;
     private Object mTopToBottom;
@@ -14,12 +15,15 @@ public class AlignVerticallyReference extends HelperReference {
 
     public AlignVerticallyReference(State state) {
         super(state, State.Helper.ALIGN_VERTICALLY);
+        this.mBias = 0.5f;
     }
 
+    @Override // android.support.constraint.solver.state.HelperReference
     public void apply() {
-        Iterator it = this.mReferences.iterator();
+        Iterator<Object> it = this.mReferences.iterator();
         while (it.hasNext()) {
-            ConstraintReference reference = this.mState.constraints(it.next());
+            Object key = it.next();
+            ConstraintReference reference = this.mState.constraints(key);
             reference.clearVertical();
             Object obj = this.mTopToTop;
             if (obj != null) {

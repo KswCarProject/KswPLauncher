@@ -7,12 +7,13 @@ import android.view.KeyEvent;
 import android.widget.ImageView;
 import com.wits.ksw.MainActivity;
 
+/* loaded from: classes16.dex */
 public class CustomBmwImageView extends ImageView {
     private static final String TAG = CustomBmwImageView.class.getName();
     private Context mContext;
 
     public CustomBmwImageView(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public CustomBmwImageView(Context context, AttributeSet attrs) {
@@ -21,6 +22,7 @@ public class CustomBmwImageView extends ImageView {
         setDefaultFocusHighlightEnabled(false);
     }
 
+    @Override // android.view.View
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == 21 && event.getAction() == 0) {
             try {

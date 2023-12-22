@@ -4,6 +4,7 @@ import com.google.zxing.FormatException;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.common.BitArray;
 
+/* loaded from: classes.dex */
 final class AI01AndOtherAIs extends AI01decoder {
     private static final int HEADER_SIZE = 4;
 
@@ -11,12 +12,13 @@ final class AI01AndOtherAIs extends AI01decoder {
         super(information);
     }
 
+    @Override // com.google.zxing.oned.rss.expanded.decoders.AbstractExpandedDecoder
     public String parseInformation() throws NotFoundException, FormatException {
-        StringBuilder sb = new StringBuilder();
-        StringBuilder buff = sb;
-        sb.append("(01)");
+        StringBuilder buff = new StringBuilder();
+        buff.append("(01)");
         int initialGtinPosition = buff.length();
-        buff.append(getGeneralDecoder().extractNumericValueFromBitArray(4, 4));
+        int firstGtinDigit = getGeneralDecoder().extractNumericValueFromBitArray(4, 4);
+        buff.append(firstGtinDigit);
         encodeCompressedGtinWithoutAI(buff, 8, initialGtinPosition);
         return getGeneralDecoder().decodeAllCodes(buff, 48);
     }

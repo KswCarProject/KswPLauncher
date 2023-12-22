@@ -9,10 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.view.CustomSkinImageView;
 
+/* loaded from: classes7.dex */
 public abstract class AlsId7UiSubPhoneViewBinding extends ViewDataBinding {
     public final ImageView alsId7MainPhoneImg;
     public final TextView dayTextView;
@@ -24,17 +25,17 @@ public abstract class AlsId7UiSubPhoneViewBinding extends ViewDataBinding {
     public final CustomSkinImageView phoneImageView;
     public final TextView textView2;
 
-    public abstract void setNaviViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setNaviViewModel(LauncherViewModel NaviViewModel);
 
-    protected AlsId7UiSubPhoneViewBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView alsId7MainPhoneImg2, TextView dayTextView2, TextView monthTextView2, TextView phoneConnectionTextView2, ConstraintLayout phoneConstraintLayout2, CustomSkinImageView phoneImageView2, TextView textView22) {
+    protected AlsId7UiSubPhoneViewBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView alsId7MainPhoneImg, TextView dayTextView, TextView monthTextView, TextView phoneConnectionTextView, ConstraintLayout phoneConstraintLayout, CustomSkinImageView phoneImageView, TextView textView2) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.alsId7MainPhoneImg = alsId7MainPhoneImg2;
-        this.dayTextView = dayTextView2;
-        this.monthTextView = monthTextView2;
-        this.phoneConnectionTextView = phoneConnectionTextView2;
-        this.phoneConstraintLayout = phoneConstraintLayout2;
-        this.phoneImageView = phoneImageView2;
-        this.textView2 = textView22;
+        this.alsId7MainPhoneImg = alsId7MainPhoneImg;
+        this.dayTextView = dayTextView;
+        this.monthTextView = monthTextView;
+        this.phoneConnectionTextView = phoneConnectionTextView;
+        this.phoneConstraintLayout = phoneConstraintLayout;
+        this.phoneImageView = phoneImageView;
+        this.textView2 = textView2;
     }
 
     public LauncherViewModel getNaviViewModel() {
@@ -47,7 +48,7 @@ public abstract class AlsId7UiSubPhoneViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7UiSubPhoneViewBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AlsId7UiSubPhoneViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_ui_sub_phone_view, root, attachToRoot, component);
+        return (AlsId7UiSubPhoneViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_ui_sub_phone_view, root, attachToRoot, component);
     }
 
     public static AlsId7UiSubPhoneViewBinding inflate(LayoutInflater inflater) {
@@ -56,7 +57,7 @@ public abstract class AlsId7UiSubPhoneViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7UiSubPhoneViewBinding inflate(LayoutInflater inflater, Object component) {
-        return (AlsId7UiSubPhoneViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_ui_sub_phone_view, (ViewGroup) null, false, component);
+        return (AlsId7UiSubPhoneViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_ui_sub_phone_view, null, false, component);
     }
 
     public static AlsId7UiSubPhoneViewBinding bind(View view) {
@@ -65,6 +66,6 @@ public abstract class AlsId7UiSubPhoneViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7UiSubPhoneViewBinding bind(View view, Object component) {
-        return (AlsId7UiSubPhoneViewBinding) bind(component, view, R.layout.als_id7_ui_sub_phone_view);
+        return (AlsId7UiSubPhoneViewBinding) bind(component, view, C0899R.C0902layout.als_id7_ui_sub_phone_view);
     }
 }

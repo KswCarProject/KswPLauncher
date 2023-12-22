@@ -11,28 +11,32 @@ import io.reactivex.internal.disposables.EmptyDisposable;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.Callable;
 
+/* loaded from: classes.dex */
 public final class ObservableGenerate<T, S> extends Observable<T> {
     final Consumer<? super S> disposeState;
     final BiFunction<S, Emitter<T>, S> generator;
     final Callable<S> stateSupplier;
 
-    public ObservableGenerate(Callable<S> stateSupplier2, BiFunction<S, Emitter<T>, S> generator2, Consumer<? super S> disposeState2) {
-        this.stateSupplier = stateSupplier2;
-        this.generator = generator2;
-        this.disposeState = disposeState2;
+    public ObservableGenerate(Callable<S> stateSupplier, BiFunction<S, Emitter<T>, S> generator, Consumer<? super S> disposeState) {
+        this.stateSupplier = stateSupplier;
+        this.generator = generator;
+        this.disposeState = disposeState;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super T> observer) {
         try {
-            GeneratorDisposable<T, S> gd = new GeneratorDisposable<>(observer, this.generator, this.disposeState, this.stateSupplier.call());
+            S state = this.stateSupplier.call();
+            GeneratorDisposable<T, S> gd = new GeneratorDisposable<>(observer, this.generator, this.disposeState, state);
             observer.onSubscribe(gd);
             gd.run();
         } catch (Throwable e) {
             Exceptions.throwIfFatal(e);
-            EmptyDisposable.error(e, (Observer<?>) observer);
+            EmptyDisposable.error(e, observer);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class GeneratorDisposable<T, S> implements Emitter<T>, Disposable {
         volatile boolean cancelled;
         final Consumer<? super S> disposeState;
@@ -42,10 +46,10 @@ public final class ObservableGenerate<T, S> extends Observable<T> {
         S state;
         boolean terminate;
 
-        GeneratorDisposable(Observer<? super T> actual, BiFunction<S, ? super Emitter<T>, S> generator2, Consumer<? super S> disposeState2, S initialState) {
+        GeneratorDisposable(Observer<? super T> actual, BiFunction<S, ? super Emitter<T>, S> generator, Consumer<? super S> disposeState, S initialState) {
             this.downstream = actual;
-            this.generator = generator2;
-            this.disposeState = disposeState2;
+            this.generator = generator;
+            this.disposeState = disposeState;
             this.state = initialState;
         }
 
@@ -89,28 +93,31 @@ public final class ObservableGenerate<T, S> extends Observable<T> {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.cancelled = true;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.cancelled;
         }
 
+        @Override // io.reactivex.Emitter
         public void onNext(T t) {
-            if (this.terminate) {
-                return;
-            }
-            if (this.hasNext) {
-                onError(new IllegalStateException("onNext already called in this generate turn"));
-            } else if (t == null) {
-                onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
-            } else {
-                this.hasNext = true;
-                this.downstream.onNext(t);
+            if (!this.terminate) {
+                if (this.hasNext) {
+                    onError(new IllegalStateException("onNext already called in this generate turn"));
+                } else if (t == null) {
+                    onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
+                } else {
+                    this.hasNext = true;
+                    this.downstream.onNext(t);
+                }
             }
         }
 
+        @Override // io.reactivex.Emitter
         public void onError(Throwable t) {
             if (this.terminate) {
                 RxJavaPlugins.onError(t);
@@ -123,6 +130,7 @@ public final class ObservableGenerate<T, S> extends Observable<T> {
             this.downstream.onError(t);
         }
 
+        @Override // io.reactivex.Emitter
         public void onComplete() {
             if (!this.terminate) {
                 this.terminate = true;

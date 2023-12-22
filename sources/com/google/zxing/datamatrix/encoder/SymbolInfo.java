@@ -3,6 +3,7 @@ package com.google.zxing.datamatrix.encoder;
 import com.google.zxing.Dimension;
 import com.wits.pms.statuscontrol.WitsCommand;
 
+/* loaded from: classes.dex */
 public class SymbolInfo {
     static final SymbolInfo[] PROD_SYMBOLS;
     private static SymbolInfo[] symbols;
@@ -25,19 +26,19 @@ public class SymbolInfo {
         symbols = override;
     }
 
-    public SymbolInfo(boolean rectangular2, int dataCapacity2, int errorCodewords2, int matrixWidth2, int matrixHeight2, int dataRegions2) {
-        this(rectangular2, dataCapacity2, errorCodewords2, matrixWidth2, matrixHeight2, dataRegions2, dataCapacity2, errorCodewords2);
+    public SymbolInfo(boolean rectangular, int dataCapacity, int errorCodewords, int matrixWidth, int matrixHeight, int dataRegions) {
+        this(rectangular, dataCapacity, errorCodewords, matrixWidth, matrixHeight, dataRegions, dataCapacity, errorCodewords);
     }
 
-    SymbolInfo(boolean rectangular2, int dataCapacity2, int errorCodewords2, int matrixWidth2, int matrixHeight2, int dataRegions2, int rsBlockData2, int rsBlockError2) {
-        this.rectangular = rectangular2;
-        this.dataCapacity = dataCapacity2;
-        this.errorCodewords = errorCodewords2;
-        this.matrixWidth = matrixWidth2;
-        this.matrixHeight = matrixHeight2;
-        this.dataRegions = dataRegions2;
-        this.rsBlockData = rsBlockData2;
-        this.rsBlockError = rsBlockError2;
+    SymbolInfo(boolean rectangular, int dataCapacity, int errorCodewords, int matrixWidth, int matrixHeight, int dataRegions, int rsBlockData, int rsBlockError) {
+        this.rectangular = rectangular;
+        this.dataCapacity = dataCapacity;
+        this.errorCodewords = errorCodewords;
+        this.matrixWidth = matrixWidth;
+        this.matrixHeight = matrixHeight;
+        this.dataRegions = dataRegions;
+        this.rsBlockData = rsBlockData;
+        this.rsBlockError = rsBlockError;
     }
 
     public static SymbolInfo lookup(int dataCodewords) {
@@ -49,23 +50,25 @@ public class SymbolInfo {
     }
 
     public static SymbolInfo lookup(int dataCodewords, boolean allowRectangular, boolean fail) {
-        return lookup(dataCodewords, allowRectangular ? SymbolShapeHint.FORCE_NONE : SymbolShapeHint.FORCE_SQUARE, fail);
+        SymbolShapeHint shape = allowRectangular ? SymbolShapeHint.FORCE_NONE : SymbolShapeHint.FORCE_SQUARE;
+        return lookup(dataCodewords, shape, fail);
     }
 
     private static SymbolInfo lookup(int dataCodewords, SymbolShapeHint shape, boolean fail) {
-        return lookup(dataCodewords, shape, (Dimension) null, (Dimension) null, fail);
+        return lookup(dataCodewords, shape, null, null, fail);
     }
 
     public static SymbolInfo lookup(int dataCodewords, SymbolShapeHint shape, Dimension minSize, Dimension maxSize, boolean fail) {
+        SymbolInfo[] symbolInfoArr;
         for (SymbolInfo symbol : symbols) {
             if ((shape != SymbolShapeHint.FORCE_SQUARE || !symbol.rectangular) && ((shape != SymbolShapeHint.FORCE_RECTANGLE || symbol.rectangular) && ((minSize == null || (symbol.getSymbolWidth() >= minSize.getWidth() && symbol.getSymbolHeight() >= minSize.getHeight())) && ((maxSize == null || (symbol.getSymbolWidth() <= maxSize.getWidth() && symbol.getSymbolHeight() <= maxSize.getHeight())) && dataCodewords <= symbol.dataCapacity)))) {
                 return symbol;
             }
         }
-        if (!fail) {
-            return null;
+        if (fail) {
+            throw new IllegalArgumentException("Can't find a symbol arrangement that matches the message. Data codewords: ".concat(String.valueOf(dataCodewords)));
         }
-        throw new IllegalArgumentException("Can't find a symbol arrangement that matches the message. Data codewords: ".concat(String.valueOf(dataCodewords)));
+        return null;
     }
 
     private int getHorizontalDataRegions() {

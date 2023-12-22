@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:tag="layout/fragment_pemp_weather_edit_0" style="@style/id8_edit_main_card_container_left_padding">
+    <RelativeLayout android:id="@+id/layout" android:tag="binding_1" android:paddingBottom="0dp" android:paddingEnd="0dp" style="@style/id8_pemp_main_card_container_edit">
+        <TextView android:id="@+id/tv_title" android:text="@string/ksw_id8_weather" android:layout_marginEnd="15dp" style="@style/id8_pemp_main_card_title_edit"/>
+        <ImageView android:id="@+id/iv_divider" android:background="@drawable/id8_main_edit_icon_navi_line" android:layout_below="@+id/tv_title" android:layout_marginEnd="15dp" style="@style/id8_pemp_main_card_divider"/>
+        <TextView android:ellipsize="end" android:id="@+id/tv_city" android:tag="binding_2" android:layout_marginBottom="8dp" android:singleLine="true" android:layout_below="@+id/iv_divider" android:layout_marginEnd="15dp" style="@style/id8_pemp_main_card_desc_edit"/>
+        <TextView android:textSize="12sp" android:id="@+id/bt_a" android:tag="binding_3" android:visibility="gone" android:drawablePadding="6dp" android:layout_below="@+id/tv_city" style="@style/id8_main_card_desc_edit"/>
+        <TextView android:textSize="12sp" android:id="@+id/bt_b" android:tag="binding_4" android:visibility="gone" android:drawablePadding="6dp" android:layout_below="@+id/tv_city" android:layout_marginStart="110dp" style="@style/id8_main_card_desc_edit"/>
+        <TextView android:textSize="12sp" android:id="@+id/bt_c" android:tag="binding_5" android:visibility="gone" android:layout_marginTop="4dp" android:drawablePadding="6dp" android:layout_below="@+id/bt_b" style="@style/id8_main_card_desc_edit"/>
+        <RelativeLayout android:gravity="left" android:id="@+id/temperature" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:layout_below="@+id/tv_city" android:layout_marginEnd="15dp">
+            <TextView android:textSize="63sp" android:textColor="@android:color/white" android:id="@+id/temperature_tv" android:tag="binding_6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" style="@style/bmw_id8_text_shadow"/>
+            <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toRightOf="@+id/temperature_tv">
+                <TextView android:textSize="63sp" android:textColor="@android:color/white" android:id="@+id/unit_weather" android:tag="binding_7" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="°" android:includeFontPadding="false" style="@style/bmw_id8_text_shadow"/>
+                <TextView android:textSize="18sp" android:textColor="@android:color/white" android:gravity="center" android:tag="binding_8" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="40dp" android:layout_marginStart="5dp" style="@style/bmw_id8_text_shadow"/>
+            </FrameLayout>
+        </RelativeLayout>
+        <LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
+            <TextView android:textSize="17sp" android:textColor="@android:color/white" android:gravity="center" android:id="@+id/weather_tv" android:tag="binding_9" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="25dp" android:singleLine="true" android:layout_marginStart="45dp" android:layout_marginEnd="0dp" style="@style/pemp_id8_text_shadow"/>
+        </LinearLayout>
+        <include android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="18dp" android:layout_alignParentBottom="true" android:layout_marginStart="20dp" android:layout_marginEnd="20dp" layout="@layout/include_near_weather_edit"/>
+        <ImageView android:id="@+id/remove" android:layout_width="72dp" android:layout_height="72dp" android:layout_marginBottom="5dp" android:src="@drawable/bmw_id8_main_edit_icon_delete" android:layout_alignParentBottom="true" android:layout_marginEnd="8dp" android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package skin.support.constraint;
 
+/* loaded from: classes.dex */
 public final class BuildConfig {
     public static final String APPLICATION_ID = "skin.support.constraint";
     public static final String BUILD_TYPE = "release";

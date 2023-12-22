@@ -18,25 +18,28 @@ import kotlin.reflect.KTypeParameter;
 import kotlin.reflect.KTypeProjection;
 import kotlin.reflect.KVariance;
 
+/* loaded from: classes.dex */
 public class Reflection {
-    private static final KClass[] EMPTY_K_CLASS_ARRAY = new KClass[0];
+    private static final KClass[] EMPTY_K_CLASS_ARRAY;
     static final String REFLECTION_NOT_AVAILABLE = " (Kotlin reflection is not available)";
     private static final ReflectionFactory factory;
 
     static {
         ReflectionFactory impl;
         try {
-            impl = (ReflectionFactory) Class.forName("kotlin.reflect.jvm.internal.ReflectionFactoryImpl").newInstance();
+            Class<?> implClass = Class.forName("kotlin.reflect.jvm.internal.ReflectionFactoryImpl");
+            impl = (ReflectionFactory) implClass.newInstance();
         } catch (ClassCastException e) {
             impl = null;
         } catch (ClassNotFoundException e2) {
             impl = null;
-        } catch (InstantiationException e3) {
+        } catch (IllegalAccessException e3) {
             impl = null;
-        } catch (IllegalAccessException e4) {
+        } catch (InstantiationException e4) {
             impl = null;
         }
         factory = impl != null ? impl : new ReflectionFactory();
+        EMPTY_K_CLASS_ARRAY = new KClass[0];
     }
 
     public static KClass createKotlinClass(Class javaClass) {
@@ -124,11 +127,11 @@ public class Reflection {
     }
 
     public static KType typeOf(Class klass, KTypeProjection arg1, KTypeProjection arg2) {
-        return factory.typeOf(getOrCreateKotlinClass(klass), Arrays.asList(new KTypeProjection[]{arg1, arg2}), false);
+        return factory.typeOf(getOrCreateKotlinClass(klass), Arrays.asList(arg1, arg2), false);
     }
 
     public static KType typeOf(Class klass, KTypeProjection... arguments) {
-        return factory.typeOf(getOrCreateKotlinClass(klass), ArraysKt.toList((T[]) arguments), false);
+        return factory.typeOf(getOrCreateKotlinClass(klass), ArraysKt.toList(arguments), false);
     }
 
     public static KType nullableTypeOf(KClassifier classifier) {
@@ -144,11 +147,11 @@ public class Reflection {
     }
 
     public static KType nullableTypeOf(Class klass, KTypeProjection arg1, KTypeProjection arg2) {
-        return factory.typeOf(getOrCreateKotlinClass(klass), Arrays.asList(new KTypeProjection[]{arg1, arg2}), true);
+        return factory.typeOf(getOrCreateKotlinClass(klass), Arrays.asList(arg1, arg2), true);
     }
 
     public static KType nullableTypeOf(Class klass, KTypeProjection... arguments) {
-        return factory.typeOf(getOrCreateKotlinClass(klass), ArraysKt.toList((T[]) arguments), true);
+        return factory.typeOf(getOrCreateKotlinClass(klass), ArraysKt.toList(arguments), true);
     }
 
     public static KTypeParameter typeParameter(Object container, String name, KVariance variance, boolean isReified) {
@@ -160,7 +163,7 @@ public class Reflection {
     }
 
     public static void setUpperBounds(KTypeParameter typeParameter, KType... bounds) {
-        factory.setUpperBounds(typeParameter, ArraysKt.toList((T[]) bounds));
+        factory.setUpperBounds(typeParameter, ArraysKt.toList(bounds));
     }
 
     public static KType platformType(KType lowerBound, KType upperBound) {

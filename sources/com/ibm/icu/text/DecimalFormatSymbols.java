@@ -17,30 +17,14 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.MissingResourceException;
 
+/* loaded from: classes.dex */
 public class DecimalFormatSymbols implements Cloneable, Serializable {
     public static final int CURRENCY_SPC_CURRENCY_MATCH = 0;
     public static final int CURRENCY_SPC_INSERT = 2;
     public static final int CURRENCY_SPC_SURROUNDING_MATCH = 1;
-    private static final char DEF_DECIMAL_SEPARATOR = '.';
-    private static final char[] DEF_DIGIT_CHARS_ARRAY = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-    private static final String[] DEF_DIGIT_STRINGS_ARRAY = {TxzMessage.TXZ_DISMISS, TxzMessage.TXZ_SHOW, "2", "3", "4", "5", "6", "7", "8", "9"};
-    private static final char DEF_GROUPING_SEPARATOR = ',';
-    private static final char DEF_MINUS_SIGN = '-';
-    private static final char DEF_PERCENT = '%';
-    private static final char DEF_PERMILL = '‰';
-    private static final char DEF_PLUS_SIGN = '+';
     private static final String LATIN_NUMBERING_SYSTEM = "latn";
     private static final String NUMBER_ELEMENTS = "NumberElements";
     private static final String SYMBOLS = "symbols";
-    private static final String[] SYMBOL_DEFAULTS = {String.valueOf(DEF_DECIMAL_SEPARATOR), String.valueOf(DEF_GROUPING_SEPARATOR), String.valueOf(DEF_PERCENT), String.valueOf(DEF_MINUS_SIGN), String.valueOf(DEF_PLUS_SIGN), DateFormat.ABBR_WEEKDAY, String.valueOf(DEF_PERMILL), "∞", "NaN", null, null, "×"};
-    /* access modifiers changed from: private */
-    public static final String[] SYMBOL_KEYS = {"decimal", "group", "percentSign", "minusSign", "plusSign", "exponential", "perMille", "infinity", "nan", "currencyDecimal", "currencyGroup", "superscriptingExponent"};
-    private static final CacheBase<ULocale, CacheData, Void> cachedLocaleData = new SoftCache<ULocale, CacheData, Void>() {
-        /* access modifiers changed from: protected */
-        public CacheData createInstance(ULocale locale, Void unused) {
-            return DecimalFormatSymbols.loadData(locale);
-        }
-    };
     private static final int currentSerialVersion = 8;
     private static final long serialVersionUID = 5772796243397350300L;
     private String NaN;
@@ -83,6 +67,22 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
     private ULocale ulocale;
     private ULocale validLocale;
     private char zeroDigit;
+    private static final String[] SYMBOL_KEYS = {"decimal", "group", "percentSign", "minusSign", "plusSign", "exponential", "perMille", "infinity", "nan", "currencyDecimal", "currencyGroup", "superscriptingExponent"};
+    private static final String[] DEF_DIGIT_STRINGS_ARRAY = {TxzMessage.TXZ_DISMISS, TxzMessage.TXZ_SHOW, "2", "3", "4", "5", "6", "7", "8", "9"};
+    private static final char[] DEF_DIGIT_CHARS_ARRAY = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+    private static final char DEF_DECIMAL_SEPARATOR = '.';
+    private static final char DEF_GROUPING_SEPARATOR = ',';
+    private static final char DEF_PERCENT = '%';
+    private static final char DEF_MINUS_SIGN = '-';
+    private static final char DEF_PLUS_SIGN = '+';
+    private static final char DEF_PERMILL = '\u2030';
+    private static final String[] SYMBOL_DEFAULTS = {String.valueOf((char) DEF_DECIMAL_SEPARATOR), String.valueOf((char) DEF_GROUPING_SEPARATOR), String.valueOf((char) DEF_PERCENT), String.valueOf((char) DEF_MINUS_SIGN), String.valueOf((char) DEF_PLUS_SIGN), DateFormat.ABBR_WEEKDAY, String.valueOf((char) DEF_PERMILL), "\u221e", "NaN", null, null, "\u00d7"};
+    private static final CacheBase<ULocale, CacheData, Void> cachedLocaleData = new SoftCache<ULocale, CacheData, Void>() { // from class: com.ibm.icu.text.DecimalFormatSymbols.1
+        /* JADX INFO: Access modifiers changed from: protected */
+        public CacheData createInstance(ULocale locale, Void unused) {
+            return DecimalFormatSymbols.loadData(locale);
+        }
+    };
 
     public DecimalFormatSymbols() {
         this(ULocale.getDefault(ULocale.Category.FORMAT));
@@ -96,7 +96,7 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
         this.exponentMultiplicationSign = null;
         this.serialVersionOnStream = 8;
         this.currencyPattern = null;
-        initialize(locale, (NumberingSystem) null);
+        initialize(locale, null);
     }
 
     private DecimalFormatSymbols(Locale locale, NumberingSystem ns) {
@@ -146,18 +146,18 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
         return (char[]) this.digits.clone();
     }
 
-    public void setZeroDigit(char zeroDigit2) {
-        this.zeroDigit = zeroDigit2;
+    public void setZeroDigit(char zeroDigit) {
+        this.zeroDigit = zeroDigit;
         this.digitStrings = (String[]) this.digitStrings.clone();
         this.digits = (char[]) this.digits.clone();
-        this.digitStrings[0] = String.valueOf(zeroDigit2);
-        this.digits[0] = zeroDigit2;
+        this.digitStrings[0] = String.valueOf(zeroDigit);
+        this.digits[0] = zeroDigit;
         for (int i = 1; i < 10; i++) {
-            char d = (char) (zeroDigit2 + i);
+            char d = (char) (zeroDigit + i);
             this.digitStrings[i] = String.valueOf(d);
             this.digits[i] = d;
         }
-        this.codePointZero = zeroDigit2;
+        this.codePointZero = zeroDigit;
     }
 
     public String[] getDigitStrings() {
@@ -174,93 +174,89 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
         return this.codePointZero;
     }
 
-    public void setDigitStrings(String[] digitStrings2) {
-        int cc;
+    public void setDigitStrings(String[] digitStrings) {
         int cp;
-        if (digitStrings2 == null) {
+        int cc;
+        if (digitStrings == null) {
             throw new NullPointerException("The input digit string array is null");
-        } else if (digitStrings2.length == 10) {
-            String[] tmpDigitStrings = new String[10];
-            char[] tmpDigits = new char[10];
-            int tmpCodePointZero = -1;
-            int i = 0;
-            while (i < 10) {
-                String digitStr = digitStrings2[i];
-                if (digitStr != null) {
-                    tmpDigitStrings[i] = digitStr;
-                    if (digitStr.length() == 0) {
-                        cp = -1;
-                        cc = 0;
-                    } else {
-                        cp = Character.codePointAt(digitStrings2[i], 0);
-                        cc = Character.charCount(cp);
-                    }
-                    if (cc == digitStr.length()) {
-                        if (cc != 1 || tmpDigits == null) {
-                            tmpDigits = null;
-                        } else {
-                            tmpDigits[i] = (char) cp;
-                        }
-                        if (i == 0) {
-                            tmpCodePointZero = cp;
-                        } else if (cp != tmpCodePointZero + i) {
-                            tmpCodePointZero = -1;
-                        }
-                    } else {
-                        tmpCodePointZero = -1;
-                        tmpDigits = null;
-                    }
-                    i++;
-                } else {
-                    throw new IllegalArgumentException("The input digit string array contains a null element");
-                }
-            }
-            this.digitStrings = tmpDigitStrings;
-            this.codePointZero = tmpCodePointZero;
-            if (tmpDigits == null) {
-                char[] cArr = DEF_DIGIT_CHARS_ARRAY;
-                this.zeroDigit = cArr[0];
-                this.digits = cArr;
-                return;
-            }
-            this.zeroDigit = tmpDigits[0];
-            this.digits = tmpDigits;
-        } else {
+        }
+        if (digitStrings.length != 10) {
             throw new IllegalArgumentException("Number of digit strings is not 10");
         }
+        String[] tmpDigitStrings = new String[10];
+        char[] tmpDigits = new char[10];
+        int tmpCodePointZero = -1;
+        for (int i = 0; i < 10; i++) {
+            String digitStr = digitStrings[i];
+            if (digitStr == null) {
+                throw new IllegalArgumentException("The input digit string array contains a null element");
+            }
+            tmpDigitStrings[i] = digitStr;
+            if (digitStr.length() == 0) {
+                cp = -1;
+                cc = 0;
+            } else {
+                cp = Character.codePointAt(digitStrings[i], 0);
+                cc = Character.charCount(cp);
+            }
+            if (cc == digitStr.length()) {
+                if (cc == 1 && tmpDigits != null) {
+                    tmpDigits[i] = (char) cp;
+                } else {
+                    tmpDigits = null;
+                }
+                if (i == 0) {
+                    tmpCodePointZero = cp;
+                } else if (cp != tmpCodePointZero + i) {
+                    tmpCodePointZero = -1;
+                }
+            } else {
+                tmpCodePointZero = -1;
+                tmpDigits = null;
+            }
+        }
+        this.digitStrings = tmpDigitStrings;
+        this.codePointZero = tmpCodePointZero;
+        if (tmpDigits == null) {
+            char[] cArr = DEF_DIGIT_CHARS_ARRAY;
+            this.zeroDigit = cArr[0];
+            this.digits = cArr;
+            return;
+        }
+        this.zeroDigit = tmpDigits[0];
+        this.digits = tmpDigits;
     }
 
     public char getSignificantDigit() {
         return this.sigDigit;
     }
 
-    public void setSignificantDigit(char sigDigit2) {
-        this.sigDigit = sigDigit2;
+    public void setSignificantDigit(char sigDigit) {
+        this.sigDigit = sigDigit;
     }
 
     public char getGroupingSeparator() {
         return this.groupingSeparator;
     }
 
-    public void setGroupingSeparator(char groupingSeparator2) {
-        this.groupingSeparator = groupingSeparator2;
-        this.groupingSeparatorString = String.valueOf(groupingSeparator2);
+    public void setGroupingSeparator(char groupingSeparator) {
+        this.groupingSeparator = groupingSeparator;
+        this.groupingSeparatorString = String.valueOf(groupingSeparator);
     }
 
     public String getGroupingSeparatorString() {
         return this.groupingSeparatorString;
     }
 
-    public void setGroupingSeparatorString(String groupingSeparatorString2) {
-        if (groupingSeparatorString2 != null) {
-            this.groupingSeparatorString = groupingSeparatorString2;
-            if (groupingSeparatorString2.length() == 1) {
-                this.groupingSeparator = groupingSeparatorString2.charAt(0);
-            } else {
-                this.groupingSeparator = DEF_GROUPING_SEPARATOR;
-            }
-        } else {
+    public void setGroupingSeparatorString(String groupingSeparatorString) {
+        if (groupingSeparatorString == null) {
             throw new NullPointerException("The input grouping separator is null");
+        }
+        this.groupingSeparatorString = groupingSeparatorString;
+        if (groupingSeparatorString.length() == 1) {
+            this.groupingSeparator = groupingSeparatorString.charAt(0);
+        } else {
+            this.groupingSeparator = DEF_GROUPING_SEPARATOR;
         }
     }
 
@@ -268,25 +264,24 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
         return this.decimalSeparator;
     }
 
-    public void setDecimalSeparator(char decimalSeparator2) {
-        this.decimalSeparator = decimalSeparator2;
-        this.decimalSeparatorString = String.valueOf(decimalSeparator2);
+    public void setDecimalSeparator(char decimalSeparator) {
+        this.decimalSeparator = decimalSeparator;
+        this.decimalSeparatorString = String.valueOf(decimalSeparator);
     }
 
     public String getDecimalSeparatorString() {
         return this.decimalSeparatorString;
     }
 
-    public void setDecimalSeparatorString(String decimalSeparatorString2) {
-        if (decimalSeparatorString2 != null) {
-            this.decimalSeparatorString = decimalSeparatorString2;
-            if (decimalSeparatorString2.length() == 1) {
-                this.decimalSeparator = decimalSeparatorString2.charAt(0);
-            } else {
-                this.decimalSeparator = DEF_DECIMAL_SEPARATOR;
-            }
-        } else {
+    public void setDecimalSeparatorString(String decimalSeparatorString) {
+        if (decimalSeparatorString == null) {
             throw new NullPointerException("The input decimal separator is null");
+        }
+        this.decimalSeparatorString = decimalSeparatorString;
+        if (decimalSeparatorString.length() == 1) {
+            this.decimalSeparator = decimalSeparatorString.charAt(0);
+        } else {
+            this.decimalSeparator = DEF_DECIMAL_SEPARATOR;
         }
     }
 
@@ -294,25 +289,24 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
         return this.perMill;
     }
 
-    public void setPerMill(char perMill2) {
-        this.perMill = perMill2;
-        this.perMillString = String.valueOf(perMill2);
+    public void setPerMill(char perMill) {
+        this.perMill = perMill;
+        this.perMillString = String.valueOf(perMill);
     }
 
     public String getPerMillString() {
         return this.perMillString;
     }
 
-    public void setPerMillString(String perMillString2) {
-        if (perMillString2 != null) {
-            this.perMillString = perMillString2;
-            if (perMillString2.length() == 1) {
-                this.perMill = perMillString2.charAt(0);
-            } else {
-                this.perMill = DEF_PERMILL;
-            }
-        } else {
+    public void setPerMillString(String perMillString) {
+        if (perMillString == null) {
             throw new NullPointerException("The input permille string is null");
+        }
+        this.perMillString = perMillString;
+        if (perMillString.length() == 1) {
+            this.perMill = perMillString.charAt(0);
+        } else {
+            this.perMill = DEF_PERMILL;
         }
     }
 
@@ -320,25 +314,24 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
         return this.percent;
     }
 
-    public void setPercent(char percent2) {
-        this.percent = percent2;
-        this.percentString = String.valueOf(percent2);
+    public void setPercent(char percent) {
+        this.percent = percent;
+        this.percentString = String.valueOf(percent);
     }
 
     public String getPercentString() {
         return this.percentString;
     }
 
-    public void setPercentString(String percentString2) {
-        if (percentString2 != null) {
-            this.percentString = percentString2;
-            if (percentString2.length() == 1) {
-                this.percent = percentString2.charAt(0);
-            } else {
-                this.percent = DEF_PERCENT;
-            }
-        } else {
+    public void setPercentString(String percentString) {
+        if (percentString == null) {
             throw new NullPointerException("The input percent sign is null");
+        }
+        this.percentString = percentString;
+        if (percentString.length() == 1) {
+            this.percent = percentString.charAt(0);
+        } else {
+            this.percent = DEF_PERCENT;
         }
     }
 
@@ -346,41 +339,41 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
         return this.digit;
     }
 
-    public void setDigit(char digit2) {
-        this.digit = digit2;
+    public void setDigit(char digit) {
+        this.digit = digit;
     }
 
     public char getPatternSeparator() {
         return this.patternSeparator;
     }
 
-    public void setPatternSeparator(char patternSeparator2) {
-        this.patternSeparator = patternSeparator2;
+    public void setPatternSeparator(char patternSeparator) {
+        this.patternSeparator = patternSeparator;
     }
 
     public String getInfinity() {
         return this.infinity;
     }
 
-    public void setInfinity(String infinity2) {
-        this.infinity = infinity2;
+    public void setInfinity(String infinity) {
+        this.infinity = infinity;
     }
 
     public String getNaN() {
         return this.NaN;
     }
 
-    public void setNaN(String NaN2) {
-        this.NaN = NaN2;
+    public void setNaN(String NaN) {
+        this.NaN = NaN;
     }
 
     public char getMinusSign() {
         return this.minusSign;
     }
 
-    public void setMinusSign(char minusSign2) {
-        this.minusSign = minusSign2;
-        this.minusString = String.valueOf(minusSign2);
+    public void setMinusSign(char minusSign) {
+        this.minusSign = minusSign;
+        this.minusString = String.valueOf(minusSign);
     }
 
     public String getMinusSignString() {
@@ -388,15 +381,14 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
     }
 
     public void setMinusSignString(String minusSignString) {
-        if (minusSignString != null) {
-            this.minusString = minusSignString;
-            if (minusSignString.length() == 1) {
-                this.minusSign = minusSignString.charAt(0);
-            } else {
-                this.minusSign = DEF_MINUS_SIGN;
-            }
-        } else {
+        if (minusSignString == null) {
             throw new NullPointerException("The input minus sign is null");
+        }
+        this.minusString = minusSignString;
+        if (minusSignString.length() == 1) {
+            this.minusSign = minusSignString.charAt(0);
+        } else {
+            this.minusSign = DEF_MINUS_SIGN;
         }
     }
 
@@ -414,15 +406,14 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
     }
 
     public void setPlusSignString(String plusSignString) {
-        if (plusSignString != null) {
-            this.plusString = plusSignString;
-            if (plusSignString.length() == 1) {
-                this.plusSign = plusSignString.charAt(0);
-            } else {
-                this.plusSign = DEF_PLUS_SIGN;
-            }
-        } else {
+        if (plusSignString == null) {
             throw new NullPointerException("The input plus sign is null");
+        }
+        this.plusString = plusSignString;
+        if (plusSignString.length() == 1) {
+            this.plusSign = plusSignString.charAt(0);
+        } else {
+            this.plusSign = DEF_PLUS_SIGN;
         }
     }
 
@@ -430,30 +421,29 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
         return this.currencySymbol;
     }
 
-    public void setCurrencySymbol(String currency2) {
-        this.currencySymbol = currency2;
+    public void setCurrencySymbol(String currency) {
+        this.currencySymbol = currency;
     }
 
     public String getInternationalCurrencySymbol() {
         return this.intlCurrencySymbol;
     }
 
-    public void setInternationalCurrencySymbol(String currency2) {
-        this.intlCurrencySymbol = currency2;
+    public void setInternationalCurrencySymbol(String currency) {
+        this.intlCurrencySymbol = currency;
     }
 
     public Currency getCurrency() {
         return this.currency;
     }
 
-    public void setCurrency(Currency currency2) {
-        if (currency2 != null) {
-            this.currency = currency2;
-            this.intlCurrencySymbol = currency2.getCurrencyCode();
-            this.currencySymbol = currency2.getSymbol(this.requestedLocale);
-            return;
+    public void setCurrency(Currency currency) {
+        if (currency == null) {
+            throw new NullPointerException();
         }
-        throw new NullPointerException();
+        this.currency = currency;
+        this.intlCurrencySymbol = currency.getCurrencyCode();
+        this.currencySymbol = currency.getSymbol(this.requestedLocale);
     }
 
     public char getMonetaryDecimalSeparator() {
@@ -470,15 +460,14 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
     }
 
     public void setMonetaryDecimalSeparatorString(String sep) {
-        if (sep != null) {
-            this.monetarySeparatorString = sep;
-            if (sep.length() == 1) {
-                this.monetarySeparator = sep.charAt(0);
-            } else {
-                this.monetarySeparator = DEF_DECIMAL_SEPARATOR;
-            }
-        } else {
+        if (sep == null) {
             throw new NullPointerException("The input monetary decimal separator is null");
+        }
+        this.monetarySeparatorString = sep;
+        if (sep.length() == 1) {
+            this.monetarySeparator = sep.charAt(0);
+        } else {
+            this.monetarySeparator = DEF_DECIMAL_SEPARATOR;
         }
     }
 
@@ -496,20 +485,18 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
     }
 
     public void setMonetaryGroupingSeparatorString(String sep) {
-        if (sep != null) {
-            this.monetaryGroupingSeparatorString = sep;
-            if (sep.length() == 1) {
-                this.monetaryGroupingSeparator = sep.charAt(0);
-            } else {
-                this.monetaryGroupingSeparator = DEF_GROUPING_SEPARATOR;
-            }
-        } else {
+        if (sep == null) {
             throw new NullPointerException("The input monetary grouping separator is null");
+        }
+        this.monetaryGroupingSeparatorString = sep;
+        if (sep.length() == 1) {
+            this.monetaryGroupingSeparator = sep.charAt(0);
+        } else {
+            this.monetaryGroupingSeparator = DEF_GROUPING_SEPARATOR;
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public String getCurrencyPattern() {
+    String getCurrencyPattern() {
         return this.currencyPattern;
     }
 
@@ -517,8 +504,8 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
         return this.exponentMultiplicationSign;
     }
 
-    public void setExponentMultiplicationSign(String exponentMultiplicationSign2) {
-        this.exponentMultiplicationSign = exponentMultiplicationSign2;
+    public void setExponentMultiplicationSign(String exponentMultiplicationSign) {
+        this.exponentMultiplicationSign = exponentMultiplicationSign;
     }
 
     public String getExponentSeparator() {
@@ -540,17 +527,18 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
     public String getPatternForCurrencySpacing(int itemType, boolean beforeCurrency) {
         if (itemType < 0 || itemType > 2) {
             throw new IllegalArgumentException("unknown currency spacing: " + itemType);
-        } else if (beforeCurrency) {
-            return this.currencySpcBeforeSym[itemType];
-        } else {
-            return this.currencySpcAfterSym[itemType];
         }
+        if (beforeCurrency) {
+            return this.currencySpcBeforeSym[itemType];
+        }
+        return this.currencySpcAfterSym[itemType];
     }
 
     public void setPatternForCurrencySpacing(int itemType, boolean beforeCurrency, String pattern) {
         if (itemType < 0 || itemType > 2) {
             throw new IllegalArgumentException("unknown currency spacing: " + itemType);
-        } else if (beforeCurrency) {
+        }
+        if (beforeCurrency) {
             this.currencySpcBeforeSym[itemType] = pattern;
         } else {
             this.currencySpcAfterSym[itemType] = pattern;
@@ -574,43 +562,42 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
     }
 
     public boolean equals(Object obj) {
-        if (!(obj instanceof DecimalFormatSymbols)) {
-            return false;
-        }
-        if (this == obj) {
-            return true;
-        }
-        DecimalFormatSymbols other = (DecimalFormatSymbols) obj;
-        for (int i = 0; i <= 2; i++) {
-            if (!this.currencySpcBeforeSym[i].equals(other.currencySpcBeforeSym[i]) || !this.currencySpcAfterSym[i].equals(other.currencySpcAfterSym[i])) {
-                return false;
+        if (obj instanceof DecimalFormatSymbols) {
+            if (this == obj) {
+                return true;
             }
-        }
-        char[] cArr = other.digits;
-        if (cArr == null) {
-            for (int i2 = 0; i2 < 10; i2++) {
-                if (this.digits[i2] != other.zeroDigit + i2) {
+            DecimalFormatSymbols other = (DecimalFormatSymbols) obj;
+            for (int i = 0; i <= 2; i++) {
+                if (!this.currencySpcBeforeSym[i].equals(other.currencySpcBeforeSym[i]) || !this.currencySpcAfterSym[i].equals(other.currencySpcAfterSym[i])) {
                     return false;
                 }
             }
-        } else if (!Arrays.equals(this.digits, cArr)) {
-            return false;
-        }
-        if (this.groupingSeparator == other.groupingSeparator && this.decimalSeparator == other.decimalSeparator && this.percent == other.percent && this.perMill == other.perMill && this.digit == other.digit && this.minusSign == other.minusSign && this.minusString.equals(other.minusString) && this.patternSeparator == other.patternSeparator && this.infinity.equals(other.infinity) && this.NaN.equals(other.NaN) && this.currencySymbol.equals(other.currencySymbol) && this.intlCurrencySymbol.equals(other.intlCurrencySymbol) && this.padEscape == other.padEscape && this.plusSign == other.plusSign && this.plusString.equals(other.plusString) && this.exponentSeparator.equals(other.exponentSeparator) && this.monetarySeparator == other.monetarySeparator && this.monetaryGroupingSeparator == other.monetaryGroupingSeparator && this.exponentMultiplicationSign.equals(other.exponentMultiplicationSign)) {
-            return true;
+            char[] cArr = other.digits;
+            if (cArr == null) {
+                for (int i2 = 0; i2 < 10; i2++) {
+                    if (this.digits[i2] != other.zeroDigit + i2) {
+                        return false;
+                    }
+                }
+            } else if (!Arrays.equals(this.digits, cArr)) {
+                return false;
+            }
+            return this.groupingSeparator == other.groupingSeparator && this.decimalSeparator == other.decimalSeparator && this.percent == other.percent && this.perMill == other.perMill && this.digit == other.digit && this.minusSign == other.minusSign && this.minusString.equals(other.minusString) && this.patternSeparator == other.patternSeparator && this.infinity.equals(other.infinity) && this.NaN.equals(other.NaN) && this.currencySymbol.equals(other.currencySymbol) && this.intlCurrencySymbol.equals(other.intlCurrencySymbol) && this.padEscape == other.padEscape && this.plusSign == other.plusSign && this.plusString.equals(other.plusString) && this.exponentSeparator.equals(other.exponentSeparator) && this.monetarySeparator == other.monetarySeparator && this.monetaryGroupingSeparator == other.monetaryGroupingSeparator && this.exponentMultiplicationSign.equals(other.exponentMultiplicationSign);
         }
         return false;
     }
 
     public int hashCode() {
-        return (((this.digits[0] * DEF_PERCENT) + this.groupingSeparator) * 37) + this.decimalSeparator;
+        int result = (this.digits[0] * DEF_PERCENT) + this.groupingSeparator;
+        return (result * 37) + this.decimalSeparator;
     }
 
+    /* loaded from: classes.dex */
     private static final class DecFmtDataSink extends UResource.Sink {
         private String[] numberElements;
 
-        public DecFmtDataSink(String[] numberElements2) {
-            this.numberElements = numberElements2;
+        public DecFmtDataSink(String[] numberElements) {
+            this.numberElements = numberElements;
         }
 
         public void put(UResource.Key key, UResource.Value value, boolean noFallback) {
@@ -620,13 +607,13 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
                 while (true) {
                     if (i >= DecimalFormatSymbols.SYMBOL_KEYS.length) {
                         break;
-                    } else if (key.contentEquals(DecimalFormatSymbols.SYMBOL_KEYS[i])) {
+                    } else if (!key.contentEquals(DecimalFormatSymbols.SYMBOL_KEYS[i])) {
+                        i++;
+                    } else {
                         String[] strArr = this.numberElements;
                         if (strArr[i] == null) {
                             strArr[i] = value.toString();
                         }
-                    } else {
-                        i++;
                     }
                 }
             }
@@ -636,7 +623,8 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
     private void initialize(ULocale locale, NumberingSystem ns) {
         this.requestedLocale = locale.toLocale();
         this.ulocale = locale;
-        CacheData data = (CacheData) cachedLocaleData.getInstance(ns == null ? locale : locale.setKeywordValue("numbers", ns.getName()), (Object) null);
+        ULocale keyLocale = ns == null ? locale : locale.setKeywordValue("numbers", ns.getName());
+        CacheData data = (CacheData) cachedLocaleData.getInstance(keyLocale, (Object) null);
         setLocale(data.validLocale, data.validLocale);
         setDigitStrings(data.digits);
         String[] numberElements = data.numberElements;
@@ -657,10 +645,10 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
         this.padEscape = '*';
         this.sigDigit = '@';
         CurrencyData.CurrencyDisplayInfo info = CurrencyData.provider.getInstance(locale, true);
-        Currency instance = Currency.getInstance(locale);
-        this.currency = instance;
-        if (instance != null) {
-            this.intlCurrencySymbol = instance.getCurrencyCode();
+        Currency currency = Currency.getInstance(locale);
+        this.currency = currency;
+        if (currency != null) {
+            this.intlCurrencySymbol = currency.getCurrencyCode();
             this.currencySymbol = this.currency.getName(locale, 0, (boolean[]) null);
             CurrencyData.CurrencyFormatInfo fmtInfo = info.getFormatInfo(this.intlCurrencySymbol);
             if (fmtInfo != null) {
@@ -670,31 +658,32 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
             }
         } else {
             this.intlCurrencySymbol = "XXX";
-            this.currencySymbol = "¤";
+            this.currencySymbol = "\u00a4";
         }
         initSpacingInfo(info.getSpacingInfo());
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public static CacheData loadData(ULocale locale) {
         String digitString;
         NumberingSystem ns = NumberingSystem.getInstance(locale);
-        String[] digits2 = new String[10];
-        if (ns == null || ns.getRadix() != 10 || ns.isAlgorithmic() || !NumberingSystem.isValidDigitString(ns.getDescription())) {
-            digits2 = DEF_DIGIT_STRINGS_ARRAY;
-            digitString = LATIN_NUMBERING_SYSTEM;
-        } else {
+        String[] digits = new String[10];
+        if (ns != null && ns.getRadix() == 10 && !ns.isAlgorithmic() && NumberingSystem.isValidDigitString(ns.getDescription())) {
             String digitString2 = ns.getDescription();
             int offset = 0;
             for (int i = 0; i < 10; i++) {
-                int nextOffset = Character.charCount(digitString2.codePointAt(offset)) + offset;
-                digits2[i] = digitString2.substring(offset, nextOffset);
+                int cp = digitString2.codePointAt(offset);
+                int nextOffset = Character.charCount(cp) + offset;
+                digits[i] = digitString2.substring(offset, nextOffset);
                 offset = nextOffset;
             }
             digitString = ns.getName();
+        } else {
+            digits = DEF_DIGIT_STRINGS_ARRAY;
+            digitString = LATIN_NUMBERING_SYSTEM;
         }
         ICUResourceBundle rb = UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b", locale);
-        ULocale validLocale2 = rb.getULocale();
+        ULocale validLocale = rb.getULocale();
         String[] numberElements = new String[SYMBOL_KEYS.length];
         DecFmtDataSink sink = new DecFmtDataSink(numberElements);
         try {
@@ -707,11 +696,13 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
         while (true) {
             if (i2 >= length) {
                 break;
-            } else if (numberElements[i2] == null) {
+            }
+            String entry = numberElements[i2];
+            if (entry != null) {
+                i2++;
+            } else {
                 hasNull = true;
                 break;
-            } else {
-                i2++;
             }
         }
         if (hasNull && !digitString.equals(LATIN_NUMBERING_SYSTEM)) {
@@ -728,7 +719,7 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
         if (numberElements[10] == null) {
             numberElements[10] = numberElements[1];
         }
-        return new CacheData(validLocale2, digits2, numberElements);
+        return new CacheData(validLocale, digits, numberElements);
     }
 
     private void initSpacingInfo(CurrencyData.CurrencySpacingInfo spcInfo) {
@@ -777,26 +768,26 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
         }
         int i3 = this.serialVersionOnStream;
         if (i3 < 8 && this.exponentMultiplicationSign == null) {
-            this.exponentMultiplicationSign = "×";
+            this.exponentMultiplicationSign = "\u00d7";
         }
         if (i3 < 9) {
             if (this.digitStrings == null) {
                 this.digitStrings = new String[10];
                 char[] cArr = this.digits;
-                if (cArr == null || cArr.length != 10) {
-                    char digit2 = this.zeroDigit;
+                if (cArr != null && cArr.length == 10) {
+                    this.zeroDigit = cArr[0];
+                    for (int i4 = 0; i4 < 10; i4++) {
+                        this.digitStrings[i4] = String.valueOf(this.digits[i4]);
+                    }
+                } else {
+                    char digit = this.zeroDigit;
                     if (cArr == null) {
                         this.digits = new char[10];
                     }
-                    for (int i4 = 0; i4 < 10; i4++) {
-                        this.digits[i4] = digit2;
-                        this.digitStrings[i4] = String.valueOf(digit2);
-                        digit2 = (char) (digit2 + 1);
-                    }
-                } else {
-                    this.zeroDigit = cArr[0];
                     for (int i5 = 0; i5 < 10; i5++) {
-                        this.digitStrings[i5] = String.valueOf(this.digits[i5]);
+                        this.digits[i5] = digit;
+                        this.digitStrings[i5] = String.valueOf(digit);
+                        digit = (char) (digit + 1);
                     }
                 }
             }
@@ -828,30 +819,24 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
         return type == ULocale.ACTUAL_LOCALE ? this.actualLocale : this.validLocale;
     }
 
-    /* access modifiers changed from: package-private */
-    public final void setLocale(ULocale valid, ULocale actual) {
-        boolean z = true;
-        boolean z2 = valid == null;
-        if (actual != null) {
-            z = false;
+    final void setLocale(ULocale valid, ULocale actual) {
+        if ((valid == null) != (actual == null)) {
+            throw new IllegalArgumentException();
         }
-        if (z2 == z) {
-            this.validLocale = valid;
-            this.actualLocale = actual;
-            return;
-        }
-        throw new IllegalArgumentException();
+        this.validLocale = valid;
+        this.actualLocale = actual;
     }
 
+    /* loaded from: classes.dex */
     private static class CacheData {
         final String[] digits;
         final String[] numberElements;
         final ULocale validLocale;
 
-        public CacheData(ULocale loc, String[] digits2, String[] numberElements2) {
+        public CacheData(ULocale loc, String[] digits, String[] numberElements) {
             this.validLocale = loc;
-            this.digits = digits2;
-            this.numberElements = numberElements2;
+            this.digits = digits;
+            this.numberElements = numberElements;
         }
     }
 }

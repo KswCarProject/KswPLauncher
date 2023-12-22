@@ -7,10 +7,11 @@ import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
-import com.wits.ksw.launcher.view.ug.UgHomeImageView;
+import com.wits.ksw.launcher.view.p006ug.UgHomeImageView;
 
+/* loaded from: classes7.dex */
 public abstract class KswmbuxHomeThreeBinding extends ViewDataBinding {
     public final ConstraintLayout carConstraintLayout;
     public final UgHomeImageView kswmbuxHomeCarVaiw;
@@ -19,14 +20,14 @@ public abstract class KswmbuxHomeThreeBinding extends ViewDataBinding {
     @Bindable
     protected LauncherViewModel mViewModel;
 
-    public abstract void setViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setViewModel(LauncherViewModel viewModel);
 
-    protected KswmbuxHomeThreeBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout carConstraintLayout2, UgHomeImageView kswmbuxHomeCarVaiw2, UgHomeImageView kswmbuxHomeDashboradVaiw2, UgHomeImageView kswmbuxHomeEasyVaiw2) {
+    protected KswmbuxHomeThreeBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout carConstraintLayout, UgHomeImageView kswmbuxHomeCarVaiw, UgHomeImageView kswmbuxHomeDashboradVaiw, UgHomeImageView kswmbuxHomeEasyVaiw) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.carConstraintLayout = carConstraintLayout2;
-        this.kswmbuxHomeCarVaiw = kswmbuxHomeCarVaiw2;
-        this.kswmbuxHomeDashboradVaiw = kswmbuxHomeDashboradVaiw2;
-        this.kswmbuxHomeEasyVaiw = kswmbuxHomeEasyVaiw2;
+        this.carConstraintLayout = carConstraintLayout;
+        this.kswmbuxHomeCarVaiw = kswmbuxHomeCarVaiw;
+        this.kswmbuxHomeDashboradVaiw = kswmbuxHomeDashboradVaiw;
+        this.kswmbuxHomeEasyVaiw = kswmbuxHomeEasyVaiw;
     }
 
     public LauncherViewModel getViewModel() {
@@ -39,7 +40,7 @@ public abstract class KswmbuxHomeThreeBinding extends ViewDataBinding {
 
     @Deprecated
     public static KswmbuxHomeThreeBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (KswmbuxHomeThreeBinding) ViewDataBinding.inflateInternal(inflater, R.layout.kswmbux_home_three, root, attachToRoot, component);
+        return (KswmbuxHomeThreeBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.kswmbux_home_three, root, attachToRoot, component);
     }
 
     public static KswmbuxHomeThreeBinding inflate(LayoutInflater inflater) {
@@ -48,7 +49,7 @@ public abstract class KswmbuxHomeThreeBinding extends ViewDataBinding {
 
     @Deprecated
     public static KswmbuxHomeThreeBinding inflate(LayoutInflater inflater, Object component) {
-        return (KswmbuxHomeThreeBinding) ViewDataBinding.inflateInternal(inflater, R.layout.kswmbux_home_three, (ViewGroup) null, false, component);
+        return (KswmbuxHomeThreeBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.kswmbux_home_three, null, false, component);
     }
 
     public static KswmbuxHomeThreeBinding bind(View view) {
@@ -57,6 +58,6 @@ public abstract class KswmbuxHomeThreeBinding extends ViewDataBinding {
 
     @Deprecated
     public static KswmbuxHomeThreeBinding bind(View view, Object component) {
-        return (KswmbuxHomeThreeBinding) bind(component, view, R.layout.kswmbux_home_three);
+        return (KswmbuxHomeThreeBinding) bind(component, view, C0899R.C0902layout.kswmbux_home_three);
     }
 }

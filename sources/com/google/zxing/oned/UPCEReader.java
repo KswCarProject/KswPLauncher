@@ -5,16 +5,16 @@ import com.google.zxing.FormatException;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.common.BitArray;
 
+/* loaded from: classes.dex */
 public final class UPCEReader extends UPCEANReader {
     private static final int[] MIDDLE_END_PATTERN = {1, 1, 1, 1, 1, 1};
     static final int[][] NUMSYS_AND_CHECK_DIGIT_PATTERNS = {new int[]{56, 52, 50, 49, 44, 38, 35, 42, 41, 37}, new int[]{7, 11, 13, 14, 19, 25, 28, 21, 22, 26}};
     private final int[] decodeMiddleCounters = new int[4];
 
-    /* access modifiers changed from: protected */
-    public int decodeMiddle(BitArray row, int[] startRange, StringBuilder result) throws NotFoundException {
-        int[] iArr = this.decodeMiddleCounters;
-        int[] counters = iArr;
-        iArr[0] = 0;
+    @Override // com.google.zxing.oned.UPCEANReader
+    protected int decodeMiddle(BitArray row, int[] startRange, StringBuilder result) throws NotFoundException {
+        int[] counters = this.decodeMiddleCounters;
+        counters[0] = 0;
         counters[1] = 0;
         counters[2] = 0;
         counters[3] = 0;
@@ -35,13 +35,13 @@ public final class UPCEReader extends UPCEANReader {
         return rowOffset;
     }
 
-    /* access modifiers changed from: protected */
-    public int[] decodeEnd(BitArray row, int endStart) throws NotFoundException {
+    @Override // com.google.zxing.oned.UPCEANReader
+    protected int[] decodeEnd(BitArray row, int endStart) throws NotFoundException {
         return findGuardPattern(row, endStart, true, MIDDLE_END_PATTERN);
     }
 
-    /* access modifiers changed from: protected */
-    public boolean checkChecksum(String s) throws FormatException {
+    @Override // com.google.zxing.oned.UPCEANReader
+    protected boolean checkChecksum(String s) throws FormatException {
         return super.checkChecksum(convertUPCEtoUPCA(s));
     }
 
@@ -58,20 +58,18 @@ public final class UPCEReader extends UPCEANReader {
         throw NotFoundException.getNotFoundInstance();
     }
 
-    /* access modifiers changed from: package-private */
-    public BarcodeFormat getBarcodeFormat() {
+    @Override // com.google.zxing.oned.UPCEANReader
+    BarcodeFormat getBarcodeFormat() {
         return BarcodeFormat.UPC_E;
     }
 
     public static String convertUPCEtoUPCA(String upce) {
         char[] upceChars = new char[6];
         upce.getChars(1, 7, upceChars, 0);
-        StringBuilder sb = new StringBuilder(12);
-        StringBuilder result = sb;
-        sb.append(upce.charAt(0));
-        char c = upceChars[5];
-        char lastChar = c;
-        switch (c) {
+        StringBuilder result = new StringBuilder(12);
+        result.append(upce.charAt(0));
+        char lastChar = upceChars[5];
+        switch (lastChar) {
             case '0':
             case '1':
             case '2':

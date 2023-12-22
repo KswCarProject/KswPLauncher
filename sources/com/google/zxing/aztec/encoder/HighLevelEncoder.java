@@ -11,21 +11,21 @@ import java.util.LinkedList;
 import java.util.List;
 import kotlin.UByte;
 
+/* loaded from: classes.dex */
 public final class HighLevelEncoder {
     private static final int[][] CHAR_MAP;
-    static final int[][] LATCH_TABLE = {new int[]{0, 327708, 327710, 327709, 656318}, new int[]{590318, 0, 327710, 327709, 656318}, new int[]{262158, 590300, 0, 590301, 932798}, new int[]{327709, 327708, 656318, 0, 327710}, new int[]{327711, 656380, 656382, 656381, 0}};
     static final int MODE_DIGIT = 2;
     static final int MODE_LOWER = 1;
     static final int MODE_MIXED = 3;
-    static final String[] MODE_NAMES = {"UPPER", "LOWER", "DIGIT", "MIXED", "PUNCT"};
     static final int MODE_PUNCT = 4;
     static final int MODE_UPPER = 0;
     static final int[][] SHIFT_TABLE;
     private final byte[] text;
+    static final String[] MODE_NAMES = {"UPPER", "LOWER", "DIGIT", "MIXED", "PUNCT"};
+    static final int[][] LATCH_TABLE = {new int[]{0, 327708, 327710, 327709, 656318}, new int[]{590318, 0, 327710, 327709, 656318}, new int[]{262158, 590300, 0, 590301, 932798}, new int[]{327709, 327708, 656318, 0, 327710}, new int[]{327711, 656380, 656382, 656381, 0}};
 
     static {
-        Class<int> cls = int.class;
-        int[][] iArr = (int[][]) Array.newInstance(cls, new int[]{5, 256});
+        int[][] iArr = (int[][]) Array.newInstance(int.class, 5, 256);
         CHAR_MAP = iArr;
         iArr[0][32] = 1;
         for (int c = 65; c <= 90; c++) {
@@ -52,22 +52,23 @@ public final class HighLevelEncoder {
                 CHAR_MAP[4][punctTable[i2]] = i2;
             }
         }
-        int[][] iArr3 = (int[][]) Array.newInstance(cls, new int[]{6, 6});
+        int[] mixedTable2 = {6, 6};
+        int[][] iArr3 = (int[][]) Array.newInstance(int.class, mixedTable2);
         SHIFT_TABLE = iArr3;
-        for (int[] fill : iArr3) {
-            Arrays.fill(fill, -1);
+        for (int[] iArr4 : iArr3) {
+            Arrays.fill(iArr4, -1);
         }
-        int[][] iArr4 = SHIFT_TABLE;
-        iArr4[0][4] = 0;
-        iArr4[1][4] = 0;
-        iArr4[1][0] = 28;
-        iArr4[3][4] = 0;
-        iArr4[2][4] = 0;
-        iArr4[2][0] = 15;
+        int[][] iArr5 = SHIFT_TABLE;
+        iArr5[0][4] = 0;
+        iArr5[1][4] = 0;
+        iArr5[1][0] = 28;
+        iArr5[3][4] = 0;
+        iArr5[2][4] = 0;
+        iArr5[2][0] = 15;
     }
 
-    public HighLevelEncoder(byte[] text2) {
-        this.text = text2;
+    public HighLevelEncoder(byte[] text) {
+        this.text = text;
     }
 
     public BitArray encode() {
@@ -76,51 +77,40 @@ public final class HighLevelEncoder {
         int index = 0;
         while (true) {
             byte[] bArr = this.text;
-            if (index >= bArr.length) {
-                return ((State) Collections.min(states, new Comparator<State>() {
+            if (index < bArr.length) {
+                int nextChar = index + 1 < bArr.length ? bArr[index + 1] : 0;
+                switch (bArr[index]) {
+                    case 13:
+                        pairCode = nextChar == 10 ? 2 : 0;
+                        break;
+                    case 44:
+                        pairCode = nextChar == 32 ? 4 : 0;
+                        break;
+                    case 46:
+                        pairCode = nextChar == 32 ? 3 : 0;
+                        break;
+                    case 58:
+                        pairCode = nextChar == 32 ? 5 : 0;
+                        break;
+                    default:
+                        pairCode = 0;
+                        break;
+                }
+                if (pairCode > 0) {
+                    states = updateStateListForPair(states, index, pairCode);
+                    index++;
+                } else {
+                    states = updateStateListForChar(states, index);
+                }
+                index++;
+            } else {
+                return ((State) Collections.min(states, new Comparator<State>() { // from class: com.google.zxing.aztec.encoder.HighLevelEncoder.1
+                    @Override // java.util.Comparator
                     public int compare(State a, State b) {
                         return a.getBitCount() - b.getBitCount();
                     }
                 })).toBitArray(this.text);
             }
-            int i = 0;
-            int nextChar = index + 1 < bArr.length ? bArr[index + 1] : 0;
-            switch (bArr[index]) {
-                case 13:
-                    if (nextChar == 10) {
-                        i = 2;
-                    }
-                    pairCode = i;
-                    break;
-                case 44:
-                    if (nextChar == 32) {
-                        i = 4;
-                    }
-                    pairCode = i;
-                    break;
-                case 46:
-                    if (nextChar == 32) {
-                        i = 3;
-                    }
-                    pairCode = i;
-                    break;
-                case 58:
-                    if (nextChar == 32) {
-                        i = 5;
-                    }
-                    pairCode = i;
-                    break;
-                default:
-                    pairCode = 0;
-                    break;
-            }
-            if (pairCode > 0) {
-                states = updateStateListForPair(states, index, pairCode);
-                index++;
-            } else {
-                states = updateStateListForChar(states, index);
-            }
-            index++;
         }
     }
 
@@ -137,29 +127,31 @@ public final class HighLevelEncoder {
         boolean charInCurrentTable = CHAR_MAP[state.getMode()][ch] > 0;
         State stateNoBinary = null;
         for (int mode = 0; mode <= 4; mode++) {
-            int i = CHAR_MAP[mode][ch];
-            int charInMode = i;
-            if (i > 0) {
+            int charInMode = CHAR_MAP[mode][ch];
+            if (charInMode > 0) {
                 if (stateNoBinary == null) {
                     stateNoBinary = state.endBinaryShift(index);
                 }
                 if (!charInCurrentTable || mode == state.getMode() || mode == 2) {
-                    result.add(stateNoBinary.latchAndAppend(mode, charInMode));
+                    State latchState = stateNoBinary.latchAndAppend(mode, charInMode);
+                    result.add(latchState);
                 }
                 if (!charInCurrentTable && SHIFT_TABLE[state.getMode()][mode] >= 0) {
-                    result.add(stateNoBinary.shiftAndAppend(mode, charInMode));
+                    State shiftState = stateNoBinary.shiftAndAppend(mode, charInMode);
+                    result.add(shiftState);
                 }
             }
         }
         if (state.getBinaryShiftByteCount() > 0 || CHAR_MAP[state.getMode()][ch] == 0) {
-            result.add(state.addBinaryShiftChar(index));
+            State binaryState = state.addBinaryShiftChar(index);
+            result.add(binaryState);
         }
     }
 
     private static Collection<State> updateStateListForPair(Iterable<State> states, int index, int pairCode) {
         Collection<State> result = new LinkedList<>();
-        for (State updateStateForPair : states) {
-            updateStateForPair(updateStateForPair, index, pairCode, result);
+        for (State state : states) {
+            updateStateForPair(state, index, pairCode, result);
         }
         return simplifyStates(result);
     }
@@ -171,10 +163,12 @@ public final class HighLevelEncoder {
             result.add(stateNoBinary.shiftAndAppend(4, pairCode));
         }
         if (pairCode == 3 || pairCode == 4) {
-            result.add(stateNoBinary.latchAndAppend(2, 16 - pairCode).latchAndAppend(2, 1));
+            State digitState = stateNoBinary.latchAndAppend(2, 16 - pairCode).latchAndAppend(2, 1);
+            result.add(digitState);
         }
         if (state.getBinaryShiftByteCount() > 0) {
-            result.add(state.addBinaryShiftChar(index).addBinaryShiftChar(index + 1));
+            State binaryState = state.addBinaryShiftChar(index).addBinaryShiftChar(index + 1);
+            result.add(binaryState);
         }
     }
 
@@ -187,9 +181,8 @@ public final class HighLevelEncoder {
                 if (!iterator.hasNext()) {
                     break;
                 }
-                State next = iterator.next();
-                State oldState = next;
-                if (next.isBetterThanOrEqualTo(newState)) {
+                State oldState = iterator.next();
+                if (oldState.isBetterThanOrEqualTo(newState)) {
                     add = false;
                     break;
                 } else if (newState.isBetterThanOrEqualTo(oldState)) {

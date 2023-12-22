@@ -16,7 +16,6 @@ import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.request.BaseRequestOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
 import com.bumptech.glide.util.Preconditions;
@@ -25,6 +24,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 class GifFrameLoader {
     private final BitmapPool bitmapPool;
     private final List<FrameCallback> callbacks;
@@ -43,103 +43,79 @@ class GifFrameLoader {
     private boolean startFromFirstFrame;
     private Transformation<Bitmap> transformation;
 
+    /* loaded from: classes.dex */
     public interface FrameCallback {
         void onFrameReady();
     }
 
+    /* loaded from: classes.dex */
     interface OnEveryFrameListener {
         void onFrameReady();
     }
 
-    GifFrameLoader(Glide glide, GifDecoder gifDecoder2, int width, int height, Transformation<Bitmap> transformation2, Bitmap firstFrame2) {
-        this(glide.getBitmapPool(), Glide.with(glide.getContext()), gifDecoder2, (Handler) null, getRequestBuilder(Glide.with(glide.getContext()), width, height), transformation2, firstFrame2);
+    GifFrameLoader(Glide glide, GifDecoder gifDecoder, int width, int height, Transformation<Bitmap> transformation, Bitmap firstFrame) {
+        this(glide.getBitmapPool(), Glide.with(glide.getContext()), gifDecoder, null, getRequestBuilder(Glide.with(glide.getContext()), width, height), transformation, firstFrame);
     }
 
-    GifFrameLoader(BitmapPool bitmapPool2, RequestManager requestManager2, GifDecoder gifDecoder2, Handler handler2, RequestBuilder<Bitmap> requestBuilder2, Transformation<Bitmap> transformation2, Bitmap firstFrame2) {
+    GifFrameLoader(BitmapPool bitmapPool, RequestManager requestManager, GifDecoder gifDecoder, Handler handler, RequestBuilder<Bitmap> requestBuilder, Transformation<Bitmap> transformation, Bitmap firstFrame) {
         this.callbacks = new ArrayList();
-        this.requestManager = requestManager2;
-        handler2 = handler2 == null ? new Handler(Looper.getMainLooper(), new FrameLoaderCallback()) : handler2;
-        this.bitmapPool = bitmapPool2;
-        this.handler = handler2;
-        this.requestBuilder = requestBuilder2;
-        this.gifDecoder = gifDecoder2;
-        setFrameTransformation(transformation2, firstFrame2);
+        this.requestManager = requestManager;
+        handler = handler == null ? new Handler(Looper.getMainLooper(), new FrameLoaderCallback()) : handler;
+        this.bitmapPool = bitmapPool;
+        this.handler = handler;
+        this.requestBuilder = requestBuilder;
+        this.gifDecoder = gifDecoder;
+        setFrameTransformation(transformation, firstFrame);
     }
 
-    /* JADX WARNING: type inference failed for: r3v0, types: [com.bumptech.glide.load.Transformation, java.lang.Object, com.bumptech.glide.load.Transformation<android.graphics.Bitmap>] */
-    /* access modifiers changed from: package-private */
-    /* JADX WARNING: Unknown variable types count: 1 */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void setFrameTransformation(com.bumptech.glide.load.Transformation<android.graphics.Bitmap> r3, android.graphics.Bitmap r4) {
-        /*
-            r2 = this;
-            java.lang.Object r0 = com.bumptech.glide.util.Preconditions.checkNotNull(r3)
-            com.bumptech.glide.load.Transformation r0 = (com.bumptech.glide.load.Transformation) r0
-            r2.transformation = r0
-            java.lang.Object r0 = com.bumptech.glide.util.Preconditions.checkNotNull(r4)
-            android.graphics.Bitmap r0 = (android.graphics.Bitmap) r0
-            r2.firstFrame = r0
-            com.bumptech.glide.RequestBuilder<android.graphics.Bitmap> r0 = r2.requestBuilder
-            com.bumptech.glide.request.RequestOptions r1 = new com.bumptech.glide.request.RequestOptions
-            r1.<init>()
-            com.bumptech.glide.request.BaseRequestOptions r1 = r1.transform((com.bumptech.glide.load.Transformation<android.graphics.Bitmap>) r3)
-            com.bumptech.glide.RequestBuilder r0 = r0.apply((com.bumptech.glide.request.BaseRequestOptions<?>) r1)
-            r2.requestBuilder = r0
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.load.resource.gif.GifFrameLoader.setFrameTransformation(com.bumptech.glide.load.Transformation, android.graphics.Bitmap):void");
+    void setFrameTransformation(Transformation<Bitmap> transformation, Bitmap firstFrame) {
+        this.transformation = (Transformation) Preconditions.checkNotNull(transformation);
+        this.firstFrame = (Bitmap) Preconditions.checkNotNull(firstFrame);
+        this.requestBuilder = this.requestBuilder.apply((BaseRequestOptions<?>) new RequestOptions().transform(transformation));
     }
 
-    /* access modifiers changed from: package-private */
-    public Transformation<Bitmap> getFrameTransformation() {
+    Transformation<Bitmap> getFrameTransformation() {
         return this.transformation;
     }
 
-    /* access modifiers changed from: package-private */
-    public Bitmap getFirstFrame() {
+    Bitmap getFirstFrame() {
         return this.firstFrame;
     }
 
-    /* access modifiers changed from: package-private */
-    public void subscribe(FrameCallback frameCallback) {
+    void subscribe(FrameCallback frameCallback) {
         if (this.isCleared) {
             throw new IllegalStateException("Cannot subscribe to a cleared frame loader");
-        } else if (!this.callbacks.contains(frameCallback)) {
-            boolean start = this.callbacks.isEmpty();
-            this.callbacks.add(frameCallback);
-            if (start) {
-                start();
-            }
-        } else {
+        }
+        if (this.callbacks.contains(frameCallback)) {
             throw new IllegalStateException("Cannot subscribe twice in a row");
+        }
+        boolean start = this.callbacks.isEmpty();
+        this.callbacks.add(frameCallback);
+        if (start) {
+            start();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void unsubscribe(FrameCallback frameCallback) {
+    void unsubscribe(FrameCallback frameCallback) {
         this.callbacks.remove(frameCallback);
         if (this.callbacks.isEmpty()) {
             stop();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public int getWidth() {
+    int getWidth() {
         return getCurrentFrame().getWidth();
     }
 
-    /* access modifiers changed from: package-private */
-    public int getHeight() {
+    int getHeight() {
         return getCurrentFrame().getHeight();
     }
 
-    /* access modifiers changed from: package-private */
-    public int getSize() {
+    int getSize() {
         return this.gifDecoder.getByteSize() + getFrameSize();
     }
 
-    /* access modifiers changed from: package-private */
-    public int getCurrentIndex() {
+    int getCurrentIndex() {
         DelayTarget delayTarget = this.current;
         if (delayTarget != null) {
             return delayTarget.index;
@@ -151,82 +127,80 @@ class GifFrameLoader {
         return Util.getBitmapByteSize(getCurrentFrame().getWidth(), getCurrentFrame().getHeight(), getCurrentFrame().getConfig());
     }
 
-    /* access modifiers changed from: package-private */
-    public ByteBuffer getBuffer() {
+    ByteBuffer getBuffer() {
         return this.gifDecoder.getData().asReadOnlyBuffer();
     }
 
-    /* access modifiers changed from: package-private */
-    public int getFrameCount() {
+    int getFrameCount() {
         return this.gifDecoder.getFrameCount();
     }
 
-    /* access modifiers changed from: package-private */
-    public int getLoopCount() {
+    int getLoopCount() {
         return this.gifDecoder.getTotalIterationCount();
     }
 
     private void start() {
-        if (!this.isRunning) {
-            this.isRunning = true;
-            this.isCleared = false;
-            loadNextFrame();
+        if (this.isRunning) {
+            return;
         }
+        this.isRunning = true;
+        this.isCleared = false;
+        loadNextFrame();
     }
 
     private void stop() {
         this.isRunning = false;
     }
 
-    /* access modifiers changed from: package-private */
-    public void clear() {
+    void clear() {
         this.callbacks.clear();
         recycleFirstFrame();
         stop();
         DelayTarget delayTarget = this.current;
         if (delayTarget != null) {
-            this.requestManager.clear((Target<?>) delayTarget);
+            this.requestManager.clear(delayTarget);
             this.current = null;
         }
         DelayTarget delayTarget2 = this.next;
         if (delayTarget2 != null) {
-            this.requestManager.clear((Target<?>) delayTarget2);
+            this.requestManager.clear(delayTarget2);
             this.next = null;
         }
         DelayTarget delayTarget3 = this.pendingTarget;
         if (delayTarget3 != null) {
-            this.requestManager.clear((Target<?>) delayTarget3);
+            this.requestManager.clear(delayTarget3);
             this.pendingTarget = null;
         }
         this.gifDecoder.clear();
         this.isCleared = true;
     }
 
-    /* access modifiers changed from: package-private */
-    public Bitmap getCurrentFrame() {
+    Bitmap getCurrentFrame() {
         DelayTarget delayTarget = this.current;
         return delayTarget != null ? delayTarget.getResource() : this.firstFrame;
     }
 
     private void loadNextFrame() {
-        if (this.isRunning && !this.isLoadPending) {
-            if (this.startFromFirstFrame) {
-                Preconditions.checkArgument(this.pendingTarget == null, "Pending target must be null when starting from the first frame");
-                this.gifDecoder.resetFrameIndex();
-                this.startFromFirstFrame = false;
-            }
-            if (this.pendingTarget != null) {
-                DelayTarget temp = this.pendingTarget;
-                this.pendingTarget = null;
-                onFrameReady(temp);
-                return;
-            }
-            this.isLoadPending = true;
-            long targetTime = SystemClock.uptimeMillis() + ((long) this.gifDecoder.getNextDelay());
-            this.gifDecoder.advance();
-            this.next = new DelayTarget(this.handler, this.gifDecoder.getCurrentFrameIndex(), targetTime);
-            this.requestBuilder.apply((BaseRequestOptions<?>) RequestOptions.signatureOf(getFrameSignature())).load((Object) this.gifDecoder).into(this.next);
+        if (!this.isRunning || this.isLoadPending) {
+            return;
         }
+        if (this.startFromFirstFrame) {
+            Preconditions.checkArgument(this.pendingTarget == null, "Pending target must be null when starting from the first frame");
+            this.gifDecoder.resetFrameIndex();
+            this.startFromFirstFrame = false;
+        }
+        if (this.pendingTarget != null) {
+            DelayTarget temp = this.pendingTarget;
+            this.pendingTarget = null;
+            onFrameReady(temp);
+            return;
+        }
+        this.isLoadPending = true;
+        int delay = this.gifDecoder.getNextDelay();
+        long targetTime = SystemClock.uptimeMillis() + delay;
+        this.gifDecoder.advance();
+        this.next = new DelayTarget(this.handler, this.gifDecoder.getCurrentFrameIndex(), targetTime);
+        this.requestBuilder.apply((BaseRequestOptions<?>) RequestOptions.signatureOf(getFrameSignature())).load((Object) this.gifDecoder).into((RequestBuilder<Bitmap>) this.next);
     }
 
     private void recycleFirstFrame() {
@@ -237,27 +211,24 @@ class GifFrameLoader {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void setNextStartFromFirstFrame() {
+    void setNextStartFromFirstFrame() {
         Preconditions.checkArgument(!this.isRunning, "Can't restart a running animation");
         this.startFromFirstFrame = true;
         DelayTarget delayTarget = this.pendingTarget;
         if (delayTarget != null) {
-            this.requestManager.clear((Target<?>) delayTarget);
+            this.requestManager.clear(delayTarget);
             this.pendingTarget = null;
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void setOnEveryFrameReadyListener(OnEveryFrameListener onEveryFrameListener2) {
-        this.onEveryFrameListener = onEveryFrameListener2;
+    void setOnEveryFrameReadyListener(OnEveryFrameListener onEveryFrameListener) {
+        this.onEveryFrameListener = onEveryFrameListener;
     }
 
-    /* access modifiers changed from: package-private */
-    public void onFrameReady(DelayTarget delayTarget) {
-        OnEveryFrameListener onEveryFrameListener2 = this.onEveryFrameListener;
-        if (onEveryFrameListener2 != null) {
-            onEveryFrameListener2.onFrameReady();
+    void onFrameReady(DelayTarget delayTarget) {
+        OnEveryFrameListener onEveryFrameListener = this.onEveryFrameListener;
+        if (onEveryFrameListener != null) {
+            onEveryFrameListener.onFrameReady();
         }
         this.isLoadPending = false;
         if (this.isCleared) {
@@ -270,7 +241,8 @@ class GifFrameLoader {
                 DelayTarget previous = this.current;
                 this.current = delayTarget;
                 for (int i = this.callbacks.size() - 1; i >= 0; i--) {
-                    this.callbacks.get(i).onFrameReady();
+                    FrameCallback cb = this.callbacks.get(i);
+                    cb.onFrameReady();
                 }
                 if (previous != null) {
                     this.handler.obtainMessage(2, previous).sendToTarget();
@@ -280,6 +252,7 @@ class GifFrameLoader {
         }
     }
 
+    /* loaded from: classes.dex */
     private class FrameLoaderCallback implements Handler.Callback {
         static final int MSG_CLEAR = 2;
         static final int MSG_DELAY = 1;
@@ -287,44 +260,53 @@ class GifFrameLoader {
         FrameLoaderCallback() {
         }
 
+        @Override // android.os.Handler.Callback
         public boolean handleMessage(Message msg) {
             if (msg.what == 1) {
-                GifFrameLoader.this.onFrameReady((DelayTarget) msg.obj);
+                DelayTarget target = (DelayTarget) msg.obj;
+                GifFrameLoader.this.onFrameReady(target);
                 return true;
-            } else if (msg.what != 2) {
+            } else if (msg.what == 2) {
+                DelayTarget target2 = (DelayTarget) msg.obj;
+                GifFrameLoader.this.requestManager.clear(target2);
                 return false;
             } else {
-                GifFrameLoader.this.requestManager.clear((Target<?>) (DelayTarget) msg.obj);
                 return false;
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static class DelayTarget extends SimpleTarget<Bitmap> {
         private final Handler handler;
         final int index;
         private Bitmap resource;
         private final long targetTime;
 
-        DelayTarget(Handler handler2, int index2, long targetTime2) {
-            this.handler = handler2;
-            this.index = index2;
-            this.targetTime = targetTime2;
+        @Override // com.bumptech.glide.request.target.Target
+        public /* bridge */ /* synthetic */ void onResourceReady(Object obj, Transition transition) {
+            onResourceReady((Bitmap) obj, (Transition<? super Bitmap>) transition);
         }
 
-        /* access modifiers changed from: package-private */
-        public Bitmap getResource() {
+        DelayTarget(Handler handler, int index, long targetTime) {
+            this.handler = handler;
+            this.index = index;
+            this.targetTime = targetTime;
+        }
+
+        Bitmap getResource() {
             return this.resource;
         }
 
-        public void onResourceReady(Bitmap resource2, Transition<? super Bitmap> transition) {
-            this.resource = resource2;
-            this.handler.sendMessageAtTime(this.handler.obtainMessage(1, this), this.targetTime);
+        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+            this.resource = resource;
+            Message msg = this.handler.obtainMessage(1, this);
+            this.handler.sendMessageAtTime(msg, this.targetTime);
         }
     }
 
-    private static RequestBuilder<Bitmap> getRequestBuilder(RequestManager requestManager2, int width, int height) {
-        return requestManager2.asBitmap().apply((BaseRequestOptions<?>) ((RequestOptions) ((RequestOptions) RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).useAnimationPool(true)).skipMemoryCache(true)).override(width, height));
+    private static RequestBuilder<Bitmap> getRequestBuilder(RequestManager requestManager, int width, int height) {
+        return requestManager.asBitmap().apply((BaseRequestOptions<?>) RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).useAnimationPool(true).skipMemoryCache(true).override(width, height));
     }
 
     private static Key getFrameSignature() {

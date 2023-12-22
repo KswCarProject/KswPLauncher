@@ -18,22 +18,24 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableMergeWithSingle<T> extends AbstractFlowableWithUpstream<T, T> {
     final SingleSource<? extends T> other;
 
-    public FlowableMergeWithSingle(Flowable<T> source, SingleSource<? extends T> other2) {
+    public FlowableMergeWithSingle(Flowable<T> source, SingleSource<? extends T> other) {
         super(source);
-        this.other = other2;
+        this.other = other;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> subscriber) {
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> subscriber) {
         MergeWithObserver<T> parent = new MergeWithObserver<>(subscriber);
         subscriber.onSubscribe(parent);
-        this.source.subscribe(parent);
+        this.source.subscribe((FlowableSubscriber) parent);
         this.other.subscribe(parent.otherObserver);
     }
 
+    /* loaded from: classes.dex */
     static final class MergeWithObserver<T> extends AtomicInteger implements FlowableSubscriber<T>, Subscription {
         static final int OTHER_STATE_CONSUMED_OR_EMPTY = 2;
         static final int OTHER_STATE_HAS_VALUE = 1;
@@ -42,28 +44,30 @@ public final class FlowableMergeWithSingle<T> extends AbstractFlowableWithUpstre
         int consumed;
         final Subscriber<? super T> downstream;
         long emitted;
-        final AtomicThrowable error = new AtomicThrowable();
         final int limit;
         volatile boolean mainDone;
-        final AtomicReference<Subscription> mainSubscription = new AtomicReference<>();
-        final OtherObserver<T> otherObserver = new OtherObserver<>(this);
         volatile int otherState;
         final int prefetch;
         volatile SimplePlainQueue<T> queue;
-        final AtomicLong requested = new AtomicLong();
         T singleItem;
+        final AtomicReference<Subscription> mainSubscription = new AtomicReference<>();
+        final OtherObserver<T> otherObserver = new OtherObserver<>(this);
+        final AtomicThrowable error = new AtomicThrowable();
+        final AtomicLong requested = new AtomicLong();
 
-        MergeWithObserver(Subscriber<? super T> downstream2) {
-            this.downstream = downstream2;
+        MergeWithObserver(Subscriber<? super T> downstream) {
+            this.downstream = downstream;
             int bufferSize = Flowable.bufferSize();
             this.prefetch = bufferSize;
             this.limit = bufferSize - (bufferSize >> 2);
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
-            SubscriptionHelper.setOnce(this.mainSubscription, s, (long) this.prefetch);
+            SubscriptionHelper.setOnce(this.mainSubscription, s, this.prefetch);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             if (compareAndSet(0, 1)) {
                 long e = this.emitted;
@@ -75,7 +79,7 @@ public final class FlowableMergeWithSingle<T> extends AbstractFlowableWithUpstre
                         int c = this.consumed + 1;
                         if (c == this.limit) {
                             this.consumed = 0;
-                            this.mainSubscription.get().request((long) c);
+                            this.mainSubscription.get().request(c);
                         } else {
                             this.consumed = c;
                         }
@@ -83,13 +87,15 @@ public final class FlowableMergeWithSingle<T> extends AbstractFlowableWithUpstre
                         q.offer(t);
                     }
                 } else {
-                    getOrCreateQueue().offer(t);
+                    SimplePlainQueue<T> q2 = getOrCreateQueue();
+                    q2.offer(t);
                 }
                 if (decrementAndGet() == 0) {
                     return;
                 }
             } else {
-                getOrCreateQueue().offer(t);
+                SimplePlainQueue<T> q3 = getOrCreateQueue();
+                q3.offer(t);
                 if (getAndIncrement() != 0) {
                     return;
                 }
@@ -97,6 +103,7 @@ public final class FlowableMergeWithSingle<T> extends AbstractFlowableWithUpstre
             drainLoop();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable ex) {
             if (this.error.addThrowable(ex)) {
                 DisposableHelper.dispose(this.otherObserver);
@@ -106,16 +113,19 @@ public final class FlowableMergeWithSingle<T> extends AbstractFlowableWithUpstre
             RxJavaPlugins.onError(ex);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.mainDone = true;
             drain();
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             BackpressureHelper.add(this.requested, n);
             drain();
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             this.cancelled = true;
             SubscriptionHelper.cancel(this.mainSubscription);
@@ -126,8 +136,7 @@ public final class FlowableMergeWithSingle<T> extends AbstractFlowableWithUpstre
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void otherSuccess(T value) {
+        void otherSuccess(T value) {
             if (compareAndSet(0, 1)) {
                 long e = this.emitted;
                 if (this.requested.get() != e) {
@@ -151,8 +160,7 @@ public final class FlowableMergeWithSingle<T> extends AbstractFlowableWithUpstre
             drainLoop();
         }
 
-        /* access modifiers changed from: package-private */
-        public void otherError(Throwable ex) {
+        void otherError(Throwable ex) {
             if (this.error.addThrowable(ex)) {
                 SubscriptionHelper.cancel(this.mainSubscription);
                 drain();
@@ -161,26 +169,23 @@ public final class FlowableMergeWithSingle<T> extends AbstractFlowableWithUpstre
             RxJavaPlugins.onError(ex);
         }
 
-        /* access modifiers changed from: package-private */
-        public SimplePlainQueue<T> getOrCreateQueue() {
+        SimplePlainQueue<T> getOrCreateQueue() {
             SimplePlainQueue<T> q = this.queue;
-            if (q != null) {
-                return q;
+            if (q == null) {
+                SimplePlainQueue<T> q2 = new SpscArrayQueue<>(Flowable.bufferSize());
+                this.queue = q2;
+                return q2;
             }
-            SimplePlainQueue<T> q2 = new SpscArrayQueue<>(Flowable.bufferSize());
-            this.queue = q2;
-            return q2;
+            return q;
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
+        void drain() {
             if (getAndIncrement() == 0) {
                 drainLoop();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drainLoop() {
+        void drainLoop() {
             long e;
             Subscriber<? super T> actual = this.downstream;
             int missed = 1;
@@ -202,16 +207,15 @@ public final class FlowableMergeWithSingle<T> extends AbstractFlowableWithUpstre
                     } else {
                         int os = this.otherState;
                         if (os == 1) {
-                            T v = this.singleItem;
                             this.singleItem = null;
                             this.otherState = 2;
-                            actual.onNext(v);
+                            actual.onNext((T) this.singleItem);
                             e2++;
                         } else {
                             boolean d = this.mainDone;
                             SimplePlainQueue<T> q = this.queue;
-                            T v2 = q != null ? q.poll() : null;
-                            boolean empty = v2 == null;
+                            Object obj = (Object) (q != null ? q.poll() : null);
+                            boolean empty = obj == 0;
                             if (d && empty && os == 2) {
                                 this.queue = null;
                                 actual.onComplete();
@@ -219,15 +223,16 @@ public final class FlowableMergeWithSingle<T> extends AbstractFlowableWithUpstre
                             } else if (empty) {
                                 break;
                             } else {
-                                actual.onNext(v2);
+                                actual.onNext(obj);
                                 long e3 = e2 + 1;
                                 c++;
-                                if (c == lim) {
+                                if (c != lim) {
+                                    e = e3;
+                                } else {
                                     c = 0;
                                     e = e3;
-                                    this.mainSubscription.get().request((long) lim);
-                                } else {
-                                    e = e3;
+                                    long e4 = lim;
+                                    this.mainSubscription.get().request(e4);
                                 }
                                 e2 = e;
                             }
@@ -261,22 +266,26 @@ public final class FlowableMergeWithSingle<T> extends AbstractFlowableWithUpstre
             } while (missed != 0);
         }
 
+        /* loaded from: classes.dex */
         static final class OtherObserver<T> extends AtomicReference<Disposable> implements SingleObserver<T> {
             private static final long serialVersionUID = -2935427570954647017L;
             final MergeWithObserver<T> parent;
 
-            OtherObserver(MergeWithObserver<T> parent2) {
-                this.parent = parent2;
+            OtherObserver(MergeWithObserver<T> parent) {
+                this.parent = parent;
             }
 
+            @Override // io.reactivex.SingleObserver
             public void onSubscribe(Disposable d) {
                 DisposableHelper.setOnce(this, d);
             }
 
+            @Override // io.reactivex.SingleObserver
             public void onSuccess(T t) {
                 this.parent.otherSuccess(t);
             }
 
+            @Override // io.reactivex.SingleObserver
             public void onError(Throwable e) {
                 this.parent.otherError(e);
             }

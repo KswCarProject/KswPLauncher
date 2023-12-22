@@ -1,15 +1,16 @@
 package com.ibm.icu.text;
 
-import android.support.v4.view.InputDeviceCompat;
+import android.support.p001v4.view.InputDeviceCompat;
 import com.ibm.icu.text.Transliterator;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 class TransliterationRuleSet {
     private int[] index;
-    private int maxContextLength = 0;
-    private List<TransliterationRule> ruleVector = new ArrayList();
     private TransliterationRule[] rules;
+    private List<TransliterationRule> ruleVector = new ArrayList();
+    private int maxContextLength = 0;
 
     public int getMaximumContextLength() {
         return this.maxContextLength;
@@ -17,9 +18,8 @@ class TransliterationRuleSet {
 
     public void addRule(TransliterationRule rule) {
         this.ruleVector.add(rule);
-        int anteContextLength = rule.getAnteContextLength();
-        int len = anteContextLength;
-        if (anteContextLength > this.maxContextLength) {
+        int len = rule.getAnteContextLength();
+        if (len > this.maxContextLength) {
             this.maxContextLength = len;
         }
         this.rules = null;
@@ -36,13 +36,15 @@ class TransliterationRuleSet {
         for (int x = 0; x < 256; x++) {
             this.index[x] = v.size();
             for (int j2 = 0; j2 < n; j2++) {
-                if (indexValue[j2] < 0) {
+                if (indexValue[j2] >= 0) {
+                    if (indexValue[j2] == x) {
+                        v.add(this.ruleVector.get(j2));
+                    }
+                } else {
                     TransliterationRule r = this.ruleVector.get(j2);
                     if (r.matchesIndexValue(x)) {
                         v.add(r);
                     }
-                } else if (indexValue[j2] == x) {
-                    v.add(this.ruleVector.get(j2));
                 }
             }
         }
@@ -74,41 +76,41 @@ class TransliterationRuleSet {
 
     public boolean transliterate(Replaceable text, Transliterator.Position pos, boolean incremental) {
         int indexByte = text.char32At(pos.start) & 255;
-        int i = this.index[indexByte];
-        while (i < this.index[indexByte + 1]) {
-            switch (this.rules[i].matchAndReplace(text, pos, incremental)) {
+        for (int i = this.index[indexByte]; i < this.index[indexByte + 1]; i++) {
+            int m = this.rules[i].matchAndReplace(text, pos, incremental);
+            switch (m) {
                 case 1:
                     return false;
                 case 2:
                     return true;
                 default:
-                    i++;
             }
         }
-        pos.start += UTF16.getCharCount(text.char32At(pos.start));
+        int i2 = pos.start;
+        pos.start = i2 + UTF16.getCharCount(text.char32At(pos.start));
         return true;
     }
 
-    /* access modifiers changed from: package-private */
-    public String toRules(boolean escapeUnprintable) {
+    String toRules(boolean escapeUnprintable) {
         int count = this.ruleVector.size();
         StringBuilder ruleSource = new StringBuilder();
         for (int i = 0; i < count; i++) {
             if (i != 0) {
-                ruleSource.append(10);
+                ruleSource.append('\n');
             }
-            ruleSource.append(this.ruleVector.get(i).toRule(escapeUnprintable));
+            TransliterationRule r = this.ruleVector.get(i);
+            ruleSource.append(r.toRule(escapeUnprintable));
         }
         return ruleSource.toString();
     }
 
-    /* access modifiers changed from: package-private */
-    public void addSourceTargetSet(UnicodeSet filter, UnicodeSet sourceSet, UnicodeSet targetSet) {
+    void addSourceTargetSet(UnicodeSet filter, UnicodeSet sourceSet, UnicodeSet targetSet) {
         UnicodeSet currentFilter = new UnicodeSet(filter);
         UnicodeSet revisiting = new UnicodeSet();
         int count = this.ruleVector.size();
         for (int i = 0; i < count; i++) {
-            this.ruleVector.get(i).addSourceTargetSet(currentFilter, sourceSet, targetSet, revisiting.clear());
+            TransliterationRule r = this.ruleVector.get(i);
+            r.addSourceTargetSet(currentFilter, sourceSet, targetSet, revisiting.clear());
             currentFilter.addAll(revisiting);
         }
     }

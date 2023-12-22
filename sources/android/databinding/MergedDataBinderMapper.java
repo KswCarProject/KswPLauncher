@@ -7,26 +7,29 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/* loaded from: classes.dex */
 public class MergedDataBinderMapper extends DataBinderMapper {
     private static final String TAG = "MergedDataBinderMapper";
     private Set<Class<? extends DataBinderMapper>> mExistingMappers = new HashSet();
-    private List<String> mFeatureBindingMappers = new CopyOnWriteArrayList();
     private List<DataBinderMapper> mMappers = new CopyOnWriteArrayList();
+    private List<String> mFeatureBindingMappers = new CopyOnWriteArrayList();
 
+    /* JADX WARN: Multi-variable type inference failed */
     public void addMapper(DataBinderMapper mapper) {
         if (this.mExistingMappers.add(mapper.getClass())) {
             this.mMappers.add(mapper);
-            for (DataBinderMapper dependency : mapper.collectDependencies()) {
+            List<DataBinderMapper> dependencies = mapper.collectDependencies();
+            for (DataBinderMapper dependency : dependencies) {
                 addMapper(dependency);
             }
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void addMapper(String featureMapper) {
+    protected void addMapper(String featureMapper) {
         this.mFeatureBindingMappers.add(featureMapper + ".DataBinderMapperImpl");
     }
 
+    @Override // android.databinding.DataBinderMapper
     public ViewDataBinding getDataBinder(DataBindingComponent bindingComponent, View view, int layoutId) {
         for (DataBinderMapper mapper : this.mMappers) {
             ViewDataBinding result = mapper.getDataBinder(bindingComponent, view, layoutId);
@@ -40,6 +43,7 @@ public class MergedDataBinderMapper extends DataBinderMapper {
         return null;
     }
 
+    @Override // android.databinding.DataBinderMapper
     public ViewDataBinding getDataBinder(DataBindingComponent bindingComponent, View[] view, int layoutId) {
         for (DataBinderMapper mapper : this.mMappers) {
             ViewDataBinding result = mapper.getDataBinder(bindingComponent, view, layoutId);
@@ -53,6 +57,7 @@ public class MergedDataBinderMapper extends DataBinderMapper {
         return null;
     }
 
+    @Override // android.databinding.DataBinderMapper
     public int getLayoutId(String tag) {
         for (DataBinderMapper mapper : this.mMappers) {
             int result = mapper.getLayoutId(tag);
@@ -66,6 +71,7 @@ public class MergedDataBinderMapper extends DataBinderMapper {
         return 0;
     }
 
+    @Override // android.databinding.DataBinderMapper
     public String convertBrIdToString(int id) {
         for (DataBinderMapper mapper : this.mMappers) {
             String result = mapper.convertBrIdToString(id);

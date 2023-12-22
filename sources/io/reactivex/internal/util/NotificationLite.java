@@ -7,33 +7,39 @@ import java.io.Serializable;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public enum NotificationLite {
     COMPLETE;
 
+    /* loaded from: classes.dex */
     static final class ErrorNotification implements Serializable {
         private static final long serialVersionUID = -8759979445933046293L;
-        final Throwable e;
 
-        ErrorNotification(Throwable e2) {
-            this.e = e2;
+        /* renamed from: e */
+        final Throwable f364e;
+
+        ErrorNotification(Throwable e) {
+            this.f364e = e;
         }
 
         public String toString() {
-            return "NotificationLite.Error[" + this.e + "]";
+            return "NotificationLite.Error[" + this.f364e + "]";
         }
 
         public int hashCode() {
-            return this.e.hashCode();
+            return this.f364e.hashCode();
         }
 
         public boolean equals(Object obj) {
             if (obj instanceof ErrorNotification) {
-                return ObjectHelper.equals(this.e, ((ErrorNotification) obj).e);
+                ErrorNotification n = (ErrorNotification) obj;
+                return ObjectHelper.equals(this.f364e, n.f364e);
             }
             return false;
         }
     }
 
+    /* loaded from: classes.dex */
     static final class SubscriptionNotification implements Serializable {
         private static final long serialVersionUID = -1322257508628817540L;
         final Subscription upstream;
@@ -47,6 +53,7 @@ public enum NotificationLite {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class DisposableNotification implements Serializable {
         private static final long serialVersionUID = -7482590109178395495L;
         final Disposable upstream;
@@ -96,12 +103,13 @@ public enum NotificationLite {
         return o instanceof DisposableNotification;
     }
 
+    /* JADX WARN: Multi-variable type inference failed */
     public static <T> T getValue(Object o) {
         return o;
     }
 
     public static Throwable getError(Object o) {
-        return ((ErrorNotification) o).e;
+        return ((ErrorNotification) o).f364e;
     }
 
     public static Subscription getSubscription(Object o) {
@@ -117,7 +125,7 @@ public enum NotificationLite {
             s.onComplete();
             return true;
         } else if (o instanceof ErrorNotification) {
-            s.onError(((ErrorNotification) o).e);
+            s.onError(((ErrorNotification) o).f364e);
             return true;
         } else {
             s.onNext(o);
@@ -130,7 +138,7 @@ public enum NotificationLite {
             observer.onComplete();
             return true;
         } else if (o instanceof ErrorNotification) {
-            observer.onError(((ErrorNotification) o).e);
+            observer.onError(((ErrorNotification) o).f364e);
             return true;
         } else {
             observer.onNext(o);
@@ -143,7 +151,7 @@ public enum NotificationLite {
             s.onComplete();
             return true;
         } else if (o instanceof ErrorNotification) {
-            s.onError(((ErrorNotification) o).e);
+            s.onError(((ErrorNotification) o).f364e);
             return true;
         } else if (o instanceof SubscriptionNotification) {
             s.onSubscribe(((SubscriptionNotification) o).upstream);
@@ -159,7 +167,7 @@ public enum NotificationLite {
             observer.onComplete();
             return true;
         } else if (o instanceof ErrorNotification) {
-            observer.onError(((ErrorNotification) o).e);
+            observer.onError(((ErrorNotification) o).f364e);
             return true;
         } else if (o instanceof DisposableNotification) {
             observer.onSubscribe(((DisposableNotification) o).upstream);
@@ -170,6 +178,7 @@ public enum NotificationLite {
         }
     }
 
+    @Override // java.lang.Enum
     public String toString() {
         return "NotificationLite.Complete";
     }

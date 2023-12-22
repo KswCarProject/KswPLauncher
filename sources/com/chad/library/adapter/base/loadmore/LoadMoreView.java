@@ -2,24 +2,22 @@ package com.chad.library.adapter.base.loadmore;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 
+/* loaded from: classes.dex */
 public abstract class LoadMoreView {
     public static final int STATUS_DEFAULT = 1;
     public static final int STATUS_END = 4;
     public static final int STATUS_FAIL = 3;
     public static final int STATUS_LOADING = 2;
-    private boolean mLoadMoreEndGone = false;
     private int mLoadMoreStatus = 1;
+    private boolean mLoadMoreEndGone = false;
 
     public abstract int getLayoutId();
 
-    /* access modifiers changed from: protected */
-    public abstract int getLoadEndViewId();
+    protected abstract int getLoadEndViewId();
 
-    /* access modifiers changed from: protected */
-    public abstract int getLoadFailViewId();
+    protected abstract int getLoadFailViewId();
 
-    /* access modifiers changed from: protected */
-    public abstract int getLoadingViewId();
+    protected abstract int getLoadingViewId();
 
     public void setLoadMoreStatus(int loadMoreStatus) {
         this.mLoadMoreStatus = loadMoreStatus;

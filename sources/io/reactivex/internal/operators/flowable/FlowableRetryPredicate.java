@@ -12,48 +12,57 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableRetryPredicate<T> extends AbstractFlowableWithUpstream<T, T> {
     final long count;
     final Predicate<? super Throwable> predicate;
 
-    public FlowableRetryPredicate(Flowable<T> source, long count2, Predicate<? super Throwable> predicate2) {
+    public FlowableRetryPredicate(Flowable<T> source, long count, Predicate<? super Throwable> predicate) {
         super(source);
-        this.predicate = predicate2;
-        this.count = count2;
+        this.predicate = predicate;
+        this.count = count;
     }
 
+    @Override // io.reactivex.Flowable
     public void subscribeActual(Subscriber<? super T> s) {
         SubscriptionArbiter sa = new SubscriptionArbiter(false);
         s.onSubscribe(sa);
-        new RetrySubscriber(s, this.count, this.predicate, sa, this.source).subscribeNext();
+        RetrySubscriber<T> rs = new RetrySubscriber<>(s, this.count, this.predicate, sa, this.source);
+        rs.subscribeNext();
     }
 
+    /* loaded from: classes.dex */
     static final class RetrySubscriber<T> extends AtomicInteger implements FlowableSubscriber<T> {
         private static final long serialVersionUID = -7098360935104053232L;
         final Subscriber<? super T> downstream;
         final Predicate<? super Throwable> predicate;
         long produced;
         long remaining;
-        final SubscriptionArbiter sa;
+
+        /* renamed from: sa */
+        final SubscriptionArbiter f296sa;
         final Publisher<? extends T> source;
 
-        RetrySubscriber(Subscriber<? super T> actual, long count, Predicate<? super Throwable> predicate2, SubscriptionArbiter sa2, Publisher<? extends T> source2) {
+        RetrySubscriber(Subscriber<? super T> actual, long count, Predicate<? super Throwable> predicate, SubscriptionArbiter sa, Publisher<? extends T> source) {
             this.downstream = actual;
-            this.sa = sa2;
-            this.source = source2;
-            this.predicate = predicate2;
+            this.f296sa = sa;
+            this.source = source;
+            this.predicate = predicate;
             this.remaining = count;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
-            this.sa.setSubscription(s);
+            this.f296sa.setSubscription(s);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             this.produced++;
             this.downstream.onNext(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             long r = this.remaining;
             if (r != LongCompanionObject.MAX_VALUE) {
@@ -64,7 +73,8 @@ public final class FlowableRetryPredicate<T> extends AbstractFlowableWithUpstrea
                 return;
             }
             try {
-                if (!this.predicate.test(t)) {
+                boolean b = this.predicate.test(t);
+                if (!b) {
                     this.downstream.onError(t);
                 } else {
                     subscribeNext();
@@ -75,19 +85,19 @@ public final class FlowableRetryPredicate<T> extends AbstractFlowableWithUpstrea
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.downstream.onComplete();
         }
 
-        /* access modifiers changed from: package-private */
-        public void subscribeNext() {
+        void subscribeNext() {
             if (getAndIncrement() == 0) {
                 int missed = 1;
-                while (!this.sa.isCancelled()) {
+                while (!this.f296sa.isCancelled()) {
                     long p = this.produced;
                     if (p != 0) {
-                        this.produced = 0;
-                        this.sa.produced(p);
+                        this.produced = 0L;
+                        this.f296sa.produced(p);
                     }
                     this.source.subscribe(this);
                     missed = addAndGet(-missed);

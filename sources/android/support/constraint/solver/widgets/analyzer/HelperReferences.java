@@ -4,24 +4,25 @@ import android.support.constraint.solver.widgets.Barrier;
 import android.support.constraint.solver.widgets.ConstraintWidget;
 import android.support.constraint.solver.widgets.analyzer.DependencyNode;
 
+/* loaded from: classes.dex */
 class HelperReferences extends WidgetRun {
     public HelperReferences(ConstraintWidget widget) {
         super(widget);
     }
 
-    /* access modifiers changed from: package-private */
-    public void clear() {
+    @Override // android.support.constraint.solver.widgets.analyzer.WidgetRun
+    void clear() {
         this.runGroup = null;
         this.start.clear();
     }
 
-    /* access modifiers changed from: package-private */
-    public void reset() {
+    @Override // android.support.constraint.solver.widgets.analyzer.WidgetRun
+    void reset() {
         this.start.resolved = false;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean supportsWrapComputation() {
+    @Override // android.support.constraint.solver.widgets.analyzer.WidgetRun
+    boolean supportsWrapComputation() {
         return false;
     }
 
@@ -30,8 +31,8 @@ class HelperReferences extends WidgetRun {
         node.targets.add(this.start);
     }
 
-    /* access modifiers changed from: package-private */
-    public void apply() {
+    @Override // android.support.constraint.solver.widgets.analyzer.WidgetRun
+    void apply() {
         if (this.widget instanceof Barrier) {
             this.start.delegateToWidgetRun = true;
             Barrier barrier = (Barrier) this.widget;
@@ -96,6 +97,7 @@ class HelperReferences extends WidgetRun {
         }
     }
 
+    @Override // android.support.constraint.solver.widgets.analyzer.WidgetRun, android.support.constraint.solver.widgets.analyzer.Dependency
     public void update(Dependency dependency) {
         Barrier barrier = (Barrier) this.widget;
         int type = barrier.getBarrierType();
@@ -117,9 +119,11 @@ class HelperReferences extends WidgetRun {
         }
     }
 
+    @Override // android.support.constraint.solver.widgets.analyzer.WidgetRun
     public void applyToWidget() {
         if (this.widget instanceof Barrier) {
-            int type = ((Barrier) this.widget).getBarrierType();
+            Barrier barrier = (Barrier) this.widget;
+            int type = barrier.getBarrierType();
             if (type == 0 || type == 1) {
                 this.widget.setX(this.start.value);
             } else {

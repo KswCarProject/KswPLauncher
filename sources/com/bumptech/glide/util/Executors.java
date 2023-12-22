@@ -6,17 +6,20 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/* loaded from: classes.dex */
 public final class Executors {
-    private static final Executor DIRECT_EXECUTOR = new Executor() {
-        public void execute(Runnable command) {
-            command.run();
-        }
-    };
-    private static final Executor MAIN_THREAD_EXECUTOR = new Executor() {
+    private static final Executor MAIN_THREAD_EXECUTOR = new Executor() { // from class: com.bumptech.glide.util.Executors.1
         private final Handler handler = new Handler(Looper.getMainLooper());
 
+        @Override // java.util.concurrent.Executor
         public void execute(Runnable command) {
             this.handler.post(command);
+        }
+    };
+    private static final Executor DIRECT_EXECUTOR = new Executor() { // from class: com.bumptech.glide.util.Executors.2
+        @Override // java.util.concurrent.Executor
+        public void execute(Runnable command) {
+            command.run();
         }
     };
 
@@ -34,9 +37,9 @@ public final class Executors {
     public static void shutdownAndAwaitTermination(ExecutorService pool) {
         pool.shutdownNow();
         try {
-            if (!pool.awaitTermination(5, TimeUnit.SECONDS)) {
+            if (!pool.awaitTermination(5L, TimeUnit.SECONDS)) {
                 pool.shutdownNow();
-                if (!pool.awaitTermination(5, TimeUnit.SECONDS)) {
+                if (!pool.awaitTermination(5L, TimeUnit.SECONDS)) {
                     throw new RuntimeException("Failed to shutdown");
                 }
             }

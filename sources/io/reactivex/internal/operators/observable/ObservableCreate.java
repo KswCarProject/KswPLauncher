@@ -16,15 +16,16 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ObservableCreate<T> extends Observable<T> {
     final ObservableOnSubscribe<T> source;
 
-    public ObservableCreate(ObservableOnSubscribe<T> source2) {
-        this.source = source2;
+    public ObservableCreate(ObservableOnSubscribe<T> source) {
+        this.source = source;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Observer<? super T> observer) {
+    @Override // io.reactivex.Observable
+    protected void subscribeActual(Observer<? super T> observer) {
         CreateEmitter<T> parent = new CreateEmitter<>(observer);
         observer.onSubscribe(parent);
         try {
@@ -35,14 +36,16 @@ public final class ObservableCreate<T> extends Observable<T> {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class CreateEmitter<T> extends AtomicReference<Disposable> implements ObservableEmitter<T>, Disposable {
         private static final long serialVersionUID = -3434801548987643227L;
         final Observer<? super T> observer;
 
-        CreateEmitter(Observer<? super T> observer2) {
-            this.observer = observer2;
+        CreateEmitter(Observer<? super T> observer) {
+            this.observer = observer;
         }
 
+        @Override // io.reactivex.Emitter
         public void onNext(T t) {
             if (t == null) {
                 onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
@@ -51,30 +54,32 @@ public final class ObservableCreate<T> extends Observable<T> {
             }
         }
 
+        @Override // io.reactivex.Emitter
         public void onError(Throwable t) {
             if (!tryOnError(t)) {
                 RxJavaPlugins.onError(t);
             }
         }
 
-        /* JADX INFO: finally extract failed */
+        @Override // io.reactivex.ObservableEmitter
         public boolean tryOnError(Throwable t) {
             if (t == null) {
                 t = new NullPointerException("onError called with null. Null values are generally not allowed in 2.x operators and sources.");
             }
-            if (isDisposed()) {
-                return false;
+            if (!isDisposed()) {
+                try {
+                    this.observer.onError(t);
+                    dispose();
+                    return true;
+                } catch (Throwable th) {
+                    dispose();
+                    throw th;
+                }
             }
-            try {
-                this.observer.onError(t);
-                dispose();
-                return true;
-            } catch (Throwable th) {
-                dispose();
-                throw th;
-            }
+            return false;
         }
 
+        @Override // io.reactivex.Emitter
         public void onComplete() {
             if (!isDisposed()) {
                 try {
@@ -85,31 +90,38 @@ public final class ObservableCreate<T> extends Observable<T> {
             }
         }
 
+        @Override // io.reactivex.ObservableEmitter
         public void setDisposable(Disposable d) {
             DisposableHelper.set(this, d);
         }
 
+        @Override // io.reactivex.ObservableEmitter
         public void setCancellable(Cancellable c) {
             setDisposable(new CancellableDisposable(c));
         }
 
+        @Override // io.reactivex.ObservableEmitter
         public ObservableEmitter<T> serialize() {
             return new SerializedEmitter(this);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             DisposableHelper.dispose(this);
         }
 
+        @Override // io.reactivex.ObservableEmitter, io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return DisposableHelper.isDisposed((Disposable) get());
+            return DisposableHelper.isDisposed(get());
         }
 
+        @Override // java.util.concurrent.atomic.AtomicReference
         public String toString() {
-            return String.format("%s{%s}", new Object[]{getClass().getSimpleName(), super.toString()});
+            return String.format("%s{%s}", getClass().getSimpleName(), super.toString());
         }
     }
 
+    /* loaded from: classes.dex */
     static final class SerializedEmitter<T> extends AtomicInteger implements ObservableEmitter<T> {
         private static final long serialVersionUID = 4883307006032401862L;
         volatile boolean done;
@@ -117,40 +129,44 @@ public final class ObservableCreate<T> extends Observable<T> {
         final AtomicThrowable error = new AtomicThrowable();
         final SpscLinkedArrayQueue<T> queue = new SpscLinkedArrayQueue<>(16);
 
-        SerializedEmitter(ObservableEmitter<T> emitter2) {
-            this.emitter = emitter2;
+        SerializedEmitter(ObservableEmitter<T> emitter) {
+            this.emitter = emitter;
         }
 
+        @Override // io.reactivex.Emitter
         public void onNext(T t) {
-            if (!this.emitter.isDisposed() && !this.done) {
-                if (t == null) {
-                    onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
+            if (this.emitter.isDisposed() || this.done) {
+                return;
+            }
+            if (t == null) {
+                onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
+                return;
+            }
+            if (get() == 0 && compareAndSet(0, 1)) {
+                this.emitter.onNext(t);
+                if (decrementAndGet() == 0) {
                     return;
                 }
-                if (get() != 0 || !compareAndSet(0, 1)) {
-                    SimpleQueue<T> q = this.queue;
-                    synchronized (q) {
-                        q.offer(t);
-                    }
-                    if (getAndIncrement() != 0) {
-                        return;
-                    }
-                } else {
-                    this.emitter.onNext(t);
-                    if (decrementAndGet() == 0) {
-                        return;
-                    }
+            } else {
+                SimpleQueue<T> q = this.queue;
+                synchronized (q) {
+                    q.offer(t);
                 }
-                drainLoop();
+                if (getAndIncrement() != 0) {
+                    return;
+                }
             }
+            drainLoop();
         }
 
+        @Override // io.reactivex.Emitter
         public void onError(Throwable t) {
             if (!tryOnError(t)) {
                 RxJavaPlugins.onError(t);
             }
         }
 
+        @Override // io.reactivex.ObservableEmitter
         public boolean tryOnError(Throwable t) {
             if (this.emitter.isDisposed() || this.done) {
                 return false;
@@ -158,38 +174,38 @@ public final class ObservableCreate<T> extends Observable<T> {
             if (t == null) {
                 t = new NullPointerException("onError called with null. Null values are generally not allowed in 2.x operators and sources.");
             }
-            if (!this.error.addThrowable(t)) {
-                return false;
+            if (this.error.addThrowable(t)) {
+                this.done = true;
+                drain();
+                return true;
+            }
+            return false;
+        }
+
+        @Override // io.reactivex.Emitter
+        public void onComplete() {
+            if (this.emitter.isDisposed() || this.done) {
+                return;
             }
             this.done = true;
             drain();
-            return true;
         }
 
-        public void onComplete() {
-            if (!this.emitter.isDisposed() && !this.done) {
-                this.done = true;
-                drain();
-            }
-        }
-
-        /* access modifiers changed from: package-private */
-        public void drain() {
+        void drain() {
             if (getAndIncrement() == 0) {
                 drainLoop();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drainLoop() {
+        void drainLoop() {
             ObservableEmitter<T> e = this.emitter;
             SpscLinkedArrayQueue<T> q = this.queue;
-            AtomicThrowable error2 = this.error;
+            AtomicThrowable error = this.error;
             int missed = 1;
             while (!e.isDisposed()) {
-                if (error2.get() != null) {
+                if (error.get() != null) {
                     q.clear();
-                    e.onError(error2.terminate());
+                    e.onError(error.terminate());
                     return;
                 }
                 boolean d = this.done;
@@ -198,34 +214,39 @@ public final class ObservableCreate<T> extends Observable<T> {
                 if (d && empty) {
                     e.onComplete();
                     return;
-                } else if (empty) {
+                } else if (!empty) {
+                    e.onNext(v);
+                } else {
                     missed = addAndGet(-missed);
                     if (missed == 0) {
                         return;
                     }
-                } else {
-                    e.onNext(v);
                 }
             }
             q.clear();
         }
 
+        @Override // io.reactivex.ObservableEmitter
         public void setDisposable(Disposable d) {
             this.emitter.setDisposable(d);
         }
 
+        @Override // io.reactivex.ObservableEmitter
         public void setCancellable(Cancellable c) {
             this.emitter.setCancellable(c);
         }
 
+        @Override // io.reactivex.ObservableEmitter, io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.emitter.isDisposed();
         }
 
+        @Override // io.reactivex.ObservableEmitter
         public ObservableEmitter<T> serialize() {
             return this;
         }
 
+        @Override // java.util.concurrent.atomic.AtomicInteger
         public String toString() {
             return this.emitter.toString();
         }

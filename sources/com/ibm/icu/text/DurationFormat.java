@@ -7,9 +7,11 @@ import java.text.ParsePosition;
 import java.util.Date;
 
 @Deprecated
+/* loaded from: classes.dex */
 public abstract class DurationFormat extends UFormat {
     private static final long serialVersionUID = -2076961954727774282L;
 
+    @Override // java.text.Format
     @Deprecated
     public abstract StringBuffer format(Object obj, StringBuffer stringBuffer, FieldPosition fieldPosition);
 
@@ -36,6 +38,7 @@ public abstract class DurationFormat extends UFormat {
         setLocale(locale, locale);
     }
 
+    @Override // java.text.Format
     @Deprecated
     public Object parseObject(String source, ParsePosition pos) {
         throw new UnsupportedOperationException();

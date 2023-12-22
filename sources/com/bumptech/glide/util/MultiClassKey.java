@@ -1,5 +1,6 @@
 package com.bumptech.glide.util;
 
+/* loaded from: classes.dex */
 public class MultiClassKey {
     private Class<?> first;
     private Class<?> second;
@@ -8,22 +9,22 @@ public class MultiClassKey {
     public MultiClassKey() {
     }
 
-    public MultiClassKey(Class<?> first2, Class<?> second2) {
-        set(first2, second2);
+    public MultiClassKey(Class<?> first, Class<?> second) {
+        set(first, second);
     }
 
-    public MultiClassKey(Class<?> first2, Class<?> second2, Class<?> third2) {
-        set(first2, second2, third2);
+    public MultiClassKey(Class<?> first, Class<?> second, Class<?> third) {
+        set(first, second, third);
     }
 
-    public void set(Class<?> first2, Class<?> second2) {
-        set(first2, second2, (Class<?>) null);
+    public void set(Class<?> first, Class<?> second) {
+        set(first, second, null);
     }
 
-    public void set(Class<?> first2, Class<?> second2, Class<?> third2) {
-        this.first = first2;
-        this.second = second2;
-        this.third = third2;
+    public void set(Class<?> first, Class<?> second, Class<?> third) {
+        this.first = first;
+        this.second = second;
+        this.third = third;
     }
 
     public String toString() {
@@ -45,8 +46,9 @@ public class MultiClassKey {
     }
 
     public int hashCode() {
-        int result = ((this.first.hashCode() * 31) + this.second.hashCode()) * 31;
+        int result = this.first.hashCode();
+        int result2 = ((result * 31) + this.second.hashCode()) * 31;
         Class<?> cls = this.third;
-        return result + (cls != null ? cls.hashCode() : 0);
+        return result2 + (cls != null ? cls.hashCode() : 0);
     }
 }

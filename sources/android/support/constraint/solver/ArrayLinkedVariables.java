@@ -3,35 +3,37 @@ package android.support.constraint.solver;
 import android.support.constraint.solver.ArrayRow;
 import java.util.Arrays;
 
+/* loaded from: classes.dex */
 public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
     private static final boolean DEBUG = false;
     private static final boolean FULL_NEW_CHECK = false;
     static final int NONE = -1;
     private static float epsilon = 0.001f;
+    protected final Cache mCache;
+    private final ArrayRow mRow;
+    int currentSize = 0;
     private int ROW_SIZE = 8;
     private SolverVariable candidate = null;
-    int currentSize = 0;
     private int[] mArrayIndices = new int[8];
     private int[] mArrayNextIndices = new int[8];
     private float[] mArrayValues = new float[8];
-    protected final Cache mCache;
-    private boolean mDidFillOnce = false;
     private int mHead = -1;
     private int mLast = -1;
-    private final ArrayRow mRow;
+    private boolean mDidFillOnce = false;
 
     ArrayLinkedVariables(ArrayRow arrayRow, Cache cache) {
         this.mRow = arrayRow;
         this.mCache = cache;
     }
 
+    @Override // android.support.constraint.solver.ArrayRow.ArrayRowVariables
     public final void put(SolverVariable variable, float value) {
         if (value == 0.0f) {
             remove(variable, true);
         } else if (this.mHead == -1) {
             this.mHead = 0;
             this.mArrayValues[0] = value;
-            this.mArrayIndices[0] = variable.id;
+            this.mArrayIndices[0] = variable.f25id;
             this.mArrayNextIndices[this.mHead] = -1;
             variable.usageInRowCount++;
             variable.addToRow(this.mRow);
@@ -48,17 +50,15 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
         } else {
             int current = this.mHead;
             int previous = -1;
-            int counter = 0;
-            while (current != -1 && counter < this.currentSize) {
-                if (this.mArrayIndices[current] == variable.id) {
+            for (int counter = 0; current != -1 && counter < this.currentSize; counter++) {
+                if (this.mArrayIndices[current] == variable.f25id) {
                     this.mArrayValues[current] = value;
                     return;
                 }
-                if (this.mArrayIndices[current] < variable.id) {
+                if (this.mArrayIndices[current] < variable.f25id) {
                     previous = current;
                 }
                 current = this.mArrayNextIndices[current];
-                counter++;
             }
             int i2 = this.mLast;
             int availableIndice = i2 + 1;
@@ -75,13 +75,15 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
                 int i3 = 0;
                 while (true) {
                     int[] iArr4 = this.mArrayIndices;
-                    if (i3 >= iArr4.length) {
-                        break;
-                    } else if (iArr4[i3] == -1) {
-                        availableIndice = i3;
-                        break;
+                    if (i3 < iArr4.length) {
+                        if (iArr4[i3] != -1) {
+                            i3++;
+                        } else {
+                            availableIndice = i3;
+                            break;
+                        }
                     } else {
-                        i3++;
+                        break;
                     }
                 }
             }
@@ -96,7 +98,7 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
                 this.mArrayIndices = Arrays.copyOf(this.mArrayIndices, this.ROW_SIZE);
                 this.mArrayNextIndices = Arrays.copyOf(this.mArrayNextIndices, this.ROW_SIZE);
             }
-            this.mArrayIndices[availableIndice] = variable.id;
+            this.mArrayIndices[availableIndice] = variable.f25id;
             this.mArrayValues[availableIndice] = value;
             if (previous != -1) {
                 int[] iArr6 = this.mArrayNextIndices;
@@ -124,6 +126,7 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
         }
     }
 
+    @Override // android.support.constraint.solver.ArrayRow.ArrayRowVariables
     public void add(SolverVariable variable, float value, boolean removeFromDefinition) {
         float f = epsilon;
         if (value > (-f) && value < f) {
@@ -132,7 +135,7 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
         if (this.mHead == -1) {
             this.mHead = 0;
             this.mArrayValues[0] = value;
-            this.mArrayIndices[0] = variable.id;
+            this.mArrayIndices[0] = variable.f25id;
             this.mArrayNextIndices[this.mHead] = -1;
             variable.usageInRowCount++;
             variable.addToRow(this.mRow);
@@ -152,9 +155,9 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
         }
         int current = this.mHead;
         int previous = -1;
-        int counter = 0;
-        while (current != -1 && counter < this.currentSize) {
-            if (this.mArrayIndices[current] == variable.id) {
+        for (int counter = 0; current != -1 && counter < this.currentSize; counter++) {
+            int idx = this.mArrayIndices[current];
+            if (idx == variable.f25id) {
                 float[] fArr = this.mArrayValues;
                 float v = fArr[current] + value;
                 float f2 = epsilon;
@@ -181,11 +184,10 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
                 }
                 return;
             }
-            if (this.mArrayIndices[current] < variable.id) {
+            if (this.mArrayIndices[current] < variable.f25id) {
                 previous = current;
             }
             current = this.mArrayNextIndices[current];
-            counter++;
         }
         int i2 = this.mLast;
         int availableIndice = i2 + 1;
@@ -202,13 +204,15 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
             int i3 = 0;
             while (true) {
                 int[] iArr5 = this.mArrayIndices;
-                if (i3 >= iArr5.length) {
-                    break;
-                } else if (iArr5[i3] == -1) {
-                    availableIndice = i3;
-                    break;
+                if (i3 < iArr5.length) {
+                    if (iArr5[i3] != -1) {
+                        i3++;
+                    } else {
+                        availableIndice = i3;
+                        break;
+                    }
                 } else {
-                    i3++;
+                    break;
                 }
             }
         }
@@ -223,7 +227,7 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
             this.mArrayIndices = Arrays.copyOf(this.mArrayIndices, this.ROW_SIZE);
             this.mArrayNextIndices = Arrays.copyOf(this.mArrayNextIndices, this.ROW_SIZE);
         }
-        this.mArrayIndices[availableIndice] = variable.id;
+        this.mArrayIndices[availableIndice] = variable.f25id;
         this.mArrayValues[availableIndice] = value;
         if (previous != -1) {
             int[] iArr7 = this.mArrayNextIndices;
@@ -247,6 +251,7 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
         }
     }
 
+    @Override // android.support.constraint.solver.ArrayRow.ArrayRowVariables
     public float use(ArrayRow definition, boolean removeFromDefinition) {
         float value = get(definition.variable);
         remove(definition.variable, removeFromDefinition);
@@ -254,11 +259,13 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
         int definitionSize = definitionVariables.getCurrentSize();
         for (int i = 0; i < definitionSize; i++) {
             SolverVariable definitionVariable = definitionVariables.getVariable(i);
-            add(definitionVariable, definitionVariables.get(definitionVariable) * value, removeFromDefinition);
+            float definitionValue = definitionVariables.get(definitionVariable);
+            add(definitionVariable, definitionValue * value, removeFromDefinition);
         }
         return value;
     }
 
+    @Override // android.support.constraint.solver.ArrayRow.ArrayRowVariables
     public final float remove(SolverVariable variable, boolean removeFromDefinition) {
         if (this.candidate == variable) {
             this.candidate = null;
@@ -268,9 +275,9 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
         }
         int current = this.mHead;
         int previous = -1;
-        int counter = 0;
-        while (current != -1 && counter < this.currentSize) {
-            if (this.mArrayIndices[current] == variable.id) {
+        for (int counter = 0; current != -1 && counter < this.currentSize; counter++) {
+            int idx = this.mArrayIndices[current];
+            if (idx == variable.f25id) {
                 if (current == this.mHead) {
                     this.mHead = this.mArrayNextIndices[current];
                 } else {
@@ -290,21 +297,19 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
             }
             previous = current;
             current = this.mArrayNextIndices[current];
-            counter++;
         }
         return 0.0f;
     }
 
+    @Override // android.support.constraint.solver.ArrayRow.ArrayRowVariables
     public final void clear() {
         int current = this.mHead;
-        int counter = 0;
-        while (current != -1 && counter < this.currentSize) {
+        for (int counter = 0; current != -1 && counter < this.currentSize; counter++) {
             SolverVariable variable = this.mCache.mIndexedVariables[this.mArrayIndices[current]];
             if (variable != null) {
                 variable.removeFromRow(this.mRow);
             }
             current = this.mArrayNextIndices[current];
-            counter++;
         }
         this.mHead = -1;
         this.mLast = -1;
@@ -312,71 +317,64 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
         this.currentSize = 0;
     }
 
+    @Override // android.support.constraint.solver.ArrayRow.ArrayRowVariables
     public boolean contains(SolverVariable variable) {
         if (this.mHead == -1) {
             return false;
         }
         int current = this.mHead;
-        int counter = 0;
-        while (current != -1 && counter < this.currentSize) {
-            if (this.mArrayIndices[current] == variable.id) {
+        for (int counter = 0; current != -1 && counter < this.currentSize; counter++) {
+            if (this.mArrayIndices[current] == variable.f25id) {
                 return true;
             }
             current = this.mArrayNextIndices[current];
-            counter++;
         }
         return false;
     }
 
+    @Override // android.support.constraint.solver.ArrayRow.ArrayRowVariables
     public int indexOf(SolverVariable variable) {
         if (this.mHead == -1) {
             return -1;
         }
         int current = this.mHead;
-        int counter = 0;
-        while (current != -1 && counter < this.currentSize) {
-            if (this.mArrayIndices[current] == variable.id) {
+        for (int counter = 0; current != -1 && counter < this.currentSize; counter++) {
+            if (this.mArrayIndices[current] == variable.f25id) {
                 return current;
             }
             current = this.mArrayNextIndices[current];
-            counter++;
         }
         return -1;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean hasAtLeastOnePositiveVariable() {
+    boolean hasAtLeastOnePositiveVariable() {
         int current = this.mHead;
-        int counter = 0;
-        while (current != -1 && counter < this.currentSize) {
+        for (int counter = 0; current != -1 && counter < this.currentSize; counter++) {
             if (this.mArrayValues[current] > 0.0f) {
                 return true;
             }
             current = this.mArrayNextIndices[current];
-            counter++;
         }
         return false;
     }
 
+    @Override // android.support.constraint.solver.ArrayRow.ArrayRowVariables
     public void invert() {
         int current = this.mHead;
-        int counter = 0;
-        while (current != -1 && counter < this.currentSize) {
+        for (int counter = 0; current != -1 && counter < this.currentSize; counter++) {
             float[] fArr = this.mArrayValues;
-            fArr[current] = fArr[current] * -1.0f;
+            fArr[current] = fArr[current] * (-1.0f);
             current = this.mArrayNextIndices[current];
-            counter++;
         }
     }
 
+    @Override // android.support.constraint.solver.ArrayRow.ArrayRowVariables
     public void divideByAmount(float amount) {
         int current = this.mHead;
-        int counter = 0;
-        while (current != -1 && counter < this.currentSize) {
+        for (int counter = 0; current != -1 && counter < this.currentSize; counter++) {
             float[] fArr = this.mArrayValues;
             fArr[current] = fArr[current] / amount;
             current = this.mArrayNextIndices[current];
-            counter++;
         }
     }
 
@@ -384,6 +382,7 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
         return this.mHead;
     }
 
+    @Override // android.support.constraint.solver.ArrayRow.ArrayRowVariables
     public int getCurrentSize() {
         return this.currentSize;
     }
@@ -400,71 +399,68 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
         return this.mArrayNextIndices[index];
     }
 
-    /* access modifiers changed from: package-private */
-    public SolverVariable getPivotCandidate() {
+    SolverVariable getPivotCandidate() {
         SolverVariable solverVariable = this.candidate;
-        if (solverVariable != null) {
-            return solverVariable;
-        }
-        int current = this.mHead;
-        int counter = 0;
-        SolverVariable pivot = null;
-        while (current != -1 && counter < this.currentSize) {
-            if (this.mArrayValues[current] < 0.0f) {
-                SolverVariable v = this.mCache.mIndexedVariables[this.mArrayIndices[current]];
-                if (pivot == null || pivot.strength < v.strength) {
-                    pivot = v;
+        if (solverVariable == null) {
+            int current = this.mHead;
+            SolverVariable pivot = null;
+            for (int counter = 0; current != -1 && counter < this.currentSize; counter++) {
+                if (this.mArrayValues[current] < 0.0f) {
+                    SolverVariable v = this.mCache.mIndexedVariables[this.mArrayIndices[current]];
+                    if (pivot == null || pivot.strength < v.strength) {
+                        pivot = v;
+                    }
                 }
+                current = this.mArrayNextIndices[current];
             }
-            current = this.mArrayNextIndices[current];
-            counter++;
+            return pivot;
         }
-        return pivot;
+        return solverVariable;
     }
 
+    @Override // android.support.constraint.solver.ArrayRow.ArrayRowVariables
     public SolverVariable getVariable(int index) {
         int current = this.mHead;
-        int counter = 0;
-        while (current != -1 && counter < this.currentSize) {
+        for (int counter = 0; current != -1 && counter < this.currentSize; counter++) {
             if (counter == index) {
                 return this.mCache.mIndexedVariables[this.mArrayIndices[current]];
             }
             current = this.mArrayNextIndices[current];
-            counter++;
         }
         return null;
     }
 
+    @Override // android.support.constraint.solver.ArrayRow.ArrayRowVariables
     public float getVariableValue(int index) {
         int current = this.mHead;
-        int counter = 0;
-        while (current != -1 && counter < this.currentSize) {
+        for (int counter = 0; current != -1 && counter < this.currentSize; counter++) {
             if (counter == index) {
                 return this.mArrayValues[current];
             }
             current = this.mArrayNextIndices[current];
-            counter++;
         }
         return 0.0f;
     }
 
+    @Override // android.support.constraint.solver.ArrayRow.ArrayRowVariables
     public final float get(SolverVariable v) {
         int current = this.mHead;
-        int counter = 0;
-        while (current != -1 && counter < this.currentSize) {
-            if (this.mArrayIndices[current] == v.id) {
+        for (int counter = 0; current != -1 && counter < this.currentSize; counter++) {
+            if (this.mArrayIndices[current] == v.f25id) {
                 return this.mArrayValues[current];
             }
             current = this.mArrayNextIndices[current];
-            counter++;
         }
         return 0.0f;
     }
 
+    @Override // android.support.constraint.solver.ArrayRow.ArrayRowVariables
     public int sizeInBytes() {
-        return 0 + (this.mArrayIndices.length * 4 * 3) + 36;
+        int size = 0 + (this.mArrayIndices.length * 4 * 3);
+        return size + 36;
     }
 
+    @Override // android.support.constraint.solver.ArrayRow.ArrayRowVariables
     public void display() {
         int count = this.currentSize;
         System.out.print("{ ");
@@ -480,11 +476,9 @@ public class ArrayLinkedVariables implements ArrayRow.ArrayRowVariables {
     public String toString() {
         String result = "";
         int current = this.mHead;
-        int counter = 0;
-        while (current != -1 && counter < this.currentSize) {
+        for (int counter = 0; current != -1 && counter < this.currentSize; counter++) {
             result = ((result + " -> ") + this.mArrayValues[current] + " : ") + this.mCache.mIndexedVariables[this.mArrayIndices[current]];
             current = this.mArrayNextIndices[current];
-            counter++;
         }
         return result;
     }

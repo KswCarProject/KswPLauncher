@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewParent;
 
+/* loaded from: classes.dex */
 public abstract class VirtualLayout extends ConstraintHelper {
     private boolean mApplyElevationOnAttach;
     private boolean mApplyVisibilityOnAttach;
@@ -23,17 +24,17 @@ public abstract class VirtualLayout extends ConstraintHelper {
         super(context, attrs, defStyleAttr);
     }
 
-    /* access modifiers changed from: protected */
-    public void init(AttributeSet attrs) {
+    @Override // android.support.constraint.ConstraintHelper
+    protected void init(AttributeSet attrs) {
         super.init(attrs);
         if (attrs != null) {
-            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ConstraintLayout_Layout);
+            TypedArray a = getContext().obtainStyledAttributes(attrs, C0088R.styleable.ConstraintLayout_Layout);
             int N = a.getIndexCount();
             for (int i = 0; i < N; i++) {
                 int attr = a.getIndex(i);
-                if (attr == R.styleable.ConstraintLayout_Layout_android_visibility) {
+                if (attr == C0088R.styleable.ConstraintLayout_Layout_android_visibility) {
                     this.mApplyVisibilityOnAttach = true;
-                } else if (attr == R.styleable.ConstraintLayout_Layout_android_elevation) {
+                } else if (attr == C0088R.styleable.ConstraintLayout_Layout_android_elevation) {
                     this.mApplyElevationOnAttach = true;
                 }
             }
@@ -43,6 +44,7 @@ public abstract class VirtualLayout extends ConstraintHelper {
     public void onMeasure(android.support.constraint.solver.widgets.VirtualLayout layout, int widthMeasureSpec, int heightMeasureSpec) {
     }
 
+    @Override // android.support.constraint.ConstraintHelper, android.view.View
     public void onAttachedToWindow() {
         ViewParent parent;
         super.onAttachedToWindow();
@@ -54,7 +56,8 @@ public abstract class VirtualLayout extends ConstraintHelper {
                 elevation = getElevation();
             }
             for (int i = 0; i < this.mCount; i++) {
-                View view = container.getViewById(this.mIds[i]);
+                int id = this.mIds[i];
+                View view = container.getViewById(id);
                 if (view != null) {
                     if (this.mApplyVisibilityOnAttach) {
                         view.setVisibility(visibility);
@@ -67,11 +70,13 @@ public abstract class VirtualLayout extends ConstraintHelper {
         }
     }
 
+    @Override // android.view.View
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         applyLayoutFeatures();
     }
 
+    @Override // android.view.View
     public void setElevation(float elevation) {
         super.setElevation(elevation);
         applyLayoutFeatures();

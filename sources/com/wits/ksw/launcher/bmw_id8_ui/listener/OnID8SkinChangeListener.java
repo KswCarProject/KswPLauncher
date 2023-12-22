@@ -1,9 +1,10 @@
 package com.wits.ksw.launcher.bmw_id8_ui.listener;
 
+/* loaded from: classes10.dex */
 public interface OnID8SkinChangeListener {
-    void onSkinChangeCardBGSelector(String str);
+    void onSkinChangeCardBGSelector(String skinName);
 
-    void onSkinChangeLeftBar(int i);
+    void onSkinChangeLeftBar(int drawableId);
 
-    void onSkinChangeMusicAlbum(int i);
+    void onSkinChangeMusicAlbum(int drawableId);
 }

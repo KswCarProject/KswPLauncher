@@ -1,14 +1,15 @@
 package butterknife.internal;
 
+/* loaded from: classes.dex */
 final class ViewBinding implements Binding {
     private final String name;
     private final boolean required;
     private final String type;
 
-    ViewBinding(String name2, String type2, boolean required2) {
-        this.name = name2;
-        this.type = type2;
-        this.required = required2;
+    ViewBinding(String name, String type, boolean required) {
+        this.name = name;
+        this.type = type;
+        this.required = required;
     }
 
     public String getName() {
@@ -19,6 +20,7 @@ final class ViewBinding implements Binding {
         return this.type;
     }
 
+    @Override // butterknife.internal.Binding
     public String getDescription() {
         return "field '" + this.name + "'";
     }

@@ -10,39 +10,50 @@ import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import java.io.InputStream;
 
+/* loaded from: classes.dex */
 public class HttpGlideUrlLoader implements ModelLoader<GlideUrl, InputStream> {
     public static final Option<Integer> TIMEOUT = Option.memory("com.bumptech.glide.load.model.stream.HttpGlideUrlLoader.Timeout", 2500);
     private final ModelCache<GlideUrl, GlideUrl> modelCache;
 
     public HttpGlideUrlLoader() {
-        this((ModelCache<GlideUrl, GlideUrl>) null);
+        this(null);
     }
 
-    public HttpGlideUrlLoader(ModelCache<GlideUrl, GlideUrl> modelCache2) {
-        this.modelCache = modelCache2;
+    public HttpGlideUrlLoader(ModelCache<GlideUrl, GlideUrl> modelCache) {
+        this.modelCache = modelCache;
     }
 
+    @Override // com.bumptech.glide.load.model.ModelLoader
     public ModelLoader.LoadData<InputStream> buildLoadData(GlideUrl model, int width, int height, Options options) {
         GlideUrl url = model;
-        ModelCache<GlideUrl, GlideUrl> modelCache2 = this.modelCache;
-        if (modelCache2 != null && (url = modelCache2.get(model, 0, 0)) == null) {
-            this.modelCache.put(model, 0, 0, model);
-            url = model;
+        ModelCache<GlideUrl, GlideUrl> modelCache = this.modelCache;
+        if (modelCache != null) {
+            GlideUrl url2 = modelCache.get(model, 0, 0);
+            url = url2;
+            if (url == null) {
+                this.modelCache.put(model, 0, 0, model);
+                url = model;
+            }
         }
-        return new ModelLoader.LoadData<>(url, new HttpUrlFetcher(url, ((Integer) options.get(TIMEOUT)).intValue()));
+        int timeout = ((Integer) options.get(TIMEOUT)).intValue();
+        return new ModelLoader.LoadData<>(url, new HttpUrlFetcher(url, timeout));
     }
 
+    @Override // com.bumptech.glide.load.model.ModelLoader
     public boolean handles(GlideUrl model) {
         return true;
     }
 
+    /* loaded from: classes.dex */
     public static class Factory implements ModelLoaderFactory<GlideUrl, InputStream> {
         private final ModelCache<GlideUrl, GlideUrl> modelCache = new ModelCache<>(500);
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public ModelLoader<GlideUrl, InputStream> build(MultiModelLoaderFactory multiFactory) {
             return new HttpGlideUrlLoader(this.modelCache);
         }
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public void teardown() {
         }
     }

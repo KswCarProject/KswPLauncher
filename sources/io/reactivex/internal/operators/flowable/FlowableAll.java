@@ -11,30 +11,33 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableAll<T> extends AbstractFlowableWithUpstream<T, Boolean> {
     final Predicate<? super T> predicate;
 
-    public FlowableAll(Flowable<T> source, Predicate<? super T> predicate2) {
+    public FlowableAll(Flowable<T> source, Predicate<? super T> predicate) {
         super(source);
-        this.predicate = predicate2;
+        this.predicate = predicate;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super Boolean> s) {
-        this.source.subscribe(new AllSubscriber(s, this.predicate));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super Boolean> s) {
+        this.source.subscribe((FlowableSubscriber) new AllSubscriber(s, this.predicate));
     }
 
+    /* loaded from: classes.dex */
     static final class AllSubscriber<T> extends DeferredScalarSubscription<Boolean> implements FlowableSubscriber<T> {
         private static final long serialVersionUID = -3521127104134758517L;
         boolean done;
         final Predicate<? super T> predicate;
         Subscription upstream;
 
-        AllSubscriber(Subscriber<? super Boolean> actual, Predicate<? super T> predicate2) {
+        AllSubscriber(Subscriber<? super Boolean> actual, Predicate<? super T> predicate) {
             super(actual);
-            this.predicate = predicate2;
+            this.predicate = predicate;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -43,22 +46,26 @@ public final class FlowableAll<T> extends AbstractFlowableWithUpstream<T, Boolea
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            if (!this.done) {
-                try {
-                    if (!this.predicate.test(t)) {
-                        this.done = true;
-                        this.upstream.cancel();
-                        complete(false);
-                    }
-                } catch (Throwable e) {
-                    Exceptions.throwIfFatal(e);
+            if (this.done) {
+                return;
+            }
+            try {
+                boolean b = this.predicate.test(t);
+                if (!b) {
+                    this.done = true;
                     this.upstream.cancel();
-                    onError(e);
+                    complete(false);
                 }
+            } catch (Throwable e) {
+                Exceptions.throwIfFatal(e);
+                this.upstream.cancel();
+                onError(e);
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -68,13 +75,16 @@ public final class FlowableAll<T> extends AbstractFlowableWithUpstream<T, Boolea
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                complete(true);
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            complete(true);
         }
 
+        @Override // io.reactivex.internal.subscriptions.DeferredScalarSubscription, org.reactivestreams.Subscription
         public void cancel() {
             super.cancel();
             this.upstream.cancel();

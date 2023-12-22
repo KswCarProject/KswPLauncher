@@ -4,18 +4,19 @@ import com.google.zxing.Result;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/* loaded from: classes.dex */
 public final class EmailAddressResultParser extends ResultParser {
     private static final Pattern COMMA = Pattern.compile(",");
 
+    @Override // com.google.zxing.client.result.ResultParser
     public EmailAddressParsedResult parse(Result result) {
-        String massagedText = getMassagedText(result);
-        String rawText = massagedText;
-        if (massagedText.startsWith("mailto:") || rawText.startsWith("MAILTO:")) {
+        String tosString;
+        String rawText = getMassagedText(result);
+        if (rawText.startsWith("mailto:") || rawText.startsWith("MAILTO:")) {
             String substring = rawText.substring(7);
             String hostEmail = substring;
-            int indexOf = substring.indexOf(63);
-            int queryStart = indexOf;
-            if (indexOf >= 0) {
+            int queryStart = substring.indexOf(63);
+            if (queryStart >= 0) {
                 hostEmail = hostEmail.substring(0, queryStart);
             }
             try {
@@ -30,34 +31,30 @@ public final class EmailAddressResultParser extends ResultParser {
                 String subject = null;
                 String body = null;
                 if (nameValues != null) {
-                    if (tos == null) {
-                        String str = nameValues.get("to");
-                        String tosString = str;
-                        if (str != null) {
-                            tos = COMMA.split(tosString);
-                        }
+                    if (tos == null && (tosString = nameValues.get("to")) != null) {
+                        tos = COMMA.split(tosString);
                     }
-                    String str2 = nameValues.get("cc");
-                    String ccString = str2;
-                    if (str2 != null) {
+                    String ccString = nameValues.get("cc");
+                    if (ccString != null) {
                         ccs = COMMA.split(ccString);
                     }
-                    String str3 = nameValues.get("bcc");
-                    String bccString = str3;
-                    if (str3 != null) {
+                    String bccString = nameValues.get("bcc");
+                    if (bccString != null) {
                         bccs = COMMA.split(bccString);
                     }
-                    subject = nameValues.get("subject");
-                    body = nameValues.get("body");
+                    String subject2 = nameValues.get("subject");
+                    subject = subject2;
+                    String body2 = nameValues.get("body");
+                    body = body2;
                 }
                 return new EmailAddressParsedResult(tos, ccs, bccs, subject, body);
             } catch (IllegalArgumentException e) {
                 return null;
             }
-        } else if (!EmailDoCoMoResultParser.isBasicallyValidEmailAddress(rawText)) {
-            return null;
-        } else {
+        } else if (EmailDoCoMoResultParser.isBasicallyValidEmailAddress(rawText)) {
             return new EmailAddressParsedResult(rawText);
+        } else {
+            return null;
         }
     }
 }

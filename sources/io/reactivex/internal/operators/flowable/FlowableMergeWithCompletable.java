@@ -15,95 +15,105 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableMergeWithCompletable<T> extends AbstractFlowableWithUpstream<T, T> {
     final CompletableSource other;
 
-    public FlowableMergeWithCompletable(Flowable<T> source, CompletableSource other2) {
+    public FlowableMergeWithCompletable(Flowable<T> source, CompletableSource other) {
         super(source);
-        this.other = other2;
+        this.other = other;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> subscriber) {
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> subscriber) {
         MergeWithSubscriber<T> parent = new MergeWithSubscriber<>(subscriber);
         subscriber.onSubscribe(parent);
-        this.source.subscribe(parent);
+        this.source.subscribe((FlowableSubscriber) parent);
         this.other.subscribe(parent.otherObserver);
     }
 
+    /* loaded from: classes.dex */
     static final class MergeWithSubscriber<T> extends AtomicInteger implements FlowableSubscriber<T>, Subscription {
         private static final long serialVersionUID = -4592979584110982903L;
         final Subscriber<? super T> downstream;
-        final AtomicThrowable error = new AtomicThrowable();
         volatile boolean mainDone;
-        final AtomicReference<Subscription> mainSubscription = new AtomicReference<>();
         volatile boolean otherDone;
+        final AtomicReference<Subscription> mainSubscription = new AtomicReference<>();
         final OtherObserver otherObserver = new OtherObserver(this);
+        final AtomicThrowable error = new AtomicThrowable();
         final AtomicLong requested = new AtomicLong();
 
-        MergeWithSubscriber(Subscriber<? super T> downstream2) {
-            this.downstream = downstream2;
+        MergeWithSubscriber(Subscriber<? super T> downstream) {
+            this.downstream = downstream;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             SubscriptionHelper.deferredSetOnce(this.mainSubscription, this.requested, s);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            HalfSerializer.onNext(this.downstream, t, (AtomicInteger) this, this.error);
+            HalfSerializer.onNext(this.downstream, t, this, this.error);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable ex) {
             DisposableHelper.dispose(this.otherObserver);
-            HalfSerializer.onError((Subscriber<?>) this.downstream, ex, (AtomicInteger) this, this.error);
+            HalfSerializer.onError(this.downstream, ex, this, this.error);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.mainDone = true;
             if (this.otherDone) {
-                HalfSerializer.onComplete((Subscriber<?>) this.downstream, (AtomicInteger) this, this.error);
+                HalfSerializer.onComplete(this.downstream, this, this.error);
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             SubscriptionHelper.deferredRequest(this.mainSubscription, this.requested, n);
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             SubscriptionHelper.cancel(this.mainSubscription);
             DisposableHelper.dispose(this.otherObserver);
         }
 
-        /* access modifiers changed from: package-private */
-        public void otherError(Throwable ex) {
+        void otherError(Throwable ex) {
             SubscriptionHelper.cancel(this.mainSubscription);
-            HalfSerializer.onError((Subscriber<?>) this.downstream, ex, (AtomicInteger) this, this.error);
+            HalfSerializer.onError(this.downstream, ex, this, this.error);
         }
 
-        /* access modifiers changed from: package-private */
-        public void otherComplete() {
+        void otherComplete() {
             this.otherDone = true;
             if (this.mainDone) {
-                HalfSerializer.onComplete((Subscriber<?>) this.downstream, (AtomicInteger) this, this.error);
+                HalfSerializer.onComplete(this.downstream, this, this.error);
             }
         }
 
+        /* loaded from: classes.dex */
         static final class OtherObserver extends AtomicReference<Disposable> implements CompletableObserver {
             private static final long serialVersionUID = -2935427570954647017L;
             final MergeWithSubscriber<?> parent;
 
-            OtherObserver(MergeWithSubscriber<?> parent2) {
-                this.parent = parent2;
+            OtherObserver(MergeWithSubscriber<?> parent) {
+                this.parent = parent;
             }
 
+            @Override // io.reactivex.CompletableObserver
             public void onSubscribe(Disposable d) {
                 DisposableHelper.setOnce(this, d);
             }
 
+            @Override // io.reactivex.CompletableObserver
             public void onError(Throwable e) {
                 this.parent.otherError(e);
             }
 
+            @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
             public void onComplete() {
                 this.parent.otherComplete();
             }

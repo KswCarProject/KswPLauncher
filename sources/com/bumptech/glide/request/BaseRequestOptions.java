@@ -2,11 +2,13 @@ package com.bumptech.glide.request;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.Option;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -17,8 +19,11 @@ import com.bumptech.glide.load.resource.bitmap.CenterInside;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy;
 import com.bumptech.glide.load.resource.bitmap.Downsampler;
+import com.bumptech.glide.load.resource.bitmap.DrawableTransformation;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.VideoDecoder;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.load.resource.gif.GifDrawableTransformation;
 import com.bumptech.glide.load.resource.gif.GifOptions;
 import com.bumptech.glide.request.BaseRequestOptions;
 import com.bumptech.glide.signature.EmptySignature;
@@ -27,6 +32,7 @@ import com.bumptech.glide.util.Preconditions;
 import com.bumptech.glide.util.Util;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public abstract class BaseRequestOptions<T extends BaseRequestOptions<T>> implements Cloneable {
     private static final int DISK_CACHE_STRATEGY = 4;
     private static final int ERROR_ID = 32;
@@ -49,52 +55,52 @@ public abstract class BaseRequestOptions<T extends BaseRequestOptions<T>> implem
     private static final int UNSET = -1;
     private static final int USE_ANIMATION_POOL = 1048576;
     private static final int USE_UNLIMITED_SOURCE_GENERATORS_POOL = 262144;
-    private DiskCacheStrategy diskCacheStrategy = DiskCacheStrategy.AUTOMATIC;
     private int errorId;
     private Drawable errorPlaceholder;
     private Drawable fallbackDrawable;
     private int fallbackId;
     private int fields;
     private boolean isAutoCloneEnabled;
-    private boolean isCacheable = true;
     private boolean isLocked;
-    private boolean isScaleOnlyOrNoTransform = true;
-    private boolean isTransformationAllowed = true;
     private boolean isTransformationRequired;
     private boolean onlyRetrieveFromCache;
-    private Options options = new Options();
-    private int overrideHeight = -1;
-    private int overrideWidth = -1;
     private Drawable placeholderDrawable;
     private int placeholderId;
-    private Priority priority = Priority.NORMAL;
-    private Class<?> resourceClass = Object.class;
-    private Key signature = EmptySignature.obtain();
-    private float sizeMultiplier = 1.0f;
     private Resources.Theme theme;
-    private Map<Class<?>, Transformation<?>> transformations = new CachedHashCodeArrayMap();
     private boolean useAnimationPool;
     private boolean useUnlimitedSourceGeneratorsPool;
+    private float sizeMultiplier = 1.0f;
+    private DiskCacheStrategy diskCacheStrategy = DiskCacheStrategy.AUTOMATIC;
+    private Priority priority = Priority.NORMAL;
+    private boolean isCacheable = true;
+    private int overrideHeight = -1;
+    private int overrideWidth = -1;
+    private Key signature = EmptySignature.obtain();
+    private boolean isTransformationAllowed = true;
+    private Options options = new Options();
+    private Map<Class<?>, Transformation<?>> transformations = new CachedHashCodeArrayMap();
+    private Class<?> resourceClass = Object.class;
+    private boolean isScaleOnlyOrNoTransform = true;
 
-    private static boolean isSet(int fields2, int flag) {
-        return (fields2 & flag) != 0;
+    private static boolean isSet(int fields, int flag) {
+        return (fields & flag) != 0;
     }
 
-    public T sizeMultiplier(float sizeMultiplier2) {
+    public T sizeMultiplier(float sizeMultiplier) {
         if (this.isAutoCloneEnabled) {
-            return clone().sizeMultiplier(sizeMultiplier2);
+            return (T) mo68clone().sizeMultiplier(sizeMultiplier);
         }
-        if (sizeMultiplier2 < 0.0f || sizeMultiplier2 > 1.0f) {
+        if (sizeMultiplier < 0.0f || sizeMultiplier > 1.0f) {
             throw new IllegalArgumentException("sizeMultiplier must be between 0 and 1");
         }
-        this.sizeMultiplier = sizeMultiplier2;
+        this.sizeMultiplier = sizeMultiplier;
         this.fields |= 2;
         return selfOrThrowIfLocked();
     }
 
     public T useUnlimitedSourceGeneratorsPool(boolean flag) {
         if (this.isAutoCloneEnabled) {
-            return clone().useUnlimitedSourceGeneratorsPool(flag);
+            return (T) mo68clone().useUnlimitedSourceGeneratorsPool(flag);
         }
         this.useUnlimitedSourceGeneratorsPool = flag;
         this.fields |= 262144;
@@ -103,7 +109,7 @@ public abstract class BaseRequestOptions<T extends BaseRequestOptions<T>> implem
 
     public T useAnimationPool(boolean flag) {
         if (this.isAutoCloneEnabled) {
-            return clone().useAnimationPool(flag);
+            return (T) mo68clone().useAnimationPool(flag);
         }
         this.useAnimationPool = flag;
         this.fields |= 1048576;
@@ -112,7 +118,7 @@ public abstract class BaseRequestOptions<T extends BaseRequestOptions<T>> implem
 
     public T onlyRetrieveFromCache(boolean flag) {
         if (this.isAutoCloneEnabled) {
-            return clone().onlyRetrieveFromCache(flag);
+            return (T) mo68clone().onlyRetrieveFromCache(flag);
         }
         this.onlyRetrieveFromCache = flag;
         this.fields |= 524288;
@@ -121,106 +127,106 @@ public abstract class BaseRequestOptions<T extends BaseRequestOptions<T>> implem
 
     public T diskCacheStrategy(DiskCacheStrategy strategy) {
         if (this.isAutoCloneEnabled) {
-            return clone().diskCacheStrategy(strategy);
+            return (T) mo68clone().diskCacheStrategy(strategy);
         }
         this.diskCacheStrategy = (DiskCacheStrategy) Preconditions.checkNotNull(strategy);
         this.fields |= 4;
         return selfOrThrowIfLocked();
     }
 
-    public T priority(Priority priority2) {
+    public T priority(Priority priority) {
         if (this.isAutoCloneEnabled) {
-            return clone().priority(priority2);
+            return (T) mo68clone().priority(priority);
         }
-        this.priority = (Priority) Preconditions.checkNotNull(priority2);
+        this.priority = (Priority) Preconditions.checkNotNull(priority);
         this.fields |= 8;
         return selfOrThrowIfLocked();
     }
 
     public T placeholder(Drawable drawable) {
         if (this.isAutoCloneEnabled) {
-            return clone().placeholder(drawable);
+            return (T) mo68clone().placeholder(drawable);
         }
         this.placeholderDrawable = drawable;
         int i = this.fields | 64;
         this.fields = i;
         this.placeholderId = 0;
-        this.fields = i & -129;
+        this.fields = i & (-129);
         return selfOrThrowIfLocked();
     }
 
     public T placeholder(int resourceId) {
         if (this.isAutoCloneEnabled) {
-            return clone().placeholder(resourceId);
+            return (T) mo68clone().placeholder(resourceId);
         }
         this.placeholderId = resourceId;
         int i = this.fields | 128;
         this.fields = i;
         this.placeholderDrawable = null;
-        this.fields = i & -65;
+        this.fields = i & (-65);
         return selfOrThrowIfLocked();
     }
 
     public T fallback(Drawable drawable) {
         if (this.isAutoCloneEnabled) {
-            return clone().fallback(drawable);
+            return (T) mo68clone().fallback(drawable);
         }
         this.fallbackDrawable = drawable;
         int i = this.fields | 8192;
         this.fields = i;
         this.fallbackId = 0;
-        this.fields = i & -16385;
+        this.fields = i & (-16385);
         return selfOrThrowIfLocked();
     }
 
     public T fallback(int resourceId) {
         if (this.isAutoCloneEnabled) {
-            return clone().fallback(resourceId);
+            return (T) mo68clone().fallback(resourceId);
         }
         this.fallbackId = resourceId;
         int i = this.fields | 16384;
         this.fields = i;
         this.fallbackDrawable = null;
-        this.fields = i & -8193;
+        this.fields = i & (-8193);
         return selfOrThrowIfLocked();
     }
 
     public T error(Drawable drawable) {
         if (this.isAutoCloneEnabled) {
-            return clone().error(drawable);
+            return (T) mo68clone().error(drawable);
         }
         this.errorPlaceholder = drawable;
         int i = this.fields | 16;
         this.fields = i;
         this.errorId = 0;
-        this.fields = i & -33;
+        this.fields = i & (-33);
         return selfOrThrowIfLocked();
     }
 
     public T error(int resourceId) {
         if (this.isAutoCloneEnabled) {
-            return clone().error(resourceId);
+            return (T) mo68clone().error(resourceId);
         }
         this.errorId = resourceId;
         int i = this.fields | 32;
         this.fields = i;
         this.errorPlaceholder = null;
-        this.fields = i & -17;
+        this.fields = i & (-17);
         return selfOrThrowIfLocked();
     }
 
-    public T theme(Resources.Theme theme2) {
+    public T theme(Resources.Theme theme) {
         if (this.isAutoCloneEnabled) {
-            return clone().theme(theme2);
+            return (T) mo68clone().theme(theme);
         }
-        this.theme = theme2;
+        this.theme = theme;
         this.fields |= 32768;
         return selfOrThrowIfLocked();
     }
 
     public T skipMemoryCache(boolean skip) {
         if (this.isAutoCloneEnabled) {
-            return clone().skipMemoryCache(true);
+            return (T) mo68clone().skipMemoryCache(true);
         }
         this.isCacheable = !skip;
         this.fields |= 256;
@@ -229,7 +235,7 @@ public abstract class BaseRequestOptions<T extends BaseRequestOptions<T>> implem
 
     public T override(int width, int height) {
         if (this.isAutoCloneEnabled) {
-            return clone().override(width, height);
+            return (T) mo68clone().override(width, height);
         }
         this.overrideWidth = width;
         this.overrideHeight = height;
@@ -241,59 +247,49 @@ public abstract class BaseRequestOptions<T extends BaseRequestOptions<T>> implem
         return override(size, size);
     }
 
-    public T signature(Key signature2) {
+    public T signature(Key signature) {
         if (this.isAutoCloneEnabled) {
-            return clone().signature(signature2);
+            return (T) mo68clone().signature(signature);
         }
-        this.signature = (Key) Preconditions.checkNotNull(signature2);
+        this.signature = (Key) Preconditions.checkNotNull(signature);
         this.fields |= 1024;
         return selfOrThrowIfLocked();
     }
 
-    public T clone() {
+    @Override // 
+    /* renamed from: clone */
+    public T mo68clone() {
         try {
-            BaseRequestOptions<?> result = (BaseRequestOptions) super.clone();
-            Options options2 = new Options();
-            result.options = options2;
-            options2.putAll(this.options);
+            T t = (T) super.clone();
+            Options options = new Options();
+            t.options = options;
+            options.putAll(this.options);
             CachedHashCodeArrayMap cachedHashCodeArrayMap = new CachedHashCodeArrayMap();
-            result.transformations = cachedHashCodeArrayMap;
+            t.transformations = cachedHashCodeArrayMap;
             cachedHashCodeArrayMap.putAll(this.transformations);
-            result.isLocked = false;
-            result.isAutoCloneEnabled = false;
-            return result;
+            t.isLocked = false;
+            t.isAutoCloneEnabled = false;
+            return t;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
     }
 
-    /* JADX WARNING: type inference failed for: r2v0, types: [com.bumptech.glide.load.Option, java.lang.Object, com.bumptech.glide.load.Option<Y>] */
-    /* JADX WARNING: Unknown variable types count: 1 */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public <Y> T set(com.bumptech.glide.load.Option<Y> r2, Y r3) {
-        /*
-            r1 = this;
-            boolean r0 = r1.isAutoCloneEnabled
-            if (r0 == 0) goto L_0x000d
-            com.bumptech.glide.request.BaseRequestOptions r0 = r1.clone()
-            com.bumptech.glide.request.BaseRequestOptions r0 = r0.set(r2, r3)
-            return r0
-        L_0x000d:
-            com.bumptech.glide.util.Preconditions.checkNotNull(r2)
-            com.bumptech.glide.util.Preconditions.checkNotNull(r3)
-            com.bumptech.glide.load.Options r0 = r1.options
-            r0.set(r2, r3)
-            com.bumptech.glide.request.BaseRequestOptions r0 = r1.selfOrThrowIfLocked()
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.request.BaseRequestOptions.set(com.bumptech.glide.load.Option, java.lang.Object):com.bumptech.glide.request.BaseRequestOptions");
+    public <Y> T set(Option<Y> option, Y value) {
+        if (this.isAutoCloneEnabled) {
+            return (T) mo68clone().set(option, value);
+        }
+        Preconditions.checkNotNull(option);
+        Preconditions.checkNotNull(value);
+        this.options.set(option, value);
+        return selfOrThrowIfLocked();
     }
 
-    public T decode(Class<?> resourceClass2) {
+    public T decode(Class<?> resourceClass) {
         if (this.isAutoCloneEnabled) {
-            return clone().decode(resourceClass2);
+            return (T) mo68clone().decode(resourceClass);
         }
-        this.resourceClass = (Class) Preconditions.checkNotNull(resourceClass2);
+        this.resourceClass = (Class) Preconditions.checkNotNull(resourceClass);
         this.fields |= 4096;
         return selfOrThrowIfLocked();
     }
@@ -324,7 +320,7 @@ public abstract class BaseRequestOptions<T extends BaseRequestOptions<T>> implem
 
     public T format(DecodeFormat format) {
         Preconditions.checkNotNull(format);
-        return set(Downsampler.DECODE_FORMAT, format).set(GifOptions.DECODE_FORMAT, format);
+        return (T) set(Downsampler.DECODE_FORMAT, format).set(GifOptions.DECODE_FORMAT, format);
     }
 
     public T disallowHardwareConfig() {
@@ -340,11 +336,11 @@ public abstract class BaseRequestOptions<T extends BaseRequestOptions<T>> implem
     }
 
     public T optionalCenterCrop() {
-        return optionalTransform(DownsampleStrategy.CENTER_OUTSIDE, (Transformation<Bitmap>) new CenterCrop());
+        return optionalTransform(DownsampleStrategy.CENTER_OUTSIDE, new CenterCrop());
     }
 
     public T centerCrop() {
-        return transform(DownsampleStrategy.CENTER_OUTSIDE, (Transformation<Bitmap>) new CenterCrop());
+        return transform(DownsampleStrategy.CENTER_OUTSIDE, new CenterCrop());
     }
 
     public T optionalFitCenter() {
@@ -364,249 +360,116 @@ public abstract class BaseRequestOptions<T extends BaseRequestOptions<T>> implem
     }
 
     public T optionalCircleCrop() {
-        return optionalTransform(DownsampleStrategy.CENTER_OUTSIDE, (Transformation<Bitmap>) new CircleCrop());
+        return optionalTransform(DownsampleStrategy.CENTER_OUTSIDE, new CircleCrop());
     }
 
     public T circleCrop() {
-        return transform(DownsampleStrategy.CENTER_INSIDE, (Transformation<Bitmap>) new CircleCrop());
+        return transform(DownsampleStrategy.CENTER_INSIDE, new CircleCrop());
     }
 
-    /* JADX WARNING: type inference failed for: r3v0, types: [com.bumptech.glide.load.Transformation, com.bumptech.glide.load.Transformation<android.graphics.Bitmap>] */
-    /* access modifiers changed from: package-private */
-    /* JADX WARNING: Unknown variable types count: 1 */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public final T optionalTransform(com.bumptech.glide.load.resource.bitmap.DownsampleStrategy r2, com.bumptech.glide.load.Transformation<android.graphics.Bitmap> r3) {
-        /*
-            r1 = this;
-            boolean r0 = r1.isAutoCloneEnabled
-            if (r0 == 0) goto L_0x000d
-            com.bumptech.glide.request.BaseRequestOptions r0 = r1.clone()
-            com.bumptech.glide.request.BaseRequestOptions r0 = r0.optionalTransform((com.bumptech.glide.load.resource.bitmap.DownsampleStrategy) r2, (com.bumptech.glide.load.Transformation<android.graphics.Bitmap>) r3)
-            return r0
-        L_0x000d:
-            r1.downsample(r2)
-            r0 = 0
-            com.bumptech.glide.request.BaseRequestOptions r0 = r1.transform((com.bumptech.glide.load.Transformation<android.graphics.Bitmap>) r3, (boolean) r0)
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.request.BaseRequestOptions.optionalTransform(com.bumptech.glide.load.resource.bitmap.DownsampleStrategy, com.bumptech.glide.load.Transformation):com.bumptech.glide.request.BaseRequestOptions");
-    }
-
-    /* JADX WARNING: type inference failed for: r3v0, types: [com.bumptech.glide.load.Transformation, com.bumptech.glide.load.Transformation<android.graphics.Bitmap>] */
-    /* access modifiers changed from: package-private */
-    /* JADX WARNING: Unknown variable types count: 1 */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public final T transform(com.bumptech.glide.load.resource.bitmap.DownsampleStrategy r2, com.bumptech.glide.load.Transformation<android.graphics.Bitmap> r3) {
-        /*
-            r1 = this;
-            boolean r0 = r1.isAutoCloneEnabled
-            if (r0 == 0) goto L_0x000d
-            com.bumptech.glide.request.BaseRequestOptions r0 = r1.clone()
-            com.bumptech.glide.request.BaseRequestOptions r0 = r0.transform((com.bumptech.glide.load.resource.bitmap.DownsampleStrategy) r2, (com.bumptech.glide.load.Transformation<android.graphics.Bitmap>) r3)
-            return r0
-        L_0x000d:
-            r1.downsample(r2)
-            com.bumptech.glide.request.BaseRequestOptions r0 = r1.transform((com.bumptech.glide.load.Transformation<android.graphics.Bitmap>) r3)
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.request.BaseRequestOptions.transform(com.bumptech.glide.load.resource.bitmap.DownsampleStrategy, com.bumptech.glide.load.Transformation):com.bumptech.glide.request.BaseRequestOptions");
-    }
-
-    /* JADX WARNING: type inference failed for: r3v0, types: [com.bumptech.glide.load.Transformation, com.bumptech.glide.load.Transformation<android.graphics.Bitmap>] */
-    /* JADX WARNING: Unknown variable types count: 1 */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private T scaleOnlyTransform(com.bumptech.glide.load.resource.bitmap.DownsampleStrategy r2, com.bumptech.glide.load.Transformation<android.graphics.Bitmap> r3) {
-        /*
-            r1 = this;
-            r0 = 1
-            com.bumptech.glide.request.BaseRequestOptions r0 = r1.scaleOnlyTransform(r2, r3, r0)
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.request.BaseRequestOptions.scaleOnlyTransform(com.bumptech.glide.load.resource.bitmap.DownsampleStrategy, com.bumptech.glide.load.Transformation):com.bumptech.glide.request.BaseRequestOptions");
-    }
-
-    /* JADX WARNING: type inference failed for: r3v0, types: [com.bumptech.glide.load.Transformation, com.bumptech.glide.load.Transformation<android.graphics.Bitmap>] */
-    /* JADX WARNING: Unknown variable types count: 1 */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private T optionalScaleOnlyTransform(com.bumptech.glide.load.resource.bitmap.DownsampleStrategy r2, com.bumptech.glide.load.Transformation<android.graphics.Bitmap> r3) {
-        /*
-            r1 = this;
-            r0 = 0
-            com.bumptech.glide.request.BaseRequestOptions r0 = r1.scaleOnlyTransform(r2, r3, r0)
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.request.BaseRequestOptions.optionalScaleOnlyTransform(com.bumptech.glide.load.resource.bitmap.DownsampleStrategy, com.bumptech.glide.load.Transformation):com.bumptech.glide.request.BaseRequestOptions");
-    }
-
-    /* JADX WARNING: type inference failed for: r4v0, types: [com.bumptech.glide.load.Transformation, com.bumptech.glide.load.Transformation<android.graphics.Bitmap>] */
-    /* JADX WARNING: Unknown variable types count: 1 */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private T scaleOnlyTransform(com.bumptech.glide.load.resource.bitmap.DownsampleStrategy r3, com.bumptech.glide.load.Transformation<android.graphics.Bitmap> r4, boolean r5) {
-        /*
-            r2 = this;
-            if (r5 == 0) goto L_0x0007
-            com.bumptech.glide.request.BaseRequestOptions r0 = r2.transform((com.bumptech.glide.load.resource.bitmap.DownsampleStrategy) r3, (com.bumptech.glide.load.Transformation<android.graphics.Bitmap>) r4)
-            goto L_0x000b
-        L_0x0007:
-            com.bumptech.glide.request.BaseRequestOptions r0 = r2.optionalTransform((com.bumptech.glide.load.resource.bitmap.DownsampleStrategy) r3, (com.bumptech.glide.load.Transformation<android.graphics.Bitmap>) r4)
-        L_0x000b:
-            r1 = 1
-            r0.isScaleOnlyOrNoTransform = r1
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.request.BaseRequestOptions.scaleOnlyTransform(com.bumptech.glide.load.resource.bitmap.DownsampleStrategy, com.bumptech.glide.load.Transformation, boolean):com.bumptech.glide.request.BaseRequestOptions");
-    }
-
-    /* JADX WARNING: type inference failed for: r2v0, types: [com.bumptech.glide.load.Transformation, com.bumptech.glide.load.Transformation<android.graphics.Bitmap>] */
-    /* JADX WARNING: Unknown variable types count: 1 */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public T transform(com.bumptech.glide.load.Transformation<android.graphics.Bitmap> r2) {
-        /*
-            r1 = this;
-            r0 = 1
-            com.bumptech.glide.request.BaseRequestOptions r0 = r1.transform((com.bumptech.glide.load.Transformation<android.graphics.Bitmap>) r2, (boolean) r0)
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.request.BaseRequestOptions.transform(com.bumptech.glide.load.Transformation):com.bumptech.glide.request.BaseRequestOptions");
-    }
-
-    public T transform(Transformation<Bitmap>... transformations2) {
-        if (transformations2.length > 1) {
-            return transform((Transformation<Bitmap>) new MultiTransformation((Transformation<T>[]) transformations2), true);
+    final T optionalTransform(DownsampleStrategy downsampleStrategy, Transformation<Bitmap> transformation) {
+        if (this.isAutoCloneEnabled) {
+            return (T) mo68clone().optionalTransform(downsampleStrategy, transformation);
         }
-        if (transformations2.length == 1) {
-            return transform((Transformation<Bitmap>) transformations2[0]);
+        downsample(downsampleStrategy);
+        return transform(transformation, false);
+    }
+
+    final T transform(DownsampleStrategy downsampleStrategy, Transformation<Bitmap> transformation) {
+        if (this.isAutoCloneEnabled) {
+            return (T) mo68clone().transform(downsampleStrategy, transformation);
+        }
+        downsample(downsampleStrategy);
+        return transform(transformation);
+    }
+
+    private T scaleOnlyTransform(DownsampleStrategy strategy, Transformation<Bitmap> transformation) {
+        return scaleOnlyTransform(strategy, transformation, true);
+    }
+
+    private T optionalScaleOnlyTransform(DownsampleStrategy strategy, Transformation<Bitmap> transformation) {
+        return scaleOnlyTransform(strategy, transformation, false);
+    }
+
+    private T scaleOnlyTransform(DownsampleStrategy strategy, Transformation<Bitmap> transformation, boolean isTransformationRequired) {
+        T transform = isTransformationRequired ? transform(strategy, transformation) : optionalTransform(strategy, transformation);
+        transform.isScaleOnlyOrNoTransform = true;
+        return transform;
+    }
+
+    public T transform(Transformation<Bitmap> transformation) {
+        return transform(transformation, true);
+    }
+
+    public T transform(Transformation<Bitmap>... transformations) {
+        if (transformations.length > 1) {
+            return transform((Transformation<Bitmap>) new MultiTransformation(transformations), true);
+        }
+        if (transformations.length == 1) {
+            return transform(transformations[0]);
         }
         return selfOrThrowIfLocked();
     }
 
     @Deprecated
-    public T transforms(Transformation<Bitmap>... transformations2) {
-        return transform((Transformation<Bitmap>) new MultiTransformation((Transformation<T>[]) transformations2), true);
+    public T transforms(Transformation<Bitmap>... transformations) {
+        return transform((Transformation<Bitmap>) new MultiTransformation(transformations), true);
     }
 
-    /* JADX WARNING: type inference failed for: r2v0, types: [com.bumptech.glide.load.Transformation, com.bumptech.glide.load.Transformation<android.graphics.Bitmap>] */
-    /* JADX WARNING: Unknown variable types count: 1 */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public T optionalTransform(com.bumptech.glide.load.Transformation<android.graphics.Bitmap> r2) {
-        /*
-            r1 = this;
-            r0 = 0
-            com.bumptech.glide.request.BaseRequestOptions r0 = r1.transform((com.bumptech.glide.load.Transformation<android.graphics.Bitmap>) r2, (boolean) r0)
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.request.BaseRequestOptions.optionalTransform(com.bumptech.glide.load.Transformation):com.bumptech.glide.request.BaseRequestOptions");
+    public T optionalTransform(Transformation<Bitmap> transformation) {
+        return transform(transformation, false);
     }
 
-    /* JADX WARNING: type inference failed for: r4v0, types: [com.bumptech.glide.load.Transformation, com.bumptech.glide.load.Transformation<android.graphics.Bitmap>] */
-    /* access modifiers changed from: package-private */
-    /* JADX WARNING: Unknown variable types count: 1 */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public T transform(com.bumptech.glide.load.Transformation<android.graphics.Bitmap> r4, boolean r5) {
-        /*
-            r3 = this;
-            boolean r0 = r3.isAutoCloneEnabled
-            if (r0 == 0) goto L_0x000d
-            com.bumptech.glide.request.BaseRequestOptions r0 = r3.clone()
-            com.bumptech.glide.request.BaseRequestOptions r0 = r0.transform((com.bumptech.glide.load.Transformation<android.graphics.Bitmap>) r4, (boolean) r5)
-            return r0
-        L_0x000d:
-            com.bumptech.glide.load.resource.bitmap.DrawableTransformation r0 = new com.bumptech.glide.load.resource.bitmap.DrawableTransformation
-            r0.<init>(r4, r5)
-            java.lang.Class<android.graphics.Bitmap> r1 = android.graphics.Bitmap.class
-            r3.transform(r1, r4, r5)
-            java.lang.Class<android.graphics.drawable.Drawable> r1 = android.graphics.drawable.Drawable.class
-            r3.transform(r1, r0, r5)
-            java.lang.Class<android.graphics.drawable.BitmapDrawable> r1 = android.graphics.drawable.BitmapDrawable.class
-            com.bumptech.glide.load.Transformation r2 = r0.asBitmapDrawable()
-            r3.transform(r1, r2, r5)
-            java.lang.Class<com.bumptech.glide.load.resource.gif.GifDrawable> r1 = com.bumptech.glide.load.resource.gif.GifDrawable.class
-            com.bumptech.glide.load.resource.gif.GifDrawableTransformation r2 = new com.bumptech.glide.load.resource.gif.GifDrawableTransformation
-            r2.<init>(r4)
-            r3.transform(r1, r2, r5)
-            com.bumptech.glide.request.BaseRequestOptions r1 = r3.selfOrThrowIfLocked()
-            return r1
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.request.BaseRequestOptions.transform(com.bumptech.glide.load.Transformation, boolean):com.bumptech.glide.request.BaseRequestOptions");
+    /* JADX WARN: Multi-variable type inference failed */
+    T transform(Transformation<Bitmap> transformation, boolean isRequired) {
+        if (this.isAutoCloneEnabled) {
+            return (T) mo68clone().transform(transformation, isRequired);
+        }
+        DrawableTransformation drawableTransformation = new DrawableTransformation(transformation, isRequired);
+        transform(Bitmap.class, transformation, isRequired);
+        transform(Drawable.class, drawableTransformation, isRequired);
+        transform(BitmapDrawable.class, drawableTransformation.asBitmapDrawable(), isRequired);
+        transform(GifDrawable.class, new GifDrawableTransformation(transformation), isRequired);
+        return selfOrThrowIfLocked();
     }
 
-    /* JADX WARNING: type inference failed for: r2v0, types: [java.lang.Class<Y>, java.lang.Class] */
-    /* JADX WARNING: type inference failed for: r3v0, types: [com.bumptech.glide.load.Transformation<Y>, com.bumptech.glide.load.Transformation] */
-    /* JADX WARNING: Unknown variable types count: 2 */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public <Y> T optionalTransform(java.lang.Class<Y> r2, com.bumptech.glide.load.Transformation<Y> r3) {
-        /*
-            r1 = this;
-            r0 = 0
-            com.bumptech.glide.request.BaseRequestOptions r0 = r1.transform(r2, r3, r0)
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.request.BaseRequestOptions.optionalTransform(java.lang.Class, com.bumptech.glide.load.Transformation):com.bumptech.glide.request.BaseRequestOptions");
+    public <Y> T optionalTransform(Class<Y> resourceClass, Transformation<Y> transformation) {
+        return transform(resourceClass, transformation, false);
     }
 
-    /* JADX WARNING: type inference failed for: r4v0, types: [java.lang.Class<Y>, java.lang.Object, java.lang.Class] */
-    /* JADX WARNING: type inference failed for: r5v0, types: [com.bumptech.glide.load.Transformation<Y>, com.bumptech.glide.load.Transformation, java.lang.Object] */
-    /* access modifiers changed from: package-private */
-    /* JADX WARNING: Unknown variable types count: 2 */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public <Y> T transform(java.lang.Class<Y> r4, com.bumptech.glide.load.Transformation<Y> r5, boolean r6) {
-        /*
-            r3 = this;
-            boolean r0 = r3.isAutoCloneEnabled
-            if (r0 == 0) goto L_0x000d
-            com.bumptech.glide.request.BaseRequestOptions r0 = r3.clone()
-            com.bumptech.glide.request.BaseRequestOptions r0 = r0.transform(r4, r5, r6)
-            return r0
-        L_0x000d:
-            com.bumptech.glide.util.Preconditions.checkNotNull(r4)
-            com.bumptech.glide.util.Preconditions.checkNotNull(r5)
-            java.util.Map<java.lang.Class<?>, com.bumptech.glide.load.Transformation<?>> r0 = r3.transformations
-            r0.put(r4, r5)
-            int r0 = r3.fields
-            r0 = r0 | 2048(0x800, float:2.87E-42)
-            r3.fields = r0
-            r1 = 1
-            r3.isTransformationAllowed = r1
-            r2 = 65536(0x10000, float:9.18355E-41)
-            r0 = r0 | r2
-            r3.fields = r0
-            r2 = 0
-            r3.isScaleOnlyOrNoTransform = r2
-            if (r6 == 0) goto L_0x0032
-            r2 = 131072(0x20000, float:1.83671E-40)
-            r0 = r0 | r2
-            r3.fields = r0
-            r3.isTransformationRequired = r1
-        L_0x0032:
-            com.bumptech.glide.request.BaseRequestOptions r0 = r3.selfOrThrowIfLocked()
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.request.BaseRequestOptions.transform(java.lang.Class, com.bumptech.glide.load.Transformation, boolean):com.bumptech.glide.request.BaseRequestOptions");
+    <Y> T transform(Class<Y> resourceClass, Transformation<Y> transformation, boolean isRequired) {
+        if (this.isAutoCloneEnabled) {
+            return (T) mo68clone().transform(resourceClass, transformation, isRequired);
+        }
+        Preconditions.checkNotNull(resourceClass);
+        Preconditions.checkNotNull(transformation);
+        this.transformations.put(resourceClass, transformation);
+        int i = this.fields | 2048;
+        this.fields = i;
+        this.isTransformationAllowed = true;
+        int i2 = i | 65536;
+        this.fields = i2;
+        this.isScaleOnlyOrNoTransform = false;
+        if (isRequired) {
+            this.fields = i2 | 131072;
+            this.isTransformationRequired = true;
+        }
+        return selfOrThrowIfLocked();
     }
 
-    /* JADX WARNING: type inference failed for: r2v0, types: [java.lang.Class<Y>, java.lang.Class] */
-    /* JADX WARNING: type inference failed for: r3v0, types: [com.bumptech.glide.load.Transformation<Y>, com.bumptech.glide.load.Transformation] */
-    /* JADX WARNING: Unknown variable types count: 2 */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public <Y> T transform(java.lang.Class<Y> r2, com.bumptech.glide.load.Transformation<Y> r3) {
-        /*
-            r1 = this;
-            r0 = 1
-            com.bumptech.glide.request.BaseRequestOptions r0 = r1.transform(r2, r3, r0)
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.request.BaseRequestOptions.transform(java.lang.Class, com.bumptech.glide.load.Transformation):com.bumptech.glide.request.BaseRequestOptions");
+    public <Y> T transform(Class<Y> resourceClass, Transformation<Y> transformation) {
+        return transform(resourceClass, transformation, true);
     }
 
     public T dontTransform() {
         if (this.isAutoCloneEnabled) {
-            return clone().dontTransform();
+            return (T) mo68clone().dontTransform();
         }
         this.transformations.clear();
-        int i = this.fields & -2049;
+        int i = this.fields & (-2049);
         this.fields = i;
         this.isTransformationRequired = false;
-        int i2 = i & -131073;
+        int i2 = i & (-131073);
         this.fields = i2;
         this.isTransformationAllowed = false;
         this.fields = i2 | 65536;
@@ -620,109 +483,106 @@ public abstract class BaseRequestOptions<T extends BaseRequestOptions<T>> implem
 
     public T apply(BaseRequestOptions<?> o) {
         if (this.isAutoCloneEnabled) {
-            return clone().apply(o);
+            return (T) mo68clone().apply(o);
         }
-        BaseRequestOptions<?> other = o;
-        if (isSet(other.fields, 2)) {
-            this.sizeMultiplier = other.sizeMultiplier;
+        if (isSet(o.fields, 2)) {
+            this.sizeMultiplier = o.sizeMultiplier;
         }
-        if (isSet(other.fields, 262144)) {
-            this.useUnlimitedSourceGeneratorsPool = other.useUnlimitedSourceGeneratorsPool;
+        if (isSet(o.fields, 262144)) {
+            this.useUnlimitedSourceGeneratorsPool = o.useUnlimitedSourceGeneratorsPool;
         }
-        if (isSet(other.fields, 1048576)) {
-            this.useAnimationPool = other.useAnimationPool;
+        if (isSet(o.fields, 1048576)) {
+            this.useAnimationPool = o.useAnimationPool;
         }
-        if (isSet(other.fields, 4)) {
-            this.diskCacheStrategy = other.diskCacheStrategy;
+        if (isSet(o.fields, 4)) {
+            this.diskCacheStrategy = o.diskCacheStrategy;
         }
-        if (isSet(other.fields, 8)) {
-            this.priority = other.priority;
+        if (isSet(o.fields, 8)) {
+            this.priority = o.priority;
         }
-        if (isSet(other.fields, 16)) {
-            this.errorPlaceholder = other.errorPlaceholder;
+        if (isSet(o.fields, 16)) {
+            this.errorPlaceholder = o.errorPlaceholder;
             this.errorId = 0;
             this.fields &= -33;
         }
-        if (isSet(other.fields, 32)) {
-            this.errorId = other.errorId;
+        if (isSet(o.fields, 32)) {
+            this.errorId = o.errorId;
             this.errorPlaceholder = null;
             this.fields &= -17;
         }
-        if (isSet(other.fields, 64)) {
-            this.placeholderDrawable = other.placeholderDrawable;
+        if (isSet(o.fields, 64)) {
+            this.placeholderDrawable = o.placeholderDrawable;
             this.placeholderId = 0;
             this.fields &= -129;
         }
-        if (isSet(other.fields, 128)) {
-            this.placeholderId = other.placeholderId;
+        if (isSet(o.fields, 128)) {
+            this.placeholderId = o.placeholderId;
             this.placeholderDrawable = null;
             this.fields &= -65;
         }
-        if (isSet(other.fields, 256)) {
-            this.isCacheable = other.isCacheable;
+        if (isSet(o.fields, 256)) {
+            this.isCacheable = o.isCacheable;
         }
-        if (isSet(other.fields, 512)) {
-            this.overrideWidth = other.overrideWidth;
-            this.overrideHeight = other.overrideHeight;
+        if (isSet(o.fields, 512)) {
+            this.overrideWidth = o.overrideWidth;
+            this.overrideHeight = o.overrideHeight;
         }
-        if (isSet(other.fields, 1024)) {
-            this.signature = other.signature;
+        if (isSet(o.fields, 1024)) {
+            this.signature = o.signature;
         }
-        if (isSet(other.fields, 4096)) {
-            this.resourceClass = other.resourceClass;
+        if (isSet(o.fields, 4096)) {
+            this.resourceClass = o.resourceClass;
         }
-        if (isSet(other.fields, 8192)) {
-            this.fallbackDrawable = other.fallbackDrawable;
+        if (isSet(o.fields, 8192)) {
+            this.fallbackDrawable = o.fallbackDrawable;
             this.fallbackId = 0;
             this.fields &= -16385;
         }
-        if (isSet(other.fields, 16384)) {
-            this.fallbackId = other.fallbackId;
+        if (isSet(o.fields, 16384)) {
+            this.fallbackId = o.fallbackId;
             this.fallbackDrawable = null;
             this.fields &= -8193;
         }
-        if (isSet(other.fields, 32768)) {
-            this.theme = other.theme;
+        if (isSet(o.fields, 32768)) {
+            this.theme = o.theme;
         }
-        if (isSet(other.fields, 65536)) {
-            this.isTransformationAllowed = other.isTransformationAllowed;
+        if (isSet(o.fields, 65536)) {
+            this.isTransformationAllowed = o.isTransformationAllowed;
         }
-        if (isSet(other.fields, 131072)) {
-            this.isTransformationRequired = other.isTransformationRequired;
+        if (isSet(o.fields, 131072)) {
+            this.isTransformationRequired = o.isTransformationRequired;
         }
-        if (isSet(other.fields, 2048)) {
-            this.transformations.putAll(other.transformations);
-            this.isScaleOnlyOrNoTransform = other.isScaleOnlyOrNoTransform;
+        if (isSet(o.fields, 2048)) {
+            this.transformations.putAll(o.transformations);
+            this.isScaleOnlyOrNoTransform = o.isScaleOnlyOrNoTransform;
         }
-        if (isSet(other.fields, 524288)) {
-            this.onlyRetrieveFromCache = other.onlyRetrieveFromCache;
+        if (isSet(o.fields, 524288)) {
+            this.onlyRetrieveFromCache = o.onlyRetrieveFromCache;
         }
         if (!this.isTransformationAllowed) {
             this.transformations.clear();
-            int i = this.fields & -2049;
+            int i = this.fields & (-2049);
             this.fields = i;
             this.isTransformationRequired = false;
-            this.fields = i & -131073;
+            this.fields = i & (-131073);
             this.isScaleOnlyOrNoTransform = true;
         }
-        this.fields |= other.fields;
-        this.options.putAll(other.options);
+        this.fields |= o.fields;
+        this.options.putAll(o.options);
         return selfOrThrowIfLocked();
     }
 
     public boolean equals(Object o) {
-        if (!(o instanceof BaseRequestOptions)) {
-            return false;
-        }
-        BaseRequestOptions<?> other = (BaseRequestOptions) o;
-        if (Float.compare(other.sizeMultiplier, this.sizeMultiplier) == 0 && this.errorId == other.errorId && Util.bothNullOrEqual(this.errorPlaceholder, other.errorPlaceholder) && this.placeholderId == other.placeholderId && Util.bothNullOrEqual(this.placeholderDrawable, other.placeholderDrawable) && this.fallbackId == other.fallbackId && Util.bothNullOrEqual(this.fallbackDrawable, other.fallbackDrawable) && this.isCacheable == other.isCacheable && this.overrideHeight == other.overrideHeight && this.overrideWidth == other.overrideWidth && this.isTransformationRequired == other.isTransformationRequired && this.isTransformationAllowed == other.isTransformationAllowed && this.useUnlimitedSourceGeneratorsPool == other.useUnlimitedSourceGeneratorsPool && this.onlyRetrieveFromCache == other.onlyRetrieveFromCache && this.diskCacheStrategy.equals(other.diskCacheStrategy) && this.priority == other.priority && this.options.equals(other.options) && this.transformations.equals(other.transformations) && this.resourceClass.equals(other.resourceClass) && Util.bothNullOrEqual(this.signature, other.signature) && Util.bothNullOrEqual(this.theme, other.theme)) {
-            return true;
+        if (o instanceof BaseRequestOptions) {
+            BaseRequestOptions<?> other = (BaseRequestOptions) o;
+            return Float.compare(other.sizeMultiplier, this.sizeMultiplier) == 0 && this.errorId == other.errorId && Util.bothNullOrEqual(this.errorPlaceholder, other.errorPlaceholder) && this.placeholderId == other.placeholderId && Util.bothNullOrEqual(this.placeholderDrawable, other.placeholderDrawable) && this.fallbackId == other.fallbackId && Util.bothNullOrEqual(this.fallbackDrawable, other.fallbackDrawable) && this.isCacheable == other.isCacheable && this.overrideHeight == other.overrideHeight && this.overrideWidth == other.overrideWidth && this.isTransformationRequired == other.isTransformationRequired && this.isTransformationAllowed == other.isTransformationAllowed && this.useUnlimitedSourceGeneratorsPool == other.useUnlimitedSourceGeneratorsPool && this.onlyRetrieveFromCache == other.onlyRetrieveFromCache && this.diskCacheStrategy.equals(other.diskCacheStrategy) && this.priority == other.priority && this.options.equals(other.options) && this.transformations.equals(other.transformations) && this.resourceClass.equals(other.resourceClass) && Util.bothNullOrEqual(this.signature, other.signature) && Util.bothNullOrEqual(this.theme, other.theme);
         }
         return false;
     }
 
     public int hashCode() {
-        return Util.hashCode((Object) this.theme, Util.hashCode((Object) this.signature, Util.hashCode((Object) this.resourceClass, Util.hashCode((Object) this.transformations, Util.hashCode((Object) this.options, Util.hashCode((Object) this.priority, Util.hashCode((Object) this.diskCacheStrategy, Util.hashCode(this.onlyRetrieveFromCache, Util.hashCode(this.useUnlimitedSourceGeneratorsPool, Util.hashCode(this.isTransformationAllowed, Util.hashCode(this.isTransformationRequired, Util.hashCode(this.overrideWidth, Util.hashCode(this.overrideHeight, Util.hashCode(this.isCacheable, Util.hashCode((Object) this.fallbackDrawable, Util.hashCode(this.fallbackId, Util.hashCode((Object) this.placeholderDrawable, Util.hashCode(this.placeholderId, Util.hashCode((Object) this.errorPlaceholder, Util.hashCode(this.errorId, Util.hashCode(this.sizeMultiplier)))))))))))))))))))));
+        int hashCode = Util.hashCode(this.sizeMultiplier);
+        return Util.hashCode(this.theme, Util.hashCode(this.signature, Util.hashCode(this.resourceClass, Util.hashCode(this.transformations, Util.hashCode(this.options, Util.hashCode(this.priority, Util.hashCode(this.diskCacheStrategy, Util.hashCode(this.onlyRetrieveFromCache, Util.hashCode(this.useUnlimitedSourceGeneratorsPool, Util.hashCode(this.isTransformationAllowed, Util.hashCode(this.isTransformationRequired, Util.hashCode(this.overrideWidth, Util.hashCode(this.overrideHeight, Util.hashCode(this.isCacheable, Util.hashCode(this.fallbackDrawable, Util.hashCode(this.fallbackId, Util.hashCode(this.placeholderDrawable, Util.hashCode(this.placeholderId, Util.hashCode(this.errorPlaceholder, Util.hashCode(this.errorId, hashCode))))))))))))))))))));
     }
 
     public T lock() {
@@ -731,22 +591,21 @@ public abstract class BaseRequestOptions<T extends BaseRequestOptions<T>> implem
     }
 
     public T autoClone() {
-        if (!this.isLocked || this.isAutoCloneEnabled) {
-            this.isAutoCloneEnabled = true;
-            return lock();
+        if (this.isLocked && !this.isAutoCloneEnabled) {
+            throw new IllegalStateException("You cannot auto lock an already locked options object, try clone() first");
         }
-        throw new IllegalStateException("You cannot auto lock an already locked options object, try clone() first");
+        this.isAutoCloneEnabled = true;
+        return lock();
     }
 
     private T selfOrThrowIfLocked() {
-        if (!this.isLocked) {
-            return self();
+        if (this.isLocked) {
+            throw new IllegalStateException("You cannot modify locked T, consider clone()");
         }
-        throw new IllegalStateException("You cannot modify locked T, consider clone()");
+        return self();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean isAutoCloneEnabled() {
+    protected boolean isAutoCloneEnabled() {
         return this.isAutoCloneEnabled;
     }
 
@@ -838,8 +697,7 @@ public abstract class BaseRequestOptions<T extends BaseRequestOptions<T>> implem
         return this.sizeMultiplier;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isScaleOnlyOrNoTransform() {
+    boolean isScaleOnlyOrNoTransform() {
         return this.isScaleOnlyOrNoTransform;
     }
 

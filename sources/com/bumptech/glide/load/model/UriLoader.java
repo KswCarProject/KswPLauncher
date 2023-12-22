@@ -17,78 +17,94 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+/* loaded from: classes.dex */
 public class UriLoader<Data> implements ModelLoader<Uri, Data> {
-    private static final Set<String> SCHEMES = Collections.unmodifiableSet(new HashSet(Arrays.asList(new String[]{"file", "android.resource", "content"})));
+    private static final Set<String> SCHEMES = Collections.unmodifiableSet(new HashSet(Arrays.asList("file", "android.resource", "content")));
     private final LocalUriFetcherFactory<Data> factory;
 
+    /* loaded from: classes.dex */
     public interface LocalUriFetcherFactory<Data> {
         DataFetcher<Data> build(Uri uri);
     }
 
-    public UriLoader(LocalUriFetcherFactory<Data> factory2) {
-        this.factory = factory2;
+    public UriLoader(LocalUriFetcherFactory<Data> factory) {
+        this.factory = factory;
     }
 
+    @Override // com.bumptech.glide.load.model.ModelLoader
     public ModelLoader.LoadData<Data> buildLoadData(Uri model, int width, int height, Options options) {
         return new ModelLoader.LoadData<>(new ObjectKey(model), this.factory.build(model));
     }
 
+    @Override // com.bumptech.glide.load.model.ModelLoader
     public boolean handles(Uri model) {
         return SCHEMES.contains(model.getScheme());
     }
 
+    /* loaded from: classes.dex */
     public static class StreamFactory implements ModelLoaderFactory<Uri, InputStream>, LocalUriFetcherFactory<InputStream> {
         private final ContentResolver contentResolver;
 
-        public StreamFactory(ContentResolver contentResolver2) {
-            this.contentResolver = contentResolver2;
+        public StreamFactory(ContentResolver contentResolver) {
+            this.contentResolver = contentResolver;
         }
 
+        @Override // com.bumptech.glide.load.model.UriLoader.LocalUriFetcherFactory
         public DataFetcher<InputStream> build(Uri uri) {
             return new StreamLocalUriFetcher(this.contentResolver, uri);
         }
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public ModelLoader<Uri, InputStream> build(MultiModelLoaderFactory multiFactory) {
             return new UriLoader(this);
         }
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public void teardown() {
         }
     }
 
+    /* loaded from: classes.dex */
     public static class FileDescriptorFactory implements ModelLoaderFactory<Uri, ParcelFileDescriptor>, LocalUriFetcherFactory<ParcelFileDescriptor> {
         private final ContentResolver contentResolver;
 
-        public FileDescriptorFactory(ContentResolver contentResolver2) {
-            this.contentResolver = contentResolver2;
+        public FileDescriptorFactory(ContentResolver contentResolver) {
+            this.contentResolver = contentResolver;
         }
 
+        @Override // com.bumptech.glide.load.model.UriLoader.LocalUriFetcherFactory
         public DataFetcher<ParcelFileDescriptor> build(Uri uri) {
             return new FileDescriptorLocalUriFetcher(this.contentResolver, uri);
         }
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public ModelLoader<Uri, ParcelFileDescriptor> build(MultiModelLoaderFactory multiFactory) {
             return new UriLoader(this);
         }
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public void teardown() {
         }
     }
 
+    /* loaded from: classes.dex */
     public static final class AssetFileDescriptorFactory implements ModelLoaderFactory<Uri, AssetFileDescriptor>, LocalUriFetcherFactory<AssetFileDescriptor> {
         private final ContentResolver contentResolver;
 
-        public AssetFileDescriptorFactory(ContentResolver contentResolver2) {
-            this.contentResolver = contentResolver2;
+        public AssetFileDescriptorFactory(ContentResolver contentResolver) {
+            this.contentResolver = contentResolver;
         }
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public ModelLoader<Uri, AssetFileDescriptor> build(MultiModelLoaderFactory multiFactory) {
             return new UriLoader(this);
         }
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public void teardown() {
         }
 
+        @Override // com.bumptech.glide.load.model.UriLoader.LocalUriFetcherFactory
         public DataFetcher<AssetFileDescriptor> build(Uri uri) {
             return new AssetFileDescriptorLocalUriFetcher(this.contentResolver, uri);
         }

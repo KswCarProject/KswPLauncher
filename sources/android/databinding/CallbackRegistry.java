@@ -3,6 +3,7 @@ package android.databinding;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public class CallbackRegistry<C, T, A> implements Cloneable {
     private static final String TAG = "CallbackRegistry";
     private List<C> mCallbacks = new ArrayList();
@@ -11,6 +12,7 @@ public class CallbackRegistry<C, T, A> implements Cloneable {
     private final NotifierCallback<C, T, A> mNotifier;
     private long[] mRemainderRemoved;
 
+    /* loaded from: classes.dex */
     public static abstract class NotifierCallback<C, T, A> {
         public abstract void onNotifyCallback(C c, T t, int i, A a);
     }
@@ -38,13 +40,14 @@ public class CallbackRegistry<C, T, A> implements Cloneable {
             long j = this.mFirst64Removed;
             if (j != 0) {
                 removeRemovedCallbacks(0, j);
-                this.mFirst64Removed = 0;
+                this.mFirst64Removed = 0L;
             }
         }
     }
 
     private void notifyFirst64(T sender, int arg, A arg2) {
-        notifyCallbacks(sender, arg, arg2, 0, Math.min(64, this.mCallbacks.size()), this.mFirst64Removed);
+        int maxNotified = Math.min(64, this.mCallbacks.size());
+        notifyCallbacks(sender, arg, arg2, 0, maxNotified, this.mFirst64Removed);
     }
 
     private void notifyRecurse(T sender, int arg, A arg2) {
@@ -52,15 +55,13 @@ public class CallbackRegistry<C, T, A> implements Cloneable {
         long[] jArr = this.mRemainderRemoved;
         int remainderIndex = jArr == null ? -1 : jArr.length - 1;
         notifyRemainder(sender, arg, arg2, remainderIndex);
-        notifyCallbacks(sender, arg, arg2, (remainderIndex + 2) * 64, callbackCount, 0);
+        int startCallbackIndex = (remainderIndex + 2) * 64;
+        notifyCallbacks(sender, arg, arg2, startCallbackIndex, callbackCount, 0L);
     }
 
     private void notifyRemainder(T sender, int arg, A arg2, int remainderIndex) {
         if (remainderIndex < 0) {
             notifyFirst64(sender, arg, arg2);
-            T t = sender;
-            int i = arg;
-            A a = arg2;
             return;
         }
         long bits = this.mRemainderRemoved[remainderIndex];
@@ -81,37 +82,34 @@ public class CallbackRegistry<C, T, A> implements Cloneable {
     }
 
     public synchronized void add(C callback) {
-        if (callback != null) {
-            int index = this.mCallbacks.lastIndexOf(callback);
-            if (index < 0 || isRemoved(index)) {
-                this.mCallbacks.add(callback);
-            }
-        } else {
+        if (callback == null) {
             throw new IllegalArgumentException("callback cannot be null");
+        }
+        int index = this.mCallbacks.lastIndexOf(callback);
+        if (index < 0 || isRemoved(index)) {
+            this.mCallbacks.add(callback);
         }
     }
 
     private boolean isRemoved(int index) {
         int maskIndex;
         if (index < 64) {
-            if ((this.mFirst64Removed & (1 << index)) != 0) {
-                return true;
-            }
-            return false;
+            long bitMask = 1 << index;
+            return (this.mFirst64Removed & bitMask) != 0;
         }
         long[] jArr = this.mRemainderRemoved;
-        if (jArr == null || (maskIndex = (index / 64) - 1) >= jArr.length) {
-            return false;
-        }
-        if ((jArr[maskIndex] & (1 << (index % 64))) != 0) {
-            return true;
+        if (jArr != null && (maskIndex = (index / 64) - 1) < jArr.length) {
+            long bits = jArr[maskIndex];
+            long bitMask2 = 1 << (index % 64);
+            return (bits & bitMask2) != 0;
         }
         return false;
     }
 
     private void removeRemovedCallbacks(int startIndex, long removed) {
+        int endIndex = startIndex + 64;
         long bitMask = Long.MIN_VALUE;
-        for (int i = (startIndex + 64) - 1; i >= startIndex; i--) {
+        for (int i = endIndex - 1; i >= startIndex; i--) {
             if ((removed & bitMask) != 0) {
                 this.mCallbacks.remove(i);
             }
@@ -132,21 +130,23 @@ public class CallbackRegistry<C, T, A> implements Cloneable {
 
     private void setRemovalBit(int index) {
         if (index < 64) {
-            this.mFirst64Removed |= 1 << index;
+            long bitMask = 1 << index;
+            this.mFirst64Removed |= bitMask;
             return;
         }
         int remainderIndex = (index / 64) - 1;
         long[] jArr = this.mRemainderRemoved;
         if (jArr == null) {
-            this.mRemainderRemoved = new long[(this.mCallbacks.size() / 64)];
+            this.mRemainderRemoved = new long[this.mCallbacks.size() / 64];
         } else if (jArr.length <= remainderIndex) {
-            long[] newRemainders = new long[(this.mCallbacks.size() / 64)];
+            long[] newRemainders = new long[this.mCallbacks.size() / 64];
             long[] jArr2 = this.mRemainderRemoved;
             System.arraycopy(jArr2, 0, newRemainders, 0, jArr2.length);
             this.mRemainderRemoved = newRemainders;
         }
+        long bitMask2 = 1 << (index % 64);
         long[] jArr3 = this.mRemainderRemoved;
-        jArr3[remainderIndex] = jArr3[remainderIndex] | (1 << (index % 64));
+        jArr3[remainderIndex] = jArr3[remainderIndex] | bitMask2;
     }
 
     public synchronized ArrayList<C> copyCallbacks() {
@@ -197,12 +197,13 @@ public class CallbackRegistry<C, T, A> implements Cloneable {
         }
     }
 
-    public synchronized CallbackRegistry<C, T, A> clone() {
+    /* renamed from: clone */
+    public synchronized CallbackRegistry<C, T, A> m62clone() {
         CallbackRegistry<C, T, A> clone;
         clone = null;
         try {
             clone = (CallbackRegistry) super.clone();
-            clone.mFirst64Removed = 0;
+            clone.mFirst64Removed = 0L;
             clone.mRemainderRemoved = null;
             clone.mNotificationLevel = 0;
             clone.mCallbacks = new ArrayList();

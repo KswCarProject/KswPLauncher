@@ -8,6 +8,7 @@ import java.util.concurrent.CountDownLatch;
 import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public abstract class BlockingBaseSubscriber<T> extends CountDownLatch implements FlowableSubscriber<T> {
     volatile boolean cancelled;
     Throwable error;
@@ -18,6 +19,7 @@ public abstract class BlockingBaseSubscriber<T> extends CountDownLatch implement
         super(1);
     }
 
+    @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
     public final void onSubscribe(Subscription s) {
         if (SubscriptionHelper.validate(this.upstream, s)) {
             this.upstream = s;
@@ -31,6 +33,7 @@ public abstract class BlockingBaseSubscriber<T> extends CountDownLatch implement
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public final void onComplete() {
         countDown();
     }
@@ -50,9 +53,9 @@ public abstract class BlockingBaseSubscriber<T> extends CountDownLatch implement
             }
         }
         Throwable e = this.error;
-        if (e == null) {
-            return this.value;
+        if (e != null) {
+            throw ExceptionHelper.wrapOrThrow(e);
         }
-        throw ExceptionHelper.wrapOrThrow(e);
+        return this.value;
     }
 }

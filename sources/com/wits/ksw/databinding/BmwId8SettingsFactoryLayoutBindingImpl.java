@@ -4,10 +4,13 @@ import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 
+/* loaded from: classes7.dex */
 public class BmwId8SettingsFactoryLayoutBindingImpl extends BmwId8SettingsFactoryLayoutBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -17,19 +20,19 @@ public class BmwId8SettingsFactoryLayoutBindingImpl extends BmwId8SettingsFactor
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.bmw_id8_settings_factory_psw, 1);
-        sparseIntArray.put(R.id.bmw_id8_settings_factory_1_btn, 2);
-        sparseIntArray.put(R.id.bmw_id8_settings_factory_2_btn, 3);
-        sparseIntArray.put(R.id.bmw_id8_settings_factory_3_btn, 4);
-        sparseIntArray.put(R.id.bmw_id8_settings_factory_del_btn, 5);
-        sparseIntArray.put(R.id.bmw_id8_settings_factory_4_btn, 6);
-        sparseIntArray.put(R.id.bmw_id8_settings_factory_5_btn, 7);
-        sparseIntArray.put(R.id.bmw_id8_settings_factory_6_btn, 8);
-        sparseIntArray.put(R.id.bmw_id8_settings_factory_0_btn, 9);
-        sparseIntArray.put(R.id.bmw_id8_settings_factory_7_btn, 10);
-        sparseIntArray.put(R.id.bmw_id8_settings_factory_8_btn, 11);
-        sparseIntArray.put(R.id.bmw_id8_settings_factory_9_btn, 12);
-        sparseIntArray.put(R.id.bmw_id8_settings_factory_enter_btn, 13);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_factory_psw, 1);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_factory_1_btn, 2);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_factory_2_btn, 3);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_factory_3_btn, 4);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_factory_del_btn, 5);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_factory_4_btn, 6);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_factory_5_btn, 7);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_factory_6_btn, 8);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_factory_0_btn, 9);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_factory_7_btn, 10);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_factory_8_btn, 11);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_factory_9_btn, 12);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_factory_enter_btn, 13);
     }
 
     public BmwId8SettingsFactoryLayoutBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -37,22 +40,24 @@ public class BmwId8SettingsFactoryLayoutBindingImpl extends BmwId8SettingsFactor
     }
 
     private BmwId8SettingsFactoryLayoutBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[9], bindings[2], bindings[3], bindings[4], bindings[6], bindings[7], bindings[8], bindings[10], bindings[11], bindings[12], bindings[5], bindings[13], bindings[1]);
-        this.mDirtyFlags = -1;
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 0, (ImageView) bindings[9], (ImageView) bindings[2], (ImageView) bindings[3], (ImageView) bindings[4], (ImageView) bindings[6], (ImageView) bindings[7], (ImageView) bindings[8], (ImageView) bindings[10], (ImageView) bindings[11], (ImageView) bindings[12], (ImageView) bindings[5], (ImageView) bindings[13], (TextView) bindings[1]);
+        this.mDirtyFlags = -1L;
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
+        relativeLayout.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 2;
+            this.mDirtyFlags = 2L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -62,28 +67,30 @@ public class BmwId8SettingsFactoryLayoutBindingImpl extends BmwId8SettingsFactor
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (25 != variableId) {
-            return false;
+        if (25 == variableId) {
+            setViewModel((BmwId8SettingsViewModel) variable);
+            return true;
         }
-        setViewModel((BmwId8SettingsViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.BmwId8SettingsFactoryLayoutBinding
     public void setViewModel(BmwId8SettingsViewModel ViewModel) {
         this.mViewModel = ViewModel;
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         synchronized (this) {
-            long dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            long j = this.mDirtyFlags;
+            this.mDirtyFlags = 0L;
         }
     }
 }

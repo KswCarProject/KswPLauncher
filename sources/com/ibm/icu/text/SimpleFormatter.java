@@ -2,11 +2,12 @@ package com.ibm.icu.text;
 
 import com.ibm.icu.impl.SimpleFormatterImpl;
 
+/* loaded from: classes.dex */
 public final class SimpleFormatter {
     private final String compiledPattern;
 
-    private SimpleFormatter(String compiledPattern2) {
-        this.compiledPattern = compiledPattern2;
+    private SimpleFormatter(String compiledPattern) {
+        this.compiledPattern = compiledPattern;
     }
 
     public static SimpleFormatter compile(CharSequence pattern) {
@@ -14,7 +15,9 @@ public final class SimpleFormatter {
     }
 
     public static SimpleFormatter compileMinMaxArguments(CharSequence pattern, int min, int max) {
-        return new SimpleFormatter(SimpleFormatterImpl.compileToStringMinMaxArguments(pattern, new StringBuilder(), min, max));
+        StringBuilder sb = new StringBuilder();
+        String compiledPattern = SimpleFormatterImpl.compileToStringMinMaxArguments(pattern, sb, min, max);
+        return new SimpleFormatter(compiledPattern);
     }
 
     public int getArgumentLimit() {
@@ -38,7 +41,7 @@ public final class SimpleFormatter {
         for (int i = 0; i < values.length; i++) {
             values[i] = "{" + i + '}';
         }
-        return formatAndAppend(new StringBuilder(), (int[]) null, values).toString();
+        return formatAndAppend(new StringBuilder(), null, values).toString();
     }
 
     public String getTextWithNoArguments() {

@@ -1,5 +1,6 @@
 package io.reactivex.internal.util;
 
+/* loaded from: classes.dex */
 public final class Pow2 {
     private Pow2() {
         throw new IllegalStateException("No instances!");
@@ -10,6 +11,6 @@ public final class Pow2 {
     }
 
     public static boolean isPowerOfTwo(int value) {
-        return ((value + -1) & value) == 0;
+        return ((value + (-1)) & value) == 0;
     }
 }

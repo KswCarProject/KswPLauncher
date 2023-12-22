@@ -7,16 +7,19 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class EAN8Writer extends UPCEANWriter {
     private static final int CODE_WIDTH = 67;
 
+    @Override // com.google.zxing.oned.OneDimensionalCodeWriter, com.google.zxing.Writer
     public BitMatrix encode(String contents, BarcodeFormat format, int width, int height, Map<EncodeHintType, ?> hints) throws WriterException {
-        if (format == BarcodeFormat.EAN_8) {
-            return super.encode(contents, format, width, height, hints);
+        if (format != BarcodeFormat.EAN_8) {
+            throw new IllegalArgumentException("Can only encode EAN_8, but got ".concat(String.valueOf(format)));
         }
-        throw new IllegalArgumentException("Can only encode EAN_8, but got ".concat(String.valueOf(format)));
+        return super.encode(contents, format, width, height, hints);
     }
 
+    @Override // com.google.zxing.oned.OneDimensionalCodeWriter
     public boolean[] encode(String str) {
         int length = str.length();
         switch (length) {
@@ -29,11 +32,10 @@ public final class EAN8Writer extends UPCEANWriter {
                 }
             case 8:
                 try {
-                    if (UPCEANReader.checkStandardUPCEANChecksum(str)) {
-                        break;
-                    } else {
+                    if (!UPCEANReader.checkStandardUPCEANChecksum(str)) {
                         throw new IllegalArgumentException("Contents do not pass checksum");
                     }
+                    break;
                 } catch (FormatException e2) {
                     throw new IllegalArgumentException("Illegal contents");
                 }

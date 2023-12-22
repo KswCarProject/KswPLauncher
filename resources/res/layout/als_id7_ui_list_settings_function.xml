@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/relat_functionItem" android:background="@drawable/als_id7_ui_seting_lp_bg" android:focusable="true" android:layout_width="265dp" android:layout_height="77dp">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/relat_functionItem" android:background="@drawable/als_id7_ui_seting_lp_bg" android:focusable="true" android:layout_width="265dp" android:layout_height="77dp">
     <TextView android:textSize="25sp" android:textColor="@drawable/als_id7_ui_text_selector" android:ellipsize="end" android:gravity="center_vertical" android:id="@+id/tv_functionItem" android:paddingLeft="30dp" android:paddingTop="10dp" android:paddingRight="10dp" android:paddingBottom="10dp" android:focusable="false" android:layout_width="260dp" android:layout_height="wrap_content" android:lines="1" android:drawablePadding="15dp" android:layout_centerInParent="true"/>
 </RelativeLayout>

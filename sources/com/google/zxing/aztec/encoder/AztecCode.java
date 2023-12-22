@@ -2,6 +2,7 @@ package com.google.zxing.aztec.encoder;
 
 import com.google.zxing.common.BitMatrix;
 
+/* loaded from: classes.dex */
 public final class AztecCode {
     private int codeWords;
     private boolean compact;
@@ -13,39 +14,39 @@ public final class AztecCode {
         return this.compact;
     }
 
-    public void setCompact(boolean compact2) {
-        this.compact = compact2;
+    public void setCompact(boolean compact) {
+        this.compact = compact;
     }
 
     public int getSize() {
         return this.size;
     }
 
-    public void setSize(int size2) {
-        this.size = size2;
+    public void setSize(int size) {
+        this.size = size;
     }
 
     public int getLayers() {
         return this.layers;
     }
 
-    public void setLayers(int layers2) {
-        this.layers = layers2;
+    public void setLayers(int layers) {
+        this.layers = layers;
     }
 
     public int getCodeWords() {
         return this.codeWords;
     }
 
-    public void setCodeWords(int codeWords2) {
-        this.codeWords = codeWords2;
+    public void setCodeWords(int codeWords) {
+        this.codeWords = codeWords;
     }
 
     public BitMatrix getMatrix() {
         return this.matrix;
     }
 
-    public void setMatrix(BitMatrix matrix2) {
-        this.matrix = matrix2;
+    public void setMatrix(BitMatrix matrix) {
+        this.matrix = matrix;
     }
 }

@@ -2,6 +2,7 @@ package com.google.zxing.common;
 
 import java.util.List;
 
+/* loaded from: classes.dex */
 public final class DecoderResult {
     private final List<byte[]> byteSegments;
     private final String ecLevel;
@@ -14,16 +15,16 @@ public final class DecoderResult {
     private final int structuredAppendSequenceNumber;
     private final String text;
 
-    public DecoderResult(byte[] rawBytes2, String text2, List<byte[]> byteSegments2, String ecLevel2) {
-        this(rawBytes2, text2, byteSegments2, ecLevel2, -1, -1);
+    public DecoderResult(byte[] rawBytes, String text, List<byte[]> byteSegments, String ecLevel) {
+        this(rawBytes, text, byteSegments, ecLevel, -1, -1);
     }
 
-    public DecoderResult(byte[] rawBytes2, String text2, List<byte[]> byteSegments2, String ecLevel2, int saSequence, int saParity) {
-        this.rawBytes = rawBytes2;
-        this.numBits = rawBytes2 == null ? 0 : rawBytes2.length * 8;
-        this.text = text2;
-        this.byteSegments = byteSegments2;
-        this.ecLevel = ecLevel2;
+    public DecoderResult(byte[] rawBytes, String text, List<byte[]> byteSegments, String ecLevel, int saSequence, int saParity) {
+        this.rawBytes = rawBytes;
+        this.numBits = rawBytes == null ? 0 : rawBytes.length * 8;
+        this.text = text;
+        this.byteSegments = byteSegments;
+        this.ecLevel = ecLevel;
         this.structuredAppendParity = saParity;
         this.structuredAppendSequenceNumber = saSequence;
     }
@@ -36,8 +37,8 @@ public final class DecoderResult {
         return this.numBits;
     }
 
-    public void setNumBits(int numBits2) {
-        this.numBits = numBits2;
+    public void setNumBits(int numBits) {
+        this.numBits = numBits;
     }
 
     public String getText() {
@@ -56,24 +57,24 @@ public final class DecoderResult {
         return this.errorsCorrected;
     }
 
-    public void setErrorsCorrected(Integer errorsCorrected2) {
-        this.errorsCorrected = errorsCorrected2;
+    public void setErrorsCorrected(Integer errorsCorrected) {
+        this.errorsCorrected = errorsCorrected;
     }
 
     public Integer getErasures() {
         return this.erasures;
     }
 
-    public void setErasures(Integer erasures2) {
-        this.erasures = erasures2;
+    public void setErasures(Integer erasures) {
+        this.erasures = erasures;
     }
 
     public Object getOther() {
         return this.other;
     }
 
-    public void setOther(Object other2) {
-        this.other = other2;
+    public void setOther(Object other) {
+        this.other = other;
     }
 
     public boolean hasStructuredAppend() {

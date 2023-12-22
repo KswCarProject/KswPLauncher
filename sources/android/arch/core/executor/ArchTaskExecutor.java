@@ -2,20 +2,23 @@ package android.arch.core.executor;
 
 import java.util.concurrent.Executor;
 
+/* loaded from: classes.dex */
 public class ArchTaskExecutor extends TaskExecutor {
-    private static final Executor sIOThreadExecutor = new Executor() {
-        public void execute(Runnable command) {
-            ArchTaskExecutor.getInstance().executeOnDiskIO(command);
-        }
-    };
     private static volatile ArchTaskExecutor sInstance;
-    private static final Executor sMainThreadExecutor = new Executor() {
+    private TaskExecutor mDefaultTaskExecutor;
+    private TaskExecutor mDelegate;
+    private static final Executor sMainThreadExecutor = new Executor() { // from class: android.arch.core.executor.ArchTaskExecutor.1
+        @Override // java.util.concurrent.Executor
         public void execute(Runnable command) {
             ArchTaskExecutor.getInstance().postToMainThread(command);
         }
     };
-    private TaskExecutor mDefaultTaskExecutor;
-    private TaskExecutor mDelegate;
+    private static final Executor sIOThreadExecutor = new Executor() { // from class: android.arch.core.executor.ArchTaskExecutor.2
+        @Override // java.util.concurrent.Executor
+        public void execute(Runnable command) {
+            ArchTaskExecutor.getInstance().executeOnDiskIO(command);
+        }
+    };
 
     private ArchTaskExecutor() {
         DefaultTaskExecutor defaultTaskExecutor = new DefaultTaskExecutor();
@@ -39,10 +42,12 @@ public class ArchTaskExecutor extends TaskExecutor {
         this.mDelegate = taskExecutor == null ? this.mDefaultTaskExecutor : taskExecutor;
     }
 
+    @Override // android.arch.core.executor.TaskExecutor
     public void executeOnDiskIO(Runnable runnable) {
         this.mDelegate.executeOnDiskIO(runnable);
     }
 
+    @Override // android.arch.core.executor.TaskExecutor
     public void postToMainThread(Runnable runnable) {
         this.mDelegate.postToMainThread(runnable);
     }
@@ -55,6 +60,7 @@ public class ArchTaskExecutor extends TaskExecutor {
         return sIOThreadExecutor;
     }
 
+    @Override // android.arch.core.executor.TaskExecutor
     public boolean isMainThread() {
         return this.mDelegate.isMainThread();
     }

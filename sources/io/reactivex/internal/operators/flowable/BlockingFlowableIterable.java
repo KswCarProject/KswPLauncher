@@ -16,21 +16,24 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class BlockingFlowableIterable<T> implements Iterable<T> {
     final int bufferSize;
     final Flowable<T> source;
 
-    public BlockingFlowableIterable(Flowable<T> source2, int bufferSize2) {
-        this.source = source2;
-        this.bufferSize = bufferSize2;
+    public BlockingFlowableIterable(Flowable<T> source, int bufferSize) {
+        this.source = source;
+        this.bufferSize = bufferSize;
     }
 
+    @Override // java.lang.Iterable
     public Iterator<T> iterator() {
         BlockingFlowableIterator<T> it = new BlockingFlowableIterator<>(this.bufferSize);
-        this.source.subscribe(it);
+        this.source.subscribe((FlowableSubscriber) it);
         return it;
     }
 
+    /* loaded from: classes.dex */
     static final class BlockingFlowableIterator<T> extends AtomicReference<Subscription> implements FlowableSubscriber<T>, Iterator<T>, Runnable, Disposable {
         private static final long serialVersionUID = 6695226475494099826L;
         final long batchSize;
@@ -42,15 +45,16 @@ public final class BlockingFlowableIterable<T> implements Iterable<T> {
         long produced;
         final SpscArrayQueue<T> queue;
 
-        BlockingFlowableIterator(int batchSize2) {
-            this.queue = new SpscArrayQueue<>(batchSize2);
-            this.batchSize = (long) batchSize2;
-            this.limit = (long) (batchSize2 - (batchSize2 >> 2));
+        BlockingFlowableIterator(int batchSize) {
+            this.queue = new SpscArrayQueue<>(batchSize);
+            this.batchSize = batchSize;
+            this.limit = batchSize - (batchSize >> 2);
             ReentrantLock reentrantLock = new ReentrantLock();
             this.lock = reentrantLock;
             this.condition = reentrantLock.newCondition();
         }
 
+        @Override // java.util.Iterator
         public boolean hasNext() {
             while (!isDisposed()) {
                 boolean d = this.done;
@@ -59,27 +63,29 @@ public final class BlockingFlowableIterable<T> implements Iterable<T> {
                     Throwable e = this.error;
                     if (e != null) {
                         throw ExceptionHelper.wrapOrThrow(e);
-                    } else if (empty) {
+                    }
+                    if (empty) {
                         return false;
                     }
                 }
-                if (!empty) {
+                if (empty) {
+                    BlockingHelper.verifyNonBlocking();
+                    this.lock.lock();
+                    while (!this.done && this.queue.isEmpty() && !isDisposed()) {
+                        try {
+                            try {
+                                this.condition.await();
+                            } catch (InterruptedException ex) {
+                                run();
+                                throw ExceptionHelper.wrapOrThrow(ex);
+                            }
+                        } finally {
+                            this.lock.unlock();
+                        }
+                    }
+                } else {
                     return true;
                 }
-                BlockingHelper.verifyNonBlocking();
-                this.lock.lock();
-                while (!this.done && this.queue.isEmpty() && !isDisposed()) {
-                    try {
-                        this.condition.await();
-                    } catch (InterruptedException ex) {
-                        run();
-                        throw ExceptionHelper.wrapOrThrow(ex);
-                    } catch (Throwable th) {
-                        this.lock.unlock();
-                        throw th;
-                    }
-                }
-                this.lock.unlock();
             }
             Throwable e2 = this.error;
             if (e2 == null) {
@@ -88,13 +94,14 @@ public final class BlockingFlowableIterable<T> implements Iterable<T> {
             throw ExceptionHelper.wrapOrThrow(e2);
         }
 
+        @Override // java.util.Iterator
         public T next() {
             if (hasNext()) {
                 T v = this.queue.poll();
                 long p = this.produced + 1;
                 if (p == this.limit) {
-                    this.produced = 0;
-                    ((Subscription) get()).request(p);
+                    this.produced = 0L;
+                    get().request(p);
                 } else {
                     this.produced = p;
                 }
@@ -103,10 +110,12 @@ public final class BlockingFlowableIterable<T> implements Iterable<T> {
             throw new NoSuchElementException();
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             SubscriptionHelper.setOnce(this, s, this.batchSize);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             if (!this.queue.offer(t)) {
                 SubscriptionHelper.cancel(this);
@@ -116,19 +125,20 @@ public final class BlockingFlowableIterable<T> implements Iterable<T> {
             signalConsumer();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             this.error = t;
             this.done = true;
             signalConsumer();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.done = true;
             signalConsumer();
         }
 
-        /* access modifiers changed from: package-private */
-        public void signalConsumer() {
+        void signalConsumer() {
             this.lock.lock();
             try {
                 this.condition.signalAll();
@@ -137,20 +147,24 @@ public final class BlockingFlowableIterable<T> implements Iterable<T> {
             }
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             SubscriptionHelper.cancel(this);
             signalConsumer();
         }
 
+        @Override // java.util.Iterator
         public void remove() {
             throw new UnsupportedOperationException("remove");
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             SubscriptionHelper.cancel(this);
             signalConsumer();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return get() == SubscriptionHelper.CANCELLED;
         }

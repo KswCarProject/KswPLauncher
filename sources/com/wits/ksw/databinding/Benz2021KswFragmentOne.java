@@ -11,10 +11,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView;
 
+/* loaded from: classes7.dex */
 public abstract class Benz2021KswFragmentOne extends ViewDataBinding {
     public final BenzMbuxItemView btItemview;
     public final RelativeLayout btRl;
@@ -55,47 +56,46 @@ public abstract class Benz2021KswFragmentOne extends ViewDataBinding {
     public final View space3;
     public final View space5;
 
-    public abstract void setViewModel(BcVieModel bcVieModel);
+    public abstract void setViewModel(BcVieModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected Benz2021KswFragmentOne(Object _bindingComponent, View _root, int _localFieldCount, BenzMbuxItemView btItemview2, RelativeLayout btRl2, TextView btTip2, TextView btTv2, BenzMbuxItemView carItemview2, RelativeLayout carRl2, TextView carTip2, TextView carTv2, LinearLayout fragmentOneLl2, ImageView ivBt12, ImageView ivBt22, ImageView ivCar12, ImageView ivCar22, ImageView ivMusic12, ImageView ivMusic22, ImageView ivNavi12, ImageView ivNavi22, ImageView ivSet12, ImageView ivSet22, FrameLayout musicItemview2, RelativeLayout musicRl2, TextView musicTip2, TextView musicTv2, BenzMbuxItemView naviItemview2, RelativeLayout naviRl2, TextView naviTip2, TextView naviTv2, BenzMbuxItemView setItemview2, TextView setTip2, TextView setTv2, RelativeLayout settingRl2, View space4, View space12, View space22, View space32, View space52) {
+    protected Benz2021KswFragmentOne(Object _bindingComponent, View _root, int _localFieldCount, BenzMbuxItemView btItemview, RelativeLayout btRl, TextView btTip, TextView btTv, BenzMbuxItemView carItemview, RelativeLayout carRl, TextView carTip, TextView carTv, LinearLayout fragmentOneLl, ImageView ivBt1, ImageView ivBt2, ImageView ivCar1, ImageView ivCar2, ImageView ivMusic1, ImageView ivMusic2, ImageView ivNavi1, ImageView ivNavi2, ImageView ivSet1, ImageView ivSet2, FrameLayout musicItemview, RelativeLayout musicRl, TextView musicTip, TextView musicTv, BenzMbuxItemView naviItemview, RelativeLayout naviRl, TextView naviTip, TextView naviTv, BenzMbuxItemView setItemview, TextView setTip, TextView setTv, RelativeLayout settingRl, View space, View space1, View space2, View space3, View space5) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.btItemview = btItemview2;
-        this.btRl = btRl2;
-        this.btTip = btTip2;
-        this.btTv = btTv2;
-        this.carItemview = carItemview2;
-        this.carRl = carRl2;
-        this.carTip = carTip2;
-        this.carTv = carTv2;
-        this.fragmentOneLl = fragmentOneLl2;
-        this.ivBt1 = ivBt12;
-        this.ivBt2 = ivBt22;
-        this.ivCar1 = ivCar12;
-        this.ivCar2 = ivCar22;
-        this.ivMusic1 = ivMusic12;
-        this.ivMusic2 = ivMusic22;
-        this.ivNavi1 = ivNavi12;
-        this.ivNavi2 = ivNavi22;
-        this.ivSet1 = ivSet12;
-        this.ivSet2 = ivSet22;
-        this.musicItemview = musicItemview2;
-        this.musicRl = musicRl2;
-        this.musicTip = musicTip2;
-        this.musicTv = musicTv2;
-        this.naviItemview = naviItemview2;
-        this.naviRl = naviRl2;
-        this.naviTip = naviTip2;
-        this.naviTv = naviTv2;
-        this.setItemview = setItemview2;
-        this.setTip = setTip2;
-        this.setTv = setTv2;
-        this.settingRl = settingRl2;
-        this.space = space4;
-        this.space1 = space12;
-        this.space2 = space22;
-        this.space3 = space32;
-        this.space5 = space52;
+        this.btItemview = btItemview;
+        this.btRl = btRl;
+        this.btTip = btTip;
+        this.btTv = btTv;
+        this.carItemview = carItemview;
+        this.carRl = carRl;
+        this.carTip = carTip;
+        this.carTv = carTv;
+        this.fragmentOneLl = fragmentOneLl;
+        this.ivBt1 = ivBt1;
+        this.ivBt2 = ivBt2;
+        this.ivCar1 = ivCar1;
+        this.ivCar2 = ivCar2;
+        this.ivMusic1 = ivMusic1;
+        this.ivMusic2 = ivMusic2;
+        this.ivNavi1 = ivNavi1;
+        this.ivNavi2 = ivNavi2;
+        this.ivSet1 = ivSet1;
+        this.ivSet2 = ivSet2;
+        this.musicItemview = musicItemview;
+        this.musicRl = musicRl;
+        this.musicTip = musicTip;
+        this.musicTv = musicTv;
+        this.naviItemview = naviItemview;
+        this.naviRl = naviRl;
+        this.naviTip = naviTip;
+        this.naviTv = naviTv;
+        this.setItemview = setItemview;
+        this.setTip = setTip;
+        this.setTv = setTv;
+        this.settingRl = settingRl;
+        this.space = space;
+        this.space1 = space1;
+        this.space2 = space2;
+        this.space3 = space3;
+        this.space5 = space5;
     }
 
     public BcVieModel getViewModel() {
@@ -108,7 +108,7 @@ public abstract class Benz2021KswFragmentOne extends ViewDataBinding {
 
     @Deprecated
     public static Benz2021KswFragmentOne inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (Benz2021KswFragmentOne) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_benz_mbux2021_ksw_one, root, attachToRoot, component);
+        return (Benz2021KswFragmentOne) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_benz_mbux2021_ksw_one, root, attachToRoot, component);
     }
 
     public static Benz2021KswFragmentOne inflate(LayoutInflater inflater) {
@@ -117,7 +117,7 @@ public abstract class Benz2021KswFragmentOne extends ViewDataBinding {
 
     @Deprecated
     public static Benz2021KswFragmentOne inflate(LayoutInflater inflater, Object component) {
-        return (Benz2021KswFragmentOne) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_benz_mbux2021_ksw_one, (ViewGroup) null, false, component);
+        return (Benz2021KswFragmentOne) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_benz_mbux2021_ksw_one, null, false, component);
     }
 
     public static Benz2021KswFragmentOne bind(View view) {
@@ -126,6 +126,6 @@ public abstract class Benz2021KswFragmentOne extends ViewDataBinding {
 
     @Deprecated
     public static Benz2021KswFragmentOne bind(View view, Object component) {
-        return (Benz2021KswFragmentOne) bind(component, view, R.layout.fragment_benz_mbux2021_ksw_one);
+        return (Benz2021KswFragmentOne) bind(component, view, C0899R.C0902layout.fragment_benz_mbux2021_ksw_one);
     }
 }

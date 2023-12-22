@@ -6,9 +6,11 @@ import com.ibm.icu.util.ULocale;
 import java.text.ParsePosition;
 import java.util.Locale;
 
+/* loaded from: classes.dex */
 public class CompactDecimalFormat extends DecimalFormat {
     private static final long serialVersionUID = 4716293295276629682L;
 
+    /* loaded from: classes.dex */
     public enum CompactStyle {
         SHORT,
         LONG
@@ -32,10 +34,12 @@ public class CompactDecimalFormat extends DecimalFormat {
         refreshFormatter();
     }
 
+    @Override // com.ibm.icu.text.DecimalFormat, com.ibm.icu.text.NumberFormat
     public Number parse(String text, ParsePosition parsePosition) {
         throw new UnsupportedOperationException();
     }
 
+    @Override // com.ibm.icu.text.DecimalFormat, com.ibm.icu.text.NumberFormat
     public CurrencyAmount parseCurrency(CharSequence text, ParsePosition parsePosition) {
         throw new UnsupportedOperationException();
     }

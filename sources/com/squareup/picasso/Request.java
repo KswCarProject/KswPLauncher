@@ -9,13 +9,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/* loaded from: classes.dex */
 public final class Request {
     private static final long TOO_LONG_LOG = TimeUnit.SECONDS.toNanos(5);
     public final boolean centerCrop;
     public final boolean centerInside;
     public final Bitmap.Config config;
     public final boolean hasRotationPivot;
-    int id;
+
+    /* renamed from: id */
+    int f172id;
     int networkPolicy;
     public final boolean onlyScaleDown;
     public final Picasso.Priority priority;
@@ -30,26 +33,26 @@ public final class Request {
     public final List<Transformation> transformations;
     public final Uri uri;
 
-    private Request(Uri uri2, int resourceId2, String stableKey2, List<Transformation> transformations2, int targetWidth2, int targetHeight2, boolean centerCrop2, boolean centerInside2, boolean onlyScaleDown2, float rotationDegrees2, float rotationPivotX2, float rotationPivotY2, boolean hasRotationPivot2, Bitmap.Config config2, Picasso.Priority priority2) {
-        this.uri = uri2;
-        this.resourceId = resourceId2;
-        this.stableKey = stableKey2;
-        if (transformations2 == null) {
+    private Request(Uri uri, int resourceId, String stableKey, List<Transformation> transformations, int targetWidth, int targetHeight, boolean centerCrop, boolean centerInside, boolean onlyScaleDown, float rotationDegrees, float rotationPivotX, float rotationPivotY, boolean hasRotationPivot, Bitmap.Config config, Picasso.Priority priority) {
+        this.uri = uri;
+        this.resourceId = resourceId;
+        this.stableKey = stableKey;
+        if (transformations == null) {
             this.transformations = null;
         } else {
-            this.transformations = Collections.unmodifiableList(transformations2);
+            this.transformations = Collections.unmodifiableList(transformations);
         }
-        this.targetWidth = targetWidth2;
-        this.targetHeight = targetHeight2;
-        this.centerCrop = centerCrop2;
-        this.centerInside = centerInside2;
-        this.onlyScaleDown = onlyScaleDown2;
-        this.rotationDegrees = rotationDegrees2;
-        this.rotationPivotX = rotationPivotX2;
-        this.rotationPivotY = rotationPivotY2;
-        this.hasRotationPivot = hasRotationPivot2;
-        this.config = config2;
-        this.priority = priority2;
+        this.targetWidth = targetWidth;
+        this.targetHeight = targetHeight;
+        this.centerCrop = centerCrop;
+        this.centerInside = centerInside;
+        this.onlyScaleDown = onlyScaleDown;
+        this.rotationDegrees = rotationDegrees;
+        this.rotationPivotX = rotationPivotX;
+        this.rotationPivotY = rotationPivotY;
+        this.hasRotationPivot = hasRotationPivot;
+        this.config = config;
+        this.priority = priority;
     }
 
     public String toString() {
@@ -92,8 +95,7 @@ public final class Request {
         return sb.toString();
     }
 
-    /* access modifiers changed from: package-private */
-    public String logId() {
+    String logId() {
         long delta = System.nanoTime() - this.started;
         if (delta > TOO_LONG_LOG) {
             return plainId() + '+' + TimeUnit.NANOSECONDS.toSeconds(delta) + 's';
@@ -101,16 +103,14 @@ public final class Request {
         return plainId() + '+' + TimeUnit.NANOSECONDS.toMillis(delta) + DateFormat.MINUTE_SECOND;
     }
 
-    /* access modifiers changed from: package-private */
-    public String plainId() {
-        return "[R" + this.id + ']';
+    String plainId() {
+        return "[R" + this.f172id + ']';
     }
 
-    /* access modifiers changed from: package-private */
-    public String getName() {
-        Uri uri2 = this.uri;
-        if (uri2 != null) {
-            return String.valueOf(uri2.getPath());
+    String getName() {
+        Uri uri = this.uri;
+        if (uri != null) {
+            return String.valueOf(uri.getPath());
         }
         return Integer.toHexString(this.resourceId);
     }
@@ -119,18 +119,15 @@ public final class Request {
         return (this.targetWidth == 0 && this.targetHeight == 0) ? false : true;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean needsTransformation() {
+    boolean needsTransformation() {
         return needsMatrixTransform() || hasCustomTransformations();
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean needsMatrixTransform() {
+    boolean needsMatrixTransform() {
         return hasSize() || this.rotationDegrees != 0.0f;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean hasCustomTransformations() {
+    boolean hasCustomTransformations() {
         return this.transformations != null;
     }
 
@@ -138,6 +135,7 @@ public final class Request {
         return new Builder();
     }
 
+    /* loaded from: classes.dex */
     public static final class Builder {
         private boolean centerCrop;
         private boolean centerInside;
@@ -155,17 +153,17 @@ public final class Request {
         private List<Transformation> transformations;
         private Uri uri;
 
-        public Builder(Uri uri2) {
-            setUri(uri2);
+        public Builder(Uri uri) {
+            setUri(uri);
         }
 
-        public Builder(int resourceId2) {
-            setResourceId(resourceId2);
+        public Builder(int resourceId) {
+            setResourceId(resourceId);
         }
 
-        Builder(Uri uri2, int resourceId2, Bitmap.Config bitmapConfig) {
-            this.uri = uri2;
-            this.resourceId = resourceId2;
+        Builder(Uri uri, int resourceId, Bitmap.Config bitmapConfig) {
+            this.uri = uri;
+            this.resourceId = resourceId;
             this.config = bitmapConfig;
         }
 
@@ -189,56 +187,54 @@ public final class Request {
             this.priority = request.priority;
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean hasImage() {
+        boolean hasImage() {
             return (this.uri == null && this.resourceId == 0) ? false : true;
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean hasSize() {
+        boolean hasSize() {
             return (this.targetWidth == 0 && this.targetHeight == 0) ? false : true;
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean hasPriority() {
+        boolean hasPriority() {
             return this.priority != null;
         }
 
-        public Builder setUri(Uri uri2) {
-            if (uri2 != null) {
-                this.uri = uri2;
-                this.resourceId = 0;
-                return this;
+        public Builder setUri(Uri uri) {
+            if (uri == null) {
+                throw new IllegalArgumentException("Image URI may not be null.");
             }
-            throw new IllegalArgumentException("Image URI may not be null.");
-        }
-
-        public Builder setResourceId(int resourceId2) {
-            if (resourceId2 != 0) {
-                this.resourceId = resourceId2;
-                this.uri = null;
-                return this;
-            }
-            throw new IllegalArgumentException("Image resource ID may not be 0.");
-        }
-
-        public Builder stableKey(String stableKey2) {
-            this.stableKey = stableKey2;
+            this.uri = uri;
+            this.resourceId = 0;
             return this;
         }
 
-        public Builder resize(int targetWidth2, int targetHeight2) {
-            if (targetWidth2 < 0) {
-                throw new IllegalArgumentException("Width must be positive number or 0.");
-            } else if (targetHeight2 < 0) {
-                throw new IllegalArgumentException("Height must be positive number or 0.");
-            } else if (targetHeight2 == 0 && targetWidth2 == 0) {
-                throw new IllegalArgumentException("At least one dimension has to be positive number.");
-            } else {
-                this.targetWidth = targetWidth2;
-                this.targetHeight = targetHeight2;
-                return this;
+        public Builder setResourceId(int resourceId) {
+            if (resourceId == 0) {
+                throw new IllegalArgumentException("Image resource ID may not be 0.");
             }
+            this.resourceId = resourceId;
+            this.uri = null;
+            return this;
+        }
+
+        public Builder stableKey(String stableKey) {
+            this.stableKey = stableKey;
+            return this;
+        }
+
+        public Builder resize(int targetWidth, int targetHeight) {
+            if (targetWidth < 0) {
+                throw new IllegalArgumentException("Width must be positive number or 0.");
+            }
+            if (targetHeight < 0) {
+                throw new IllegalArgumentException("Height must be positive number or 0.");
+            }
+            if (targetHeight == 0 && targetWidth == 0) {
+                throw new IllegalArgumentException("At least one dimension has to be positive number.");
+            }
+            this.targetWidth = targetWidth;
+            this.targetHeight = targetHeight;
+            return this;
         }
 
         public Builder clearResize() {
@@ -250,11 +246,11 @@ public final class Request {
         }
 
         public Builder centerCrop() {
-            if (!this.centerInside) {
-                this.centerCrop = true;
-                return this;
+            if (this.centerInside) {
+                throw new IllegalStateException("Center crop can not be used after calling centerInside");
             }
-            throw new IllegalStateException("Center crop can not be used after calling centerInside");
+            this.centerCrop = true;
+            return this;
         }
 
         public Builder clearCenterCrop() {
@@ -263,11 +259,11 @@ public final class Request {
         }
 
         public Builder centerInside() {
-            if (!this.centerCrop) {
-                this.centerInside = true;
-                return this;
+            if (this.centerCrop) {
+                throw new IllegalStateException("Center inside can not be used after calling centerCrop");
             }
-            throw new IllegalStateException("Center inside can not be used after calling centerCrop");
+            this.centerInside = true;
+            return this;
         }
 
         public Builder clearCenterInside() {
@@ -309,63 +305,62 @@ public final class Request {
             return this;
         }
 
-        public Builder config(Bitmap.Config config2) {
-            this.config = config2;
+        public Builder config(Bitmap.Config config) {
+            this.config = config;
             return this;
         }
 
-        public Builder priority(Picasso.Priority priority2) {
-            if (priority2 == null) {
+        public Builder priority(Picasso.Priority priority) {
+            if (priority == null) {
                 throw new IllegalArgumentException("Priority invalid.");
-            } else if (this.priority == null) {
-                this.priority = priority2;
-                return this;
-            } else {
+            }
+            if (this.priority != null) {
                 throw new IllegalStateException("Priority already set.");
             }
+            this.priority = priority;
+            return this;
         }
 
         public Builder transform(Transformation transformation) {
             if (transformation == null) {
                 throw new IllegalArgumentException("Transformation must not be null.");
-            } else if (transformation.key() != null) {
-                if (this.transformations == null) {
-                    this.transformations = new ArrayList(2);
-                }
-                this.transformations.add(transformation);
-                return this;
-            } else {
+            }
+            if (transformation.key() == null) {
                 throw new IllegalArgumentException("Transformation key must not be null.");
             }
+            if (this.transformations == null) {
+                this.transformations = new ArrayList(2);
+            }
+            this.transformations.add(transformation);
+            return this;
         }
 
-        public Builder transform(List<? extends Transformation> transformations2) {
-            if (transformations2 != null) {
-                int size = transformations2.size();
-                for (int i = 0; i < size; i++) {
-                    transform((Transformation) transformations2.get(i));
-                }
-                return this;
+        public Builder transform(List<? extends Transformation> transformations) {
+            if (transformations == null) {
+                throw new IllegalArgumentException("Transformation list must not be null.");
             }
-            throw new IllegalArgumentException("Transformation list must not be null.");
+            int size = transformations.size();
+            for (int i = 0; i < size; i++) {
+                transform(transformations.get(i));
+            }
+            return this;
         }
 
         public Request build() {
             boolean z = this.centerInside;
             if (z && this.centerCrop) {
                 throw new IllegalStateException("Center crop and center inside can not be used together.");
-            } else if (this.centerCrop && this.targetWidth == 0 && this.targetHeight == 0) {
-                throw new IllegalStateException("Center crop requires calling resize with positive width and height.");
-            } else if (z && this.targetWidth == 0 && this.targetHeight == 0) {
-                throw new IllegalStateException("Center inside requires calling resize with positive width and height.");
-            } else {
-                if (this.priority == null) {
-                    this.priority = Picasso.Priority.NORMAL;
-                }
-                Request request = r2;
-                Request request2 = new Request(this.uri, this.resourceId, this.stableKey, this.transformations, this.targetWidth, this.targetHeight, this.centerCrop, this.centerInside, this.onlyScaleDown, this.rotationDegrees, this.rotationPivotX, this.rotationPivotY, this.hasRotationPivot, this.config, this.priority);
-                return request;
             }
+            if (this.centerCrop && this.targetWidth == 0 && this.targetHeight == 0) {
+                throw new IllegalStateException("Center crop requires calling resize with positive width and height.");
+            }
+            if (z && this.targetWidth == 0 && this.targetHeight == 0) {
+                throw new IllegalStateException("Center inside requires calling resize with positive width and height.");
+            }
+            if (this.priority == null) {
+                this.priority = Picasso.Priority.NORMAL;
+            }
+            return new Request(this.uri, this.resourceId, this.stableKey, this.transformations, this.targetWidth, this.targetHeight, this.centerCrop, this.centerInside, this.onlyScaleDown, this.rotationDegrees, this.rotationPivotX, this.rotationPivotY, this.hasRotationPivot, this.config, this.priority);
         }
     }
 }

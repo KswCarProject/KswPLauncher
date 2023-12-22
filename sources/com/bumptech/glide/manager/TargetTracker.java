@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+/* loaded from: classes.dex */
 public final class TargetTracker implements LifecycleListener {
     private final Set<Target<?>> targets = Collections.newSetFromMap(new WeakHashMap());
 
@@ -18,20 +19,23 @@ public final class TargetTracker implements LifecycleListener {
         this.targets.remove(target);
     }
 
+    @Override // com.bumptech.glide.manager.LifecycleListener
     public void onStart() {
-        for (T target : Util.getSnapshot(this.targets)) {
+        for (Target<?> target : Util.getSnapshot(this.targets)) {
             target.onStart();
         }
     }
 
+    @Override // com.bumptech.glide.manager.LifecycleListener
     public void onStop() {
-        for (T target : Util.getSnapshot(this.targets)) {
+        for (Target<?> target : Util.getSnapshot(this.targets)) {
             target.onStop();
         }
     }
 
+    @Override // com.bumptech.glide.manager.LifecycleListener
     public void onDestroy() {
-        for (T target : Util.getSnapshot(this.targets)) {
+        for (Target<?> target : Util.getSnapshot(this.targets)) {
             target.onDestroy();
         }
     }

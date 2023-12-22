@@ -13,6 +13,7 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableSkipLastTimed<T> extends AbstractFlowableWithUpstream<T, T> {
     final int bufferSize;
     final boolean delayError;
@@ -20,20 +21,21 @@ public final class FlowableSkipLastTimed<T> extends AbstractFlowableWithUpstream
     final long time;
     final TimeUnit unit;
 
-    public FlowableSkipLastTimed(Flowable<T> source, long time2, TimeUnit unit2, Scheduler scheduler2, int bufferSize2, boolean delayError2) {
+    public FlowableSkipLastTimed(Flowable<T> source, long time, TimeUnit unit, Scheduler scheduler, int bufferSize, boolean delayError) {
         super(source);
-        this.time = time2;
-        this.unit = unit2;
-        this.scheduler = scheduler2;
-        this.bufferSize = bufferSize2;
-        this.delayError = delayError2;
+        this.time = time;
+        this.unit = unit;
+        this.scheduler = scheduler;
+        this.bufferSize = bufferSize;
+        this.delayError = delayError;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
-        this.source.subscribe(new SkipLastTimedSubscriber(s, this.time, this.unit, this.scheduler, this.bufferSize, this.delayError));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
+        this.source.subscribe((FlowableSubscriber) new SkipLastTimedSubscriber(s, this.time, this.unit, this.scheduler, this.bufferSize, this.delayError));
     }
 
+    /* loaded from: classes.dex */
     static final class SkipLastTimedSubscriber<T> extends AtomicInteger implements FlowableSubscriber<T>, Subscription {
         private static final long serialVersionUID = -5677354903406201275L;
         volatile boolean cancelled;
@@ -48,15 +50,16 @@ public final class FlowableSkipLastTimed<T> extends AbstractFlowableWithUpstream
         final TimeUnit unit;
         Subscription upstream;
 
-        SkipLastTimedSubscriber(Subscriber<? super T> actual, long time2, TimeUnit unit2, Scheduler scheduler2, int bufferSize, boolean delayError2) {
+        SkipLastTimedSubscriber(Subscriber<? super T> actual, long time, TimeUnit unit, Scheduler scheduler, int bufferSize, boolean delayError) {
             this.downstream = actual;
-            this.time = time2;
-            this.unit = unit2;
-            this.scheduler = scheduler2;
+            this.time = time;
+            this.unit = unit;
+            this.scheduler = scheduler;
             this.queue = new SpscLinkedArrayQueue<>(bufferSize);
-            this.delayError = delayError2;
+            this.delayError = delayError;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -65,22 +68,27 @@ public final class FlowableSkipLastTimed<T> extends AbstractFlowableWithUpstream
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            this.queue.offer(Long.valueOf(this.scheduler.now(this.unit)), t);
+            long now = this.scheduler.now(this.unit);
+            this.queue.offer(Long.valueOf(now), t);
             drain();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             this.error = t;
             this.done = true;
             drain();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.done = true;
             drain();
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             if (SubscriptionHelper.validate(n)) {
                 BackpressureHelper.add(this.requested, n);
@@ -88,6 +96,7 @@ public final class FlowableSkipLastTimed<T> extends AbstractFlowableWithUpstream
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             if (!this.cancelled) {
                 this.cancelled = true;
@@ -98,89 +107,87 @@ public final class FlowableSkipLastTimed<T> extends AbstractFlowableWithUpstream
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
-            boolean delayError2;
-            if (getAndIncrement() == 0) {
-                int missed = 1;
-                Subscriber<? super T> a = this.downstream;
-                SpscLinkedArrayQueue<Object> q = this.queue;
-                boolean delayError3 = this.delayError;
-                TimeUnit unit2 = this.unit;
-                Scheduler scheduler2 = this.scheduler;
-                long time2 = this.time;
+        void drain() {
+            boolean delayError;
+            if (getAndIncrement() != 0) {
+                return;
+            }
+            int missed = 1;
+            Subscriber<? super T> a = this.downstream;
+            SpscLinkedArrayQueue<Object> q = this.queue;
+            boolean delayError2 = this.delayError;
+            TimeUnit unit = this.unit;
+            Scheduler scheduler = this.scheduler;
+            long time = this.time;
+            while (true) {
+                long r = this.requested.get();
+                long e = 0;
                 while (true) {
-                    long r = this.requested.get();
-                    long e = 0;
-                    while (true) {
-                        if (e == r) {
-                            delayError2 = delayError3;
-                            break;
-                        }
-                        boolean d = this.done;
-                        Long ts = (Long) q.peek();
-                        boolean empty = ts == null;
-                        long now = scheduler2.now(unit2);
-                        if (!empty && ts.longValue() > now - time2) {
-                            empty = true;
-                        }
-                        if (!checkTerminated(d, empty, a, delayError3)) {
-                            if (empty) {
-                                delayError2 = delayError3;
-                                break;
-                            }
-                            q.poll();
-                            a.onNext(q.poll());
-                            e++;
-                            delayError3 = delayError3;
-                        } else {
-                            return;
-                        }
+                    if (e == r) {
+                        delayError = delayError2;
+                        break;
                     }
-                    if (e != 0) {
-                        BackpressureHelper.produced(this.requested, e);
+                    boolean d = this.done;
+                    Long ts = (Long) q.peek();
+                    boolean empty = ts == null;
+                    long now = scheduler.now(unit);
+                    if (!empty && ts.longValue() > now - time) {
+                        empty = true;
                     }
-                    missed = addAndGet(-missed);
-                    if (missed != 0) {
-                        delayError3 = delayError2;
-                    } else {
+                    if (checkTerminated(d, empty, a, delayError2)) {
                         return;
                     }
+                    if (empty) {
+                        delayError = delayError2;
+                        break;
+                    }
+                    q.poll();
+                    a.onNext(q.poll());
+                    e++;
+                    delayError2 = delayError2;
+                }
+                if (e != 0) {
+                    BackpressureHelper.produced(this.requested, e);
+                }
+                missed = addAndGet(-missed);
+                if (missed != 0) {
+                    delayError2 = delayError;
+                } else {
+                    return;
                 }
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean checkTerminated(boolean d, boolean empty, Subscriber<? super T> a, boolean delayError2) {
+        boolean checkTerminated(boolean d, boolean empty, Subscriber<? super T> a, boolean delayError) {
             if (this.cancelled) {
                 this.queue.clear();
                 return true;
-            } else if (!d) {
-                return false;
-            } else {
-                if (!delayError2) {
-                    Throwable e = this.error;
-                    if (e != null) {
-                        this.queue.clear();
-                        a.onError(e);
-                        return true;
-                    } else if (!empty) {
-                        return false;
-                    } else {
-                        a.onComplete();
+            } else if (d) {
+                if (delayError) {
+                    if (empty) {
+                        Throwable e = this.error;
+                        if (e != null) {
+                            a.onError(e);
+                        } else {
+                            a.onComplete();
+                        }
                         return true;
                     }
-                } else if (!empty) {
                     return false;
-                } else {
-                    Throwable e2 = this.error;
-                    if (e2 != null) {
-                        a.onError(e2);
-                    } else {
-                        a.onComplete();
-                    }
-                    return true;
                 }
+                Throwable e2 = this.error;
+                if (e2 != null) {
+                    this.queue.clear();
+                    a.onError(e2);
+                    return true;
+                } else if (empty) {
+                    a.onComplete();
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
             }
         }
     }

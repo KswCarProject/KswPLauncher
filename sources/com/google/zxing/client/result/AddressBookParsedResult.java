@@ -1,5 +1,6 @@
 package com.google.zxing.client.result;
 
+/* loaded from: classes.dex */
 public final class AddressBookParsedResult extends ParsedResult {
     private final String[] addressTypes;
     private final String[] addresses;
@@ -13,50 +14,45 @@ public final class AddressBookParsedResult extends ParsedResult {
     private final String note;
 
     /* renamed from: org  reason: collision with root package name */
-    private final String f3org;
+    private final String f385org;
     private final String[] phoneNumbers;
     private final String[] phoneTypes;
     private final String pronunciation;
     private final String title;
     private final String[] urls;
 
-    public AddressBookParsedResult(String[] names2, String[] phoneNumbers2, String[] phoneTypes2, String[] emails2, String[] emailTypes2, String[] addresses2, String[] addressTypes2) {
-        this(names2, (String[]) null, (String) null, phoneNumbers2, phoneTypes2, emails2, emailTypes2, (String) null, (String) null, addresses2, addressTypes2, (String) null, (String) null, (String) null, (String[]) null, (String[]) null);
+    public AddressBookParsedResult(String[] names, String[] phoneNumbers, String[] phoneTypes, String[] emails, String[] emailTypes, String[] addresses, String[] addressTypes) {
+        this(names, null, null, phoneNumbers, phoneTypes, emails, emailTypes, null, null, addresses, addressTypes, null, null, null, null, null);
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    public AddressBookParsedResult(String[] names2, String[] nicknames2, String pronunciation2, String[] phoneNumbers2, String[] phoneTypes2, String[] emails2, String[] emailTypes2, String instantMessenger2, String note2, String[] addresses2, String[] addressTypes2, String org2, String birthday2, String title2, String[] urls2, String[] geo2) {
+    public AddressBookParsedResult(String[] names, String[] nicknames, String pronunciation, String[] phoneNumbers, String[] phoneTypes, String[] emails, String[] emailTypes, String instantMessenger, String note, String[] addresses, String[] addressTypes, String org2, String birthday, String title, String[] urls, String[] geo) {
         super(ParsedResultType.ADDRESSBOOK);
-        String[] strArr = phoneNumbers2;
-        String[] strArr2 = phoneTypes2;
-        String[] strArr3 = emails2;
-        String[] strArr4 = emailTypes2;
-        String[] strArr5 = addresses2;
-        String[] strArr6 = addressTypes2;
-        if (strArr != null && strArr2 != null && strArr.length != strArr2.length) {
+        if (phoneNumbers != null && phoneTypes != null && phoneNumbers.length != phoneTypes.length) {
             throw new IllegalArgumentException("Phone numbers and types lengths differ");
-        } else if (strArr3 != null && strArr4 != null && strArr3.length != strArr4.length) {
-            throw new IllegalArgumentException("Emails and types lengths differ");
-        } else if (strArr5 == null || strArr6 == null || strArr5.length == strArr6.length) {
-            this.names = names2;
-            this.nicknames = nicknames2;
-            this.pronunciation = pronunciation2;
-            this.phoneNumbers = strArr;
-            this.phoneTypes = strArr2;
-            this.emails = strArr3;
-            this.emailTypes = strArr4;
-            this.instantMessenger = instantMessenger2;
-            this.note = note2;
-            this.addresses = strArr5;
-            this.addressTypes = strArr6;
-            this.f3org = org2;
-            this.birthday = birthday2;
-            this.title = title2;
-            this.urls = urls2;
-            this.geo = geo2;
-        } else {
-            throw new IllegalArgumentException("Addresses and types lengths differ");
         }
+        if (emails != null && emailTypes != null && emails.length != emailTypes.length) {
+            throw new IllegalArgumentException("Emails and types lengths differ");
+        }
+        if (addresses == null || addressTypes == null || addresses.length == addressTypes.length) {
+            this.names = names;
+            this.nicknames = nicknames;
+            this.pronunciation = pronunciation;
+            this.phoneNumbers = phoneNumbers;
+            this.phoneTypes = phoneTypes;
+            this.emails = emails;
+            this.emailTypes = emailTypes;
+            this.instantMessenger = instantMessenger;
+            this.note = note;
+            this.addresses = addresses;
+            this.addressTypes = addressTypes;
+            this.f385org = org2;
+            this.birthday = birthday;
+            this.title = title;
+            this.urls = urls;
+            this.geo = geo;
+            return;
+        }
+        throw new IllegalArgumentException("Addresses and types lengths differ");
     }
 
     public String[] getNames() {
@@ -108,7 +104,7 @@ public final class AddressBookParsedResult extends ParsedResult {
     }
 
     public String getOrg() {
-        return this.f3org;
+        return this.f385org;
     }
 
     public String[] getURLs() {
@@ -123,13 +119,14 @@ public final class AddressBookParsedResult extends ParsedResult {
         return this.geo;
     }
 
+    @Override // com.google.zxing.client.result.ParsedResult
     public String getDisplayResult() {
         StringBuilder result = new StringBuilder(100);
         maybeAppend(this.names, result);
         maybeAppend(this.nicknames, result);
         maybeAppend(this.pronunciation, result);
         maybeAppend(this.title, result);
-        maybeAppend(this.f3org, result);
+        maybeAppend(this.f385org, result);
         maybeAppend(this.addresses, result);
         maybeAppend(this.phoneNumbers, result);
         maybeAppend(this.emails, result);

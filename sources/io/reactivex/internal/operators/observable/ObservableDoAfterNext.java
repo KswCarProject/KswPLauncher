@@ -5,27 +5,30 @@ import io.reactivex.Observer;
 import io.reactivex.functions.Consumer;
 import io.reactivex.internal.observers.BasicFuseableObserver;
 
+/* loaded from: classes.dex */
 public final class ObservableDoAfterNext<T> extends AbstractObservableWithUpstream<T, T> {
     final Consumer<? super T> onAfterNext;
 
-    public ObservableDoAfterNext(ObservableSource<T> source, Consumer<? super T> onAfterNext2) {
+    public ObservableDoAfterNext(ObservableSource<T> source, Consumer<? super T> onAfterNext) {
         super(source);
-        this.onAfterNext = onAfterNext2;
+        this.onAfterNext = onAfterNext;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Observer<? super T> observer) {
+    @Override // io.reactivex.Observable
+    protected void subscribeActual(Observer<? super T> observer) {
         this.source.subscribe(new DoAfterObserver(observer, this.onAfterNext));
     }
 
+    /* loaded from: classes.dex */
     static final class DoAfterObserver<T> extends BasicFuseableObserver<T, T> {
         final Consumer<? super T> onAfterNext;
 
-        DoAfterObserver(Observer<? super T> actual, Consumer<? super T> onAfterNext2) {
+        DoAfterObserver(Observer<? super T> actual, Consumer<? super T> onAfterNext) {
             super(actual);
-            this.onAfterNext = onAfterNext2;
+            this.onAfterNext = onAfterNext;
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             this.downstream.onNext(t);
             if (this.sourceMode == 0) {
@@ -37,12 +40,14 @@ public final class ObservableDoAfterNext<T> extends AbstractObservableWithUpstre
             }
         }
 
+        @Override // io.reactivex.internal.fuseable.QueueFuseable
         public int requestFusion(int mode) {
             return transitiveBoundaryFusion(mode);
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public T poll() throws Exception {
-            T v = this.qd.poll();
+            T v = this.f264qd.poll();
             if (v != null) {
                 this.onAfterNext.accept(v);
             }

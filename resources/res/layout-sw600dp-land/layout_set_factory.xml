@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:focusable="false" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical" android:background="@mipmap/id7_keypad_bk" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:paddingLeft="10dp" android:layout_width="wrap_content" android:layout_height="0dp" android:layout_weight="1">
+            <TextView android:textSize="25sp" android:textColor="@color/color1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/fac_1"/>
+            <TextView android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_showPwd" android:layout_width="wrap_content" android:layout_height="wrap_content" android:lines="1" android:maxLength="16"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:paddingLeft="30dp" android:paddingRight="30dp" android:layout_width="wrap_content" android:layout_height="0dp" android:layout_weight="1">
+            <ImageView android:id="@+id/img_btn1" android:background="@drawable/btn_1" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <ImageView android:id="@+id/img_btn2" android:background="@drawable/btn_2" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <ImageView android:id="@+id/img_btn3" android:background="@drawable/btn_3" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <ImageView android:id="@+id/img_del" android:background="@drawable/btn_del" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:paddingLeft="30dp" android:paddingRight="30dp" android:layout_width="wrap_content" android:layout_height="0dp" android:layout_weight="1">
+            <ImageView android:id="@+id/img_btn4" android:background="@drawable/btn_4" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <ImageView android:id="@+id/img_btn5" android:background="@drawable/btn_5" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <ImageView android:id="@+id/img_btn6" android:background="@drawable/btn_6" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <ImageView android:id="@+id/img_btn0" android:background="@drawable/btn_0" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:paddingLeft="30dp" android:paddingRight="30dp" android:layout_width="wrap_content" android:layout_height="0dp" android:layout_weight="1">
+            <ImageView android:id="@+id/img_btn7" android:background="@drawable/btn_7" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <ImageView android:id="@+id/img_btn8" android:background="@drawable/btn_8" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <ImageView android:id="@+id/img_btn9" android:background="@drawable/btn_9" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <ImageView android:id="@+id/img_enter" android:background="@drawable/btn_enter" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -15,6 +15,7 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableIntervalRange extends Flowable<Long> {
     final long end;
     final long initialDelay;
@@ -23,15 +24,16 @@ public final class FlowableIntervalRange extends Flowable<Long> {
     final long start;
     final TimeUnit unit;
 
-    public FlowableIntervalRange(long start2, long end2, long initialDelay2, long period2, TimeUnit unit2, Scheduler scheduler2) {
-        this.initialDelay = initialDelay2;
-        this.period = period2;
-        this.unit = unit2;
-        this.scheduler = scheduler2;
-        this.start = start2;
-        this.end = end2;
+    public FlowableIntervalRange(long start, long end, long initialDelay, long period, TimeUnit unit, Scheduler scheduler) {
+        this.initialDelay = initialDelay;
+        this.period = period;
+        this.unit = unit;
+        this.scheduler = scheduler;
+        this.start = start;
+        this.end = end;
     }
 
+    @Override // io.reactivex.Flowable
     public void subscribeActual(Subscriber<? super Long> s) {
         IntervalRangeSubscriber is = new IntervalRangeSubscriber(s, this.start, this.end);
         s.onSubscribe(is);
@@ -42,9 +44,11 @@ public final class FlowableIntervalRange extends Flowable<Long> {
             worker.schedulePeriodically(is, this.initialDelay, this.period, this.unit);
             return;
         }
-        is.setResource(sch.schedulePeriodicallyDirect(is, this.initialDelay, this.period, this.unit));
+        Disposable d = sch.schedulePeriodicallyDirect(is, this.initialDelay, this.period, this.unit);
+        is.setResource(d);
     }
 
+    /* loaded from: classes.dex */
     static final class IntervalRangeSubscriber extends AtomicLong implements Subscription, Runnable {
         private static final long serialVersionUID = -2809475196591179431L;
         long count;
@@ -52,22 +56,25 @@ public final class FlowableIntervalRange extends Flowable<Long> {
         final long end;
         final AtomicReference<Disposable> resource = new AtomicReference<>();
 
-        IntervalRangeSubscriber(Subscriber<? super Long> actual, long start, long end2) {
+        IntervalRangeSubscriber(Subscriber<? super Long> actual, long start, long end) {
             this.downstream = actual;
             this.count = start;
-            this.end = end2;
+            this.end = end;
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             if (SubscriptionHelper.validate(n)) {
                 BackpressureHelper.add(this, n);
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             DisposableHelper.dispose(this.resource);
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             if (this.resource.get() != DisposableHelper.DISPOSED) {
                 long r = get();

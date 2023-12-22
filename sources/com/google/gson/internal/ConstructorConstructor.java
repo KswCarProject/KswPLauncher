@@ -26,30 +26,33 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+/* loaded from: classes.dex */
 public final class ConstructorConstructor {
     private final ReflectionAccessor accessor = ReflectionAccessor.getInstance();
     private final Map<Type, InstanceCreator<?>> instanceCreators;
 
-    public ConstructorConstructor(Map<Type, InstanceCreator<?>> instanceCreators2) {
-        this.instanceCreators = instanceCreators2;
+    public ConstructorConstructor(Map<Type, InstanceCreator<?>> instanceCreators) {
+        this.instanceCreators = instanceCreators;
     }
 
     public <T> ObjectConstructor<T> get(TypeToken<T> typeToken) {
         final Type type = typeToken.getType();
         Class<? super T> rawType = typeToken.getRawType();
-        final InstanceCreator<T> typeCreator = this.instanceCreators.get(type);
-        if (typeCreator != null) {
-            return new ObjectConstructor<T>() {
+        final InstanceCreator<?> instanceCreator = this.instanceCreators.get(type);
+        if (instanceCreator != null) {
+            return new ObjectConstructor<T>() { // from class: com.google.gson.internal.ConstructorConstructor.1
+                @Override // com.google.gson.internal.ObjectConstructor
                 public T construct() {
-                    return typeCreator.createInstance(type);
+                    return (T) instanceCreator.createInstance(type);
                 }
             };
         }
-        final InstanceCreator<T> rawTypeCreator = this.instanceCreators.get(rawType);
-        if (rawTypeCreator != null) {
-            return new ObjectConstructor<T>() {
+        final InstanceCreator<?> instanceCreator2 = this.instanceCreators.get(rawType);
+        if (instanceCreator2 != null) {
+            return new ObjectConstructor<T>() { // from class: com.google.gson.internal.ConstructorConstructor.2
+                @Override // com.google.gson.internal.ObjectConstructor
                 public T construct() {
-                    return rawTypeCreator.createInstance(type);
+                    return (T) instanceCreator2.createInstance(type);
                 }
             };
         }
@@ -70,16 +73,17 @@ public final class ConstructorConstructor {
             if (!constructor.isAccessible()) {
                 this.accessor.makeAccessible(constructor);
             }
-            return new ObjectConstructor<T>() {
+            return new ObjectConstructor<T>() { // from class: com.google.gson.internal.ConstructorConstructor.3
+                @Override // com.google.gson.internal.ObjectConstructor
                 public T construct() {
                     try {
-                        return constructor.newInstance((Object[]) null);
-                    } catch (InstantiationException e) {
-                        throw new RuntimeException("Failed to invoke " + constructor + " with no args", e);
-                    } catch (InvocationTargetException e2) {
-                        throw new RuntimeException("Failed to invoke " + constructor + " with no args", e2.getTargetException());
-                    } catch (IllegalAccessException e3) {
-                        throw new AssertionError(e3);
+                        return (T) constructor.newInstance(null);
+                    } catch (IllegalAccessException e) {
+                        throw new AssertionError(e);
+                    } catch (InstantiationException e2) {
+                        throw new RuntimeException("Failed to invoke " + constructor + " with no args", e2);
+                    } catch (InvocationTargetException e3) {
+                        throw new RuntimeException("Failed to invoke " + constructor + " with no args", e3.getTargetException());
                     }
                 }
             };
@@ -91,20 +95,22 @@ public final class ConstructorConstructor {
     private <T> ObjectConstructor<T> newDefaultImplementationConstructor(final Type type, Class<? super T> rawType) {
         if (Collection.class.isAssignableFrom(rawType)) {
             if (SortedSet.class.isAssignableFrom(rawType)) {
-                return new ObjectConstructor<T>() {
+                return new ObjectConstructor<T>() { // from class: com.google.gson.internal.ConstructorConstructor.4
+                    @Override // com.google.gson.internal.ObjectConstructor
                     public T construct() {
-                        return new TreeSet();
+                        return (T) new TreeSet();
                     }
                 };
             }
             if (EnumSet.class.isAssignableFrom(rawType)) {
-                return new ObjectConstructor<T>() {
+                return new ObjectConstructor<T>() { // from class: com.google.gson.internal.ConstructorConstructor.5
+                    @Override // com.google.gson.internal.ObjectConstructor
                     public T construct() {
-                        Type type = type;
-                        if (type instanceof ParameterizedType) {
-                            Type elementType = ((ParameterizedType) type).getActualTypeArguments()[0];
+                        Type type2 = type;
+                        if (type2 instanceof ParameterizedType) {
+                            Type elementType = ((ParameterizedType) type2).getActualTypeArguments()[0];
                             if (elementType instanceof Class) {
-                                return EnumSet.noneOf((Class) elementType);
+                                return (T) EnumSet.noneOf((Class) elementType);
                             }
                             throw new JsonIOException("Invalid EnumSet type: " + type.toString());
                         }
@@ -113,70 +119,79 @@ public final class ConstructorConstructor {
                 };
             }
             if (Set.class.isAssignableFrom(rawType)) {
-                return new ObjectConstructor<T>() {
+                return new ObjectConstructor<T>() { // from class: com.google.gson.internal.ConstructorConstructor.6
+                    @Override // com.google.gson.internal.ObjectConstructor
                     public T construct() {
-                        return new LinkedHashSet();
+                        return (T) new LinkedHashSet();
                     }
                 };
             }
             if (Queue.class.isAssignableFrom(rawType)) {
-                return new ObjectConstructor<T>() {
+                return new ObjectConstructor<T>() { // from class: com.google.gson.internal.ConstructorConstructor.7
+                    @Override // com.google.gson.internal.ObjectConstructor
                     public T construct() {
-                        return new ArrayDeque();
+                        return (T) new ArrayDeque();
                     }
                 };
             }
-            return new ObjectConstructor<T>() {
+            return new ObjectConstructor<T>() { // from class: com.google.gson.internal.ConstructorConstructor.8
+                @Override // com.google.gson.internal.ObjectConstructor
                 public T construct() {
-                    return new ArrayList();
+                    return (T) new ArrayList();
                 }
             };
-        } else if (!Map.class.isAssignableFrom(rawType)) {
-            return null;
-        } else {
+        } else if (Map.class.isAssignableFrom(rawType)) {
             if (ConcurrentNavigableMap.class.isAssignableFrom(rawType)) {
-                return new ObjectConstructor<T>() {
+                return new ObjectConstructor<T>() { // from class: com.google.gson.internal.ConstructorConstructor.9
+                    @Override // com.google.gson.internal.ObjectConstructor
                     public T construct() {
-                        return new ConcurrentSkipListMap();
+                        return (T) new ConcurrentSkipListMap();
                     }
                 };
             }
             if (ConcurrentMap.class.isAssignableFrom(rawType)) {
-                return new ObjectConstructor<T>() {
+                return new ObjectConstructor<T>() { // from class: com.google.gson.internal.ConstructorConstructor.10
+                    @Override // com.google.gson.internal.ObjectConstructor
                     public T construct() {
-                        return new ConcurrentHashMap();
+                        return (T) new ConcurrentHashMap();
                     }
                 };
             }
             if (SortedMap.class.isAssignableFrom(rawType)) {
-                return new ObjectConstructor<T>() {
+                return new ObjectConstructor<T>() { // from class: com.google.gson.internal.ConstructorConstructor.11
+                    @Override // com.google.gson.internal.ObjectConstructor
                     public T construct() {
-                        return new TreeMap();
+                        return (T) new TreeMap();
                     }
                 };
             }
-            if (!(type instanceof ParameterizedType) || String.class.isAssignableFrom(TypeToken.get(((ParameterizedType) type).getActualTypeArguments()[0]).getRawType())) {
-                return new ObjectConstructor<T>() {
+            if ((type instanceof ParameterizedType) && !String.class.isAssignableFrom(TypeToken.get(((ParameterizedType) type).getActualTypeArguments()[0]).getRawType())) {
+                return new ObjectConstructor<T>() { // from class: com.google.gson.internal.ConstructorConstructor.12
+                    @Override // com.google.gson.internal.ObjectConstructor
                     public T construct() {
-                        return new LinkedTreeMap();
+                        return (T) new LinkedHashMap();
                     }
                 };
             }
-            return new ObjectConstructor<T>() {
+            return new ObjectConstructor<T>() { // from class: com.google.gson.internal.ConstructorConstructor.13
+                @Override // com.google.gson.internal.ObjectConstructor
                 public T construct() {
-                    return new LinkedHashMap();
+                    return (T) new LinkedTreeMap();
                 }
             };
+        } else {
+            return null;
         }
     }
 
     private <T> ObjectConstructor<T> newUnsafeAllocator(final Type type, final Class<? super T> rawType) {
-        return new ObjectConstructor<T>() {
+        return new ObjectConstructor<T>() { // from class: com.google.gson.internal.ConstructorConstructor.14
             private final UnsafeAllocator unsafeAllocator = UnsafeAllocator.create();
 
+            @Override // com.google.gson.internal.ObjectConstructor
             public T construct() {
                 try {
-                    return this.unsafeAllocator.newInstance(rawType);
+                    return (T) this.unsafeAllocator.newInstance(rawType);
                 } catch (Exception e) {
                     throw new RuntimeException("Unable to invoke no-args constructor for " + type + ". Registering an InstanceCreator with Gson for this type may fix this problem.", e);
                 }

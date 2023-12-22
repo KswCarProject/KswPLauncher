@@ -3,6 +3,7 @@ package com.ibm.icu.text;
 import com.ibm.icu.text.Transliterator;
 import java.util.List;
 
+/* loaded from: classes.dex */
 class CompoundTransliterator extends Transliterator {
     private int numAnonymousRBTs;
     private Transliterator[] trans;
@@ -11,12 +12,12 @@ class CompoundTransliterator extends Transliterator {
         this(list, 0);
     }
 
-    CompoundTransliterator(List<Transliterator> list, int numAnonymousRBTs2) {
-        super("", (UnicodeFilter) null);
+    CompoundTransliterator(List<Transliterator> list, int numAnonymousRBTs) {
+        super("", null);
         this.numAnonymousRBTs = 0;
         this.trans = null;
         init(list, 0, false);
-        this.numAnonymousRBTs = numAnonymousRBTs2;
+        this.numAnonymousRBTs = numAnonymousRBTs;
     }
 
     CompoundTransliterator(String id, UnicodeFilter filter2, Transliterator[] trans2, int numAnonymousRBTs2) {
@@ -30,7 +31,8 @@ class CompoundTransliterator extends Transliterator {
         int count = list.size();
         this.trans = new Transliterator[count];
         for (int i = 0; i < count; i++) {
-            this.trans[i] = list.get(direction == 0 ? i : (count - 1) - i);
+            int j = direction == 0 ? i : (count - 1) - i;
+            this.trans[i] = list.get(j);
         }
         if (direction == 1 && fixReverseID) {
             StringBuilder newID = new StringBuilder();
@@ -59,6 +61,7 @@ class CompoundTransliterator extends Transliterator {
         }
     }
 
+    @Override // com.ibm.icu.text.Transliterator
     public String toRules(boolean escapeUnprintable) {
         String rule;
         StringBuilder rulesSource = new StringBuilder();
@@ -68,37 +71,39 @@ class CompoundTransliterator extends Transliterator {
         int i = 0;
         while (true) {
             Transliterator[] transliteratorArr = this.trans;
-            if (i >= transliteratorArr.length) {
+            if (i < transliteratorArr.length) {
+                if (transliteratorArr[i].getID().startsWith("%Pass")) {
+                    rule = this.trans[i].toRules(escapeUnprintable);
+                    if (this.numAnonymousRBTs > 1 && i > 0 && this.trans[i - 1].getID().startsWith("%Pass")) {
+                        rule = "::Null;" + rule;
+                    }
+                } else {
+                    rule = this.trans[i].getID().indexOf(59) >= 0 ? this.trans[i].toRules(escapeUnprintable) : this.trans[i].baseToRules(escapeUnprintable);
+                }
+                _smartAppend(rulesSource, '\n');
+                rulesSource.append(rule);
+                _smartAppend(rulesSource, ';');
+                i++;
+            } else {
                 return rulesSource.toString();
             }
-            if (transliteratorArr[i].getID().startsWith("%Pass")) {
-                rule = this.trans[i].toRules(escapeUnprintable);
-                if (this.numAnonymousRBTs > 1 && i > 0 && this.trans[i - 1].getID().startsWith("%Pass")) {
-                    rule = "::Null;" + rule;
-                }
-            } else {
-                rule = this.trans[i].getID().indexOf(59) >= 0 ? this.trans[i].toRules(escapeUnprintable) : this.trans[i].baseToRules(escapeUnprintable);
-            }
-            _smartAppend(rulesSource, 10);
-            rulesSource.append(rule);
-            _smartAppend(rulesSource, ';');
-            i++;
         }
     }
 
+    @Override // com.ibm.icu.text.Transliterator
     public void addSourceTargetSet(UnicodeSet filter, UnicodeSet sourceSet, UnicodeSet targetSet) {
         UnicodeSet myFilter = new UnicodeSet(getFilterAsUnicodeSet(filter));
         UnicodeSet tempTargetSet = new UnicodeSet();
-        for (Transliterator addSourceTargetSet : this.trans) {
+        for (int i = 0; i < this.trans.length; i++) {
             tempTargetSet.clear();
-            addSourceTargetSet.addSourceTargetSet(myFilter, sourceSet, tempTargetSet);
+            this.trans[i].addSourceTargetSet(myFilter, sourceSet, tempTargetSet);
             targetSet.addAll(tempTargetSet);
             myFilter.addAll(tempTargetSet);
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void handleTransliterate(Replaceable text, Transliterator.Position index, boolean incremental) {
+    @Override // com.ibm.icu.text.Transliterator
+    protected void handleTransliterate(Replaceable text, Transliterator.Position index, boolean incremental) {
         if (this.trans.length < 1) {
             index.start = index.limit;
             return;
@@ -106,22 +111,19 @@ class CompoundTransliterator extends Transliterator {
         int compoundLimit = index.limit;
         int compoundStart = index.start;
         int delta = 0;
-        int i = 0;
-        while (i < this.trans.length) {
+        for (int i = 0; i < this.trans.length; i++) {
             index.start = compoundStart;
             int limit = index.limit;
             if (index.start == index.limit) {
                 break;
             }
             this.trans[i].filteredTransliterate(text, index, incremental);
-            if (incremental || index.start == index.limit) {
-                delta += index.limit - limit;
-                if (incremental) {
-                    index.limit = index.start;
-                }
-                i++;
-            } else {
+            if (!incremental && index.start != index.limit) {
                 throw new RuntimeException("ERROR: Incomplete non-incremental transliteration by " + this.trans[i].getID());
+            }
+            delta += index.limit - limit;
+            if (incremental) {
+                index.limit = index.start;
             }
         }
         index.limit = compoundLimit + delta;

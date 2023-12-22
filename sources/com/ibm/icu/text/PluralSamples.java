@@ -15,6 +15,7 @@ import java.util.TreeSet;
 import kotlin.time.DurationKt;
 
 @Deprecated
+/* loaded from: classes.dex */
 public class PluralSamples {
     private static final int LIMIT_FRACTION_SAMPLES = 3;
     private static final int[] TENS = {1, 10, 100, 1000, 10000, 100000, DurationKt.NANOS_IN_MILLIS};
@@ -26,59 +27,61 @@ public class PluralSamples {
     private PluralRules pluralRules;
 
     @Deprecated
-    public PluralSamples(PluralRules pluralRules2) {
-        PluralRules pluralRules3 = pluralRules2;
-        this.pluralRules = pluralRules3;
-        Set<String> keywords = pluralRules2.getKeywords();
+    public PluralSamples(PluralRules pluralRules) {
+        this.pluralRules = pluralRules;
+        Set<String> keywords = pluralRules.getKeywords();
         Map<String, Boolean> temp = new HashMap<>();
         for (String k : keywords) {
-            temp.put(k, pluralRules3.isLimited(k));
+            temp.put(k, pluralRules.isLimited(k));
         }
         this._keyLimitedMap = temp;
         Map<String, List<Double>> sampleMap = new HashMap<>();
         int keywordsRemaining = keywords.size();
-        int i = 0;
-        while (keywordsRemaining > 0 && i < 128) {
-            keywordsRemaining = addSimpleSamples(pluralRules2, 3, sampleMap, keywordsRemaining, ((double) i) / 2.0d);
-            i++;
+        int keywordsRemaining2 = keywordsRemaining;
+        for (int i = 0; keywordsRemaining2 > 0 && i < 128; i++) {
+            keywordsRemaining2 = addSimpleSamples(pluralRules, 3, sampleMap, keywordsRemaining2, i / 2.0d);
         }
-        int keywordsRemaining2 = addSimpleSamples(pluralRules2, 3, sampleMap, keywordsRemaining, 1000000.0d);
+        int keywordsRemaining3 = addSimpleSamples(pluralRules, 3, sampleMap, keywordsRemaining2, 1000000.0d);
         Map<String, Set<PluralRules.FixedDecimal>> sampleFractionMap = new HashMap<>();
         Set<PluralRules.FixedDecimal> mentioned = new TreeSet<>();
         Map<String, Set<PluralRules.FixedDecimal>> foundKeywords = new HashMap<>();
         for (PluralRules.FixedDecimal s : mentioned) {
-            addRelation(foundKeywords, pluralRules3.select((PluralRules.IFixedDecimal) s), s);
+            addRelation(foundKeywords, pluralRules.select(s), s);
         }
         if (foundKeywords.size() != keywords.size()) {
             int i2 = 1;
             while (true) {
-                if (i2 >= 1000) {
+                if (i2 < 1000) {
+                    boolean done = addIfNotPresent(i2, mentioned, foundKeywords);
+                    if (done) {
+                        break;
+                    }
+                    i2++;
+                } else {
                     int i3 = 10;
                     while (true) {
-                        if (i3 >= 1000) {
-                            System.out.println("Failed to find sample for each keyword: " + foundKeywords + "\n\t" + pluralRules3 + "\n\t" + mentioned);
-                            break;
-                        } else if (addIfNotPresent(((double) i3) / 10.0d, mentioned, foundKeywords)) {
-                            break;
-                        } else {
+                        if (i3 < 1000) {
+                            boolean done2 = addIfNotPresent(i3 / 10.0d, mentioned, foundKeywords);
+                            if (done2) {
+                                break;
+                            }
                             i3++;
+                        } else {
+                            System.out.println("Failed to find sample for each keyword: " + foundKeywords + "\n\t" + pluralRules + "\n\t" + mentioned);
+                            break;
                         }
                     }
-                } else if (addIfNotPresent((double) i2, mentioned, foundKeywords)) {
-                    break;
-                } else {
-                    i2++;
                 }
             }
         }
-        mentioned.add(new PluralRules.FixedDecimal(0));
-        mentioned.add(new PluralRules.FixedDecimal(1));
-        mentioned.add(new PluralRules.FixedDecimal(2));
+        mentioned.add(new PluralRules.FixedDecimal(0L));
+        mentioned.add(new PluralRules.FixedDecimal(1L));
+        mentioned.add(new PluralRules.FixedDecimal(2L));
         mentioned.add(new PluralRules.FixedDecimal(0.1d, 1));
         mentioned.add(new PluralRules.FixedDecimal(1.99d, 2));
         mentioned.addAll(fractions(mentioned));
         for (PluralRules.FixedDecimal s2 : mentioned) {
-            String keyword = pluralRules3.select((PluralRules.IFixedDecimal) s2);
+            String keyword = pluralRules.select(s2);
             Set<PluralRules.FixedDecimal> list = sampleFractionMap.get(keyword);
             if (list == null) {
                 list = new LinkedHashSet<>();
@@ -86,7 +89,7 @@ public class PluralSamples {
             }
             list.add(s2);
         }
-        if (keywordsRemaining2 > 0) {
+        if (keywordsRemaining3 > 0) {
             for (String k2 : keywords) {
                 if (!sampleMap.containsKey(k2)) {
                     sampleMap.put(k2, Collections.emptyList());
@@ -107,27 +110,27 @@ public class PluralSamples {
         this._fractionSamples = Collections.unmodifiableSet(mentioned);
     }
 
-    private int addSimpleSamples(PluralRules pluralRules2, int MAX_SAMPLES, Map<String, List<Double>> sampleMap, int keywordsRemaining, double val) {
-        String keyword = pluralRules2.select(val);
+    private int addSimpleSamples(PluralRules pluralRules, int MAX_SAMPLES, Map<String, List<Double>> sampleMap, int keywordsRemaining, double val) {
+        String keyword = pluralRules.select(val);
         boolean keyIsLimited = this._keyLimitedMap.get(keyword).booleanValue();
         List<Double> list = sampleMap.get(keyword);
         if (list == null) {
-            list = new ArrayList<>(MAX_SAMPLES);
+            list = new ArrayList(MAX_SAMPLES);
             sampleMap.put(keyword, list);
         } else if (!keyIsLimited && list.size() == MAX_SAMPLES) {
             return keywordsRemaining;
         }
         list.add(Double.valueOf(val));
-        if (keyIsLimited || list.size() != MAX_SAMPLES) {
-            return keywordsRemaining;
+        if (!keyIsLimited && list.size() == MAX_SAMPLES) {
+            return keywordsRemaining - 1;
         }
-        return keywordsRemaining - 1;
+        return keywordsRemaining;
     }
 
     private void addRelation(Map<String, Set<PluralRules.FixedDecimal>> foundKeywords, String keyword, PluralRules.FixedDecimal s) {
         Set<PluralRules.FixedDecimal> set = foundKeywords.get(keyword);
         if (set == null) {
-            Set<PluralRules.FixedDecimal> hashSet = new HashSet<>();
+            HashSet hashSet = new HashSet();
             set = hashSet;
             foundKeywords.put(keyword, hashSet);
         }
@@ -136,25 +139,22 @@ public class PluralSamples {
 
     private boolean addIfNotPresent(double d, Set<PluralRules.FixedDecimal> mentioned, Map<String, Set<PluralRules.FixedDecimal>> foundKeywords) {
         PluralRules.FixedDecimal numberInfo = new PluralRules.FixedDecimal(d);
-        String keyword = this.pluralRules.select((PluralRules.IFixedDecimal) numberInfo);
-        if (foundKeywords.containsKey(keyword) && !keyword.equals(PluralRules.KEYWORD_OTHER)) {
-            return false;
+        String keyword = this.pluralRules.select(numberInfo);
+        if (!foundKeywords.containsKey(keyword) || keyword.equals(PluralRules.KEYWORD_OTHER)) {
+            addRelation(foundKeywords, keyword, numberInfo);
+            mentioned.add(numberInfo);
+            return keyword.equals(PluralRules.KEYWORD_OTHER) && foundKeywords.get(PluralRules.KEYWORD_OTHER).size() > 1;
         }
-        addRelation(foundKeywords, keyword, numberInfo);
-        mentioned.add(numberInfo);
-        if (!keyword.equals(PluralRules.KEYWORD_OTHER) || foundKeywords.get(PluralRules.KEYWORD_OTHER).size() <= 1) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
     private Set<PluralRules.FixedDecimal> fractions(Set<PluralRules.FixedDecimal> original) {
-        List<Integer> ints;
         Set<Integer> result;
-        String keyword;
-        List<Integer> ints2;
+        List<Integer> ints;
         Set<Integer> result2;
+        List<Integer> ints2;
         Integer base;
+        String keyword;
         Set<PluralRules.FixedDecimal> toAddTo = new HashSet<>();
         Set<Integer> result3 = new HashSet<>();
         for (PluralRules.FixedDecimal base1 : original) {
@@ -165,14 +165,14 @@ public class PluralSamples {
         int j = 0;
         while (j < ints3.size()) {
             Integer base2 = ints3.get(j);
-            String keyword2 = this.pluralRules.select((double) base2.intValue());
+            String keyword2 = this.pluralRules.select(base2.intValue());
             if (keywords.contains(keyword2)) {
                 result = result3;
                 ints = ints3;
             } else {
                 keywords.add(keyword2);
-                toAddTo.add(new PluralRules.FixedDecimal((double) base2.intValue(), 1));
-                toAddTo.add(new PluralRules.FixedDecimal((double) base2.intValue(), 2));
+                toAddTo.add(new PluralRules.FixedDecimal(base2.intValue(), 1));
+                toAddTo.add(new PluralRules.FixedDecimal(base2.intValue(), 2));
                 Integer fract = getDifferentCategory(ints3, keyword2);
                 if (fract.intValue() >= TENS[2]) {
                     toAddTo.add(new PluralRules.FixedDecimal(base2 + "." + fract));
@@ -194,7 +194,7 @@ public class PluralSamples {
                                 ints2 = ints3;
                                 base = base2;
                                 keyword = keyword2;
-                                toAddTo.add(new PluralRules.FixedDecimal(((double) base2.intValue()) + (((double) fract.intValue()) / ((double) iArr[i])), visibleFractions));
+                                toAddTo.add(new PluralRules.FixedDecimal(base2.intValue() + (fract.intValue() / iArr[i]), visibleFractions));
                             }
                             i++;
                             base2 = base;
@@ -202,14 +202,9 @@ public class PluralSamples {
                             ints3 = ints2;
                             keyword2 = keyword;
                         }
-                        List<Integer> list = ints3;
-                        Integer num = base2;
-                        String str = keyword2;
                     }
                     result = result3;
                     ints = ints3;
-                    Integer num2 = base2;
-                    String str2 = keyword2;
                 }
             }
             j++;
@@ -222,7 +217,8 @@ public class PluralSamples {
     private Integer getDifferentCategory(List<Integer> ints, String keyword) {
         for (int i = ints.size() - 1; i >= 0; i--) {
             Integer other = ints.get(i);
-            if (!this.pluralRules.select((double) other.intValue()).equals(keyword)) {
+            String keywordOther = this.pluralRules.select(other.intValue());
+            if (!keywordOther.equals(keyword)) {
                 return other;
             }
         }
@@ -245,52 +241,48 @@ public class PluralSamples {
         if (explicits == null) {
             explicits = Collections.emptySet();
         }
-        if (originalSize <= explicits.size()) {
-            HashSet<Double> subtractedSet = new HashSet<>(values);
-            for (Double explicit : explicits) {
-                subtractedSet.remove(Double.valueOf(explicit.doubleValue() - ((double) offset)));
+        if (originalSize > explicits.size()) {
+            if (originalSize == 1) {
+                if (uniqueValue != null) {
+                    uniqueValue.value = values.iterator().next();
+                }
+                return PluralRules.KeywordStatus.UNIQUE;
             }
-            if (subtractedSet.size() == 0) {
-                return PluralRules.KeywordStatus.SUPPRESSED;
-            }
-            if (uniqueValue != null && subtractedSet.size() == 1) {
-                uniqueValue.value = subtractedSet.iterator().next();
-            }
-            return originalSize == 1 ? PluralRules.KeywordStatus.UNIQUE : PluralRules.KeywordStatus.BOUNDED;
-        } else if (originalSize != 1) {
             return PluralRules.KeywordStatus.BOUNDED;
-        } else {
-            if (uniqueValue != null) {
-                uniqueValue.value = values.iterator().next();
-            }
-            return PluralRules.KeywordStatus.UNIQUE;
         }
+        HashSet<Double> subtractedSet = new HashSet<>(values);
+        for (Double explicit : explicits) {
+            subtractedSet.remove(Double.valueOf(explicit.doubleValue() - offset));
+        }
+        if (subtractedSet.size() == 0) {
+            return PluralRules.KeywordStatus.SUPPRESSED;
+        }
+        if (uniqueValue != null && subtractedSet.size() == 1) {
+            uniqueValue.value = subtractedSet.iterator().next();
+        }
+        return originalSize == 1 ? PluralRules.KeywordStatus.UNIQUE : PluralRules.KeywordStatus.BOUNDED;
     }
 
-    /* access modifiers changed from: package-private */
-    public Map<String, List<Double>> getKeySamplesMap() {
+    Map<String, List<Double>> getKeySamplesMap() {
         return this._keySamplesMap;
     }
 
-    /* access modifiers changed from: package-private */
-    public Map<String, Set<PluralRules.FixedDecimal>> getKeyFractionSamplesMap() {
+    Map<String, Set<PluralRules.FixedDecimal>> getKeyFractionSamplesMap() {
         return this._keyFractionSamplesMap;
     }
 
-    /* access modifiers changed from: package-private */
-    public Set<PluralRules.FixedDecimal> getFractionSamples() {
+    Set<PluralRules.FixedDecimal> getFractionSamples() {
         return this._fractionSamples;
     }
 
-    /* access modifiers changed from: package-private */
-    public Collection<Double> getAllKeywordValues(String keyword) {
+    Collection<Double> getAllKeywordValues(String keyword) {
         if (!this.pluralRules.getKeywords().contains(keyword)) {
             return Collections.emptyList();
         }
         Collection<Double> result = getKeySamplesMap().get(keyword);
-        if (result.size() <= 2 || this._keyLimitedMap.get(keyword).booleanValue()) {
-            return result;
+        if (result.size() > 2 && !this._keyLimitedMap.get(keyword).booleanValue()) {
+            return null;
         }
-        return null;
+        return result;
     }
 }

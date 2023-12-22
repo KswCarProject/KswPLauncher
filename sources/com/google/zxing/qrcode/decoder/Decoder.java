@@ -11,6 +11,7 @@ import com.google.zxing.common.reedsolomon.ReedSolomonException;
 import java.util.Map;
 import kotlin.UByte;
 
+/* loaded from: classes.dex */
 public final class Decoder {
     private final ReedSolomonDecoder rsDecoder = new ReedSolomonDecoder(GenericGF.QR_CODE_FIELD_256);
 
@@ -32,17 +33,16 @@ public final class Decoder {
         ChecksumException ce = null;
         try {
             return decode(parser, hints);
-        } catch (FormatException e) {
-            fe = e;
+        } catch (ChecksumException e) {
+            ce = e;
             try {
                 parser.remask();
                 parser.setMirror(true);
                 parser.readVersion();
                 parser.readFormatInformation();
                 parser.mirror();
-                DecoderResult decode = decode(parser, hints);
-                DecoderResult result = decode;
-                decode.setOther(new QRCodeDecoderMetaData(true));
+                DecoderResult result = decode(parser, hints);
+                result.setOther(new QRCodeDecoderMetaData(true));
                 return result;
             } catch (ChecksumException | FormatException e2) {
                 if (fe != null) {
@@ -50,16 +50,15 @@ public final class Decoder {
                 }
                 throw ce;
             }
-        } catch (ChecksumException e3) {
-            ce = e3;
+        } catch (FormatException e3) {
+            fe = e3;
             parser.remask();
             parser.setMirror(true);
             parser.readVersion();
             parser.readFormatInformation();
             parser.mirror();
-            DecoderResult decode2 = decode(parser, hints);
-            DecoderResult result2 = decode2;
-            decode2.setOther(new QRCodeDecoderMetaData(true));
+            DecoderResult result2 = decode(parser, hints);
+            result2.setOther(new QRCodeDecoderMetaData(true));
             return result2;
         }
     }
@@ -75,9 +74,8 @@ public final class Decoder {
         byte[] resultBytes = new byte[totalBytes];
         int resultOffset = 0;
         for (DataBlock dataBlock2 : dataBlocks) {
-            DataBlock dataBlock3 = dataBlock2;
             byte[] codewordBytes = dataBlock2.getCodewords();
-            int numDataCodewords = dataBlock3.getNumDataCodewords();
+            int numDataCodewords = dataBlock2.getNumDataCodewords();
             correctErrors(codewordBytes, numDataCodewords);
             int i = 0;
             while (i < numDataCodewords) {

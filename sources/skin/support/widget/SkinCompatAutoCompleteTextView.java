@@ -3,11 +3,12 @@ package skin.support.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.AppCompatAutoCompleteTextView;
+import android.support.p004v7.widget.AppCompatAutoCompleteTextView;
 import android.util.AttributeSet;
-import skin.support.R;
+import skin.support.C1899R;
 import skin.support.content.res.SkinCompatResources;
 
+/* loaded from: classes.dex */
 public class SkinCompatAutoCompleteTextView extends AppCompatAutoCompleteTextView implements SkinCompatSupportable {
     private static final int[] TINT_ATTRS = {16843126};
     private SkinCompatBackgroundHelper mBackgroundTintHelper;
@@ -15,11 +16,11 @@ public class SkinCompatAutoCompleteTextView extends AppCompatAutoCompleteTextVie
     private SkinCompatTextHelper mTextHelper;
 
     public SkinCompatAutoCompleteTextView(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public SkinCompatAutoCompleteTextView(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.autoCompleteTextViewStyle);
+        this(context, attrs, C1899R.attr.autoCompleteTextViewStyle);
     }
 
     public SkinCompatAutoCompleteTextView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -39,6 +40,7 @@ public class SkinCompatAutoCompleteTextView extends AppCompatAutoCompleteTextVie
         create.loadFromAttributes(attrs, defStyleAttr);
     }
 
+    @Override // android.support.p004v7.widget.AppCompatAutoCompleteTextView, android.widget.AutoCompleteTextView
     public void setDropDownBackgroundResource(int resId) {
         super.setDropDownBackgroundResource(resId);
         this.mDropDownBackgroundResId = resId;
@@ -54,6 +56,7 @@ public class SkinCompatAutoCompleteTextView extends AppCompatAutoCompleteTextVie
         }
     }
 
+    @Override // android.support.p004v7.widget.AppCompatAutoCompleteTextView, android.view.View
     public void setBackgroundResource(int resId) {
         super.setBackgroundResource(resId);
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
@@ -62,10 +65,12 @@ public class SkinCompatAutoCompleteTextView extends AppCompatAutoCompleteTextVie
         }
     }
 
+    @Override // android.widget.TextView
     public void setTextAppearance(int resId) {
         setTextAppearance(getContext(), resId);
     }
 
+    @Override // android.support.p004v7.widget.AppCompatAutoCompleteTextView, android.widget.TextView
     public void setTextAppearance(Context context, int resId) {
         super.setTextAppearance(context, resId);
         SkinCompatTextHelper skinCompatTextHelper = this.mTextHelper;
@@ -74,6 +79,7 @@ public class SkinCompatAutoCompleteTextView extends AppCompatAutoCompleteTextVie
         }
     }
 
+    @Override // android.widget.TextView
     public void setCompoundDrawablesRelativeWithIntrinsicBounds(int start, int top, int end, int bottom) {
         super.setCompoundDrawablesRelativeWithIntrinsicBounds(start, top, end, bottom);
         SkinCompatTextHelper skinCompatTextHelper = this.mTextHelper;
@@ -82,6 +88,7 @@ public class SkinCompatAutoCompleteTextView extends AppCompatAutoCompleteTextVie
         }
     }
 
+    @Override // android.widget.TextView
     public void setCompoundDrawablesWithIntrinsicBounds(int left, int top, int right, int bottom) {
         super.setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom);
         SkinCompatTextHelper skinCompatTextHelper = this.mTextHelper;
@@ -90,6 +97,7 @@ public class SkinCompatAutoCompleteTextView extends AppCompatAutoCompleteTextVie
         }
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
         if (skinCompatBackgroundHelper != null) {

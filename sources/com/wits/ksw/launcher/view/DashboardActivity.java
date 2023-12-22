@@ -7,14 +7,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RadioGroup;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.MainActivity;
-import com.wits.ksw.R;
 import com.wits.ksw.databinding.ALSDasoardBind;
 import com.wits.ksw.databinding.ActivityDashBoardAudiBinding;
 import com.wits.ksw.databinding.ActivityDashBoardAudiMib3Binding;
@@ -35,13 +34,14 @@ import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import skin.support.content.res.SkinCompatResources;
 
+/* loaded from: classes16.dex */
 public class DashboardActivity extends BaseThemeActivity {
-    /* access modifiers changed from: private */
-    public static final String TAG = DashboardActivity.class.getSimpleName();
+    private static final String TAG = DashboardActivity.class.getSimpleName();
     private int carManufacturer;
     private BmwId8DashboardLayoutNewBinding mBmwId8NewBinding;
     String screenFile = "";
-    private Handler screenHandler = new Handler() {
+    private Handler screenHandler = new Handler() { // from class: com.wits.ksw.launcher.view.DashboardActivity.6
+        @Override // android.os.Handler
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 666:
@@ -54,13 +54,14 @@ public class DashboardActivity extends BaseThemeActivity {
             }
         }
     };
-    /* access modifiers changed from: private */
-    public DashboardViewModel viewMode;
+    private DashboardViewModel viewMode;
 
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity, android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity
     public void onCreate(Bundle savedInstanceState) {
         int width = getWindowManager().getDefaultDisplay().getWidth();
-        Log.d(TAG, "onCreate: width = " + width + "height=" + getWindowManager().getDefaultDisplay().getHeight());
-        DashboardViewModel dashboardViewModel = (DashboardViewModel) ViewModelProviders.of((FragmentActivity) this).get(DashboardViewModel.class);
+        int height = getWindowManager().getDefaultDisplay().getHeight();
+        Log.d(TAG, "onCreate: width = " + width + "height=" + height);
+        DashboardViewModel dashboardViewModel = (DashboardViewModel) ViewModelProviders.m59of(this).get(DashboardViewModel.class);
         this.viewMode = dashboardViewModel;
         dashboardViewModel.initData();
         initCarManufacturer();
@@ -68,8 +69,8 @@ public class DashboardActivity extends BaseThemeActivity {
         super.onCreate(savedInstanceState);
     }
 
-    /* access modifiers changed from: protected */
-    public void initUIKSWID7View() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initUIKSWID7View() {
         initBmwid7UiView();
     }
 
@@ -86,53 +87,54 @@ public class DashboardActivity extends BaseThemeActivity {
         }
         Log.d(TAG, "initCarManufacturer: " + this.carManufacturer);
         int i2 = this.carManufacturer;
-        if (i2 == 2 || i2 == 3) {
-            this.viewMode.hideOil.set(true);
-        } else {
+        if (i2 != 2 && i2 != 3) {
             this.viewMode.hideOil.set(false);
+        } else {
+            this.viewMode.hideOil.set(true);
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void initBmwid5UiView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBmwid5UiView() {
         initBmwid7UiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBmwid6UiView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBmwid6UiView() {
         initBmwid7UiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBmwid6CuspUiView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBmwid6CuspUiView() {
         initBmwid7UiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBmwEvoId6GS() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBmwEvoId6GS() {
         initBmwid6UiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBmwid7UiView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBmwid7UiView() {
         initUI();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBcUiView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBcUiView() {
         initUI();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBenzGSView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBenzGSView() {
         initBcUiView();
     }
 
     private void initSevenDashBoard() {
-        SevenDasoardBind binding = (SevenDasoardBind) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_seven);
+        SevenDasoardBind binding = (SevenDasoardBind) DataBindingUtil.setContentView(this, C0899R.C0902layout.activity_dash_board_seven);
         DashboardViewModel.carInfo.sevenmode.set(this.viewMode.getSevenModel());
         binding.setViewModel(this.viewMode);
-        binding.getRoot().setOnTouchListener(new View.OnTouchListener() {
+        binding.getRoot().setOnTouchListener(new View.OnTouchListener() { // from class: com.wits.ksw.launcher.view.DashboardActivity.1
+            @Override // android.view.View.OnTouchListener
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == 0) {
                     DashboardActivity.this.viewMode.showSevenMenu.set(event.getX() < 252.0f);
@@ -142,85 +144,95 @@ public class DashboardActivity extends BaseThemeActivity {
         });
     }
 
-    /* access modifiers changed from: protected */
-    public void initGSUiView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initGSUiView() {
         initBmwid7UiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initCommonUIGSUGView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initCommonUIGSUGView() {
         initBmwid6UiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBenzMBUXView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBenzMBUXView() {
         initBcUiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBenz_MBUX_2021_View() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBenz_MBUX_2021_View() {
         initBcUiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBenz_MBUX_2021_KSW_View() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBenz_MBUX_2021_KSW_View() {
         initBcUiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBenz_MBUX_2021_KSW_View_V2() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBenz_MBUX_2021_KSW_View_new() {
         initBcUiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBenz_MBUX_2021_View2() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBenz_MBUX_2021_KSW_View_V2() {
         initBcUiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBenz_NTG6_FY_View() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBenz_MBUX_2021_View2() {
         initBcUiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initUI_NTG6_FY_ViewV2() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBenz_NTG6_FY_View() {
         initBcUiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initAudiView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initUI_NTG6_FY_ViewV2() {
+        initBcUiView();
+    }
+
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBenz_NTG6_FY_View_new() {
+        initBcUiView();
+    }
+
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initAudiView() {
         initUI();
     }
 
-    /* access modifiers changed from: protected */
-    public void initAudiMbi3View() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initAudiMbi3View() {
         initAudiMib3UI();
     }
 
-    /* access modifiers changed from: protected */
-    public void initAudiMbi3ViewV2() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initAudiMbi3ViewV2() {
         initAudiMib3UI();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBenzNTG5View() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBenzNTG5View() {
         initBcUiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initAlsView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initAlsView() {
         initBmwid7UiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBwmNbt() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBwmNbt() {
         Log.d("zgy", "---initBwmNbt()--BBB--");
         initBmwid7UiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initLexus() {
-        ActivityDashBoardLexusBinding binding = (ActivityDashBoardLexusBinding) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_lexus);
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initLexus() {
+        ActivityDashBoardLexusBinding binding = (ActivityDashBoardLexusBinding) DataBindingUtil.setContentView(this, C0899R.C0902layout.activity_dash_board_lexus);
         binding.setViewModel(this.viewMode);
         AnimationDrawable animationDrawableL = (AnimationDrawable) binding.lexusIvLeft.getBackground();
         AnimationDrawable animationDrawableR = (AnimationDrawable) binding.lexusIvRight.getBackground();
@@ -234,98 +246,111 @@ public class DashboardActivity extends BaseThemeActivity {
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void initLexusLs() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initLexusLs() {
         initLexus();
     }
 
-    /* access modifiers changed from: protected */
-    public void initLexusLsDrag() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initLexusLsDrag() {
         initLexus();
     }
 
-    /* access modifiers changed from: protected */
-    public void initLexusLsDragV2() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initLexusLsDragV2() {
         initLexus();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBwmID7Hicar() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBwmID7Hicar() {
         initBmwid7UiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initRomeo() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initRomeo() {
         initSevenDashBoard();
     }
 
-    /* access modifiers changed from: protected */
-    public void initCommonUIGSUG1024View() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initRomeo_V2() {
+        initSevenDashBoard();
+    }
+
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initCommonUIGSUG1024View() {
         initBcUiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initCommonUIKSWMBUX1024View() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initCommonUIKSWMBUX1024View() {
         initBcUiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initAlsId7UI() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initAlsId7UI() {
         initBmwid7UiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initAlsId7UI_V2() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initAlsId7UI_V2() {
         initBmwid7UiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initLandRover() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initLandRover() {
         initBmwid7UiView();
-        View tempAndoil = findViewById(R.id.constraintLayout);
+        View tempAndoil = findViewById(C0899R.C0901id.constraintLayout);
         if (tempAndoil != null) {
             tempAndoil.setVisibility(8);
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void initAlsId7UiView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initAlsId7UiView() {
         initBmwid7UiView();
     }
 
-    /* access modifiers changed from: protected */
-    public void initAudi_mib3_FyUiView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initAudi_mib3_FyUiView() {
         initAudiMib3FyUI();
     }
 
-    /* access modifiers changed from: protected */
-    public void initAudi_mib3_Fy_V2_UiView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initAudi_mib3_Fy_V2_UiView() {
         initAudiMib3FyUI();
     }
 
-    /* access modifiers changed from: protected */
-    public void initAudiMib3Ty() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initAudiMib3Ty() {
         initAudiMib3UI();
     }
 
-    /* access modifiers changed from: protected */
-    public void initBmwId8UiView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBmwId8UiView() {
         setActivityFull();
-        BmwId8DashboardLayoutNewBinding bmwId8DashboardLayoutNewBinding = (BmwId8DashboardLayoutNewBinding) DataBindingUtil.setContentView(this, R.layout.bmw_id8_dashboard_layout_new);
+        BmwId8DashboardLayoutNewBinding bmwId8DashboardLayoutNewBinding = (BmwId8DashboardLayoutNewBinding) DataBindingUtil.setContentView(this, C0899R.C0902layout.bmw_id8_dashboard_layout_new);
         this.mBmwId8NewBinding = bmwId8DashboardLayoutNewBinding;
         bmwId8DashboardLayoutNewBinding.setViewModel(this.viewMode);
     }
 
-    /* access modifiers changed from: protected */
-    public void initBmwId8GsUiView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBmwId8GsUiView() {
         setActivityFull();
-        BmwId8DashboardLayoutNewBinding bmwId8DashboardLayoutNewBinding = (BmwId8DashboardLayoutNewBinding) DataBindingUtil.setContentView(this, R.layout.bmw_id8_dashboard_layout_new);
+        BmwId8DashboardLayoutNewBinding bmwId8DashboardLayoutNewBinding = (BmwId8DashboardLayoutNewBinding) DataBindingUtil.setContentView(this, C0899R.C0902layout.bmw_id8_dashboard_layout_new);
         this.mBmwId8NewBinding = bmwId8DashboardLayoutNewBinding;
         bmwId8DashboardLayoutNewBinding.setViewModel(this.viewMode);
     }
 
-    /* access modifiers changed from: protected */
-    public void initBmwid7V2UiView() {
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBmwId8PempUiView() {
+        setActivityFull();
+        BmwId8DashboardLayoutNewBinding bmwId8DashboardLayoutNewBinding = (BmwId8DashboardLayoutNewBinding) DataBindingUtil.setContentView(this, C0899R.C0902layout.bmw_id8_dashboard_layout_new);
+        this.mBmwId8NewBinding = bmwId8DashboardLayoutNewBinding;
+        bmwId8DashboardLayoutNewBinding.setViewModel(this.viewMode);
+    }
+
+    @Override // com.wits.ksw.launcher.base.BaseThemeActivity
+    protected void initBmwid7V2UiView() {
         initBmwid7UiView();
     }
 
@@ -335,7 +360,8 @@ public class DashboardActivity extends BaseThemeActivity {
             initSevenDashBoard();
         } else if (this.viewMode.isLCModel()) {
             setFull();
-            ((ActivityDashBoardLcBinding) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_lc)).setViewModel(this.viewMode);
+            ActivityDashBoardLcBinding binding = (ActivityDashBoardLcBinding) DataBindingUtil.setContentView(this, C0899R.C0902layout.activity_dash_board_lc);
+            binding.setViewModel(this.viewMode);
         } else {
             setFull();
             initAudiMib3FyDashBoard();
@@ -343,7 +369,7 @@ public class DashboardActivity extends BaseThemeActivity {
     }
 
     private void initAudiMib3FyDashBoard() {
-        final ActivityDashBoardAudiMib3FyBinding binding = (ActivityDashBoardAudiMib3FyBinding) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_audi_mib3_fy);
+        final ActivityDashBoardAudiMib3FyBinding binding = (ActivityDashBoardAudiMib3FyBinding) DataBindingUtil.setContentView(this, C0899R.C0902layout.activity_dash_board_audi_mib3_fy);
         DashboardViewModel dashboardViewModel = this.viewMode;
         dashboardViewModel.setAlsModel(dashboardViewModel.getAlsModel());
         binding.setViewModel(this.viewMode);
@@ -357,12 +383,14 @@ public class DashboardActivity extends BaseThemeActivity {
             binding.modeRg.check(binding.motionRb.getId());
             setAudiMib3FyRes(2, binding);
         }
-        binding.showModeIv.setOnClickListener(new View.OnClickListener() {
+        binding.showModeIv.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.launcher.view.-$$Lambda$DashboardActivity$Bi0r8X10Riu0JqVRyOMuUdbrCmw
+            @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
                 DashboardActivity.this.lambda$initAudiMib3FyDashBoard$0$DashboardActivity(view);
             }
         });
-        binding.modeRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        binding.modeRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() { // from class: com.wits.ksw.launcher.view.DashboardActivity.2
+            @Override // android.widget.RadioGroup.OnCheckedChangeListener
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == binding.energyConservationRb.getId()) {
                     DashboardActivity.this.viewMode.setAlsModel(0);
@@ -377,7 +405,8 @@ public class DashboardActivity extends BaseThemeActivity {
                 DashboardActivity.this.viewMode.showAls.set(false);
             }
         });
-        binding.getRoot().setOnTouchListener(new View.OnTouchListener() {
+        binding.getRoot().setOnTouchListener(new View.OnTouchListener() { // from class: com.wits.ksw.launcher.view.DashboardActivity.3
+            @Override // android.view.View.OnTouchListener
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == 0 && DashboardActivity.this.viewMode != null && DashboardActivity.this.viewMode.isAlsModel() && DashboardActivity.this.viewMode.showAls.get()) {
                     DashboardActivity.this.viewMode.showAls.set(false);
@@ -391,24 +420,24 @@ public class DashboardActivity extends BaseThemeActivity {
         this.viewMode.showAls.set(true);
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void setAudiMib3FyRes(int mode, ActivityDashBoardAudiMib3FyBinding binding) {
         if (binding != null) {
             switch (mode) {
                 case 0:
-                    binding.linearLayout2.setBackgroundResource(R.drawable.ec_audi_mib3_dashboard_bk);
-                    binding.speedometerImageView.setImageResource(R.drawable.ec_audi_mib3_fy_speed_wtach_level);
-                    binding.tachometerImageView.setImageResource(R.drawable.ec_audi_mib3_dashboard_8);
+                    binding.linearLayout2.setBackgroundResource(C0899R.C0900drawable.ec_audi_mib3_dashboard_bk);
+                    binding.speedometerImageView.setImageResource(C0899R.C0900drawable.ec_audi_mib3_fy_speed_wtach_level);
+                    binding.tachometerImageView.setImageResource(C0899R.C0900drawable.ec_audi_mib3_dashboard_8);
                     return;
                 case 1:
-                    binding.linearLayout2.setBackgroundResource(R.drawable.comfortable_audi_mib3_dashboard_bk);
-                    binding.speedometerImageView.setImageResource(R.drawable.comfortable_audi_mib3_fy_speed_wtach_level);
-                    binding.tachometerImageView.setImageResource(R.drawable.comfortable_audi_mib3_dashboard_8);
+                    binding.linearLayout2.setBackgroundResource(C0899R.C0900drawable.comfortable_audi_mib3_dashboard_bk);
+                    binding.speedometerImageView.setImageResource(C0899R.C0900drawable.comfortable_audi_mib3_fy_speed_wtach_level);
+                    binding.tachometerImageView.setImageResource(C0899R.C0900drawable.comfortable_audi_mib3_dashboard_8);
                     return;
                 case 2:
-                    binding.linearLayout2.setBackgroundResource(R.drawable.motion_audi_mib3_dashboard_bk);
-                    binding.speedometerImageView.setImageResource(R.drawable.motion_audi_mib3_fy_speed_wtach_level);
-                    binding.tachometerImageView.setImageResource(R.drawable.motion_audi_mib3_dashboard_8);
+                    binding.linearLayout2.setBackgroundResource(C0899R.C0900drawable.motion_audi_mib3_dashboard_bk);
+                    binding.speedometerImageView.setImageResource(C0899R.C0900drawable.motion_audi_mib3_fy_speed_wtach_level);
+                    binding.tachometerImageView.setImageResource(C0899R.C0900drawable.motion_audi_mib3_dashboard_8);
                     return;
                 default:
                     return;
@@ -417,7 +446,7 @@ public class DashboardActivity extends BaseThemeActivity {
     }
 
     private void initAlsDashboard() {
-        final ALSDasoardBind binding = (ALSDasoardBind) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_als);
+        final ALSDasoardBind binding = (ALSDasoardBind) DataBindingUtil.setContentView(this, C0899R.C0902layout.activity_dash_board_als);
         DashboardViewModel dashboardViewModel = this.viewMode;
         dashboardViewModel.setAlsModel(dashboardViewModel.getAlsModel());
         binding.setViewModel(this.viewMode);
@@ -428,12 +457,14 @@ public class DashboardActivity extends BaseThemeActivity {
         } else if (this.viewMode.getAlsModel() == 2) {
             binding.alsRadioGroup.check(binding.alsRadioButton3.getId());
         }
-        binding.alsCloseView.setOnClickListener(new View.OnClickListener() {
+        binding.alsCloseView.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.launcher.view.-$$Lambda$DashboardActivity$V64oXRIPCz5HLFOg660VSxTx0Hg
+            @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
                 DashboardActivity.this.lambda$initAlsDashboard$1$DashboardActivity(view);
             }
         });
-        binding.alsRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        binding.alsRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() { // from class: com.wits.ksw.launcher.view.DashboardActivity.4
+            @Override // android.widget.RadioGroup.OnCheckedChangeListener
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == binding.alsRadioButton1.getId()) {
                     DashboardActivity.this.viewMode.setAlsModel(0);
@@ -445,7 +476,8 @@ public class DashboardActivity extends BaseThemeActivity {
                 DashboardActivity.this.viewMode.showAls.set(false);
             }
         });
-        binding.getRoot().setOnTouchListener(new View.OnTouchListener() {
+        binding.getRoot().setOnTouchListener(new View.OnTouchListener() { // from class: com.wits.ksw.launcher.view.DashboardActivity.5
+            @Override // android.view.View.OnTouchListener
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == 0 && DashboardActivity.this.viewMode != null && DashboardActivity.this.viewMode.isAlsModel()) {
                     DashboardActivity.this.viewMode.showAls.set(event.getX() < 235.0f);
@@ -459,6 +491,7 @@ public class DashboardActivity extends BaseThemeActivity {
         this.viewMode.showAls.set(false);
     }
 
+    @Override // android.support.p004v7.app.AppCompatActivity, android.app.Activity, android.view.KeyEvent.Callback
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == 66) {
             DashboardViewModel dashboardViewModel = this.viewMode;
@@ -490,10 +523,13 @@ public class DashboardActivity extends BaseThemeActivity {
             initSevenDashBoard();
         } else if (this.viewMode.isLCModel()) {
             setFull();
-            ((ActivityDashBoardLcBinding) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_lc)).setViewModel(this.viewMode);
+            ActivityDashBoardLcBinding binding = (ActivityDashBoardLcBinding) DataBindingUtil.setContentView(this, C0899R.C0902layout.activity_dash_board_lc);
+            binding.setViewModel(this.viewMode);
         } else {
             setFull();
-            ((ActivityDashBoardAudiMib3Binding) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_audi_mib3)).setViewModel(this.viewMode);
+            setStatusBarTranslucent();
+            ActivityDashBoardAudiMib3Binding binding2 = (ActivityDashBoardAudiMib3Binding) DataBindingUtil.setContentView(this, C0899R.C0902layout.activity_dash_board_audi_mib3);
+            binding2.setViewModel(this.viewMode);
         }
     }
 
@@ -504,41 +540,48 @@ public class DashboardActivity extends BaseThemeActivity {
         } else if (this.viewMode.isSevenModel()) {
             initSevenDashBoard();
         } else {
-            ((DasoardBind) DataBindingUtil.setContentView(this, R.layout.activity_dash_board)).setViewModel(this.viewMode);
+            DasoardBind binding = (DasoardBind) DataBindingUtil.setContentView(this, C0899R.C0902layout.activity_dash_board);
+            binding.setViewModel(this.viewMode);
         }
     }
 
     private void initBzUI() {
         if (this.viewMode.isAlsModel()) {
             setActivityFull();
+            setFull();
+            setStatusBarTranslucent();
             initAlsDashboard();
         } else if (this.viewMode.isSevenModel()) {
             setActivityFull();
+            setFull();
+            setStatusBarTranslucent();
             initSevenDashBoard();
         } else {
             setFull();
-            ((ActivityNtg6DashBoardBinding) DataBindingUtil.setContentView(this, R.layout.activity_ntg6_dash_board)).setViewModel(this.viewMode);
+            setStatusBarTranslucent();
+            ActivityNtg6DashBoardBinding ntg6DasoardBind = (ActivityNtg6DashBoardBinding) DataBindingUtil.setContentView(this, C0899R.C0902layout.activity_ntg6_dash_board);
+            ntg6DasoardBind.setViewModel(this.viewMode);
         }
         this.viewMode.hideOil.set(true);
     }
 
-    /* access modifiers changed from: protected */
-    public void onResume() {
+    @Override // android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onResume() {
         super.onResume();
         try {
             if (UiThemeUtils.isLEXUS_LS_UI(this) || UiThemeUtils.isLEXUS_LS_UI_V2(this)) {
-                this.screenHandler.sendEmptyMessageDelayed(666, 1800);
+                this.screenHandler.sendEmptyMessageDelayed(666, 1800L);
             }
             if (UiThemeUtils.isLEXUS_UI(this)) {
                 McuImpl.getInstance().getCarInfo().unitEnImg.set(Boolean.valueOf(KswUtils.ismph()));
             }
-            if (UiThemeUtils.isBMW_ID8_UI(this) || UiThemeUtils.isUI_GS_ID8(this)) {
+            if (UiThemeUtils.isBMW_ID8_UI(this) || UiThemeUtils.isUI_GS_ID8(this) || UiThemeUtils.isUI_PEMP_ID8(this)) {
                 BmwId8DashboardLayoutNewBinding bmwId8DashboardLayoutNewBinding = this.mBmwId8NewBinding;
                 if (bmwId8DashboardLayoutNewBinding != null) {
-                    bmwId8DashboardLayoutNewBinding.bmwId8DashboardLay.setBackground(SkinCompatResources.getDrawable(this, R.drawable.id8_dashboard_bg_new));
-                    this.mBmwId8NewBinding.bmwId8DashboardMusicLay.bmwId8DashboardMusicName.setTextColor(SkinCompatResources.getColor(this, R.color.id8_main_style_color));
-                    this.mBmwId8NewBinding.bmwId8DashboardLeftBg.setBackground(SkinCompatResources.getDrawable(this, R.drawable.id8_dashboard_bg_l_new));
-                    this.mBmwId8NewBinding.bmwId8DashboardRightBg.setBackground(SkinCompatResources.getDrawable(this, R.drawable.id8_dashboard_bg_r_new));
+                    bmwId8DashboardLayoutNewBinding.bmwId8DashboardLay.setBackground(SkinCompatResources.getDrawable(this, C0899R.C0900drawable.id8_dashboard_bg_new));
+                    this.mBmwId8NewBinding.bmwId8DashboardMusicLay.bmwId8DashboardMusicName.setTextColor(SkinCompatResources.getColor(this, C0899R.color.id8_main_style_color));
+                    this.mBmwId8NewBinding.bmwId8DashboardLeftBg.setBackground(SkinCompatResources.getDrawable(this, C0899R.C0900drawable.id8_dashboard_bg_l_new));
+                    this.mBmwId8NewBinding.bmwId8DashboardRightBg.setBackground(SkinCompatResources.getDrawable(this, C0899R.C0900drawable.id8_dashboard_bg_r_new));
                 }
                 boolean isPlay = PowerManagerApp.getManager().getStatusBoolean("play");
                 int lastMode = PowerManagerApp.getStatusInt("lastMode");
@@ -557,8 +600,8 @@ public class DashboardActivity extends BaseThemeActivity {
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void onPause() {
+    @Override // android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onPause() {
         super.onPause();
         if (UiThemeUtils.isLEXUS_LS_UI(this) || UiThemeUtils.isLEXUS_LS_UI_V2(this)) {
             this.screenHandler.removeMessages(666);
@@ -571,10 +614,12 @@ public class DashboardActivity extends BaseThemeActivity {
             initSevenDashBoard();
         } else if (this.viewMode.isLCModel()) {
             setFull();
-            ((ActivityDashBoardLcBinding) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_lc)).setViewModel(this.viewMode);
+            ActivityDashBoardLcBinding binding = (ActivityDashBoardLcBinding) DataBindingUtil.setContentView(this, C0899R.C0902layout.activity_dash_board_lc);
+            binding.setViewModel(this.viewMode);
         } else {
             setFull();
-            ((ActivityDashBoardAudiBinding) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_audi)).setViewModel(this.viewMode);
+            ActivityDashBoardAudiBinding binding2 = (ActivityDashBoardAudiBinding) DataBindingUtil.setContentView(this, C0899R.C0902layout.activity_dash_board_audi);
+            binding2.setViewModel(this.viewMode);
         }
     }
 }

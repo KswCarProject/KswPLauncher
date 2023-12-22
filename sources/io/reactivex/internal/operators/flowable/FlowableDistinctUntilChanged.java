@@ -1,6 +1,7 @@
 package io.reactivex.internal.operators.flowable;
 
 import io.reactivex.Flowable;
+import io.reactivex.FlowableSubscriber;
 import io.reactivex.functions.BiPredicate;
 import io.reactivex.functions.Function;
 import io.reactivex.internal.fuseable.ConditionalSubscriber;
@@ -8,43 +9,48 @@ import io.reactivex.internal.subscribers.BasicFuseableConditionalSubscriber;
 import io.reactivex.internal.subscribers.BasicFuseableSubscriber;
 import org.reactivestreams.Subscriber;
 
+/* loaded from: classes.dex */
 public final class FlowableDistinctUntilChanged<T, K> extends AbstractFlowableWithUpstream<T, T> {
     final BiPredicate<? super K, ? super K> comparer;
     final Function<? super T, K> keySelector;
 
-    public FlowableDistinctUntilChanged(Flowable<T> source, Function<? super T, K> keySelector2, BiPredicate<? super K, ? super K> comparer2) {
+    public FlowableDistinctUntilChanged(Flowable<T> source, Function<? super T, K> keySelector, BiPredicate<? super K, ? super K> comparer) {
         super(source);
-        this.keySelector = keySelector2;
-        this.comparer = comparer2;
+        this.keySelector = keySelector;
+        this.comparer = comparer;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
         if (s instanceof ConditionalSubscriber) {
-            this.source.subscribe(new DistinctUntilChangedConditionalSubscriber((ConditionalSubscriber) s, this.keySelector, this.comparer));
-        } else {
-            this.source.subscribe(new DistinctUntilChangedSubscriber(s, this.keySelector, this.comparer));
+            ConditionalSubscriber<? super T> cs = (ConditionalSubscriber) s;
+            this.source.subscribe((FlowableSubscriber) new DistinctUntilChangedConditionalSubscriber(cs, this.keySelector, this.comparer));
+            return;
         }
+        this.source.subscribe((FlowableSubscriber) new DistinctUntilChangedSubscriber(s, this.keySelector, this.comparer));
     }
 
+    /* loaded from: classes.dex */
     static final class DistinctUntilChangedSubscriber<T, K> extends BasicFuseableSubscriber<T, T> implements ConditionalSubscriber<T> {
         final BiPredicate<? super K, ? super K> comparer;
         boolean hasValue;
         final Function<? super T, K> keySelector;
         K last;
 
-        DistinctUntilChangedSubscriber(Subscriber<? super T> actual, Function<? super T, K> keySelector2, BiPredicate<? super K, ? super K> comparer2) {
+        DistinctUntilChangedSubscriber(Subscriber<? super T> actual, Function<? super T, K> keySelector, BiPredicate<? super K, ? super K> comparer) {
             super(actual);
-            this.keySelector = keySelector2;
-            this.comparer = comparer2;
+            this.keySelector = keySelector;
+            this.comparer = comparer;
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             if (!tryOnNext(t)) {
-                this.upstream.request(1);
+                this.upstream.request(1L);
             }
         }
 
+        @Override // io.reactivex.internal.fuseable.ConditionalSubscriber
         public boolean tryOnNext(T t) {
             if (this.done) {
                 return false;
@@ -56,7 +62,7 @@ public final class FlowableDistinctUntilChanged<T, K> extends AbstractFlowableWi
             try {
                 K key = this.keySelector.apply(t);
                 if (this.hasValue) {
-                    boolean equal = this.comparer.test(this.last, key);
+                    boolean equal = this.comparer.test((K) this.last, key);
                     this.last = key;
                     if (equal) {
                         return false;
@@ -73,13 +79,15 @@ public final class FlowableDistinctUntilChanged<T, K> extends AbstractFlowableWi
             }
         }
 
+        @Override // io.reactivex.internal.fuseable.QueueFuseable
         public int requestFusion(int mode) {
             return transitiveBoundaryFusion(mode);
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public T poll() throws Exception {
             while (true) {
-                T v = this.qs.poll();
+                T v = this.f345qs.poll();
                 if (v == null) {
                     return null;
                 }
@@ -88,37 +96,40 @@ public final class FlowableDistinctUntilChanged<T, K> extends AbstractFlowableWi
                     this.hasValue = true;
                     this.last = key;
                     return v;
-                } else if (!this.comparer.test(this.last, key)) {
+                } else if (!this.comparer.test((K) this.last, key)) {
                     this.last = key;
                     return v;
                 } else {
                     this.last = key;
                     if (this.sourceMode != 1) {
-                        this.upstream.request(1);
+                        this.upstream.request(1L);
                     }
                 }
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class DistinctUntilChangedConditionalSubscriber<T, K> extends BasicFuseableConditionalSubscriber<T, T> {
         final BiPredicate<? super K, ? super K> comparer;
         boolean hasValue;
         final Function<? super T, K> keySelector;
         K last;
 
-        DistinctUntilChangedConditionalSubscriber(ConditionalSubscriber<? super T> actual, Function<? super T, K> keySelector2, BiPredicate<? super K, ? super K> comparer2) {
+        DistinctUntilChangedConditionalSubscriber(ConditionalSubscriber<? super T> actual, Function<? super T, K> keySelector, BiPredicate<? super K, ? super K> comparer) {
             super(actual);
-            this.keySelector = keySelector2;
-            this.comparer = comparer2;
+            this.keySelector = keySelector;
+            this.comparer = comparer;
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             if (!tryOnNext(t)) {
-                this.upstream.request(1);
+                this.upstream.request(1L);
             }
         }
 
+        @Override // io.reactivex.internal.fuseable.ConditionalSubscriber
         public boolean tryOnNext(T t) {
             if (this.done) {
                 return false;
@@ -129,7 +140,7 @@ public final class FlowableDistinctUntilChanged<T, K> extends AbstractFlowableWi
             try {
                 K key = this.keySelector.apply(t);
                 if (this.hasValue) {
-                    boolean equal = this.comparer.test(this.last, key);
+                    boolean equal = this.comparer.test((K) this.last, key);
                     this.last = key;
                     if (equal) {
                         return false;
@@ -146,13 +157,15 @@ public final class FlowableDistinctUntilChanged<T, K> extends AbstractFlowableWi
             }
         }
 
+        @Override // io.reactivex.internal.fuseable.QueueFuseable
         public int requestFusion(int mode) {
             return transitiveBoundaryFusion(mode);
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public T poll() throws Exception {
             while (true) {
-                T v = this.qs.poll();
+                T v = this.f344qs.poll();
                 if (v == null) {
                     return null;
                 }
@@ -161,13 +174,13 @@ public final class FlowableDistinctUntilChanged<T, K> extends AbstractFlowableWi
                     this.hasValue = true;
                     this.last = key;
                     return v;
-                } else if (!this.comparer.test(this.last, key)) {
+                } else if (!this.comparer.test((K) this.last, key)) {
                     this.last = key;
                     return v;
                 } else {
                     this.last = key;
                     if (this.sourceMode != 1) {
-                        this.upstream.request(1);
+                        this.upstream.request(1L);
                     }
                 }
             }

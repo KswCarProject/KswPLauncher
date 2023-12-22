@@ -2,29 +2,26 @@ package com.google.zxing.aztec.encoder;
 
 import com.google.zxing.common.BitArray;
 
+/* loaded from: classes.dex */
 abstract class Token {
-    static final Token EMPTY = new SimpleToken((Token) null, 0, 0);
+    static final Token EMPTY = new SimpleToken(null, 0, 0);
     private final Token previous;
 
-    /* access modifiers changed from: package-private */
-    public abstract void appendTo(BitArray bitArray, byte[] bArr);
+    abstract void appendTo(BitArray bitArray, byte[] bArr);
 
-    Token(Token previous2) {
-        this.previous = previous2;
+    Token(Token previous) {
+        this.previous = previous;
     }
 
-    /* access modifiers changed from: package-private */
-    public final Token getPrevious() {
+    final Token getPrevious() {
         return this.previous;
     }
 
-    /* access modifiers changed from: package-private */
-    public final Token add(int value, int bitCount) {
+    final Token add(int value, int bitCount) {
         return new SimpleToken(this, value, bitCount);
     }
 
-    /* access modifiers changed from: package-private */
-    public final Token addBinaryShift(int start, int byteCount) {
+    final Token addBinaryShift(int start, int byteCount) {
         return new BinaryShiftToken(this, start, byteCount);
     }
 }

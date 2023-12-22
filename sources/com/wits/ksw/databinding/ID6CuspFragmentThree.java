@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class ID6CuspFragmentThree extends ViewDataBinding {
     public final ImageView id6CuspDashboardImageView;
     public final ImageView id6CuspDvrImageView;
@@ -22,17 +23,17 @@ public abstract class ID6CuspFragmentThree extends ViewDataBinding {
     @Bindable
     protected LauncherViewModel mViewModel;
 
-    public abstract void setViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setViewModel(LauncherViewModel viewModel);
 
-    protected ID6CuspFragmentThree(Object _bindingComponent, View _root, int _localFieldCount, ImageView id6CuspDashboardImageView2, ImageView id6CuspDvrImageView2, TextView id6CuspDvrMess2, ImageView id6CuspFileIamgeView2, TextView id6CuspOilMess2, TextView id6CuspSpeedMess2, TextView id6CuspVideoMess2) {
+    protected ID6CuspFragmentThree(Object _bindingComponent, View _root, int _localFieldCount, ImageView id6CuspDashboardImageView, ImageView id6CuspDvrImageView, TextView id6CuspDvrMess, ImageView id6CuspFileIamgeView, TextView id6CuspOilMess, TextView id6CuspSpeedMess, TextView id6CuspVideoMess) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.id6CuspDashboardImageView = id6CuspDashboardImageView2;
-        this.id6CuspDvrImageView = id6CuspDvrImageView2;
-        this.id6CuspDvrMess = id6CuspDvrMess2;
-        this.id6CuspFileIamgeView = id6CuspFileIamgeView2;
-        this.id6CuspOilMess = id6CuspOilMess2;
-        this.id6CuspSpeedMess = id6CuspSpeedMess2;
-        this.id6CuspVideoMess = id6CuspVideoMess2;
+        this.id6CuspDashboardImageView = id6CuspDashboardImageView;
+        this.id6CuspDvrImageView = id6CuspDvrImageView;
+        this.id6CuspDvrMess = id6CuspDvrMess;
+        this.id6CuspFileIamgeView = id6CuspFileIamgeView;
+        this.id6CuspOilMess = id6CuspOilMess;
+        this.id6CuspSpeedMess = id6CuspSpeedMess;
+        this.id6CuspVideoMess = id6CuspVideoMess;
     }
 
     public LauncherViewModel getViewModel() {
@@ -45,7 +46,7 @@ public abstract class ID6CuspFragmentThree extends ViewDataBinding {
 
     @Deprecated
     public static ID6CuspFragmentThree inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ID6CuspFragmentThree) ViewDataBinding.inflateInternal(inflater, R.layout.id6_cusp_fragment_three, root, attachToRoot, component);
+        return (ID6CuspFragmentThree) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id6_cusp_fragment_three, root, attachToRoot, component);
     }
 
     public static ID6CuspFragmentThree inflate(LayoutInflater inflater) {
@@ -54,7 +55,7 @@ public abstract class ID6CuspFragmentThree extends ViewDataBinding {
 
     @Deprecated
     public static ID6CuspFragmentThree inflate(LayoutInflater inflater, Object component) {
-        return (ID6CuspFragmentThree) ViewDataBinding.inflateInternal(inflater, R.layout.id6_cusp_fragment_three, (ViewGroup) null, false, component);
+        return (ID6CuspFragmentThree) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id6_cusp_fragment_three, null, false, component);
     }
 
     public static ID6CuspFragmentThree bind(View view) {
@@ -63,6 +64,6 @@ public abstract class ID6CuspFragmentThree extends ViewDataBinding {
 
     @Deprecated
     public static ID6CuspFragmentThree bind(View view, Object component) {
-        return (ID6CuspFragmentThree) bind(component, view, R.layout.id6_cusp_fragment_three);
+        return (ID6CuspFragmentThree) bind(component, view, C0899R.C0902layout.id6_cusp_fragment_three);
     }
 }

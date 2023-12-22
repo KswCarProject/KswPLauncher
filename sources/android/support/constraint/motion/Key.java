@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/* loaded from: classes.dex */
 public abstract class Key {
     static final String ALPHA = "alpha";
     static final String CUSTOM = "CUSTOM";
@@ -29,16 +30,14 @@ public abstract class Key {
     HashMap<String, ConstraintAttribute> mCustomConstraints;
     int mFramePosition;
     int mTargetId;
-    String mTargetString = null;
+    String mTargetString;
     protected int mType;
 
     public abstract void addValues(HashMap<String, SplineSet> hashMap);
 
-    /* access modifiers changed from: package-private */
-    public abstract void getAttributeNames(HashSet<String> hashSet);
+    abstract void getAttributeNames(HashSet<String> hashSet);
 
-    /* access modifiers changed from: package-private */
-    public abstract void load(Context context, AttributeSet attributeSet);
+    abstract void load(Context context, AttributeSet attributeSet);
 
     public abstract void setValue(String str, Object obj);
 
@@ -46,10 +45,10 @@ public abstract class Key {
         int i = UNSET;
         this.mFramePosition = i;
         this.mTargetId = i;
+        this.mTargetString = null;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean matches(String constraintTag) {
+    boolean matches(String constraintTag) {
         String str = this.mTargetString;
         if (str == null || constraintTag == null) {
             return false;
@@ -57,21 +56,18 @@ public abstract class Key {
         return constraintTag.matches(str);
     }
 
-    /* access modifiers changed from: package-private */
-    public float toFloat(Object value) {
+    float toFloat(Object value) {
         return value instanceof Float ? ((Float) value).floatValue() : Float.parseFloat(value.toString());
     }
 
-    /* access modifiers changed from: package-private */
-    public int toInt(Object value) {
+    int toInt(Object value) {
         return value instanceof Integer ? ((Integer) value).intValue() : Integer.parseInt(value.toString());
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean toBoolean(Object value) {
+    boolean toBoolean(Object value) {
         return value instanceof Boolean ? ((Boolean) value).booleanValue() : Boolean.parseBoolean(value.toString());
     }
 
-    public void setInterpolation(HashMap<String, Integer> hashMap) {
+    public void setInterpolation(HashMap<String, Integer> interpolation) {
     }
 }

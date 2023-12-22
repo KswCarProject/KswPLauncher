@@ -9,40 +9,45 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class CompletableAndThenObservable<R> extends Observable<R> {
     final ObservableSource<? extends R> other;
     final CompletableSource source;
 
-    public CompletableAndThenObservable(CompletableSource source2, ObservableSource<? extends R> other2) {
-        this.source = source2;
-        this.other = other2;
+    public CompletableAndThenObservable(CompletableSource source, ObservableSource<? extends R> other) {
+        this.source = source;
+        this.other = other;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Observer<? super R> observer) {
+    @Override // io.reactivex.Observable
+    protected void subscribeActual(Observer<? super R> observer) {
         AndThenObservableObserver<R> parent = new AndThenObservableObserver<>(observer, this.other);
         observer.onSubscribe(parent);
         this.source.subscribe(parent);
     }
 
+    /* loaded from: classes.dex */
     static final class AndThenObservableObserver<R> extends AtomicReference<Disposable> implements Observer<R>, CompletableObserver, Disposable {
         private static final long serialVersionUID = -8948264376121066672L;
         final Observer<? super R> downstream;
         ObservableSource<? extends R> other;
 
-        AndThenObservableObserver(Observer<? super R> downstream2, ObservableSource<? extends R> other2) {
-            this.other = other2;
-            this.downstream = downstream2;
+        AndThenObservableObserver(Observer<? super R> downstream, ObservableSource<? extends R> other) {
+            this.other = other;
+            this.downstream = downstream;
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(R t) {
             this.downstream.onNext(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             this.downstream.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             ObservableSource<? extends R> o = this.other;
             if (o == null) {
@@ -53,14 +58,17 @@ public final class CompletableAndThenObservable<R> extends Observable<R> {
             o.subscribe(this);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             DisposableHelper.dispose(this);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return DisposableHelper.isDisposed((Disposable) get());
+            return DisposableHelper.isDisposed(get());
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             DisposableHelper.replace(this, d);
         }

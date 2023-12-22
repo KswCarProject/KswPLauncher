@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Deprecated
+/* loaded from: classes.dex */
 public class RequestManagerFragment extends Fragment {
     private static final String TAG = "RMFragment";
     private final Set<RequestManagerFragment> childRequestManagerFragments;
@@ -24,18 +25,17 @@ public class RequestManagerFragment extends Fragment {
         this(new ActivityFragmentLifecycle());
     }
 
-    RequestManagerFragment(ActivityFragmentLifecycle lifecycle2) {
+    RequestManagerFragment(ActivityFragmentLifecycle lifecycle) {
         this.requestManagerTreeNode = new FragmentRequestManagerTreeNode();
         this.childRequestManagerFragments = new HashSet();
-        this.lifecycle = lifecycle2;
+        this.lifecycle = lifecycle;
     }
 
-    public void setRequestManager(RequestManager requestManager2) {
-        this.requestManager = requestManager2;
+    public void setRequestManager(RequestManager requestManager) {
+        this.requestManager = requestManager;
     }
 
-    /* access modifiers changed from: package-private */
-    public ActivityFragmentLifecycle getGlideLifecycle() {
+    ActivityFragmentLifecycle getGlideLifecycle() {
         return this.lifecycle;
     }
 
@@ -55,8 +55,7 @@ public class RequestManagerFragment extends Fragment {
         this.childRequestManagerFragments.remove(child);
     }
 
-    /* access modifiers changed from: package-private */
-    public Set<RequestManagerFragment> getDescendantRequestManagerFragments() {
+    Set<RequestManagerFragment> getDescendantRequestManagerFragments() {
         if (equals(this.rootRequestManagerFragment)) {
             return Collections.unmodifiableSet(this.childRequestManagerFragments);
         }
@@ -72,11 +71,10 @@ public class RequestManagerFragment extends Fragment {
         return Collections.unmodifiableSet(descendants);
     }
 
-    /* access modifiers changed from: package-private */
-    public void setParentFragmentHint(Fragment parentFragmentHint2) {
-        this.parentFragmentHint = parentFragmentHint2;
-        if (parentFragmentHint2 != null && parentFragmentHint2.getActivity() != null) {
-            registerFragmentWithRoot(parentFragmentHint2.getActivity());
+    void setParentFragmentHint(Fragment parentFragmentHint) {
+        this.parentFragmentHint = parentFragmentHint;
+        if (parentFragmentHint != null && parentFragmentHint.getActivity() != null) {
+            registerFragmentWithRoot(parentFragmentHint.getActivity());
         }
     }
 
@@ -94,14 +92,14 @@ public class RequestManagerFragment extends Fragment {
         Fragment root = getParentFragment();
         while (true) {
             Fragment parentFragment = fragment.getParentFragment();
-            Fragment parentFragment2 = parentFragment;
-            if (parentFragment == null) {
+            if (parentFragment != null) {
+                if (parentFragment.equals(root)) {
+                    return true;
+                }
+                fragment = fragment.getParentFragment();
+            } else {
                 return false;
             }
-            if (parentFragment2.equals(root)) {
-                return true;
-            }
-            fragment = fragment.getParentFragment();
         }
     }
 
@@ -122,6 +120,7 @@ public class RequestManagerFragment extends Fragment {
         }
     }
 
+    @Override // android.app.Fragment
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -133,35 +132,42 @@ public class RequestManagerFragment extends Fragment {
         }
     }
 
+    @Override // android.app.Fragment
     public void onDetach() {
         super.onDetach();
         unregisterFragmentWithRoot();
     }
 
+    @Override // android.app.Fragment
     public void onStart() {
         super.onStart();
         this.lifecycle.onStart();
     }
 
+    @Override // android.app.Fragment
     public void onStop() {
         super.onStop();
         this.lifecycle.onStop();
     }
 
+    @Override // android.app.Fragment
     public void onDestroy() {
         super.onDestroy();
         this.lifecycle.onDestroy();
         unregisterFragmentWithRoot();
     }
 
+    @Override // android.app.Fragment
     public String toString() {
         return super.toString() + "{parent=" + getParentFragmentUsingHint() + "}";
     }
 
+    /* loaded from: classes.dex */
     private class FragmentRequestManagerTreeNode implements RequestManagerTreeNode {
         FragmentRequestManagerTreeNode() {
         }
 
+        @Override // com.bumptech.glide.manager.RequestManagerTreeNode
         public Set<RequestManager> getDescendants() {
             Set<RequestManagerFragment> descendantFragments = RequestManagerFragment.this.getDescendantRequestManagerFragments();
             Set<RequestManager> descendants = new HashSet<>(descendantFragments.size());

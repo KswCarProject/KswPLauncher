@@ -2,6 +2,7 @@ package com.wits.ksw.launcher.view.benzmbux2021;
 
 import android.app.Activity;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -10,27 +11,35 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.MainActivity;
-import com.wits.ksw.R;
 import com.wits.ksw.launcher.bean.MediaInfo;
 import com.wits.ksw.launcher.model.BcVieModel;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.launcher.view.lexusls.drag.LOGE;
 import com.wits.ksw.settings.TxzMessage;
 
+/* loaded from: classes4.dex */
 public class Benz2021DialogThemeActivity extends Activity {
+    private RadioButton rb_icon_sel_classical;
+    private RadioButton rb_icon_sel_modern;
+    private TextView tv_icon_sel_classical;
+    private TextView tv_icon_sel_modern;
+    private String styleIndex = TxzMessage.TXZ_SHOW;
     private String bgIndex = TxzMessage.TXZ_SHOW;
-    private View.OnClickListener mThemeItemClickListener = new View.OnClickListener() {
+    private View.OnClickListener mThemeItemClickListener = new View.OnClickListener() { // from class: com.wits.ksw.launcher.view.benzmbux2021.Benz2021DialogThemeActivity.1
+        @Override // android.view.View.OnClickListener
         public void onClick(View v) {
-            Object obj;
-            Object obj2;
-            Object obj3;
-            Object obj4;
-            Object obj5;
-            Object obj6;
-            Object obj7;
-            LOGE.E("v.getId() = " + v.getId());
+            Drawable drawable;
+            Drawable drawable2;
+            Drawable drawable3;
+            Drawable drawable4;
+            Drawable drawable5;
+            Drawable drawable6;
+            Drawable drawable7;
+            LOGE.m43E("v.getId() = " + v.getId());
             switch (v.getId()) {
-                case R.id.rb_benz_mbux_2021_coat_bg_1 /*2131297429*/:
+                case C0899R.C0901id.rb_benz_mbux_2021_coat_bg_1 /* 2131297462 */:
                     BenzMbux2021Configs.bg_sel = 1;
                     Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), "BG_SAVE", 1);
                     BcVieModel bcVieModel = MainActivity.mBcVieModel;
@@ -41,12 +50,12 @@ public class Benz2021DialogThemeActivity extends Activity {
                     MediaInfo mediaInfo = BcVieModel.mediaInfo;
                     BcVieModel bcVieModel4 = MainActivity.mBcVieModel;
                     if (BcVieModel.mediaInfo.picBg.get() == null) {
-                        obj = Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_OTHER[BenzMbux2021Configs.bg_sel - 1]);
+                        drawable = Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_OTHER[BenzMbux2021Configs.bg_sel - 1]);
                     } else {
                         BcVieModel bcVieModel5 = MainActivity.mBcVieModel;
-                        obj = BcVieModel.mediaInfo.picBg.get();
+                        drawable = BcVieModel.mediaInfo.picBg.get();
                     }
-                    mediaInfo.setPicBg((BitmapDrawable) obj);
+                    mediaInfo.setPicBg((BitmapDrawable) drawable);
                     if (MainActivity.benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem() == 0) {
                         ImageView imageView = MainActivity.benzMbux2021Binding2.layoutMain2021;
                         BcVieModel bcVieModel6 = MainActivity.mBcVieModel;
@@ -65,7 +74,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     } else {
                         return;
                     }
-                case R.id.rb_benz_mbux_2021_coat_bg_2 /*2131297430*/:
+                case C0899R.C0901id.rb_benz_mbux_2021_coat_bg_2 /* 2131297463 */:
                     Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), "BG_SAVE", 2);
                     BenzMbux2021Configs.bg_sel = 2;
                     BcVieModel bcVieModel9 = MainActivity.mBcVieModel;
@@ -76,12 +85,12 @@ public class Benz2021DialogThemeActivity extends Activity {
                     MediaInfo mediaInfo2 = BcVieModel.mediaInfo;
                     BcVieModel bcVieModel12 = MainActivity.mBcVieModel;
                     if (BcVieModel.mediaInfo.picBg.get() == null) {
-                        obj2 = Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_OTHER[BenzMbux2021Configs.bg_sel - 1]);
+                        drawable2 = Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_OTHER[BenzMbux2021Configs.bg_sel - 1]);
                     } else {
                         BcVieModel bcVieModel13 = MainActivity.mBcVieModel;
-                        obj2 = BcVieModel.mediaInfo.picBg.get();
+                        drawable2 = BcVieModel.mediaInfo.picBg.get();
                     }
-                    mediaInfo2.setPicBg((BitmapDrawable) obj2);
+                    mediaInfo2.setPicBg((BitmapDrawable) drawable2);
                     if (MainActivity.benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem() == 0) {
                         ImageView imageView4 = MainActivity.benzMbux2021Binding2.layoutMain2021;
                         BcVieModel bcVieModel14 = MainActivity.mBcVieModel;
@@ -100,7 +109,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     } else {
                         return;
                     }
-                case R.id.rb_benz_mbux_2021_coat_bg_3 /*2131297431*/:
+                case C0899R.C0901id.rb_benz_mbux_2021_coat_bg_3 /* 2131297464 */:
                     Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), "BG_SAVE", 3);
                     BenzMbux2021Configs.bg_sel = 3;
                     BcVieModel bcVieModel17 = MainActivity.mBcVieModel;
@@ -111,12 +120,12 @@ public class Benz2021DialogThemeActivity extends Activity {
                     MediaInfo mediaInfo3 = BcVieModel.mediaInfo;
                     BcVieModel bcVieModel20 = MainActivity.mBcVieModel;
                     if (BcVieModel.mediaInfo.picBg.get() == null) {
-                        obj3 = Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_OTHER[BenzMbux2021Configs.bg_sel - 1]);
+                        drawable3 = Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_OTHER[BenzMbux2021Configs.bg_sel - 1]);
                     } else {
                         BcVieModel bcVieModel21 = MainActivity.mBcVieModel;
-                        obj3 = BcVieModel.mediaInfo.picBg.get();
+                        drawable3 = BcVieModel.mediaInfo.picBg.get();
                     }
-                    mediaInfo3.setPicBg((BitmapDrawable) obj3);
+                    mediaInfo3.setPicBg((BitmapDrawable) drawable3);
                     if (MainActivity.benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem() == 0) {
                         ImageView imageView7 = MainActivity.benzMbux2021Binding2.layoutMain2021;
                         BcVieModel bcVieModel22 = MainActivity.mBcVieModel;
@@ -135,7 +144,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     } else {
                         return;
                     }
-                case R.id.rb_benz_mbux_2021_coat_bg_4 /*2131297432*/:
+                case C0899R.C0901id.rb_benz_mbux_2021_coat_bg_4 /* 2131297465 */:
                     Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), "BG_SAVE", 4);
                     BenzMbux2021Configs.bg_sel = 4;
                     BcVieModel bcVieModel25 = MainActivity.mBcVieModel;
@@ -146,12 +155,12 @@ public class Benz2021DialogThemeActivity extends Activity {
                     MediaInfo mediaInfo4 = BcVieModel.mediaInfo;
                     BcVieModel bcVieModel28 = MainActivity.mBcVieModel;
                     if (BcVieModel.mediaInfo.picBg.get() == null) {
-                        obj4 = Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_OTHER[BenzMbux2021Configs.bg_sel - 1]);
+                        drawable4 = Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_OTHER[BenzMbux2021Configs.bg_sel - 1]);
                     } else {
                         BcVieModel bcVieModel29 = MainActivity.mBcVieModel;
-                        obj4 = BcVieModel.mediaInfo.picBg.get();
+                        drawable4 = BcVieModel.mediaInfo.picBg.get();
                     }
-                    mediaInfo4.setPicBg((BitmapDrawable) obj4);
+                    mediaInfo4.setPicBg((BitmapDrawable) drawable4);
                     if (MainActivity.benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem() == 0) {
                         ImageView imageView10 = MainActivity.benzMbux2021Binding2.layoutMain2021;
                         BcVieModel bcVieModel30 = MainActivity.mBcVieModel;
@@ -170,7 +179,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     } else {
                         return;
                     }
-                case R.id.rb_benz_mbux_2021_coat_bg_5 /*2131297433*/:
+                case C0899R.C0901id.rb_benz_mbux_2021_coat_bg_5 /* 2131297466 */:
                     Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), "BG_SAVE", 5);
                     BenzMbux2021Configs.bg_sel = 5;
                     BcVieModel bcVieModel33 = MainActivity.mBcVieModel;
@@ -181,12 +190,12 @@ public class Benz2021DialogThemeActivity extends Activity {
                     MediaInfo mediaInfo5 = BcVieModel.mediaInfo;
                     BcVieModel bcVieModel36 = MainActivity.mBcVieModel;
                     if (BcVieModel.mediaInfo.picBg.get() == null) {
-                        obj5 = Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_OTHER[BenzMbux2021Configs.bg_sel - 1]);
+                        drawable5 = Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_OTHER[BenzMbux2021Configs.bg_sel - 1]);
                     } else {
                         BcVieModel bcVieModel37 = MainActivity.mBcVieModel;
-                        obj5 = BcVieModel.mediaInfo.picBg.get();
+                        drawable5 = BcVieModel.mediaInfo.picBg.get();
                     }
-                    mediaInfo5.setPicBg((BitmapDrawable) obj5);
+                    mediaInfo5.setPicBg((BitmapDrawable) drawable5);
                     if (MainActivity.benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem() == 0) {
                         ImageView imageView13 = MainActivity.benzMbux2021Binding2.layoutMain2021;
                         BcVieModel bcVieModel38 = MainActivity.mBcVieModel;
@@ -205,7 +214,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     } else {
                         return;
                     }
-                case R.id.rb_benz_mbux_2021_coat_bg_6 /*2131297434*/:
+                case C0899R.C0901id.rb_benz_mbux_2021_coat_bg_6 /* 2131297467 */:
                     Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), "BG_SAVE", 6);
                     BenzMbux2021Configs.bg_sel = 6;
                     BcVieModel bcVieModel41 = MainActivity.mBcVieModel;
@@ -216,12 +225,12 @@ public class Benz2021DialogThemeActivity extends Activity {
                     MediaInfo mediaInfo6 = BcVieModel.mediaInfo;
                     BcVieModel bcVieModel44 = MainActivity.mBcVieModel;
                     if (BcVieModel.mediaInfo.picBg.get() == null) {
-                        obj6 = Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_OTHER[BenzMbux2021Configs.bg_sel - 1]);
+                        drawable6 = Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_OTHER[BenzMbux2021Configs.bg_sel - 1]);
                     } else {
                         BcVieModel bcVieModel45 = MainActivity.mBcVieModel;
-                        obj6 = BcVieModel.mediaInfo.picBg.get();
+                        drawable6 = BcVieModel.mediaInfo.picBg.get();
                     }
-                    mediaInfo6.setPicBg((BitmapDrawable) obj6);
+                    mediaInfo6.setPicBg((BitmapDrawable) drawable6);
                     if (MainActivity.benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem() == 0) {
                         ImageView imageView16 = MainActivity.benzMbux2021Binding2.layoutMain2021;
                         BcVieModel bcVieModel46 = MainActivity.mBcVieModel;
@@ -240,7 +249,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     } else {
                         return;
                     }
-                case R.id.rb_benz_mbux_2021_coat_bg_7 /*2131297435*/:
+                case C0899R.C0901id.rb_benz_mbux_2021_coat_bg_7 /* 2131297468 */:
                     Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), "BG_SAVE", 7);
                     BenzMbux2021Configs.bg_sel = 7;
                     BcVieModel bcVieModel49 = MainActivity.mBcVieModel;
@@ -251,12 +260,12 @@ public class Benz2021DialogThemeActivity extends Activity {
                     MediaInfo mediaInfo7 = BcVieModel.mediaInfo;
                     BcVieModel bcVieModel52 = MainActivity.mBcVieModel;
                     if (BcVieModel.mediaInfo.picBg.get() == null) {
-                        obj7 = Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_OTHER[BenzMbux2021Configs.bg_sel - 1]);
+                        drawable7 = Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_OTHER[BenzMbux2021Configs.bg_sel - 1]);
                     } else {
                         BcVieModel bcVieModel53 = MainActivity.mBcVieModel;
-                        obj7 = BcVieModel.mediaInfo.picBg.get();
+                        drawable7 = BcVieModel.mediaInfo.picBg.get();
                     }
-                    mediaInfo7.setPicBg((BitmapDrawable) obj7);
+                    mediaInfo7.setPicBg((BitmapDrawable) drawable7);
                     if (MainActivity.benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem() == 0) {
                         ImageView imageView19 = MainActivity.benzMbux2021Binding2.layoutMain2021;
                         BcVieModel bcVieModel54 = MainActivity.mBcVieModel;
@@ -275,18 +284,18 @@ public class Benz2021DialogThemeActivity extends Activity {
                     } else {
                         return;
                     }
-                case R.id.rb_icon_sel_classical /*2131297436*/:
+                case C0899R.C0901id.rb_icon_sel_classical /* 2131297469 */:
                     BenzMbux2021Configs.style_sel = 1;
-                    Benz2021DialogThemeActivity.this.tv_icon_sel_modern.setTextColor(Benz2021DialogThemeActivity.this.getColor(R.color.color1));
-                    Benz2021DialogThemeActivity.this.tv_icon_sel_classical.setTextColor(Benz2021DialogThemeActivity.this.getColor(R.color.rb_text_color));
+                    Benz2021DialogThemeActivity.this.tv_icon_sel_modern.setTextColor(Benz2021DialogThemeActivity.this.getColor(C0899R.color.color1));
+                    Benz2021DialogThemeActivity.this.tv_icon_sel_classical.setTextColor(Benz2021DialogThemeActivity.this.getColor(C0899R.color.rb_text_color));
                     Benz2021DialogThemeActivity.this.rb_icon_sel_modern.setSelected(false);
                     Benz2021DialogThemeActivity.this.rb_icon_sel_classical.setSelected(true);
                     MainActivity.mBcVieModel.itemIconClassical.set(true);
                     return;
-                case R.id.rb_icon_sel_modern /*2131297437*/:
+                case C0899R.C0901id.rb_icon_sel_modern /* 2131297470 */:
                     BenzMbux2021Configs.style_sel = 2;
-                    Benz2021DialogThemeActivity.this.tv_icon_sel_modern.setTextColor(Benz2021DialogThemeActivity.this.getColor(R.color.rb_text_color));
-                    Benz2021DialogThemeActivity.this.tv_icon_sel_classical.setTextColor(Benz2021DialogThemeActivity.this.getColor(R.color.color1));
+                    Benz2021DialogThemeActivity.this.tv_icon_sel_modern.setTextColor(Benz2021DialogThemeActivity.this.getColor(C0899R.color.rb_text_color));
+                    Benz2021DialogThemeActivity.this.tv_icon_sel_classical.setTextColor(Benz2021DialogThemeActivity.this.getColor(C0899R.color.color1));
                     Benz2021DialogThemeActivity.this.rb_icon_sel_classical.setSelected(false);
                     Benz2021DialogThemeActivity.this.rb_icon_sel_modern.setSelected(true);
                     MainActivity.mBcVieModel.itemIconClassical.set(false);
@@ -296,18 +305,9 @@ public class Benz2021DialogThemeActivity extends Activity {
             }
         }
     };
-    /* access modifiers changed from: private */
-    public RadioButton rb_icon_sel_classical;
-    /* access modifiers changed from: private */
-    public RadioButton rb_icon_sel_modern;
-    private String styleIndex = TxzMessage.TXZ_SHOW;
-    /* access modifiers changed from: private */
-    public TextView tv_icon_sel_classical;
-    /* access modifiers changed from: private */
-    public TextView tv_icon_sel_modern;
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override // android.app.Activity
+    protected void onCreate(Bundle savedInstanceState) {
         Object obj;
         Object obj2;
         Object obj3;
@@ -316,24 +316,25 @@ public class Benz2021DialogThemeActivity extends Activity {
         Object obj6;
         Object obj7;
         super.onCreate(savedInstanceState);
-        LOGE.D("Benz2021DialogThemeActivity00000000000");
-        setContentView(R.layout.dialog_benz_mbux_2021_theme_layout);
-        this.tv_icon_sel_classical = (TextView) findViewById(R.id.tv_icon_sel_classical);
-        this.tv_icon_sel_modern = (TextView) findViewById(R.id.tv_icon_sel_modern);
-        this.rb_icon_sel_classical = (RadioButton) findViewById(R.id.rb_icon_sel_classical);
-        RadioButton radioButton = (RadioButton) findViewById(R.id.rb_icon_sel_modern);
+        LOGE.m44D("Benz2021DialogThemeActivity00000000000");
+        setContentView(C0899R.C0902layout.dialog_benz_mbux_2021_theme_layout);
+        this.tv_icon_sel_classical = (TextView) findViewById(C0899R.C0901id.tv_icon_sel_classical);
+        this.tv_icon_sel_modern = (TextView) findViewById(C0899R.C0901id.tv_icon_sel_modern);
+        this.rb_icon_sel_classical = (RadioButton) findViewById(C0899R.C0901id.rb_icon_sel_classical);
+        RadioButton radioButton = (RadioButton) findViewById(C0899R.C0901id.rb_icon_sel_modern);
         this.rb_icon_sel_modern = radioButton;
         radioButton.setOnClickListener(this.mThemeItemClickListener);
+        this.rb_icon_sel_classical.setButtonDrawable(UiThemeUtils.isUI_MBUX_YO(this) ? C0899R.C0900drawable.benz_mbux_2021_coast_style_rb_yo_sel_classical : C0899R.C0900drawable.benz_mbux_2021_coast_style_rb_sel_classical);
         this.rb_icon_sel_classical.setOnClickListener(this.mThemeItemClickListener);
         this.rb_icon_sel_classical.setSelected(!this.rb_icon_sel_modern.isSelected());
-        this.tv_icon_sel_classical.setTextColor(this.rb_icon_sel_classical.isSelected() ? getColor(R.color.rb_text_color) : getColor(R.color.color1));
-        findViewById(R.id.rb_benz_mbux_2021_coat_bg_1).setOnClickListener(this.mThemeItemClickListener);
-        findViewById(R.id.rb_benz_mbux_2021_coat_bg_2).setOnClickListener(this.mThemeItemClickListener);
-        findViewById(R.id.rb_benz_mbux_2021_coat_bg_3).setOnClickListener(this.mThemeItemClickListener);
-        findViewById(R.id.rb_benz_mbux_2021_coat_bg_4).setOnClickListener(this.mThemeItemClickListener);
-        findViewById(R.id.rb_benz_mbux_2021_coat_bg_5).setOnClickListener(this.mThemeItemClickListener);
-        findViewById(R.id.rb_benz_mbux_2021_coat_bg_6).setOnClickListener(this.mThemeItemClickListener);
-        findViewById(R.id.rb_benz_mbux_2021_coat_bg_7).setOnClickListener(this.mThemeItemClickListener);
+        this.tv_icon_sel_classical.setTextColor(this.rb_icon_sel_classical.isSelected() ? getColor(C0899R.color.rb_text_color) : getColor(C0899R.color.color1));
+        findViewById(C0899R.C0901id.rb_benz_mbux_2021_coat_bg_1).setOnClickListener(this.mThemeItemClickListener);
+        findViewById(C0899R.C0901id.rb_benz_mbux_2021_coat_bg_2).setOnClickListener(this.mThemeItemClickListener);
+        findViewById(C0899R.C0901id.rb_benz_mbux_2021_coat_bg_3).setOnClickListener(this.mThemeItemClickListener);
+        findViewById(C0899R.C0901id.rb_benz_mbux_2021_coat_bg_4).setOnClickListener(this.mThemeItemClickListener);
+        findViewById(C0899R.C0901id.rb_benz_mbux_2021_coat_bg_5).setOnClickListener(this.mThemeItemClickListener);
+        findViewById(C0899R.C0901id.rb_benz_mbux_2021_coat_bg_6).setOnClickListener(this.mThemeItemClickListener);
+        findViewById(C0899R.C0901id.rb_benz_mbux_2021_coat_bg_7).setOnClickListener(this.mThemeItemClickListener);
         this.styleIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), "STYLE_INDEX");
         this.bgIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), "BG_INDEX");
         if (TextUtils.isEmpty(this.styleIndex)) {
@@ -344,18 +345,18 @@ public class Benz2021DialogThemeActivity extends Activity {
         }
         int iStyleIndex = Integer.parseInt(this.styleIndex);
         int iBgIndex = Integer.parseInt(this.bgIndex);
-        LOGE.D("Benz2021DialogThemeActivity styleIndex = " + this.styleIndex + " iStyleIndex = " + iStyleIndex + " iBgIndex" + iBgIndex);
+        LOGE.m44D("Benz2021DialogThemeActivity styleIndex = " + this.styleIndex + " iStyleIndex = " + iStyleIndex + " iBgIndex" + iBgIndex);
         if (iStyleIndex == 1) {
             BenzMbux2021Configs.style_sel = 1;
-            this.tv_icon_sel_modern.setTextColor(getColor(R.color.color1));
-            this.tv_icon_sel_classical.setTextColor(getColor(R.color.rb_text_color));
+            this.tv_icon_sel_modern.setTextColor(getColor(C0899R.color.color1));
+            this.tv_icon_sel_classical.setTextColor(getColor(C0899R.color.rb_text_color));
             this.rb_icon_sel_modern.setSelected(false);
             this.rb_icon_sel_classical.setSelected(true);
             MainActivity.mBcVieModel.itemIconClassical.set(true);
         } else {
             BenzMbux2021Configs.style_sel = 2;
-            this.tv_icon_sel_modern.setTextColor(getColor(R.color.rb_text_color));
-            this.tv_icon_sel_classical.setTextColor(getColor(R.color.color1));
+            this.tv_icon_sel_modern.setTextColor(getColor(C0899R.color.rb_text_color));
+            this.tv_icon_sel_classical.setTextColor(getColor(C0899R.color.color1));
             this.rb_icon_sel_classical.setSelected(false);
             this.rb_icon_sel_modern.setSelected(true);
             MainActivity.mBcVieModel.itemIconClassical.set(false);
@@ -382,7 +383,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     BcVieModel bcVieModel6 = MainActivity.mBcVieModel;
                     imageView.setBackground(BcVieModel.mediaInfo.picOne.get());
                 } else if (MainActivity.benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem() == 1) {
-                    LOGE.D("liuhaoMedia benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem()==1---------1 ");
+                    LOGE.m44D("liuhaoMedia benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem()==1---------1 ");
                     ImageView imageView2 = MainActivity.benzMbux2021Binding2.layoutMain2021;
                     BcVieModel bcVieModel7 = MainActivity.mBcVieModel;
                     imageView2.setBackground(BcVieModel.mediaInfo.picBg.get());
@@ -391,7 +392,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     BcVieModel bcVieModel8 = MainActivity.mBcVieModel;
                     imageView3.setBackground(BcVieModel.mediaInfo.picOther.get());
                 }
-                ((RadioButton) findViewById(R.id.rb_benz_mbux_2021_coat_bg_1)).setChecked(true);
+                ((RadioButton) findViewById(C0899R.C0901id.rb_benz_mbux_2021_coat_bg_1)).setChecked(true);
                 return;
             case 2:
                 BenzMbux2021Configs.bg_sel = 2;
@@ -414,7 +415,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     BcVieModel bcVieModel14 = MainActivity.mBcVieModel;
                     imageView4.setBackground(BcVieModel.mediaInfo.picOne.get());
                 } else if (MainActivity.benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem() == 1) {
-                    LOGE.D("liuhaoMedia benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem()==1---------2 ");
+                    LOGE.m44D("liuhaoMedia benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem()==1---------2 ");
                     ImageView imageView5 = MainActivity.benzMbux2021Binding2.layoutMain2021;
                     BcVieModel bcVieModel15 = MainActivity.mBcVieModel;
                     imageView5.setBackground(BcVieModel.mediaInfo.picBg.get());
@@ -423,7 +424,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     BcVieModel bcVieModel16 = MainActivity.mBcVieModel;
                     imageView6.setBackground(BcVieModel.mediaInfo.picOther.get());
                 }
-                ((RadioButton) findViewById(R.id.rb_benz_mbux_2021_coat_bg_2)).setChecked(true);
+                ((RadioButton) findViewById(C0899R.C0901id.rb_benz_mbux_2021_coat_bg_2)).setChecked(true);
                 return;
             case 3:
                 BenzMbux2021Configs.bg_sel = 3;
@@ -446,7 +447,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     BcVieModel bcVieModel22 = MainActivity.mBcVieModel;
                     imageView7.setBackground(BcVieModel.mediaInfo.picOne.get());
                 } else if (MainActivity.benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem() == 1) {
-                    LOGE.D("liuhaoMedia benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem()==1---------3 ");
+                    LOGE.m44D("liuhaoMedia benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem()==1---------3 ");
                     ImageView imageView8 = MainActivity.benzMbux2021Binding2.layoutMain2021;
                     BcVieModel bcVieModel23 = MainActivity.mBcVieModel;
                     imageView8.setBackground(BcVieModel.mediaInfo.picBg.get());
@@ -455,7 +456,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     BcVieModel bcVieModel24 = MainActivity.mBcVieModel;
                     imageView9.setBackground(BcVieModel.mediaInfo.picOther.get());
                 }
-                ((RadioButton) findViewById(R.id.rb_benz_mbux_2021_coat_bg_3)).setChecked(true);
+                ((RadioButton) findViewById(C0899R.C0901id.rb_benz_mbux_2021_coat_bg_3)).setChecked(true);
                 return;
             case 4:
                 BenzMbux2021Configs.bg_sel = 4;
@@ -478,7 +479,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     BcVieModel bcVieModel30 = MainActivity.mBcVieModel;
                     imageView10.setBackground(BcVieModel.mediaInfo.picOne.get());
                 } else if (MainActivity.benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem() == 1) {
-                    LOGE.D("liuhaoMedia benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem()==1---------4 ");
+                    LOGE.m44D("liuhaoMedia benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem()==1---------4 ");
                     ImageView imageView11 = MainActivity.benzMbux2021Binding2.layoutMain2021;
                     BcVieModel bcVieModel31 = MainActivity.mBcVieModel;
                     imageView11.setBackground(BcVieModel.mediaInfo.picBg.get());
@@ -487,7 +488,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     BcVieModel bcVieModel32 = MainActivity.mBcVieModel;
                     imageView12.setBackground(BcVieModel.mediaInfo.picOther.get());
                 }
-                ((RadioButton) findViewById(R.id.rb_benz_mbux_2021_coat_bg_4)).setChecked(true);
+                ((RadioButton) findViewById(C0899R.C0901id.rb_benz_mbux_2021_coat_bg_4)).setChecked(true);
                 return;
             case 5:
                 BenzMbux2021Configs.bg_sel = 5;
@@ -510,7 +511,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     BcVieModel bcVieModel38 = MainActivity.mBcVieModel;
                     imageView13.setBackground(BcVieModel.mediaInfo.picOne.get());
                 } else if (MainActivity.benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem() == 1) {
-                    LOGE.D("liuhaoMedia benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem()==1---------5 ");
+                    LOGE.m44D("liuhaoMedia benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem()==1---------5 ");
                     ImageView imageView14 = MainActivity.benzMbux2021Binding2.layoutMain2021;
                     BcVieModel bcVieModel39 = MainActivity.mBcVieModel;
                     imageView14.setBackground(BcVieModel.mediaInfo.picBg.get());
@@ -519,7 +520,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     BcVieModel bcVieModel40 = MainActivity.mBcVieModel;
                     imageView15.setBackground(BcVieModel.mediaInfo.picOther.get());
                 }
-                ((RadioButton) findViewById(R.id.rb_benz_mbux_2021_coat_bg_5)).setChecked(true);
+                ((RadioButton) findViewById(C0899R.C0901id.rb_benz_mbux_2021_coat_bg_5)).setChecked(true);
                 return;
             case 6:
                 BenzMbux2021Configs.bg_sel = 6;
@@ -542,7 +543,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     BcVieModel bcVieModel46 = MainActivity.mBcVieModel;
                     imageView16.setBackground(BcVieModel.mediaInfo.picOne.get());
                 } else if (MainActivity.benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem() == 1) {
-                    LOGE.D("liuhaoMedia benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem()==1---------6 ");
+                    LOGE.m44D("liuhaoMedia benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem()==1---------6 ");
                     ImageView imageView17 = MainActivity.benzMbux2021Binding2.layoutMain2021;
                     BcVieModel bcVieModel47 = MainActivity.mBcVieModel;
                     imageView17.setBackground(BcVieModel.mediaInfo.picBg.get());
@@ -551,7 +552,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     BcVieModel bcVieModel48 = MainActivity.mBcVieModel;
                     imageView18.setBackground(BcVieModel.mediaInfo.picOther.get());
                 }
-                ((RadioButton) findViewById(R.id.rb_benz_mbux_2021_coat_bg_6)).setChecked(true);
+                ((RadioButton) findViewById(C0899R.C0901id.rb_benz_mbux_2021_coat_bg_6)).setChecked(true);
                 return;
             case 7:
                 BenzMbux2021Configs.bg_sel = 7;
@@ -574,7 +575,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     BcVieModel bcVieModel54 = MainActivity.mBcVieModel;
                     imageView19.setBackground(BcVieModel.mediaInfo.picOne.get());
                 } else if (MainActivity.benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem() == 1) {
-                    LOGE.D("liuhaoMedia benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem()==1---------7 ");
+                    LOGE.m44D("liuhaoMedia benzMbux2021Binding2.benzMbux2021Viewpager.getCurrentItem()==1---------7 ");
                     ImageView imageView20 = MainActivity.benzMbux2021Binding2.layoutMain2021;
                     BcVieModel bcVieModel55 = MainActivity.mBcVieModel;
                     imageView20.setBackground(BcVieModel.mediaInfo.picBg.get());
@@ -583,13 +584,14 @@ public class Benz2021DialogThemeActivity extends Activity {
                     BcVieModel bcVieModel56 = MainActivity.mBcVieModel;
                     imageView21.setBackground(BcVieModel.mediaInfo.picOther.get());
                 }
-                ((RadioButton) findViewById(R.id.rb_benz_mbux_2021_coat_bg_7)).setChecked(true);
+                ((RadioButton) findViewById(C0899R.C0901id.rb_benz_mbux_2021_coat_bg_7)).setChecked(true);
                 return;
             default:
                 return;
         }
     }
 
+    @Override // android.app.Activity
     public boolean onTouchEvent(MotionEvent event) {
         finish();
         return true;
@@ -599,8 +601,8 @@ public class Benz2021DialogThemeActivity extends Activity {
         finish();
     }
 
-    /* access modifiers changed from: protected */
-    public void onPause() {
+    @Override // android.app.Activity
+    protected void onPause() {
         super.onPause();
         BenzMbux2021Configs.saveStyleData(this);
     }

@@ -11,19 +11,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import kotlin.UByte;
 
+/* loaded from: classes.dex */
 public class CharsetDetector {
     private static final List<CSRecognizerInfo> ALL_CS_RECOGNIZERS;
     private static final int kBufSize = 8000;
-    short[] fByteStats = new short[256];
-    boolean fC1Bytes = false;
     String fDeclaredEncoding;
     private boolean[] fEnabledRecognizers;
-    byte[] fInputBytes = new byte[kBufSize];
     int fInputLen;
     InputStream fInputStream;
     byte[] fRawInput;
     int fRawLength;
+    byte[] fInputBytes = new byte[kBufSize];
+    short[] fByteStats = new short[256];
+    boolean fC1Bytes = false;
     private boolean fStripTags = false;
 
     public CharsetDetector setDeclaredEncoding(String encoding) {
@@ -73,14 +75,16 @@ public class CharsetDetector {
             if (i < list.size()) {
                 CSRecognizerInfo rcinfo = list.get(i);
                 boolean[] zArr = this.fEnabledRecognizers;
-                if ((zArr != null ? zArr[i] : rcinfo.isDefaultEnabled) && (m = rcinfo.recognizer.match(this)) != null) {
+                boolean active = zArr != null ? zArr[i] : rcinfo.isDefaultEnabled;
+                if (active && (m = rcinfo.recognizer.match(this)) != null) {
                     matches.add(m);
                 }
                 i++;
             } else {
                 Collections.sort(matches);
                 Collections.reverse(matches);
-                return (CharsetMatch[]) matches.toArray(new CharsetMatch[matches.size()]);
+                CharsetMatch[] resultArray = new CharsetMatch[matches.size()];
+                return (CharsetMatch[]) matches.toArray(resultArray);
             }
         }
     }
@@ -172,9 +176,9 @@ public class CharsetDetector {
             }
             this.fInputLen = srci2;
         }
-        Arrays.fill(this.fByteStats, 0);
+        Arrays.fill(this.fByteStats, (short) 0);
         for (int srci3 = 0; srci3 < this.fInputLen; srci3++) {
-            int val = this.fInputBytes[srci3] & 255;
+            int val = this.fInputBytes[srci3] & UByte.MAX_VALUE;
             short[] sArr = this.fByteStats;
             sArr[val] = (short) (sArr[val] + 1);
         }
@@ -187,13 +191,14 @@ public class CharsetDetector {
         }
     }
 
+    /* loaded from: classes.dex */
     private static class CSRecognizerInfo {
         boolean isDefaultEnabled;
         CharsetRecognizer recognizer;
 
-        CSRecognizerInfo(CharsetRecognizer recognizer2, boolean isDefaultEnabled2) {
-            this.recognizer = recognizer2;
-            this.isDefaultEnabled = isDefaultEnabled2;
+        CSRecognizerInfo(CharsetRecognizer recognizer, boolean isDefaultEnabled) {
+            this.recognizer = recognizer;
+            this.isDefaultEnabled = isDefaultEnabled;
         }
     }
 
@@ -236,15 +241,18 @@ public class CharsetDetector {
         int i = 0;
         while (true) {
             List<CSRecognizerInfo> list = ALL_CS_RECOGNIZERS;
-            if (i >= list.size()) {
-                return (String[]) csnames.toArray(new String[csnames.size()]);
+            if (i < list.size()) {
+                CSRecognizerInfo rcinfo = list.get(i);
+                boolean[] zArr = this.fEnabledRecognizers;
+                boolean active = zArr == null ? rcinfo.isDefaultEnabled : zArr[i];
+                if (active) {
+                    csnames.add(rcinfo.recognizer.getName());
+                }
+                i++;
+            } else {
+                int i2 = csnames.size();
+                return (String[]) csnames.toArray(new String[i2]);
             }
-            CSRecognizerInfo rcinfo = list.get(i);
-            boolean[] zArr = this.fEnabledRecognizers;
-            if (zArr == null ? rcinfo.isDefaultEnabled : zArr[i]) {
-                csnames.add(rcinfo.recognizer.getName());
-            }
-            i++;
         }
     }
 
@@ -260,32 +268,32 @@ public class CharsetDetector {
                 break;
             }
             CSRecognizerInfo csrinfo = list.get(i);
-            if (csrinfo.recognizer.getName().equals(encoding)) {
+            if (!csrinfo.recognizer.getName().equals(encoding)) {
+                i++;
+            } else {
                 modIdx = i;
                 isDefaultVal = csrinfo.isDefaultEnabled == enabled;
-            } else {
-                i++;
             }
         }
-        if (modIdx >= 0) {
-            if (this.fEnabledRecognizers == null && !isDefaultVal) {
-                this.fEnabledRecognizers = new boolean[list.size()];
-                int i2 = 0;
-                while (true) {
-                    List<CSRecognizerInfo> list2 = ALL_CS_RECOGNIZERS;
-                    if (i2 >= list2.size()) {
-                        break;
-                    }
-                    this.fEnabledRecognizers[i2] = list2.get(i2).isDefaultEnabled;
-                    i2++;
+        if (modIdx < 0) {
+            throw new IllegalArgumentException("Invalid encoding: \"" + encoding + "\"");
+        }
+        if (this.fEnabledRecognizers == null && !isDefaultVal) {
+            this.fEnabledRecognizers = new boolean[list.size()];
+            int i2 = 0;
+            while (true) {
+                List<CSRecognizerInfo> list2 = ALL_CS_RECOGNIZERS;
+                if (i2 >= list2.size()) {
+                    break;
                 }
+                this.fEnabledRecognizers[i2] = list2.get(i2).isDefaultEnabled;
+                i2++;
             }
-            boolean[] zArr = this.fEnabledRecognizers;
-            if (zArr != null) {
-                zArr[modIdx] = enabled;
-            }
-            return this;
         }
-        throw new IllegalArgumentException("Invalid encoding: \"" + encoding + "\"");
+        boolean[] zArr = this.fEnabledRecognizers;
+        if (zArr != null) {
+            zArr[modIdx] = enabled;
+        }
+        return this;
     }
 }

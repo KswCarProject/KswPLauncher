@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.DashboardViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class BmwId8DashboardWeatherLayoutBinding extends ViewDataBinding {
     public final ImageView ivIcon;
     @Bindable
@@ -18,13 +19,13 @@ public abstract class BmwId8DashboardWeatherLayoutBinding extends ViewDataBindin
     public final TextView temperatureTv;
     public final TextView unitWeather;
 
-    public abstract void setViewModel(DashboardViewModel dashboardViewModel);
+    public abstract void setViewModel(DashboardViewModel viewModel);
 
-    protected BmwId8DashboardWeatherLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivIcon2, TextView temperatureTv2, TextView unitWeather2) {
+    protected BmwId8DashboardWeatherLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivIcon, TextView temperatureTv, TextView unitWeather) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.ivIcon = ivIcon2;
-        this.temperatureTv = temperatureTv2;
-        this.unitWeather = unitWeather2;
+        this.ivIcon = ivIcon;
+        this.temperatureTv = temperatureTv;
+        this.unitWeather = unitWeather;
     }
 
     public DashboardViewModel getViewModel() {
@@ -37,7 +38,7 @@ public abstract class BmwId8DashboardWeatherLayoutBinding extends ViewDataBindin
 
     @Deprecated
     public static BmwId8DashboardWeatherLayoutBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BmwId8DashboardWeatherLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_dashboard_weather_layout, root, attachToRoot, component);
+        return (BmwId8DashboardWeatherLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_dashboard_weather_layout, root, attachToRoot, component);
     }
 
     public static BmwId8DashboardWeatherLayoutBinding inflate(LayoutInflater inflater) {
@@ -46,7 +47,7 @@ public abstract class BmwId8DashboardWeatherLayoutBinding extends ViewDataBindin
 
     @Deprecated
     public static BmwId8DashboardWeatherLayoutBinding inflate(LayoutInflater inflater, Object component) {
-        return (BmwId8DashboardWeatherLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_dashboard_weather_layout, (ViewGroup) null, false, component);
+        return (BmwId8DashboardWeatherLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_dashboard_weather_layout, null, false, component);
     }
 
     public static BmwId8DashboardWeatherLayoutBinding bind(View view) {
@@ -55,6 +56,6 @@ public abstract class BmwId8DashboardWeatherLayoutBinding extends ViewDataBindin
 
     @Deprecated
     public static BmwId8DashboardWeatherLayoutBinding bind(View view, Object component) {
-        return (BmwId8DashboardWeatherLayoutBinding) bind(component, view, R.layout.bmw_id8_dashboard_weather_layout);
+        return (BmwId8DashboardWeatherLayoutBinding) bind(component, view, C0899R.C0902layout.bmw_id8_dashboard_weather_layout);
     }
 }

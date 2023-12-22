@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class FragmentGsWeatherEditBinding extends ViewDataBinding {
     public final ImageView gsId8IconEditBg;
     public final ImageView ivIcon;
@@ -21,16 +22,16 @@ public abstract class FragmentGsWeatherEditBinding extends ViewDataBinding {
     public final TextView tvTitle;
     public final TextView weatherTv;
 
-    public abstract void setWeatherViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setWeatherViewModel(LauncherViewModel WeatherViewModel);
 
-    protected FragmentGsWeatherEditBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView gsId8IconEditBg2, ImageView ivIcon2, ImageView remove2, TextView tvCity2, TextView tvTitle2, TextView weatherTv2) {
+    protected FragmentGsWeatherEditBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView gsId8IconEditBg, ImageView ivIcon, ImageView remove, TextView tvCity, TextView tvTitle, TextView weatherTv) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.gsId8IconEditBg = gsId8IconEditBg2;
-        this.ivIcon = ivIcon2;
-        this.remove = remove2;
-        this.tvCity = tvCity2;
-        this.tvTitle = tvTitle2;
-        this.weatherTv = weatherTv2;
+        this.gsId8IconEditBg = gsId8IconEditBg;
+        this.ivIcon = ivIcon;
+        this.remove = remove;
+        this.tvCity = tvCity;
+        this.tvTitle = tvTitle;
+        this.weatherTv = weatherTv;
     }
 
     public LauncherViewModel getWeatherViewModel() {
@@ -43,7 +44,7 @@ public abstract class FragmentGsWeatherEditBinding extends ViewDataBinding {
 
     @Deprecated
     public static FragmentGsWeatherEditBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (FragmentGsWeatherEditBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_gs_weather_edit, root, attachToRoot, component);
+        return (FragmentGsWeatherEditBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_gs_weather_edit, root, attachToRoot, component);
     }
 
     public static FragmentGsWeatherEditBinding inflate(LayoutInflater inflater) {
@@ -52,7 +53,7 @@ public abstract class FragmentGsWeatherEditBinding extends ViewDataBinding {
 
     @Deprecated
     public static FragmentGsWeatherEditBinding inflate(LayoutInflater inflater, Object component) {
-        return (FragmentGsWeatherEditBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_gs_weather_edit, (ViewGroup) null, false, component);
+        return (FragmentGsWeatherEditBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_gs_weather_edit, null, false, component);
     }
 
     public static FragmentGsWeatherEditBinding bind(View view) {
@@ -61,6 +62,6 @@ public abstract class FragmentGsWeatherEditBinding extends ViewDataBinding {
 
     @Deprecated
     public static FragmentGsWeatherEditBinding bind(View view, Object component) {
-        return (FragmentGsWeatherEditBinding) bind(component, view, R.layout.fragment_gs_weather_edit);
+        return (FragmentGsWeatherEditBinding) bind(component, view, C0899R.C0902layout.fragment_gs_weather_edit);
     }
 }

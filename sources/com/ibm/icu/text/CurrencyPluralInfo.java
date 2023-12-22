@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public class CurrencyPluralInfo implements Cloneable, Serializable {
     private static final String defaultCurrencyPluralPattern;
     private static final char[] defaultCurrencyPluralPatternChar;
@@ -50,14 +51,14 @@ public class CurrencyPluralInfo implements Cloneable, Serializable {
 
     public String getCurrencyPluralPattern(String pluralCount) {
         String currencyPluralPattern = this.pluralCountToCurrencyUnitPattern.get(pluralCount);
-        if (currencyPluralPattern != null) {
-            return currencyPluralPattern;
-        }
-        if (!pluralCount.equals(PluralRules.KEYWORD_OTHER)) {
-            currencyPluralPattern = this.pluralCountToCurrencyUnitPattern.get(PluralRules.KEYWORD_OTHER);
-        }
         if (currencyPluralPattern == null) {
-            return defaultCurrencyPluralPattern;
+            if (!pluralCount.equals(PluralRules.KEYWORD_OTHER)) {
+                currencyPluralPattern = this.pluralCountToCurrencyUnitPattern.get(PluralRules.KEYWORD_OTHER);
+            }
+            if (currencyPluralPattern == null) {
+                return defaultCurrencyPluralPattern;
+            }
+            return currencyPluralPattern;
         }
         return currencyPluralPattern;
     }
@@ -85,7 +86,8 @@ public class CurrencyPluralInfo implements Cloneable, Serializable {
             other.ulocale = (ULocale) this.ulocale.clone();
             other.pluralCountToCurrencyUnitPattern = new HashMap();
             for (String pluralCount : this.pluralCountToCurrencyUnitPattern.keySet()) {
-                other.pluralCountToCurrencyUnitPattern.put(pluralCount, this.pluralCountToCurrencyUnitPattern.get(pluralCount));
+                String currencyPattern = this.pluralCountToCurrencyUnitPattern.get(pluralCount);
+                other.pluralCountToCurrencyUnitPattern.put(pluralCount, currencyPattern);
             }
             return other;
         } catch (CloneNotSupportedException e) {
@@ -94,29 +96,25 @@ public class CurrencyPluralInfo implements Cloneable, Serializable {
     }
 
     public boolean equals(Object a) {
-        if (!(a instanceof CurrencyPluralInfo)) {
-            return false;
+        if (a instanceof CurrencyPluralInfo) {
+            CurrencyPluralInfo other = (CurrencyPluralInfo) a;
+            return this.pluralRules.equals(other.pluralRules) && this.pluralCountToCurrencyUnitPattern.equals(other.pluralCountToCurrencyUnitPattern);
         }
-        CurrencyPluralInfo other = (CurrencyPluralInfo) a;
-        if (!this.pluralRules.equals(other.pluralRules) || !this.pluralCountToCurrencyUnitPattern.equals(other.pluralCountToCurrencyUnitPattern)) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
     public int hashCode() {
         return (this.pluralCountToCurrencyUnitPattern.hashCode() ^ this.pluralRules.hashCode()) ^ this.ulocale.hashCode();
     }
 
-    /* access modifiers changed from: package-private */
     @Deprecated
-    public String select(double number) {
+    String select(double number) {
         return this.pluralRules.select(number);
     }
 
     @Deprecated
     public String select(PluralRules.FixedDecimal numberInfo) {
-        return this.pluralRules.select((PluralRules.IFixedDecimal) numberInfo);
+        return this.pluralRules.select(numberInfo);
     }
 
     @Deprecated
@@ -131,9 +129,8 @@ public class CurrencyPluralInfo implements Cloneable, Serializable {
     }
 
     private void setupCurrencyPluralPattern(ULocale uloc) {
-        ULocale uLocale = uloc;
         this.pluralCountToCurrencyUnitPattern = new HashMap();
-        String numberStylePattern = NumberFormat.getPattern(uLocale, 0);
+        String numberStylePattern = NumberFormat.getPattern(uloc, 0);
         int separatorIndex = numberStylePattern.indexOf(";");
         String negNumberPattern = null;
         int i = -1;
@@ -141,26 +138,28 @@ public class CurrencyPluralInfo implements Cloneable, Serializable {
             negNumberPattern = numberStylePattern.substring(separatorIndex + 1);
             numberStylePattern = numberStylePattern.substring(0, separatorIndex);
         }
-        for (Map.Entry<String, String> e : CurrencyData.provider.getInstance(uLocale, true).getUnitPatterns().entrySet()) {
+        Map<String, String> map = CurrencyData.provider.getInstance(uloc, true).getUnitPatterns();
+        for (Map.Entry<String, String> e : map.entrySet()) {
             String pluralCount = e.getKey();
             String pattern = e.getValue();
             String patternWithNumber = pattern.replace("{0}", numberStylePattern);
             String str = tripleCurrencyStr;
             String patternWithCurrencySign = patternWithNumber.replace("{1}", str);
             if (separatorIndex != i) {
-                patternWithCurrencySign = patternWithCurrencySign + ";" + pattern.replace("{0}", negNumberPattern).replace("{1}", str);
+                String negWithNumber = pattern.replace("{0}", negNumberPattern);
+                String negWithCurrSign = negWithNumber.replace("{1}", str);
+                patternWithCurrencySign = patternWithCurrencySign + ";" + negWithCurrSign;
             }
             this.pluralCountToCurrencyUnitPattern.put(pluralCount, patternWithCurrencySign);
-            ULocale uLocale2 = uloc;
             i = -1;
         }
     }
 
     static {
-        char[] cArr = {164, 164, 164};
+        char[] cArr = {'\u00a4', '\u00a4', '\u00a4'};
         tripleCurrencySign = cArr;
         tripleCurrencyStr = new String(cArr);
-        char[] cArr2 = {0, '.', '#', '#', ' ', 164, 164, 164};
+        char[] cArr2 = {0, '.', '#', '#', ' ', '\u00a4', '\u00a4', '\u00a4'};
         defaultCurrencyPluralPatternChar = cArr2;
         defaultCurrencyPluralPattern = new String(cArr2);
     }

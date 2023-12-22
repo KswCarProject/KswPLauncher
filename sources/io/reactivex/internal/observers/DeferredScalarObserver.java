@@ -4,6 +4,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 
+/* loaded from: classes.dex */
 public abstract class DeferredScalarObserver<T, R> extends DeferredScalarDisposable<R> implements Observer<T> {
     private static final long serialVersionUID = -266195175408988651L;
     protected Disposable upstream;
@@ -12,6 +13,7 @@ public abstract class DeferredScalarObserver<T, R> extends DeferredScalarDisposa
         super(downstream);
     }
 
+    @Override // io.reactivex.Observer
     public void onSubscribe(Disposable d) {
         if (DisposableHelper.validate(this.upstream, d)) {
             this.upstream = d;
@@ -19,21 +21,24 @@ public abstract class DeferredScalarObserver<T, R> extends DeferredScalarDisposa
         }
     }
 
+    @Override // io.reactivex.Observer
     public void onError(Throwable t) {
         this.value = null;
         error(t);
     }
 
+    @Override // io.reactivex.Observer
     public void onComplete() {
-        R v = this.value;
-        if (v != null) {
+        T t = this.value;
+        if (t != null) {
             this.value = null;
-            complete(v);
+            complete(t);
             return;
         }
         complete();
     }
 
+    @Override // io.reactivex.internal.observers.DeferredScalarDisposable, io.reactivex.disposables.Disposable
     public void dispose() {
         super.dispose();
         this.upstream.dispose();

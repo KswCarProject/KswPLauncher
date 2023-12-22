@@ -2,29 +2,29 @@ package com.wits.ksw.databinding;
 
 import android.content.Context;
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.content.res.AppCompatResources;
+import android.support.p001v4.media.session.PlaybackStateCompat;
+import android.support.p004v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.generated.callback.OnClickListener;
-import com.wits.ksw.launcher.bean.CarInfo;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.view.LinearGradientProgressNew;
 
+/* loaded from: classes7.dex */
 public class DashboardDataBindingImpl extends DashboardDataBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback313;
+    private final View.OnClickListener mCallback447;
     private long mDirtyFlags;
     private final LinearGradientProgressNew mboundView1;
     private final TextView mboundView3;
@@ -38,40 +38,42 @@ public class DashboardDataBindingImpl extends DashboardDataBinding implements On
     }
 
     private DashboardDataBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 5, bindings[2], bindings[0]);
-        this.mDirtyFlags = -1;
-        this.ivMask.setTag((Object) null);
-        this.llContainer.setTag((Object) null);
-        LinearGradientProgressNew linearGradientProgressNew = bindings[1];
+        super(bindingComponent, root, 5, (ImageView) bindings[2], (RelativeLayout) bindings[0]);
+        this.mDirtyFlags = -1L;
+        this.ivMask.setTag(null);
+        this.llContainer.setTag(null);
+        LinearGradientProgressNew linearGradientProgressNew = (LinearGradientProgressNew) bindings[1];
         this.mboundView1 = linearGradientProgressNew;
-        linearGradientProgressNew.setTag((Object) null);
-        TextView textView = bindings[3];
+        linearGradientProgressNew.setTag(null);
+        TextView textView = (TextView) bindings[3];
         this.mboundView3 = textView;
-        textView.setTag((Object) null);
-        ImageView imageView = bindings[4];
+        textView.setTag(null);
+        ImageView imageView = (ImageView) bindings[4];
         this.mboundView4 = imageView;
-        imageView.setTag((Object) null);
-        ImageView imageView2 = bindings[5];
+        imageView.setTag(null);
+        ImageView imageView2 = (ImageView) bindings[5];
         this.mboundView5 = imageView2;
-        imageView2.setTag((Object) null);
-        TextView textView2 = bindings[6];
+        imageView2.setTag(null);
+        TextView textView2 = (TextView) bindings[6];
         this.mboundView6 = textView2;
-        textView2.setTag((Object) null);
-        TextView textView3 = bindings[7];
+        textView2.setTag(null);
+        TextView textView3 = (TextView) bindings[7];
         this.mboundView7 = textView3;
-        textView3.setTag((Object) null);
+        textView3.setTag(null);
         setRootTag(root);
-        this.mCallback313 = new OnClickListener(this, 1);
+        this.mCallback447 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 64;
+            this.mDirtyFlags = 64L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -81,14 +83,16 @@ public class DashboardDataBindingImpl extends DashboardDataBinding implements On
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (6 != variableId) {
-            return false;
+        if (6 == variableId) {
+            setDashboardViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setDashboardViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.DashboardDataBinding
     public void setDashboardViewModel(LauncherViewModel DashboardViewModel) {
         this.mDashboardViewModel = DashboardViewModel;
         synchronized (this) {
@@ -98,8 +102,8 @@ public class DashboardDataBindingImpl extends DashboardDataBinding implements On
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeDashboardViewModelCarInfoOilValue((ObservableField) object, fieldId);
@@ -116,70 +120,69 @@ public class DashboardDataBindingImpl extends DashboardDataBinding implements On
         }
     }
 
-    private boolean onChangeDashboardViewModelCarInfoOilValue(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeDashboardViewModelCarInfoOilValue(ObservableField<String> DashboardViewModelCarInfoOilValue, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeDashboardViewModelCarInfoSpeedUnit(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeDashboardViewModelCarInfoSpeedUnit(ObservableField<String> DashboardViewModelCarInfoSpeedUnit, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeDashboardViewModelCarInfoSpeed(ObservableInt DashboardViewModelCarInfoSpeed, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeDashboardViewModelCarInfoSeatBeltpValue(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeDashboardViewModelCarInfoSeatBeltpValue(ObservableField<Boolean> DashboardViewModelCarInfoSeatBeltpValue, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeDashboardViewModelCarInfoBrakeValue(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeDashboardViewModelCarInfoBrakeValue(ObservableField<Boolean> DashboardViewModelCarInfoBrakeValue, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 16;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 16;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         String stringValueOfDashboardViewModelCarInfoSpeed;
         ObservableField<String> dashboardViewModelCarInfoOilValue;
         ObservableField<Boolean> dashboardViewModelCarInfoBrakeValue;
-        Drawable drawable;
         ObservableField<Boolean> dashboardViewModelCarInfoSeatBeltpValue;
         long dirtyFlags2;
-        int i;
         Context context;
+        int i;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         ObservableField<String> dashboardViewModelCarInfoOilValue2 = null;
         ObservableField<String> dashboardViewModelCarInfoSpeedUnit = null;
@@ -193,13 +196,15 @@ public class DashboardDataBindingImpl extends DashboardDataBinding implements On
         int dashboardViewModelCarInfoSpeedGet = 0;
         String stringValueOfDashboardViewModelCarInfoSpeed2 = null;
         Boolean dashboardViewModelCarInfoSeatBeltpValueGet = null;
-        if ((dirtyFlags & 95) != 0) {
-            CarInfo dashboardViewModelCarInfo = LauncherViewModel.carInfo;
+        if ((dirtyFlags & 95) == 0) {
+            stringValueOfDashboardViewModelCarInfoSpeed = null;
+        } else {
+            com.wits.ksw.launcher.bean.CarInfo dashboardViewModelCarInfo = LauncherViewModel.carInfo;
             if ((dirtyFlags & 65) != 0) {
                 if (dashboardViewModelCarInfo != null) {
                     dashboardViewModelCarInfoOilValue2 = dashboardViewModelCarInfo.oilValue;
                 }
-                updateRegistration(0, (Observable) dashboardViewModelCarInfoOilValue2);
+                updateRegistration(0, dashboardViewModelCarInfoOilValue2);
                 if (dashboardViewModelCarInfoOilValue2 != null) {
                     dashboardViewModelCarInfoOilValueGet = dashboardViewModelCarInfoOilValue2.get();
                 }
@@ -208,7 +213,7 @@ public class DashboardDataBindingImpl extends DashboardDataBinding implements On
                 if (dashboardViewModelCarInfo != null) {
                     dashboardViewModelCarInfoSpeedUnit = dashboardViewModelCarInfo.speedUnit;
                 }
-                updateRegistration(1, (Observable) dashboardViewModelCarInfoSpeedUnit);
+                updateRegistration(1, dashboardViewModelCarInfoSpeedUnit);
                 if (dashboardViewModelCarInfoSpeedUnit != null) {
                     dashboardViewModelCarInfoSpeedUnitGet = dashboardViewModelCarInfoSpeedUnit.get();
                 }
@@ -217,22 +222,25 @@ public class DashboardDataBindingImpl extends DashboardDataBinding implements On
                 if (dashboardViewModelCarInfo != null) {
                     dashboardViewModelCarInfoSpeed = dashboardViewModelCarInfo.speed;
                 }
-                updateRegistration(2, (Observable) dashboardViewModelCarInfoSpeed);
+                updateRegistration(2, dashboardViewModelCarInfoSpeed);
                 if (dashboardViewModelCarInfoSpeed != null) {
                     dashboardViewModelCarInfoSpeedGet = dashboardViewModelCarInfoSpeed.get();
                 }
                 stringValueOfDashboardViewModelCarInfoSpeed2 = String.valueOf(dashboardViewModelCarInfoSpeedGet);
             }
-            if ((dirtyFlags & 72) != 0) {
-                if (dashboardViewModelCarInfo != null) {
-                    dashboardViewModelCarInfoSeatBeltpValue = dashboardViewModelCarInfo.seatBeltpValue;
-                } else {
+            if ((dirtyFlags & 72) == 0) {
+                dashboardViewModelCarInfoOilValue = dashboardViewModelCarInfoOilValue2;
+            } else {
+                if (dashboardViewModelCarInfo == null) {
                     dashboardViewModelCarInfoSeatBeltpValue = null;
+                } else {
+                    dashboardViewModelCarInfoSeatBeltpValue = dashboardViewModelCarInfo.seatBeltpValue;
                 }
                 dashboardViewModelCarInfoOilValue = dashboardViewModelCarInfoOilValue2;
-                updateRegistration(3, (Observable) dashboardViewModelCarInfoSeatBeltpValue);
+                updateRegistration(3, dashboardViewModelCarInfoSeatBeltpValue);
                 if (dashboardViewModelCarInfoSeatBeltpValue != null) {
-                    dashboardViewModelCarInfoSeatBeltpValueGet = dashboardViewModelCarInfoSeatBeltpValue.get();
+                    Boolean dashboardViewModelCarInfoSeatBeltpValueGet2 = dashboardViewModelCarInfoSeatBeltpValue.get();
+                    dashboardViewModelCarInfoSeatBeltpValueGet = dashboardViewModelCarInfoSeatBeltpValueGet2;
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxDashboardViewModelCarInfoSeatBeltpValueGet = ViewDataBinding.safeUnbox(dashboardViewModelCarInfoSeatBeltpValueGet);
                 if ((dirtyFlags & 72) != 0) {
@@ -245,27 +253,28 @@ public class DashboardDataBindingImpl extends DashboardDataBinding implements On
                 if (androidDatabindingViewDataBindingSafeUnboxDashboardViewModelCarInfoSeatBeltpValueGet) {
                     context = this.mboundView5.getContext();
                     dirtyFlags2 = dirtyFlags;
-                    i = R.drawable.id8_main_icon_dashboard_seatbelt;
+                    i = C0899R.C0900drawable.id8_main_icon_dashboard_seatbelt;
                 } else {
                     dirtyFlags2 = dirtyFlags;
                     context = this.mboundView5.getContext();
-                    i = R.drawable.id8_main_icon_dashboard_seatbelt_f;
+                    i = C0899R.C0900drawable.id8_main_icon_dashboard_seatbelt_f;
                 }
                 dashboardViewModelCarInfoSeatBeltpValueMboundView5AndroidDrawableId8MainIconDashboardSeatbeltMboundView5AndroidDrawableId8MainIconDashboardSeatbeltF = AppCompatResources.getDrawable(context, i);
-                ObservableField<Boolean> observableField = dashboardViewModelCarInfoSeatBeltpValue;
                 dirtyFlags = dirtyFlags2;
-            } else {
-                dashboardViewModelCarInfoOilValue = dashboardViewModelCarInfoOilValue2;
             }
-            if ((dirtyFlags & 80) != 0) {
-                if (dashboardViewModelCarInfo != null) {
-                    dashboardViewModelCarInfoBrakeValue = dashboardViewModelCarInfo.brakeValue;
-                } else {
+            if ((dirtyFlags & 80) == 0) {
+                dashboardViewModelCarInfoOilValue2 = dashboardViewModelCarInfoOilValue;
+                stringValueOfDashboardViewModelCarInfoSpeed = stringValueOfDashboardViewModelCarInfoSpeed2;
+            } else {
+                if (dashboardViewModelCarInfo == null) {
                     dashboardViewModelCarInfoBrakeValue = null;
+                } else {
+                    dashboardViewModelCarInfoBrakeValue = dashboardViewModelCarInfo.brakeValue;
                 }
-                updateRegistration(4, (Observable) dashboardViewModelCarInfoBrakeValue);
+                updateRegistration(4, dashboardViewModelCarInfoBrakeValue);
                 if (dashboardViewModelCarInfoBrakeValue != null) {
-                    dashboardViewModelCarInfoBrakeValueGet = dashboardViewModelCarInfoBrakeValue.get();
+                    Boolean dashboardViewModelCarInfoBrakeValueGet2 = dashboardViewModelCarInfoBrakeValue.get();
+                    dashboardViewModelCarInfoBrakeValueGet = dashboardViewModelCarInfoBrakeValueGet2;
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxDashboardViewModelCarInfoBrakeValueGet = ViewDataBinding.safeUnbox(dashboardViewModelCarInfoBrakeValueGet);
                 if ((dirtyFlags & 80) != 0) {
@@ -275,27 +284,13 @@ public class DashboardDataBindingImpl extends DashboardDataBinding implements On
                         dirtyFlags |= 512;
                     }
                 }
-                if (androidDatabindingViewDataBindingSafeUnboxDashboardViewModelCarInfoBrakeValueGet) {
-                    ObservableField<Boolean> observableField2 = dashboardViewModelCarInfoBrakeValue;
-                    drawable = AppCompatResources.getDrawable(this.mboundView4.getContext(), R.drawable.id8_main_icon_dashboard_brake_f);
-                } else {
-                    drawable = AppCompatResources.getDrawable(this.mboundView4.getContext(), R.drawable.id8_main_icon_dashboard_brake);
-                }
-                dashboardViewModelCarInfoBrakeValueMboundView4AndroidDrawableId8MainIconDashboardBrakeFMboundView4AndroidDrawableId8MainIconDashboardBrake = drawable;
+                dashboardViewModelCarInfoBrakeValueMboundView4AndroidDrawableId8MainIconDashboardBrakeFMboundView4AndroidDrawableId8MainIconDashboardBrake = androidDatabindingViewDataBindingSafeUnboxDashboardViewModelCarInfoBrakeValueGet ? AppCompatResources.getDrawable(this.mboundView4.getContext(), C0899R.C0900drawable.id8_main_icon_dashboard_brake_f) : AppCompatResources.getDrawable(this.mboundView4.getContext(), C0899R.C0900drawable.id8_main_icon_dashboard_brake);
                 dashboardViewModelCarInfoOilValue2 = dashboardViewModelCarInfoOilValue;
-                CarInfo carInfo = dashboardViewModelCarInfo;
-                stringValueOfDashboardViewModelCarInfoSpeed = stringValueOfDashboardViewModelCarInfoSpeed2;
-            } else {
-                dashboardViewModelCarInfoOilValue2 = dashboardViewModelCarInfoOilValue;
-                CarInfo carInfo2 = dashboardViewModelCarInfo;
                 stringValueOfDashboardViewModelCarInfoSpeed = stringValueOfDashboardViewModelCarInfoSpeed2;
             }
-        } else {
-            stringValueOfDashboardViewModelCarInfoSpeed = null;
         }
         if ((dirtyFlags & 64) != 0) {
-            ObservableField<String> observableField3 = dashboardViewModelCarInfoOilValue2;
-            this.ivMask.setOnClickListener(this.mCallback313);
+            this.ivMask.setOnClickListener(this.mCallback447);
         }
         if ((dirtyFlags & 68) != 0) {
             this.mboundView1.setScae(dashboardViewModelCarInfoSpeedGet);
@@ -315,9 +310,11 @@ public class DashboardDataBindingImpl extends DashboardDataBinding implements On
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
         LauncherViewModel dashboardViewModel = this.mDashboardViewModel;
-        if (dashboardViewModel != null) {
+        boolean dashboardViewModelJavaLangObjectNull = dashboardViewModel != null;
+        if (dashboardViewModelJavaLangObjectNull) {
             dashboardViewModel.openDashboard(callbackArg_0);
         }
     }

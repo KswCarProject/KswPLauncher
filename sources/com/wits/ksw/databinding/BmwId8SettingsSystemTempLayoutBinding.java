@@ -7,9 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class BmwId8SettingsSystemTempLayoutBinding extends ViewDataBinding {
     public final RelativeLayout bmwId8SettingsSystemTempC;
     public final RelativeLayout bmwId8SettingsSystemTempF;
@@ -17,13 +18,13 @@ public abstract class BmwId8SettingsSystemTempLayoutBinding extends ViewDataBind
     @Bindable
     protected BmwId8SettingsViewModel mViewModel;
 
-    public abstract void setViewModel(BmwId8SettingsViewModel bmwId8SettingsViewModel);
+    public abstract void setViewModel(BmwId8SettingsViewModel viewModel);
 
-    protected BmwId8SettingsSystemTempLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout bmwId8SettingsSystemTempC2, RelativeLayout bmwId8SettingsSystemTempF2, RelativeLayout bmwId8SettingsSystemTempLay2) {
+    protected BmwId8SettingsSystemTempLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout bmwId8SettingsSystemTempC, RelativeLayout bmwId8SettingsSystemTempF, RelativeLayout bmwId8SettingsSystemTempLay) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.bmwId8SettingsSystemTempC = bmwId8SettingsSystemTempC2;
-        this.bmwId8SettingsSystemTempF = bmwId8SettingsSystemTempF2;
-        this.bmwId8SettingsSystemTempLay = bmwId8SettingsSystemTempLay2;
+        this.bmwId8SettingsSystemTempC = bmwId8SettingsSystemTempC;
+        this.bmwId8SettingsSystemTempF = bmwId8SettingsSystemTempF;
+        this.bmwId8SettingsSystemTempLay = bmwId8SettingsSystemTempLay;
     }
 
     public BmwId8SettingsViewModel getViewModel() {
@@ -36,7 +37,7 @@ public abstract class BmwId8SettingsSystemTempLayoutBinding extends ViewDataBind
 
     @Deprecated
     public static BmwId8SettingsSystemTempLayoutBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BmwId8SettingsSystemTempLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_system_temp_layout, root, attachToRoot, component);
+        return (BmwId8SettingsSystemTempLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_system_temp_layout, root, attachToRoot, component);
     }
 
     public static BmwId8SettingsSystemTempLayoutBinding inflate(LayoutInflater inflater) {
@@ -45,7 +46,7 @@ public abstract class BmwId8SettingsSystemTempLayoutBinding extends ViewDataBind
 
     @Deprecated
     public static BmwId8SettingsSystemTempLayoutBinding inflate(LayoutInflater inflater, Object component) {
-        return (BmwId8SettingsSystemTempLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_system_temp_layout, (ViewGroup) null, false, component);
+        return (BmwId8SettingsSystemTempLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_system_temp_layout, null, false, component);
     }
 
     public static BmwId8SettingsSystemTempLayoutBinding bind(View view) {
@@ -54,6 +55,6 @@ public abstract class BmwId8SettingsSystemTempLayoutBinding extends ViewDataBind
 
     @Deprecated
     public static BmwId8SettingsSystemTempLayoutBinding bind(View view, Object component) {
-        return (BmwId8SettingsSystemTempLayoutBinding) bind(component, view, R.layout.bmw_id8_settings_system_temp_layout);
+        return (BmwId8SettingsSystemTempLayoutBinding) bind(component, view, C0899R.C0902layout.bmw_id8_settings_system_temp_layout);
     }
 }

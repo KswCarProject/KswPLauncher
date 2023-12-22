@@ -2,6 +2,7 @@ package com.google.zxing.oned.rss.expanded.decoders;
 
 import com.google.zxing.NotFoundException;
 
+/* loaded from: classes.dex */
 final class FieldParser {
     private static final Object[][] FOUR_DIGIT_DATA_LENGTH;
     private static final Object[][] THREE_DIGIT_DATA_LENGTH;
@@ -22,92 +23,77 @@ final class FieldParser {
     }
 
     static String parseFieldsInGeneralPurpose(String rawInformation) throws NotFoundException {
+        Object[][] objArr;
+        Object[][] objArr2;
+        Object[][] objArr3;
+        Object[][] objArr4;
         if (rawInformation.isEmpty()) {
             return null;
         }
-        if (rawInformation.length() >= 2) {
-            String firstTwoDigits = rawInformation.substring(0, 2);
-            Object[][] objArr = TWO_DIGIT_DATA_LENGTH;
-            int length = objArr.length;
-            int i = 0;
-            while (i < length) {
-                Object[] objArr2 = objArr[i];
-                Object[] dataLength = objArr2;
-                if (!objArr2[0].equals(firstTwoDigits)) {
-                    i++;
-                } else if (dataLength[1] == VARIABLE_LENGTH) {
+        if (rawInformation.length() < 2) {
+            throw NotFoundException.getNotFoundInstance();
+        }
+        String firstTwoDigits = rawInformation.substring(0, 2);
+        for (Object[] dataLength : TWO_DIGIT_DATA_LENGTH) {
+            if (dataLength[0].equals(firstTwoDigits)) {
+                if (dataLength[1] == VARIABLE_LENGTH) {
                     return processVariableAI(2, ((Integer) dataLength[2]).intValue(), rawInformation);
                 } else {
                     return processFixedAI(2, ((Integer) dataLength[1]).intValue(), rawInformation);
                 }
             }
-            if (rawInformation.length() >= 3) {
-                String firstThreeDigits = rawInformation.substring(0, 3);
-                Object[][] objArr3 = THREE_DIGIT_DATA_LENGTH;
-                int length2 = objArr3.length;
-                int i2 = 0;
-                while (i2 < length2) {
-                    Object[] objArr4 = objArr3[i2];
-                    Object[] dataLength2 = objArr4;
-                    if (!objArr4[0].equals(firstThreeDigits)) {
-                        i2++;
-                    } else if (dataLength2[1] == VARIABLE_LENGTH) {
-                        return processVariableAI(3, ((Integer) dataLength2[2]).intValue(), rawInformation);
-                    } else {
-                        return processFixedAI(3, ((Integer) dataLength2[1]).intValue(), rawInformation);
-                    }
-                }
-                Object[][] objArr5 = THREE_DIGIT_PLUS_DIGIT_DATA_LENGTH;
-                int length3 = objArr5.length;
-                int i3 = 0;
-                while (i3 < length3) {
-                    Object[] objArr6 = objArr5[i3];
-                    Object[] dataLength3 = objArr6;
-                    if (!objArr6[0].equals(firstThreeDigits)) {
-                        i3++;
-                    } else if (dataLength3[1] == VARIABLE_LENGTH) {
-                        return processVariableAI(4, ((Integer) dataLength3[2]).intValue(), rawInformation);
-                    } else {
-                        return processFixedAI(4, ((Integer) dataLength3[1]).intValue(), rawInformation);
-                    }
-                }
-                if (rawInformation.length() >= 4) {
-                    String firstFourDigits = rawInformation.substring(0, 4);
-                    Object[][] objArr7 = FOUR_DIGIT_DATA_LENGTH;
-                    int length4 = objArr7.length;
-                    int i4 = 0;
-                    while (i4 < length4) {
-                        Object[] objArr8 = objArr7[i4];
-                        Object[] dataLength4 = objArr8;
-                        if (!objArr8[0].equals(firstFourDigits)) {
-                            i4++;
-                        } else if (dataLength4[1] == VARIABLE_LENGTH) {
-                            return processVariableAI(4, ((Integer) dataLength4[2]).intValue(), rawInformation);
-                        } else {
-                            return processFixedAI(4, ((Integer) dataLength4[1]).intValue(), rawInformation);
-                        }
-                    }
-                    throw NotFoundException.getNotFoundInstance();
-                }
-                throw NotFoundException.getNotFoundInstance();
-            }
+        }
+        if (rawInformation.length() < 3) {
             throw NotFoundException.getNotFoundInstance();
+        }
+        String firstThreeDigits = rawInformation.substring(0, 3);
+        for (Object[] dataLength2 : THREE_DIGIT_DATA_LENGTH) {
+            if (dataLength2[0].equals(firstThreeDigits)) {
+                if (dataLength2[1] == VARIABLE_LENGTH) {
+                    return processVariableAI(3, ((Integer) dataLength2[2]).intValue(), rawInformation);
+                } else {
+                    return processFixedAI(3, ((Integer) dataLength2[1]).intValue(), rawInformation);
+                }
+            }
+        }
+        for (Object[] dataLength3 : THREE_DIGIT_PLUS_DIGIT_DATA_LENGTH) {
+            if (dataLength3[0].equals(firstThreeDigits)) {
+                if (dataLength3[1] == VARIABLE_LENGTH) {
+                    return processVariableAI(4, ((Integer) dataLength3[2]).intValue(), rawInformation);
+                } else {
+                    return processFixedAI(4, ((Integer) dataLength3[1]).intValue(), rawInformation);
+                }
+            }
+        }
+        if (rawInformation.length() < 4) {
+            throw NotFoundException.getNotFoundInstance();
+        }
+        String firstFourDigits = rawInformation.substring(0, 4);
+        for (Object[] dataLength4 : FOUR_DIGIT_DATA_LENGTH) {
+            if (dataLength4[0].equals(firstFourDigits)) {
+                if (dataLength4[1] == VARIABLE_LENGTH) {
+                    return processVariableAI(4, ((Integer) dataLength4[2]).intValue(), rawInformation);
+                } else {
+                    return processFixedAI(4, ((Integer) dataLength4[1]).intValue(), rawInformation);
+                }
+            }
         }
         throw NotFoundException.getNotFoundInstance();
     }
 
     private static String processFixedAI(int aiSize, int fieldSize, String rawInformation) throws NotFoundException {
-        if (rawInformation.length() >= aiSize) {
-            String ai = rawInformation.substring(0, aiSize);
-            if (rawInformation.length() >= aiSize + fieldSize) {
-                String field = rawInformation.substring(aiSize, aiSize + fieldSize);
-                String result = "(" + ai + ')' + field;
-                String parsedAI = parseFieldsInGeneralPurpose(rawInformation.substring(aiSize + fieldSize));
-                return parsedAI == null ? result : result + parsedAI;
-            }
+        if (rawInformation.length() < aiSize) {
             throw NotFoundException.getNotFoundInstance();
         }
-        throw NotFoundException.getNotFoundInstance();
+        String ai = rawInformation.substring(0, aiSize);
+        if (rawInformation.length() < aiSize + fieldSize) {
+            throw NotFoundException.getNotFoundInstance();
+        }
+        String field = rawInformation.substring(aiSize, aiSize + fieldSize);
+        String remaining = rawInformation.substring(aiSize + fieldSize);
+        String result = "(" + ai + ')' + field;
+        String parsedAI = parseFieldsInGeneralPurpose(remaining);
+        return parsedAI == null ? result : result + parsedAI;
     }
 
     private static String processVariableAI(int aiSize, int variableFieldSize, String rawInformation) throws NotFoundException {
@@ -119,8 +105,9 @@ final class FieldParser {
             maxSize = aiSize + variableFieldSize;
         }
         String field = rawInformation.substring(aiSize, maxSize);
+        String remaining = rawInformation.substring(maxSize);
         String result = "(" + ai + ')' + field;
-        String parsedAI = parseFieldsInGeneralPurpose(rawInformation.substring(maxSize));
+        String parsedAI = parseFieldsInGeneralPurpose(remaining);
         return parsedAI == null ? result : result + parsedAI;
     }
 }

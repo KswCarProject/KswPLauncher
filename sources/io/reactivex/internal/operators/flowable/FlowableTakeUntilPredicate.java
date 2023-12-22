@@ -9,30 +9,33 @@ import io.reactivex.plugins.RxJavaPlugins;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableTakeUntilPredicate<T> extends AbstractFlowableWithUpstream<T, T> {
     final Predicate<? super T> predicate;
 
-    public FlowableTakeUntilPredicate(Flowable<T> source, Predicate<? super T> predicate2) {
+    public FlowableTakeUntilPredicate(Flowable<T> source, Predicate<? super T> predicate) {
         super(source);
-        this.predicate = predicate2;
+        this.predicate = predicate;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
-        this.source.subscribe(new InnerSubscriber(s, this.predicate));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
+        this.source.subscribe((FlowableSubscriber) new InnerSubscriber(s, this.predicate));
     }
 
+    /* loaded from: classes.dex */
     static final class InnerSubscriber<T> implements FlowableSubscriber<T>, Subscription {
         boolean done;
         final Subscriber<? super T> downstream;
         final Predicate<? super T> predicate;
         Subscription upstream;
 
-        InnerSubscriber(Subscriber<? super T> actual, Predicate<? super T> predicate2) {
+        InnerSubscriber(Subscriber<? super T> actual, Predicate<? super T> predicate) {
             this.downstream = actual;
-            this.predicate = predicate2;
+            this.predicate = predicate;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -40,11 +43,13 @@ public final class FlowableTakeUntilPredicate<T> extends AbstractFlowableWithUps
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             if (!this.done) {
                 this.downstream.onNext(t);
                 try {
-                    if (this.predicate.test(t)) {
+                    boolean b = this.predicate.test(t);
+                    if (b) {
                         this.done = true;
                         this.upstream.cancel();
                         this.downstream.onComplete();
@@ -57,6 +62,7 @@ public final class FlowableTakeUntilPredicate<T> extends AbstractFlowableWithUps
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (!this.done) {
                 this.done = true;
@@ -66,6 +72,7 @@ public final class FlowableTakeUntilPredicate<T> extends AbstractFlowableWithUps
             RxJavaPlugins.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             if (!this.done) {
                 this.done = true;
@@ -73,10 +80,12 @@ public final class FlowableTakeUntilPredicate<T> extends AbstractFlowableWithUps
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             this.upstream.request(n);
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             this.upstream.cancel();
         }

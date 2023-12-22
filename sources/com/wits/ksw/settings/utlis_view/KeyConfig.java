@@ -1,11 +1,13 @@
 package com.wits.ksw.settings.utlis_view;
 
+/* loaded from: classes10.dex */
 public class KeyConfig {
     public static final String AC_CONTROL = "AC_Control";
     public static final String AHD_Select = "AHD_cam_Select";
     public static final String AMP_TYPE = "AMP_Type";
     public static final String ANDROID_MEDIA_VOL = "Android_media_vol";
     public static final String ANDROID_PHONE_VOL = "Android_phone_vol";
+    public static final String APP_360 = "APK360";
     public static final String AUDI_UI_LEFT_ID = "Audi_Logo_Left";
     public static final String AUDI_UI_RIGHT_ID = "Audi_Logo_Right";
     public static final String AUX_TYPE = "AUX_Type";
@@ -14,6 +16,7 @@ public class KeyConfig {
     public static final String BAO_MA_DISPLAY = "CarDisplay";
     public static final String BEI_GUANG_LiangDU = "Brightness";
     public static final String BENZPANE = "BenzPanelEnable";
+    public static final String BOOT_UP_CAMERA = "BootUpCamera";
     public static final String BT_TYPE = "BT_Type";
     public static final String CAM360 = "cam360_video";
     public static final String CAN_BUS_TYPE = "canBusType";
@@ -51,6 +54,7 @@ public class KeyConfig {
     public static final String FRONT_VIEW_MIRROR_SETTING = "forwardCamMirror";
     public static final String FUEL_UNIT = "FuelUnit";
     public static final String F_CAM_Type = "Front_view_camera";
+    public static final String GLOBAL_WEATHER_APP = "globalweather_app";
     public static final String GOOGLE_APP = "GoogleAPP";
     public static final String HAND_SET_AUTOMATIC = "HandsetAutomaticSelect";
     public static final String HOU_SHI_SX = "RearCamMirror";
@@ -59,17 +63,20 @@ public class KeyConfig {
     public static final String KEY_THIRD_APP_MUSIC_PKG = "KEY_THIRD_APP_MUSIC_PKG";
     public static final String KEY_THIRD_APP_VIDEO_CLS = "KEY_THIRD_APP_VIDEO_CLS";
     public static final String KEY_THIRD_APP_VIDEO_PKG = "KEY_THIRD_APP_VIDEO_PKG";
+    public static final String KSW_LOGO = "ksw_logo";
     public static final String LANGUAGE_DEFUAL = "Language";
     public static final String LANGUAGE_LIST = "SupportLanguageList";
     public static final String MAP_KEY = "Map_key";
     public static final String MIC_GAIN_M501 = "mic_gain_m501";
     public static final String MIC_GAIN_M600 = "mic_gain_m600";
+    public static final String MIC_TYPE = "MicControl";
     public static final String MODE_KEY = "Mode_key";
     public static final String NAVI_DEFUAL = "NaviApp";
     public static final String NAVI_LIST = "SupportNaviAppList";
     public static final String NAVI_VOICE_MIX = "NaviMix";
     public static final String NBT_AUX_SW = "CarAux_auto_method";
     public static final String OEM_FM = "OEM_FM";
+    public static final String ORIGINAL_RADAR = "OriginalRadar";
     public static final String PASSWORD = "password";
     public static final String PHONE_KEY = "phone_key";
     public static final String REVERSE_TIME = "Reverse_time";
@@ -80,6 +87,7 @@ public class KeyConfig {
     public static final String TIME_FORMAT = "TimeFormat";
     public static final String TIME_SOURCE = "TimeSyncSoucrce";
     public static final String TOUCH_CONTINUOUS_SEND = "touch_continuous_send";
+    public static final String TURN_SIGNAL = "TurnSignalControl";
     public static final String TXZ = "Support_TXZ";
     public static final String TXZ_OIL = "txz_oil";
     public static final String TXZ_SPEED = "txz_speed";

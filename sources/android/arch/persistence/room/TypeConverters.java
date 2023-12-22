@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.CLASS)
+/* loaded from: classes.dex */
 public @interface TypeConverters {
     Class<?>[] value();
 }

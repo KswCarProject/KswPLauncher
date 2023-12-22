@@ -17,39 +17,42 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ObservableFlatMapSingle<T, R> extends AbstractObservableWithUpstream<T, R> {
     final boolean delayErrors;
     final Function<? super T, ? extends SingleSource<? extends R>> mapper;
 
-    public ObservableFlatMapSingle(ObservableSource<T> source, Function<? super T, ? extends SingleSource<? extends R>> mapper2, boolean delayError) {
+    public ObservableFlatMapSingle(ObservableSource<T> source, Function<? super T, ? extends SingleSource<? extends R>> mapper, boolean delayError) {
         super(source);
-        this.mapper = mapper2;
+        this.mapper = mapper;
         this.delayErrors = delayError;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Observer<? super R> observer) {
+    @Override // io.reactivex.Observable
+    protected void subscribeActual(Observer<? super R> observer) {
         this.source.subscribe(new FlatMapSingleObserver(observer, this.mapper, this.delayErrors));
     }
 
+    /* loaded from: classes.dex */
     static final class FlatMapSingleObserver<T, R> extends AtomicInteger implements Observer<T>, Disposable {
         private static final long serialVersionUID = 8600231336733376951L;
-        final AtomicInteger active = new AtomicInteger(1);
         volatile boolean cancelled;
         final boolean delayErrors;
         final Observer<? super R> downstream;
-        final AtomicThrowable errors = new AtomicThrowable();
         final Function<? super T, ? extends SingleSource<? extends R>> mapper;
-        final AtomicReference<SpscLinkedArrayQueue<R>> queue = new AtomicReference<>();
-        final CompositeDisposable set = new CompositeDisposable();
         Disposable upstream;
+        final CompositeDisposable set = new CompositeDisposable();
+        final AtomicThrowable errors = new AtomicThrowable();
+        final AtomicInteger active = new AtomicInteger(1);
+        final AtomicReference<SpscLinkedArrayQueue<R>> queue = new AtomicReference<>();
 
-        FlatMapSingleObserver(Observer<? super R> actual, Function<? super T, ? extends SingleSource<? extends R>> mapper2, boolean delayErrors2) {
+        FlatMapSingleObserver(Observer<? super R> actual, Function<? super T, ? extends SingleSource<? extends R>> mapper, boolean delayErrors) {
             this.downstream = actual;
-            this.mapper = mapper2;
-            this.delayErrors = delayErrors2;
+            this.mapper = mapper;
+            this.delayErrors = delayErrors;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -57,6 +60,7 @@ public final class ObservableFlatMapSingle<T, R> extends AbstractObservableWithU
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             try {
                 SingleSource<? extends R> ms = (SingleSource) ObjectHelper.requireNonNull(this.mapper.apply(t), "The mapper returned a null SingleSource");
@@ -72,6 +76,7 @@ public final class ObservableFlatMapSingle<T, R> extends AbstractObservableWithU
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             this.active.decrementAndGet();
             if (this.errors.addThrowable(t)) {
@@ -84,46 +89,45 @@ public final class ObservableFlatMapSingle<T, R> extends AbstractObservableWithU
             RxJavaPlugins.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             this.active.decrementAndGet();
             drain();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.cancelled = true;
             this.upstream.dispose();
             this.set.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.cancelled;
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerSuccess(FlatMapSingleObserver<T, R>.InnerObserver inner, R value) {
+        void innerSuccess(FlatMapSingleObserver<T, R>.InnerObserver inner, R value) {
             this.set.delete(inner);
             if (get() == 0) {
-                boolean d = false;
                 if (compareAndSet(0, 1)) {
                     this.downstream.onNext(value);
-                    if (this.active.decrementAndGet() == 0) {
-                        d = true;
-                    }
+                    boolean d = this.active.decrementAndGet() == 0;
                     SpscLinkedArrayQueue<R> q = this.queue.get();
-                    if (!d || (q != null && !q.isEmpty())) {
-                        if (decrementAndGet() == 0) {
+                    if (d && (q == null || q.isEmpty())) {
+                        Throwable ex = this.errors.terminate();
+                        if (ex != null) {
+                            this.downstream.onError(ex);
+                            return;
+                        } else {
+                            this.downstream.onComplete();
                             return;
                         }
-                        drainLoop();
                     }
-                    Throwable ex = this.errors.terminate();
-                    if (ex != null) {
-                        this.downstream.onError(ex);
-                        return;
-                    } else {
-                        this.downstream.onComplete();
+                    if (decrementAndGet() == 0) {
                         return;
                     }
+                    drainLoop();
                 }
             }
             SpscLinkedArrayQueue<R> q2 = getOrCreateQueue();
@@ -137,8 +141,7 @@ public final class ObservableFlatMapSingle<T, R> extends AbstractObservableWithU
             drainLoop();
         }
 
-        /* access modifiers changed from: package-private */
-        public SpscLinkedArrayQueue<R> getOrCreateQueue() {
+        SpscLinkedArrayQueue<R> getOrCreateQueue() {
             SpscLinkedArrayQueue<R> current;
             do {
                 SpscLinkedArrayQueue<R> current2 = this.queue.get();
@@ -146,12 +149,11 @@ public final class ObservableFlatMapSingle<T, R> extends AbstractObservableWithU
                     return current2;
                 }
                 current = new SpscLinkedArrayQueue<>(Observable.bufferSize());
-            } while (!this.queue.compareAndSet((Object) null, current));
+            } while (!this.queue.compareAndSet(null, current));
             return current;
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerError(FlatMapSingleObserver<T, R>.InnerObserver inner, Throwable e) {
+        void innerError(FlatMapSingleObserver<T, R>.InnerObserver inner, Throwable e) {
             this.set.delete(inner);
             if (this.errors.addThrowable(e)) {
                 if (!this.delayErrors) {
@@ -165,85 +167,84 @@ public final class ObservableFlatMapSingle<T, R> extends AbstractObservableWithU
             RxJavaPlugins.onError(e);
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
+        void drain() {
             if (getAndIncrement() == 0) {
                 drainLoop();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void clear() {
+        void clear() {
             SpscLinkedArrayQueue<R> q = this.queue.get();
             if (q != null) {
                 q.clear();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drainLoop() {
+        void drainLoop() {
             int missed = 1;
             Observer<? super R> a = this.downstream;
             AtomicInteger n = this.active;
             AtomicReference<SpscLinkedArrayQueue<R>> qr = this.queue;
             while (!this.cancelled) {
-                if (this.delayErrors || ((Throwable) this.errors.get()) == null) {
-                    boolean empty = true;
-                    boolean d = n.get() == 0;
-                    SpscLinkedArrayQueue<R> q = qr.get();
-                    R v = q != null ? q.poll() : null;
-                    if (v != null) {
-                        empty = false;
-                    }
-                    if (d && empty) {
-                        Throwable ex = this.errors.terminate();
-                        if (ex != null) {
-                            a.onError(ex);
-                            return;
-                        } else {
-                            a.onComplete();
-                            return;
-                        }
-                    } else if (empty) {
-                        missed = addAndGet(-missed);
-                        if (missed == 0) {
-                            return;
-                        }
-                    } else {
-                        a.onNext(v);
-                    }
-                } else {
-                    Throwable ex2 = this.errors.terminate();
+                if (!this.delayErrors && this.errors.get() != null) {
+                    Throwable ex = this.errors.terminate();
                     clear();
-                    a.onError(ex2);
+                    a.onError(ex);
                     return;
+                }
+                boolean d = n.get() == 0;
+                SpscLinkedArrayQueue<R> q = qr.get();
+                R poll = q != null ? q.poll() : (Object) null;
+                boolean empty = poll == null;
+                if (d && empty) {
+                    Throwable ex2 = this.errors.terminate();
+                    if (ex2 != null) {
+                        a.onError(ex2);
+                        return;
+                    } else {
+                        a.onComplete();
+                        return;
+                    }
+                } else if (!empty) {
+                    a.onNext(poll);
+                } else {
+                    missed = addAndGet(-missed);
+                    if (missed == 0) {
+                        return;
+                    }
                 }
             }
             clear();
         }
 
+        /* loaded from: classes.dex */
         final class InnerObserver extends AtomicReference<Disposable> implements SingleObserver<R>, Disposable {
             private static final long serialVersionUID = -502562646270949838L;
 
             InnerObserver() {
             }
 
+            @Override // io.reactivex.SingleObserver
             public void onSubscribe(Disposable d) {
                 DisposableHelper.setOnce(this, d);
             }
 
+            @Override // io.reactivex.SingleObserver
             public void onSuccess(R value) {
                 FlatMapSingleObserver.this.innerSuccess(this, value);
             }
 
+            @Override // io.reactivex.SingleObserver
             public void onError(Throwable e) {
                 FlatMapSingleObserver.this.innerError(this, e);
             }
 
+            @Override // io.reactivex.disposables.Disposable
             public boolean isDisposed() {
-                return DisposableHelper.isDisposed((Disposable) get());
+                return DisposableHelper.isDisposed(get());
             }
 
+            @Override // io.reactivex.disposables.Disposable
             public void dispose() {
                 DisposableHelper.dispose(this);
             }

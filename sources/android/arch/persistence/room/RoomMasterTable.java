@@ -1,5 +1,6 @@
 package android.arch.persistence.room;
 
+/* loaded from: classes.dex */
 public class RoomMasterTable {
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_IDENTITY_HASH = "identity_hash";

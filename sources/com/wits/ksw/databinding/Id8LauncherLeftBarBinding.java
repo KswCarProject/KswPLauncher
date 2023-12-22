@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class Id8LauncherLeftBarBinding extends ViewDataBinding {
     public final ImageView ivLeft1;
     public final ImageView ivLeft2;
@@ -29,24 +30,23 @@ public abstract class Id8LauncherLeftBarBinding extends ViewDataBinding {
     public final TextView tvLeft3;
     public final TextView tvLeft4;
 
-    public abstract void setLeftViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setLeftViewModel(LauncherViewModel LeftViewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected Id8LauncherLeftBarBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivLeft12, ImageView ivLeft22, ImageView ivLeft32, ImageView ivLeft42, LinearLayout llLeft12, LinearLayout llLeft22, LinearLayout llLeft32, LinearLayout llLeft42, LinearLayout llLeftBarContainer2, TextView tvLeft12, TextView tvLeft22, TextView tvLeft32, TextView tvLeft42) {
+    protected Id8LauncherLeftBarBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivLeft1, ImageView ivLeft2, ImageView ivLeft3, ImageView ivLeft4, LinearLayout llLeft1, LinearLayout llLeft2, LinearLayout llLeft3, LinearLayout llLeft4, LinearLayout llLeftBarContainer, TextView tvLeft1, TextView tvLeft2, TextView tvLeft3, TextView tvLeft4) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.ivLeft1 = ivLeft12;
-        this.ivLeft2 = ivLeft22;
-        this.ivLeft3 = ivLeft32;
-        this.ivLeft4 = ivLeft42;
-        this.llLeft1 = llLeft12;
-        this.llLeft2 = llLeft22;
-        this.llLeft3 = llLeft32;
-        this.llLeft4 = llLeft42;
-        this.llLeftBarContainer = llLeftBarContainer2;
-        this.tvLeft1 = tvLeft12;
-        this.tvLeft2 = tvLeft22;
-        this.tvLeft3 = tvLeft32;
-        this.tvLeft4 = tvLeft42;
+        this.ivLeft1 = ivLeft1;
+        this.ivLeft2 = ivLeft2;
+        this.ivLeft3 = ivLeft3;
+        this.ivLeft4 = ivLeft4;
+        this.llLeft1 = llLeft1;
+        this.llLeft2 = llLeft2;
+        this.llLeft3 = llLeft3;
+        this.llLeft4 = llLeft4;
+        this.llLeftBarContainer = llLeftBarContainer;
+        this.tvLeft1 = tvLeft1;
+        this.tvLeft2 = tvLeft2;
+        this.tvLeft3 = tvLeft3;
+        this.tvLeft4 = tvLeft4;
     }
 
     public LauncherViewModel getLeftViewModel() {
@@ -59,7 +59,7 @@ public abstract class Id8LauncherLeftBarBinding extends ViewDataBinding {
 
     @Deprecated
     public static Id8LauncherLeftBarBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (Id8LauncherLeftBarBinding) ViewDataBinding.inflateInternal(inflater, R.layout.id8_launcher_left_bar, root, attachToRoot, component);
+        return (Id8LauncherLeftBarBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id8_launcher_left_bar, root, attachToRoot, component);
     }
 
     public static Id8LauncherLeftBarBinding inflate(LayoutInflater inflater) {
@@ -68,7 +68,7 @@ public abstract class Id8LauncherLeftBarBinding extends ViewDataBinding {
 
     @Deprecated
     public static Id8LauncherLeftBarBinding inflate(LayoutInflater inflater, Object component) {
-        return (Id8LauncherLeftBarBinding) ViewDataBinding.inflateInternal(inflater, R.layout.id8_launcher_left_bar, (ViewGroup) null, false, component);
+        return (Id8LauncherLeftBarBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id8_launcher_left_bar, null, false, component);
     }
 
     public static Id8LauncherLeftBarBinding bind(View view) {
@@ -77,6 +77,6 @@ public abstract class Id8LauncherLeftBarBinding extends ViewDataBinding {
 
     @Deprecated
     public static Id8LauncherLeftBarBinding bind(View view, Object component) {
-        return (Id8LauncherLeftBarBinding) bind(component, view, R.layout.id8_launcher_left_bar);
+        return (Id8LauncherLeftBarBinding) bind(component, view, C0899R.C0902layout.id8_launcher_left_bar);
     }
 }

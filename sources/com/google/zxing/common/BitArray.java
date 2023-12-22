@@ -2,6 +2,7 @@ package com.google.zxing.common;
 
 import java.util.Arrays;
 
+/* loaded from: classes.dex */
 public final class BitArray implements Cloneable {
     private int[] bits;
     private int size;
@@ -11,14 +12,14 @@ public final class BitArray implements Cloneable {
         this.bits = new int[1];
     }
 
-    public BitArray(int size2) {
-        this.size = size2;
-        this.bits = makeArray(size2);
+    public BitArray(int size) {
+        this.size = size;
+        this.bits = makeArray(size);
     }
 
-    BitArray(int[] bits2, int size2) {
-        this.bits = bits2;
-        this.size = size2;
+    BitArray(int[] bits, int size) {
+        this.bits = bits;
+        this.size = size;
     }
 
     public int getSize() {
@@ -29,9 +30,9 @@ public final class BitArray implements Cloneable {
         return (this.size + 7) / 8;
     }
 
-    private void ensureCapacity(int size2) {
-        if (size2 > (this.bits.length << 5)) {
-            int[] newBits = makeArray(size2);
+    private void ensureCapacity(int size) {
+        if (size > (this.bits.length << 5)) {
+            int[] newBits = makeArray(size);
             int[] iArr = this.bits;
             System.arraycopy(iArr, 0, newBits, 0, iArr.length);
             this.bits = newBits;
@@ -69,10 +70,9 @@ public final class BitArray implements Cloneable {
             }
             currentBits = iArr[bitsOffset];
         }
-        int numberOfTrailingZeros = (bitsOffset << 5) + Integer.numberOfTrailingZeros(currentBits);
-        int result = numberOfTrailingZeros;
+        int result = (bitsOffset << 5) + Integer.numberOfTrailingZeros(currentBits);
         int i2 = this.size;
-        return numberOfTrailingZeros > i2 ? i2 : result;
+        return result > i2 ? i2 : result;
     }
 
     public int getNextUnset(int from) {
@@ -90,10 +90,9 @@ public final class BitArray implements Cloneable {
             }
             currentBits = ~iArr[bitsOffset];
         }
-        int numberOfTrailingZeros = (bitsOffset << 5) + Integer.numberOfTrailingZeros(currentBits);
-        int result = numberOfTrailingZeros;
+        int result = (bitsOffset << 5) + Integer.numberOfTrailingZeros(currentBits);
         int i2 = this.size;
-        return numberOfTrailingZeros > i2 ? i2 : result;
+        return result > i2 ? i2 : result;
     }
 
     public void setBulk(int i, int newBits) {
@@ -103,18 +102,21 @@ public final class BitArray implements Cloneable {
     public void setRange(int start, int end) {
         if (end < start || start < 0 || end > this.size) {
             throw new IllegalArgumentException();
-        } else if (end != start) {
-            int end2 = end - 1;
-            int firstInt = start / 32;
-            int lastInt = end2 / 32;
-            int i = firstInt;
-            while (i <= lastInt) {
-                int firstBit = i > firstInt ? 0 : start & 31;
-                int lastBit = i < lastInt ? 31 : end2 & 31;
-                int[] iArr = this.bits;
-                iArr[i] = iArr[i] | ((2 << lastBit) - (1 << firstBit));
-                i++;
-            }
+        }
+        if (end == start) {
+            return;
+        }
+        int end2 = end - 1;
+        int firstInt = start / 32;
+        int lastInt = end2 / 32;
+        int i = firstInt;
+        while (i <= lastInt) {
+            int firstBit = i > firstInt ? 0 : start & 31;
+            int lastBit = i < lastInt ? 31 : end2 & 31;
+            int mask = (2 << lastBit) - (1 << firstBit);
+            int[] iArr = this.bits;
+            iArr[i] = iArr[i] | mask;
+            i++;
         }
     }
 
@@ -128,22 +130,25 @@ public final class BitArray implements Cloneable {
     public boolean isRange(int start, int end, boolean value) {
         if (end < start || start < 0 || end > this.size) {
             throw new IllegalArgumentException();
-        } else if (end == start) {
-            return true;
-        } else {
-            int end2 = end - 1;
-            int firstInt = start / 32;
-            int lastInt = end2 / 32;
-            int i = firstInt;
-            while (i <= lastInt) {
-                int mask = (2 << (i < lastInt ? 31 : end2 & 31)) - (1 << (i > firstInt ? 0 : start & 31));
-                if ((this.bits[i] & mask) != (value ? mask : 0)) {
-                    return false;
-                }
-                i++;
-            }
+        }
+        if (end == start) {
             return true;
         }
+        int end2 = end - 1;
+        int firstInt = start / 32;
+        int lastInt = end2 / 32;
+        int i = firstInt;
+        while (i <= lastInt) {
+            int firstBit = i > firstInt ? 0 : start & 31;
+            int lastBit = i < lastInt ? 31 : end2 & 31;
+            int mask = (2 << lastBit) - (1 << firstBit);
+            if ((this.bits[i] & mask) == (value ? mask : 0)) {
+                i++;
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void appendBit(boolean bit) {
@@ -180,19 +185,18 @@ public final class BitArray implements Cloneable {
     }
 
     public void xor(BitArray other) {
-        if (this.size == other.size) {
-            int i = 0;
-            while (true) {
-                int[] iArr = this.bits;
-                if (i < iArr.length) {
-                    iArr[i] = iArr[i] ^ other.bits[i];
-                    i++;
-                } else {
-                    return;
-                }
-            }
-        } else {
+        if (this.size != other.size) {
             throw new IllegalArgumentException("Sizes don't match");
+        }
+        int i = 0;
+        while (true) {
+            int[] iArr = this.bits;
+            if (i < iArr.length) {
+                iArr[i] = iArr[i] ^ other.bits[i];
+                i++;
+            } else {
+                return;
+            }
         }
     }
 
@@ -205,7 +209,8 @@ public final class BitArray implements Cloneable {
                 }
                 bitOffset++;
             }
-            array[offset + i] = (byte) theByte;
+            int j2 = offset + i;
+            array[j2] = (byte) theByte;
         }
     }
 
@@ -215,44 +220,41 @@ public final class BitArray implements Cloneable {
 
     public void reverse() {
         int[] newBits = new int[this.bits.length];
-        int i = (this.size - 1) / 32;
-        int len = i;
-        int oldBitsLen = i + 1;
-        for (int i2 = 0; i2 < oldBitsLen; i2++) {
-            long x = (long) this.bits[i2];
+        int len = (this.size - 1) / 32;
+        int oldBitsLen = len + 1;
+        for (int i = 0; i < oldBitsLen; i++) {
+            long x = this.bits[i];
             long x2 = ((x >> 1) & 1431655765) | ((1431655765 & x) << 1);
             long x3 = ((x2 >> 2) & 858993459) | ((858993459 & x2) << 2);
             long x4 = ((x3 >> 4) & 252645135) | ((252645135 & x3) << 4);
             long x5 = ((x4 >> 8) & 16711935) | ((16711935 & x4) << 8);
-            newBits[len - i2] = (int) (((x5 >> 16) & 65535) | ((65535 & x5) << 16));
+            newBits[len - i] = (int) (((x5 >> 16) & 65535) | ((65535 & x5) << 16));
         }
-        int i3 = this.size;
-        if (i3 != (oldBitsLen << 5)) {
-            int leftOffset = (oldBitsLen << 5) - i3;
+        int i2 = this.size;
+        if (i2 != (oldBitsLen << 5)) {
+            int leftOffset = (oldBitsLen << 5) - i2;
             int currentInt = newBits[0] >>> leftOffset;
-            for (int i4 = 1; i4 < oldBitsLen; i4++) {
-                int nextInt = newBits[i4];
-                newBits[i4 - 1] = currentInt | (nextInt << (32 - leftOffset));
+            for (int i3 = 1; i3 < oldBitsLen; i3++) {
+                int nextInt = newBits[i3];
+                newBits[i3 - 1] = currentInt | (nextInt << (32 - leftOffset));
                 currentInt = nextInt >>> leftOffset;
             }
-            newBits[oldBitsLen - 1] = currentInt;
+            int i4 = oldBitsLen - 1;
+            newBits[i4] = currentInt;
         }
         this.bits = newBits;
     }
 
-    private static int[] makeArray(int size2) {
-        return new int[((size2 + 31) / 32)];
+    private static int[] makeArray(int size) {
+        return new int[(size + 31) / 32];
     }
 
     public boolean equals(Object o) {
-        if (!(o instanceof BitArray)) {
-            return false;
+        if (o instanceof BitArray) {
+            BitArray other = (BitArray) o;
+            return this.size == other.size && Arrays.equals(this.bits, other.bits);
         }
-        BitArray other = (BitArray) o;
-        if (this.size != other.size || !Arrays.equals(this.bits, other.bits)) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
     public int hashCode() {
@@ -271,7 +273,8 @@ public final class BitArray implements Cloneable {
         return result.toString();
     }
 
-    public BitArray clone() {
+    /* renamed from: clone */
+    public BitArray m71clone() {
         return new BitArray((int[]) this.bits.clone(), this.size);
     }
 }

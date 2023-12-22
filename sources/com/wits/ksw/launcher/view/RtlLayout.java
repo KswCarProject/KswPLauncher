@@ -5,8 +5,10 @@ import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.Log;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
+import java.util.Locale;
 
+/* loaded from: classes16.dex */
 public class RtlLayout extends ConstraintLayout {
     private static final String TAG = "RtlId5Layout";
 
@@ -22,11 +24,13 @@ public class RtlLayout extends ConstraintLayout {
         super(context, attrs, defStyleAttr);
     }
 
+    @Override // android.view.View
     public void setBackground(Drawable background) {
-        String language = getResources().getConfiguration().locale.getLanguage();
+        Locale locale = getResources().getConfiguration().locale;
+        String language = locale.getLanguage();
         Log.i(TAG, "init: language=" + language);
         if (language.contains("ar")) {
-            background = getResources().getDrawable(R.mipmap.id5_bk_rtl);
+            background = getResources().getDrawable(C0899R.mipmap.id5_bk_rtl);
         }
         super.setBackground(background);
     }

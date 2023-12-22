@@ -5,46 +5,47 @@ import com.google.zxing.FormatException;
 import java.util.HashMap;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public enum CharacterSetECI {
-    Cp437((String) new int[]{0, 2}, (int) new String[0]),
-    ISO8859_1((String) new int[]{1, 3}, (int) new String[]{"ISO-8859-1"}),
-    ISO8859_2((String) 4, (int) new String[]{"ISO-8859-2"}),
-    ISO8859_3((String) 5, (int) new String[]{"ISO-8859-3"}),
-    ISO8859_4((String) 6, (int) new String[]{"ISO-8859-4"}),
-    ISO8859_5((String) 7, (int) new String[]{"ISO-8859-5"}),
-    ISO8859_6((String) 8, (int) new String[]{"ISO-8859-6"}),
-    ISO8859_7((String) 9, (int) new String[]{"ISO-8859-7"}),
-    ISO8859_8((String) 10, (int) new String[]{"ISO-8859-8"}),
-    ISO8859_9((String) 11, (int) new String[]{"ISO-8859-9"}),
-    ISO8859_10((String) 12, (int) new String[]{"ISO-8859-10"}),
-    ISO8859_11((String) 13, (int) new String[]{"ISO-8859-11"}),
-    ISO8859_13((String) 15, (int) new String[]{"ISO-8859-13"}),
-    ISO8859_14((String) 16, (int) new String[]{"ISO-8859-14"}),
-    ISO8859_15((String) 17, (int) new String[]{"ISO-8859-15"}),
-    ISO8859_16((String) 18, (int) new String[]{"ISO-8859-16"}),
-    SJIS((String) 20, (int) new String[]{"Shift_JIS"}),
-    Cp1250((String) 21, (int) new String[]{"windows-1250"}),
-    Cp1251((String) 22, (int) new String[]{"windows-1251"}),
-    Cp1252((String) 23, (int) new String[]{"windows-1252"}),
-    Cp1256((String) 24, (int) new String[]{"windows-1256"}),
-    UnicodeBigUnmarked((String) 25, (int) new String[]{"UTF-16BE", "UnicodeBig"}),
-    UTF8((String) 26, (int) new String[]{Key.STRING_CHARSET_NAME}),
-    ASCII((String) new int[]{27, 170}, (int) new String[]{"US-ASCII"}),
+    Cp437(new int[]{0, 2}, new String[0]),
+    ISO8859_1(new int[]{1, 3}, "ISO-8859-1"),
+    ISO8859_2(4, "ISO-8859-2"),
+    ISO8859_3(5, "ISO-8859-3"),
+    ISO8859_4(6, "ISO-8859-4"),
+    ISO8859_5(7, "ISO-8859-5"),
+    ISO8859_6(8, "ISO-8859-6"),
+    ISO8859_7(9, "ISO-8859-7"),
+    ISO8859_8(10, "ISO-8859-8"),
+    ISO8859_9(11, "ISO-8859-9"),
+    ISO8859_10(12, "ISO-8859-10"),
+    ISO8859_11(13, "ISO-8859-11"),
+    ISO8859_13(15, "ISO-8859-13"),
+    ISO8859_14(16, "ISO-8859-14"),
+    ISO8859_15(17, "ISO-8859-15"),
+    ISO8859_16(18, "ISO-8859-16"),
+    SJIS(20, "Shift_JIS"),
+    Cp1250(21, "windows-1250"),
+    Cp1251(22, "windows-1251"),
+    Cp1252(23, "windows-1252"),
+    Cp1256(24, "windows-1256"),
+    UnicodeBigUnmarked(25, "UTF-16BE", "UnicodeBig"),
+    UTF8(26, Key.STRING_CHARSET_NAME),
+    ASCII(new int[]{27, 170}, "US-ASCII"),
     Big5(28),
-    GB18030((String) 29, (int) new String[]{StringUtils.GB2312, "EUC_CN", "GBK"}),
-    EUC_KR((String) 30, (int) new String[]{"EUC-KR"});
+    GB18030(29, StringUtils.GB2312, "EUC_CN", "GBK"),
+    EUC_KR(30, "EUC-KR");
     
-    private static final Map<String, CharacterSetECI> NAME_TO_ECI = null;
-    private static final Map<Integer, CharacterSetECI> VALUE_TO_ECI = null;
     private final String[] otherEncodingNames;
     private final int[] values;
+    private static final Map<Integer, CharacterSetECI> VALUE_TO_ECI = new HashMap();
+    private static final Map<String, CharacterSetECI> NAME_TO_ECI = new HashMap();
 
     static {
-        VALUE_TO_ECI = new HashMap();
-        NAME_TO_ECI = new HashMap();
-        for (CharacterSetECI characterSetECI : values()) {
-            CharacterSetECI eci = characterSetECI;
-            for (int value : characterSetECI.values) {
+        CharacterSetECI[] values;
+        int[] iArr;
+        String[] strArr;
+        for (CharacterSetECI eci : values()) {
+            for (int value : eci.values) {
                 VALUE_TO_ECI.put(Integer.valueOf(value), eci);
             }
             NAME_TO_ECI.put(eci.name(), eci);
@@ -54,18 +55,18 @@ public enum CharacterSetECI {
         }
     }
 
-    private CharacterSetECI(int value) {
-        this(r3, r4, new int[]{value}, new String[0]);
+    CharacterSetECI(int value) {
+        this(new int[]{value}, new String[0]);
     }
 
-    private CharacterSetECI(int value, String... otherEncodingNames2) {
+    CharacterSetECI(int value, String... otherEncodingNames) {
         this.values = new int[]{value};
-        this.otherEncodingNames = otherEncodingNames2;
+        this.otherEncodingNames = otherEncodingNames;
     }
 
-    private CharacterSetECI(int[] values2, String... otherEncodingNames2) {
-        this.values = values2;
-        this.otherEncodingNames = otherEncodingNames2;
+    CharacterSetECI(int[] values, String... otherEncodingNames) {
+        this.values = values;
+        this.otherEncodingNames = otherEncodingNames;
     }
 
     public int getValue() {
@@ -73,10 +74,10 @@ public enum CharacterSetECI {
     }
 
     public static CharacterSetECI getCharacterSetECIByValue(int value) throws FormatException {
-        if (value >= 0 && value < 900) {
-            return VALUE_TO_ECI.get(Integer.valueOf(value));
+        if (value < 0 || value >= 900) {
+            throw FormatException.getFormatInstance();
         }
-        throw FormatException.getFormatInstance();
+        return VALUE_TO_ECI.get(Integer.valueOf(value));
     }
 
     public static CharacterSetECI getCharacterSetECIByName(String name) {

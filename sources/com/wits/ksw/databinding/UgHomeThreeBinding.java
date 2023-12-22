@@ -7,10 +7,11 @@ import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
-import com.wits.ksw.launcher.view.ug.UgHomeImageView;
+import com.wits.ksw.launcher.view.p006ug.UgHomeImageView;
 
+/* loaded from: classes7.dex */
 public abstract class UgHomeThreeBinding extends ViewDataBinding {
     public final ConstraintLayout carConstraintLayout;
     @Bindable
@@ -19,14 +20,14 @@ public abstract class UgHomeThreeBinding extends ViewDataBinding {
     public final UgHomeImageView ugHomeDashboradVaiw;
     public final UgHomeImageView ugHomeSettingVaiw;
 
-    public abstract void setViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setViewModel(LauncherViewModel viewModel);
 
-    protected UgHomeThreeBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout carConstraintLayout2, UgHomeImageView ugHomeCarVaiw2, UgHomeImageView ugHomeDashboradVaiw2, UgHomeImageView ugHomeSettingVaiw2) {
+    protected UgHomeThreeBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout carConstraintLayout, UgHomeImageView ugHomeCarVaiw, UgHomeImageView ugHomeDashboradVaiw, UgHomeImageView ugHomeSettingVaiw) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.carConstraintLayout = carConstraintLayout2;
-        this.ugHomeCarVaiw = ugHomeCarVaiw2;
-        this.ugHomeDashboradVaiw = ugHomeDashboradVaiw2;
-        this.ugHomeSettingVaiw = ugHomeSettingVaiw2;
+        this.carConstraintLayout = carConstraintLayout;
+        this.ugHomeCarVaiw = ugHomeCarVaiw;
+        this.ugHomeDashboradVaiw = ugHomeDashboradVaiw;
+        this.ugHomeSettingVaiw = ugHomeSettingVaiw;
     }
 
     public LauncherViewModel getViewModel() {
@@ -39,7 +40,7 @@ public abstract class UgHomeThreeBinding extends ViewDataBinding {
 
     @Deprecated
     public static UgHomeThreeBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (UgHomeThreeBinding) ViewDataBinding.inflateInternal(inflater, R.layout.ug_home_three, root, attachToRoot, component);
+        return (UgHomeThreeBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.ug_home_three, root, attachToRoot, component);
     }
 
     public static UgHomeThreeBinding inflate(LayoutInflater inflater) {
@@ -48,7 +49,7 @@ public abstract class UgHomeThreeBinding extends ViewDataBinding {
 
     @Deprecated
     public static UgHomeThreeBinding inflate(LayoutInflater inflater, Object component) {
-        return (UgHomeThreeBinding) ViewDataBinding.inflateInternal(inflater, R.layout.ug_home_three, (ViewGroup) null, false, component);
+        return (UgHomeThreeBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.ug_home_three, null, false, component);
     }
 
     public static UgHomeThreeBinding bind(View view) {
@@ -57,6 +58,6 @@ public abstract class UgHomeThreeBinding extends ViewDataBinding {
 
     @Deprecated
     public static UgHomeThreeBinding bind(View view, Object component) {
-        return (UgHomeThreeBinding) bind(component, view, R.layout.ug_home_three);
+        return (UgHomeThreeBinding) bind(component, view, C0899R.C0902layout.ug_home_three);
     }
 }

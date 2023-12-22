@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/ll_container" android:tag="layout/fragment_pemp_dashboard_0" style="@style/id8_main_card_container">
+    <ImageView android:background="@drawable/pemp_id8_main_icon_dashboard_bg" style="@style/id8_pemp_main_big_card_size"/>
+    <ImageView android:id="@+id/iv_mask" android:tag="binding_1" style="@style/id8_pemp_main_big_card_size"/>
+    <RelativeLayout style="@style/id8_pemp_main_big_card_container">
+        <TextView android:id="@+id/tv_dashboard" android:text="@string/ksw_id8_dashboard" style="@style/id8_pemp_main_card_title"/>
+        <ImageView android:id="@+id/divider" android:background="@drawable/id8_main_icon_navi_line" android:layout_below="@+id/tv_dashboard" style="@style/id8_pemp_main_card_divider"/>
+        <TextView android:textSize="17sp" android:textColor="@color/color1" android:tag="binding_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="80dp" android:layout_below="@+id/divider" android:layout_marginStart="37dp" style="@style/bmw_id8_text_shadow"/>
+        <TextView android:textSize="69sp" android:textColor="@color/color1" android:gravity="center" android:tag="binding_3" android:visibility="gone" android:layout_width="120dp" android:layout_height="wrap_content" android:layout_marginLeft="180dp" android:layout_marginTop="242dp" android:singleLine="true" android:includeFontPadding="false" style="@style/bmw_id8_text_shadow"/>
+        <FrameLayout android:gravity="center" android:id="@+id/iv_speed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="78dp" android:layout_centerHorizontal="true">
+            <ImageView android:tag="binding_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/pemp_id8_main_icon_dashboard_2"/>
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/pemp_id8_main_icon_dashboard_1"/>
+        </FrameLayout>
+        <TextView android:textSize="17sp" android:textColor="@color/id8_font_white" android:gravity="center" android:tag="binding_5" android:layout_width="120dp" android:layout_height="wrap_content" android:layout_marginTop="240dp" android:singleLine="true" android:includeFontPadding="false" android:layout_centerHorizontal="true" style="@style/bmw_id8_text_shadow"/>
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1">
+                <ImageView android:tag="binding_6" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                <TextView android:textSize="17sp" android:textColor="@color/id8_font_white" android:ellipsize="end" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="@string/tv_id8_seat_belt" android:singleLine="true" android:layout_marginStart="5dp" android:layout_marginEnd="5dp"/>
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1">
+                <ImageView android:tag="binding_7" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                <TextView android:textSize="17sp" android:textColor="@color/id8_font_white" android:ellipsize="end" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="11dp" android:text="@string/tv_id8_brake" android:singleLine="true" android:layout_marginStart="5dp" android:layout_marginEnd="5dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

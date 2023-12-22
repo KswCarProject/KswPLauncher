@@ -5,7 +5,9 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.CheckBox;
+import java.util.Locale;
 
+/* loaded from: classes10.dex */
 public class RtlCheckBox extends CheckBox {
     private static final String TAG = "RtlCheckBox";
 
@@ -31,17 +33,20 @@ public class RtlCheckBox extends CheckBox {
 
     public void init() {
         Drawable drawable = getButtonDrawable();
-        if (drawable != null) {
-            if (getResources().getConfiguration().locale.getLanguage().contains("ar")) {
-                Log.i(TAG, "RtlCheckBox: ");
-                setButtonDrawable((Drawable) null);
-                setCompoundDrawablesWithIntrinsicBounds((Drawable) null, (Drawable) null, drawable, (Drawable) null);
-                setGravity(21);
-                return;
-            }
-            setCompoundDrawablesWithIntrinsicBounds((Drawable) null, (Drawable) null, (Drawable) null, (Drawable) null);
-            setButtonDrawable(drawable);
-            setGravity(16);
+        if (drawable == null) {
+            return;
         }
+        Locale locale = getResources().getConfiguration().locale;
+        String language = locale.getLanguage();
+        if (language.contains("ar")) {
+            Log.i(TAG, "RtlCheckBox: ");
+            setButtonDrawable((Drawable) null);
+            setCompoundDrawablesWithIntrinsicBounds((Drawable) null, (Drawable) null, drawable, (Drawable) null);
+            setGravity(21);
+            return;
+        }
+        setCompoundDrawablesWithIntrinsicBounds((Drawable) null, (Drawable) null, (Drawable) null, (Drawable) null);
+        setButtonDrawable(drawable);
+        setGravity(16);
     }
 }

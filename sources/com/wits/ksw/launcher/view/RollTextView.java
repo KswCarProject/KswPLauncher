@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+/* loaded from: classes16.dex */
 public class RollTextView extends TextView {
     public RollTextView(Context context) {
         super(context);
@@ -17,6 +18,7 @@ public class RollTextView extends TextView {
         super(context, attrs, defStyle);
     }
 
+    @Override // android.view.View
     public boolean isFocused() {
         return true;
     }

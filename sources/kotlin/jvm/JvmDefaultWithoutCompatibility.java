@@ -7,10 +7,11 @@ import java.lang.annotation.Target;
 import kotlin.Metadata;
 import kotlin.annotation.AnnotationTarget;
 
-@Target({ElementType.TYPE})
-@kotlin.annotation.Target(allowedTargets = {AnnotationTarget.CLASS})
-@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0010\u001b\n\u0000\b\u0002\u0018\u00002\u00020\u0001B\u0000ø\u0001\u0000\u0002\u0006\n\u0004\b!0\u0001¨\u0006\u0002"}, d2 = {"Lkotlin/jvm/JvmDefaultWithoutCompatibility;", "", "kotlin-stdlib"}, k = 1, mv = {1, 6, 0}, xi = 48)
-@Retention(RetentionPolicy.RUNTIME)
 /* compiled from: JvmDefault.kt */
+@Target({ElementType.TYPE})
+@Metadata(m25d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0010\u001b\n\u0000\b\u0087\u0002\u0018\u00002\u00020\u0001B\u0000\u00f8\u0001\u0000\u0082\u0002\u0006\n\u0004\b!0\u0001\u00a8\u0006\u0002"}, m24d2 = {"Lkotlin/jvm/JvmDefaultWithoutCompatibility;", "", "kotlin-stdlib"}, m23k = 1, m22mv = {1, 6, 0}, m20xi = 48)
+@kotlin.annotation.Target(allowedTargets = {AnnotationTarget.CLASS})
+@Retention(RetentionPolicy.RUNTIME)
+/* loaded from: classes.dex */
 public @interface JvmDefaultWithoutCompatibility {
 }

@@ -1,136 +1,113 @@
 package com.wits.ksw.launcher.adpater;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.p001v4.content.ContextCompat;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean;
 import com.wits.ksw.settings.utlis_view.RtlNaviRadioButton;
 import java.util.List;
 
+/* loaded from: classes11.dex */
 public class AppsListViewAdapter extends BaseAdapter {
     private Context context;
-    /* access modifiers changed from: private */
-    public IAppsCheckListener iAppsCheckListener;
+    private IAppsCheckListener iAppsCheckListener;
     private int layoutRes;
-    /* access modifiers changed from: private */
-    public List<LexusLsAppSelBean> list;
-    private LayoutInflater mInflater = null;
+    private List<LexusLsAppSelBean> list;
+    private LayoutInflater mInflater;
 
+    /* loaded from: classes11.dex */
     public interface IAppsCheckListener {
-        void checkedListener(String str, String str2, int i);
+        void checkedListener(String pkg, String cls, int pos);
     }
 
-    public AppsListViewAdapter(Context context2, List<LexusLsAppSelBean> list2, int res) {
-        this.list = list2;
-        this.context = context2;
-        this.mInflater = LayoutInflater.from(context2);
+    public AppsListViewAdapter(Context context, List<LexusLsAppSelBean> list, int res) {
+        this.mInflater = null;
+        this.list = list;
+        this.context = context;
+        this.mInflater = LayoutInflater.from(context);
         this.layoutRes = res;
     }
 
+    @Override // android.widget.Adapter
     public int getCount() {
-        List<LexusLsAppSelBean> list2 = this.list;
-        if (list2 == null) {
+        List<LexusLsAppSelBean> list = this.list;
+        if (list == null) {
             return 0;
         }
-        return list2.size();
+        return list.size();
     }
 
+    @Override // android.widget.Adapter
     public Object getItem(int position) {
         return this.list.get(position);
     }
 
+    @Override // android.widget.Adapter
     public long getItemId(int position) {
-        return (long) position;
+        return position;
     }
 
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v4, resolved type: java.lang.Object} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v2, resolved type: com.wits.ksw.launcher.adpater.AppsListViewAdapter$ViewHolder} */
-    /* JADX WARNING: Multi-variable type inference failed */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public android.view.View getView(final int r6, android.view.View r7, android.view.ViewGroup r8) {
-        /*
-            r5 = this;
-            r0 = 0
-            r1 = 0
-            if (r7 != 0) goto L_0x0021
-            com.wits.ksw.launcher.adpater.AppsListViewAdapter$ViewHolder r2 = new com.wits.ksw.launcher.adpater.AppsListViewAdapter$ViewHolder
-            r2.<init>()
-            r0 = r2
-            android.view.LayoutInflater r2 = r5.mInflater
-            int r3 = r5.layoutRes
-            android.view.View r7 = r2.inflate(r3, r1)
-            r2 = 2131297438(0x7f09049e, float:1.821282E38)
-            android.view.View r2 = r7.findViewById(r2)
-            com.wits.ksw.settings.utlis_view.RtlNaviRadioButton r2 = (com.wits.ksw.settings.utlis_view.RtlNaviRadioButton) r2
-            r0.rbt_apps = r2
-            r7.setTag(r0)
-            goto L_0x0028
-        L_0x0021:
-            java.lang.Object r2 = r7.getTag()
-            r0 = r2
-            com.wits.ksw.launcher.adpater.AppsListViewAdapter$ViewHolder r0 = (com.wits.ksw.launcher.adpater.AppsListViewAdapter.ViewHolder) r0
-        L_0x0028:
-            r2 = 0
-            java.util.List<com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean> r3 = r5.list
-            java.lang.Object r3 = r3.get(r6)
-            com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean r3 = (com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean) r3
-            android.graphics.drawable.Drawable r3 = r3.getAppIcon()
-            if (r3 != 0) goto L_0x0041
-            android.content.Context r3 = r5.context
-            r4 = 2131492978(0x7f0c0072, float:1.8609423E38)
-            android.graphics.drawable.Drawable r2 = r3.getDrawable(r4)
-            goto L_0x004d
-        L_0x0041:
-            java.util.List<com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean> r3 = r5.list
-            java.lang.Object r3 = r3.get(r6)
-            com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean r3 = (com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean) r3
-            android.graphics.drawable.Drawable r2 = r3.getAppIcon()
-        L_0x004d:
-            r3 = 0
-            r4 = 50
-            r2.setBounds(r3, r3, r4, r4)
-            com.wits.ksw.settings.utlis_view.RtlNaviRadioButton r3 = r0.rbt_apps
-            r3.setCompoundDrawables(r2, r1, r1, r1)
-            com.wits.ksw.settings.utlis_view.RtlNaviRadioButton r1 = r0.rbt_apps
-            java.util.List<com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean> r3 = r5.list
-            java.lang.Object r3 = r3.get(r6)
-            com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean r3 = (com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean) r3
-            java.lang.String r3 = r3.getAppName()
-            r1.setText(r3)
-            com.wits.ksw.settings.utlis_view.RtlNaviRadioButton r1 = r0.rbt_apps
-            r3 = 10
-            r1.setCompoundDrawablePadding(r3)
-            com.wits.ksw.settings.utlis_view.RtlNaviRadioButton r1 = r0.rbt_apps
-            r3 = 1
-            r1.setEnabled(r3)
-            com.wits.ksw.settings.utlis_view.RtlNaviRadioButton r1 = r0.rbt_apps
-            android.content.Context r3 = r5.context
-            r4 = 2131099707(0x7f06003b, float:1.7811775E38)
-            int r3 = android.support.v4.content.ContextCompat.getColor(r3, r4)
-            r1.setTextColor(r3)
-            com.wits.ksw.settings.utlis_view.RtlNaviRadioButton r1 = r0.rbt_apps
-            java.util.List<com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean> r3 = r5.list
-            java.lang.Object r3 = r3.get(r6)
-            com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean r3 = (com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean) r3
-            boolean r3 = r3.isChecked()
-            r1.setChecked(r3)
-            if (r6 != 0) goto L_0x009c
-            com.wits.ksw.settings.utlis_view.RtlNaviRadioButton r1 = r0.rbt_apps
-            r1.requestFocus()
-        L_0x009c:
-            com.wits.ksw.settings.utlis_view.RtlNaviRadioButton r1 = r0.rbt_apps
-            com.wits.ksw.launcher.adpater.AppsListViewAdapter$1 r3 = new com.wits.ksw.launcher.adpater.AppsListViewAdapter$1
-            r3.<init>(r6)
-            r1.setOnClickListener(r3)
-            com.wits.ksw.settings.utlis_view.RtlNaviRadioButton r1 = r0.rbt_apps
-            com.wits.ksw.launcher.adpater.AppsListViewAdapter$2 r3 = new com.wits.ksw.launcher.adpater.AppsListViewAdapter$2
-            r3.<init>(r6)
-            r1.setOnKeyListener(r3)
-            return r7
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.launcher.adpater.AppsListViewAdapter.getView(int, android.view.View, android.view.ViewGroup):android.view.View");
+    @Override // android.widget.Adapter
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
+        Drawable drawable;
+        if (convertView == null) {
+            holder = new ViewHolder();
+            convertView = this.mInflater.inflate(this.layoutRes, (ViewGroup) null);
+            holder.rbt_apps = (RtlNaviRadioButton) convertView.findViewById(C0899R.C0901id.rbt_apps);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+        if (this.list.get(position).getAppIcon() == null) {
+            drawable = this.context.getDrawable(C0899R.mipmap.ic_launcher);
+        } else {
+            drawable = this.list.get(position).getAppIcon();
+        }
+        drawable.setBounds(0, 0, 50, 50);
+        holder.rbt_apps.setCompoundDrawables(drawable, null, null, null);
+        holder.rbt_apps.setText(this.list.get(position).getAppName());
+        holder.rbt_apps.setCompoundDrawablePadding(10);
+        holder.rbt_apps.setEnabled(true);
+        holder.rbt_apps.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+        holder.rbt_apps.setChecked(this.list.get(position).isChecked());
+        if (position == 0) {
+            holder.rbt_apps.requestFocus();
+        }
+        holder.rbt_apps.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.launcher.adpater.AppsListViewAdapter.1
+            @Override // android.view.View.OnClickListener
+            public void onClick(View view) {
+                for (LexusLsAppSelBean bean : AppsListViewAdapter.this.list) {
+                    bean.setChecked(false);
+                }
+                ((LexusLsAppSelBean) AppsListViewAdapter.this.list.get(position)).setChecked(true);
+                AppsListViewAdapter.this.notifyDataSetChanged();
+                if (AppsListViewAdapter.this.iAppsCheckListener != null) {
+                    AppsListViewAdapter.this.iAppsCheckListener.checkedListener(((LexusLsAppSelBean) AppsListViewAdapter.this.list.get(position)).getAppPkg(), ((LexusLsAppSelBean) AppsListViewAdapter.this.list.get(position)).getAppMainAty(), position);
+                }
+            }
+        });
+        holder.rbt_apps.setOnKeyListener(new View.OnKeyListener() { // from class: com.wits.ksw.launcher.adpater.AppsListViewAdapter.2
+            @Override // android.view.View.OnKeyListener
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == 20 && position == AppsListViewAdapter.this.getCount() - 1) {
+                    Log.i("AppListAdapter", "onBindViewHolder: position" + position + ", count:" + AppsListViewAdapter.this.getCount());
+                    return true;
+                }
+                return false;
+            }
+        });
+        return convertView;
     }
 
+    /* loaded from: classes11.dex */
     static class ViewHolder {
         public RtlNaviRadioButton rbt_apps;
 

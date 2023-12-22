@@ -8,6 +8,7 @@ import io.reactivex.internal.fuseable.SimpleQueue;
 import io.reactivex.internal.util.QueueDrainHelper;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class InnerQueuedObserver<T> extends AtomicReference<Disposable> implements Observer<T>, Disposable {
     private static final long serialVersionUID = -5417183359794346637L;
     volatile boolean done;
@@ -16,11 +17,12 @@ public final class InnerQueuedObserver<T> extends AtomicReference<Disposable> im
     final int prefetch;
     SimpleQueue<T> queue;
 
-    public InnerQueuedObserver(InnerQueuedObserverSupport<T> parent2, int prefetch2) {
-        this.parent = parent2;
-        this.prefetch = prefetch2;
+    public InnerQueuedObserver(InnerQueuedObserverSupport<T> parent, int prefetch) {
+        this.parent = parent;
+        this.prefetch = prefetch;
     }
 
+    @Override // io.reactivex.Observer
     public void onSubscribe(Disposable d) {
         if (DisposableHelper.setOnce(this, d)) {
             if (d instanceof QueueDisposable) {
@@ -42,6 +44,7 @@ public final class InnerQueuedObserver<T> extends AtomicReference<Disposable> im
         }
     }
 
+    @Override // io.reactivex.Observer
     public void onNext(T t) {
         if (this.fusionMode == 0) {
             this.parent.innerNext(this, t);
@@ -50,20 +53,24 @@ public final class InnerQueuedObserver<T> extends AtomicReference<Disposable> im
         }
     }
 
+    @Override // io.reactivex.Observer
     public void onError(Throwable t) {
         this.parent.innerError(this, t);
     }
 
+    @Override // io.reactivex.Observer
     public void onComplete() {
         this.parent.innerComplete(this);
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public void dispose() {
         DisposableHelper.dispose(this);
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public boolean isDisposed() {
-        return DisposableHelper.isDisposed((Disposable) get());
+        return DisposableHelper.isDisposed(get());
     }
 
     public boolean isDone() {

@@ -23,15 +23,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class QRCodeMultiReader extends QRCodeReader implements MultipleBarcodeReader {
     private static final Result[] EMPTY_RESULT_ARRAY = new Result[0];
     private static final ResultPoint[] NO_POINTS = new ResultPoint[0];
 
+    @Override // com.google.zxing.multi.MultipleBarcodeReader
     public Result[] decodeMultiple(BinaryBitmap image) throws NotFoundException {
-        return decodeMultiple(image, (Map<DecodeHintType, ?>) null);
+        return decodeMultiple(image, null);
     }
 
+    @Override // com.google.zxing.multi.MultipleBarcodeReader
     public Result[] decodeMultiple(BinaryBitmap image, Map<DecodeHintType, ?> hints) throws NotFoundException {
+        DetectorResult[] detectMulti;
         List<Result> results = new ArrayList<>();
         for (DetectorResult detectorResult : new MultiDetector(image.getBlackMatrix()).detectMulti(hints)) {
             try {
@@ -42,13 +46,11 @@ public final class QRCodeMultiReader extends QRCodeReader implements MultipleBar
                 }
                 Result result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), points, BarcodeFormat.QR_CODE);
                 List<byte[]> byteSegments = decoderResult.getByteSegments();
-                List<byte[]> byteSegments2 = byteSegments;
                 if (byteSegments != null) {
-                    result.putMetadata(ResultMetadataType.BYTE_SEGMENTS, byteSegments2);
+                    result.putMetadata(ResultMetadataType.BYTE_SEGMENTS, byteSegments);
                 }
-                String eCLevel = decoderResult.getECLevel();
-                String ecLevel = eCLevel;
-                if (eCLevel != null) {
+                String ecLevel = decoderResult.getECLevel();
+                if (ecLevel != null) {
                     result.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, ecLevel);
                 }
                 if (decoderResult.hasStructuredAppend()) {
@@ -106,15 +108,13 @@ public final class QRCodeMultiReader extends QRCodeReader implements MultipleBar
         byte[] newRawBytes = new byte[rawBytesLen];
         byte[] newByteSegment = new byte[byteSegmentLength];
         int byteSegmentIndex = 0;
-        int newRawBytesIndex = 0;
-        for (Result next : saResults) {
-            Result saResult2 = next;
-            System.arraycopy(next.getRawBytes(), 0, newRawBytes, newRawBytesIndex, saResult2.getRawBytes().length);
-            newRawBytesIndex += saResult2.getRawBytes().length;
+        int byteSegmentIndex2 = 0;
+        for (Result saResult2 : saResults) {
+            System.arraycopy(saResult2.getRawBytes(), 0, newRawBytes, byteSegmentIndex2, saResult2.getRawBytes().length);
+            byteSegmentIndex2 += saResult2.getRawBytes().length;
             if (saResult2.getResultMetadata().containsKey(ResultMetadataType.BYTE_SEGMENTS)) {
-                for (byte[] bArr : (Iterable) saResult2.getResultMetadata().get(ResultMetadataType.BYTE_SEGMENTS)) {
-                    byte[] segment2 = bArr;
-                    System.arraycopy(bArr, 0, newByteSegment, byteSegmentIndex, segment2.length);
+                for (byte[] segment2 : (Iterable) saResult2.getResultMetadata().get(ResultMetadataType.BYTE_SEGMENTS)) {
+                    System.arraycopy(segment2, 0, newByteSegment, byteSegmentIndex, segment2.length);
                     byteSegmentIndex += segment2.length;
                     hasSA = hasSA;
                 }
@@ -131,12 +131,16 @@ public final class QRCodeMultiReader extends QRCodeReader implements MultipleBar
         return newResults;
     }
 
+    /* loaded from: classes.dex */
     private static final class SAComparator implements Serializable, Comparator<Result> {
         private SAComparator() {
         }
 
+        @Override // java.util.Comparator
         public int compare(Result a, Result b) {
-            return Integer.compare(((Integer) a.getResultMetadata().get(ResultMetadataType.STRUCTURED_APPEND_SEQUENCE)).intValue(), ((Integer) b.getResultMetadata().get(ResultMetadataType.STRUCTURED_APPEND_SEQUENCE)).intValue());
+            int aNumber = ((Integer) a.getResultMetadata().get(ResultMetadataType.STRUCTURED_APPEND_SEQUENCE)).intValue();
+            int bNumber = ((Integer) b.getResultMetadata().get(ResultMetadataType.STRUCTURED_APPEND_SEQUENCE)).intValue();
+            return Integer.compare(aNumber, bNumber);
         }
     }
 }

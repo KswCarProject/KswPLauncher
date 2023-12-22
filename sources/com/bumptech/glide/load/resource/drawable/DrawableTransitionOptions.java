@@ -5,6 +5,7 @@ import com.bumptech.glide.TransitionOptions;
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
 import com.bumptech.glide.request.transition.TransitionFactory;
 
+/* loaded from: classes.dex */
 public final class DrawableTransitionOptions extends TransitionOptions<DrawableTransitionOptions, Drawable> {
     public static DrawableTransitionOptions withCrossFade() {
         return new DrawableTransitionOptions().crossFade();
@@ -23,7 +24,7 @@ public final class DrawableTransitionOptions extends TransitionOptions<DrawableT
     }
 
     public static DrawableTransitionOptions with(TransitionFactory<Drawable> transitionFactory) {
-        return (DrawableTransitionOptions) new DrawableTransitionOptions().transition(transitionFactory);
+        return new DrawableTransitionOptions().transition(transitionFactory);
     }
 
     public DrawableTransitionOptions crossFade() {
@@ -35,7 +36,7 @@ public final class DrawableTransitionOptions extends TransitionOptions<DrawableT
     }
 
     public DrawableTransitionOptions crossFade(DrawableCrossFadeFactory drawableCrossFadeFactory) {
-        return (DrawableTransitionOptions) transition(drawableCrossFadeFactory);
+        return transition(drawableCrossFadeFactory);
     }
 
     public DrawableTransitionOptions crossFade(DrawableCrossFadeFactory.Builder builder) {

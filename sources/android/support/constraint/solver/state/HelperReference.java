@@ -4,6 +4,7 @@ import android.support.constraint.solver.state.State;
 import android.support.constraint.solver.widgets.HelperWidget;
 import java.util.ArrayList;
 
+/* loaded from: classes.dex */
 public class HelperReference {
     private HelperWidget mHelperWidget;
     protected ArrayList<Object> mReferences = new ArrayList<>();

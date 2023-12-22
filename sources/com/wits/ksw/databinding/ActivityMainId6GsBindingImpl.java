@@ -1,20 +1,22 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ImageView;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.view.bmwevoid6gs.BmwId6gsViewMode;
+import com.wits.ksw.launcher.view.bmwevoid6gs.Bmwid6gsViewPager;
 
+/* loaded from: classes7.dex */
 public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback357;
-    private final View.OnClickListener mCallback358;
+    private final View.OnClickListener mCallback515;
+    private final View.OnClickListener mCallback516;
     private long mDirtyFlags;
     private final ConstraintLayout mboundView0;
 
@@ -23,27 +25,29 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
     }
 
     private ActivityMainId6GsBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 1, bindings[2], bindings[1], bindings[3]);
-        this.mDirtyFlags = -1;
-        this.id6GsLeftBtn.setTag((Object) null);
-        this.id6GsMainViewPager.setTag((Object) null);
-        this.id6GsRightBtn.setTag((Object) null);
-        ConstraintLayout constraintLayout = bindings[0];
+        super(bindingComponent, root, 1, (ImageView) bindings[2], (Bmwid6gsViewPager) bindings[1], (ImageView) bindings[3]);
+        this.mDirtyFlags = -1L;
+        this.id6GsLeftBtn.setTag(null);
+        this.id6GsMainViewPager.setTag(null);
+        this.id6GsRightBtn.setTag(null);
+        ConstraintLayout constraintLayout = (ConstraintLayout) bindings[0];
         this.mboundView0 = constraintLayout;
-        constraintLayout.setTag((Object) null);
+        constraintLayout.setTag(null);
         setRootTag(root);
-        this.mCallback358 = new OnClickListener(this, 2);
-        this.mCallback357 = new OnClickListener(this, 1);
+        this.mCallback516 = new OnClickListener(this, 2);
+        this.mCallback515 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 4;
+            this.mDirtyFlags = 4L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -53,14 +57,16 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((BmwId6gsViewMode) variable);
+            return true;
         }
-        setVm((BmwId6gsViewMode) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.ActivityMainId6GsBinding
     public void setVm(BmwId6gsViewMode Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -70,8 +76,8 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmPageIndex((ObservableInt) object, fieldId);
@@ -81,21 +87,22 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
     }
 
     private boolean onChangeVmPageIndex(ObservableInt VmPageIndex, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
+        boolean z;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         int vmPageIndexInt2ViewINVISIBLEViewVISIBLE = 0;
         ObservableInt vmPageIndex = null;
@@ -106,16 +113,17 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
             if (vm != null) {
                 vmPageIndex = vm.pageIndex;
             }
-            updateRegistration(0, (Observable) vmPageIndex);
+            updateRegistration(0, vmPageIndex);
             if (vmPageIndex != null) {
                 vmPageIndexGet = vmPageIndex.get();
             }
-            boolean z = true;
-            boolean vmPageIndexInt0 = vmPageIndexGet == 0;
-            if (vmPageIndexGet != 2) {
+            if (vmPageIndexGet != 0) {
                 z = false;
+            } else {
+                z = true;
             }
-            boolean vmPageIndexInt2 = z;
+            boolean vmPageIndexInt0 = z;
+            boolean vmPageIndexInt2 = vmPageIndexGet == 2;
             if ((dirtyFlags & 7) != 0) {
                 if (vmPageIndexInt0) {
                     dirtyFlags |= 64;
@@ -130,16 +138,12 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
                     dirtyFlags |= 8;
                 }
             }
-            int i = 4;
             vmPageIndexInt0ViewINVISIBLEViewVISIBLE = vmPageIndexInt0 ? 4 : 0;
-            if (!vmPageIndexInt2) {
-                i = 0;
-            }
-            vmPageIndexInt2ViewINVISIBLEViewVISIBLE = i;
+            vmPageIndexInt2ViewINVISIBLEViewVISIBLE = vmPageIndexInt2 ? 4 : 0;
         }
         if ((4 & dirtyFlags) != 0) {
-            this.id6GsLeftBtn.setOnClickListener(this.mCallback357);
-            this.id6GsRightBtn.setOnClickListener(this.mCallback358);
+            this.id6GsLeftBtn.setOnClickListener(this.mCallback515);
+            this.id6GsRightBtn.setOnClickListener(this.mCallback516);
         }
         if ((7 & dirtyFlags) != 0) {
             this.id6GsLeftBtn.setVisibility(vmPageIndexInt0ViewINVISIBLEViewVISIBLE);
@@ -148,18 +152,19 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean vmPageIndexJavaLangObjectNull = false;
+        boolean vmPageIndexJavaLangObjectNull;
         switch (sourceId) {
             case 1:
                 BmwId6gsViewMode vm = this.mVm;
-                if (vm != null) {
+                boolean vmJavaLangObjectNull = vm != null;
+                if (vmJavaLangObjectNull) {
                     ObservableInt vmPageIndex = vm.pageIndex;
-                    if (vmPageIndex != null) {
-                        vmPageIndexJavaLangObjectNull = true;
-                    }
+                    vmPageIndexJavaLangObjectNull = vmPageIndex != null;
                     if (vmPageIndexJavaLangObjectNull) {
-                        vm.setCurrentItem(callbackArg_0, vmPageIndex.get() - 1);
+                        int vmPageIndexGet = vmPageIndex.get();
+                        vm.setCurrentItem(callbackArg_0, vmPageIndexGet - 1);
                         return;
                     }
                     return;
@@ -167,13 +172,13 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
                 return;
             case 2:
                 BmwId6gsViewMode vm2 = this.mVm;
-                if (vm2 != null) {
+                boolean vmJavaLangObjectNull2 = vm2 != null;
+                if (vmJavaLangObjectNull2) {
                     ObservableInt vmPageIndex2 = vm2.pageIndex;
-                    if (vmPageIndex2 != null) {
-                        vmPageIndexJavaLangObjectNull = true;
-                    }
+                    vmPageIndexJavaLangObjectNull = vmPageIndex2 != null;
                     if (vmPageIndexJavaLangObjectNull) {
-                        vm2.setCurrentItem(callbackArg_0, vmPageIndex2.get() + 1);
+                        int vmPageIndexGet2 = vmPageIndex2.get();
+                        vm2.setCurrentItem(callbackArg_0, vmPageIndexGet2 + 1);
                         return;
                     }
                     return;

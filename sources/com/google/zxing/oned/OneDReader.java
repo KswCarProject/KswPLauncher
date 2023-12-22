@@ -6,258 +6,186 @@ import com.google.zxing.DecodeHintType;
 import com.google.zxing.FormatException;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.Reader;
+import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.ResultMetadataType;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.common.BitArray;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public abstract class OneDReader implements Reader {
     public abstract Result decodeRow(int i, BitArray bitArray, Map<DecodeHintType, ?> map) throws NotFoundException, ChecksumException, FormatException;
 
+    @Override // com.google.zxing.Reader
     public Result decode(BinaryBitmap image) throws NotFoundException, FormatException {
-        return decode(image, (Map<DecodeHintType, ?>) null);
+        return decode(image, null);
     }
 
+    @Override // com.google.zxing.Reader
     public Result decode(BinaryBitmap image, Map<DecodeHintType, ?> hints) throws NotFoundException, FormatException {
         try {
             return doDecode(image, hints);
         } catch (NotFoundException nfe) {
-            if (!(hints != null && hints.containsKey(DecodeHintType.TRY_HARDER)) || !image.isRotateSupported()) {
-                throw nfe;
-            }
-            BinaryBitmap rotatedImage = image.rotateCounterClockwise();
-            Result doDecode = doDecode(rotatedImage, hints);
-            Result result = doDecode;
-            Map<ResultMetadataType, Object> resultMetadata = doDecode.getResultMetadata();
-            int orientation = 270;
-            if (resultMetadata != null && resultMetadata.containsKey(ResultMetadataType.ORIENTATION)) {
-                orientation = (((Integer) resultMetadata.get(ResultMetadataType.ORIENTATION)).intValue() + 270) % 360;
-            }
-            result.putMetadata(ResultMetadataType.ORIENTATION, Integer.valueOf(orientation));
-            ResultPoint[] resultPoints = result.getResultPoints();
-            ResultPoint[] points = resultPoints;
-            if (resultPoints != null) {
-                int height = rotatedImage.getHeight();
-                for (int i = 0; i < points.length; i++) {
-                    points[i] = new ResultPoint((((float) height) - points[i].getY()) - 1.0f, points[i].getX());
+            if ((hints != null && hints.containsKey(DecodeHintType.TRY_HARDER)) && image.isRotateSupported()) {
+                BinaryBitmap rotatedImage = image.rotateCounterClockwise();
+                Result result = doDecode(rotatedImage, hints);
+                Map<ResultMetadataType, ?> metadata = result.getResultMetadata();
+                int orientation = 270;
+                if (metadata != null && metadata.containsKey(ResultMetadataType.ORIENTATION)) {
+                    orientation = (((Integer) metadata.get(ResultMetadataType.ORIENTATION)).intValue() + 270) % 360;
                 }
+                result.putMetadata(ResultMetadataType.ORIENTATION, Integer.valueOf(orientation));
+                ResultPoint[] points = result.getResultPoints();
+                if (points != null) {
+                    int height = rotatedImage.getHeight();
+                    for (int i = 0; i < points.length; i++) {
+                        points[i] = new ResultPoint((height - points[i].getY()) - 1.0f, points[i].getX());
+                    }
+                }
+                return result;
             }
-            return result;
+            throw nfe;
         }
     }
 
+    @Override // com.google.zxing.Reader
     public void reset() {
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:71:0x010a, code lost:
-        throw com.google.zxing.NotFoundException.getNotFoundInstance();
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private com.google.zxing.Result doDecode(com.google.zxing.BinaryBitmap r22, java.util.Map<com.google.zxing.DecodeHintType, ?> r23) throws com.google.zxing.NotFoundException {
-        /*
-            r21 = this;
-            r0 = r23
-            int r1 = r22.getWidth()
-            int r2 = r22.getHeight()
-            com.google.zxing.common.BitArray r3 = new com.google.zxing.common.BitArray
-            r3.<init>(r1)
-            r4 = 0
-            r5 = 1
-            if (r0 == 0) goto L_0x001d
-            com.google.zxing.DecodeHintType r6 = com.google.zxing.DecodeHintType.TRY_HARDER
-            boolean r6 = r0.containsKey(r6)
-            if (r6 == 0) goto L_0x001d
-            r6 = r5
-            goto L_0x001e
-        L_0x001d:
-            r6 = r4
-        L_0x001e:
-            if (r6 == 0) goto L_0x0023
-            r7 = 8
-            goto L_0x0024
-        L_0x0023:
-            r7 = 5
-        L_0x0024:
-            int r7 = r2 >> r7
-            int r7 = java.lang.Math.max(r5, r7)
-            if (r6 == 0) goto L_0x002e
-            r6 = r2
-            goto L_0x0030
-        L_0x002e:
-            r6 = 15
-        L_0x0030:
-            int r8 = r2 / 2
-            r9 = r3
-            r3 = r0
-            r0 = r4
-        L_0x0035:
-            if (r0 >= r6) goto L_0x0104
-            int r10 = r0 + 1
-            int r11 = r10 / 2
-            r0 = r0 & 1
-            if (r0 != 0) goto L_0x0041
-            r0 = r5
-            goto L_0x0042
-        L_0x0041:
-            r0 = r4
-        L_0x0042:
-            if (r0 == 0) goto L_0x0045
-            goto L_0x0046
-        L_0x0045:
-            int r11 = -r11
-        L_0x0046:
-            int r11 = r11 * r7
-            int r11 = r11 + r8
-            if (r11 < 0) goto L_0x0101
-            if (r11 >= r2) goto L_0x0101
-            r12 = r22
-            com.google.zxing.common.BitArray r9 = r12.getBlackRow(r11, r9)     // Catch:{ NotFoundException -> 0x00ef }
-            r13 = r4
-        L_0x0054:
-            r0 = 2
-            if (r13 >= r0) goto L_0x00e7
-            if (r13 != r5) goto L_0x0076
-            r9.reverse()
-            if (r3 == 0) goto L_0x0076
-            com.google.zxing.DecodeHintType r0 = com.google.zxing.DecodeHintType.NEED_RESULT_POINT_CALLBACK
-            boolean r0 = r3.containsKey(r0)
-            if (r0 == 0) goto L_0x0076
-            java.util.EnumMap r0 = new java.util.EnumMap
-            java.lang.Class<com.google.zxing.DecodeHintType> r14 = com.google.zxing.DecodeHintType.class
-            r0.<init>(r14)
-            r0.putAll(r3)
-            com.google.zxing.DecodeHintType r3 = com.google.zxing.DecodeHintType.NEED_RESULT_POINT_CALLBACK
-            r0.remove(r3)
-            r3 = r0
-        L_0x0076:
-            r14 = r21
-            com.google.zxing.Result r0 = r14.decodeRow(r11, r9, r3)     // Catch:{ ReaderException -> 0x00d7 }
-            if (r13 != r5) goto L_0x00d6
-            com.google.zxing.ResultMetadataType r15 = com.google.zxing.ResultMetadataType.ORIENTATION     // Catch:{ ReaderException -> 0x00d7 }
-            r16 = 180(0xb4, float:2.52E-43)
-            java.lang.Integer r5 = java.lang.Integer.valueOf(r16)     // Catch:{ ReaderException -> 0x00cf }
-            r0.putMetadata(r15, r5)     // Catch:{ ReaderException -> 0x00cf }
-            com.google.zxing.ResultPoint[] r5 = r0.getResultPoints()     // Catch:{ ReaderException -> 0x00cf }
-            if (r5 == 0) goto L_0x00d6
-            com.google.zxing.ResultPoint r15 = new com.google.zxing.ResultPoint     // Catch:{ ReaderException -> 0x00cf }
-            r16 = r2
-            float r2 = (float) r1
-            r18 = r5[r4]     // Catch:{ ReaderException -> 0x00cb }
-            float r18 = r18.getX()     // Catch:{ ReaderException -> 0x00cb }
-            float r18 = r2 - r18
-            r19 = 1065353216(0x3f800000, float:1.0)
-            r20 = r1
-            float r1 = r18 - r19
-            r18 = r5[r4]     // Catch:{ ReaderException -> 0x00c9 }
-            float r4 = r18.getY()     // Catch:{ ReaderException -> 0x00c9 }
-            r15.<init>(r1, r4)     // Catch:{ ReaderException -> 0x00c9 }
-            r1 = 0
-            r5[r1] = r15     // Catch:{ ReaderException -> 0x00c9 }
-            com.google.zxing.ResultPoint r4 = new com.google.zxing.ResultPoint     // Catch:{ ReaderException -> 0x00c9 }
-            r15 = 1
-            r17 = r5[r15]     // Catch:{ ReaderException -> 0x00c7 }
-            float r17 = r17.getX()     // Catch:{ ReaderException -> 0x00c7 }
-            float r2 = r2 - r17
-            float r2 = r2 - r19
-            r17 = r5[r15]     // Catch:{ ReaderException -> 0x00c7 }
-            float r1 = r17.getY()     // Catch:{ ReaderException -> 0x00c7 }
-            r4.<init>(r2, r1)     // Catch:{ ReaderException -> 0x00c7 }
-            r5[r15] = r4     // Catch:{ ReaderException -> 0x00c7 }
-            goto L_0x00d6
-        L_0x00c7:
-            r0 = move-exception
-            goto L_0x00dd
-        L_0x00c9:
-            r0 = move-exception
-            goto L_0x00d4
-        L_0x00cb:
-            r0 = move-exception
-            r20 = r1
-            goto L_0x00d4
-        L_0x00cf:
-            r0 = move-exception
-            r20 = r1
-            r16 = r2
-        L_0x00d4:
-            r15 = 1
-            goto L_0x00dd
-        L_0x00d6:
-            return r0
-        L_0x00d7:
-            r0 = move-exception
-            r20 = r1
-            r16 = r2
-            r15 = r5
-        L_0x00dd:
-            int r13 = r13 + 1
-            r5 = r15
-            r2 = r16
-            r1 = r20
-            r4 = 0
-            goto L_0x0054
-        L_0x00e7:
-            r14 = r21
-            r20 = r1
-            r16 = r2
-            r15 = r5
-            goto L_0x00f8
-        L_0x00ef:
-            r0 = move-exception
-            r14 = r21
-            r20 = r1
-            r16 = r2
-            r15 = r5
-        L_0x00f8:
-            r0 = r10
-            r5 = r15
-            r2 = r16
-            r1 = r20
-            r4 = 0
-            goto L_0x0035
-        L_0x0101:
-            r14 = r21
-            goto L_0x0106
-        L_0x0104:
-            r14 = r21
-        L_0x0106:
-            com.google.zxing.NotFoundException r0 = com.google.zxing.NotFoundException.getNotFoundInstance()
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.google.zxing.oned.OneDReader.doDecode(com.google.zxing.BinaryBitmap, java.util.Map):com.google.zxing.Result");
+    private Result doDecode(BinaryBitmap binaryBitmap, Map<DecodeHintType, ?> map) throws NotFoundException {
+        int i;
+        int i2;
+        int i3;
+        int i4;
+        int width = binaryBitmap.getWidth();
+        int height = binaryBitmap.getHeight();
+        BitArray bitArray = new BitArray(width);
+        int i5 = 0;
+        int i6 = 1;
+        boolean z = map != null && map.containsKey(DecodeHintType.TRY_HARDER);
+        int max = Math.max(1, height >> (z ? 8 : 5));
+        if (z) {
+            i = height;
+        } else {
+            i = 15;
+        }
+        int i7 = height / 2;
+        BitArray bitArray2 = bitArray;
+        EnumMap enumMap = map;
+        int i8 = 0;
+        while (i8 < i) {
+            int i9 = i8 + 1;
+            int i10 = i9 / 2;
+            if (((i8 & 1) == 0 ? i6 : i5) == 0) {
+                i10 = -i10;
+            }
+            int i11 = (i10 * max) + i7;
+            if (i11 < 0 || i11 >= height) {
+                break;
+            }
+            try {
+                bitArray2 = binaryBitmap.getBlackRow(i11, bitArray2);
+                int i12 = i5;
+                while (i12 < 2) {
+                    if (i12 == i6) {
+                        bitArray2.reverse();
+                        if (enumMap != null && enumMap.containsKey(DecodeHintType.NEED_RESULT_POINT_CALLBACK)) {
+                            EnumMap enumMap2 = new EnumMap(DecodeHintType.class);
+                            enumMap2.putAll(enumMap);
+                            enumMap2.remove(DecodeHintType.NEED_RESULT_POINT_CALLBACK);
+                            enumMap = enumMap2;
+                        }
+                    }
+                    try {
+                        Result decodeRow = decodeRow(i11, bitArray2, enumMap);
+                        if (i12 == i6) {
+                            try {
+                                decodeRow.putMetadata(ResultMetadataType.ORIENTATION, 180);
+                                ResultPoint[] resultPoints = decodeRow.getResultPoints();
+                                if (resultPoints != null) {
+                                    i3 = height;
+                                    float f = width;
+                                    try {
+                                        i2 = width;
+                                        try {
+                                            resultPoints[0] = new ResultPoint((f - resultPoints[i5].getX()) - 1.0f, resultPoints[i5].getY());
+                                            i4 = 1;
+                                        } catch (ReaderException e) {
+                                            i4 = 1;
+                                            i12++;
+                                            i6 = i4;
+                                            height = i3;
+                                            width = i2;
+                                            i5 = 0;
+                                        }
+                                    } catch (ReaderException e2) {
+                                        i2 = width;
+                                    }
+                                    try {
+                                        resultPoints[1] = new ResultPoint((f - resultPoints[1].getX()) - 1.0f, resultPoints[1].getY());
+                                    } catch (ReaderException e3) {
+                                        i12++;
+                                        i6 = i4;
+                                        height = i3;
+                                        width = i2;
+                                        i5 = 0;
+                                    }
+                                }
+                            } catch (ReaderException e4) {
+                                i2 = width;
+                                i3 = height;
+                            }
+                        }
+                        return decodeRow;
+                    } catch (ReaderException e5) {
+                        i2 = width;
+                        i3 = height;
+                        i4 = i6;
+                    }
+                }
+                continue;
+            } catch (NotFoundException e6) {
+            }
+            i8 = i9;
+            i6 = i6;
+            height = height;
+            width = width;
+            i5 = 0;
+        }
+        throw NotFoundException.getNotFoundInstance();
     }
 
     protected static void recordPattern(BitArray row, int start, int[] counters) throws NotFoundException {
         int numCounters = counters.length;
         Arrays.fill(counters, 0, numCounters, 0);
         int end = row.getSize();
-        if (start < end) {
-            boolean isWhite = !row.get(start);
-            int counterPosition = 0;
-            int i = start;
-            while (i < end) {
-                if (row.get(i) == isWhite) {
-                    counterPosition++;
-                    if (counterPosition == numCounters) {
-                        break;
-                    }
-                    counters[counterPosition] = 1;
-                    isWhite = !isWhite;
-                } else {
-                    counters[counterPosition] = counters[counterPosition] + 1;
+        if (start >= end) {
+            throw NotFoundException.getNotFoundInstance();
+        }
+        boolean isWhite = !row.get(start);
+        int counterPosition = 0;
+        int i = start;
+        while (i < end) {
+            if (row.get(i) != isWhite) {
+                counters[counterPosition] = counters[counterPosition] + 1;
+            } else {
+                counterPosition++;
+                if (counterPosition == numCounters) {
+                    break;
                 }
-                i++;
+                counters[counterPosition] = 1;
+                isWhite = !isWhite;
             }
-            if (counterPosition == numCounters) {
-                return;
-            }
+            i++;
+        }
+        if (counterPosition != numCounters) {
             if (counterPosition != numCounters - 1 || i != end) {
                 throw NotFoundException.getNotFoundInstance();
             }
-            return;
         }
-        throw NotFoundException.getNotFoundInstance();
     }
 
     protected static void recordPatternInReverse(BitArray row, int start, int[] counters) throws NotFoundException {
@@ -270,11 +198,10 @@ public abstract class OneDReader implements Reader {
                 last = !last;
             }
         }
-        if (numTransitionsLeft < 0) {
-            recordPattern(row, start + 1, counters);
-            return;
+        if (numTransitionsLeft >= 0) {
+            throw NotFoundException.getNotFoundInstance();
         }
-        throw NotFoundException.getNotFoundInstance();
+        recordPattern(row, start + 1, counters);
     }
 
     protected static float patternMatchVariance(int[] counters, int[] pattern, float maxIndividualVariance) {
@@ -288,19 +215,19 @@ public abstract class OneDReader implements Reader {
         if (total < patternLength) {
             return Float.POSITIVE_INFINITY;
         }
-        float unitBarWidth = ((float) total) / ((float) patternLength);
+        float unitBarWidth = total / patternLength;
         float maxIndividualVariance2 = maxIndividualVariance * unitBarWidth;
         float totalVariance = 0.0f;
         for (int x = 0; x < numCounters; x++) {
             int counter = counters[x];
-            float scaledPattern = ((float) pattern[x]) * unitBarWidth;
-            float f = ((float) counter) > scaledPattern ? ((float) counter) - scaledPattern : scaledPattern - ((float) counter);
+            float scaledPattern = pattern[x] * unitBarWidth;
+            float f = ((float) counter) > scaledPattern ? counter - scaledPattern : scaledPattern - counter;
             float variance = f;
             if (f > maxIndividualVariance2) {
                 return Float.POSITIVE_INFINITY;
             }
             totalVariance += variance;
         }
-        return totalVariance / ((float) total);
+        return totalVariance / total;
     }
 }

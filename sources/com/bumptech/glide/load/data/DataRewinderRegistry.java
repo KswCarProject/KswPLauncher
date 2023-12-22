@@ -6,12 +6,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public class DataRewinderRegistry {
-    private static final DataRewinder.Factory<?> DEFAULT_FACTORY = new DataRewinder.Factory<Object>() {
+    private static final DataRewinder.Factory<?> DEFAULT_FACTORY = new DataRewinder.Factory<Object>() { // from class: com.bumptech.glide.load.data.DataRewinderRegistry.1
+        @Override // com.bumptech.glide.load.data.DataRewinder.Factory
         public DataRewinder<Object> build(Object data) {
             return new DefaultRewinder(data);
         }
 
+        @Override // com.bumptech.glide.load.data.DataRewinder.Factory
         public Class<Object> getDataClass() {
             throw new UnsupportedOperationException("Not implemented");
         }
@@ -42,20 +45,23 @@ public class DataRewinderRegistry {
         if (factory == null) {
             factory = DEFAULT_FACTORY;
         }
-        return factory.build(data);
+        return (DataRewinder<T>) factory.build(data);
     }
 
+    /* loaded from: classes.dex */
     private static final class DefaultRewinder implements DataRewinder<Object> {
         private final Object data;
 
-        DefaultRewinder(Object data2) {
-            this.data = data2;
+        DefaultRewinder(Object data) {
+            this.data = data;
         }
 
+        @Override // com.bumptech.glide.load.data.DataRewinder
         public Object rewindAndGet() {
             return this.data;
         }
 
+        @Override // com.bumptech.glide.load.data.DataRewinder
         public void cleanup() {
         }
     }

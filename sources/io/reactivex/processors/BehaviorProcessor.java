@@ -19,10 +19,8 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class BehaviorProcessor<T> extends FlowableProcessor<T> {
-    static final BehaviorSubscription[] EMPTY = new BehaviorSubscription[0];
-    static final Object[] EMPTY_ARRAY = new Object[0];
-    static final BehaviorSubscription[] TERMINATED = new BehaviorSubscription[0];
     long index;
     final ReadWriteLock lock;
     final Lock readLock;
@@ -30,6 +28,9 @@ public final class BehaviorProcessor<T> extends FlowableProcessor<T> {
     final AtomicReference<Throwable> terminalEvent;
     final AtomicReference<Object> value;
     final Lock writeLock;
+    static final Object[] EMPTY_ARRAY = new Object[0];
+    static final BehaviorSubscription[] EMPTY = new BehaviorSubscription[0];
+    static final BehaviorSubscription[] TERMINATED = new BehaviorSubscription[0];
 
     @CheckReturnValue
     public static <T> BehaviorProcessor<T> create() {
@@ -57,24 +58,28 @@ public final class BehaviorProcessor<T> extends FlowableProcessor<T> {
         this.value.lazySet(ObjectHelper.requireNonNull(defaultValue, "defaultValue is null"));
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
         BehaviorSubscription<T> bs = new BehaviorSubscription<>(s, this);
         s.onSubscribe(bs);
-        if (!add(bs)) {
-            Throwable ex = this.terminalEvent.get();
-            if (ex == ExceptionHelper.TERMINATED) {
-                s.onComplete();
+        if (add(bs)) {
+            if (bs.cancelled) {
+                remove(bs);
+                return;
             } else {
-                s.onError(ex);
+                bs.emitFirst();
+                return;
             }
-        } else if (bs.cancelled) {
-            remove(bs);
+        }
+        Throwable ex = this.terminalEvent.get();
+        if (ex == ExceptionHelper.TERMINATED) {
+            s.onComplete();
         } else {
-            bs.emitFirst();
+            s.onError(ex);
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onSubscribe(Subscription s) {
         if (this.terminalEvent.get() != null) {
             s.cancel();
@@ -83,20 +88,25 @@ public final class BehaviorProcessor<T> extends FlowableProcessor<T> {
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onNext(T t) {
+        BehaviorSubscription<T>[] behaviorSubscriptionArr;
         ObjectHelper.requireNonNull(t, "onNext called with null. Null values are generally not allowed in 2.x operators and sources.");
-        if (this.terminalEvent.get() == null) {
-            Object o = NotificationLite.next(t);
-            setCurrent(o);
-            for (BehaviorSubscription<T> bs : (BehaviorSubscription[]) this.subscribers.get()) {
-                bs.emitNext(o, this.index);
-            }
+        if (this.terminalEvent.get() != null) {
+            return;
+        }
+        Object o = NotificationLite.next(t);
+        setCurrent(o);
+        for (BehaviorSubscription<T> bs : this.subscribers.get()) {
+            bs.emitNext(o, this.index);
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onError(Throwable t) {
+        BehaviorSubscription<T>[] terminate;
         ObjectHelper.requireNonNull(t, "onError called with null. Null values are generally not allowed in 2.x operators and sources.");
-        if (!this.terminalEvent.compareAndSet((Object) null, t)) {
+        if (!this.terminalEvent.compareAndSet(null, t)) {
             RxJavaPlugins.onError(t);
             return;
         }
@@ -106,12 +116,15 @@ public final class BehaviorProcessor<T> extends FlowableProcessor<T> {
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onComplete() {
-        if (this.terminalEvent.compareAndSet((Object) null, ExceptionHelper.TERMINATED)) {
-            Object o = NotificationLite.complete();
-            for (BehaviorSubscription<T> bs : terminate(o)) {
-                bs.emitNext(o, this.index);
-            }
+        BehaviorSubscription<T>[] terminate;
+        if (!this.terminalEvent.compareAndSet(null, ExceptionHelper.TERMINATED)) {
+            return;
+        }
+        Object o = NotificationLite.complete();
+        for (BehaviorSubscription<T> bs : terminate(o)) {
+            bs.emitNext(o, this.index);
         }
     }
 
@@ -120,7 +133,7 @@ public final class BehaviorProcessor<T> extends FlowableProcessor<T> {
             onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
             return true;
         }
-        BehaviorSubscription<T>[] array = (BehaviorSubscription[]) this.subscribers.get();
+        BehaviorSubscription<T>[] array = this.subscribers.get();
         for (BehaviorSubscription<T> s : array) {
             if (s.isFull()) {
                 return false;
@@ -134,15 +147,16 @@ public final class BehaviorProcessor<T> extends FlowableProcessor<T> {
         return true;
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public boolean hasSubscribers() {
-        return ((BehaviorSubscription[]) this.subscribers.get()).length != 0;
+        return this.subscribers.get().length != 0;
     }
 
-    /* access modifiers changed from: package-private */
-    public int subscriberCount() {
-        return ((BehaviorSubscription[]) this.subscribers.get()).length;
+    int subscriberCount() {
+        return this.subscribers.get().length;
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public Throwable getThrowable() {
         Object o = this.value.get();
         if (NotificationLite.isError(o)) {
@@ -156,122 +170,123 @@ public final class BehaviorProcessor<T> extends FlowableProcessor<T> {
         if (NotificationLite.isComplete(o) || NotificationLite.isError(o)) {
             return null;
         }
-        return NotificationLite.getValue(o);
+        return (T) NotificationLite.getValue(o);
     }
 
+    /* JADX WARN: Multi-variable type inference failed */
     @Deprecated
     public Object[] getValues() {
-        T[] tArr = EMPTY_ARRAY;
-        T[] b = getValues((Object[]) tArr);
-        if (b == tArr) {
+        Object[] objArr = EMPTY_ARRAY;
+        T[] b = getValues(objArr);
+        if (b == objArr) {
             return new Object[0];
         }
         return b;
     }
 
+    /* JADX WARN: Multi-variable type inference failed */
     @Deprecated
     public T[] getValues(T[] array) {
         Object o = this.value.get();
         if (o == null || NotificationLite.isComplete(o) || NotificationLite.isError(o)) {
             if (array.length != 0) {
-                array[0] = null;
+                array[0] = 0;
             }
             return array;
         }
-        T v = NotificationLite.getValue(o);
+        Object value = NotificationLite.getValue(o);
         if (array.length != 0) {
-            array[0] = v;
-            if (array.length == 1) {
+            array[0] = value;
+            if (array.length != 1) {
+                array[1] = 0;
                 return array;
             }
-            array[1] = null;
             return array;
         }
-        T[] array2 = (Object[]) ((Object[]) Array.newInstance(array.getClass().getComponentType(), 1));
-        array2[0] = v;
+        T[] array2 = (T[]) ((Object[]) Array.newInstance(array.getClass().getComponentType(), 1));
+        array2[0] = value;
         return array2;
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public boolean hasComplete() {
-        return NotificationLite.isComplete(this.value.get());
+        Object o = this.value.get();
+        return NotificationLite.isComplete(o);
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public boolean hasThrowable() {
-        return NotificationLite.isError(this.value.get());
+        Object o = this.value.get();
+        return NotificationLite.isError(o);
     }
 
     public boolean hasValue() {
         Object o = this.value.get();
-        return o != null && !NotificationLite.isComplete(o) && !NotificationLite.isError(o);
+        return (o == null || NotificationLite.isComplete(o) || NotificationLite.isError(o)) ? false : true;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean add(BehaviorSubscription<T> rs) {
+    boolean add(BehaviorSubscription<T> rs) {
         BehaviorSubscription<T>[] a;
         BehaviorSubscription<T>[] b;
         do {
-            a = (BehaviorSubscription[]) this.subscribers.get();
+            a = this.subscribers.get();
             if (a == TERMINATED) {
                 return false;
             }
             int len = a.length;
-            b = new BehaviorSubscription[(len + 1)];
+            b = new BehaviorSubscription[len + 1];
             System.arraycopy(a, 0, b, 0, len);
             b[len] = rs;
         } while (!this.subscribers.compareAndSet(a, b));
         return true;
     }
 
-    /* access modifiers changed from: package-private */
-    public void remove(BehaviorSubscription<T> rs) {
+    /* JADX WARN: Multi-variable type inference failed */
+    void remove(BehaviorSubscription<T> rs) {
         BehaviorSubscription<T>[] a;
         BehaviorSubscription<T>[] b;
         do {
-            a = (BehaviorSubscription[]) this.subscribers.get();
+            a = this.subscribers.get();
             int len = a.length;
-            if (len != 0) {
-                int j = -1;
-                int i = 0;
-                while (true) {
-                    if (i >= len) {
-                        break;
-                    } else if (a[i] == rs) {
-                        j = i;
-                        break;
-                    } else {
-                        i++;
-                    }
-                }
-                if (j >= 0) {
-                    if (len == 1) {
-                        b = EMPTY;
-                    } else {
-                        BehaviorSubscription<T>[] b2 = new BehaviorSubscription[(len - 1)];
-                        System.arraycopy(a, 0, b2, 0, j);
-                        System.arraycopy(a, j + 1, b2, j, (len - j) - 1);
-                        b = b2;
-                    }
-                } else {
-                    return;
-                }
-            } else {
+            if (len == 0) {
                 return;
+            }
+            int j = -1;
+            int i = 0;
+            while (true) {
+                if (i >= len) {
+                    break;
+                } else if (a[i] != rs) {
+                    i++;
+                } else {
+                    j = i;
+                    break;
+                }
+            }
+            if (j < 0) {
+                return;
+            }
+            if (len == 1) {
+                b = EMPTY;
+            } else {
+                BehaviorSubscription<T>[] b2 = new BehaviorSubscription[len - 1];
+                System.arraycopy(a, 0, b2, 0, j);
+                System.arraycopy(a, j + 1, b2, j, (len - j) - 1);
+                b = b2;
             }
         } while (!this.subscribers.compareAndSet(a, b));
     }
 
-    /* access modifiers changed from: package-private */
-    public BehaviorSubscription<T>[] terminate(Object terminalValue) {
-        BehaviorSubscription<T>[] a = (BehaviorSubscription[]) this.subscribers.get();
+    BehaviorSubscription<T>[] terminate(Object terminalValue) {
+        BehaviorSubscription<T>[] a = this.subscribers.get();
         BehaviorSubscription<T>[] behaviorSubscriptionArr = TERMINATED;
-        if (!(a == behaviorSubscriptionArr || (a = (BehaviorSubscription[]) this.subscribers.getAndSet(behaviorSubscriptionArr)) == behaviorSubscriptionArr)) {
+        if (a != behaviorSubscriptionArr && (a = this.subscribers.getAndSet(behaviorSubscriptionArr)) != behaviorSubscriptionArr) {
             setCurrent(terminalValue);
         }
         return a;
     }
 
-    /* access modifiers changed from: package-private */
-    public void setCurrent(Object o) {
+    void setCurrent(Object o) {
         Lock wl = this.writeLock;
         wl.lock();
         this.index++;
@@ -279,6 +294,7 @@ public final class BehaviorProcessor<T> extends FlowableProcessor<T> {
         wl.unlock();
     }
 
+    /* loaded from: classes.dex */
     static final class BehaviorSubscription<T> extends AtomicLong implements Subscription, AppendOnlyLinkedArrayList.NonThrowingPredicate<Object> {
         private static final long serialVersionUID = 3293175281126227086L;
         volatile boolean cancelled;
@@ -290,17 +306,19 @@ public final class BehaviorProcessor<T> extends FlowableProcessor<T> {
         AppendOnlyLinkedArrayList<Object> queue;
         final BehaviorProcessor<T> state;
 
-        BehaviorSubscription(Subscriber<? super T> actual, BehaviorProcessor<T> state2) {
+        BehaviorSubscription(Subscriber<? super T> actual, BehaviorProcessor<T> state) {
             this.downstream = actual;
-            this.state = state2;
+            this.state = state;
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             if (SubscriptionHelper.validate(n)) {
                 BackpressureHelper.add(this, n);
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             if (!this.cancelled) {
                 this.cancelled = true;
@@ -308,134 +326,61 @@ public final class BehaviorProcessor<T> extends FlowableProcessor<T> {
             }
         }
 
-        /* access modifiers changed from: package-private */
-        /* JADX WARNING: Code restructure failed: missing block: B:19:0x0031, code lost:
-            if (r2 == null) goto L_?;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:21:0x0037, code lost:
-            if (test(r2) == false) goto L_0x003a;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:22:0x0039, code lost:
-            return;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:23:0x003a, code lost:
-            emitLoop();
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:31:?, code lost:
-            return;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:32:?, code lost:
-            return;
-         */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public void emitFirst() {
-            /*
-                r5 = this;
-                boolean r0 = r5.cancelled
-                if (r0 == 0) goto L_0x0005
-                return
-            L_0x0005:
-                monitor-enter(r5)
-                boolean r0 = r5.cancelled     // Catch:{ all -> 0x003e }
-                if (r0 == 0) goto L_0x000c
-                monitor-exit(r5)     // Catch:{ all -> 0x003e }
-                return
-            L_0x000c:
-                boolean r0 = r5.next     // Catch:{ all -> 0x003e }
-                if (r0 == 0) goto L_0x0012
-                monitor-exit(r5)     // Catch:{ all -> 0x003e }
-                return
-            L_0x0012:
-                io.reactivex.processors.BehaviorProcessor<T> r0 = r5.state     // Catch:{ all -> 0x003e }
-                java.util.concurrent.locks.Lock r1 = r0.readLock     // Catch:{ all -> 0x003e }
-                r1.lock()     // Catch:{ all -> 0x003e }
-                long r2 = r0.index     // Catch:{ all -> 0x003e }
-                r5.index = r2     // Catch:{ all -> 0x003e }
-                java.util.concurrent.atomic.AtomicReference<java.lang.Object> r2 = r0.value     // Catch:{ all -> 0x003e }
-                java.lang.Object r2 = r2.get()     // Catch:{ all -> 0x003e }
-                r1.unlock()     // Catch:{ all -> 0x003e }
-                r3 = 1
-                if (r2 == 0) goto L_0x002b
-                r4 = r3
-                goto L_0x002c
-            L_0x002b:
-                r4 = 0
-            L_0x002c:
-                r5.emitting = r4     // Catch:{ all -> 0x003e }
-                r5.next = r3     // Catch:{ all -> 0x003e }
-                monitor-exit(r5)     // Catch:{ all -> 0x003e }
-                if (r2 == 0) goto L_0x003d
-                boolean r0 = r5.test(r2)
-                if (r0 == 0) goto L_0x003a
-                return
-            L_0x003a:
-                r5.emitLoop()
-            L_0x003d:
-                return
-            L_0x003e:
-                r0 = move-exception
-                monitor-exit(r5)     // Catch:{ all -> 0x003e }
-                throw r0
-            */
-            throw new UnsupportedOperationException("Method not decompiled: io.reactivex.processors.BehaviorProcessor.BehaviorSubscription.emitFirst():void");
+        void emitFirst() {
+            if (this.cancelled) {
+                return;
+            }
+            synchronized (this) {
+                if (this.cancelled) {
+                    return;
+                }
+                if (this.next) {
+                    return;
+                }
+                BehaviorProcessor<T> s = this.state;
+                Lock readLock = s.readLock;
+                readLock.lock();
+                this.index = s.index;
+                Object o = s.value.get();
+                readLock.unlock();
+                this.emitting = o != null;
+                this.next = true;
+                if (o == null || test(o)) {
+                    return;
+                }
+                emitLoop();
+            }
         }
 
-        /* access modifiers changed from: package-private */
-        /* JADX WARNING: Code restructure failed: missing block: B:25:0x0032, code lost:
-            r3.fastPath = true;
-         */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public void emitNext(java.lang.Object r4, long r5) {
-            /*
-                r3 = this;
-                boolean r0 = r3.cancelled
-                if (r0 == 0) goto L_0x0005
-                return
-            L_0x0005:
-                boolean r0 = r3.fastPath
-                if (r0 != 0) goto L_0x0038
-                monitor-enter(r3)
-                boolean r0 = r3.cancelled     // Catch:{ all -> 0x0035 }
-                if (r0 == 0) goto L_0x0010
-                monitor-exit(r3)     // Catch:{ all -> 0x0035 }
-                return
-            L_0x0010:
-                long r0 = r3.index     // Catch:{ all -> 0x0035 }
-                int r0 = (r0 > r5 ? 1 : (r0 == r5 ? 0 : -1))
-                if (r0 != 0) goto L_0x0018
-                monitor-exit(r3)     // Catch:{ all -> 0x0035 }
-                return
-            L_0x0018:
-                boolean r0 = r3.emitting     // Catch:{ all -> 0x0035 }
-                if (r0 == 0) goto L_0x002e
-                io.reactivex.internal.util.AppendOnlyLinkedArrayList<java.lang.Object> r0 = r3.queue     // Catch:{ all -> 0x0035 }
-                if (r0 != 0) goto L_0x0029
-                io.reactivex.internal.util.AppendOnlyLinkedArrayList r1 = new io.reactivex.internal.util.AppendOnlyLinkedArrayList     // Catch:{ all -> 0x0035 }
-                r2 = 4
-                r1.<init>(r2)     // Catch:{ all -> 0x0035 }
-                r0 = r1
-                r3.queue = r0     // Catch:{ all -> 0x0035 }
-            L_0x0029:
-                r0.add(r4)     // Catch:{ all -> 0x0035 }
-                monitor-exit(r3)     // Catch:{ all -> 0x0035 }
-                return
-            L_0x002e:
-                r0 = 1
-                r3.next = r0     // Catch:{ all -> 0x0035 }
-                monitor-exit(r3)     // Catch:{ all -> 0x0035 }
-                r3.fastPath = r0
-                goto L_0x0038
-            L_0x0035:
-                r0 = move-exception
-                monitor-exit(r3)     // Catch:{ all -> 0x0035 }
-                throw r0
-            L_0x0038:
-                r3.test(r4)
-                return
-            */
-            throw new UnsupportedOperationException("Method not decompiled: io.reactivex.processors.BehaviorProcessor.BehaviorSubscription.emitNext(java.lang.Object, long):void");
+        void emitNext(Object value, long stateIndex) {
+            if (this.cancelled) {
+                return;
+            }
+            if (!this.fastPath) {
+                synchronized (this) {
+                    if (this.cancelled) {
+                        return;
+                    }
+                    if (this.index == stateIndex) {
+                        return;
+                    }
+                    if (this.emitting) {
+                        AppendOnlyLinkedArrayList<Object> q = this.queue;
+                        if (q == null) {
+                            q = new AppendOnlyLinkedArrayList<>(4);
+                            this.queue = q;
+                        }
+                        q.add(value);
+                        return;
+                    }
+                    this.next = true;
+                    this.fastPath = true;
+                }
+            }
+            test(value);
         }
 
+        @Override // io.reactivex.internal.util.AppendOnlyLinkedArrayList.NonThrowingPredicate, io.reactivex.functions.Predicate
         public boolean test(Object o) {
             if (this.cancelled) {
                 return true;
@@ -449,11 +394,11 @@ public final class BehaviorProcessor<T> extends FlowableProcessor<T> {
             } else {
                 long r = get();
                 if (r != 0) {
-                    this.downstream.onNext(NotificationLite.getValue(o));
-                    if (r == LongCompanionObject.MAX_VALUE) {
+                    this.downstream.onNext((Object) NotificationLite.getValue(o));
+                    if (r != LongCompanionObject.MAX_VALUE) {
+                        decrementAndGet();
                         return false;
                     }
-                    decrementAndGet();
                     return false;
                 }
                 cancel();
@@ -462,38 +407,19 @@ public final class BehaviorProcessor<T> extends FlowableProcessor<T> {
             }
         }
 
-        /* access modifiers changed from: package-private */
-        /* JADX WARNING: Code restructure failed: missing block: B:12:0x0013, code lost:
-            r0.forEachWhile(r2);
-         */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public void emitLoop() {
-            /*
-                r2 = this;
-            L_0x0000:
-                boolean r0 = r2.cancelled
-                if (r0 == 0) goto L_0x0005
-                return
-            L_0x0005:
-                monitor-enter(r2)
-                io.reactivex.internal.util.AppendOnlyLinkedArrayList<java.lang.Object> r0 = r2.queue     // Catch:{ all -> 0x0017 }
-                if (r0 != 0) goto L_0x000f
-                r1 = 0
-                r2.emitting = r1     // Catch:{ all -> 0x0017 }
-                monitor-exit(r2)     // Catch:{ all -> 0x0017 }
-                return
-            L_0x000f:
-                r1 = 0
-                r2.queue = r1     // Catch:{ all -> 0x0017 }
-                monitor-exit(r2)     // Catch:{ all -> 0x0017 }
-                r0.forEachWhile(r2)
-                goto L_0x0000
-            L_0x0017:
-                r0 = move-exception
-                monitor-exit(r2)     // Catch:{ all -> 0x0017 }
-                throw r0
-            */
-            throw new UnsupportedOperationException("Method not decompiled: io.reactivex.processors.BehaviorProcessor.BehaviorSubscription.emitLoop():void");
+        void emitLoop() {
+            AppendOnlyLinkedArrayList<Object> q;
+            while (!this.cancelled) {
+                synchronized (this) {
+                    q = this.queue;
+                    if (q == null) {
+                        this.emitting = false;
+                        return;
+                    }
+                    this.queue = null;
+                }
+                q.forEachWhile(this);
+            }
         }
 
         public boolean isFull() {

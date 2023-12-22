@@ -2,6 +2,7 @@ package com.google.zxing.common;
 
 import com.google.zxing.NotFoundException;
 
+/* loaded from: classes.dex */
 public abstract class GridSampler {
     private static GridSampler gridSampler = new DefaultGridSampler();
 
@@ -32,14 +33,14 @@ public abstract class GridSampler {
                 points[offset] = 0.0f;
                 nudged = true;
             } else if (x == width) {
-                points[offset] = (float) (width - 1);
+                points[offset] = width - 1;
                 nudged = true;
             }
             if (y == -1) {
                 points[offset + 1] = 0.0f;
                 nudged = true;
             } else if (y == height) {
-                points[offset + 1] = (float) (height - 1);
+                points[offset + 1] = height - 1;
                 nudged = true;
             }
         }
@@ -55,14 +56,14 @@ public abstract class GridSampler {
                 points[offset2] = 0.0f;
                 nudged2 = true;
             } else if (x2 == width) {
-                points[offset2] = (float) (width - 1);
+                points[offset2] = width - 1;
                 nudged2 = true;
             }
             if (y2 == -1) {
                 points[offset2 + 1] = 0.0f;
                 nudged2 = true;
             } else if (y2 == height) {
-                points[offset2 + 1] = (float) (height - 1);
+                points[offset2 + 1] = height - 1;
                 nudged2 = true;
             }
         }

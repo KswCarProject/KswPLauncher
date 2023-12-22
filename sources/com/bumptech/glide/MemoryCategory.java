@@ -1,5 +1,6 @@
 package com.bumptech.glide;
 
+/* loaded from: classes.dex */
 public enum MemoryCategory {
     LOW(0.5f),
     NORMAL(1.0f),
@@ -7,8 +8,8 @@ public enum MemoryCategory {
     
     private final float multiplier;
 
-    private MemoryCategory(float multiplier2) {
-        this.multiplier = multiplier2;
+    MemoryCategory(float multiplier) {
+        this.multiplier = multiplier;
     }
 
     public float getMultiplier() {

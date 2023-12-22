@@ -8,10 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi.vm.AudiSettingViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi.p007vm.AudiSettingViewModel;
 import com.wits.ksw.settings.audi.widget.AudiConstraintLayout;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityAudiTimeBinding extends ViewDataBinding {
     public final TextView audiSyncTime;
     public final TextView audiTimeZhishi;
@@ -20,14 +21,14 @@ public abstract class ActivityAudiTimeBinding extends ViewDataBinding {
     protected AudiSettingViewModel mVm;
     public final RadioGroup timeRadioGroup;
 
-    public abstract void setVm(AudiSettingViewModel audiSettingViewModel);
+    public abstract void setVm(AudiSettingViewModel vm);
 
-    protected ActivityAudiTimeBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView audiSyncTime2, TextView audiTimeZhishi2, AudiConstraintLayout linearLayout42, RadioGroup timeRadioGroup2) {
+    protected ActivityAudiTimeBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView audiSyncTime, TextView audiTimeZhishi, AudiConstraintLayout linearLayout4, RadioGroup timeRadioGroup) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.audiSyncTime = audiSyncTime2;
-        this.audiTimeZhishi = audiTimeZhishi2;
-        this.linearLayout4 = linearLayout42;
-        this.timeRadioGroup = timeRadioGroup2;
+        this.audiSyncTime = audiSyncTime;
+        this.audiTimeZhishi = audiTimeZhishi;
+        this.linearLayout4 = linearLayout4;
+        this.timeRadioGroup = timeRadioGroup;
     }
 
     public AudiSettingViewModel getVm() {
@@ -40,7 +41,7 @@ public abstract class ActivityAudiTimeBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityAudiTimeBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityAudiTimeBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_audi_time, root, attachToRoot, component);
+        return (ActivityAudiTimeBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_audi_time, root, attachToRoot, component);
     }
 
     public static ActivityAudiTimeBinding inflate(LayoutInflater inflater) {
@@ -49,7 +50,7 @@ public abstract class ActivityAudiTimeBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityAudiTimeBinding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityAudiTimeBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_audi_time, (ViewGroup) null, false, component);
+        return (ActivityAudiTimeBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_audi_time, null, false, component);
     }
 
     public static ActivityAudiTimeBinding bind(View view) {
@@ -58,6 +59,6 @@ public abstract class ActivityAudiTimeBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityAudiTimeBinding bind(View view, Object component) {
-        return (ActivityAudiTimeBinding) bind(component, view, R.layout.activity_audi_time);
+        return (ActivityAudiTimeBinding) bind(component, view, C0899R.C0902layout.activity_audi_time);
     }
 }

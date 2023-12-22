@@ -19,42 +19,43 @@ import com.google.zxing.qrcode.detector.Detector;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public class QRCodeReader implements Reader {
     private static final ResultPoint[] NO_POINTS = new ResultPoint[0];
     private final Decoder decoder = new Decoder();
 
-    /* access modifiers changed from: protected */
-    public final Decoder getDecoder() {
+    protected final Decoder getDecoder() {
         return this.decoder;
     }
 
+    @Override // com.google.zxing.Reader
     public Result decode(BinaryBitmap image) throws NotFoundException, ChecksumException, FormatException {
-        return decode(image, (Map<DecodeHintType, ?>) null);
+        return decode(image, null);
     }
 
+    @Override // com.google.zxing.Reader
     public final Result decode(BinaryBitmap image, Map<DecodeHintType, ?> hints) throws NotFoundException, ChecksumException, FormatException {
         DecoderResult decoderResult;
         ResultPoint[] points;
-        if (hints == null || !hints.containsKey(DecodeHintType.PURE_BARCODE)) {
+        if (hints != null && hints.containsKey(DecodeHintType.PURE_BARCODE)) {
+            BitMatrix bits = extractPureBits(image.getBlackMatrix());
+            decoderResult = this.decoder.decode(bits, hints);
+            points = NO_POINTS;
+        } else {
             DetectorResult detectorResult = new Detector(image.getBlackMatrix()).detect(hints);
             decoderResult = this.decoder.decode(detectorResult.getBits(), hints);
             points = detectorResult.getPoints();
-        } else {
-            decoderResult = this.decoder.decode(extractPureBits(image.getBlackMatrix()), hints);
-            points = NO_POINTS;
         }
         if (decoderResult.getOther() instanceof QRCodeDecoderMetaData) {
             ((QRCodeDecoderMetaData) decoderResult.getOther()).applyMirroredCorrection(points);
         }
         Result result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), points, BarcodeFormat.QR_CODE);
         List<byte[]> byteSegments = decoderResult.getByteSegments();
-        List<byte[]> byteSegments2 = byteSegments;
         if (byteSegments != null) {
-            result.putMetadata(ResultMetadataType.BYTE_SEGMENTS, byteSegments2);
+            result.putMetadata(ResultMetadataType.BYTE_SEGMENTS, byteSegments);
         }
-        String eCLevel = decoderResult.getECLevel();
-        String ecLevel = eCLevel;
-        if (eCLevel != null) {
+        String ecLevel = decoderResult.getECLevel();
+        if (ecLevel != null) {
             result.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, ecLevel);
         }
         if (decoderResult.hasStructuredAppend()) {
@@ -64,24 +65,22 @@ public class QRCodeReader implements Reader {
         return result;
     }
 
+    @Override // com.google.zxing.Reader
     public void reset() {
     }
 
     private static BitMatrix extractPureBits(BitMatrix image) throws NotFoundException {
-        BitMatrix bitMatrix = image;
         int[] leftTopBlack = image.getTopLeftOnBit();
         int[] rightBottomBlack = image.getBottomRightOnBit();
         if (leftTopBlack == null || rightBottomBlack == null) {
-            int[] iArr = rightBottomBlack;
             throw NotFoundException.getNotFoundInstance();
         }
-        float moduleSize = moduleSize(leftTopBlack, bitMatrix);
+        float moduleSize = moduleSize(leftTopBlack, image);
         int top = leftTopBlack[1];
         int bottom = rightBottomBlack[1];
         int left = leftTopBlack[0];
         int right = rightBottomBlack[0];
         if (left >= right || top >= bottom) {
-            int[] iArr2 = rightBottomBlack;
             throw NotFoundException.getNotFoundInstance();
         }
         if (bottom - top != right - left) {
@@ -91,43 +90,39 @@ public class QRCodeReader implements Reader {
                 throw NotFoundException.getNotFoundInstance();
             }
         }
-        int matrixWidth = Math.round(((float) ((right - left) + 1)) / moduleSize);
-        int matrixHeight = Math.round(((float) ((bottom - top) + 1)) / moduleSize);
+        int matrixWidth = Math.round(((right - left) + 1) / moduleSize);
+        int matrixHeight = Math.round(((bottom - top) + 1) / moduleSize);
         if (matrixWidth <= 0 || matrixHeight <= 0) {
-            int[] iArr3 = rightBottomBlack;
             throw NotFoundException.getNotFoundInstance();
-        } else if (matrixHeight == matrixWidth) {
+        }
+        if (matrixHeight == matrixWidth) {
             int nudge = (int) (moduleSize / 2.0f);
             int top2 = top + nudge;
             int i2 = left + nudge;
             int left2 = i2;
-            int i3 = (i2 + ((int) (((float) (matrixWidth - 1)) * moduleSize))) - right;
-            int nudgedTooFarRight = i3;
-            if (i3 > 0) {
-                if (nudgedTooFarRight <= nudge) {
-                    left2 -= nudgedTooFarRight;
-                } else {
+            int nudgedTooFarRight = (i2 + ((int) ((matrixWidth - 1) * moduleSize))) - right;
+            if (nudgedTooFarRight > 0) {
+                if (nudgedTooFarRight > nudge) {
                     throw NotFoundException.getNotFoundInstance();
                 }
+                left2 -= nudgedTooFarRight;
             }
-            int i4 = (((int) (((float) (matrixHeight - 1)) * moduleSize)) + top2) - bottom;
-            int nudgedTooFarDown = i4;
-            if (i4 > 0) {
-                if (nudgedTooFarDown <= nudge) {
-                    top2 -= nudgedTooFarDown;
-                } else {
+            int nudgedTooFarDown = (((int) ((matrixHeight - 1) * moduleSize)) + top2) - bottom;
+            if (nudgedTooFarDown > 0) {
+                if (nudgedTooFarDown > nudge) {
                     throw NotFoundException.getNotFoundInstance();
                 }
+                top2 -= nudgedTooFarDown;
             }
             BitMatrix bits = new BitMatrix(matrixWidth, matrixHeight);
             int y = 0;
             while (y < matrixHeight) {
-                int iOffset = ((int) (((float) y) * moduleSize)) + top2;
+                int iOffset = ((int) (y * moduleSize)) + top2;
                 int[] leftTopBlack2 = leftTopBlack;
                 int x = 0;
                 while (x < matrixWidth) {
                     int[] rightBottomBlack2 = rightBottomBlack;
-                    if (bitMatrix.get(((int) (((float) x) * moduleSize)) + left2, iOffset)) {
+                    if (image.get(((int) (x * moduleSize)) + left2, iOffset)) {
                         bits.set(x, y);
                     }
                     x++;
@@ -137,13 +132,12 @@ public class QRCodeReader implements Reader {
                 leftTopBlack = leftTopBlack2;
             }
             return bits;
-        } else {
-            int[] iArr4 = leftTopBlack;
-            throw NotFoundException.getNotFoundInstance();
         }
+        throw NotFoundException.getNotFoundInstance();
     }
 
     private static float moduleSize(int[] leftTopBlack, BitMatrix image) throws NotFoundException {
+        boolean z;
         int height = image.getHeight();
         int width = image.getWidth();
         int x = leftTopBlack[0];
@@ -156,14 +150,19 @@ public class QRCodeReader implements Reader {
                 if (transitions == 5) {
                     break;
                 }
-                inBlack = !inBlack;
+                if (inBlack) {
+                    z = false;
+                } else {
+                    z = true;
+                }
+                inBlack = z;
             }
             x++;
             y++;
         }
-        if (x != width && y != height) {
-            return ((float) (x - leftTopBlack[0])) / 7.0f;
+        if (x == width || y == height) {
+            throw NotFoundException.getNotFoundInstance();
         }
-        throw NotFoundException.getNotFoundInstance();
+        return (x - leftTopBlack[0]) / 7.0f;
     }
 }

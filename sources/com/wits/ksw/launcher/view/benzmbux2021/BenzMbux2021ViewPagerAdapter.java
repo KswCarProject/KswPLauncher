@@ -1,24 +1,30 @@
 package com.wits.ksw.launcher.view.benzmbux2021;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.p001v4.app.Fragment;
+import android.support.p001v4.app.FragmentManager;
+import android.support.p001v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes4.dex */
 public class BenzMbux2021ViewPagerAdapter extends FragmentPagerAdapter {
-    private List<Fragment> fragmentList = new ArrayList();
-    private Fragment fragmentPage1 = new BenzMbux2021FragmentOne();
-    private Fragment fragmentPage2 = new BenzMbux2021FragmentTwo();
-    private Fragment fragmentPage3 = new BenzMbux2021FragmentThree();
+    private List<Fragment> fragmentList;
+    private Fragment fragmentPage1;
+    private Fragment fragmentPage2;
+    private Fragment fragmentPage3;
 
     public BenzMbux2021ViewPagerAdapter(FragmentManager fm) {
         super(fm);
+        this.fragmentList = new ArrayList();
+        this.fragmentPage1 = new BenzMbux2021FragmentOne();
+        this.fragmentPage2 = new BenzMbux2021FragmentTwo();
+        this.fragmentPage3 = new BenzMbux2021FragmentThree();
         this.fragmentList.add(this.fragmentPage1);
         this.fragmentList.add(this.fragmentPage2);
         this.fragmentList.add(this.fragmentPage3);
     }
 
+    @Override // android.support.p001v4.app.FragmentPagerAdapter
     public Fragment getItem(int i) {
         List<Fragment> list = this.fragmentList;
         if (list == null) {
@@ -27,6 +33,7 @@ public class BenzMbux2021ViewPagerAdapter extends FragmentPagerAdapter {
         return list.get(i);
     }
 
+    @Override // android.support.p001v4.view.PagerAdapter
     public int getCount() {
         List<Fragment> list = this.fragmentList;
         if (list == null) {

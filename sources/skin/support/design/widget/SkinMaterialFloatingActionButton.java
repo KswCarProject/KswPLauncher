@@ -5,32 +5,33 @@ import android.content.res.TypedArray;
 import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import skin.support.content.res.SkinCompatResources;
-import skin.support.design.R;
+import skin.support.design.C1911R;
 import skin.support.widget.SkinCompatHelper;
 import skin.support.widget.SkinCompatImageHelper;
 import skin.support.widget.SkinCompatSupportable;
 
+/* loaded from: classes.dex */
 public class SkinMaterialFloatingActionButton extends FloatingActionButton implements SkinCompatSupportable {
     private int mBackgroundTintResId;
     private SkinCompatImageHelper mImageHelper;
     private int mRippleColorResId;
 
     public SkinMaterialFloatingActionButton(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public SkinMaterialFloatingActionButton(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    /* JADX WARNING: type inference failed for: r3v0, types: [android.widget.ImageView, skin.support.design.widget.SkinMaterialFloatingActionButton] */
+    /* JADX WARN: Multi-variable type inference failed */
     public SkinMaterialFloatingActionButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mRippleColorResId = 0;
         this.mBackgroundTintResId = 0;
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.FloatingActionButton, defStyleAttr, R.style.Widget_Design_FloatingActionButton);
-        this.mBackgroundTintResId = a.getResourceId(R.styleable.FloatingActionButton_backgroundTint, 0);
-        this.mRippleColorResId = a.getResourceId(R.styleable.FloatingActionButton_rippleColor, 0);
+        TypedArray a = context.obtainStyledAttributes(attrs, C1911R.styleable.FloatingActionButton, defStyleAttr, C1911R.style.Widget_Design_FloatingActionButton);
+        this.mBackgroundTintResId = a.getResourceId(C1911R.styleable.FloatingActionButton_backgroundTint, 0);
+        this.mRippleColorResId = a.getResourceId(C1911R.styleable.FloatingActionButton_rippleColor, 0);
         a.recycle();
         applyBackgroundTintResource();
         applyRippleColorResource();
@@ -55,6 +56,7 @@ public class SkinMaterialFloatingActionButton extends FloatingActionButton imple
         }
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         applyBackgroundTintResource();
         applyRippleColorResource();

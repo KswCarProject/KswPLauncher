@@ -12,13 +12,15 @@ import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/* loaded from: classes.dex */
 public final class CompletableMergeIterable extends Completable {
     final Iterable<? extends CompletableSource> sources;
 
-    public CompletableMergeIterable(Iterable<? extends CompletableSource> sources2) {
-        this.sources = sources2;
+    public CompletableMergeIterable(Iterable<? extends CompletableSource> sources) {
+        this.sources = sources;
     }
 
+    @Override // io.reactivex.Completable
     public void subscribeActual(CompletableObserver observer) {
         CompositeDisposable set = new CompositeDisposable();
         observer.onSubscribe(set);
@@ -28,18 +30,18 @@ public final class CompletableMergeIterable extends Completable {
             MergeCompletableObserver shared = new MergeCompletableObserver(observer, set, wip);
             while (!set.isDisposed()) {
                 try {
-                    if (!iterator.hasNext()) {
-                        shared.onComplete();
-                        return;
-                    } else if (!set.isDisposed()) {
+                    boolean b = iterator.hasNext();
+                    if (b) {
+                        if (set.isDisposed()) {
+                            return;
+                        }
                         try {
                             CompletableSource c = (CompletableSource) ObjectHelper.requireNonNull(iterator.next(), "The iterator returned a null CompletableSource");
-                            if (!set.isDisposed()) {
-                                wip.getAndIncrement();
-                                c.subscribe(shared);
-                            } else {
+                            if (set.isDisposed()) {
                                 return;
                             }
+                            wip.getAndIncrement();
+                            c.subscribe(shared);
                         } catch (Throwable e) {
                             Exceptions.throwIfFatal(e);
                             set.dispose();
@@ -47,6 +49,7 @@ public final class CompletableMergeIterable extends Completable {
                             return;
                         }
                     } else {
+                        shared.onComplete();
                         return;
                     }
                 } catch (Throwable e2) {
@@ -62,22 +65,25 @@ public final class CompletableMergeIterable extends Completable {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class MergeCompletableObserver extends AtomicBoolean implements CompletableObserver {
         private static final long serialVersionUID = -7730517613164279224L;
         final CompletableObserver downstream;
         final CompositeDisposable set;
         final AtomicInteger wip;
 
-        MergeCompletableObserver(CompletableObserver actual, CompositeDisposable set2, AtomicInteger wip2) {
+        MergeCompletableObserver(CompletableObserver actual, CompositeDisposable set, AtomicInteger wip) {
             this.downstream = actual;
-            this.set = set2;
-            this.wip = wip2;
+            this.set = set;
+            this.wip = wip;
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onSubscribe(Disposable d) {
             this.set.add(d);
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onError(Throwable e) {
             this.set.dispose();
             if (compareAndSet(false, true)) {
@@ -87,6 +93,7 @@ public final class CompletableMergeIterable extends Completable {
             }
         }
 
+        @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
         public void onComplete() {
             if (this.wip.decrementAndGet() == 0 && compareAndSet(false, true)) {
                 this.downstream.onComplete();

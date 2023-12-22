@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import kotlin.jvm.internal.LongCompanionObject;
 
+/* loaded from: classes.dex */
 public class CurrencyMetaInfo {
     @Deprecated
     protected static final CurrencyDigits defaultDigits = new CurrencyDigits(2, 0);
@@ -35,21 +36,24 @@ public class CurrencyMetaInfo {
     protected CurrencyMetaInfo() {
     }
 
+    /* loaded from: classes.dex */
     public static final class CurrencyFilter {
-        private static final CurrencyFilter ALL = new CurrencyFilter((String) null, (String) null, Long.MIN_VALUE, LongCompanionObject.MAX_VALUE, false);
+        private static final CurrencyFilter ALL = new CurrencyFilter(null, null, Long.MIN_VALUE, LongCompanionObject.MAX_VALUE, false);
         public final String currency;
         public final long from;
         public final String region;
         @Deprecated
         public final boolean tenderOnly;
-        public final long to;
 
-        private CurrencyFilter(String region2, String currency2, long from2, long to2, boolean tenderOnly2) {
-            this.region = region2;
-            this.currency = currency2;
-            this.from = from2;
-            this.to = to2;
-            this.tenderOnly = tenderOnly2;
+        /* renamed from: to */
+        public final long f145to;
+
+        private CurrencyFilter(String region, String currency, long from, long to, boolean tenderOnly) {
+            this.region = region;
+            this.currency = currency;
+            this.from = from;
+            this.f145to = to;
+            this.tenderOnly = tenderOnly;
         }
 
         public static CurrencyFilter all() {
@@ -60,60 +64,62 @@ public class CurrencyMetaInfo {
             return ALL.withDate(new Date());
         }
 
-        public static CurrencyFilter onRegion(String region2) {
-            return ALL.withRegion(region2);
+        public static CurrencyFilter onRegion(String region) {
+            return ALL.withRegion(region);
         }
 
-        public static CurrencyFilter onCurrency(String currency2) {
-            return ALL.withCurrency(currency2);
+        public static CurrencyFilter onCurrency(String currency) {
+            return ALL.withCurrency(currency);
         }
 
         public static CurrencyFilter onDate(Date date) {
             return ALL.withDate(date);
         }
 
-        public static CurrencyFilter onDateRange(Date from2, Date to2) {
-            return ALL.withDateRange(from2, to2);
+        public static CurrencyFilter onDateRange(Date from, Date to) {
+            return ALL.withDateRange(from, to);
         }
 
         public static CurrencyFilter onDate(long date) {
             return ALL.withDate(date);
         }
 
-        public static CurrencyFilter onDateRange(long from2, long to2) {
-            return ALL.withDateRange(from2, to2);
+        public static CurrencyFilter onDateRange(long from, long to) {
+            return ALL.withDateRange(from, to);
         }
 
         public static CurrencyFilter onTender() {
             return ALL.withTender();
         }
 
-        public CurrencyFilter withRegion(String region2) {
-            return new CurrencyFilter(region2, this.currency, this.from, this.to, this.tenderOnly);
+        public CurrencyFilter withRegion(String region) {
+            return new CurrencyFilter(region, this.currency, this.from, this.f145to, this.tenderOnly);
         }
 
-        public CurrencyFilter withCurrency(String currency2) {
-            return new CurrencyFilter(this.region, currency2, this.from, this.to, this.tenderOnly);
+        public CurrencyFilter withCurrency(String currency) {
+            return new CurrencyFilter(this.region, currency, this.from, this.f145to, this.tenderOnly);
         }
 
         public CurrencyFilter withDate(Date date) {
             return new CurrencyFilter(this.region, this.currency, date.getTime(), date.getTime(), this.tenderOnly);
         }
 
-        public CurrencyFilter withDateRange(Date from2, Date to2) {
-            return new CurrencyFilter(this.region, this.currency, from2 == null ? Long.MIN_VALUE : from2.getTime(), to2 == null ? LongCompanionObject.MAX_VALUE : to2.getTime(), this.tenderOnly);
+        public CurrencyFilter withDateRange(Date from, Date to) {
+            long fromLong = from == null ? Long.MIN_VALUE : from.getTime();
+            long toLong = to == null ? LongCompanionObject.MAX_VALUE : to.getTime();
+            return new CurrencyFilter(this.region, this.currency, fromLong, toLong, this.tenderOnly);
         }
 
         public CurrencyFilter withDate(long date) {
             return new CurrencyFilter(this.region, this.currency, date, date, this.tenderOnly);
         }
 
-        public CurrencyFilter withDateRange(long from2, long to2) {
-            return new CurrencyFilter(this.region, this.currency, from2, to2, this.tenderOnly);
+        public CurrencyFilter withDateRange(long from, long to) {
+            return new CurrencyFilter(this.region, this.currency, from, to, this.tenderOnly);
         }
 
         public CurrencyFilter withTender() {
-            return new CurrencyFilter(this.region, this.currency, this.from, this.to, true);
+            return new CurrencyFilter(this.region, this.currency, this.from, this.f145to, true);
         }
 
         public boolean equals(Object rhs) {
@@ -121,7 +127,7 @@ public class CurrencyMetaInfo {
         }
 
         public boolean equals(CurrencyFilter rhs) {
-            return Utility.sameObjects(this, rhs) || (rhs != null && equals(this.region, rhs.region) && equals(this.currency, rhs.currency) && this.from == rhs.from && this.to == rhs.to && this.tenderOnly == rhs.tenderOnly);
+            return Utility.sameObjects(this, rhs) || (rhs != null && equals(this.region, rhs.region) && equals(this.currency, rhs.currency) && this.from == rhs.from && this.f145to == rhs.f145to && this.tenderOnly == rhs.tenderOnly);
         }
 
         public int hashCode() {
@@ -135,8 +141,9 @@ public class CurrencyMetaInfo {
                 hc = (hc * 31) + str2.hashCode();
             }
             long j = this.from;
-            long j2 = this.to;
-            return (((((((((hc * 31) + ((int) j)) * 31) + ((int) (j >>> 32))) * 31) + ((int) j2)) * 31) + ((int) (j2 >>> 32))) * 31) + (this.tenderOnly ? 1 : 0);
+            int hc2 = (hc * 31) + ((int) j);
+            long j2 = this.f145to;
+            return (((((((hc2 * 31) + ((int) (j >>> 32))) * 31) + ((int) j2)) * 31) + ((int) (j2 >>> 32))) * 31) + (this.tenderOnly ? 1 : 0);
         }
 
         public String toString() {
@@ -148,13 +155,14 @@ public class CurrencyMetaInfo {
         }
     }
 
+    /* loaded from: classes.dex */
     public static final class CurrencyDigits {
         public final int fractionDigits;
         public final int roundingIncrement;
 
-        public CurrencyDigits(int fractionDigits2, int roundingIncrement2) {
-            this.fractionDigits = fractionDigits2;
-            this.roundingIncrement = roundingIncrement2;
+        public CurrencyDigits(int fractionDigits, int roundingIncrement) {
+            this.fractionDigits = fractionDigits;
+            this.roundingIncrement = roundingIncrement;
         }
 
         public String toString() {
@@ -162,27 +170,30 @@ public class CurrencyMetaInfo {
         }
     }
 
+    /* loaded from: classes.dex */
     public static final class CurrencyInfo {
         public final String code;
         public final long from;
         public final int priority;
         public final String region;
         private final boolean tender;
-        public final long to;
+
+        /* renamed from: to */
+        public final long f146to;
 
         @Deprecated
-        public CurrencyInfo(String region2, String code2, long from2, long to2, int priority2) {
-            this(region2, code2, from2, to2, priority2, true);
+        public CurrencyInfo(String region, String code, long from, long to, int priority) {
+            this(region, code, from, to, priority, true);
         }
 
         @Deprecated
-        public CurrencyInfo(String region2, String code2, long from2, long to2, int priority2, boolean tender2) {
-            this.region = region2;
-            this.code = code2;
-            this.from = from2;
-            this.to = to2;
-            this.priority = priority2;
-            this.tender = tender2;
+        public CurrencyInfo(String region, String code, long from, long to, int priority, boolean tender) {
+            this.region = region;
+            this.code = code;
+            this.from = from;
+            this.f146to = to;
+            this.priority = priority;
+            this.tender = tender;
         }
 
         public String toString() {
@@ -218,7 +229,8 @@ public class CurrencyMetaInfo {
         CurrencyMetaInfo temp;
         boolean tempHasData = false;
         try {
-            temp = (CurrencyMetaInfo) Class.forName("com.ibm.icu.impl.ICUCurrencyMetaInfo").newInstance();
+            Class<?> clzz = Class.forName("com.ibm.icu.impl.ICUCurrencyMetaInfo");
+            temp = (CurrencyMetaInfo) clzz.newInstance();
             tempHasData = true;
         } catch (Throwable th) {
             temp = new CurrencyMetaInfo();
@@ -234,8 +246,9 @@ public class CurrencyMetaInfo {
         return Grego.timeToString(date);
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public static String debugString(Object o) {
+        Field[] fields;
         String s;
         StringBuilder sb = new StringBuilder();
         try {

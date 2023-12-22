@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/ll_container" android:tag="layout/fragment_pemp_weather_0" style="@style/id8_main_card_container">
+    <ImageView android:tag="binding_1" style="@style/id8_pemp_main_card_size"/>
+    <ImageView android:id="@+id/iv_mask" android:tag="binding_2" style="@style/id8_pemp_main_card_size"/>
+    <RelativeLayout android:tag="binding_3" style="@style/id8_pemp_main_card_container">
+        <TextView android:id="@+id/tv_title" android:text="@string/ksw_id8_weather" style="@style/id8_pemp_main_card_title"/>
+        <ImageView android:id="@+id/iv_divider" android:background="@drawable/id8_main_icon_weather_line" android:layout_below="@+id/tv_title" style="@style/id8_pemp_main_card_divider"/>
+        <TextView android:id="@+id/tv_city" android:tag="binding_4" android:layout_below="@+id/iv_divider" style="@style/id8_pemp_main_card_desc"/>
+        <ProgressBar android:tag="binding_5" android:layout_width="50dp" android:layout_height="50dp" android:layout_centerInParent="true" android:indeterminateTint="@color/color1" android:indeterminateTintMode="src_atop"/>
+        <LinearLayout android:gravity="center" android:orientation="vertical" android:tag="binding_6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="20dp" android:src="@drawable/weather_error" android:scaleType="fitXY"/>
+            <TextView android:textSize="19sp" android:textColor="@android:color/white" android:tag="binding_7" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <TextView android:textSize="17sp" android:id="@+id/bt_a" android:tag="binding_8" android:visibility="gone" android:drawablePadding="10dp" android:layout_below="@+id/tv_city" style="@style/id8_main_card_desc"/>
+        <TextView android:textSize="17sp" android:id="@+id/bt_b" android:tag="binding_9" android:visibility="gone" android:drawablePadding="10dp" android:layout_below="@+id/tv_city" android:layout_marginStart="150dp" style="@style/id8_main_card_desc"/>
+        <TextView android:textSize="17sp" android:id="@+id/bt_c" android:tag="binding_10" android:visibility="gone" android:layout_marginTop="4dp" android:drawablePadding="10dp" android:layout_below="@+id/bt_a" style="@style/id8_main_card_desc"/>
+        <RelativeLayout android:gravity="left" android:id="@+id/temperature" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="15dp" android:layout_below="@+id/tv_city">
+            <TextView android:textSize="86sp" android:textColor="@android:color/white" android:id="@+id/temperature_tv" android:tag="binding_11" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" style="@style/bmw_id8_text_shadow"/>
+            <FrameLayout android:id="@+id/temperature_range" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toRightOf="@+id/temperature_tv">
+                <TextView android:textSize="86sp" android:textColor="@android:color/white" android:id="@+id/unit_weather" android:tag="binding_12" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="°" android:includeFontPadding="false" style="@style/bmw_id8_text_shadow"/>
+                <TextView android:textSize="24sp" android:textColor="@android:color/white" android:gravity="center" android:tag="binding_13" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="50dp" android:layout_marginStart="5dp" style="@style/bmw_id8_text_shadow"/>
+            </FrameLayout>
+        </RelativeLayout>
+        <LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
+            <TextView android:textSize="23sp" android:textColor="@android:color/white" android:gravity="center" android:id="@+id/weather_tv" android:tag="binding_14" android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true" android:layout_marginStart="70dp" android:layout_marginEnd="0dp" style="@style/pemp_id8_text_shadow"/>
+        </LinearLayout>
+        <ImageView android:id="@+id/iv_icon" android:tag="binding_15" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/temperature" android:layout_alignParentRight="true" android:layout_marginStart="21dp" android:layout_marginEnd="21dp"/>
+        <include android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="38dp" android:layout_alignParentBottom="true" android:layout_marginStart="20dp" android:layout_marginEnd="20dp" layout="@layout/include_near_weather"/>
+    </RelativeLayout>
+</RelativeLayout>

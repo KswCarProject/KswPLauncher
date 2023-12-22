@@ -8,9 +8,12 @@ import com.bumptech.glide.load.model.ModelLoader;
 import java.io.File;
 import java.util.List;
 
+/* loaded from: classes.dex */
 class ResourceCacheGenerator implements DataFetcherGenerator, DataFetcher.DataCallback<Object> {
     private File cacheFile;
-    private final DataFetcherGenerator.FetcherReadyCallback cb;
+
+    /* renamed from: cb */
+    private final DataFetcherGenerator.FetcherReadyCallback f82cb;
     private ResourceCacheKey currentKey;
     private final DecodeHelper<?> helper;
     private volatile ModelLoader.LoadData<?> loadData;
@@ -20,67 +23,71 @@ class ResourceCacheGenerator implements DataFetcherGenerator, DataFetcher.DataCa
     private int sourceIdIndex;
     private Key sourceKey;
 
-    ResourceCacheGenerator(DecodeHelper<?> helper2, DataFetcherGenerator.FetcherReadyCallback cb2) {
-        this.helper = helper2;
-        this.cb = cb2;
+    ResourceCacheGenerator(DecodeHelper<?> helper, DataFetcherGenerator.FetcherReadyCallback cb) {
+        this.helper = helper;
+        this.f82cb = cb;
     }
 
+    /* JADX WARN: Multi-variable type inference failed */
+    /* JADX WARN: Type inference failed for: r3v0 */
+    /* JADX WARN: Type inference failed for: r3v1, types: [int, boolean] */
+    /* JADX WARN: Type inference failed for: r3v7 */
+    /* JADX WARN: Type inference failed for: r3v8 */
+    /* JADX WARN: Type inference failed for: r3v9 */
+    @Override // com.bumptech.glide.load.engine.DataFetcherGenerator
     public boolean startNext() {
         List<Key> sourceIds = this.helper.getCacheKeys();
-        boolean z = false;
+        ?? r3 = 0;
         if (sourceIds.isEmpty()) {
             return false;
         }
         List<Class<?>> resourceClasses = this.helper.getRegisteredResourceClasses();
-        if (!resourceClasses.isEmpty()) {
-            while (true) {
-                if (this.modelLoaders == null || !hasNextModelLoader()) {
-                    int i = this.resourceClassIndex + 1;
-                    this.resourceClassIndex = i;
-                    if (i >= resourceClasses.size()) {
-                        int i2 = this.sourceIdIndex + 1;
-                        this.sourceIdIndex = i2;
-                        if (i2 >= sourceIds.size()) {
-                            return z;
-                        }
-                        this.resourceClassIndex = z ? 1 : 0;
-                    }
-                    Key sourceId = sourceIds.get(this.sourceIdIndex);
-                    Class<?> resourceClass = resourceClasses.get(this.resourceClassIndex);
-                    Key key = sourceId;
-                    ResourceCacheKey resourceCacheKey = r5;
-                    ResourceCacheKey resourceCacheKey2 = new ResourceCacheKey(this.helper.getArrayPool(), key, this.helper.getSignature(), this.helper.getWidth(), this.helper.getHeight(), this.helper.getTransformation(resourceClass), resourceClass, this.helper.getOptions());
-                    this.currentKey = resourceCacheKey;
-                    File file = this.helper.getDiskCache().get(this.currentKey);
-                    this.cacheFile = file;
-                    if (file != null) {
-                        this.sourceKey = sourceId;
-                        this.modelLoaders = this.helper.getModelLoaders(file);
-                        z = false;
-                        this.modelLoaderIndex = 0;
-                    } else {
-                        z = false;
-                    }
-                } else {
-                    this.loadData = null;
-                    boolean started = false;
-                    while (!started && hasNextModelLoader()) {
-                        List<ModelLoader<File, ?>> list = this.modelLoaders;
-                        int i3 = this.modelLoaderIndex;
-                        this.modelLoaderIndex = i3 + 1;
-                        this.loadData = list.get(i3).buildLoadData(this.cacheFile, this.helper.getWidth(), this.helper.getHeight(), this.helper.getOptions());
-                        if (this.loadData != null && this.helper.hasLoadPath(this.loadData.fetcher.getDataClass())) {
-                            started = true;
-                            this.loadData.fetcher.loadData(this.helper.getPriority(), this);
-                        }
-                    }
-                    return started;
-                }
+        if (resourceClasses.isEmpty()) {
+            if (File.class.equals(this.helper.getTranscodeClass())) {
+                return false;
             }
-        } else if (File.class.equals(this.helper.getTranscodeClass())) {
-            return false;
-        } else {
             throw new IllegalStateException("Failed to find any load path from " + this.helper.getModelClass() + " to " + this.helper.getTranscodeClass());
+        }
+        while (true) {
+            if (this.modelLoaders != null && hasNextModelLoader()) {
+                this.loadData = null;
+                boolean started = false;
+                while (!started && hasNextModelLoader()) {
+                    List<ModelLoader<File, ?>> list = this.modelLoaders;
+                    int i = this.modelLoaderIndex;
+                    this.modelLoaderIndex = i + 1;
+                    ModelLoader<File, ?> modelLoader = list.get(i);
+                    this.loadData = modelLoader.buildLoadData(this.cacheFile, this.helper.getWidth(), this.helper.getHeight(), this.helper.getOptions());
+                    if (this.loadData != null && this.helper.hasLoadPath(this.loadData.fetcher.getDataClass())) {
+                        started = true;
+                        this.loadData.fetcher.loadData(this.helper.getPriority(), this);
+                    }
+                }
+                return started;
+            }
+            int i2 = this.resourceClassIndex + 1;
+            this.resourceClassIndex = i2;
+            if (i2 >= resourceClasses.size()) {
+                int i3 = this.sourceIdIndex + 1;
+                this.sourceIdIndex = i3;
+                if (i3 >= sourceIds.size()) {
+                    return r3;
+                }
+                this.resourceClassIndex = r3;
+            }
+            Key sourceId = sourceIds.get(this.sourceIdIndex);
+            Class<?> resourceClass = resourceClasses.get(this.resourceClassIndex);
+            this.currentKey = new ResourceCacheKey(this.helper.getArrayPool(), sourceId, this.helper.getSignature(), this.helper.getWidth(), this.helper.getHeight(), this.helper.getTransformation(resourceClass), resourceClass, this.helper.getOptions());
+            File file = this.helper.getDiskCache().get(this.currentKey);
+            this.cacheFile = file;
+            if (file == null) {
+                r3 = 0;
+            } else {
+                this.sourceKey = sourceId;
+                this.modelLoaders = this.helper.getModelLoaders(file);
+                r3 = 0;
+                this.modelLoaderIndex = 0;
+            }
         }
     }
 
@@ -88,6 +95,7 @@ class ResourceCacheGenerator implements DataFetcherGenerator, DataFetcher.DataCa
         return this.modelLoaderIndex < this.modelLoaders.size();
     }
 
+    @Override // com.bumptech.glide.load.engine.DataFetcherGenerator
     public void cancel() {
         ModelLoader.LoadData<?> local = this.loadData;
         if (local != null) {
@@ -95,11 +103,13 @@ class ResourceCacheGenerator implements DataFetcherGenerator, DataFetcher.DataCa
         }
     }
 
+    @Override // com.bumptech.glide.load.data.DataFetcher.DataCallback
     public void onDataReady(Object data) {
-        this.cb.onDataFetcherReady(this.sourceKey, data, this.loadData.fetcher, DataSource.RESOURCE_DISK_CACHE, this.currentKey);
+        this.f82cb.onDataFetcherReady(this.sourceKey, data, this.loadData.fetcher, DataSource.RESOURCE_DISK_CACHE, this.currentKey);
     }
 
+    @Override // com.bumptech.glide.load.data.DataFetcher.DataCallback
     public void onLoadFailed(Exception e) {
-        this.cb.onDataFetcherFailed(this.currentKey, e, this.loadData.fetcher, DataSource.RESOURCE_DISK_CACHE);
+        this.f82cb.onDataFetcherFailed(this.currentKey, e, this.loadData.fetcher, DataSource.RESOURCE_DISK_CACHE);
     }
 }

@@ -20,11 +20,13 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableConcatMap<T, R> extends AbstractFlowableWithUpstream<T, R> {
     final ErrorMode errorMode;
     final Function<? super T, ? extends Publisher<? extends R>> mapper;
     final int prefetch;
 
+    /* loaded from: classes.dex */
     interface ConcatMapSupport<T> {
         void innerComplete();
 
@@ -33,15 +35,16 @@ public final class FlowableConcatMap<T, R> extends AbstractFlowableWithUpstream<
         void innerNext(T t);
     }
 
-    public FlowableConcatMap(Flowable<T> source, Function<? super T, ? extends Publisher<? extends R>> mapper2, int prefetch2, ErrorMode errorMode2) {
+    public FlowableConcatMap(Flowable<T> source, Function<? super T, ? extends Publisher<? extends R>> mapper, int prefetch, ErrorMode errorMode) {
         super(source);
-        this.mapper = mapper2;
-        this.prefetch = prefetch2;
-        this.errorMode = errorMode2;
+        this.mapper = mapper;
+        this.prefetch = prefetch;
+        this.errorMode = errorMode;
     }
 
-    /* renamed from: io.reactivex.internal.operators.flowable.FlowableConcatMap$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
+    /* renamed from: io.reactivex.internal.operators.flowable.FlowableConcatMap$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C18801 {
         static final /* synthetic */ int[] $SwitchMap$io$reactivex$internal$util$ErrorMode;
 
         static {
@@ -58,51 +61,52 @@ public final class FlowableConcatMap<T, R> extends AbstractFlowableWithUpstream<
         }
     }
 
-    public static <T, R> Subscriber<T> subscribe(Subscriber<? super R> s, Function<? super T, ? extends Publisher<? extends R>> mapper2, int prefetch2, ErrorMode errorMode2) {
-        switch (AnonymousClass1.$SwitchMap$io$reactivex$internal$util$ErrorMode[errorMode2.ordinal()]) {
+    public static <T, R> Subscriber<T> subscribe(Subscriber<? super R> s, Function<? super T, ? extends Publisher<? extends R>> mapper, int prefetch, ErrorMode errorMode) {
+        switch (C18801.$SwitchMap$io$reactivex$internal$util$ErrorMode[errorMode.ordinal()]) {
             case 1:
-                return new ConcatMapDelayed(s, mapper2, prefetch2, false);
+                return new ConcatMapDelayed(s, mapper, prefetch, false);
             case 2:
-                return new ConcatMapDelayed(s, mapper2, prefetch2, true);
+                return new ConcatMapDelayed(s, mapper, prefetch, true);
             default:
-                return new ConcatMapImmediate(s, mapper2, prefetch2);
+                return new ConcatMapImmediate(s, mapper, prefetch);
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super R> s) {
-        if (!FlowableScalarXMap.tryScalarXMapSubscribe(this.source, s, this.mapper)) {
-            this.source.subscribe(subscribe(s, this.mapper, this.prefetch, this.errorMode));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super R> s) {
+        if (FlowableScalarXMap.tryScalarXMapSubscribe(this.source, s, this.mapper)) {
+            return;
         }
+        this.source.subscribe(subscribe(s, this.mapper, this.prefetch, this.errorMode));
     }
 
+    /* loaded from: classes.dex */
     static abstract class BaseConcatMapSubscriber<T, R> extends AtomicInteger implements FlowableSubscriber<T>, ConcatMapSupport<R>, Subscription {
         private static final long serialVersionUID = -3511336836796789179L;
         volatile boolean active;
         volatile boolean cancelled;
         int consumed;
         volatile boolean done;
-        final AtomicThrowable errors = new AtomicThrowable();
-        final ConcatMapInner<R> inner = new ConcatMapInner<>(this);
         final int limit;
         final Function<? super T, ? extends Publisher<? extends R>> mapper;
         final int prefetch;
         SimpleQueue<T> queue;
         int sourceMode;
         Subscription upstream;
+        final ConcatMapInner<R> inner = new ConcatMapInner<>(this);
+        final AtomicThrowable errors = new AtomicThrowable();
 
-        /* access modifiers changed from: package-private */
-        public abstract void drain();
+        abstract void drain();
 
-        /* access modifiers changed from: package-private */
-        public abstract void subscribeActual();
+        abstract void subscribeActual();
 
-        BaseConcatMapSubscriber(Function<? super T, ? extends Publisher<? extends R>> mapper2, int prefetch2) {
-            this.mapper = mapper2;
-            this.prefetch = prefetch2;
-            this.limit = prefetch2 - (prefetch2 >> 2);
+        BaseConcatMapSubscriber(Function<? super T, ? extends Publisher<? extends R>> mapper, int prefetch) {
+            this.mapper = mapper;
+            this.prefetch = prefetch;
+            this.limit = prefetch - (prefetch >> 2);
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public final void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -120,51 +124,57 @@ public final class FlowableConcatMap<T, R> extends AbstractFlowableWithUpstream<
                         this.sourceMode = m;
                         this.queue = f;
                         subscribeActual();
-                        s.request((long) this.prefetch);
+                        s.request(this.prefetch);
                         return;
                     }
                 }
                 this.queue = new SpscArrayQueue(this.prefetch);
                 subscribeActual();
-                s.request((long) this.prefetch);
+                s.request(this.prefetch);
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public final void onNext(T t) {
-            if (this.sourceMode == 2 || this.queue.offer(t)) {
-                drain();
+            if (this.sourceMode != 2 && !this.queue.offer(t)) {
+                this.upstream.cancel();
+                onError(new IllegalStateException("Queue full?!"));
                 return;
             }
-            this.upstream.cancel();
-            onError(new IllegalStateException("Queue full?!"));
+            drain();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public final void onComplete() {
             this.done = true;
             drain();
         }
 
+        @Override // io.reactivex.internal.operators.flowable.FlowableConcatMap.ConcatMapSupport
         public final void innerComplete() {
             this.active = false;
             drain();
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ConcatMapImmediate<T, R> extends BaseConcatMapSubscriber<T, R> {
         private static final long serialVersionUID = 7898995095634264146L;
         final Subscriber<? super R> downstream;
-        final AtomicInteger wip = new AtomicInteger();
+        final AtomicInteger wip;
 
         ConcatMapImmediate(Subscriber<? super R> actual, Function<? super T, ? extends Publisher<? extends R>> mapper, int prefetch) {
             super(mapper, prefetch);
             this.downstream = actual;
+            this.wip = new AtomicInteger();
         }
 
-        /* access modifiers changed from: package-private */
-        public void subscribeActual() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableConcatMap.BaseConcatMapSubscriber
+        void subscribeActual() {
             this.downstream.onSubscribe(this);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.errors.addThrowable(t)) {
                 this.inner.cancel();
@@ -177,15 +187,18 @@ public final class FlowableConcatMap<T, R> extends AbstractFlowableWithUpstream<
             RxJavaPlugins.onError(t);
         }
 
+        @Override // io.reactivex.internal.operators.flowable.FlowableConcatMap.ConcatMapSupport
         public void innerNext(R value) {
             if (get() == 0 && compareAndSet(0, 1)) {
                 this.downstream.onNext(value);
-                if (!compareAndSet(1, 0)) {
-                    this.downstream.onError(this.errors.terminate());
+                if (compareAndSet(1, 0)) {
+                    return;
                 }
+                this.downstream.onError(this.errors.terminate());
             }
         }
 
+        @Override // io.reactivex.internal.operators.flowable.FlowableConcatMap.ConcatMapSupport
         public void innerError(Throwable e) {
             if (this.errors.addThrowable(e)) {
                 this.upstream.cancel();
@@ -198,10 +211,12 @@ public final class FlowableConcatMap<T, R> extends AbstractFlowableWithUpstream<
             RxJavaPlugins.onError(e);
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             this.inner.request(n);
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             if (!this.cancelled) {
                 this.cancelled = true;
@@ -210,8 +225,8 @@ public final class FlowableConcatMap<T, R> extends AbstractFlowableWithUpstream<
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableConcatMap.BaseConcatMapSubscriber
+        void drain() {
             if (this.wip.getAndIncrement() == 0) {
                 while (!this.cancelled) {
                     if (!this.active) {
@@ -229,25 +244,28 @@ public final class FlowableConcatMap<T, R> extends AbstractFlowableWithUpstream<
                                         int c = this.consumed + 1;
                                         if (c == this.limit) {
                                             this.consumed = 0;
-                                            this.upstream.request((long) c);
+                                            this.upstream.request(c);
                                         } else {
                                             this.consumed = c;
                                         }
                                     }
-                                    if ((p instanceof Callable) != 0) {
+                                    if (p instanceof Callable) {
+                                        Callable<R> callable = (Callable) p;
                                         try {
-                                            R vr = ((Callable) p).call();
-                                            if (vr == null) {
+                                            Object call = callable.call();
+                                            if (call == null) {
                                                 continue;
-                                            } else if (!this.inner.isUnbounded()) {
-                                                this.active = true;
-                                                this.inner.setSubscription(new SimpleScalarSubscription(vr, this.inner));
-                                            } else if (get() == 0 && compareAndSet(0, 1)) {
-                                                this.downstream.onNext(vr);
-                                                if (!compareAndSet(1, 0)) {
-                                                    this.downstream.onError(this.errors.terminate());
-                                                    return;
+                                            } else if (this.inner.isUnbounded()) {
+                                                if (get() == 0 && compareAndSet(0, 1)) {
+                                                    this.downstream.onNext(call);
+                                                    if (!compareAndSet(1, 0)) {
+                                                        this.downstream.onError(this.errors.terminate());
+                                                        return;
+                                                    }
                                                 }
+                                            } else {
+                                                this.active = true;
+                                                this.inner.setSubscription(new SimpleScalarSubscription(call, this.inner));
                                             }
                                         } catch (Throwable e) {
                                             Exceptions.throwIfFatal(e);
@@ -284,43 +302,48 @@ public final class FlowableConcatMap<T, R> extends AbstractFlowableWithUpstream<
         }
     }
 
+    /* loaded from: classes.dex */
     static final class SimpleScalarSubscription<T> extends AtomicBoolean implements Subscription {
         final Subscriber<? super T> downstream;
         final T value;
 
-        SimpleScalarSubscription(T value2, Subscriber<? super T> downstream2) {
-            this.value = value2;
-            this.downstream = downstream2;
+        SimpleScalarSubscription(T value, Subscriber<? super T> downstream) {
+            this.value = value;
+            this.downstream = downstream;
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             if (n > 0 && compareAndSet(false, true)) {
                 Subscriber<? super T> a = this.downstream;
-                a.onNext(this.value);
+                a.onNext((T) this.value);
                 a.onComplete();
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ConcatMapDelayed<T, R> extends BaseConcatMapSubscriber<T, R> {
         private static final long serialVersionUID = -2945777694260521066L;
         final Subscriber<? super R> downstream;
         final boolean veryEnd;
 
-        ConcatMapDelayed(Subscriber<? super R> actual, Function<? super T, ? extends Publisher<? extends R>> mapper, int prefetch, boolean veryEnd2) {
+        ConcatMapDelayed(Subscriber<? super R> actual, Function<? super T, ? extends Publisher<? extends R>> mapper, int prefetch, boolean veryEnd) {
             super(mapper, prefetch);
             this.downstream = actual;
-            this.veryEnd = veryEnd2;
+            this.veryEnd = veryEnd;
         }
 
-        /* access modifiers changed from: package-private */
-        public void subscribeActual() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableConcatMap.BaseConcatMapSubscriber
+        void subscribeActual() {
             this.downstream.onSubscribe(this);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.errors.addThrowable(t)) {
                 this.done = true;
@@ -330,10 +353,12 @@ public final class FlowableConcatMap<T, R> extends AbstractFlowableWithUpstream<
             RxJavaPlugins.onError(t);
         }
 
+        @Override // io.reactivex.internal.operators.flowable.FlowableConcatMap.ConcatMapSupport
         public void innerNext(R value) {
             this.downstream.onNext(value);
         }
 
+        @Override // io.reactivex.internal.operators.flowable.FlowableConcatMap.ConcatMapSupport
         public void innerError(Throwable e) {
             if (this.errors.addThrowable(e)) {
                 if (!this.veryEnd) {
@@ -347,10 +372,12 @@ public final class FlowableConcatMap<T, R> extends AbstractFlowableWithUpstream<
             RxJavaPlugins.onError(e);
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             this.inner.request(n);
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             if (!this.cancelled) {
                 this.cancelled = true;
@@ -359,79 +386,79 @@ public final class FlowableConcatMap<T, R> extends AbstractFlowableWithUpstream<
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
-            Throwable e;
+        @Override // io.reactivex.internal.operators.flowable.FlowableConcatMap.BaseConcatMapSubscriber
+        void drain() {
+            Object obj;
             if (getAndIncrement() == 0) {
                 while (!this.cancelled) {
                     if (!this.active) {
                         boolean d = this.done;
-                        if (!d || this.veryEnd || ((Throwable) this.errors.get()) == null) {
-                            try {
-                                T v = this.queue.poll();
-                                boolean empty = v == null;
-                                if (d && empty) {
-                                    Throwable ex = this.errors.terminate();
-                                    if (ex != null) {
-                                        this.downstream.onError(ex);
-                                        return;
-                                    } else {
-                                        this.downstream.onComplete();
-                                        return;
-                                    }
-                                } else if (!empty) {
-                                    try {
-                                        Publisher<? extends R> p = (Publisher) ObjectHelper.requireNonNull(this.mapper.apply(v), "The mapper returned a null Publisher");
-                                        if (this.sourceMode != 1) {
-                                            int c = this.consumed + 1;
-                                            if (c == this.limit) {
-                                                this.consumed = 0;
-                                                this.upstream.request((long) c);
-                                            } else {
-                                                this.consumed = c;
-                                            }
+                        if (d && !this.veryEnd && this.errors.get() != null) {
+                            this.downstream.onError(this.errors.terminate());
+                            return;
+                        }
+                        try {
+                            T v = this.queue.poll();
+                            boolean empty = v == null;
+                            if (d && empty) {
+                                Throwable ex = this.errors.terminate();
+                                if (ex != null) {
+                                    this.downstream.onError(ex);
+                                    return;
+                                } else {
+                                    this.downstream.onComplete();
+                                    return;
+                                }
+                            } else if (!empty) {
+                                try {
+                                    Publisher<? extends R> p = (Publisher) ObjectHelper.requireNonNull(this.mapper.apply(v), "The mapper returned a null Publisher");
+                                    if (this.sourceMode != 1) {
+                                        int c = this.consumed + 1;
+                                        if (c == this.limit) {
+                                            this.consumed = 0;
+                                            this.upstream.request(c);
+                                        } else {
+                                            this.consumed = c;
                                         }
-                                        if (p instanceof Callable) {
-                                            try {
-                                                e = ((Callable) p).call();
-                                            } catch (Throwable e2) {
-                                                Exceptions.throwIfFatal(e2);
-                                                this.errors.addThrowable(e2);
-                                                if (!this.veryEnd) {
-                                                    this.upstream.cancel();
-                                                    this.downstream.onError(this.errors.terminate());
-                                                    return;
-                                                }
-                                                e = null;
+                                    }
+                                    if (p instanceof Callable) {
+                                        Callable<R> supplier = (Callable) p;
+                                        try {
+                                            obj = supplier.call();
+                                        } catch (Throwable e) {
+                                            Exceptions.throwIfFatal(e);
+                                            this.errors.addThrowable(e);
+                                            if (!this.veryEnd) {
+                                                this.upstream.cancel();
+                                                this.downstream.onError(this.errors.terminate());
+                                                return;
                                             }
-                                            if (e == null) {
-                                                continue;
-                                            } else if (this.inner.isUnbounded()) {
-                                                this.downstream.onNext(e);
-                                            } else {
-                                                this.active = true;
-                                                this.inner.setSubscription(new SimpleScalarSubscription(e, this.inner));
-                                            }
+                                            obj = null;
+                                        }
+                                        if (obj == null) {
+                                            continue;
+                                        } else if (this.inner.isUnbounded()) {
+                                            this.downstream.onNext(obj);
                                         } else {
                                             this.active = true;
-                                            p.subscribe(this.inner);
+                                            this.inner.setSubscription(new SimpleScalarSubscription(obj, this.inner));
                                         }
-                                    } catch (Throwable e3) {
-                                        Exceptions.throwIfFatal(e3);
-                                        this.upstream.cancel();
-                                        this.errors.addThrowable(e3);
-                                        this.downstream.onError(this.errors.terminate());
-                                        return;
+                                    } else {
+                                        this.active = true;
+                                        p.subscribe(this.inner);
                                     }
+                                } catch (Throwable e2) {
+                                    Exceptions.throwIfFatal(e2);
+                                    this.upstream.cancel();
+                                    this.errors.addThrowable(e2);
+                                    this.downstream.onError(this.errors.terminate());
+                                    return;
                                 }
-                            } catch (Throwable e4) {
-                                Exceptions.throwIfFatal(e4);
-                                this.upstream.cancel();
-                                this.errors.addThrowable(e4);
-                                this.downstream.onError(this.errors.terminate());
-                                return;
                             }
-                        } else {
+                        } catch (Throwable e3) {
+                            Exceptions.throwIfFatal(e3);
+                            this.upstream.cancel();
+                            this.errors.addThrowable(e3);
                             this.downstream.onError(this.errors.terminate());
                             return;
                         }
@@ -444,38 +471,43 @@ public final class FlowableConcatMap<T, R> extends AbstractFlowableWithUpstream<
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ConcatMapInner<R> extends SubscriptionArbiter implements FlowableSubscriber<R> {
         private static final long serialVersionUID = 897683679971470653L;
         final ConcatMapSupport<R> parent;
         long produced;
 
-        ConcatMapInner(ConcatMapSupport<R> parent2) {
+        ConcatMapInner(ConcatMapSupport<R> parent) {
             super(false);
-            this.parent = parent2;
+            this.parent = parent;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             setSubscription(s);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(R t) {
             this.produced++;
             this.parent.innerNext(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             long p = this.produced;
             if (p != 0) {
-                this.produced = 0;
+                this.produced = 0L;
                 produced(p);
             }
             this.parent.innerError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             long p = this.produced;
             if (p != 0) {
-                this.produced = 0;
+                this.produced = 0L;
                 produced(p);
             }
             this.parent.innerComplete();

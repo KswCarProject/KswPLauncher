@@ -2,22 +2,24 @@ package com.wits.ksw.databinding;
 
 import android.content.Context;
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.content.res.AppCompatResources;
+import android.support.p001v4.media.session.PlaybackStateCompat;
+import android.support.p004v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 
+/* loaded from: classes7.dex */
 public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemLayoutBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -38,19 +40,19 @@ public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemL
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.bmw_id8_settings_system_scroll, 15);
-        sparseIntArray.put(R.id.bmw_id8_settings_system_mirror, 16);
-        sparseIntArray.put(R.id.bmw_id8_settings_system_motion, 17);
-        sparseIntArray.put(R.id.bmw_id8_settings_system_lines, 18);
-        sparseIntArray.put(R.id.bmw_id8_settings_system_radar, 19);
-        sparseIntArray.put(R.id.bmw_id8_settings_system_mute, 20);
-        sparseIntArray.put(R.id.bmw_id8_settings_system_camera, 21);
-        sparseIntArray.put(R.id.bmw_id8_settings_system_brightness, 22);
-        sparseIntArray.put(R.id.bmw_id8_settings_system_temp, 23);
-        sparseIntArray.put(R.id.bmw_id8_settings_system_fuel, 24);
-        sparseIntArray.put(R.id.bmw_id8_settings_system_music, 25);
-        sparseIntArray.put(R.id.bmw_id8_settings_system_video, 26);
-        sparseIntArray.put(R.id.bmw_id8_settings_system_framelay, 27);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_system_scroll, 15);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_system_mirror, 16);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_system_motion, 17);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_system_lines, 18);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_system_radar, 19);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_system_mute, 20);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_system_camera, 21);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_system_brightness, 22);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_system_temp, 23);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_system_fuel, 24);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_system_music, 25);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_system_video, 26);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_system_framelay, 27);
     }
 
     public BmwId8SettingsSystemLayoutBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -58,58 +60,60 @@ public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemL
     }
 
     private BmwId8SettingsSystemLayoutBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 7, bindings[22], bindings[21], bindings[27], bindings[24], bindings[14], bindings[1], bindings[18], bindings[16], bindings[17], bindings[25], bindings[20], bindings[19], bindings[13], bindings[15], bindings[23], bindings[26]);
-        this.mDirtyFlags = -1;
-        this.bmwId8SettingsSystemImg.setTag((Object) null);
-        this.bmwId8SettingsSystemLeftArrow.setTag((Object) null);
-        this.bmwId8SettingsSystemRightArrow.setTag((Object) null);
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 7, (RelativeLayout) bindings[22], (RelativeLayout) bindings[21], (FrameLayout) bindings[27], (RelativeLayout) bindings[24], (ImageView) bindings[14], (ImageView) bindings[1], (RelativeLayout) bindings[18], (RelativeLayout) bindings[16], (RelativeLayout) bindings[17], (RelativeLayout) bindings[25], (RelativeLayout) bindings[20], (RelativeLayout) bindings[19], (ImageView) bindings[13], (ScrollView) bindings[15], (RelativeLayout) bindings[23], (RelativeLayout) bindings[26]);
+        this.mDirtyFlags = -1L;
+        this.bmwId8SettingsSystemImg.setTag(null);
+        this.bmwId8SettingsSystemLeftArrow.setTag(null);
+        this.bmwId8SettingsSystemRightArrow.setTag(null);
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
-        ImageView imageView = bindings[10];
+        relativeLayout.setTag(null);
+        ImageView imageView = (ImageView) bindings[10];
         this.mboundView10 = imageView;
-        imageView.setTag((Object) null);
-        TextView textView = bindings[11];
+        imageView.setTag(null);
+        TextView textView = (TextView) bindings[11];
         this.mboundView11 = textView;
-        textView.setTag((Object) null);
-        ImageView imageView2 = bindings[12];
+        textView.setTag(null);
+        ImageView imageView2 = (ImageView) bindings[12];
         this.mboundView12 = imageView2;
-        imageView2.setTag((Object) null);
-        ImageView imageView3 = bindings[2];
+        imageView2.setTag(null);
+        ImageView imageView3 = (ImageView) bindings[2];
         this.mboundView2 = imageView3;
-        imageView3.setTag((Object) null);
-        TextView textView2 = bindings[3];
+        imageView3.setTag(null);
+        TextView textView2 = (TextView) bindings[3];
         this.mboundView3 = textView2;
-        textView2.setTag((Object) null);
-        ImageView imageView4 = bindings[4];
+        textView2.setTag(null);
+        ImageView imageView4 = (ImageView) bindings[4];
         this.mboundView4 = imageView4;
-        imageView4.setTag((Object) null);
-        TextView textView3 = bindings[5];
+        imageView4.setTag(null);
+        TextView textView3 = (TextView) bindings[5];
         this.mboundView5 = textView3;
-        textView3.setTag((Object) null);
-        ImageView imageView5 = bindings[6];
+        textView3.setTag(null);
+        ImageView imageView5 = (ImageView) bindings[6];
         this.mboundView6 = imageView5;
-        imageView5.setTag((Object) null);
-        TextView textView4 = bindings[7];
+        imageView5.setTag(null);
+        TextView textView4 = (TextView) bindings[7];
         this.mboundView7 = textView4;
-        textView4.setTag((Object) null);
-        ImageView imageView6 = bindings[8];
+        textView4.setTag(null);
+        ImageView imageView6 = (ImageView) bindings[8];
         this.mboundView8 = imageView6;
-        imageView6.setTag((Object) null);
-        TextView textView5 = bindings[9];
+        imageView6.setTag(null);
+        TextView textView5 = (TextView) bindings[9];
         this.mboundView9 = textView5;
-        textView5.setTag((Object) null);
+        textView5.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 256;
+            this.mDirtyFlags = 256L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -119,14 +123,16 @@ public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemL
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (25 != variableId) {
-            return false;
+        if (25 == variableId) {
+            setViewModel((BmwId8SettingsViewModel) variable);
+            return true;
         }
-        setViewModel((BmwId8SettingsViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.BmwId8SettingsSystemLayoutBinding
     public void setViewModel(BmwId8SettingsViewModel ViewModel) {
         this.mViewModel = ViewModel;
         synchronized (this) {
@@ -136,8 +142,8 @@ public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemL
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeViewModelParkMute((ObservableBoolean) object, fieldId);
@@ -159,108 +165,104 @@ public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemL
     }
 
     private boolean onChangeViewModelParkMute(ObservableBoolean ViewModelParkMute, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelParkLines(ObservableBoolean ViewModelParkLines, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelParkRadar(ObservableBoolean ViewModelParkRadar, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelSystemIconShow(ObservableBoolean ViewModelSystemIconShow, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelSystemBgShow(ObservableBoolean ViewModelSystemBgShow, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 16;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 16;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelDisableVideo(ObservableBoolean ViewModelDisableVideo, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 32;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 32;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelRearMirror(ObservableBoolean ViewModelRearMirror, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 64;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 64;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
-        String viewModelParkMuteMboundView11AndroidStringOnMboundView11AndroidStringOff;
-        int viewModelSystemBgShowViewGONEViewVISIBLE;
-        Drawable viewModelParkRadarMboundView10AndroidDrawableId8SettingsSystemOnMboundView10AndroidDrawableId8SettingsSystemOff;
-        Drawable viewModelRearMirrorMboundView4AndroidDrawableId8SettingsSystemOnMboundView4AndroidDrawableId8SettingsSystemOff;
-        String viewModelDisableVideoMboundView5AndroidStringOnMboundView5AndroidStringOff;
         Drawable viewModelDisableVideoMboundView6AndroidDrawableId8SettingsSystemOnMboundView6AndroidDrawableId8SettingsSystemOff;
+        String viewModelDisableVideoMboundView5AndroidStringOnMboundView5AndroidStringOff;
+        Drawable viewModelRearMirrorMboundView4AndroidDrawableId8SettingsSystemOnMboundView4AndroidDrawableId8SettingsSystemOff;
+        Drawable viewModelParkRadarMboundView10AndroidDrawableId8SettingsSystemOnMboundView10AndroidDrawableId8SettingsSystemOff;
+        int viewModelSystemBgShowViewGONEViewVISIBLE;
+        String viewModelParkMuteMboundView11AndroidStringOnMboundView11AndroidStringOff;
         Drawable viewModelParkLinesMboundView8AndroidDrawableId8SettingsSystemOnMboundView8AndroidDrawableId8SettingsSystemOff;
         int viewModelSystemIconShowViewVISIBLEViewGONE;
         int viewModelSystemIconShowViewVISIBLEViewGONE2;
         int viewModelSystemIconShowViewVISIBLEViewGONE3;
         ObservableBoolean viewModelRearMirror;
         String viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff;
-        String viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff2;
         Drawable drawable;
         ObservableBoolean viewModelDisableVideo;
-        Drawable drawable2;
         ObservableBoolean viewModelSystemBgShow;
         ObservableBoolean viewModelSystemIconShow;
         ObservableBoolean viewModelParkRadar;
-        String str;
         ObservableBoolean viewModelParkLines;
-        Drawable drawable3;
         long dirtyFlags2;
-        int i;
         Context context;
+        int i;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
-        String viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff3 = null;
+        String viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff2 = null;
         int viewModelSystemBgShowViewVISIBLEViewGONE = 0;
         boolean viewModelRearMirrorGet = false;
         Drawable viewModelParkLinesMboundView8AndroidDrawableId8SettingsSystemOnMboundView8AndroidDrawableId8SettingsSystemOff2 = null;
@@ -281,12 +283,19 @@ public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemL
         boolean viewModelParkRadarGet = false;
         BmwId8SettingsViewModel viewModel = this.mViewModel;
         int viewModelSystemIconShowViewVISIBLEViewGONE4 = 0;
-        if ((dirtyFlags & 511) != 0) {
+        if ((dirtyFlags & 511) == 0) {
+            viewModelDisableVideoMboundView6AndroidDrawableId8SettingsSystemOnMboundView6AndroidDrawableId8SettingsSystemOff = null;
+            viewModelDisableVideoMboundView5AndroidStringOnMboundView5AndroidStringOff = null;
+            viewModelRearMirrorMboundView4AndroidDrawableId8SettingsSystemOnMboundView4AndroidDrawableId8SettingsSystemOff = null;
+            viewModelParkRadarMboundView10AndroidDrawableId8SettingsSystemOnMboundView10AndroidDrawableId8SettingsSystemOff = null;
+            viewModelSystemBgShowViewGONEViewVISIBLE = 0;
+            viewModelParkMuteMboundView11AndroidStringOnMboundView11AndroidStringOff = null;
+        } else {
             if ((dirtyFlags & 385) != 0) {
                 if (viewModel != null) {
                     viewModelParkMute = viewModel.parkMute;
                 }
-                updateRegistration(0, (Observable) viewModelParkMute);
+                updateRegistration(0, viewModelParkMute);
                 if (viewModelParkMute != null) {
                     viewModelParkMuteGet = viewModelParkMute.get();
                 }
@@ -300,24 +309,26 @@ public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemL
                 if (viewModelParkMuteGet) {
                     context = this.mboundView12.getContext();
                     dirtyFlags2 = dirtyFlags;
-                    i = R.drawable.id8_settings_system_on;
+                    i = C0899R.C0900drawable.id8_settings_system_on;
                 } else {
                     dirtyFlags2 = dirtyFlags;
                     context = this.mboundView12.getContext();
-                    i = R.drawable.id8_settings_system_off;
+                    i = C0899R.C0900drawable.id8_settings_system_off;
                 }
                 viewModelParkMuteMboundView12AndroidDrawableId8SettingsSystemOnMboundView12AndroidDrawableId8SettingsSystemOff = AppCompatResources.getDrawable(context, i);
-                viewModelParkMuteMboundView11AndroidStringOnMboundView11AndroidStringOff2 = this.mboundView11.getResources().getString(viewModelParkMuteGet ? R.string.on : R.string.off);
+                viewModelParkMuteMboundView11AndroidStringOnMboundView11AndroidStringOff2 = this.mboundView11.getResources().getString(viewModelParkMuteGet ? C0899R.string.on : C0899R.string.off);
                 dirtyFlags = dirtyFlags2;
             }
-            if ((dirtyFlags & 386) != 0) {
-                if (viewModel != null) {
-                    viewModelParkLines = viewModel.parkLines;
-                } else {
+            if ((dirtyFlags & 386) == 0) {
+                viewModelSystemIconShowViewVISIBLEViewGONE = 0;
+            } else {
+                if (viewModel == null) {
                     viewModelParkLines = null;
+                } else {
+                    viewModelParkLines = viewModel.parkLines;
                 }
                 viewModelSystemIconShowViewVISIBLEViewGONE = 0;
-                updateRegistration(1, (Observable) viewModelParkLines);
+                updateRegistration(1, viewModelParkLines);
                 if (viewModelParkLines != null) {
                     viewModelParkLinesGet = viewModelParkLines.get();
                 }
@@ -328,24 +339,16 @@ public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemL
                         dirtyFlags = dirtyFlags | PlaybackStateCompat.ACTION_PLAY_FROM_URI | PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE_ENABLED;
                     }
                 }
-                if (viewModelParkLinesGet) {
-                    ObservableBoolean observableBoolean = viewModelParkLines;
-                    drawable3 = AppCompatResources.getDrawable(this.mboundView8.getContext(), R.drawable.id8_settings_system_on);
-                } else {
-                    drawable3 = AppCompatResources.getDrawable(this.mboundView8.getContext(), R.drawable.id8_settings_system_off);
-                }
-                viewModelParkLinesMboundView8AndroidDrawableId8SettingsSystemOnMboundView8AndroidDrawableId8SettingsSystemOff2 = drawable3;
-                viewModelParkLinesMboundView7AndroidStringOnMboundView7AndroidStringOff = this.mboundView7.getResources().getString(viewModelParkLinesGet ? R.string.on : R.string.off);
-            } else {
-                viewModelSystemIconShowViewVISIBLEViewGONE = 0;
+                viewModelParkLinesMboundView8AndroidDrawableId8SettingsSystemOnMboundView8AndroidDrawableId8SettingsSystemOff2 = viewModelParkLinesGet ? AppCompatResources.getDrawable(this.mboundView8.getContext(), C0899R.C0900drawable.id8_settings_system_on) : AppCompatResources.getDrawable(this.mboundView8.getContext(), C0899R.C0900drawable.id8_settings_system_off);
+                viewModelParkLinesMboundView7AndroidStringOnMboundView7AndroidStringOff = this.mboundView7.getResources().getString(viewModelParkLinesGet ? C0899R.string.on : C0899R.string.off);
             }
             if ((dirtyFlags & 388) != 0) {
-                if (viewModel != null) {
-                    viewModelParkRadar = viewModel.parkRadar;
-                } else {
+                if (viewModel == null) {
                     viewModelParkRadar = null;
+                } else {
+                    viewModelParkRadar = viewModel.parkRadar;
                 }
-                updateRegistration(2, (Observable) viewModelParkRadar);
+                updateRegistration(2, viewModelParkRadar);
                 if (viewModelParkRadar != null) {
                     viewModelParkRadarGet = viewModelParkRadar.get();
                 }
@@ -356,22 +359,18 @@ public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemL
                         dirtyFlags = dirtyFlags | PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID | 134217728;
                     }
                 }
-                if (viewModelParkRadarGet) {
-                    ObservableBoolean observableBoolean2 = viewModelParkRadar;
-                    str = this.mboundView9.getResources().getString(R.string.on);
-                } else {
-                    str = this.mboundView9.getResources().getString(R.string.off);
-                }
-                viewModelParkRadarMboundView9AndroidStringOnMboundView9AndroidStringOff = str;
-                viewModelParkRadarMboundView10AndroidDrawableId8SettingsSystemOnMboundView10AndroidDrawableId8SettingsSystemOff2 = AppCompatResources.getDrawable(this.mboundView10.getContext(), viewModelParkRadarGet ? R.drawable.id8_settings_system_on : R.drawable.id8_settings_system_off);
+                viewModelParkRadarMboundView9AndroidStringOnMboundView9AndroidStringOff = viewModelParkRadarGet ? this.mboundView9.getResources().getString(C0899R.string.on) : this.mboundView9.getResources().getString(C0899R.string.off);
+                viewModelParkRadarMboundView10AndroidDrawableId8SettingsSystemOnMboundView10AndroidDrawableId8SettingsSystemOff2 = AppCompatResources.getDrawable(this.mboundView10.getContext(), viewModelParkRadarGet ? C0899R.C0900drawable.id8_settings_system_on : C0899R.C0900drawable.id8_settings_system_off);
             }
-            if ((dirtyFlags & 392) != 0) {
-                if (viewModel != null) {
-                    viewModelSystemIconShow = viewModel.systemIconShow;
-                } else {
+            if ((dirtyFlags & 392) == 0) {
+                viewModelSystemIconShowViewVISIBLEViewGONE2 = viewModelSystemIconShowViewVISIBLEViewGONE;
+            } else {
+                if (viewModel == null) {
                     viewModelSystemIconShow = null;
+                } else {
+                    viewModelSystemIconShow = viewModel.systemIconShow;
                 }
-                updateRegistration(3, (Observable) viewModelSystemIconShow);
+                updateRegistration(3, viewModelSystemIconShow);
                 if (viewModelSystemIconShow != null) {
                     viewModelSystemIconShowGet = viewModelSystemIconShow.get();
                 }
@@ -383,18 +382,17 @@ public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemL
                     }
                 }
                 viewModelSystemIconShowViewVISIBLEViewGONE2 = viewModelSystemIconShowGet ? 0 : 8;
-                ObservableBoolean observableBoolean3 = viewModelSystemIconShow;
-            } else {
-                viewModelSystemIconShowViewVISIBLEViewGONE2 = viewModelSystemIconShowViewVISIBLEViewGONE;
             }
-            if ((dirtyFlags & 400) != 0) {
-                if (viewModel != null) {
-                    viewModelSystemBgShow = viewModel.systemBgShow;
-                } else {
+            if ((dirtyFlags & 400) == 0) {
+                viewModelSystemIconShowViewVISIBLEViewGONE3 = viewModelSystemIconShowViewVISIBLEViewGONE2;
+            } else {
+                if (viewModel == null) {
                     viewModelSystemBgShow = null;
+                } else {
+                    viewModelSystemBgShow = viewModel.systemBgShow;
                 }
                 viewModelSystemIconShowViewVISIBLEViewGONE3 = viewModelSystemIconShowViewVISIBLEViewGONE2;
-                updateRegistration(4, (Observable) viewModelSystemBgShow);
+                updateRegistration(4, viewModelSystemBgShow);
                 if (viewModelSystemBgShow != null) {
                     viewModelSystemBgShowGet = viewModelSystemBgShow.get();
                 }
@@ -407,17 +405,14 @@ public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemL
                 }
                 viewModelSystemBgShowViewVISIBLEViewGONE = viewModelSystemBgShowGet ? 0 : 8;
                 viewModelSystemBgShowViewGONEViewVISIBLE2 = viewModelSystemBgShowGet ? 8 : 0;
-                ObservableBoolean observableBoolean4 = viewModelSystemBgShow;
-            } else {
-                viewModelSystemIconShowViewVISIBLEViewGONE3 = viewModelSystemIconShowViewVISIBLEViewGONE2;
             }
             if ((dirtyFlags & 416) != 0) {
-                if (viewModel != null) {
-                    viewModelDisableVideo = viewModel.disableVideo;
-                } else {
+                if (viewModel == null) {
                     viewModelDisableVideo = null;
+                } else {
+                    viewModelDisableVideo = viewModel.disableVideo;
                 }
-                updateRegistration(5, (Observable) viewModelDisableVideo);
+                updateRegistration(5, viewModelDisableVideo);
                 if (viewModelDisableVideo != null) {
                     viewModelDisableVideoGet = viewModelDisableVideo.get();
                 }
@@ -428,22 +423,25 @@ public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemL
                         dirtyFlags = dirtyFlags | PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE | 8388608;
                     }
                 }
-                if (viewModelDisableVideoGet) {
-                    ObservableBoolean observableBoolean5 = viewModelDisableVideo;
-                    drawable2 = AppCompatResources.getDrawable(this.mboundView6.getContext(), R.drawable.id8_settings_system_on);
-                } else {
-                    drawable2 = AppCompatResources.getDrawable(this.mboundView6.getContext(), R.drawable.id8_settings_system_off);
-                }
-                viewModelDisableVideoMboundView6AndroidDrawableId8SettingsSystemOnMboundView6AndroidDrawableId8SettingsSystemOff2 = drawable2;
-                viewModelDisableVideoMboundView5AndroidStringOnMboundView5AndroidStringOff2 = this.mboundView5.getResources().getString(viewModelDisableVideoGet ? R.string.on : R.string.off);
+                viewModelDisableVideoMboundView6AndroidDrawableId8SettingsSystemOnMboundView6AndroidDrawableId8SettingsSystemOff2 = viewModelDisableVideoGet ? AppCompatResources.getDrawable(this.mboundView6.getContext(), C0899R.C0900drawable.id8_settings_system_on) : AppCompatResources.getDrawable(this.mboundView6.getContext(), C0899R.C0900drawable.id8_settings_system_off);
+                viewModelDisableVideoMboundView5AndroidStringOnMboundView5AndroidStringOff2 = this.mboundView5.getResources().getString(viewModelDisableVideoGet ? C0899R.string.on : C0899R.string.off);
             }
-            if ((dirtyFlags & 448) != 0) {
-                if (viewModel != null) {
-                    viewModelRearMirror = viewModel.rearMirror;
-                } else {
+            if ((dirtyFlags & 448) == 0) {
+                viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff2 = null;
+                viewModelSystemIconShowViewVISIBLEViewGONE4 = viewModelSystemIconShowViewVISIBLEViewGONE3;
+                viewModelDisableVideoMboundView6AndroidDrawableId8SettingsSystemOnMboundView6AndroidDrawableId8SettingsSystemOff = viewModelDisableVideoMboundView6AndroidDrawableId8SettingsSystemOnMboundView6AndroidDrawableId8SettingsSystemOff2;
+                viewModelDisableVideoMboundView5AndroidStringOnMboundView5AndroidStringOff = viewModelDisableVideoMboundView5AndroidStringOnMboundView5AndroidStringOff2;
+                viewModelRearMirrorMboundView4AndroidDrawableId8SettingsSystemOnMboundView4AndroidDrawableId8SettingsSystemOff = null;
+                viewModelParkRadarMboundView10AndroidDrawableId8SettingsSystemOnMboundView10AndroidDrawableId8SettingsSystemOff = viewModelParkRadarMboundView10AndroidDrawableId8SettingsSystemOnMboundView10AndroidDrawableId8SettingsSystemOff2;
+                viewModelSystemBgShowViewGONEViewVISIBLE = viewModelSystemBgShowViewGONEViewVISIBLE2;
+                viewModelParkMuteMboundView11AndroidStringOnMboundView11AndroidStringOff = viewModelParkMuteMboundView11AndroidStringOnMboundView11AndroidStringOff2;
+            } else {
+                if (viewModel == null) {
                     viewModelRearMirror = null;
+                } else {
+                    viewModelRearMirror = viewModel.rearMirror;
                 }
-                updateRegistration(6, (Observable) viewModelRearMirror);
+                updateRegistration(6, viewModelRearMirror);
                 if (viewModelRearMirror != null) {
                     viewModelRearMirrorGet = viewModelRearMirror.get();
                 }
@@ -454,73 +452,30 @@ public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemL
                         dirtyFlags = dirtyFlags | 512 | 33554432;
                     }
                 }
+                String viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff3 = viewModelRearMirrorGet ? this.mboundView3.getResources().getString(C0899R.string.on) : this.mboundView3.getResources().getString(C0899R.string.off);
                 if (viewModelRearMirrorGet) {
-                    ObservableBoolean observableBoolean6 = viewModelRearMirror;
-                    viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff = this.mboundView3.getResources().getString(R.string.on);
+                    viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff = viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff3;
+                    drawable = AppCompatResources.getDrawable(this.mboundView4.getContext(), C0899R.C0900drawable.id8_settings_system_on);
                 } else {
-                    viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff = this.mboundView3.getResources().getString(R.string.off);
-                }
-                if (viewModelRearMirrorGet) {
-                    viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff2 = viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff;
-                    drawable = AppCompatResources.getDrawable(this.mboundView4.getContext(), R.drawable.id8_settings_system_on);
-                } else {
-                    viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff2 = viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff;
-                    drawable = AppCompatResources.getDrawable(this.mboundView4.getContext(), R.drawable.id8_settings_system_off);
+                    viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff = viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff3;
+                    drawable = AppCompatResources.getDrawable(this.mboundView4.getContext(), C0899R.C0900drawable.id8_settings_system_off);
                 }
                 Drawable viewModelRearMirrorMboundView4AndroidDrawableId8SettingsSystemOnMboundView4AndroidDrawableId8SettingsSystemOff2 = drawable;
-                viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff3 = viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff2;
+                viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff2 = viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff;
                 viewModelSystemIconShowViewVISIBLEViewGONE4 = viewModelSystemIconShowViewVISIBLEViewGONE3;
-                Drawable drawable4 = viewModelDisableVideoMboundView6AndroidDrawableId8SettingsSystemOnMboundView6AndroidDrawableId8SettingsSystemOff2;
-                BmwId8SettingsViewModel bmwId8SettingsViewModel = viewModel;
-                viewModelDisableVideoMboundView6AndroidDrawableId8SettingsSystemOnMboundView6AndroidDrawableId8SettingsSystemOff = drawable4;
-                String str2 = viewModelDisableVideoMboundView5AndroidStringOnMboundView5AndroidStringOff2;
-                boolean z = viewModelRearMirrorGet;
-                viewModelDisableVideoMboundView5AndroidStringOnMboundView5AndroidStringOff = str2;
-                Drawable drawable5 = viewModelRearMirrorMboundView4AndroidDrawableId8SettingsSystemOnMboundView4AndroidDrawableId8SettingsSystemOff2;
-                boolean z2 = viewModelSystemIconShowGet;
-                viewModelRearMirrorMboundView4AndroidDrawableId8SettingsSystemOnMboundView4AndroidDrawableId8SettingsSystemOff = drawable5;
-                Drawable drawable6 = viewModelParkRadarMboundView10AndroidDrawableId8SettingsSystemOnMboundView10AndroidDrawableId8SettingsSystemOff2;
-                boolean z3 = viewModelParkMuteGet;
-                viewModelParkRadarMboundView10AndroidDrawableId8SettingsSystemOnMboundView10AndroidDrawableId8SettingsSystemOff = drawable6;
-                int i2 = viewModelSystemBgShowViewGONEViewVISIBLE2;
-                ObservableBoolean observableBoolean7 = viewModelParkMute;
-                viewModelSystemBgShowViewGONEViewVISIBLE = i2;
-                String str3 = viewModelParkMuteMboundView11AndroidStringOnMboundView11AndroidStringOff2;
-                boolean z4 = viewModelDisableVideoGet;
-                viewModelParkMuteMboundView11AndroidStringOnMboundView11AndroidStringOff = str3;
-            } else {
-                viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff3 = null;
-                viewModelSystemIconShowViewVISIBLEViewGONE4 = viewModelSystemIconShowViewVISIBLEViewGONE3;
-                Drawable drawable7 = viewModelDisableVideoMboundView6AndroidDrawableId8SettingsSystemOnMboundView6AndroidDrawableId8SettingsSystemOff2;
-                BmwId8SettingsViewModel bmwId8SettingsViewModel2 = viewModel;
-                viewModelDisableVideoMboundView6AndroidDrawableId8SettingsSystemOnMboundView6AndroidDrawableId8SettingsSystemOff = drawable7;
+                viewModelDisableVideoMboundView6AndroidDrawableId8SettingsSystemOnMboundView6AndroidDrawableId8SettingsSystemOff = viewModelDisableVideoMboundView6AndroidDrawableId8SettingsSystemOnMboundView6AndroidDrawableId8SettingsSystemOff2;
                 viewModelDisableVideoMboundView5AndroidStringOnMboundView5AndroidStringOff = viewModelDisableVideoMboundView5AndroidStringOnMboundView5AndroidStringOff2;
-                boolean z5 = viewModelSystemIconShowGet;
-                viewModelRearMirrorMboundView4AndroidDrawableId8SettingsSystemOnMboundView4AndroidDrawableId8SettingsSystemOff = null;
-                Drawable drawable8 = viewModelParkRadarMboundView10AndroidDrawableId8SettingsSystemOnMboundView10AndroidDrawableId8SettingsSystemOff2;
-                boolean z6 = viewModelParkMuteGet;
-                viewModelParkRadarMboundView10AndroidDrawableId8SettingsSystemOnMboundView10AndroidDrawableId8SettingsSystemOff = drawable8;
-                int i3 = viewModelSystemBgShowViewGONEViewVISIBLE2;
-                ObservableBoolean observableBoolean8 = viewModelParkMute;
-                viewModelSystemBgShowViewGONEViewVISIBLE = i3;
-                String str4 = viewModelParkMuteMboundView11AndroidStringOnMboundView11AndroidStringOff2;
-                boolean z7 = viewModelDisableVideoGet;
-                viewModelParkMuteMboundView11AndroidStringOnMboundView11AndroidStringOff = str4;
+                viewModelRearMirrorMboundView4AndroidDrawableId8SettingsSystemOnMboundView4AndroidDrawableId8SettingsSystemOff = viewModelRearMirrorMboundView4AndroidDrawableId8SettingsSystemOnMboundView4AndroidDrawableId8SettingsSystemOff2;
+                viewModelParkRadarMboundView10AndroidDrawableId8SettingsSystemOnMboundView10AndroidDrawableId8SettingsSystemOff = viewModelParkRadarMboundView10AndroidDrawableId8SettingsSystemOnMboundView10AndroidDrawableId8SettingsSystemOff2;
+                viewModelSystemBgShowViewGONEViewVISIBLE = viewModelSystemBgShowViewGONEViewVISIBLE2;
+                viewModelParkMuteMboundView11AndroidStringOnMboundView11AndroidStringOff = viewModelParkMuteMboundView11AndroidStringOnMboundView11AndroidStringOff2;
             }
-        } else {
-            BmwId8SettingsViewModel bmwId8SettingsViewModel3 = viewModel;
-            viewModelDisableVideoMboundView6AndroidDrawableId8SettingsSystemOnMboundView6AndroidDrawableId8SettingsSystemOff = null;
-            viewModelDisableVideoMboundView5AndroidStringOnMboundView5AndroidStringOff = null;
-            viewModelRearMirrorMboundView4AndroidDrawableId8SettingsSystemOnMboundView4AndroidDrawableId8SettingsSystemOff = null;
-            viewModelParkRadarMboundView10AndroidDrawableId8SettingsSystemOnMboundView10AndroidDrawableId8SettingsSystemOff = null;
-            viewModelSystemBgShowViewGONEViewVISIBLE = 0;
-            viewModelParkMuteMboundView11AndroidStringOnMboundView11AndroidStringOff = null;
         }
-        if ((dirtyFlags & 392) != 0) {
+        if ((dirtyFlags & 392) == 0) {
+            viewModelParkLinesMboundView8AndroidDrawableId8SettingsSystemOnMboundView8AndroidDrawableId8SettingsSystemOff = viewModelParkLinesMboundView8AndroidDrawableId8SettingsSystemOnMboundView8AndroidDrawableId8SettingsSystemOff2;
+        } else {
             viewModelParkLinesMboundView8AndroidDrawableId8SettingsSystemOnMboundView8AndroidDrawableId8SettingsSystemOff = viewModelParkLinesMboundView8AndroidDrawableId8SettingsSystemOnMboundView8AndroidDrawableId8SettingsSystemOff2;
             this.bmwId8SettingsSystemImg.setVisibility(viewModelSystemIconShowViewVISIBLEViewGONE4);
-        } else {
-            viewModelParkLinesMboundView8AndroidDrawableId8SettingsSystemOnMboundView8AndroidDrawableId8SettingsSystemOff = viewModelParkLinesMboundView8AndroidDrawableId8SettingsSystemOnMboundView8AndroidDrawableId8SettingsSystemOff2;
         }
         if ((dirtyFlags & 400) != 0) {
             this.bmwId8SettingsSystemLeftArrow.setVisibility(viewModelSystemBgShowViewVISIBLEViewGONE);
@@ -536,7 +491,7 @@ public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemL
             ImageViewBindingAdapter.setImageDrawable(this.mboundView12, viewModelParkMuteMboundView12AndroidDrawableId8SettingsSystemOnMboundView12AndroidDrawableId8SettingsSystemOff);
         }
         if ((dirtyFlags & 448) != 0) {
-            TextViewBindingAdapter.setText(this.mboundView3, viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff3);
+            TextViewBindingAdapter.setText(this.mboundView3, viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff2);
             ImageViewBindingAdapter.setImageDrawable(this.mboundView4, viewModelRearMirrorMboundView4AndroidDrawableId8SettingsSystemOnMboundView4AndroidDrawableId8SettingsSystemOff);
         }
         if ((dirtyFlags & 416) != 0) {
@@ -545,10 +500,7 @@ public class BmwId8SettingsSystemLayoutBindingImpl extends BmwId8SettingsSystemL
         }
         if ((dirtyFlags & 386) != 0) {
             TextViewBindingAdapter.setText(this.mboundView7, viewModelParkLinesMboundView7AndroidStringOnMboundView7AndroidStringOff);
-            String str5 = viewModelRearMirrorMboundView3AndroidStringOnMboundView3AndroidStringOff3;
             ImageViewBindingAdapter.setImageDrawable(this.mboundView8, viewModelParkLinesMboundView8AndroidDrawableId8SettingsSystemOnMboundView8AndroidDrawableId8SettingsSystemOff);
-            return;
         }
-        Drawable drawable9 = viewModelParkLinesMboundView8AndroidDrawableId8SettingsSystemOnMboundView8AndroidDrawableId8SettingsSystemOff;
     }
 }

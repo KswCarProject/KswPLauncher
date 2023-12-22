@@ -1,7 +1,7 @@
 package android.arch.lifecycle;
 
+/* loaded from: classes.dex */
 public abstract class ViewModel {
-    /* access modifiers changed from: protected */
-    public void onCleared() {
+    protected void onCleared() {
     }
 }

@@ -1,7 +1,9 @@
 package androidx.media;
 
+import android.support.p001v4.media.AudioAttributesImplBase;
 import androidx.versionedparcelable.VersionedParcel;
 
+/* loaded from: classes.dex */
 public final class AudioAttributesImplBaseParcelizer {
     public static AudioAttributesImplBase read(VersionedParcel parcel) {
         AudioAttributesImplBase obj = new AudioAttributesImplBase();

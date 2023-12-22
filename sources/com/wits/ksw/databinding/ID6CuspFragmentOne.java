@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class ID6CuspFragmentOne extends ViewDataBinding {
     public final TextView id6BtMess;
     public final TextView id6CusoMusicNameTextView;
@@ -26,21 +27,21 @@ public abstract class ID6CuspFragmentOne extends ViewDataBinding {
     @Bindable
     protected LauncherViewModel mViewModel;
 
-    public abstract void setViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setViewModel(LauncherViewModel viewModel);
 
-    protected ID6CuspFragmentOne(Object _bindingComponent, View _root, int _localFieldCount, TextView id6BtMess2, TextView id6CusoMusicNameTextView2, ImageView id6CuspBtImageView2, TextView id6CuspBtTextView2, TextView id6CuspMusicArtisTextView2, ImageView id6CuspMusicIamgeView2, ImageView id6CuspMusicIcon2, TextView id6CuspMusicTextView2, ImageView id6CuspNavImageView2, TextView id6CuspNaviMess2, TextView id6CuspNaviTextView2) {
+    protected ID6CuspFragmentOne(Object _bindingComponent, View _root, int _localFieldCount, TextView id6BtMess, TextView id6CusoMusicNameTextView, ImageView id6CuspBtImageView, TextView id6CuspBtTextView, TextView id6CuspMusicArtisTextView, ImageView id6CuspMusicIamgeView, ImageView id6CuspMusicIcon, TextView id6CuspMusicTextView, ImageView id6CuspNavImageView, TextView id6CuspNaviMess, TextView id6CuspNaviTextView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.id6BtMess = id6BtMess2;
-        this.id6CusoMusicNameTextView = id6CusoMusicNameTextView2;
-        this.id6CuspBtImageView = id6CuspBtImageView2;
-        this.id6CuspBtTextView = id6CuspBtTextView2;
-        this.id6CuspMusicArtisTextView = id6CuspMusicArtisTextView2;
-        this.id6CuspMusicIamgeView = id6CuspMusicIamgeView2;
-        this.id6CuspMusicIcon = id6CuspMusicIcon2;
-        this.id6CuspMusicTextView = id6CuspMusicTextView2;
-        this.id6CuspNavImageView = id6CuspNavImageView2;
-        this.id6CuspNaviMess = id6CuspNaviMess2;
-        this.id6CuspNaviTextView = id6CuspNaviTextView2;
+        this.id6BtMess = id6BtMess;
+        this.id6CusoMusicNameTextView = id6CusoMusicNameTextView;
+        this.id6CuspBtImageView = id6CuspBtImageView;
+        this.id6CuspBtTextView = id6CuspBtTextView;
+        this.id6CuspMusicArtisTextView = id6CuspMusicArtisTextView;
+        this.id6CuspMusicIamgeView = id6CuspMusicIamgeView;
+        this.id6CuspMusicIcon = id6CuspMusicIcon;
+        this.id6CuspMusicTextView = id6CuspMusicTextView;
+        this.id6CuspNavImageView = id6CuspNavImageView;
+        this.id6CuspNaviMess = id6CuspNaviMess;
+        this.id6CuspNaviTextView = id6CuspNaviTextView;
     }
 
     public LauncherViewModel getViewModel() {
@@ -53,7 +54,7 @@ public abstract class ID6CuspFragmentOne extends ViewDataBinding {
 
     @Deprecated
     public static ID6CuspFragmentOne inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ID6CuspFragmentOne) ViewDataBinding.inflateInternal(inflater, R.layout.id6_cusp_fragment_one, root, attachToRoot, component);
+        return (ID6CuspFragmentOne) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id6_cusp_fragment_one, root, attachToRoot, component);
     }
 
     public static ID6CuspFragmentOne inflate(LayoutInflater inflater) {
@@ -62,7 +63,7 @@ public abstract class ID6CuspFragmentOne extends ViewDataBinding {
 
     @Deprecated
     public static ID6CuspFragmentOne inflate(LayoutInflater inflater, Object component) {
-        return (ID6CuspFragmentOne) ViewDataBinding.inflateInternal(inflater, R.layout.id6_cusp_fragment_one, (ViewGroup) null, false, component);
+        return (ID6CuspFragmentOne) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id6_cusp_fragment_one, null, false, component);
     }
 
     public static ID6CuspFragmentOne bind(View view) {
@@ -71,6 +72,6 @@ public abstract class ID6CuspFragmentOne extends ViewDataBinding {
 
     @Deprecated
     public static ID6CuspFragmentOne bind(View view, Object component) {
-        return (ID6CuspFragmentOne) bind(component, view, R.layout.id6_cusp_fragment_one);
+        return (ID6CuspFragmentOne) bind(component, view, C0899R.C0902layout.id6_cusp_fragment_one);
     }
 }

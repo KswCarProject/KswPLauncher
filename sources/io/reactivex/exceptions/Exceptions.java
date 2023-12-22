@@ -2,6 +2,7 @@ package io.reactivex.exceptions;
 
 import io.reactivex.internal.util.ExceptionHelper;
 
+/* loaded from: classes.dex */
 public final class Exceptions {
     private Exceptions() {
         throw new IllegalStateException("No instances!");
@@ -14,9 +15,11 @@ public final class Exceptions {
     public static void throwIfFatal(Throwable t) {
         if (t instanceof VirtualMachineError) {
             throw ((VirtualMachineError) t);
-        } else if (t instanceof ThreadDeath) {
+        }
+        if (t instanceof ThreadDeath) {
             throw ((ThreadDeath) t);
-        } else if (t instanceof LinkageError) {
+        }
+        if (t instanceof LinkageError) {
             throw ((LinkageError) t);
         }
     }

@@ -12,50 +12,54 @@ import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class PDF417Writer implements Writer {
     private static final int DEFAULT_ERROR_CORRECTION_LEVEL = 2;
     private static final int WHITE_SPACE = 30;
 
+    @Override // com.google.zxing.Writer
     public BitMatrix encode(String contents, BarcodeFormat format, int width, int height, Map<EncodeHintType, ?> hints) throws WriterException {
-        int errorCorrectionLevel;
         int margin;
-        if (format == BarcodeFormat.PDF_417) {
-            PDF417 encoder = new PDF417();
-            int margin2 = 30;
-            int errorCorrectionLevel2 = 2;
-            if (hints != null) {
-                if (hints.containsKey(EncodeHintType.PDF417_COMPACT)) {
-                    encoder.setCompact(Boolean.valueOf(hints.get(EncodeHintType.PDF417_COMPACT).toString()).booleanValue());
-                }
-                if (hints.containsKey(EncodeHintType.PDF417_COMPACTION)) {
-                    encoder.setCompaction(Compaction.valueOf(hints.get(EncodeHintType.PDF417_COMPACTION).toString()));
-                }
-                if (hints.containsKey(EncodeHintType.PDF417_DIMENSIONS)) {
-                    Dimensions dimensions = (Dimensions) hints.get(EncodeHintType.PDF417_DIMENSIONS);
-                    encoder.setDimensions(dimensions.getMaxCols(), dimensions.getMinCols(), dimensions.getMaxRows(), dimensions.getMinRows());
-                }
-                if (hints.containsKey(EncodeHintType.MARGIN)) {
-                    margin2 = Integer.parseInt(hints.get(EncodeHintType.MARGIN).toString());
-                }
-                if (hints.containsKey(EncodeHintType.ERROR_CORRECTION)) {
-                    errorCorrectionLevel2 = Integer.parseInt(hints.get(EncodeHintType.ERROR_CORRECTION).toString());
-                }
-                if (hints.containsKey(EncodeHintType.CHARACTER_SET)) {
-                    encoder.setEncoding(Charset.forName(hints.get(EncodeHintType.CHARACTER_SET).toString()));
-                }
-                margin = margin2;
-                errorCorrectionLevel = errorCorrectionLevel2;
-            } else {
-                margin = 30;
-                errorCorrectionLevel = 2;
-            }
-            return bitMatrixFromEncoder(encoder, contents, errorCorrectionLevel, width, height, margin);
+        int errorCorrectionLevel;
+        if (format != BarcodeFormat.PDF_417) {
+            throw new IllegalArgumentException("Can only encode PDF_417, but got ".concat(String.valueOf(format)));
         }
-        throw new IllegalArgumentException("Can only encode PDF_417, but got ".concat(String.valueOf(format)));
+        PDF417 encoder = new PDF417();
+        int margin2 = 30;
+        int errorCorrectionLevel2 = 2;
+        if (hints == null) {
+            margin = 30;
+            errorCorrectionLevel = 2;
+        } else {
+            if (hints.containsKey(EncodeHintType.PDF417_COMPACT)) {
+                encoder.setCompact(Boolean.valueOf(hints.get(EncodeHintType.PDF417_COMPACT).toString()).booleanValue());
+            }
+            if (hints.containsKey(EncodeHintType.PDF417_COMPACTION)) {
+                encoder.setCompaction(Compaction.valueOf(hints.get(EncodeHintType.PDF417_COMPACTION).toString()));
+            }
+            if (hints.containsKey(EncodeHintType.PDF417_DIMENSIONS)) {
+                Dimensions dimensions = (Dimensions) hints.get(EncodeHintType.PDF417_DIMENSIONS);
+                encoder.setDimensions(dimensions.getMaxCols(), dimensions.getMinCols(), dimensions.getMaxRows(), dimensions.getMinRows());
+            }
+            if (hints.containsKey(EncodeHintType.MARGIN)) {
+                margin2 = Integer.parseInt(hints.get(EncodeHintType.MARGIN).toString());
+            }
+            if (hints.containsKey(EncodeHintType.ERROR_CORRECTION)) {
+                errorCorrectionLevel2 = Integer.parseInt(hints.get(EncodeHintType.ERROR_CORRECTION).toString());
+            }
+            if (hints.containsKey(EncodeHintType.CHARACTER_SET)) {
+                Charset encoding = Charset.forName(hints.get(EncodeHintType.CHARACTER_SET).toString());
+                encoder.setEncoding(encoding);
+            }
+            margin = margin2;
+            errorCorrectionLevel = errorCorrectionLevel2;
+        }
+        return bitMatrixFromEncoder(encoder, contents, errorCorrectionLevel, width, height, margin);
     }
 
+    @Override // com.google.zxing.Writer
     public BitMatrix encode(String contents, BarcodeFormat format, int width, int height) throws WriterException {
-        return encode(contents, format, width, height, (Map<EncodeHintType, ?>) null);
+        return encode(contents, format, width, height, null);
     }
 
     private static BitMatrix bitMatrixFromEncoder(PDF417 encoder, String contents, int errorCorrectionLevel, int width, int height, int margin) throws WriterException {
@@ -74,20 +78,19 @@ public final class PDF417Writer implements Writer {
         } else {
             scale = scaleY;
         }
-        if (scale <= 1) {
-            return bitMatrixFromBitArray(originalScale, margin);
+        if (scale > 1) {
+            byte[][] scaledMatrix = encoder.getBarcodeMatrix().getScaledMatrix(scale, scale << 2);
+            if (rotated) {
+                scaledMatrix = rotateArray(scaledMatrix);
+            }
+            return bitMatrixFromBitArray(scaledMatrix, margin);
         }
-        byte[][] scaledMatrix = encoder.getBarcodeMatrix().getScaledMatrix(scale, scale << 2);
-        if (rotated) {
-            scaledMatrix = rotateArray(scaledMatrix);
-        }
-        return bitMatrixFromBitArray(scaledMatrix, margin);
+        return bitMatrixFromBitArray(originalScale, margin);
     }
 
     private static BitMatrix bitMatrixFromBitArray(byte[][] input, int margin) {
-        BitMatrix bitMatrix = new BitMatrix(input[0].length + (margin * 2), input.length + (margin * 2));
-        BitMatrix output = bitMatrix;
-        bitMatrix.clear();
+        BitMatrix output = new BitMatrix(input[0].length + (margin * 2), input.length + (margin * 2));
+        output.clear();
         int y = 0;
         int yOutput = (output.getHeight() - margin) - 1;
         while (y < input.length) {
@@ -104,11 +107,7 @@ public final class PDF417Writer implements Writer {
     }
 
     private static byte[][] rotateArray(byte[][] bitarray) {
-        int length = bitarray[0].length;
-        int[] iArr = new int[2];
-        iArr[1] = bitarray.length;
-        iArr[0] = length;
-        byte[][] temp = (byte[][]) Array.newInstance(byte.class, iArr);
+        byte[][] temp = (byte[][]) Array.newInstance(byte.class, bitarray[0].length, bitarray.length);
         for (int ii = 0; ii < bitarray.length; ii++) {
             int inverseii = (bitarray.length - ii) - 1;
             for (int jj = 0; jj < bitarray[0].length; jj++) {

@@ -6,9 +6,11 @@ import com.google.zxing.Result;
 import com.google.zxing.ResultMetadataType;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.common.BitArray;
+import com.wits.ksw.settings.TxzMessage;
 import java.util.EnumMap;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 final class UPCEANExtension5Support {
     private static final int[] CHECK_DIGIT_ENCODINGS = {24, 20, 18, 17, 12, 6, 3, 10, 9, 5};
     private final int[] decodeMiddleCounters = new int[4];
@@ -17,16 +19,13 @@ final class UPCEANExtension5Support {
     UPCEANExtension5Support() {
     }
 
-    /* access modifiers changed from: package-private */
-    public Result decodeRow(int rowNumber, BitArray row, int[] extensionStartRange) throws NotFoundException {
-        StringBuilder sb = this.decodeRowStringBuffer;
-        StringBuilder result = sb;
-        sb.setLength(0);
+    Result decodeRow(int rowNumber, BitArray row, int[] extensionStartRange) throws NotFoundException {
+        StringBuilder result = this.decodeRowStringBuffer;
+        result.setLength(0);
         int end = decodeMiddle(row, extensionStartRange, result);
-        String sb2 = result.toString();
-        String resultString = sb2;
-        Map<ResultMetadataType, Object> extensionData = parseExtensionString(sb2);
-        Result extensionResult = new Result(resultString, (byte[]) null, new ResultPoint[]{new ResultPoint(((float) (extensionStartRange[0] + extensionStartRange[1])) / 2.0f, (float) rowNumber), new ResultPoint((float) end, (float) rowNumber)}, BarcodeFormat.UPC_EAN_EXTENSION);
+        String resultString = result.toString();
+        Map<ResultMetadataType, Object> extensionData = parseExtensionString(resultString);
+        Result extensionResult = new Result(resultString, null, new ResultPoint[]{new ResultPoint((extensionStartRange[0] + extensionStartRange[1]) / 2.0f, rowNumber), new ResultPoint(end, rowNumber)}, BarcodeFormat.UPC_EAN_EXTENSION);
         if (extensionData != null) {
             extensionResult.putAllMetadata(extensionData);
         }
@@ -34,9 +33,8 @@ final class UPCEANExtension5Support {
     }
 
     private int decodeMiddle(BitArray row, int[] startRange, StringBuilder resultString) throws NotFoundException {
-        int[] iArr = this.decodeMiddleCounters;
-        int[] counters = iArr;
-        iArr[0] = 0;
+        int[] counters = this.decodeMiddleCounters;
+        counters[0] = 0;
         counters[1] = 0;
         counters[2] = 0;
         counters[3] = 0;
@@ -56,13 +54,14 @@ final class UPCEANExtension5Support {
                 rowOffset = row.getNextUnset(row.getNextSet(rowOffset));
             }
         }
-        if (resultString.length() == 5) {
-            if (extensionChecksum(resultString.toString()) == determineCheckDigit(lgPatternFound)) {
-                return rowOffset;
-            }
+        if (resultString.length() != 5) {
             throw NotFoundException.getNotFoundInstance();
         }
-        throw NotFoundException.getNotFoundInstance();
+        int checkDigit = determineCheckDigit(lgPatternFound);
+        if (extensionChecksum(resultString.toString()) != checkDigit) {
+            throw NotFoundException.getNotFoundInstance();
+        }
+        return rowOffset;
     }
 
     private static int extensionChecksum(CharSequence s) {
@@ -75,7 +74,8 @@ final class UPCEANExtension5Support {
         for (int i2 = length - 1; i2 >= 0; i2 -= 2) {
             sum2 += s.charAt(i2) - '0';
         }
-        return (sum2 * 3) % 10;
+        int i3 = sum2 * 3;
+        return i3 % 10;
     }
 
     private static int determineCheckDigit(int lgPatternFound) throws NotFoundException {
@@ -88,117 +88,65 @@ final class UPCEANExtension5Support {
     }
 
     private static Map<ResultMetadataType, Object> parseExtensionString(String raw) {
-        if (raw.length() != 5) {
-            return null;
+        Object parseExtension5String;
+        if (raw.length() == 5 && (parseExtension5String = parseExtension5String(raw)) != null) {
+            Map<ResultMetadataType, Object> result = new EnumMap<>(ResultMetadataType.class);
+            result.put(ResultMetadataType.SUGGESTED_PRICE, parseExtension5String);
+            return result;
         }
-        Object parseExtension5String = parseExtension5String(raw);
-        Object value = parseExtension5String;
-        if (parseExtension5String == null) {
-            return null;
-        }
-        Map<ResultMetadataType, Object> enumMap = new EnumMap<>(ResultMetadataType.class);
-        Map<ResultMetadataType, Object> result = enumMap;
-        enumMap.put(ResultMetadataType.SUGGESTED_PRICE, value);
-        return result;
+        return null;
     }
 
-    /* JADX WARNING: Can't fix incorrect switch cases order */
-    /* JADX WARNING: Code restructure failed: missing block: B:11:0x002f, code lost:
-        if (r5.equals("90000") != false) goto L_0x0033;
+    /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
+    /* JADX WARN: Code restructure failed: missing block: B:15:0x002f, code lost:
+        if (r5.equals("90000") != false) goto L8;
      */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private static java.lang.String parseExtension5String(java.lang.String r5) {
-        /*
-            r0 = 0
-            char r1 = r5.charAt(r0)
-            r2 = 1
-            java.lang.String r3 = ""
-            switch(r1) {
-                case 48: goto L_0x0044;
-                case 53: goto L_0x0040;
-                case 57: goto L_0x000c;
-                default: goto L_0x000b;
-            }
-        L_0x000b:
-            goto L_0x0048
-        L_0x000c:
-            r1 = -1
-            int r4 = r5.hashCode()
-            switch(r4) {
-                case 54118329: goto L_0x0029;
-                case 54395376: goto L_0x001f;
-                case 54395377: goto L_0x0015;
-                default: goto L_0x0014;
-            }
-        L_0x0014:
-            goto L_0x0032
-        L_0x0015:
-            java.lang.String r0 = "99991"
-            boolean r0 = r5.equals(r0)
-            if (r0 == 0) goto L_0x0014
-            r0 = r2
-            goto L_0x0033
-        L_0x001f:
-            java.lang.String r0 = "99990"
-            boolean r0 = r5.equals(r0)
-            if (r0 == 0) goto L_0x0014
-            r0 = 2
-            goto L_0x0033
-        L_0x0029:
-            java.lang.String r4 = "90000"
-            boolean r4 = r5.equals(r4)
-            if (r4 == 0) goto L_0x0014
-            goto L_0x0033
-        L_0x0032:
-            r0 = r1
-        L_0x0033:
-            switch(r0) {
-                case 0: goto L_0x003e;
-                case 1: goto L_0x003b;
-                case 2: goto L_0x0038;
-                default: goto L_0x0036;
-            }
-        L_0x0036:
-            goto L_0x0048
-        L_0x0038:
-            java.lang.String r5 = "Used"
-            return r5
-        L_0x003b:
-            java.lang.String r5 = "0.00"
-            return r5
-        L_0x003e:
-            r5 = 0
-            return r5
-        L_0x0040:
-            java.lang.String r3 = "$"
-            goto L_0x0048
-        L_0x0044:
-            java.lang.String r3 = "£"
-        L_0x0048:
-            java.lang.String r5 = r5.substring(r2)
-            int r5 = java.lang.Integer.parseInt(r5)
-            int r0 = r5 / 100
-            java.lang.String r0 = java.lang.String.valueOf(r0)
-            int r5 = r5 % 100
-            r1 = 10
-            if (r5 >= r1) goto L_0x0067
-            java.lang.String r5 = java.lang.String.valueOf(r5)
-            java.lang.String r1 = "0"
-            java.lang.String r5 = r1.concat(r5)
-            goto L_0x006b
-        L_0x0067:
-            java.lang.String r5 = java.lang.String.valueOf(r5)
-        L_0x006b:
-            java.lang.StringBuilder r1 = new java.lang.StringBuilder
-            r1.<init>()
-            java.lang.StringBuilder r1 = r1.append(r3)
-            java.lang.StringBuilder r0 = r1.append(r0)
-            r1 = 46
-            java.lang.StringBuilder r0 = r0.append(r1)
-            java.lang.StringBuilder r5 = r0.append(r5)
-            java.lang.String r5 = r5.toString()
-            return r5
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.google.zxing.oned.UPCEANExtension5Support.parseExtension5String(java.lang.String):java.lang.String");
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    private static String parseExtension5String(String str) {
+        int i;
+        char c = 0;
+        String str2 = "";
+        switch (str.charAt(0)) {
+            case '0':
+                str2 = "\u00a3";
+                break;
+            case '5':
+                str2 = "$";
+                break;
+            case '9':
+                switch (str.hashCode()) {
+                    case 54118329:
+                        break;
+                    case 54395376:
+                        if (str.equals("99990")) {
+                            c = 2;
+                            break;
+                        }
+                        c = '\uffff';
+                        break;
+                    case 54395377:
+                        if (str.equals("99991")) {
+                            c = 1;
+                            break;
+                        }
+                        c = '\uffff';
+                        break;
+                    default:
+                        c = '\uffff';
+                        break;
+                }
+                switch (c) {
+                    case 0:
+                        return null;
+                    case 1:
+                        return "0.00";
+                    case 2:
+                        return "Used";
+                }
+        }
+        int parseInt = Integer.parseInt(str.substring(1));
+        return str2 + String.valueOf(parseInt / 100) + '.' + (parseInt % 100 < 10 ? TxzMessage.TXZ_DISMISS.concat(String.valueOf(i)) : String.valueOf(i));
     }
 }

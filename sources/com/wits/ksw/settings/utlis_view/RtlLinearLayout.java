@@ -4,7 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.LinearLayout;
+import java.util.Locale;
 
+/* loaded from: classes10.dex */
 public class RtlLinearLayout extends LinearLayout {
     private static final String TAG = "RtlLinearLayout";
 
@@ -29,7 +31,9 @@ public class RtlLinearLayout extends LinearLayout {
     }
 
     private void init() {
-        if (getResources().getConfiguration().locale.getLanguage().contains("ar")) {
+        Locale locale = getResources().getConfiguration().locale;
+        String language = locale.getLanguage();
+        if (language.contains("ar")) {
             Log.i(TAG, "RtlRadioButton: ");
             setGravity(21);
             return;

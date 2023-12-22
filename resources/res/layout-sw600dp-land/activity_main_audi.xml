@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:tag="layout-sw600dp-land/activity_main_audi_0" android:background="@drawable/audi_home_bk" android:layout_width="match_parent" android:layout_height="match_parent">
+    <ImageView android:background="@drawable/audi_left_bk" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="110dp" android:scaleY="1.1"/>
+    <FrameLayout android:layout_width="900dp" android:layout_height="match_parent">
+        <ImageView android:layout_gravity="center_vertical" android:id="@+id/iv_guang" android:tag="binding_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="-10dp" android:layout_marginTop="-40dp"/>
+        <com.wits.ksw.launcher.view.LoopRotarySwitchView android:gravity="center" android:id="@+id/MLoopRotarySwitchView" android:tag="binding_2" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="-280dp" android:layout_marginTop="-45dp" app:direction="top_to_bottom" app:orientation="vertical">
+            <RelativeLayout android:id="@+id/rl_navi" android:focusable="true" android:nextFocusLeft="@+id/rl_apps" android:nextFocusRight="@+id/rl_bt" android:nextFocusUp="@+id/rl_apps" android:nextFocusDown="@+id/rl_bt" android:clickable="true" style="@style/AudiHomeItemWidthHeight">
+                <ImageView android:id="@+id/iv_navi" android:background="@drawable/audi_daohang_selector" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                <TextView android:id="@+id/tv_navi" android:background="@drawable/audi_blue_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/audi_navi" android:layout_toRightOf="@+id/iv_navi" style="@style/AudiText"/>
+            </RelativeLayout>
+            <RelativeLayout android:id="@+id/rl_bt" android:focusable="true" android:nextFocusLeft="@+id/rl_navi" android:nextFocusRight="@+id/rl_music" android:nextFocusUp="@+id/rl_navi" android:nextFocusDown="@+id/rl_music" android:clickable="true" style="@style/AudiHomeItemWidthHeight">
+                <ImageView android:id="@+id/iv_bt" android:background="@drawable/audi_lanya_selector" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                <TextView android:id="@+id/tv_bt" android:background="@drawable/audi_green_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/audi_bt" android:layout_toRightOf="@+id/iv_bt" style="@style/AudiText"/>
+            </RelativeLayout>
+            <RelativeLayout android:id="@+id/rl_music" android:focusable="true" android:nextFocusLeft="@+id/rl_bt" android:nextFocusRight="@+id/rl_settings" android:nextFocusUp="@+id/rl_bt" android:nextFocusDown="@+id/rl_settings" android:clickable="true" style="@style/AudiHomeItemWidthHeight">
+                <ImageView android:id="@+id/iv_music" android:background="@drawable/audi_music_selector" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                <TextView android:id="@+id/tv_music" android:background="@drawable/audi_red_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/audi_music" android:layout_toRightOf="@+id/iv_music" style="@style/AudiText"/>
+            </RelativeLayout>
+            <RelativeLayout android:id="@+id/rl_settings" android:focusable="true" android:nextFocusLeft="@+id/rl_music" android:nextFocusRight="@+id/rl_video" android:nextFocusUp="@+id/rl_music" android:nextFocusDown="@+id/rl_video" android:clickable="true" style="@style/AudiHomeItemWidthHeight">
+                <ImageView android:id="@+id/iv_settings" android:background="@drawable/audi_settings_selector" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                <TextView android:id="@+id/tv_settings" android:background="@drawable/audi_gray_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/audi_setting" android:layout_toRightOf="@+id/iv_settings" style="@style/AudiText"/>
+            </RelativeLayout>
+            <RelativeLayout android:id="@+id/rl_video" android:focusable="true" android:nextFocusLeft="@+id/rl_settings" android:nextFocusRight="@+id/rl_dashboard" android:nextFocusUp="@+id/rl_settings" android:nextFocusDown="@+id/rl_dashboard" android:clickable="true" style="@style/AudiHomeItemWidthHeight">
+                <ImageView android:id="@+id/iv_video" android:background="@drawable/audi_video_selector" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                <TextView android:id="@+id/tv_video" android:background="@drawable/audi_blue_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/audi_video" android:layout_toRightOf="@+id/iv_video" style="@style/AudiText"/>
+            </RelativeLayout>
+            <RelativeLayout android:id="@+id/rl_dashboard" android:focusable="true" android:nextFocusLeft="@+id/rl_video" android:nextFocusRight="@+id/rl_easyconnection" android:nextFocusUp="@+id/rl_video" android:nextFocusDown="@+id/rl_easyconnection" android:clickable="true" style="@style/AudiHomeItemWidthHeight">
+                <ImageView android:id="@+id/iv_dashboard" android:background="@drawable/audi_dashboard_selector" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                <TextView android:background="@drawable/audi_brown_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/audi_dashboard" android:layout_toRightOf="@+id/iv_dashboard" style="@style/AudiText"/>
+            </RelativeLayout>
+            <RelativeLayout android:id="@+id/rl_easyconnection" android:focusable="true" android:nextFocusLeft="@+id/rl_dashboard" android:nextFocusRight="@+id/rl_dvr" android:nextFocusUp="@+id/rl_dashboard" android:nextFocusDown="@+id/rl_dvr" android:clickable="true" style="@style/AudiHomeItemWidthHeight">
+                <ImageView android:id="@+id/iv_easyconnection" android:background="@drawable/audi_easyconnection_selector" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                <TextView android:id="@+id/tv_easyconnection" android:background="@drawable/audi_blue_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/audi_easyconnection" android:layout_toRightOf="@+id/iv_easyconnection" style="@style/AudiText"/>
+            </RelativeLayout>
+            <RelativeLayout android:id="@+id/rl_dvr" android:focusable="true" android:nextFocusLeft="@+id/rl_easyconnection" android:nextFocusRight="@+id/rl_car" android:nextFocusUp="@+id/rl_easyconnection" android:nextFocusDown="@+id/rl_car" android:clickable="true" style="@style/AudiHomeItemWidthHeight">
+                <ImageView android:id="@+id/iv_dvr" android:background="@drawable/audi_dvr_selector" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                <TextView android:id="@+id/tv_dvr" android:background="@drawable/audi_blue_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DVR" android:layout_toRightOf="@+id/iv_dvr" style="@style/AudiText"/>
+            </RelativeLayout>
+            <RelativeLayout android:id="@+id/rl_car" android:focusable="true" android:nextFocusLeft="@+id/rl_dvr" android:nextFocusRight="@+id/rl_apps" android:nextFocusUp="@+id/rl_dvr" android:nextFocusDown="@+id/rl_apps" android:clickable="true" style="@style/AudiHomeItemWidthHeight">
+                <ImageView android:id="@+id/iv_car" android:background="@drawable/audi_yuanche_selector" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                <TextView android:id="@+id/tv_car" android:background="@drawable/audi_yellow_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/audi_car" android:layout_toRightOf="@+id/iv_car" style="@style/AudiText"/>
+            </RelativeLayout>
+            <RelativeLayout android:id="@+id/rl_apps" android:focusable="true" android:nextFocusLeft="@+id/rl_car" android:nextFocusRight="@+id/rl_navi" android:nextFocusUp="@+id/rl_car" android:nextFocusDown="@+id/rl_navi" android:clickable="true" android:descendantFocusability="blocksDescendants" style="@style/AudiHomeItemWidthHeight">
+                <ImageView android:id="@+id/iv_apps" android:background="@drawable/audi_apps_selector" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                <TextView android:id="@+id/tv_apps" android:background="@drawable/audi_purple_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/audi_apps" android:layout_toRightOf="@+id/iv_apps" style="@style/AudiText"/>
+            </RelativeLayout>
+        </com.wits.ksw.launcher.view.LoopRotarySwitchView>
+        <ImageView android:id="@+id/ksw_A4L_audi_che" android:tag="binding_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="120dp" android:src="@drawable/audi_left_car_a5"/>
+    </FrameLayout>
+    <com.wits.ksw.launcher.view.DateView android:textColor="@color/color1" android:gravity="center" android:layout_gravity="start" android:id="@+id/date" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="30dp" android:singleLine="true" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" app:datePattern="yyyyMMMMd" style="@style/audi_set_default_text"/>
+    <include layout="@layout/audi_right_weather"/>
+    <include layout="@layout/audi_right_carinfo"/>
+    <include layout="@layout/audi_right_navi"/>
+    <include layout="@layout/audi_right_media"/>
+</RelativeLayout>

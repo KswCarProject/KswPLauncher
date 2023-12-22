@@ -2,11 +2,12 @@ package com.wits.ksw.launcher.pagerlayoutmanager;
 
 import android.util.Log;
 
+/* loaded from: classes7.dex */
 public class PagerConfig {
     private static final String TAG = "liuhao PagerConfig";
+    private static boolean sShowLog = false;
     private static int sFlingThreshold = 1000;
     private static float sMillisecondsPreInch = 60.0f;
-    private static boolean sShowLog = false;
 
     public static boolean isShowLog() {
         return sShowLog;

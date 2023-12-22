@@ -13,23 +13,29 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
+/* loaded from: classes.dex */
 final class ActiveResources {
     final Map<Key, ResourceWeakReference> activeEngineResources;
-    private volatile DequeuedResourceCallback cb;
+
+    /* renamed from: cb */
+    private volatile DequeuedResourceCallback f76cb;
     private final boolean isActiveResourceRetentionAllowed;
     private volatile boolean isShutdown;
     private EngineResource.ResourceListener listener;
     private final Executor monitorClearedResourcesExecutor;
     private final ReferenceQueue<EngineResource<?>> resourceReferenceQueue;
 
+    /* loaded from: classes.dex */
     interface DequeuedResourceCallback {
         void onResourceDequeued();
     }
 
-    ActiveResources(boolean isActiveResourceRetentionAllowed2) {
-        this(isActiveResourceRetentionAllowed2, Executors.newSingleThreadExecutor(new ThreadFactory() {
+    ActiveResources(boolean isActiveResourceRetentionAllowed) {
+        this(isActiveResourceRetentionAllowed, Executors.newSingleThreadExecutor(new ThreadFactory() { // from class: com.bumptech.glide.load.engine.ActiveResources.1
+            @Override // java.util.concurrent.ThreadFactory
             public Thread newThread(final Runnable r) {
-                return new Thread(new Runnable() {
+                return new Thread(new Runnable() { // from class: com.bumptech.glide.load.engine.ActiveResources.1.1
+                    @Override // java.lang.Runnable
                     public void run() {
                         Process.setThreadPriority(10);
                         r.run();
@@ -39,97 +45,73 @@ final class ActiveResources {
         }));
     }
 
-    ActiveResources(boolean isActiveResourceRetentionAllowed2, Executor monitorClearedResourcesExecutor2) {
+    ActiveResources(boolean isActiveResourceRetentionAllowed, Executor monitorClearedResourcesExecutor) {
         this.activeEngineResources = new HashMap();
         this.resourceReferenceQueue = new ReferenceQueue<>();
-        this.isActiveResourceRetentionAllowed = isActiveResourceRetentionAllowed2;
-        this.monitorClearedResourcesExecutor = monitorClearedResourcesExecutor2;
-        monitorClearedResourcesExecutor2.execute(new Runnable() {
+        this.isActiveResourceRetentionAllowed = isActiveResourceRetentionAllowed;
+        this.monitorClearedResourcesExecutor = monitorClearedResourcesExecutor;
+        monitorClearedResourcesExecutor.execute(new Runnable() { // from class: com.bumptech.glide.load.engine.ActiveResources.2
+            @Override // java.lang.Runnable
             public void run() {
                 ActiveResources.this.cleanReferenceQueue();
             }
         });
     }
 
-    /* access modifiers changed from: package-private */
-    public void setListener(EngineResource.ResourceListener listener2) {
-        synchronized (listener2) {
+    void setListener(EngineResource.ResourceListener listener) {
+        synchronized (listener) {
             synchronized (this) {
-                this.listener = listener2;
+                this.listener = listener;
             }
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public synchronized void activate(Key key, EngineResource<?> resource) {
-        ResourceWeakReference removed = this.activeEngineResources.put(key, new ResourceWeakReference(key, resource, this.resourceReferenceQueue, this.isActiveResourceRetentionAllowed));
+    synchronized void activate(Key key, EngineResource<?> resource) {
+        ResourceWeakReference toPut = new ResourceWeakReference(key, resource, this.resourceReferenceQueue, this.isActiveResourceRetentionAllowed);
+        ResourceWeakReference removed = this.activeEngineResources.put(key, toPut);
         if (removed != null) {
             removed.reset();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public synchronized void deactivate(Key key) {
+    synchronized void deactivate(Key key) {
         ResourceWeakReference removed = this.activeEngineResources.remove(key);
         if (removed != null) {
             removed.reset();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    /* JADX WARNING: Code restructure failed: missing block: B:12:0x001a, code lost:
-        return r1;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public synchronized com.bumptech.glide.load.engine.EngineResource<?> get(com.bumptech.glide.load.Key r3) {
-        /*
-            r2 = this;
-            monitor-enter(r2)
-            java.util.Map<com.bumptech.glide.load.Key, com.bumptech.glide.load.engine.ActiveResources$ResourceWeakReference> r0 = r2.activeEngineResources     // Catch:{ all -> 0x001b }
-            java.lang.Object r0 = r0.get(r3)     // Catch:{ all -> 0x001b }
-            com.bumptech.glide.load.engine.ActiveResources$ResourceWeakReference r0 = (com.bumptech.glide.load.engine.ActiveResources.ResourceWeakReference) r0     // Catch:{ all -> 0x001b }
-            if (r0 != 0) goto L_0x000e
-            r1 = 0
-            monitor-exit(r2)
-            return r1
-        L_0x000e:
-            java.lang.Object r1 = r0.get()     // Catch:{ all -> 0x001b }
-            com.bumptech.glide.load.engine.EngineResource r1 = (com.bumptech.glide.load.engine.EngineResource) r1     // Catch:{ all -> 0x001b }
-            if (r1 != 0) goto L_0x0019
-            r2.cleanupActiveReference(r0)     // Catch:{ all -> 0x001b }
-        L_0x0019:
-            monitor-exit(r2)
-            return r1
-        L_0x001b:
-            r3 = move-exception
-            monitor-exit(r2)
-            throw r3
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.load.engine.ActiveResources.get(com.bumptech.glide.load.Key):com.bumptech.glide.load.engine.EngineResource");
+    synchronized EngineResource<?> get(Key key) {
+        ResourceWeakReference activeRef = this.activeEngineResources.get(key);
+        if (activeRef == null) {
+            return null;
+        }
+        EngineResource<?> active = (EngineResource) activeRef.get();
+        if (active == null) {
+            cleanupActiveReference(activeRef);
+        }
+        return active;
     }
 
-    /* access modifiers changed from: package-private */
-    public void cleanupActiveReference(ResourceWeakReference ref) {
+    void cleanupActiveReference(ResourceWeakReference ref) {
         synchronized (this.listener) {
             synchronized (this) {
                 this.activeEngineResources.remove(ref.key);
-                if (ref.isCacheable) {
-                    if (ref.resource != null) {
-                        EngineResource<?> newResource = new EngineResource<>(ref.resource, true, false);
-                        newResource.setResourceListener(ref.key, this.listener);
-                        this.listener.onResourceReleased(ref.key, newResource);
-                    }
+                if (ref.isCacheable && ref.resource != null) {
+                    EngineResource<?> newResource = new EngineResource<>(ref.resource, true, false);
+                    newResource.setResourceListener(ref.key, this.listener);
+                    this.listener.onResourceReleased(ref.key, newResource);
                 }
             }
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void cleanReferenceQueue() {
+    void cleanReferenceQueue() {
         while (!this.isShutdown) {
             try {
-                cleanupActiveReference((ResourceWeakReference) this.resourceReferenceQueue.remove());
-                DequeuedResourceCallback current = this.cb;
+                ResourceWeakReference ref = (ResourceWeakReference) this.resourceReferenceQueue.remove();
+                cleanupActiveReference(ref);
+                DequeuedResourceCallback current = this.f76cb;
                 if (current != null) {
                     current.onResourceDequeued();
                 }
@@ -139,34 +121,33 @@ final class ActiveResources {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void setDequeuedResourceCallback(DequeuedResourceCallback cb2) {
-        this.cb = cb2;
+    void setDequeuedResourceCallback(DequeuedResourceCallback cb) {
+        this.f76cb = cb;
     }
 
-    /* access modifiers changed from: package-private */
-    public void shutdown() {
+    void shutdown() {
         this.isShutdown = true;
         Executor executor = this.monitorClearedResourcesExecutor;
         if (executor instanceof ExecutorService) {
-            com.bumptech.glide.util.Executors.shutdownAndAwaitTermination((ExecutorService) executor);
+            ExecutorService service = (ExecutorService) executor;
+            com.bumptech.glide.util.Executors.shutdownAndAwaitTermination(service);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ResourceWeakReference extends WeakReference<EngineResource<?>> {
         final boolean isCacheable;
         final Key key;
         Resource<?> resource;
 
-        ResourceWeakReference(Key key2, EngineResource<?> referent, ReferenceQueue<? super EngineResource<?>> queue, boolean isActiveResourceRetentionAllowed) {
+        ResourceWeakReference(Key key, EngineResource<?> referent, ReferenceQueue<? super EngineResource<?>> queue, boolean isActiveResourceRetentionAllowed) {
             super(referent, queue);
-            this.key = (Key) Preconditions.checkNotNull(key2);
-            this.resource = (!referent.isCacheable() || !isActiveResourceRetentionAllowed) ? null : (Resource) Preconditions.checkNotNull(referent.getResource());
+            this.key = (Key) Preconditions.checkNotNull(key);
+            this.resource = (referent.isCacheable() && isActiveResourceRetentionAllowed) ? (Resource) Preconditions.checkNotNull(referent.getResource()) : null;
             this.isCacheable = referent.isCacheable();
         }
 
-        /* access modifiers changed from: package-private */
-        public void reset() {
+        void reset() {
             this.resource = null;
             clear();
         }

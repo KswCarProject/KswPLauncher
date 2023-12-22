@@ -10,6 +10,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+/* loaded from: classes.dex */
 public final class BlockingMultiObserver<T> extends CountDownLatch implements SingleObserver<T>, CompletableObserver, MaybeObserver<T> {
     volatile boolean cancelled;
     Throwable error;
@@ -20,8 +21,7 @@ public final class BlockingMultiObserver<T> extends CountDownLatch implements Si
         super(1);
     }
 
-    /* access modifiers changed from: package-private */
-    public void dispose() {
+    void dispose() {
         this.cancelled = true;
         Disposable d = this.upstream;
         if (d != null) {
@@ -29,6 +29,7 @@ public final class BlockingMultiObserver<T> extends CountDownLatch implements Si
         }
     }
 
+    @Override // io.reactivex.SingleObserver
     public void onSubscribe(Disposable d) {
         this.upstream = d;
         if (this.cancelled) {
@@ -36,16 +37,19 @@ public final class BlockingMultiObserver<T> extends CountDownLatch implements Si
         }
     }
 
-    public void onSuccess(T value2) {
-        this.value = value2;
+    @Override // io.reactivex.SingleObserver
+    public void onSuccess(T value) {
+        this.value = value;
         countDown();
     }
 
+    @Override // io.reactivex.SingleObserver
     public void onError(Throwable e) {
         this.error = e;
         countDown();
     }
 
+    @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
     public void onComplete() {
         countDown();
     }
@@ -61,10 +65,10 @@ public final class BlockingMultiObserver<T> extends CountDownLatch implements Si
             }
         }
         Throwable ex2 = this.error;
-        if (ex2 == null) {
-            return this.value;
+        if (ex2 != null) {
+            throw ExceptionHelper.wrapOrThrow(ex2);
         }
-        throw ExceptionHelper.wrapOrThrow(ex2);
+        return this.value;
     }
 
     public T blockingGet(T defaultValue) {
@@ -78,11 +82,11 @@ public final class BlockingMultiObserver<T> extends CountDownLatch implements Si
             }
         }
         Throwable ex2 = this.error;
-        if (ex2 == null) {
-            T v = this.value;
-            return v != null ? v : defaultValue;
+        if (ex2 != null) {
+            throw ExceptionHelper.wrapOrThrow(ex2);
         }
-        throw ExceptionHelper.wrapOrThrow(ex2);
+        T v = this.value;
+        return v != null ? v : defaultValue;
     }
 
     public Throwable blockingGetError() {
@@ -128,9 +132,9 @@ public final class BlockingMultiObserver<T> extends CountDownLatch implements Si
             }
         }
         Throwable ex2 = this.error;
-        if (ex2 == null) {
-            return true;
+        if (ex2 != null) {
+            throw ExceptionHelper.wrapOrThrow(ex2);
         }
-        throw ExceptionHelper.wrapOrThrow(ex2);
+        return true;
     }
 }

@@ -1,24 +1,28 @@
 package com.google.zxing.datamatrix.encoder;
 
-import android.support.v4.view.InputDeviceCompat;
+import android.support.p001v4.view.InputDeviceCompat;
+import com.ibm.icu.text.SCSU;
 
+/* loaded from: classes.dex */
 final class Base256Encoder implements Encoder {
     Base256Encoder() {
     }
 
+    @Override // com.google.zxing.datamatrix.encoder.Encoder
     public int getEncodingMode() {
         return 5;
     }
 
+    @Override // com.google.zxing.datamatrix.encoder.Encoder
     public void encode(EncoderContext context) {
-        StringBuilder sb = new StringBuilder();
-        StringBuilder buffer = sb;
-        sb.append(0);
+        StringBuilder buffer = new StringBuilder();
+        buffer.append((char) 0);
         while (true) {
             if (!context.hasMoreCharacters()) {
                 break;
             }
-            buffer.append(context.getCurrentChar());
+            char c = context.getCurrentChar();
+            buffer.append(c);
             context.pos++;
             if (HighLevelEncoder.lookAheadTest(context.getMessage(), context.pos, getEncodingMode()) != getEncodingMode()) {
                 context.signalEncoderChange(0);
@@ -39,16 +43,16 @@ final class Base256Encoder implements Encoder {
                 throw new IllegalStateException("Message length not in valid ranges: ".concat(String.valueOf(dataCount)));
             }
         }
-        int c = buffer.length();
-        for (int i = 0; i < c; i++) {
+        int c2 = buffer.length();
+        for (int i = 0; i < c2; i++) {
             context.writeCodeword(randomize255State(buffer.charAt(i), context.getCodewordCount() + 1));
         }
     }
 
     private static char randomize255State(char ch, int codewordPosition) {
-        int i = ch + ((codewordPosition * 149) % 255) + 1;
-        int tempVariable = i;
-        if (i <= 255) {
+        int pseudoRandom = ((codewordPosition * 149) % 255) + 1;
+        int tempVariable = ch + pseudoRandom;
+        if (tempVariable <= 255) {
             return (char) tempVariable;
         }
         return (char) (tempVariable + InputDeviceCompat.SOURCE_ANY);

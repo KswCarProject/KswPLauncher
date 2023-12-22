@@ -9,21 +9,25 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.fuseable.FuseToObservable;
 import io.reactivex.plugins.RxJavaPlugins;
 
+/* loaded from: classes.dex */
 public final class ObservableIgnoreElementsCompletable<T> extends Completable implements FuseToObservable<T> {
     final ObservableSource<T> source;
 
-    public ObservableIgnoreElementsCompletable(ObservableSource<T> source2) {
-        this.source = source2;
+    public ObservableIgnoreElementsCompletable(ObservableSource<T> source) {
+        this.source = source;
     }
 
+    @Override // io.reactivex.Completable
     public void subscribeActual(CompletableObserver t) {
         this.source.subscribe(new IgnoreObservable(t));
     }
 
+    @Override // io.reactivex.internal.fuseable.FuseToObservable
     public Observable<T> fuseToObservable() {
         return RxJavaPlugins.onAssembly(new ObservableIgnoreElements(this.source));
     }
 
+    /* loaded from: classes.dex */
     static final class IgnoreObservable<T> implements Observer<T>, Disposable {
         final CompletableObserver downstream;
         Disposable upstream;
@@ -32,26 +36,32 @@ public final class ObservableIgnoreElementsCompletable<T> extends Completable im
             this.downstream = t;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             this.upstream = d;
             this.downstream.onSubscribe(this);
         }
 
-        public void onNext(T t) {
+        @Override // io.reactivex.Observer
+        public void onNext(T v) {
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable e) {
             this.downstream.onError(e);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             this.downstream.onComplete();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }

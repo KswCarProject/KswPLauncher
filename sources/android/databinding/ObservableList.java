@@ -2,8 +2,10 @@ package android.databinding;
 
 import java.util.List;
 
+/* loaded from: classes.dex */
 public interface ObservableList<T> extends List<T> {
 
+    /* loaded from: classes.dex */
     public static abstract class OnListChangedCallback<T extends ObservableList> {
         public abstract void onChanged(T t);
 

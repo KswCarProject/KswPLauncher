@@ -5,19 +5,21 @@ import io.reactivex.MaybeObserver;
 import io.reactivex.disposables.Disposables;
 import io.reactivex.internal.fuseable.ScalarCallable;
 
+/* loaded from: classes.dex */
 public final class MaybeJust<T> extends Maybe<T> implements ScalarCallable<T> {
     final T value;
 
-    public MaybeJust(T value2) {
-        this.value = value2;
+    public MaybeJust(T value) {
+        this.value = value;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super T> observer) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super T> observer) {
         observer.onSubscribe(Disposables.disposed());
-        observer.onSuccess(this.value);
+        observer.onSuccess((T) this.value);
     }
 
+    @Override // io.reactivex.internal.fuseable.ScalarCallable, java.util.concurrent.Callable
     public T call() {
         return this.value;
     }

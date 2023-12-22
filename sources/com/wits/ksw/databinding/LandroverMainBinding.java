@@ -3,14 +3,15 @@ package com.wits.ksw.databinding;
 import android.databinding.Bindable;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.v4.view.ViewPager;
+import android.support.p001v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.land_rover.model.LandroverViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class LandroverMainBinding extends ViewDataBinding {
     public final ImageView iconLeft;
     public final ImageView iconRight;
@@ -20,15 +21,15 @@ public abstract class LandroverMainBinding extends ViewDataBinding {
     protected LandroverViewModel mLauncherViewModel;
     public final ViewPager viewPager;
 
-    public abstract void setLauncherViewModel(LandroverViewModel landroverViewModel);
+    public abstract void setLauncherViewModel(LandroverViewModel LauncherViewModel);
 
-    protected LandroverMainBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView iconLeft2, ImageView iconRight2, ImageView indicato12, ImageView indicato22, ViewPager viewPager2) {
+    protected LandroverMainBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView iconLeft, ImageView iconRight, ImageView indicato1, ImageView indicato2, ViewPager viewPager) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.iconLeft = iconLeft2;
-        this.iconRight = iconRight2;
-        this.indicato1 = indicato12;
-        this.indicato2 = indicato22;
-        this.viewPager = viewPager2;
+        this.iconLeft = iconLeft;
+        this.iconRight = iconRight;
+        this.indicato1 = indicato1;
+        this.indicato2 = indicato2;
+        this.viewPager = viewPager;
     }
 
     public LandroverViewModel getLauncherViewModel() {
@@ -41,7 +42,7 @@ public abstract class LandroverMainBinding extends ViewDataBinding {
 
     @Deprecated
     public static LandroverMainBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (LandroverMainBinding) ViewDataBinding.inflateInternal(inflater, R.layout.landrover_main, root, attachToRoot, component);
+        return (LandroverMainBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.landrover_main, root, attachToRoot, component);
     }
 
     public static LandroverMainBinding inflate(LayoutInflater inflater) {
@@ -50,7 +51,7 @@ public abstract class LandroverMainBinding extends ViewDataBinding {
 
     @Deprecated
     public static LandroverMainBinding inflate(LayoutInflater inflater, Object component) {
-        return (LandroverMainBinding) ViewDataBinding.inflateInternal(inflater, R.layout.landrover_main, (ViewGroup) null, false, component);
+        return (LandroverMainBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.landrover_main, null, false, component);
     }
 
     public static LandroverMainBinding bind(View view) {
@@ -59,6 +60,6 @@ public abstract class LandroverMainBinding extends ViewDataBinding {
 
     @Deprecated
     public static LandroverMainBinding bind(View view, Object component) {
-        return (LandroverMainBinding) bind(component, view, R.layout.landrover_main);
+        return (LandroverMainBinding) bind(component, view, C0899R.C0902layout.landrover_main);
     }
 }

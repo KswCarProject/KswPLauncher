@@ -10,6 +10,7 @@ import com.bumptech.glide.load.ResourceDecoder;
 import com.bumptech.glide.load.engine.Resource;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public class ResourceDrawableDecoder implements ResourceDecoder<Uri, Drawable> {
     private static final String ANDROID_PACKAGE_NAME = "android";
     private static final int ID_PATH_SEGMENTS = 1;
@@ -20,17 +21,22 @@ public class ResourceDrawableDecoder implements ResourceDecoder<Uri, Drawable> {
     private static final int TYPE_PATH_SEGMENT_INDEX = 0;
     private final Context context;
 
-    public ResourceDrawableDecoder(Context context2) {
-        this.context = context2.getApplicationContext();
+    public ResourceDrawableDecoder(Context context) {
+        this.context = context.getApplicationContext();
     }
 
+    @Override // com.bumptech.glide.load.ResourceDecoder
     public boolean handles(Uri source, Options options) {
         return source.getScheme().equals("android.resource");
     }
 
+    @Override // com.bumptech.glide.load.ResourceDecoder
     public Resource<Drawable> decode(Uri source, int width, int height, Options options) {
-        Context targetContext = findContextForPackage(source, source.getAuthority());
-        return NonOwnedDrawableResource.newInstance(DrawableDecoderCompat.getDrawable(this.context, targetContext, findResourceIdFromUri(targetContext, source)));
+        String packageName = source.getAuthority();
+        Context targetContext = findContextForPackage(source, packageName);
+        int resId = findResourceIdFromUri(targetContext, source);
+        Drawable drawable = DrawableDecoderCompat.getDrawable(this.context, targetContext, resId);
+        return NonOwnedDrawableResource.newInstance(drawable);
     }
 
     private Context findContextForPackage(Uri source, String packageName) {
@@ -47,10 +53,10 @@ public class ResourceDrawableDecoder implements ResourceDecoder<Uri, Drawable> {
         }
     }
 
-    private int findResourceIdFromUri(Context context2, Uri source) {
+    private int findResourceIdFromUri(Context context, Uri source) {
         List<String> segments = source.getPathSegments();
         if (segments.size() == 2) {
-            return findResourceIdFromTypeAndNameResourceUri(context2, source);
+            return findResourceIdFromTypeAndNameResourceUri(context, source);
         }
         if (segments.size() == 1) {
             return findResourceIdFromResourceIdUri(source);
@@ -58,24 +64,25 @@ public class ResourceDrawableDecoder implements ResourceDecoder<Uri, Drawable> {
         throw new IllegalArgumentException("Unrecognized Uri format: " + source);
     }
 
-    private int findResourceIdFromTypeAndNameResourceUri(Context context2, Uri source) {
+    private int findResourceIdFromTypeAndNameResourceUri(Context context, Uri source) {
         List<String> segments = source.getPathSegments();
         String packageName = source.getAuthority();
         String typeName = segments.get(0);
         String resourceName = segments.get(1);
-        int result = context2.getResources().getIdentifier(resourceName, typeName, packageName);
+        int result = context.getResources().getIdentifier(resourceName, typeName, packageName);
         if (result == 0) {
             result = Resources.getSystem().getIdentifier(resourceName, typeName, ANDROID_PACKAGE_NAME);
         }
-        if (result != 0) {
-            return result;
+        if (result == 0) {
+            throw new IllegalArgumentException("Failed to find resource id for: " + source);
         }
-        throw new IllegalArgumentException("Failed to find resource id for: " + source);
+        return result;
     }
 
     private int findResourceIdFromResourceIdUri(Uri source) {
+        List<String> segments = source.getPathSegments();
         try {
-            return Integer.parseInt(source.getPathSegments().get(0));
+            return Integer.parseInt(segments.get(0));
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Unrecognized Uri format: " + source, e);
         }

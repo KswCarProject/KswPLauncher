@@ -5,6 +5,7 @@ import com.ibm.icu.util.ULocale;
 import java.util.Locale;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public abstract class CurrencyDisplayNames {
     public abstract String getName(String str);
 

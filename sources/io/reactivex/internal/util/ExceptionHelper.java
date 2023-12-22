@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ExceptionHelper {
     public static final Throwable TERMINATED = new Termination();
 
@@ -17,11 +18,11 @@ public final class ExceptionHelper {
     public static RuntimeException wrapOrThrow(Throwable error) {
         if (error instanceof Error) {
             throw ((Error) error);
-        } else if (error instanceof RuntimeException) {
-            return (RuntimeException) error;
-        } else {
-            return new RuntimeException(error);
         }
+        if (error instanceof RuntimeException) {
+            return (RuntimeException) error;
+        }
+        return new RuntimeException(error);
     }
 
     public static <T> boolean addThrowable(AtomicReference<Throwable> field, Throwable exception) {
@@ -57,7 +58,8 @@ public final class ExceptionHelper {
         while (!deque.isEmpty()) {
             Throwable e = deque.removeFirst();
             if (e instanceof CompositeException) {
-                List<Throwable> exceptions = ((CompositeException) e).getExceptions();
+                CompositeException ce = (CompositeException) e;
+                List<Throwable> exceptions = ce.getExceptions();
                 for (int i = exceptions.size() - 1; i >= 0; i--) {
                     deque.offerFirst(exceptions.get(i));
                 }
@@ -79,6 +81,7 @@ public final class ExceptionHelper {
         return "The source did not signal an event for " + timeout + " " + unit.toString().toLowerCase() + " and has been terminated.";
     }
 
+    /* loaded from: classes.dex */
     static final class Termination extends Throwable {
         private static final long serialVersionUID = -4649703670690200604L;
 
@@ -86,6 +89,7 @@ public final class ExceptionHelper {
             super("No further exceptions");
         }
 
+        @Override // java.lang.Throwable
         public Throwable fillInStackTrace() {
             return this;
         }

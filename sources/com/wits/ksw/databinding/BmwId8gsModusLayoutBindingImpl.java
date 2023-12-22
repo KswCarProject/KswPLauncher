@@ -2,25 +2,25 @@ package com.wits.ksw.databinding;
 
 import android.arch.lifecycle.LifecycleOwner;
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
-import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.p001v4.media.session.PlaybackStateCompat;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public class BmwId8gsModusLayoutBindingImpl extends BmwId8gsModusLayoutBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback340;
-    private final View.OnClickListener mCallback341;
-    private final View.OnClickListener mCallback342;
+    private final View.OnClickListener mCallback485;
+    private final View.OnClickListener mCallback486;
+    private final View.OnClickListener mCallback487;
     private long mDirtyFlags;
     private final RelativeLayout mboundView0;
     private final ImageView mboundView2;
@@ -33,110 +33,84 @@ public class BmwId8gsModusLayoutBindingImpl extends BmwId8gsModusLayoutBinding i
     static {
         ViewDataBinding.IncludedLayouts includedLayouts = new ViewDataBinding.IncludedLayouts(16);
         sIncludes = includedLayouts;
-        includedLayouts.setIncludes(0, new String[]{"id8_gs_launcher_left_bar"}, new int[]{10}, new int[]{R.layout.id8_gs_launcher_left_bar});
+        includedLayouts.setIncludes(0, new String[]{"id8_gs_launcher_left_bar"}, new int[]{10}, new int[]{C0899R.C0902layout.id8_gs_launcher_left_bar});
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.rl_modus_container, 11);
-        sparseIntArray.put(R.id.tv_change_modus_title, 12);
-        sparseIntArray.put(R.id.ll_modus_personal, 13);
-        sparseIntArray.put(R.id.ll_modus_sport, 14);
-        sparseIntArray.put(R.id.ll_modus_efficient, 15);
+        sparseIntArray.put(C0899R.C0901id.rl_modus_container, 11);
+        sparseIntArray.put(C0899R.C0901id.tv_change_modus_title, 12);
+        sparseIntArray.put(C0899R.C0901id.ll_modus_personal, 13);
+        sparseIntArray.put(C0899R.C0901id.ll_modus_sport, 14);
+        sparseIntArray.put(C0899R.C0901id.ll_modus_efficient, 15);
     }
 
     public BmwId8gsModusLayoutBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 16, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private BmwId8gsModusLayoutBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 4, bindings[10], bindings[15], bindings[7], bindings[13], bindings[1], bindings[14], bindings[4], bindings[11], bindings[12]);
-        this.mDirtyFlags = -1;
+        super(bindingComponent, root, 4, (Id8GsLauncherLeftBarBinding) bindings[10], (RelativeLayout) bindings[15], (ImageView) bindings[7], (RelativeLayout) bindings[13], (ImageView) bindings[1], (RelativeLayout) bindings[14], (ImageView) bindings[4], (RelativeLayout) bindings[11], (TextView) bindings[12]);
+        this.mDirtyFlags = -1L;
         setContainedBinding(this.bmwId8GsModusMainLeftBar);
-        this.llModusEfficientImg.setTag((Object) null);
-        this.llModusPersonalImg.setTag((Object) null);
-        this.llModusSportImg.setTag((Object) null);
-        RelativeLayout relativeLayout = bindings[0];
+        this.llModusEfficientImg.setTag(null);
+        this.llModusPersonalImg.setTag(null);
+        this.llModusSportImg.setTag(null);
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
-        ImageView imageView = bindings[2];
+        relativeLayout.setTag(null);
+        ImageView imageView = (ImageView) bindings[2];
         this.mboundView2 = imageView;
-        imageView.setTag((Object) null);
-        TextView textView = bindings[3];
+        imageView.setTag(null);
+        TextView textView = (TextView) bindings[3];
         this.mboundView3 = textView;
-        textView.setTag((Object) null);
-        ImageView imageView2 = bindings[5];
+        textView.setTag(null);
+        ImageView imageView2 = (ImageView) bindings[5];
         this.mboundView5 = imageView2;
-        imageView2.setTag((Object) null);
-        TextView textView2 = bindings[6];
+        imageView2.setTag(null);
+        TextView textView2 = (TextView) bindings[6];
         this.mboundView6 = textView2;
-        textView2.setTag((Object) null);
-        ImageView imageView3 = bindings[8];
+        textView2.setTag(null);
+        ImageView imageView3 = (ImageView) bindings[8];
         this.mboundView8 = imageView3;
-        imageView3.setTag((Object) null);
-        TextView textView3 = bindings[9];
+        imageView3.setTag(null);
+        TextView textView3 = (TextView) bindings[9];
         this.mboundView9 = textView3;
-        textView3.setTag((Object) null);
+        textView3.setTag(null);
         setRootTag(root);
-        this.mCallback342 = new OnClickListener(this, 3);
-        this.mCallback340 = new OnClickListener(this, 1);
-        this.mCallback341 = new OnClickListener(this, 2);
+        this.mCallback485 = new OnClickListener(this, 1);
+        this.mCallback487 = new OnClickListener(this, 3);
+        this.mCallback486 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 32;
+            this.mDirtyFlags = 32L;
         }
         this.bmwId8GsModusMainLeftBar.invalidateAll();
         requestRebind();
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:10:0x0016, code lost:
-        return false;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:8:0x0013, code lost:
-        if (r4.bmwId8GsModusMainLeftBar.hasPendingBindings() == false) goto L_0x0016;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:9:0x0015, code lost:
-        return true;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
-        /*
-            r4 = this;
-            monitor-enter(r4)
-            long r0 = r4.mDirtyFlags     // Catch:{ all -> 0x0018 }
-            r2 = 0
-            int r0 = (r0 > r2 ? 1 : (r0 == r2 ? 0 : -1))
-            r1 = 1
-            if (r0 == 0) goto L_0x000c
-            monitor-exit(r4)     // Catch:{ all -> 0x0018 }
-            return r1
-        L_0x000c:
-            monitor-exit(r4)     // Catch:{ all -> 0x0018 }
-            com.wits.ksw.databinding.Id8GsLauncherLeftBarBinding r0 = r4.bmwId8GsModusMainLeftBar
-            boolean r0 = r0.hasPendingBindings()
-            if (r0 == 0) goto L_0x0016
-            return r1
-        L_0x0016:
-            r0 = 0
-            return r0
-        L_0x0018:
-            r0 = move-exception
-            monitor-exit(r4)     // Catch:{ all -> 0x0018 }
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.BmwId8gsModusLayoutBindingImpl.hasPendingBindings():boolean");
-    }
-
-    public boolean setVariable(int variableId, Object variable) {
-        if (7 != variableId) {
-            return false;
+        synchronized (this) {
+            if (this.mDirtyFlags != 0) {
+                return true;
+            }
+            return this.bmwId8GsModusMainLeftBar.hasPendingBindings();
         }
-        setLauncherViewModel((LauncherViewModel) variable);
-        return true;
     }
 
+    @Override // android.databinding.ViewDataBinding
+    public boolean setVariable(int variableId, Object variable) {
+        if (7 == variableId) {
+            setLauncherViewModel((LauncherViewModel) variable);
+            return true;
+        }
+        return false;
+    }
+
+    @Override // com.wits.ksw.databinding.BmwId8gsModusLayoutBinding
     public void setLauncherViewModel(LauncherViewModel LauncherViewModel) {
         this.mLauncherViewModel = LauncherViewModel;
         synchronized (this) {
@@ -146,13 +120,14 @@ public class BmwId8gsModusLayoutBindingImpl extends BmwId8gsModusLayoutBinding i
         super.requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         super.setLifecycleOwner(lifecycleOwner);
         this.bmwId8GsModusMainLeftBar.setLifecycleOwner(lifecycleOwner);
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeLauncherViewModelIsEfficientModus((ObservableField) object, fieldId);
@@ -167,53 +142,53 @@ public class BmwId8gsModusLayoutBindingImpl extends BmwId8gsModusLayoutBinding i
         }
     }
 
-    private boolean onChangeLauncherViewModelIsEfficientModus(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeLauncherViewModelIsEfficientModus(ObservableField<Boolean> LauncherViewModelIsEfficientModus, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeLauncherViewModelIsPersonalModus(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeLauncherViewModelIsPersonalModus(ObservableField<Boolean> LauncherViewModelIsPersonalModus, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeBmwId8GsModusMainLeftBar(Id8GsLauncherLeftBarBinding BmwId8GsModusMainLeftBar, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeLauncherViewModelIsSportModus(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeLauncherViewModelIsSportModus(ObservableField<Boolean> LauncherViewModelIsSportModus, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         int launcherViewModelIsSportModusViewVISIBLEViewGONE;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         Boolean launcherViewModelIsEfficientModusGet = null;
         LauncherViewModel launcherViewModel = this.mLauncherViewModel;
@@ -225,12 +200,11 @@ public class BmwId8gsModusLayoutBindingImpl extends BmwId8gsModusLayoutBinding i
         ObservableField<Boolean> launcherViewModelIsSportModus = null;
         Boolean launcherViewModelIsSportModusGet = null;
         if ((dirtyFlags & 59) != 0) {
-            int launcherViewModelIsSportModusViewVISIBLEViewGONE2 = 8;
             if ((dirtyFlags & 49) != 0) {
                 if (launcherViewModel != null) {
                     launcherViewModelIsEfficientModus = launcherViewModel.isEfficientModus;
                 }
-                updateRegistration(0, (Observable) launcherViewModelIsEfficientModus);
+                updateRegistration(0, launcherViewModelIsEfficientModus);
                 if (launcherViewModelIsEfficientModus != null) {
                     launcherViewModelIsEfficientModusGet = launcherViewModelIsEfficientModus.get();
                 }
@@ -248,9 +222,10 @@ public class BmwId8gsModusLayoutBindingImpl extends BmwId8gsModusLayoutBinding i
                 if (launcherViewModel != null) {
                     launcherViewModelIsPersonalModus = launcherViewModel.isPersonalModus;
                 }
-                updateRegistration(1, (Observable) launcherViewModelIsPersonalModus);
+                updateRegistration(1, launcherViewModelIsPersonalModus);
                 if (launcherViewModelIsPersonalModus != null) {
-                    launcherViewModelIsPersonalModusGet = launcherViewModelIsPersonalModus.get();
+                    Boolean launcherViewModelIsPersonalModusGet2 = launcherViewModelIsPersonalModus.get();
+                    launcherViewModelIsPersonalModusGet = launcherViewModelIsPersonalModusGet2;
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxLauncherViewModelIsPersonalModusGet = ViewDataBinding.safeUnbox(launcherViewModelIsPersonalModusGet);
                 if ((dirtyFlags & 50) != 0) {
@@ -262,13 +237,16 @@ public class BmwId8gsModusLayoutBindingImpl extends BmwId8gsModusLayoutBinding i
                 }
                 launcherViewModelIsPersonalModusViewVISIBLEViewGONE = androidDatabindingViewDataBindingSafeUnboxLauncherViewModelIsPersonalModusGet ? 0 : 8;
             }
-            if ((dirtyFlags & 56) != 0) {
+            if ((dirtyFlags & 56) == 0) {
+                launcherViewModelIsSportModusViewVISIBLEViewGONE = 0;
+            } else {
                 if (launcherViewModel != null) {
                     launcherViewModelIsSportModus = launcherViewModel.isSportModus;
                 }
-                updateRegistration(3, (Observable) launcherViewModelIsSportModus);
+                updateRegistration(3, launcherViewModelIsSportModus);
                 if (launcherViewModelIsSportModus != null) {
-                    launcherViewModelIsSportModusGet = launcherViewModelIsSportModus.get();
+                    Boolean launcherViewModelIsSportModusGet2 = launcherViewModelIsSportModus.get();
+                    launcherViewModelIsSportModusGet = launcherViewModelIsSportModusGet2;
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxLauncherViewModelIsSportModusGet = ViewDataBinding.safeUnbox(launcherViewModelIsSportModusGet);
                 if ((dirtyFlags & 56) != 0) {
@@ -278,12 +256,8 @@ public class BmwId8gsModusLayoutBindingImpl extends BmwId8gsModusLayoutBinding i
                         dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
                     }
                 }
-                if (androidDatabindingViewDataBindingSafeUnboxLauncherViewModelIsSportModusGet) {
-                    launcherViewModelIsSportModusViewVISIBLEViewGONE2 = 0;
-                }
+                int launcherViewModelIsSportModusViewVISIBLEViewGONE2 = androidDatabindingViewDataBindingSafeUnboxLauncherViewModelIsSportModusGet ? 0 : 8;
                 launcherViewModelIsSportModusViewVISIBLEViewGONE = launcherViewModelIsSportModusViewVISIBLEViewGONE2;
-            } else {
-                launcherViewModelIsSportModusViewVISIBLEViewGONE = 0;
             }
         } else {
             launcherViewModelIsSportModusViewVISIBLEViewGONE = 0;
@@ -292,10 +266,9 @@ public class BmwId8gsModusLayoutBindingImpl extends BmwId8gsModusLayoutBinding i
             this.bmwId8GsModusMainLeftBar.setLeftViewModel(launcherViewModel);
         }
         if ((dirtyFlags & 32) != 0) {
-            Boolean bool = launcherViewModelIsEfficientModusGet;
-            this.llModusEfficientImg.setOnClickListener(this.mCallback342);
-            this.llModusPersonalImg.setOnClickListener(this.mCallback340);
-            this.llModusSportImg.setOnClickListener(this.mCallback341);
+            this.llModusEfficientImg.setOnClickListener(this.mCallback487);
+            this.llModusPersonalImg.setOnClickListener(this.mCallback485);
+            this.llModusSportImg.setOnClickListener(this.mCallback486);
         }
         if ((dirtyFlags & 50) != 0) {
             this.mboundView2.setVisibility(launcherViewModelIsPersonalModusViewVISIBLEViewGONE);
@@ -312,14 +285,13 @@ public class BmwId8gsModusLayoutBindingImpl extends BmwId8gsModusLayoutBinding i
         executeBindingsOn(this.bmwId8GsModusMainLeftBar);
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean launcherViewModelJavaLangObjectNull = true;
+        boolean launcherViewModelJavaLangObjectNull;
         switch (sourceId) {
             case 1:
                 LauncherViewModel launcherViewModel = this.mLauncherViewModel;
-                if (launcherViewModel == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel.changeModusToPersonal(callbackArg_0);
                     return;
@@ -327,9 +299,7 @@ public class BmwId8gsModusLayoutBindingImpl extends BmwId8gsModusLayoutBinding i
                 return;
             case 2:
                 LauncherViewModel launcherViewModel2 = this.mLauncherViewModel;
-                if (launcherViewModel2 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel2 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel2.changeModusToSport(callbackArg_0);
                     return;
@@ -337,9 +307,7 @@ public class BmwId8gsModusLayoutBindingImpl extends BmwId8gsModusLayoutBinding i
                 return;
             case 3:
                 LauncherViewModel launcherViewModel3 = this.mLauncherViewModel;
-                if (launcherViewModel3 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel3 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel3.changeModusToEfficient(callbackArg_0);
                     return;

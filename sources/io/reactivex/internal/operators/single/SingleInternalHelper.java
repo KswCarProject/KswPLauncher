@@ -9,14 +9,17 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.Callable;
 import org.reactivestreams.Publisher;
 
+/* loaded from: classes.dex */
 public final class SingleInternalHelper {
     private SingleInternalHelper() {
         throw new IllegalStateException("No instances!");
     }
 
+    /* loaded from: classes.dex */
     enum NoSuchElementCallable implements Callable<NoSuchElementException> {
         INSTANCE;
 
+        @Override // java.util.concurrent.Callable
         public NoSuchElementException call() throws Exception {
             return new NoSuchElementException();
         }
@@ -26,9 +29,11 @@ public final class SingleInternalHelper {
         return NoSuchElementCallable.INSTANCE;
     }
 
+    /* loaded from: classes.dex */
     enum ToFlowable implements Function<SingleSource, Publisher> {
         INSTANCE;
 
+        @Override // io.reactivex.functions.Function
         public Publisher apply(SingleSource v) {
             return new SingleToFlowable(v);
         }
@@ -38,33 +43,39 @@ public final class SingleInternalHelper {
         return ToFlowable.INSTANCE;
     }
 
+    /* loaded from: classes.dex */
     static final class ToFlowableIterator<T> implements Iterator<Flowable<T>> {
         private final Iterator<? extends SingleSource<? extends T>> sit;
 
-        ToFlowableIterator(Iterator<? extends SingleSource<? extends T>> sit2) {
-            this.sit = sit2;
+        ToFlowableIterator(Iterator<? extends SingleSource<? extends T>> sit) {
+            this.sit = sit;
         }
 
+        @Override // java.util.Iterator
         public boolean hasNext() {
             return this.sit.hasNext();
         }
 
+        @Override // java.util.Iterator
         public Flowable<T> next() {
-            return new SingleToFlowable((SingleSource) this.sit.next());
+            return new SingleToFlowable(this.sit.next());
         }
 
+        @Override // java.util.Iterator
         public void remove() {
             throw new UnsupportedOperationException();
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ToFlowableIterable<T> implements Iterable<Flowable<T>> {
         private final Iterable<? extends SingleSource<? extends T>> sources;
 
-        ToFlowableIterable(Iterable<? extends SingleSource<? extends T>> sources2) {
-            this.sources = sources2;
+        ToFlowableIterable(Iterable<? extends SingleSource<? extends T>> sources) {
+            this.sources = sources;
         }
 
+        @Override // java.lang.Iterable
         public Iterator<Flowable<T>> iterator() {
             return new ToFlowableIterator(this.sources.iterator());
         }
@@ -74,9 +85,11 @@ public final class SingleInternalHelper {
         return new ToFlowableIterable(sources);
     }
 
+    /* loaded from: classes.dex */
     enum ToObservable implements Function<SingleSource, Observable> {
         INSTANCE;
 
+        @Override // io.reactivex.functions.Function
         public Observable apply(SingleSource v) {
             return new SingleToObservable(v);
         }

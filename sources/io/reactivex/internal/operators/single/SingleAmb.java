@@ -10,97 +10,93 @@ import io.reactivex.internal.disposables.EmptyDisposable;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/* loaded from: classes.dex */
 public final class SingleAmb<T> extends Single<T> {
     private final SingleSource<? extends T>[] sources;
     private final Iterable<? extends SingleSource<? extends T>> sourcesIterable;
 
-    public SingleAmb(SingleSource<? extends T>[] sources2, Iterable<? extends SingleSource<? extends T>> sourcesIterable2) {
-        this.sources = sources2;
-        this.sourcesIterable = sourcesIterable2;
+    public SingleAmb(SingleSource<? extends T>[] sources, Iterable<? extends SingleSource<? extends T>> sourcesIterable) {
+        this.sources = sources;
+        this.sourcesIterable = sourcesIterable;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
-        SingleSource<? extends T>[] sources2 = this.sources;
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
+        SingleSource<? extends T>[] sources = this.sources;
         int count = 0;
-        if (sources2 == null) {
-            sources2 = new SingleSource[8];
+        if (sources == null) {
+            sources = new SingleSource[8];
             try {
                 for (SingleSource<? extends T> element : this.sourcesIterable) {
                     if (element == null) {
-                        EmptyDisposable.error((Throwable) new NullPointerException("One of the sources is null"), (SingleObserver<?>) observer);
+                        EmptyDisposable.error(new NullPointerException("One of the sources is null"), observer);
                         return;
                     }
-                    if (count == sources2.length) {
-                        SingleSource<? extends T>[] b = new SingleSource[((count >> 2) + count)];
-                        System.arraycopy(sources2, 0, b, 0, count);
-                        sources2 = b;
+                    if (count == sources.length) {
+                        SingleSource<? extends T>[] b = new SingleSource[(count >> 2) + count];
+                        System.arraycopy(sources, 0, b, 0, count);
+                        sources = b;
                     }
                     int count2 = count + 1;
                     try {
-                        sources2[count] = element;
+                        sources[count] = element;
                         count = count2;
                     } catch (Throwable th) {
                         e = th;
-                        int i = count2;
                         Exceptions.throwIfFatal(e);
-                        EmptyDisposable.error(e, (SingleObserver<?>) observer);
+                        EmptyDisposable.error(e, observer);
                         return;
                     }
                 }
             } catch (Throwable th2) {
                 e = th2;
-                Exceptions.throwIfFatal(e);
-                EmptyDisposable.error(e, (SingleObserver<?>) observer);
-                return;
             }
         } else {
-            count = sources2.length;
+            count = sources.length;
         }
         AtomicBoolean winner = new AtomicBoolean();
         CompositeDisposable set = new CompositeDisposable();
         observer.onSubscribe(set);
-        int i2 = 0;
-        while (i2 < count) {
-            SingleSource<? extends T> s1 = sources2[i2];
-            if (!set.isDisposed()) {
-                if (s1 == null) {
-                    set.dispose();
-                    Throwable e = new NullPointerException("One of the sources is null");
-                    if (winner.compareAndSet(false, true)) {
-                        observer.onError(e);
-                        return;
-                    } else {
-                        RxJavaPlugins.onError(e);
-                        return;
-                    }
-                } else {
-                    s1.subscribe(new AmbSingleObserver(observer, set, winner));
-                    i2++;
-                }
-            } else {
+        for (int i = 0; i < count; i++) {
+            SingleSource<? extends T> s1 = sources[i];
+            if (set.isDisposed()) {
                 return;
             }
+            if (s1 == null) {
+                set.dispose();
+                Throwable e = new NullPointerException("One of the sources is null");
+                if (winner.compareAndSet(false, true)) {
+                    observer.onError(e);
+                    return;
+                } else {
+                    RxJavaPlugins.onError(e);
+                    return;
+                }
+            }
+            s1.subscribe(new AmbSingleObserver(observer, set, winner));
         }
     }
 
+    /* loaded from: classes.dex */
     static final class AmbSingleObserver<T> implements SingleObserver<T> {
         final SingleObserver<? super T> downstream;
         final CompositeDisposable set;
         Disposable upstream;
         final AtomicBoolean winner;
 
-        AmbSingleObserver(SingleObserver<? super T> observer, CompositeDisposable set2, AtomicBoolean winner2) {
+        AmbSingleObserver(SingleObserver<? super T> observer, CompositeDisposable set, AtomicBoolean winner) {
             this.downstream = observer;
-            this.set = set2;
-            this.winner = winner2;
+            this.set = set;
+            this.winner = winner;
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
             this.upstream = d;
             this.set.add(d);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSuccess(T value) {
             if (this.winner.compareAndSet(false, true)) {
                 this.set.delete(this.upstream);
@@ -109,6 +105,7 @@ public final class SingleAmb<T> extends Single<T> {
             }
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
             if (this.winner.compareAndSet(false, true)) {
                 this.set.delete(this.upstream);

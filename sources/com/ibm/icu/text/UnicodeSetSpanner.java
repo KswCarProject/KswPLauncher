@@ -3,14 +3,17 @@ package com.ibm.icu.text;
 import com.ibm.icu.text.UnicodeSet;
 import com.ibm.icu.util.OutputInt;
 
+/* loaded from: classes.dex */
 public class UnicodeSetSpanner {
     private final UnicodeSet unicodeSet;
 
+    /* loaded from: classes.dex */
     public enum CountMethod {
         WHOLE_SPAN,
         MIN_ELEMENTS
     }
 
+    /* loaded from: classes.dex */
     public enum TrimOption {
         LEADING,
         BOTH,

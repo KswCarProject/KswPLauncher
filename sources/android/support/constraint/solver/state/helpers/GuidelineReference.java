@@ -5,19 +5,22 @@ import android.support.constraint.solver.state.State;
 import android.support.constraint.solver.widgets.ConstraintWidget;
 import android.support.constraint.solver.widgets.Guideline;
 
+/* loaded from: classes.dex */
 public class GuidelineReference implements Reference {
     private Object key;
-    private int mEnd = -1;
     private Guideline mGuidelineWidget;
     private int mOrientation;
-    private float mPercent = 0.0f;
-    private int mStart = -1;
     final State mState;
+    private int mStart = -1;
+    private int mEnd = -1;
+    private float mPercent = 0.0f;
 
-    public void setKey(Object key2) {
-        this.key = key2;
+    @Override // android.support.constraint.solver.state.Reference
+    public void setKey(Object key) {
+        this.key = key;
     }
 
+    @Override // android.support.constraint.solver.state.Reference
     public Object getKey() {
         return this.key;
     }
@@ -52,6 +55,7 @@ public class GuidelineReference implements Reference {
         return this.mOrientation;
     }
 
+    @Override // android.support.constraint.solver.state.Reference
     public void apply() {
         this.mGuidelineWidget.setOrientation(this.mOrientation);
         int i = this.mStart;
@@ -67,6 +71,7 @@ public class GuidelineReference implements Reference {
         }
     }
 
+    @Override // android.support.constraint.solver.state.Reference
     public ConstraintWidget getConstraintWidget() {
         if (this.mGuidelineWidget == null) {
             this.mGuidelineWidget = new Guideline();
@@ -74,6 +79,7 @@ public class GuidelineReference implements Reference {
         return this.mGuidelineWidget;
     }
 
+    @Override // android.support.constraint.solver.state.Reference
     public void setConstraintWidget(ConstraintWidget widget) {
         if (widget instanceof Guideline) {
             this.mGuidelineWidget = (Guideline) widget;

@@ -10,11 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.view.CustomBmwImageView;
 import com.wits.ksw.launcher.view.RollTextView;
 
+/* loaded from: classes7.dex */
 public abstract class Id7SubWeatherViewBinding extends ViewDataBinding {
     public final TextView btA;
     public final TextView btB;
@@ -32,24 +33,23 @@ public abstract class Id7SubWeatherViewBinding extends ViewDataBinding {
     public final TextView unitWeather;
     public final ConstraintLayout weatherConstraintLayout;
 
-    public abstract void setWeatherViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setWeatherViewModel(LauncherViewModel WeatherViewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected Id7SubWeatherViewBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView btA2, TextView btB2, TextView btC2, ImageView icon2, RelativeLayout llA2, RelativeLayout llB2, RelativeLayout llC2, TextView phoneConnectionTextView2, CustomBmwImageView phoneImageView2, TextView temperatureTv2, RollTextView textView22, TextView unitWeather2, ConstraintLayout weatherConstraintLayout2) {
+    protected Id7SubWeatherViewBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView btA, TextView btB, TextView btC, ImageView icon, RelativeLayout llA, RelativeLayout llB, RelativeLayout llC, TextView phoneConnectionTextView, CustomBmwImageView phoneImageView, TextView temperatureTv, RollTextView textView2, TextView unitWeather, ConstraintLayout weatherConstraintLayout) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.btA = btA2;
-        this.btB = btB2;
-        this.btC = btC2;
-        this.icon = icon2;
-        this.llA = llA2;
-        this.llB = llB2;
-        this.llC = llC2;
-        this.phoneConnectionTextView = phoneConnectionTextView2;
-        this.phoneImageView = phoneImageView2;
-        this.temperatureTv = temperatureTv2;
-        this.textView2 = textView22;
-        this.unitWeather = unitWeather2;
-        this.weatherConstraintLayout = weatherConstraintLayout2;
+        this.btA = btA;
+        this.btB = btB;
+        this.btC = btC;
+        this.icon = icon;
+        this.llA = llA;
+        this.llB = llB;
+        this.llC = llC;
+        this.phoneConnectionTextView = phoneConnectionTextView;
+        this.phoneImageView = phoneImageView;
+        this.temperatureTv = temperatureTv;
+        this.textView2 = textView2;
+        this.unitWeather = unitWeather;
+        this.weatherConstraintLayout = weatherConstraintLayout;
     }
 
     public LauncherViewModel getWeatherViewModel() {
@@ -62,7 +62,7 @@ public abstract class Id7SubWeatherViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static Id7SubWeatherViewBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (Id7SubWeatherViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.id7_sub_weather_view, root, attachToRoot, component);
+        return (Id7SubWeatherViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id7_sub_weather_view, root, attachToRoot, component);
     }
 
     public static Id7SubWeatherViewBinding inflate(LayoutInflater inflater) {
@@ -71,7 +71,7 @@ public abstract class Id7SubWeatherViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static Id7SubWeatherViewBinding inflate(LayoutInflater inflater, Object component) {
-        return (Id7SubWeatherViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.id7_sub_weather_view, (ViewGroup) null, false, component);
+        return (Id7SubWeatherViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id7_sub_weather_view, null, false, component);
     }
 
     public static Id7SubWeatherViewBinding bind(View view) {
@@ -80,6 +80,6 @@ public abstract class Id7SubWeatherViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static Id7SubWeatherViewBinding bind(View view, Object component) {
-        return (Id7SubWeatherViewBinding) bind(component, view, R.layout.id7_sub_weather_view);
+        return (Id7SubWeatherViewBinding) bind(component, view, C0899R.C0902layout.id7_sub_weather_view);
     }
 }

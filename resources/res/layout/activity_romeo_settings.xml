@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:descendantFocusability="afterDescendants" android:layout_width="1280dp" android:layout_height="480dp">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:descendantFocusability="afterDescendants" android:layout_width="1280dp" android:layout_height="480dp">
     <TextView android:textSize="26sp" android:textColor="#fff" android:id="@+id/lexus_set_title" android:visibility="visible" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="@string/item1" android:layout_marginStart="100dp" android:layout_marginEnd="100dp"/>
     <FrameLayout android:background="#000" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="52dp">
         <FrameLayout android:id="@+id/frame_TwoLayout" android:background="@drawable/romeo_bt_calling_bg" android:descendantFocusability="afterDescendants" android:layout_width="467dp" android:layout_height="match_parent" android:layout_marginLeft="813dp"/>
@@ -33,6 +33,6 @@
             <ImageView android:id="@+id/romeo_indicator_5" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="41dp" android:layout_marginTop="239dp" android:src="@drawable/romeo_main_indicator_5_sel"/>
             <ImageView android:id="@+id/romeo_indicator_6" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="47dp" android:layout_marginTop="301dp" android:src="@drawable/romeo_main_indicator_6_sel"/>
         </FrameLayout>
-        <android.support.v7.widget.RecyclerView android:id="@+id/recyclerView" android:focusable="true" android:nextFocusRight="@+id/frame_OneLayout" android:layout_width="161.6dp" android:layout_height="match_parent" android:layout_marginLeft="9dp"/>
+        <android.support.p004v7.widget.RecyclerView android:id="@+id/recyclerView" android:focusable="true" android:nextFocusRight="@+id/frame_OneLayout" android:layout_width="161.6dp" android:layout_height="match_parent" android:layout_marginLeft="9dp"/>
     </FrameLayout>
 </FrameLayout>

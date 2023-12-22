@@ -3,26 +3,27 @@ package com.wits.ksw.databinding;
 import android.databinding.Bindable;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.v7.widget.RecyclerView;
+import android.support.p004v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class BmwId8SettingsLanguageLayoutBinding extends ViewDataBinding {
     public final ImageView bmwId8SettingsLanguageBack;
     public final RecyclerView languageRecycle;
     @Bindable
     protected BmwId8SettingsViewModel mViewModel;
 
-    public abstract void setViewModel(BmwId8SettingsViewModel bmwId8SettingsViewModel);
+    public abstract void setViewModel(BmwId8SettingsViewModel viewModel);
 
-    protected BmwId8SettingsLanguageLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView bmwId8SettingsLanguageBack2, RecyclerView languageRecycle2) {
+    protected BmwId8SettingsLanguageLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView bmwId8SettingsLanguageBack, RecyclerView languageRecycle) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.bmwId8SettingsLanguageBack = bmwId8SettingsLanguageBack2;
-        this.languageRecycle = languageRecycle2;
+        this.bmwId8SettingsLanguageBack = bmwId8SettingsLanguageBack;
+        this.languageRecycle = languageRecycle;
     }
 
     public BmwId8SettingsViewModel getViewModel() {
@@ -35,7 +36,7 @@ public abstract class BmwId8SettingsLanguageLayoutBinding extends ViewDataBindin
 
     @Deprecated
     public static BmwId8SettingsLanguageLayoutBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BmwId8SettingsLanguageLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_language_layout, root, attachToRoot, component);
+        return (BmwId8SettingsLanguageLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_language_layout, root, attachToRoot, component);
     }
 
     public static BmwId8SettingsLanguageLayoutBinding inflate(LayoutInflater inflater) {
@@ -44,7 +45,7 @@ public abstract class BmwId8SettingsLanguageLayoutBinding extends ViewDataBindin
 
     @Deprecated
     public static BmwId8SettingsLanguageLayoutBinding inflate(LayoutInflater inflater, Object component) {
-        return (BmwId8SettingsLanguageLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_language_layout, (ViewGroup) null, false, component);
+        return (BmwId8SettingsLanguageLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_language_layout, null, false, component);
     }
 
     public static BmwId8SettingsLanguageLayoutBinding bind(View view) {
@@ -53,6 +54,6 @@ public abstract class BmwId8SettingsLanguageLayoutBinding extends ViewDataBindin
 
     @Deprecated
     public static BmwId8SettingsLanguageLayoutBinding bind(View view, Object component) {
-        return (BmwId8SettingsLanguageLayoutBinding) bind(component, view, R.layout.bmw_id8_settings_language_layout);
+        return (BmwId8SettingsLanguageLayoutBinding) bind(component, view, C0899R.C0902layout.bmw_id8_settings_language_layout);
     }
 }

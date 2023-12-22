@@ -1,10 +1,12 @@
 package kotlin.math;
 
+import com.ibm.icu.text.DateFormat;
 import kotlin.Metadata;
 
-@Metadata(d1 = {"\u0000\"\n\u0000\n\u0002\u0010\u0006\n\u0002\b\u0004\n\u0002\u0010\u0007\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0010\t\n\u0002\b7\u001a\u0011\u0010\u0016\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u0010\u0016\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u0010\u0016\u001a\u00020\t2\u0006\u0010\u0018\u001a\u00020\tH\b\u001a\u0011\u0010\u0016\u001a\u00020\f2\u0006\u0010\u0018\u001a\u00020\fH\b\u001a\u0011\u0010\u0019\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u0010\u0019\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0010\u0010\u001a\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0007\u001a\u0011\u0010\u001a\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u0010\u001b\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u0010\u001b\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0010\u0010\u001c\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0007\u001a\u0011\u0010\u001c\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u0010\u001d\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u0010\u001d\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0019\u0010\u001e\u001a\u00020\u00012\u0006\u0010\u001f\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0019\u0010\u001e\u001a\u00020\u00062\u0006\u0010\u001f\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0010\u0010 \u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0007\u001a\u0011\u0010 \u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u0010!\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u0010!\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u0010\"\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u0010\"\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u0010#\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u0010#\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u0010$\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u0010$\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u0010%\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u0010%\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u0010&\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u0010&\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0019\u0010'\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u00012\u0006\u0010\u001f\u001a\u00020\u0001H\b\u001a\u0019\u0010'\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u00062\u0006\u0010\u001f\u001a\u00020\u0006H\b\u001a\u0011\u0010(\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u0010(\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u0010)\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u0010)\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0018\u0010*\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u00012\u0006\u0010+\u001a\u00020\u0001H\u0007\u001a\u0018\u0010*\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u00062\u0006\u0010+\u001a\u00020\u0006H\u0007\u001a\u0011\u0010,\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u0010,\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0010\u0010-\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0007\u001a\u0010\u0010-\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0007\u001a\u0019\u0010.\u001a\u00020\u00012\u0006\u0010/\u001a\u00020\u00012\u0006\u00100\u001a\u00020\u0001H\b\u001a\u0019\u0010.\u001a\u00020\u00062\u0006\u0010/\u001a\u00020\u00062\u0006\u00100\u001a\u00020\u0006H\b\u001a\u0019\u0010.\u001a\u00020\t2\u0006\u0010/\u001a\u00020\t2\u0006\u00100\u001a\u00020\tH\b\u001a\u0019\u0010.\u001a\u00020\f2\u0006\u0010/\u001a\u00020\f2\u0006\u00100\u001a\u00020\fH\b\u001a\u0019\u00101\u001a\u00020\u00012\u0006\u0010/\u001a\u00020\u00012\u0006\u00100\u001a\u00020\u0001H\b\u001a\u0019\u00101\u001a\u00020\u00062\u0006\u0010/\u001a\u00020\u00062\u0006\u00100\u001a\u00020\u0006H\b\u001a\u0019\u00101\u001a\u00020\t2\u0006\u0010/\u001a\u00020\t2\u0006\u00100\u001a\u00020\tH\b\u001a\u0019\u00101\u001a\u00020\f2\u0006\u0010/\u001a\u00020\f2\u0006\u00100\u001a\u00020\fH\b\u001a\u0011\u00102\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u00102\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u0010\u000f\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u0010\u000f\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u00103\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u00103\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u00104\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u00104\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u00105\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u00105\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u00106\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u00106\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0011\u00107\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0011\u00107\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0010\u00108\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0007\u001a\u0010\u00108\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0007\u001a\u0015\u00109\u001a\u00020\u0001*\u00020\u00012\u0006\u0010:\u001a\u00020\u0001H\b\u001a\u0015\u00109\u001a\u00020\u0006*\u00020\u00062\u0006\u0010:\u001a\u00020\u0006H\b\u001a\r\u0010;\u001a\u00020\u0001*\u00020\u0001H\b\u001a\r\u0010;\u001a\u00020\u0006*\u00020\u0006H\b\u001a\u0015\u0010<\u001a\u00020\u0001*\u00020\u00012\u0006\u0010=\u001a\u00020\u0001H\b\u001a\u0015\u0010<\u001a\u00020\u0006*\u00020\u00062\u0006\u0010=\u001a\u00020\u0006H\b\u001a\r\u0010>\u001a\u00020\u0001*\u00020\u0001H\b\u001a\r\u0010>\u001a\u00020\u0006*\u00020\u0006H\b\u001a\u0015\u0010?\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\b\u001a\u0015\u0010?\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0018\u001a\u00020\tH\b\u001a\u0015\u0010?\u001a\u00020\u0006*\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\b\u001a\u0015\u0010?\u001a\u00020\u0006*\u00020\u00062\u0006\u0010\u0018\u001a\u00020\tH\b\u001a\f\u0010@\u001a\u00020\t*\u00020\u0001H\u0007\u001a\f\u0010@\u001a\u00020\t*\u00020\u0006H\u0007\u001a\f\u0010A\u001a\u00020\f*\u00020\u0001H\u0007\u001a\f\u0010A\u001a\u00020\f*\u00020\u0006H\u0007\u001a\u0015\u0010B\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u000f\u001a\u00020\u0001H\b\u001a\u0015\u0010B\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u000f\u001a\u00020\tH\b\u001a\u0015\u0010B\u001a\u00020\u0006*\u00020\u00062\u0006\u0010\u000f\u001a\u00020\u0006H\b\u001a\u0015\u0010B\u001a\u00020\u0006*\u00020\u00062\u0006\u0010\u000f\u001a\u00020\tH\b\"\u001f\u0010\u0000\u001a\u00020\u0001*\u00020\u00018Æ\u0002X\u0004¢\u0006\f\u0012\u0004\b\u0002\u0010\u0003\u001a\u0004\b\u0004\u0010\u0005\"\u001f\u0010\u0000\u001a\u00020\u0006*\u00020\u00068Æ\u0002X\u0004¢\u0006\f\u0012\u0004\b\u0002\u0010\u0007\u001a\u0004\b\u0004\u0010\b\"\u001f\u0010\u0000\u001a\u00020\t*\u00020\t8Æ\u0002X\u0004¢\u0006\f\u0012\u0004\b\u0002\u0010\n\u001a\u0004\b\u0004\u0010\u000b\"\u001f\u0010\u0000\u001a\u00020\f*\u00020\f8Æ\u0002X\u0004¢\u0006\f\u0012\u0004\b\u0002\u0010\r\u001a\u0004\b\u0004\u0010\u000e\"\u001f\u0010\u000f\u001a\u00020\u0001*\u00020\u00018Æ\u0002X\u0004¢\u0006\f\u0012\u0004\b\u0010\u0010\u0003\u001a\u0004\b\u0011\u0010\u0005\"\u001f\u0010\u000f\u001a\u00020\u0006*\u00020\u00068Æ\u0002X\u0004¢\u0006\f\u0012\u0004\b\u0010\u0010\u0007\u001a\u0004\b\u0011\u0010\b\"\u001e\u0010\u000f\u001a\u00020\t*\u00020\t8FX\u0004¢\u0006\f\u0012\u0004\b\u0010\u0010\n\u001a\u0004\b\u0011\u0010\u000b\"\u001e\u0010\u000f\u001a\u00020\t*\u00020\f8FX\u0004¢\u0006\f\u0012\u0004\b\u0010\u0010\r\u001a\u0004\b\u0011\u0010\u0012\"\u001f\u0010\u0013\u001a\u00020\u0001*\u00020\u00018Æ\u0002X\u0004¢\u0006\f\u0012\u0004\b\u0014\u0010\u0003\u001a\u0004\b\u0015\u0010\u0005\"\u001f\u0010\u0013\u001a\u00020\u0006*\u00020\u00068Æ\u0002X\u0004¢\u0006\f\u0012\u0004\b\u0014\u0010\u0007\u001a\u0004\b\u0015\u0010\b¨\u0006C"}, d2 = {"absoluteValue", "", "getAbsoluteValue$annotations", "(D)V", "getAbsoluteValue", "(D)D", "", "(F)V", "(F)F", "", "(I)V", "(I)I", "", "(J)V", "(J)J", "sign", "getSign$annotations", "getSign", "(J)I", "ulp", "getUlp$annotations", "getUlp", "abs", "x", "n", "acos", "acosh", "asin", "asinh", "atan", "atan2", "y", "atanh", "ceil", "cos", "cosh", "exp", "expm1", "floor", "hypot", "ln", "ln1p", "log", "base", "log10", "log2", "max", "a", "b", "min", "round", "sin", "sinh", "sqrt", "tan", "tanh", "truncate", "IEEErem", "divisor", "nextDown", "nextTowards", "to", "nextUp", "pow", "roundToInt", "roundToLong", "withSign", "kotlin-stdlib"}, k = 5, mv = {1, 6, 0}, xi = 49, xs = "kotlin/math/MathKt")
 /* compiled from: MathJVM.kt */
-class MathKt__MathJVMKt extends MathKt__MathHKt {
+@Metadata(m25d1 = {"\u0000\"\n\u0000\n\u0002\u0010\u0006\n\u0002\b\u0004\n\u0002\u0010\u0007\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0010\t\n\u0002\b7\u001a\u0011\u0010\u0016\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u0010\u0016\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u0010\u0016\u001a\u00020\t2\u0006\u0010\u0018\u001a\u00020\tH\u0087\b\u001a\u0011\u0010\u0016\u001a\u00020\f2\u0006\u0010\u0018\u001a\u00020\fH\u0087\b\u001a\u0011\u0010\u0019\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u0010\u0019\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0010\u0010\u001a\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0007\u001a\u0011\u0010\u001a\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u0010\u001b\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u0010\u001b\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0010\u0010\u001c\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0007\u001a\u0011\u0010\u001c\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u0010\u001d\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u0010\u001d\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0019\u0010\u001e\u001a\u00020\u00012\u0006\u0010\u001f\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0019\u0010\u001e\u001a\u00020\u00062\u0006\u0010\u001f\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0010\u0010 \u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0007\u001a\u0011\u0010 \u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u0010!\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u0010!\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u0010\"\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u0010\"\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u0010#\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u0010#\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u0010$\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u0010$\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u0010%\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u0010%\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u0010&\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u0010&\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0019\u0010'\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u00012\u0006\u0010\u001f\u001a\u00020\u0001H\u0087\b\u001a\u0019\u0010'\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u00062\u0006\u0010\u001f\u001a\u00020\u0006H\u0087\b\u001a\u0011\u0010(\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u0010(\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u0010)\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u0010)\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0018\u0010*\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u00012\u0006\u0010+\u001a\u00020\u0001H\u0007\u001a\u0018\u0010*\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u00062\u0006\u0010+\u001a\u00020\u0006H\u0007\u001a\u0011\u0010,\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u0010,\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0010\u0010-\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0007\u001a\u0010\u0010-\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0007\u001a\u0019\u0010.\u001a\u00020\u00012\u0006\u0010/\u001a\u00020\u00012\u0006\u00100\u001a\u00020\u0001H\u0087\b\u001a\u0019\u0010.\u001a\u00020\u00062\u0006\u0010/\u001a\u00020\u00062\u0006\u00100\u001a\u00020\u0006H\u0087\b\u001a\u0019\u0010.\u001a\u00020\t2\u0006\u0010/\u001a\u00020\t2\u0006\u00100\u001a\u00020\tH\u0087\b\u001a\u0019\u0010.\u001a\u00020\f2\u0006\u0010/\u001a\u00020\f2\u0006\u00100\u001a\u00020\fH\u0087\b\u001a\u0019\u00101\u001a\u00020\u00012\u0006\u0010/\u001a\u00020\u00012\u0006\u00100\u001a\u00020\u0001H\u0087\b\u001a\u0019\u00101\u001a\u00020\u00062\u0006\u0010/\u001a\u00020\u00062\u0006\u00100\u001a\u00020\u0006H\u0087\b\u001a\u0019\u00101\u001a\u00020\t2\u0006\u0010/\u001a\u00020\t2\u0006\u00100\u001a\u00020\tH\u0087\b\u001a\u0019\u00101\u001a\u00020\f2\u0006\u0010/\u001a\u00020\f2\u0006\u00100\u001a\u00020\fH\u0087\b\u001a\u0011\u00102\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u00102\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u0010\u000f\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u0010\u000f\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u00103\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u00103\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u00104\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u00104\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u00105\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u00105\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u00106\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u00106\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0011\u00107\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0011\u00107\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0010\u00108\u001a\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0007\u001a\u0010\u00108\u001a\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0007\u001a\u0015\u00109\u001a\u00020\u0001*\u00020\u00012\u0006\u0010:\u001a\u00020\u0001H\u0087\b\u001a\u0015\u00109\u001a\u00020\u0006*\u00020\u00062\u0006\u0010:\u001a\u00020\u0006H\u0087\b\u001a\r\u0010;\u001a\u00020\u0001*\u00020\u0001H\u0087\b\u001a\r\u0010;\u001a\u00020\u0006*\u00020\u0006H\u0087\b\u001a\u0015\u0010<\u001a\u00020\u0001*\u00020\u00012\u0006\u0010=\u001a\u00020\u0001H\u0087\b\u001a\u0015\u0010<\u001a\u00020\u0006*\u00020\u00062\u0006\u0010=\u001a\u00020\u0006H\u0087\b\u001a\r\u0010>\u001a\u00020\u0001*\u00020\u0001H\u0087\b\u001a\r\u0010>\u001a\u00020\u0006*\u00020\u0006H\u0087\b\u001a\u0015\u0010?\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0017\u001a\u00020\u0001H\u0087\b\u001a\u0015\u0010?\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0018\u001a\u00020\tH\u0087\b\u001a\u0015\u0010?\u001a\u00020\u0006*\u00020\u00062\u0006\u0010\u0017\u001a\u00020\u0006H\u0087\b\u001a\u0015\u0010?\u001a\u00020\u0006*\u00020\u00062\u0006\u0010\u0018\u001a\u00020\tH\u0087\b\u001a\f\u0010@\u001a\u00020\t*\u00020\u0001H\u0007\u001a\f\u0010@\u001a\u00020\t*\u00020\u0006H\u0007\u001a\f\u0010A\u001a\u00020\f*\u00020\u0001H\u0007\u001a\f\u0010A\u001a\u00020\f*\u00020\u0006H\u0007\u001a\u0015\u0010B\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u000f\u001a\u00020\u0001H\u0087\b\u001a\u0015\u0010B\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u000f\u001a\u00020\tH\u0087\b\u001a\u0015\u0010B\u001a\u00020\u0006*\u00020\u00062\u0006\u0010\u000f\u001a\u00020\u0006H\u0087\b\u001a\u0015\u0010B\u001a\u00020\u0006*\u00020\u00062\u0006\u0010\u000f\u001a\u00020\tH\u0087\b\"\u001f\u0010\u0000\u001a\u00020\u0001*\u00020\u00018\u00c6\u0002X\u0087\u0004\u00a2\u0006\f\u0012\u0004\b\u0002\u0010\u0003\u001a\u0004\b\u0004\u0010\u0005\"\u001f\u0010\u0000\u001a\u00020\u0006*\u00020\u00068\u00c6\u0002X\u0087\u0004\u00a2\u0006\f\u0012\u0004\b\u0002\u0010\u0007\u001a\u0004\b\u0004\u0010\b\"\u001f\u0010\u0000\u001a\u00020\t*\u00020\t8\u00c6\u0002X\u0087\u0004\u00a2\u0006\f\u0012\u0004\b\u0002\u0010\n\u001a\u0004\b\u0004\u0010\u000b\"\u001f\u0010\u0000\u001a\u00020\f*\u00020\f8\u00c6\u0002X\u0087\u0004\u00a2\u0006\f\u0012\u0004\b\u0002\u0010\r\u001a\u0004\b\u0004\u0010\u000e\"\u001f\u0010\u000f\u001a\u00020\u0001*\u00020\u00018\u00c6\u0002X\u0087\u0004\u00a2\u0006\f\u0012\u0004\b\u0010\u0010\u0003\u001a\u0004\b\u0011\u0010\u0005\"\u001f\u0010\u000f\u001a\u00020\u0006*\u00020\u00068\u00c6\u0002X\u0087\u0004\u00a2\u0006\f\u0012\u0004\b\u0010\u0010\u0007\u001a\u0004\b\u0011\u0010\b\"\u001e\u0010\u000f\u001a\u00020\t*\u00020\t8FX\u0087\u0004\u00a2\u0006\f\u0012\u0004\b\u0010\u0010\n\u001a\u0004\b\u0011\u0010\u000b\"\u001e\u0010\u000f\u001a\u00020\t*\u00020\f8FX\u0087\u0004\u00a2\u0006\f\u0012\u0004\b\u0010\u0010\r\u001a\u0004\b\u0011\u0010\u0012\"\u001f\u0010\u0013\u001a\u00020\u0001*\u00020\u00018\u00c6\u0002X\u0087\u0004\u00a2\u0006\f\u0012\u0004\b\u0014\u0010\u0003\u001a\u0004\b\u0015\u0010\u0005\"\u001f\u0010\u0013\u001a\u00020\u0006*\u00020\u00068\u00c6\u0002X\u0087\u0004\u00a2\u0006\f\u0012\u0004\b\u0014\u0010\u0007\u001a\u0004\b\u0015\u0010\b\u00a8\u0006C"}, m24d2 = {"absoluteValue", "", "getAbsoluteValue$annotations", "(D)V", "getAbsoluteValue", "(D)D", "", "(F)V", "(F)F", "", "(I)V", "(I)I", "", "(J)V", "(J)J", "sign", "getSign$annotations", "getSign", "(J)I", "ulp", "getUlp$annotations", "getUlp", "abs", "x", "n", "acos", "acosh", "asin", "asinh", "atan", "atan2", DateFormat.YEAR, "atanh", "ceil", "cos", "cosh", "exp", "expm1", "floor", "hypot", "ln", "ln1p", "log", "base", "log10", "log2", "max", "a", "b", "min", "round", "sin", "sinh", "sqrt", "tan", "tanh", "truncate", "IEEErem", "divisor", "nextDown", "nextTowards", "to", "nextUp", "pow", "roundToInt", "roundToLong", "withSign", "kotlin-stdlib"}, m23k = 5, m22mv = {1, 6, 0}, m20xi = 49, m19xs = "kotlin/math/MathKt")
+/* loaded from: classes.dex */
+class MathKt__MathJVMKt extends MathH {
     public static /* synthetic */ void getAbsoluteValue$annotations(double d) {
     }
 
@@ -76,23 +78,27 @@ class MathKt__MathJVMKt extends MathKt__MathHKt {
     }
 
     public static final double asinh(double x) {
-        if (x >= Constants.taylor_n_bound) {
-            if (x <= Constants.upper_taylor_n_bound) {
-                return Math.log(Math.sqrt((x * x) + ((double) 1)) + x);
+        if (x >= MathJVM.taylor_n_bound) {
+            if (x > MathJVM.upper_taylor_n_bound) {
+                if (x > MathJVM.upper_taylor_2_bound) {
+                    double result = Math.log(x) + MathJVM.LN2;
+                    return result;
+                }
+                double d = 2;
+                double result2 = Math.log((x * d) + (1 / (d * x)));
+                return result2;
             }
-            if (x > Constants.upper_taylor_2_bound) {
-                return Math.log(x) + Constants.LN2;
+            double result3 = Math.log(Math.sqrt((x * x) + 1) + x);
+            return result3;
+        } else if (x > (-MathJVM.taylor_n_bound)) {
+            if (Math.abs(x) >= MathJVM.taylor_2_bound) {
+                double result4 = x - (((x * x) * x) / 6);
+                return result4;
             }
-            double d = (double) 2;
-            return Math.log((x * d) + (((double) 1) / (d * x)));
-        } else if (x <= (-Constants.taylor_n_bound)) {
-            return -MathKt.asinh(-x);
+            return x;
         } else {
-            double result = x;
-            if (Math.abs(x) >= Constants.taylor_2_bound) {
-                return result - (((x * x) * x) / ((double) 6));
-            }
-            return result;
+            double result5 = -MathKt.asinh(-x);
+            return result5;
         }
     }
 
@@ -100,31 +106,31 @@ class MathKt__MathJVMKt extends MathKt__MathHKt {
         if (x < 1.0d) {
             return Double.NaN;
         }
-        if (x > Constants.upper_taylor_2_bound) {
-            return Math.log(x) + Constants.LN2;
+        if (x > MathJVM.upper_taylor_2_bound) {
+            return Math.log(x) + MathJVM.LN2;
         }
-        double d = (double) 1;
-        if (x - d >= Constants.taylor_n_bound) {
+        double d = 1;
+        if (x - d >= MathJVM.taylor_n_bound) {
             return Math.log(Math.sqrt((x * x) - d) + x);
         }
         double y = Math.sqrt(x - d);
         double result = y;
-        if (y >= Constants.taylor_2_bound) {
-            result -= ((y * y) * y) / ((double) 12);
+        if (y >= MathJVM.taylor_2_bound) {
+            result -= ((y * y) * y) / 12;
         }
         return Math.sqrt(2.0d) * result;
     }
 
     public static final double atanh(double x) {
-        if (Math.abs(x) < Constants.taylor_n_bound) {
-            double result = x;
-            if (Math.abs(x) > Constants.taylor_2_bound) {
-                return result + (((x * x) * x) / ((double) 3));
+        if (Math.abs(x) < MathJVM.taylor_n_bound) {
+            if (Math.abs(x) > MathJVM.taylor_2_bound) {
+                double result = x + (((x * x) * x) / 3);
+                return result;
             }
-            return result;
+            return x;
         }
-        double d = (double) 1;
-        return Math.log((d + x) / (d - x)) / ((double) 2);
+        double d = 1;
+        return Math.log((d + x) / (d - x)) / 2;
     }
 
     private static final double hypot(double x, double y) {
@@ -144,16 +150,17 @@ class MathKt__MathJVMKt extends MathKt__MathHKt {
     }
 
     public static final double log(double x, double base) {
-        if (base <= 0.0d) {
-            return Double.NaN;
+        if (base > 0.0d) {
+            if (base == 1.0d) {
+                return Double.NaN;
+            }
+            return Math.log(x) / Math.log(base);
         }
-        if (base == 1.0d) {
-            return Double.NaN;
-        }
-        return Math.log(x) / Math.log(base);
+        return Double.NaN;
     }
 
-    private static final double ln(double x) {
+    /* renamed from: ln */
+    private static final double m5ln(double x) {
         return Math.log(x);
     }
 
@@ -162,7 +169,7 @@ class MathKt__MathJVMKt extends MathKt__MathHKt {
     }
 
     public static final double log2(double x) {
-        return Math.log(x) / Constants.LN2;
+        return Math.log(x) / MathJVM.LN2;
     }
 
     private static final double ln1p(double x) {
@@ -181,10 +188,7 @@ class MathKt__MathJVMKt extends MathKt__MathHKt {
         if (Double.isNaN(x) || Double.isInfinite(x)) {
             return x;
         }
-        if (x > 0.0d) {
-            return Math.floor(x);
-        }
-        return Math.ceil(x);
+        return x > 0.0d ? Math.floor(x) : Math.ceil(x);
     }
 
     private static final double round(double x) {
@@ -212,7 +216,7 @@ class MathKt__MathJVMKt extends MathKt__MathHKt {
     }
 
     private static final double pow(double $this$pow, int n) {
-        return Math.pow($this$pow, (double) n);
+        return Math.pow($this$pow, n);
     }
 
     private static final double IEEErem(double $this$IEEErem, double divisor) {
@@ -232,7 +236,7 @@ class MathKt__MathJVMKt extends MathKt__MathHKt {
     }
 
     private static final double withSign(double $this$withSign, int sign) {
-        return Math.copySign($this$withSign, (double) sign);
+        return Math.copySign($this$withSign, sign);
     }
 
     private static final double getUlp(double $this$ulp) {
@@ -254,137 +258,135 @@ class MathKt__MathJVMKt extends MathKt__MathHKt {
     public static final int roundToInt(double $this$roundToInt) {
         if (Double.isNaN($this$roundToInt)) {
             throw new IllegalArgumentException("Cannot round NaN value.");
-        } else if ($this$roundToInt > 2.147483647E9d) {
-            return Integer.MAX_VALUE;
-        } else {
-            if ($this$roundToInt < -2.147483648E9d) {
-                return Integer.MIN_VALUE;
-            }
-            return (int) Math.round($this$roundToInt);
         }
+        if ($this$roundToInt > 2.147483647E9d) {
+            return Integer.MAX_VALUE;
+        }
+        if ($this$roundToInt < -2.147483648E9d) {
+            return Integer.MIN_VALUE;
+        }
+        return (int) Math.round($this$roundToInt);
     }
 
     public static final long roundToLong(double $this$roundToLong) {
-        if (!Double.isNaN($this$roundToLong)) {
-            return Math.round($this$roundToLong);
+        if (Double.isNaN($this$roundToLong)) {
+            throw new IllegalArgumentException("Cannot round NaN value.");
         }
-        throw new IllegalArgumentException("Cannot round NaN value.");
+        return Math.round($this$roundToLong);
     }
 
     private static final float sin(float x) {
-        return (float) Math.sin((double) x);
+        return (float) Math.sin(x);
     }
 
     private static final float cos(float x) {
-        return (float) Math.cos((double) x);
+        return (float) Math.cos(x);
     }
 
     private static final float tan(float x) {
-        return (float) Math.tan((double) x);
+        return (float) Math.tan(x);
     }
 
     private static final float asin(float x) {
-        return (float) Math.asin((double) x);
+        return (float) Math.asin(x);
     }
 
     private static final float acos(float x) {
-        return (float) Math.acos((double) x);
+        return (float) Math.acos(x);
     }
 
     private static final float atan(float x) {
-        return (float) Math.atan((double) x);
+        return (float) Math.atan(x);
     }
 
     private static final float atan2(float y, float x) {
-        return (float) Math.atan2((double) y, (double) x);
+        return (float) Math.atan2(y, x);
     }
 
     private static final float sinh(float x) {
-        return (float) Math.sinh((double) x);
+        return (float) Math.sinh(x);
     }
 
     private static final float cosh(float x) {
-        return (float) Math.cosh((double) x);
+        return (float) Math.cosh(x);
     }
 
     private static final float tanh(float x) {
-        return (float) Math.tanh((double) x);
+        return (float) Math.tanh(x);
     }
 
     private static final float asinh(float x) {
-        return (float) MathKt.asinh((double) x);
+        return (float) MathKt.asinh(x);
     }
 
     private static final float acosh(float x) {
-        return (float) MathKt.acosh((double) x);
+        return (float) MathKt.acosh(x);
     }
 
     private static final float atanh(float x) {
-        return (float) MathKt.atanh((double) x);
+        return (float) MathKt.atanh(x);
     }
 
     private static final float hypot(float x, float y) {
-        return (float) Math.hypot((double) x, (double) y);
+        return (float) Math.hypot(x, y);
     }
 
     private static final float sqrt(float x) {
-        return (float) Math.sqrt((double) x);
+        return (float) Math.sqrt(x);
     }
 
     private static final float exp(float x) {
-        return (float) Math.exp((double) x);
+        return (float) Math.exp(x);
     }
 
     private static final float expm1(float x) {
-        return (float) Math.expm1((double) x);
+        return (float) Math.expm1(x);
     }
 
     public static final float log(float x, float base) {
-        if (base <= 0.0f) {
-            return Float.NaN;
+        if (base > 0.0f) {
+            if (base == 1.0f) {
+                return Float.NaN;
+            }
+            return (float) (Math.log(x) / Math.log(base));
         }
-        if (base == 1.0f) {
-            return Float.NaN;
-        }
-        return (float) (Math.log((double) x) / Math.log((double) base));
+        return Float.NaN;
     }
 
-    private static final float ln(float x) {
-        return (float) Math.log((double) x);
+    /* renamed from: ln */
+    private static final float m4ln(float x) {
+        return (float) Math.log(x);
     }
 
     private static final float log10(float x) {
-        return (float) Math.log10((double) x);
+        return (float) Math.log10(x);
     }
 
     public static final float log2(float x) {
-        return (float) (Math.log((double) x) / Constants.LN2);
+        return (float) (Math.log(x) / MathJVM.LN2);
     }
 
     private static final float ln1p(float x) {
-        return (float) Math.log1p((double) x);
+        return (float) Math.log1p(x);
     }
 
     private static final float ceil(float x) {
-        return (float) Math.ceil((double) x);
+        return (float) Math.ceil(x);
     }
 
     private static final float floor(float x) {
-        return (float) Math.floor((double) x);
+        return (float) Math.floor(x);
     }
 
     public static final float truncate(float x) {
         if (Float.isNaN(x) || Float.isInfinite(x)) {
             return x;
         }
-        if (x > 0.0f) {
-            return (float) Math.floor((double) x);
-        }
-        return (float) Math.ceil((double) x);
+        return x > 0.0f ? (float) Math.floor(x) : (float) Math.ceil(x);
     }
 
     private static final float round(float x) {
-        return (float) Math.rint((double) x);
+        return (float) Math.rint(x);
     }
 
     private static final float abs(float x) {
@@ -404,15 +406,15 @@ class MathKt__MathJVMKt extends MathKt__MathHKt {
     }
 
     private static final float pow(float $this$pow, float x) {
-        return (float) Math.pow((double) $this$pow, (double) x);
+        return (float) Math.pow($this$pow, x);
     }
 
     private static final float pow(float $this$pow, int n) {
-        return (float) Math.pow((double) $this$pow, (double) n);
+        return (float) Math.pow($this$pow, n);
     }
 
     private static final float IEEErem(float $this$IEEErem, float divisor) {
-        return (float) Math.IEEEremainder((double) $this$IEEErem, (double) divisor);
+        return (float) Math.IEEEremainder($this$IEEErem, divisor);
     }
 
     private static final float getAbsoluteValue(float $this$absoluteValue) {
@@ -428,7 +430,7 @@ class MathKt__MathJVMKt extends MathKt__MathHKt {
     }
 
     private static final float withSign(float $this$withSign, int sign) {
-        return Math.copySign($this$withSign, (float) sign);
+        return Math.copySign($this$withSign, sign);
     }
 
     private static final float getUlp(float $this$ulp) {
@@ -444,18 +446,18 @@ class MathKt__MathJVMKt extends MathKt__MathHKt {
     }
 
     private static final float nextTowards(float $this$nextTowards, float to) {
-        return Math.nextAfter($this$nextTowards, (double) to);
+        return Math.nextAfter($this$nextTowards, to);
     }
 
     public static final int roundToInt(float $this$roundToInt) {
-        if (!Float.isNaN($this$roundToInt)) {
-            return Math.round($this$roundToInt);
+        if (Float.isNaN($this$roundToInt)) {
+            throw new IllegalArgumentException("Cannot round NaN value.");
         }
-        throw new IllegalArgumentException("Cannot round NaN value.");
+        return Math.round($this$roundToInt);
     }
 
     public static final long roundToLong(float $this$roundToLong) {
-        return MathKt.roundToLong((double) $this$roundToLong);
+        return MathKt.roundToLong($this$roundToLong);
     }
 
     private static final int abs(int n) {
@@ -478,10 +480,7 @@ class MathKt__MathJVMKt extends MathKt__MathHKt {
         if ($this$sign < 0) {
             return -1;
         }
-        if ($this$sign > 0) {
-            return 1;
-        }
-        return 0;
+        return $this$sign > 0 ? 1 : 0;
     }
 
     private static final long abs(long n) {
@@ -504,9 +503,6 @@ class MathKt__MathJVMKt extends MathKt__MathHKt {
         if ($this$sign < 0) {
             return -1;
         }
-        if ($this$sign > 0) {
-            return 1;
-        }
-        return 0;
+        return $this$sign > 0 ? 1 : 0;
     }
 }

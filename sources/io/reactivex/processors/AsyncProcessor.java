@@ -10,6 +10,7 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class AsyncProcessor<T> extends FlowableProcessor<T> {
     static final AsyncSubscription[] EMPTY = new AsyncSubscription[0];
     static final AsyncSubscription[] TERMINATED = new AsyncSubscription[0];
@@ -25,6 +26,7 @@ public final class AsyncProcessor<T> extends FlowableProcessor<T> {
     AsyncProcessor() {
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onSubscribe(Subscription s) {
         if (this.subscribers.get() == TERMINATED) {
             s.cancel();
@@ -33,14 +35,18 @@ public final class AsyncProcessor<T> extends FlowableProcessor<T> {
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onNext(T t) {
         ObjectHelper.requireNonNull(t, "onNext called with null. Null values are generally not allowed in 2.x operators and sources.");
-        if (this.subscribers.get() != TERMINATED) {
-            this.value = t;
+        if (this.subscribers.get() == TERMINATED) {
+            return;
         }
+        this.value = t;
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onError(Throwable t) {
+        AsyncSubscription<T>[] andSet;
         ObjectHelper.requireNonNull(t, "onError called with null. Null values are generally not allowed in 2.x operators and sources.");
         AsyncSubscription<T>[] asyncSubscriptionArr = this.subscribers.get();
         AsyncSubscription<T>[] asyncSubscriptionArr2 = TERMINATED;
@@ -50,46 +56,54 @@ public final class AsyncProcessor<T> extends FlowableProcessor<T> {
         }
         this.value = null;
         this.error = t;
-        for (AsyncSubscription<T> as : (AsyncSubscription[]) this.subscribers.getAndSet(asyncSubscriptionArr2)) {
+        for (AsyncSubscription<T> as : this.subscribers.getAndSet(asyncSubscriptionArr2)) {
             as.onError(t);
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onComplete() {
         AsyncSubscription<T>[] asyncSubscriptionArr = this.subscribers.get();
         AsyncSubscription<T>[] asyncSubscriptionArr2 = TERMINATED;
-        if (asyncSubscriptionArr != asyncSubscriptionArr2) {
-            T v = this.value;
-            AsyncSubscription<T>[] array = (AsyncSubscription[]) this.subscribers.getAndSet(asyncSubscriptionArr2);
-            int i = 0;
-            if (v == null) {
-                int length = array.length;
-                while (i < length) {
-                    array[i].onComplete();
-                    i++;
-                }
-                return;
-            }
-            int length2 = array.length;
-            while (i < length2) {
-                array[i].complete(v);
+        if (asyncSubscriptionArr == asyncSubscriptionArr2) {
+            return;
+        }
+        T v = this.value;
+        AsyncSubscription<T>[] array = this.subscribers.getAndSet(asyncSubscriptionArr2);
+        int i = 0;
+        if (v == null) {
+            int length = array.length;
+            while (i < length) {
+                AsyncSubscription<T> as = array[i];
+                as.onComplete();
                 i++;
             }
+            return;
+        }
+        int length2 = array.length;
+        while (i < length2) {
+            AsyncSubscription<T> as2 = array[i];
+            as2.complete(v);
+            i++;
         }
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public boolean hasSubscribers() {
-        return ((AsyncSubscription[]) this.subscribers.get()).length != 0;
+        return this.subscribers.get().length != 0;
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public boolean hasThrowable() {
         return this.subscribers.get() == TERMINATED && this.error != null;
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public boolean hasComplete() {
         return this.subscribers.get() == TERMINATED && this.error == null;
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public Throwable getThrowable() {
         if (this.subscribers.get() == TERMINATED) {
             return this.error;
@@ -97,78 +111,78 @@ public final class AsyncProcessor<T> extends FlowableProcessor<T> {
         return null;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
         AsyncSubscription<T> as = new AsyncSubscription<>(s, this);
         s.onSubscribe(as);
-        if (!add(as)) {
-            Throwable ex = this.error;
-            if (ex != null) {
-                s.onError(ex);
+        if (add(as)) {
+            if (as.isCancelled()) {
+                remove(as);
                 return;
             }
-            T v = this.value;
-            if (v != null) {
-                as.complete(v);
-            } else {
-                as.onComplete();
-            }
-        } else if (as.isCancelled()) {
-            remove(as);
+            return;
+        }
+        Throwable ex = this.error;
+        if (ex != null) {
+            s.onError(ex);
+            return;
+        }
+        T v = this.value;
+        if (v != null) {
+            as.complete(v);
+        } else {
+            as.onComplete();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean add(AsyncSubscription<T> ps) {
+    boolean add(AsyncSubscription<T> ps) {
         AsyncSubscription<T>[] a;
         AsyncSubscription<T>[] b;
         do {
-            a = (AsyncSubscription[]) this.subscribers.get();
+            a = this.subscribers.get();
             if (a == TERMINATED) {
                 return false;
             }
             int n = a.length;
-            b = new AsyncSubscription[(n + 1)];
+            b = new AsyncSubscription[n + 1];
             System.arraycopy(a, 0, b, 0, n);
             b[n] = ps;
         } while (!this.subscribers.compareAndSet(a, b));
         return true;
     }
 
-    /* access modifiers changed from: package-private */
-    public void remove(AsyncSubscription<T> ps) {
+    /* JADX WARN: Multi-variable type inference failed */
+    void remove(AsyncSubscription<T> ps) {
         AsyncSubscription<T>[] a;
         AsyncSubscription<T>[] b;
         do {
-            a = (AsyncSubscription[]) this.subscribers.get();
+            a = this.subscribers.get();
             int n = a.length;
-            if (n != 0) {
-                int j = -1;
-                int i = 0;
-                while (true) {
-                    if (i >= n) {
-                        break;
-                    } else if (a[i] == ps) {
-                        j = i;
-                        break;
-                    } else {
-                        i++;
-                    }
-                }
-                if (j >= 0) {
-                    if (n == 1) {
-                        b = EMPTY;
-                    } else {
-                        AsyncSubscription<T>[] b2 = new AsyncSubscription[(n - 1)];
-                        System.arraycopy(a, 0, b2, 0, j);
-                        System.arraycopy(a, j + 1, b2, j, (n - j) - 1);
-                        b = b2;
-                    }
-                } else {
-                    return;
-                }
-            } else {
+            if (n == 0) {
                 return;
+            }
+            int j = -1;
+            int i = 0;
+            while (true) {
+                if (i >= n) {
+                    break;
+                } else if (a[i] != ps) {
+                    i++;
+                } else {
+                    j = i;
+                    break;
+                }
+            }
+            if (j < 0) {
+                return;
+            }
+            if (n == 1) {
+                b = EMPTY;
+            } else {
+                AsyncSubscription<T>[] b2 = new AsyncSubscription[n - 1];
+                System.arraycopy(a, 0, b2, 0, j);
+                System.arraycopy(a, j + 1, b2, j, (n - j) - 1);
+                b = b2;
             }
         } while (!this.subscribers.compareAndSet(a, b));
     }
@@ -187,10 +201,7 @@ public final class AsyncProcessor<T> extends FlowableProcessor<T> {
     @Deprecated
     public Object[] getValues() {
         T v = getValue();
-        if (v == null) {
-            return new Object[0];
-        }
-        return new Object[]{v};
+        return v != null ? new Object[]{v} : new Object[0];
     }
 
     @Deprecated
@@ -203,7 +214,7 @@ public final class AsyncProcessor<T> extends FlowableProcessor<T> {
             return array;
         }
         if (array.length == 0) {
-            array = Arrays.copyOf(array, 1);
+            array = (T[]) Arrays.copyOf(array, 1);
         }
         array[0] = v;
         if (array.length != 1) {
@@ -212,30 +223,30 @@ public final class AsyncProcessor<T> extends FlowableProcessor<T> {
         return array;
     }
 
+    /* loaded from: classes.dex */
     static final class AsyncSubscription<T> extends DeferredScalarSubscription<T> {
         private static final long serialVersionUID = 5629876084736248016L;
         final AsyncProcessor<T> parent;
 
-        AsyncSubscription(Subscriber<? super T> actual, AsyncProcessor<T> parent2) {
+        AsyncSubscription(Subscriber<? super T> actual, AsyncProcessor<T> parent) {
             super(actual);
-            this.parent = parent2;
+            this.parent = parent;
         }
 
+        @Override // io.reactivex.internal.subscriptions.DeferredScalarSubscription, org.reactivestreams.Subscription
         public void cancel() {
             if (super.tryCancel()) {
                 this.parent.remove(this);
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void onComplete() {
+        void onComplete() {
             if (!isCancelled()) {
                 this.downstream.onComplete();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void onError(Throwable t) {
+        void onError(Throwable t) {
             if (isCancelled()) {
                 RxJavaPlugins.onError(t);
             } else {

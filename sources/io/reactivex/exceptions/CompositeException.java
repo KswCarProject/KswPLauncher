@@ -11,51 +11,52 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+/* loaded from: classes.dex */
 public final class CompositeException extends RuntimeException {
     private static final long serialVersionUID = 3026362227162912146L;
     private Throwable cause;
     private final List<Throwable> exceptions;
     private final String message;
 
-    /* JADX INFO: this call moved to the top of the method (can break code semantics) */
-    public CompositeException(Throwable... exceptions2) {
-        this((Iterable<? extends Throwable>) exceptions2 == null ? Collections.singletonList(new NullPointerException("exceptions was null")) : Arrays.asList(exceptions2));
+    public CompositeException(Throwable... exceptions) {
+        this(exceptions == null ? Collections.singletonList(new NullPointerException("exceptions was null")) : Arrays.asList(exceptions));
     }
 
     public CompositeException(Iterable<? extends Throwable> errors) {
-        Set<Throwable> deDupedExceptions = new LinkedHashSet<>();
+        LinkedHashSet linkedHashSet = new LinkedHashSet();
         List<Throwable> localExceptions = new ArrayList<>();
         if (errors != null) {
             for (Throwable ex : errors) {
                 if (ex instanceof CompositeException) {
-                    deDupedExceptions.addAll(((CompositeException) ex).getExceptions());
+                    linkedHashSet.addAll(((CompositeException) ex).getExceptions());
                 } else if (ex != null) {
-                    deDupedExceptions.add(ex);
+                    linkedHashSet.add(ex);
                 } else {
-                    deDupedExceptions.add(new NullPointerException("Throwable was null!"));
+                    linkedHashSet.add(new NullPointerException("Throwable was null!"));
                 }
             }
         } else {
-            deDupedExceptions.add(new NullPointerException("errors was null"));
+            linkedHashSet.add(new NullPointerException("errors was null"));
         }
-        if (!deDupedExceptions.isEmpty()) {
-            localExceptions.addAll(deDupedExceptions);
-            List<T> unmodifiableList = Collections.unmodifiableList(localExceptions);
-            this.exceptions = unmodifiableList;
-            this.message = unmodifiableList.size() + " exceptions occurred. ";
-            return;
+        if (linkedHashSet.isEmpty()) {
+            throw new IllegalArgumentException("errors is empty");
         }
-        throw new IllegalArgumentException("errors is empty");
+        localExceptions.addAll(linkedHashSet);
+        List<Throwable> unmodifiableList = Collections.unmodifiableList(localExceptions);
+        this.exceptions = unmodifiableList;
+        this.message = unmodifiableList.size() + " exceptions occurred. ";
     }
 
     public List<Throwable> getExceptions() {
         return this.exceptions;
     }
 
+    @Override // java.lang.Throwable
     public String getMessage() {
         return this.message;
     }
 
+    @Override // java.lang.Throwable
     public synchronized Throwable getCause() {
         if (this.cause == null) {
             Throwable localCause = new CompositeExceptionCausalChain();
@@ -66,7 +67,8 @@ public final class CompositeException extends RuntimeException {
                 Throwable e = it.next();
                 if (!seenCauses.contains(e)) {
                     seenCauses.add(e);
-                    for (Throwable child : getListOfCauses(e)) {
+                    List<Throwable> listOfCauses = getListOfCauses(e);
+                    for (Throwable child : listOfCauses) {
                         if (seenCauses.contains(child)) {
                             e = new RuntimeException("Duplicate found in causal chain so cropping to prevent loop ...");
                         } else {
@@ -85,23 +87,27 @@ public final class CompositeException extends RuntimeException {
         return this.cause;
     }
 
+    @Override // java.lang.Throwable
     public void printStackTrace() {
         printStackTrace(System.err);
     }
 
+    @Override // java.lang.Throwable
     public void printStackTrace(PrintStream s) {
-        printStackTrace((PrintStreamOrWriter) new WrappedPrintStream(s));
+        printStackTrace(new WrappedPrintStream(s));
     }
 
+    @Override // java.lang.Throwable
     public void printStackTrace(PrintWriter s) {
-        printStackTrace((PrintStreamOrWriter) new WrappedPrintWriter(s));
+        printStackTrace(new WrappedPrintWriter(s));
     }
 
     private void printStackTrace(PrintStreamOrWriter s) {
+        StackTraceElement[] stackTrace;
         StringBuilder b = new StringBuilder(128);
-        b.append(this).append(10);
+        b.append(this).append('\n');
         for (StackTraceElement myStackElement : getStackTrace()) {
-            b.append("\tat ").append(myStackElement).append(10);
+            b.append("\tat ").append(myStackElement).append('\n');
         }
         int i = 1;
         for (Throwable ex : this.exceptions) {
@@ -113,9 +119,10 @@ public final class CompositeException extends RuntimeException {
     }
 
     private void appendStackTrace(StringBuilder b, Throwable ex, String prefix) {
-        b.append(prefix).append(ex).append(10);
+        StackTraceElement[] stackTrace;
+        b.append(prefix).append(ex).append('\n');
         for (StackTraceElement stackElement : ex.getStackTrace()) {
-            b.append("\t\tat ").append(stackElement).append(10);
+            b.append("\t\tat ").append(stackElement).append('\n');
         }
         if (ex.getCause() != null) {
             b.append("\tCaused by: ");
@@ -123,40 +130,43 @@ public final class CompositeException extends RuntimeException {
         }
     }
 
+    /* loaded from: classes.dex */
     static abstract class PrintStreamOrWriter {
-        /* access modifiers changed from: package-private */
-        public abstract void println(Object obj);
+        abstract void println(Object obj);
 
         PrintStreamOrWriter() {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class WrappedPrintStream extends PrintStreamOrWriter {
         private final PrintStream printStream;
 
-        WrappedPrintStream(PrintStream printStream2) {
-            this.printStream = printStream2;
+        WrappedPrintStream(PrintStream printStream) {
+            this.printStream = printStream;
         }
 
-        /* access modifiers changed from: package-private */
-        public void println(Object o) {
+        @Override // io.reactivex.exceptions.CompositeException.PrintStreamOrWriter
+        void println(Object o) {
             this.printStream.println(o);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class WrappedPrintWriter extends PrintStreamOrWriter {
         private final PrintWriter printWriter;
 
-        WrappedPrintWriter(PrintWriter printWriter2) {
-            this.printWriter = printWriter2;
+        WrappedPrintWriter(PrintWriter printWriter) {
+            this.printWriter = printWriter;
         }
 
-        /* access modifiers changed from: package-private */
-        public void println(Object o) {
+        @Override // io.reactivex.exceptions.CompositeException.PrintStreamOrWriter
+        void println(Object o) {
             this.printWriter.println(o);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class CompositeExceptionCausalChain extends RuntimeException {
         static final String MESSAGE = "Chain of Causes for CompositeException In Order Received =>";
         private static final long serialVersionUID = 3875212506787802066L;
@@ -164,6 +174,7 @@ public final class CompositeException extends RuntimeException {
         CompositeExceptionCausalChain() {
         }
 
+        @Override // java.lang.Throwable
         public String getMessage() {
             return MESSAGE;
         }
@@ -177,11 +188,11 @@ public final class CompositeException extends RuntimeException {
         }
         while (true) {
             list.add(root);
-            Throwable cause2 = root.getCause();
-            if (cause2 == null || cause2 == root) {
-                return list;
+            Throwable cause = root.getCause();
+            if (cause == null || cause == root) {
+                break;
             }
-            root = cause2;
+            root = cause;
         }
         return list;
     }
@@ -190,18 +201,17 @@ public final class CompositeException extends RuntimeException {
         return this.exceptions.size();
     }
 
-    /* access modifiers changed from: package-private */
-    public Throwable getRootCause(Throwable e) {
+    Throwable getRootCause(Throwable e) {
         Throwable root = e.getCause();
         if (root == null || e == root) {
             return e;
         }
         while (true) {
-            Throwable cause2 = root.getCause();
-            if (cause2 == null || cause2 == root) {
-                return root;
+            Throwable cause = root.getCause();
+            if (cause == null || cause == root) {
+                break;
             }
-            root = cause2;
+            root = cause;
         }
         return root;
     }

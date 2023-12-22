@@ -4,16 +4,17 @@ import android.databinding.Bindable;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.RecyclerView;
+import android.support.p004v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.view.CustomBcItemBgImageView;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityMainBcBinding extends ViewDataBinding {
     public final CustomBcItemBgImageView CustomBcItemBgImageView;
     public final TextView appsBtn;
@@ -26,18 +27,18 @@ public abstract class ActivityMainBcBinding extends ViewDataBinding {
     protected BcVieModel mMBcVieModel;
     public final RecyclerView recyclerView2;
 
-    public abstract void setMBcVieModel(BcVieModel bcVieModel);
+    public abstract void setMBcVieModel(BcVieModel mBcVieModel);
 
-    protected ActivityMainBcBinding(Object _bindingComponent, View _root, int _localFieldCount, CustomBcItemBgImageView CustomBcItemBgImageView2, TextView appsBtn2, TextView bcArrowLeftButton2, TextView bcArrowRightButton2, ConstraintLayout constraintLayout22, ImageView controlBtn2, ConstraintLayout linearLayout32, RecyclerView recyclerView22) {
+    protected ActivityMainBcBinding(Object _bindingComponent, View _root, int _localFieldCount, CustomBcItemBgImageView CustomBcItemBgImageView, TextView appsBtn, TextView bcArrowLeftButton, TextView bcArrowRightButton, ConstraintLayout constraintLayout2, ImageView controlBtn, ConstraintLayout linearLayout3, RecyclerView recyclerView2) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.CustomBcItemBgImageView = CustomBcItemBgImageView2;
-        this.appsBtn = appsBtn2;
-        this.bcArrowLeftButton = bcArrowLeftButton2;
-        this.bcArrowRightButton = bcArrowRightButton2;
-        this.constraintLayout2 = constraintLayout22;
-        this.controlBtn = controlBtn2;
-        this.linearLayout3 = linearLayout32;
-        this.recyclerView2 = recyclerView22;
+        this.CustomBcItemBgImageView = CustomBcItemBgImageView;
+        this.appsBtn = appsBtn;
+        this.bcArrowLeftButton = bcArrowLeftButton;
+        this.bcArrowRightButton = bcArrowRightButton;
+        this.constraintLayout2 = constraintLayout2;
+        this.controlBtn = controlBtn;
+        this.linearLayout3 = linearLayout3;
+        this.recyclerView2 = recyclerView2;
     }
 
     public BcVieModel getMBcVieModel() {
@@ -50,7 +51,7 @@ public abstract class ActivityMainBcBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainBcBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityMainBcBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_bc, root, attachToRoot, component);
+        return (ActivityMainBcBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_bc, root, attachToRoot, component);
     }
 
     public static ActivityMainBcBinding inflate(LayoutInflater inflater) {
@@ -59,7 +60,7 @@ public abstract class ActivityMainBcBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainBcBinding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityMainBcBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_bc, (ViewGroup) null, false, component);
+        return (ActivityMainBcBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_bc, null, false, component);
     }
 
     public static ActivityMainBcBinding bind(View view) {
@@ -68,6 +69,6 @@ public abstract class ActivityMainBcBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainBcBinding bind(View view, Object component) {
-        return (ActivityMainBcBinding) bind(component, view, R.layout.activity_main_bc);
+        return (ActivityMainBcBinding) bind(component, view, C0899R.C0902layout.activity_main_bc);
     }
 }

@@ -4,9 +4,11 @@ import com.google.gson.internal.LinkedTreeMap;
 import java.util.Map;
 import java.util.Set;
 
+/* loaded from: classes.dex */
 public final class JsonObject extends JsonElement {
     private final LinkedTreeMap<String, JsonElement> members = new LinkedTreeMap<>();
 
+    @Override // com.google.gson.JsonElement
     public JsonObject deepCopy() {
         JsonObject result = new JsonObject();
         for (Map.Entry<String, JsonElement> entry : this.members.entrySet()) {

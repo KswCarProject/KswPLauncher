@@ -3,44 +3,47 @@ package com.wits.ksw.launcher.pagerlayoutmanager;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.support.constraint.solver.widgets.analyzer.BasicMeasure;
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.RecyclerView;
+import android.support.p004v7.widget.LinearSmoothScroller;
+import android.support.p004v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 
+/* loaded from: classes7.dex */
 public class PagerGridLayoutManager extends RecyclerView.LayoutManager implements RecyclerView.SmoothScroller.ScrollVectorProvider {
     public static final int HORIZONTAL = 1;
     private static final String TAG = PagerGridLayoutManager.class.getSimpleName();
     public static final int VERTICAL = 0;
-    private boolean mAllowContinuousScroll = true;
-    private boolean mChangeSelectInScrolling = true;
     private int mColumns;
-    private int mHeightUsed = 0;
-    private SparseArray<Rect> mItemFrames = new SparseArray<>();
-    private int mItemHeight = 0;
-    private int mItemWidth = 0;
-    private int mLastPageCount = -1;
-    private int mLastPageIndex = -1;
     private int mMaxScrollX;
     private int mMaxScrollY;
-    private int mOffsetX = 0;
-    private int mOffsetY = 0;
     private int mOnePageSize;
     private int mOrientation;
-    private PageListener mPageListener = null;
     private RecyclerView mRecyclerView;
     private int mRows;
-    private int mScrollState = 0;
+    private int mOffsetX = 0;
+    private int mOffsetY = 0;
+    private int mItemWidth = 0;
+    private int mItemHeight = 0;
     private int mWidthUsed = 0;
+    private int mHeightUsed = 0;
+    private int mScrollState = 0;
+    private boolean mAllowContinuousScroll = true;
+    private boolean mChangeSelectInScrolling = true;
+    private int mLastPageCount = -1;
+    private int mLastPageIndex = -1;
+    private PageListener mPageListener = null;
+    private SparseArray<Rect> mItemFrames = new SparseArray<>();
 
+    /* loaded from: classes7.dex */
     public @interface OrientationType {
     }
 
+    /* loaded from: classes7.dex */
     public interface PageListener {
-        void onPageSelect(int i);
+        void onPageSelect(int pageIndex);
 
-        void onPageSizeChanged(int i);
+        void onPageSizeChanged(int pageSize);
     }
 
     public PagerGridLayoutManager(int rows, int columns, int orientation) {
@@ -50,109 +53,115 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
         this.mOnePageSize = rows * columns;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public void onAttachedToWindow(RecyclerView view) {
         super.onAttachedToWindow(view);
         this.mRecyclerView = view;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         PagerConfig.Logi("Item onLayoutChildren");
         PagerConfig.Logi("Item onLayoutChildren isPreLayout = " + state.isPreLayout());
         PagerConfig.Logi("Item onLayoutChildren isMeasuring = " + state.isMeasuring());
         PagerConfig.Loge("Item onLayoutChildren state = " + state);
-        if (!state.isPreLayout() && state.didStructureChange()) {
-            if (getItemCount() == 0) {
-                removeAndRecycleAllViews(recycler);
-                setPageCount(0);
-                setPageIndex(0, false);
-                return;
-            }
-            setPageCount(getTotalPageCount());
-            setPageIndex(getPageIndexByOffset(), false);
-            int mPageCount = getItemCount() / this.mOnePageSize;
-            if (getItemCount() % this.mOnePageSize != 0) {
-                mPageCount++;
-            }
-            if (canScrollHorizontally()) {
-                int usableWidth = (mPageCount - 1) * getUsableWidth();
-                this.mMaxScrollX = usableWidth;
-                this.mMaxScrollY = 0;
-                if (this.mOffsetX > usableWidth) {
-                    this.mOffsetX = usableWidth;
-                }
-            } else {
-                this.mMaxScrollX = 0;
-                int usableHeight = (mPageCount - 1) * getUsableHeight();
-                this.mMaxScrollY = usableHeight;
-                if (this.mOffsetY > usableHeight) {
-                    this.mOffsetY = usableHeight;
-                }
-            }
-            PagerConfig.Logi("count = " + getItemCount());
-            if (this.mItemWidth <= 0) {
-                this.mItemWidth = getUsableWidth() / this.mColumns;
-            }
-            if (this.mItemHeight <= 0) {
-                this.mItemHeight = getUsableHeight() / this.mRows;
-            }
-            this.mWidthUsed = getUsableWidth() - this.mItemWidth;
-            this.mHeightUsed = getUsableHeight() - this.mItemHeight;
-            for (int i = 0; i < this.mOnePageSize * 2; i++) {
-                getItemFrameByPosition(i);
-            }
-            if (this.mOffsetX == 0 && this.mOffsetY == 0) {
-                int i2 = 0;
-                while (i2 < this.mOnePageSize && i2 < getItemCount()) {
-                    View view = recycler.getViewForPosition(i2);
-                    addView(view);
-                    measureChildWithMargins(view, this.mWidthUsed, this.mHeightUsed);
-                    i2++;
-                }
-            }
-            recycleAndFillItems(recycler, state, true);
+        if (state.isPreLayout() || !state.didStructureChange()) {
+            return;
         }
+        if (getItemCount() == 0) {
+            removeAndRecycleAllViews(recycler);
+            setPageCount(0);
+            setPageIndex(0, false);
+            return;
+        }
+        setPageCount(getTotalPageCount());
+        setPageIndex(getPageIndexByOffset(), false);
+        int mPageCount = getItemCount() / this.mOnePageSize;
+        if (getItemCount() % this.mOnePageSize != 0) {
+            mPageCount++;
+        }
+        if (canScrollHorizontally()) {
+            int usableWidth = (mPageCount - 1) * getUsableWidth();
+            this.mMaxScrollX = usableWidth;
+            this.mMaxScrollY = 0;
+            if (this.mOffsetX > usableWidth) {
+                this.mOffsetX = usableWidth;
+            }
+        } else {
+            this.mMaxScrollX = 0;
+            int usableHeight = (mPageCount - 1) * getUsableHeight();
+            this.mMaxScrollY = usableHeight;
+            if (this.mOffsetY > usableHeight) {
+                this.mOffsetY = usableHeight;
+            }
+        }
+        PagerConfig.Logi("count = " + getItemCount());
+        if (this.mItemWidth <= 0) {
+            this.mItemWidth = getUsableWidth() / this.mColumns;
+        }
+        if (this.mItemHeight <= 0) {
+            this.mItemHeight = getUsableHeight() / this.mRows;
+        }
+        this.mWidthUsed = getUsableWidth() - this.mItemWidth;
+        this.mHeightUsed = getUsableHeight() - this.mItemHeight;
+        for (int i = 0; i < this.mOnePageSize * 2; i++) {
+            getItemFrameByPosition(i);
+        }
+        int i2 = this.mOffsetX;
+        if (i2 == 0 && this.mOffsetY == 0) {
+            for (int i3 = 0; i3 < this.mOnePageSize && i3 < getItemCount(); i3++) {
+                View view = recycler.getViewForPosition(i3);
+                addView(view);
+                measureChildWithMargins(view, this.mWidthUsed, this.mHeightUsed);
+            }
+        }
+        recycleAndFillItems(recycler, state, true);
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public void onLayoutCompleted(RecyclerView.State state) {
         super.onLayoutCompleted(state);
-        if (!state.isPreLayout()) {
-            setPageCount(getTotalPageCount());
-            setPageIndex(getPageIndexByOffset(), false);
+        if (state.isPreLayout()) {
+            return;
         }
+        setPageCount(getTotalPageCount());
+        setPageIndex(getPageIndexByOffset(), false);
     }
 
     private void recycleAndFillItems(RecyclerView.Recycler recycler, RecyclerView.State state, boolean isStart) {
-        if (!state.isPreLayout()) {
-            PagerConfig.Logi("mOffsetX = " + this.mOffsetX);
-            PagerConfig.Logi("mOffsetY = " + this.mOffsetY);
-            Rect displayRect = new Rect(this.mOffsetX - this.mItemWidth, this.mOffsetY - this.mItemHeight, getUsableWidth() + this.mOffsetX + this.mItemWidth, getUsableHeight() + this.mOffsetY + this.mItemHeight);
-            displayRect.intersect(0, 0, this.mMaxScrollX + getUsableWidth(), this.mMaxScrollY + getUsableHeight());
-            PagerConfig.Loge("displayRect = " + displayRect.toString());
-            int startPos = this.mOnePageSize * getPageIndexByOffset();
-            PagerConfig.Logi("startPos = " + startPos);
-            int i = this.mOnePageSize;
-            int startPos2 = startPos - (i * 2);
-            if (startPos2 < 0) {
-                startPos2 = 0;
-            }
-            int stopPos = (i * 4) + startPos2;
-            if (stopPos > getItemCount()) {
-                stopPos = getItemCount();
-            }
-            PagerConfig.Loge("startPos = " + startPos2);
-            PagerConfig.Loge("stopPos = " + stopPos);
-            detachAndScrapAttachedViews(recycler);
-            if (isStart) {
-                for (int i2 = startPos2; i2 < stopPos; i2++) {
-                    addOrRemove(recycler, displayRect, i2);
-                }
-            } else {
-                for (int i3 = stopPos - 1; i3 >= startPos2; i3--) {
-                    addOrRemove(recycler, displayRect, i3);
-                }
-            }
-            PagerConfig.Loge("child count = " + getChildCount());
+        if (state.isPreLayout()) {
+            return;
         }
+        PagerConfig.Logi("mOffsetX = " + this.mOffsetX);
+        PagerConfig.Logi("mOffsetY = " + this.mOffsetY);
+        Rect displayRect = new Rect(this.mOffsetX - this.mItemWidth, this.mOffsetY - this.mItemHeight, getUsableWidth() + this.mOffsetX + this.mItemWidth, getUsableHeight() + this.mOffsetY + this.mItemHeight);
+        displayRect.intersect(0, 0, this.mMaxScrollX + getUsableWidth(), this.mMaxScrollY + getUsableHeight());
+        PagerConfig.Loge("displayRect = " + displayRect.toString());
+        int pageIndex = getPageIndexByOffset();
+        int startPos = this.mOnePageSize * pageIndex;
+        PagerConfig.Logi("startPos = " + startPos);
+        int i = this.mOnePageSize;
+        int startPos2 = startPos - (i * 2);
+        if (startPos2 < 0) {
+            startPos2 = 0;
+        }
+        int stopPos = (i * 4) + startPos2;
+        if (stopPos > getItemCount()) {
+            stopPos = getItemCount();
+        }
+        PagerConfig.Loge("startPos = " + startPos2);
+        PagerConfig.Loge("stopPos = " + stopPos);
+        detachAndScrapAttachedViews(recycler);
+        if (isStart) {
+            for (int i2 = startPos2; i2 < stopPos; i2++) {
+                addOrRemove(recycler, displayRect, i2);
+            }
+        } else {
+            for (int i3 = stopPos - 1; i3 >= startPos2; i3--) {
+                addOrRemove(recycler, displayRect, i3);
+            }
+        }
+        PagerConfig.Loge("child count = " + getChildCount());
     }
 
     private void addOrRemove(RecyclerView.Recycler recycler, Rect displayRect, int i) {
@@ -168,6 +177,7 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
         layoutDecorated(child, (rect.left - this.mOffsetX) + lp.leftMargin + getPaddingLeft(), (rect.top - this.mOffsetY) + lp.topMargin + getPaddingTop(), ((rect.right - this.mOffsetX) - lp.rightMargin) + getPaddingLeft(), ((rect.bottom - this.mOffsetY) - lp.bottomMargin) + getPaddingTop());
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public int scrollHorizontallyBy(int dx, RecyclerView.Recycler recycler, RecyclerView.State state) {
         int i = this.mOffsetX;
         int newX = i + dx;
@@ -189,6 +199,7 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
         return result;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State state) {
         int i = this.mOffsetY;
         int newY = i + dy;
@@ -210,6 +221,7 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
         return result;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public void onScrollStateChanged(int state) {
         PagerConfig.Logi("onScrollStateChanged = " + state);
         this.mScrollState = state;
@@ -238,8 +250,8 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
             int offsetX2 = offsetX + (this.mItemWidth * col);
             int offsetY2 = offsetY + (this.mItemHeight * row);
             PagerConfig.Logi("pagePos = " + pagePos);
-            PagerConfig.Logi("行 = " + row);
-            PagerConfig.Logi("列 = " + col);
+            PagerConfig.Logi("\u884c = " + row);
+            PagerConfig.Logi("\u5217 = " + col);
             PagerConfig.Logi("offsetX = " + offsetX2);
             PagerConfig.Logi("offsetY = " + offsetY2);
             rect.left = offsetX2;
@@ -303,10 +315,12 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
         return pageIndex;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public RecyclerView.LayoutParams generateDefaultLayoutParams() {
         return new RecyclerView.LayoutParams(-2, -2);
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(recycler, state, widthMeasureSpec, heightMeasureSpec);
         int widthsize = View.MeasureSpec.getSize(widthMeasureSpec);
@@ -322,16 +336,17 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
         setMeasuredDimension(View.MeasureSpec.makeMeasureSpec(widthsize, widthmode), View.MeasureSpec.makeMeasureSpec(heightsize, heightmode));
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public boolean canScrollHorizontally() {
         return this.mOrientation == 1;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public boolean canScrollVertically() {
         return this.mOrientation == 0;
     }
 
-    /* access modifiers changed from: package-private */
-    public int findNextPageFirstPos() {
+    int findNextPageFirstPos() {
         int page = this.mLastPageIndex + 1;
         if (page >= getTotalPageCount()) {
             page = getTotalPageCount() - 1;
@@ -340,8 +355,7 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
         return this.mOnePageSize * page;
     }
 
-    /* access modifiers changed from: package-private */
-    public int findPrePageFirstPos() {
+    int findPrePageFirstPos() {
         int page = this.mLastPageIndex - 1;
         PagerConfig.Loge("computeScrollVectorForPosition pre = " + page);
         if (page < 0) {
@@ -359,18 +373,19 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
         return this.mOffsetY;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.SmoothScroller.ScrollVectorProvider
     public PointF computeScrollVectorForPosition(int targetPosition) {
         PointF vector = new PointF();
         int[] pos = getSnapOffset(targetPosition);
-        vector.x = (float) pos[0];
-        vector.y = (float) pos[1];
+        vector.x = pos[0];
+        vector.y = pos[1];
         return vector;
     }
 
-    /* access modifiers changed from: package-private */
-    public int[] getSnapOffset(int targetPosition) {
+    int[] getSnapOffset(int targetPosition) {
         int[] pos = getPageLeftTopByPosition(targetPosition);
-        return new int[]{pos[0] - this.mOffsetX, pos[1] - this.mOffsetY};
+        int[] offset = {pos[0] - this.mOffsetX, pos[1] - this.mOffsetY};
+        return offset;
     }
 
     private int[] getPageLeftTopByPosition(int pos) {
@@ -395,7 +410,8 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
         }
         int targetPos = getPageIndexByOffset() * this.mOnePageSize;
         for (int i = 0; i < getChildCount(); i++) {
-            if (getPosition(getChildAt(i)) == targetPos) {
+            int childPos = getPosition(getChildAt(i));
+            if (childPos == targetPos) {
                 return getChildAt(i);
             }
         }
@@ -405,7 +421,7 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
     private void setPageCount(int pageCount) {
         if (pageCount >= 0) {
             PageListener pageListener = this.mPageListener;
-            if (!(pageListener == null || pageCount == this.mLastPageCount)) {
+            if (pageListener != null && pageCount != this.mLastPageCount) {
                 pageListener.onPageSizeChanged(pageCount);
             }
             this.mLastPageCount = pageCount;
@@ -415,15 +431,16 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
     private void setPageIndex(int pageIndex, boolean isScrolling) {
         PageListener pageListener;
         PagerConfig.Loge("setPageIndex = " + pageIndex + ":" + isScrolling);
-        if (pageIndex != this.mLastPageIndex) {
-            if (isAllowContinuousScroll()) {
-                this.mLastPageIndex = pageIndex;
-            } else if (!isScrolling) {
-                this.mLastPageIndex = pageIndex;
-            }
-            if ((!isScrolling || this.mChangeSelectInScrolling) && pageIndex >= 0 && (pageListener = this.mPageListener) != null) {
-                pageListener.onPageSelect(pageIndex);
-            }
+        if (pageIndex == this.mLastPageIndex) {
+            return;
+        }
+        if (isAllowContinuousScroll()) {
+            this.mLastPageIndex = pageIndex;
+        } else if (!isScrolling) {
+            this.mLastPageIndex = pageIndex;
+        }
+        if ((!isScrolling || this.mChangeSelectInScrolling) && pageIndex >= 0 && (pageListener = this.mPageListener) != null) {
+            pageListener.onPageSelect(pageIndex);
         }
     }
 
@@ -439,16 +456,20 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
         this.mOrientation = orientation;
         this.mItemFrames.clear();
         int x2 = this.mOffsetX;
-        this.mOffsetX = (this.mOffsetY / getUsableHeight()) * getUsableWidth();
+        int y = this.mOffsetY;
+        this.mOffsetX = (y / getUsableHeight()) * getUsableWidth();
         this.mOffsetY = (x2 / getUsableWidth()) * getUsableHeight();
         int mx = this.mMaxScrollX;
-        this.mMaxScrollX = (this.mMaxScrollY / getUsableHeight()) * getUsableWidth();
+        int my = this.mMaxScrollY;
+        this.mMaxScrollX = (my / getUsableHeight()) * getUsableWidth();
         this.mMaxScrollY = (mx / getUsableWidth()) * getUsableHeight();
         return this.mOrientation;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
-        smoothScrollToPage(getPageIndexByPos(position));
+        int targetPageIndex = getPageIndexByPos(position);
+        smoothScrollToPage(targetPageIndex);
     }
 
     public void smoothPrePage() {
@@ -474,13 +495,16 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
                 }
             }
             LinearSmoothScroller smoothScroller = new PagerGridSmoothScroller(this.mRecyclerView);
-            smoothScroller.setTargetPosition(this.mOnePageSize * pageIndex);
+            int position = this.mOnePageSize * pageIndex;
+            smoothScroller.setTargetPosition(position);
             startSmoothScroll(smoothScroller);
         }
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.LayoutManager
     public void scrollToPosition(int position) {
-        scrollToPage(getPageIndexByPos(position));
+        int pageIndex = getPageIndexByPos(position);
+        scrollToPage(pageIndex);
     }
 
     public void prePage() {
@@ -492,8 +516,8 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
     }
 
     public void scrollToPage(int pageIndex) {
-        int mTargetOffsetYBy;
         int mTargetOffsetXBy;
+        int mTargetOffsetYBy;
         if (pageIndex < 0 || pageIndex >= this.mLastPageCount) {
             Log.e(TAG, "pageIndex = " + pageIndex + " is out of bounds, mast in [0, " + this.mLastPageCount + ")");
         } else if (this.mRecyclerView == null) {
@@ -503,7 +527,8 @@ public class PagerGridLayoutManager extends RecyclerView.LayoutManager implement
                 mTargetOffsetXBy = 0;
                 mTargetOffsetYBy = (getUsableHeight() * pageIndex) - this.mOffsetY;
             } else {
-                mTargetOffsetXBy = (getUsableWidth() * pageIndex) - this.mOffsetX;
+                int mTargetOffsetYBy2 = getUsableWidth();
+                mTargetOffsetXBy = (mTargetOffsetYBy2 * pageIndex) - this.mOffsetX;
                 mTargetOffsetYBy = 0;
             }
             PagerConfig.Loge("mTargetOffsetXBy = " + mTargetOffsetXBy);

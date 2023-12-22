@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class BmwId8SettingsTimeLayoutBinding extends ViewDataBinding {
     public final RelativeLayout bmwId8SettingsTime12;
     public final RelativeLayout bmwId8SettingsTime24;
@@ -23,18 +24,18 @@ public abstract class BmwId8SettingsTimeLayoutBinding extends ViewDataBinding {
     @Bindable
     protected BmwId8SettingsViewModel mViewModel;
 
-    public abstract void setViewModel(BmwId8SettingsViewModel bmwId8SettingsViewModel);
+    public abstract void setViewModel(BmwId8SettingsViewModel viewModel);
 
-    protected BmwId8SettingsTimeLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout bmwId8SettingsTime122, RelativeLayout bmwId8SettingsTime242, RelativeLayout bmwId8SettingsTimeAndroid2, ImageView bmwId8SettingsTimeBack2, RelativeLayout bmwId8SettingsTimeCar2, RelativeLayout bmwId8SettingsTimeFormat2, RelativeLayout bmwId8SettingsTimeLay2, RelativeLayout bmwId8SettingsTimeSync2) {
+    protected BmwId8SettingsTimeLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout bmwId8SettingsTime12, RelativeLayout bmwId8SettingsTime24, RelativeLayout bmwId8SettingsTimeAndroid, ImageView bmwId8SettingsTimeBack, RelativeLayout bmwId8SettingsTimeCar, RelativeLayout bmwId8SettingsTimeFormat, RelativeLayout bmwId8SettingsTimeLay, RelativeLayout bmwId8SettingsTimeSync) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.bmwId8SettingsTime12 = bmwId8SettingsTime122;
-        this.bmwId8SettingsTime24 = bmwId8SettingsTime242;
-        this.bmwId8SettingsTimeAndroid = bmwId8SettingsTimeAndroid2;
-        this.bmwId8SettingsTimeBack = bmwId8SettingsTimeBack2;
-        this.bmwId8SettingsTimeCar = bmwId8SettingsTimeCar2;
-        this.bmwId8SettingsTimeFormat = bmwId8SettingsTimeFormat2;
-        this.bmwId8SettingsTimeLay = bmwId8SettingsTimeLay2;
-        this.bmwId8SettingsTimeSync = bmwId8SettingsTimeSync2;
+        this.bmwId8SettingsTime12 = bmwId8SettingsTime12;
+        this.bmwId8SettingsTime24 = bmwId8SettingsTime24;
+        this.bmwId8SettingsTimeAndroid = bmwId8SettingsTimeAndroid;
+        this.bmwId8SettingsTimeBack = bmwId8SettingsTimeBack;
+        this.bmwId8SettingsTimeCar = bmwId8SettingsTimeCar;
+        this.bmwId8SettingsTimeFormat = bmwId8SettingsTimeFormat;
+        this.bmwId8SettingsTimeLay = bmwId8SettingsTimeLay;
+        this.bmwId8SettingsTimeSync = bmwId8SettingsTimeSync;
     }
 
     public BmwId8SettingsViewModel getViewModel() {
@@ -47,7 +48,7 @@ public abstract class BmwId8SettingsTimeLayoutBinding extends ViewDataBinding {
 
     @Deprecated
     public static BmwId8SettingsTimeLayoutBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BmwId8SettingsTimeLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_time_layout, root, attachToRoot, component);
+        return (BmwId8SettingsTimeLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_time_layout, root, attachToRoot, component);
     }
 
     public static BmwId8SettingsTimeLayoutBinding inflate(LayoutInflater inflater) {
@@ -56,7 +57,7 @@ public abstract class BmwId8SettingsTimeLayoutBinding extends ViewDataBinding {
 
     @Deprecated
     public static BmwId8SettingsTimeLayoutBinding inflate(LayoutInflater inflater, Object component) {
-        return (BmwId8SettingsTimeLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_time_layout, (ViewGroup) null, false, component);
+        return (BmwId8SettingsTimeLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_time_layout, null, false, component);
     }
 
     public static BmwId8SettingsTimeLayoutBinding bind(View view) {
@@ -65,6 +66,6 @@ public abstract class BmwId8SettingsTimeLayoutBinding extends ViewDataBinding {
 
     @Deprecated
     public static BmwId8SettingsTimeLayoutBinding bind(View view, Object component) {
-        return (BmwId8SettingsTimeLayoutBinding) bind(component, view, R.layout.bmw_id8_settings_time_layout);
+        return (BmwId8SettingsTimeLayoutBinding) bind(component, view, C0899R.C0902layout.bmw_id8_settings_time_layout);
     }
 }

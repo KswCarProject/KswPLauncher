@@ -3,16 +3,18 @@ package com.google.zxing.aztec.encoder;
 import com.google.zxing.common.BitArray;
 import kotlin.text.Typography;
 
+/* loaded from: classes.dex */
 final class BinaryShiftToken extends Token {
     private final short binaryShiftByteCount;
     private final short binaryShiftStart;
 
-    BinaryShiftToken(Token previous, int binaryShiftStart2, int binaryShiftByteCount2) {
+    BinaryShiftToken(Token previous, int binaryShiftStart, int binaryShiftByteCount) {
         super(previous);
-        this.binaryShiftStart = (short) binaryShiftStart2;
-        this.binaryShiftByteCount = (short) binaryShiftByteCount2;
+        this.binaryShiftStart = (short) binaryShiftStart;
+        this.binaryShiftByteCount = (short) binaryShiftByteCount;
     }
 
+    @Override // com.google.zxing.aztec.encoder.Token
     public void appendTo(BitArray bitArray, byte[] text) {
         int i = 0;
         while (true) {
@@ -24,7 +26,7 @@ final class BinaryShiftToken extends Token {
                     if (s2 > 62) {
                         bitArray.appendBits(s2 - 31, 16);
                     } else if (i == 0) {
-                        bitArray.appendBits(Math.min(s2, 31), 5);
+                        bitArray.appendBits(Math.min((int) s2, 31), 5);
                     } else {
                         bitArray.appendBits(s2 - 31, 5);
                     }
@@ -38,6 +40,6 @@ final class BinaryShiftToken extends Token {
     }
 
     public String toString() {
-        return "<" + this.binaryShiftStart + "::" + ((this.binaryShiftStart + this.binaryShiftByteCount) - 1) + Typography.greater;
+        return "<" + ((int) this.binaryShiftStart) + "::" + ((this.binaryShiftStart + this.binaryShiftByteCount) - 1) + Typography.greater;
     }
 }

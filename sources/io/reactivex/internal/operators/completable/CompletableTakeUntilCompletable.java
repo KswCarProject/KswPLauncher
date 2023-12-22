@@ -9,33 +9,36 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class CompletableTakeUntilCompletable extends Completable {
     final CompletableSource other;
     final Completable source;
 
-    public CompletableTakeUntilCompletable(Completable source2, CompletableSource other2) {
-        this.source = source2;
-        this.other = other2;
+    public CompletableTakeUntilCompletable(Completable source, CompletableSource other) {
+        this.source = source;
+        this.other = other;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         TakeUntilMainObserver parent = new TakeUntilMainObserver(observer);
         observer.onSubscribe(parent);
         this.other.subscribe(parent.other);
-        this.source.subscribe((CompletableObserver) parent);
+        this.source.subscribe(parent);
     }
 
+    /* loaded from: classes.dex */
     static final class TakeUntilMainObserver extends AtomicReference<Disposable> implements CompletableObserver, Disposable {
         private static final long serialVersionUID = 3533011714830024923L;
         final CompletableObserver downstream;
-        final AtomicBoolean once = new AtomicBoolean();
         final OtherObserver other = new OtherObserver(this);
+        final AtomicBoolean once = new AtomicBoolean();
 
-        TakeUntilMainObserver(CompletableObserver downstream2) {
-            this.downstream = downstream2;
+        TakeUntilMainObserver(CompletableObserver downstream) {
+            this.downstream = downstream;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             if (this.once.compareAndSet(false, true)) {
                 DisposableHelper.dispose(this);
@@ -43,14 +46,17 @@ public final class CompletableTakeUntilCompletable extends Completable {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.once.get();
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onSubscribe(Disposable d) {
             DisposableHelper.setOnce(this, d);
         }
 
+        @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
         public void onComplete() {
             if (this.once.compareAndSet(false, true)) {
                 DisposableHelper.dispose(this.other);
@@ -58,6 +64,7 @@ public final class CompletableTakeUntilCompletable extends Completable {
             }
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onError(Throwable e) {
             if (this.once.compareAndSet(false, true)) {
                 DisposableHelper.dispose(this.other);
@@ -67,16 +74,14 @@ public final class CompletableTakeUntilCompletable extends Completable {
             RxJavaPlugins.onError(e);
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerComplete() {
+        void innerComplete() {
             if (this.once.compareAndSet(false, true)) {
                 DisposableHelper.dispose(this);
                 this.downstream.onComplete();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerError(Throwable e) {
+        void innerError(Throwable e) {
             if (this.once.compareAndSet(false, true)) {
                 DisposableHelper.dispose(this);
                 this.downstream.onError(e);
@@ -85,22 +90,26 @@ public final class CompletableTakeUntilCompletable extends Completable {
             RxJavaPlugins.onError(e);
         }
 
+        /* loaded from: classes.dex */
         static final class OtherObserver extends AtomicReference<Disposable> implements CompletableObserver {
             private static final long serialVersionUID = 5176264485428790318L;
             final TakeUntilMainObserver parent;
 
-            OtherObserver(TakeUntilMainObserver parent2) {
-                this.parent = parent2;
+            OtherObserver(TakeUntilMainObserver parent) {
+                this.parent = parent;
             }
 
+            @Override // io.reactivex.CompletableObserver
             public void onSubscribe(Disposable d) {
                 DisposableHelper.setOnce(this, d);
             }
 
+            @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
             public void onComplete() {
                 this.parent.innerComplete();
             }
 
+            @Override // io.reactivex.CompletableObserver
             public void onError(Throwable e) {
                 this.parent.innerError(e);
             }

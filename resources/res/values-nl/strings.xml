@@ -244,10 +244,17 @@
     <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Verkeerd wachtwoord!</string>
     <string name="mcu_file_corrupted">Upgrade bestand beschadigd!</string>
+    <string name="mic_control">MIC externe ingebouwde tuimelschakelaar</string>
+    <string name="mic_external">Extern</string>
+    <string name="mic_internal">Ingebouwd</string>
     <string name="mic_text">MIC winst</string>
     <string name="music_app_sel">Kies muziek App</string>
+    <string name="music_player">Odtwarzacz muzyki</string>
     <string name="ntg6_dvr_toast">Geen apparaten!</string>
     <string name="oil_size">olie: %s</string>
+    <string name="original_radar_reverse">Origineel radarbeeld achteruit</string>
+    <string name="radar_normal">Normaal</string>
+    <string name="radar_reverse">Omgekeerd</string>
     <string name="raw_car_text1">Volledig scherm</string>
     <string name="raw_car_text2">Huidige selectie:</string>
     <string name="reverse_exit_time_agreement">Uitstappen volgens de oorspronkelijke voertuigovereenkomst</string>
@@ -324,6 +331,8 @@
     <string name="text_logo_two">P2</string>
     <string name="text_ram">RAM: %s</string>
     <string name="touch_continuous_send">Touch data continu verzonden</string>
+    <string name="tv_id8_brake">Rem</string>
+    <string name="tv_id8_seat_belt">Veiligheidsgordel</string>
     <string name="txz_oil_text">Brandstofvolumealarminstelling</string>
     <string name="txz_speed_text">Snelheidsalarm voor medereizigers</string>
     <string name="txz_temp_text">Alarminstelling voor omgevingstemperatuur</string>

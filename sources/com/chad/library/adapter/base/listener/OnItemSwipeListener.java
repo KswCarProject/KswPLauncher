@@ -1,8 +1,9 @@
 package com.chad.library.adapter.base.listener;
 
 import android.graphics.Canvas;
-import android.support.v7.widget.RecyclerView;
+import android.support.p004v7.widget.RecyclerView;
 
+/* loaded from: classes.dex */
 public interface OnItemSwipeListener {
     void clearView(RecyclerView.ViewHolder viewHolder, int i);
 

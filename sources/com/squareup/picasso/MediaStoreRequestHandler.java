@@ -11,8 +11,8 @@ import android.provider.MediaStore;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestHandler;
 import java.io.IOException;
-import java.io.InputStream;
 
+/* loaded from: classes.dex */
 class MediaStoreRequestHandler extends ContentStreamRequestHandler {
     private static final String[] CONTENT_ORIENTATION = {"orientation"};
 
@@ -20,69 +20,67 @@ class MediaStoreRequestHandler extends ContentStreamRequestHandler {
         super(context);
     }
 
+    @Override // com.squareup.picasso.ContentStreamRequestHandler, com.squareup.picasso.RequestHandler
     public boolean canHandleRequest(Request data) {
         Uri uri = data.uri;
         return "content".equals(uri.getScheme()) && "media".equals(uri.getAuthority());
     }
 
+    @Override // com.squareup.picasso.ContentStreamRequestHandler, com.squareup.picasso.RequestHandler
     public RequestHandler.Result load(Request request, int networkPolicy) throws IOException {
         Bitmap bitmap;
-        Request request2 = request;
         ContentResolver contentResolver = this.context.getContentResolver();
-        int exifOrientation = getExifOrientation(contentResolver, request2.uri);
-        String mimeType = contentResolver.getType(request2.uri);
-        int kind = 1;
+        int exifOrientation = getExifOrientation(contentResolver, request.uri);
+        String mimeType = contentResolver.getType(request.uri);
         boolean isVideo = mimeType != null && mimeType.startsWith("video/");
         if (request.hasSize()) {
-            PicassoKind picassoKind = getPicassoKind(request2.targetWidth, request2.targetHeight);
+            PicassoKind picassoKind = getPicassoKind(request.targetWidth, request.targetHeight);
             if (!isVideo && picassoKind == PicassoKind.FULL) {
-                return new RequestHandler.Result((Bitmap) null, getInputStream(request), Picasso.LoadedFrom.DISK, exifOrientation);
+                return new RequestHandler.Result(null, getInputStream(request), Picasso.LoadedFrom.DISK, exifOrientation);
             }
-            long id = ContentUris.parseId(request2.uri);
+            long id = ContentUris.parseId(request.uri);
             BitmapFactory.Options options = createBitmapOptions(request);
             options.inJustDecodeBounds = true;
-            long id2 = id;
-            calculateInSampleSize(request2.targetWidth, request2.targetHeight, picassoKind.width, picassoKind.height, options, request);
+            calculateInSampleSize(request.targetWidth, request.targetHeight, picassoKind.width, picassoKind.height, options, request);
             if (isVideo) {
-                if (picassoKind != PicassoKind.FULL) {
-                    kind = picassoKind.androidKind;
-                }
-                bitmap = MediaStore.Video.Thumbnails.getThumbnail(contentResolver, id2, kind, options);
+                int kind = picassoKind != PicassoKind.FULL ? picassoKind.androidKind : 1;
+                bitmap = MediaStore.Video.Thumbnails.getThumbnail(contentResolver, id, kind, options);
             } else {
-                bitmap = MediaStore.Images.Thumbnails.getThumbnail(contentResolver, id2, picassoKind.androidKind, options);
+                bitmap = MediaStore.Images.Thumbnails.getThumbnail(contentResolver, id, picassoKind.androidKind, options);
             }
             if (bitmap != null) {
-                return new RequestHandler.Result(bitmap, (InputStream) null, Picasso.LoadedFrom.DISK, exifOrientation);
+                return new RequestHandler.Result(bitmap, null, Picasso.LoadedFrom.DISK, exifOrientation);
             }
         }
-        return new RequestHandler.Result((Bitmap) null, getInputStream(request), Picasso.LoadedFrom.DISK, exifOrientation);
+        return new RequestHandler.Result(null, getInputStream(request), Picasso.LoadedFrom.DISK, exifOrientation);
     }
 
     static PicassoKind getPicassoKind(int targetWidth, int targetHeight) {
         if (targetWidth <= PicassoKind.MICRO.width && targetHeight <= PicassoKind.MICRO.height) {
             return PicassoKind.MICRO;
         }
-        if (targetWidth > PicassoKind.MINI.width || targetHeight > PicassoKind.MINI.height) {
-            return PicassoKind.FULL;
+        if (targetWidth <= PicassoKind.MINI.width && targetHeight <= PicassoKind.MINI.height) {
+            return PicassoKind.MINI;
         }
-        return PicassoKind.MINI;
+        return PicassoKind.FULL;
     }
 
+    /* JADX WARN: Code restructure failed: missing block: B:14:0x0024, code lost:
+        r0.close();
+     */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
     static int getExifOrientation(ContentResolver contentResolver, Uri uri) {
         Cursor cursor = null;
         try {
-            Cursor cursor2 = contentResolver.query(uri, CONTENT_ORIENTATION, (String) null, (String[]) null, (String) null);
-            if (cursor2 != null) {
-                if (cursor2.moveToFirst()) {
-                    int i = cursor2.getInt(0);
-                    if (cursor2 != null) {
-                        cursor2.close();
-                    }
-                    return i;
+            cursor = contentResolver.query(uri, CONTENT_ORIENTATION, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                int i = cursor.getInt(0);
+                if (cursor != null) {
+                    cursor.close();
                 }
-            }
-            if (cursor2 != null) {
-                cursor2.close();
+                return i;
             }
             return 0;
         } catch (RuntimeException e) {
@@ -98,6 +96,7 @@ class MediaStoreRequestHandler extends ContentStreamRequestHandler {
         }
     }
 
+    /* loaded from: classes.dex */
     enum PicassoKind {
         MICRO(3, 96, 96),
         MINI(1, 512, 384),
@@ -107,10 +106,10 @@ class MediaStoreRequestHandler extends ContentStreamRequestHandler {
         final int height;
         final int width;
 
-        private PicassoKind(int androidKind2, int width2, int height2) {
-            this.androidKind = androidKind2;
-            this.width = width2;
-            this.height = height2;
+        PicassoKind(int androidKind, int width, int height) {
+            this.androidKind = androidKind;
+            this.width = width;
+            this.height = height;
         }
     }
 }

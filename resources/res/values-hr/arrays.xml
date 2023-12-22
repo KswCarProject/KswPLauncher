@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="all_months">
+        <item>Siječanj</item>
+        <item>Veljača</item>
+        <item>Ožujak</item>
+        <item>Travanj</item>
+        <item>Svibanj</item>
+        <item>Lipanj</item>
+        <item>Srpanj</item>
+        <item>Kolovoz</item>
+        <item>Rujan</item>
+        <item>Listopad</item>
+        <item>Studeni</item>
+        <item>Prosinac</item>
+    </array>
+    <array name="bc_home_netg6_als_6208_item_text_array">
+        <item>Navigacija</item>
+        <item>Video</item>
+        <item>Glazba</item>
+        <item>Telefon</item>
+        <item>Informacije o automobilu</item>
+        <item>Nadzorna ploča</item>
+        <item>Telefonska veza</item>
+        <item>Upravitelj datoteka</item>
+        <item>DVR</item>
+        <item>Postaviti</item>
+    </array>
+    <array name="bc_item_text_array">
+        <item>Navigacija</item>
+        <item>Glazba</item>
+        <item>Telefon</item>
+        <item>Informacije o automobilu</item>
+        <item>Postaviti</item>
+        <item>Video</item>
+        <item>Upravitelj datoteka</item>
+        <item>Telefonska veza</item>
+        <item>Nadzorna ploča</item>
+        <item>DVR</item>
+    </array>
+    <array name="bc_ntg5_item_text_array">
+        <item>Navigacija</item>
+        <item>Glazba</item>
+        <item>Telefon</item>
+        <item>Informacije o automobilu</item>
+        <item>Postaviti</item>
+        <item>Video</item>
+        <item>Aplikacije</item>
+        <item>Telefonska veza</item>
+        <item>Nadzorna ploča</item>
+        <item>DVR</item>
+    </array>
+    <array name="benz_mbux_2021_home_item_array">
+        <item>Telefon</item>
+        <item>Navigacija</item>
+        <item>Informacije o automobilu</item>
+        <item>Video</item>
+        <item>Glazba</item>
+        <item>Postaviti</item>
+        <item>Telefonska veza</item>
+        <item>Aplikacije</item>
+        <item>Nadzorna ploča</item>
+    </array>
+    <array name="benz_mbux_2021_item_tip_array">
+        <item>Nijedan uređaj nije povezan</item>
+        <item>Navigacija u stvarnom vremenu</item>
+        <item>Prikaži izvorne informacije o automobilu</item>
+        <item>Video player</item>
+        <item>Glazba</item>
+        <item>Sustav</item>
+        <item>Podržava USB ili WIFI vezu</item>
+        <item>Više aplikacija</item>
+        <item>Gorivo</item>
+    </array>
+    <array name="benz_mbux_home_item_array">
+        <item>Navigacija</item>
+        <item>Glazba</item>
+        <item>Telefon</item>
+        <item>Informacije o automobilu</item>
+        <item>Postaviti</item>
+        <item>Video</item>
+        <item>Aplikacije</item>
+        <item>Telefonska veza</item>
+        <item>Nadzorna ploča</item>
+        <item>DVR</item>
+    </array>
+    <array name="ksw_id7_months">
+        <item>Siječanj</item>
+        <item>Veljača</item>
+        <item>Ožujak</item>
+        <item>Travanj</item>
+        <item>Svibanj</item>
+        <item>Lipanj</item>
+        <item>Srpanj</item>
+        <item>Kolovoz</item>
+        <item>Rujan</item>
+        <item>Listopad</item>
+        <item>Studeni</item>
+        <item>Prosinac</item>
+    </array>
+    <array name="set_factory">
+        <item>Funkcija</item>
+        <item>Konfiguracija vozila</item>
+        <item>OEM monitor</item>
+        <item>CAN protokol</item>
+        <item>MIC pojačanje</item>
+        <item>Konfiguracija vremena izlaza unatrag</item>
+        <item>Konfiguracija korisničkog sučelja</item>
+        <item>Uvoz konfiguracije</item>
+        <item>Boot logo</item>
+    </array>
+    <array name="set_function">
+        <item>Sustav</item>
+        <item>Navigacija</item>
+        <item>Glasnoća</item>
+        <item>Zvuka</item>
+        <item>Jezik</item>
+        <item>Vrijeme</item>
+        <item>Informacije o sustavu</item>
+        <item>Android</item>
+        <item>Tvornički</item>
+    </array>
+    <array name="set_id6_function">
+        <item>Navigacija</item>
+        <item>Sustav</item>
+        <item>Glasnoća</item>
+        <item>Zvuka</item>
+        <item>Jezik</item>
+        <item>Vrijeme</item>
+        <item>Informacije o sustavu</item>
+        <item>Android</item>
+        <item>Tvornički</item>
+    </array>
+    <array name="set_land_rover_function">
+        <item>Sustav</item>
+        <item>Navigacija</item>
+        <item>Glasnoće</item>
+        <item>Jezik</item>
+        <item>Vrijeme</item>
+        <item>Informacije o sustavu</item>
+        <item>Android</item>
+        <item>Tvornički</item>
+    </array>
+</resources>

@@ -9,10 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView;
 
+/* loaded from: classes7.dex */
 public abstract class AudiMib3TwoDataCls extends ViewDataBinding {
     public final BenzMbuxItemView browserItemview;
     public final ImageView browserIv;
@@ -30,24 +31,23 @@ public abstract class AudiMib3TwoDataCls extends ViewDataBinding {
     @Bindable
     protected BcVieModel mViewModel;
 
-    public abstract void setViewModel(BcVieModel bcVieModel);
+    public abstract void setViewModel(BcVieModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected AudiMib3TwoDataCls(Object _bindingComponent, View _root, int _localFieldCount, BenzMbuxItemView browserItemview2, ImageView browserIv2, TextView browserTv2, BenzMbuxItemView dashboardItemview2, ImageView dashboardIv2, TextView dashboardTv2, BenzMbuxItemView dvrItemview2, ImageView dvrIv2, TextView dvrTv2, BenzMbuxItemView fileItemview2, ImageView fileIv2, TextView fileTv2, LinearLayout fragmentTwoLl2) {
+    protected AudiMib3TwoDataCls(Object _bindingComponent, View _root, int _localFieldCount, BenzMbuxItemView browserItemview, ImageView browserIv, TextView browserTv, BenzMbuxItemView dashboardItemview, ImageView dashboardIv, TextView dashboardTv, BenzMbuxItemView dvrItemview, ImageView dvrIv, TextView dvrTv, BenzMbuxItemView fileItemview, ImageView fileIv, TextView fileTv, LinearLayout fragmentTwoLl) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.browserItemview = browserItemview2;
-        this.browserIv = browserIv2;
-        this.browserTv = browserTv2;
-        this.dashboardItemview = dashboardItemview2;
-        this.dashboardIv = dashboardIv2;
-        this.dashboardTv = dashboardTv2;
-        this.dvrItemview = dvrItemview2;
-        this.dvrIv = dvrIv2;
-        this.dvrTv = dvrTv2;
-        this.fileItemview = fileItemview2;
-        this.fileIv = fileIv2;
-        this.fileTv = fileTv2;
-        this.fragmentTwoLl = fragmentTwoLl2;
+        this.browserItemview = browserItemview;
+        this.browserIv = browserIv;
+        this.browserTv = browserTv;
+        this.dashboardItemview = dashboardItemview;
+        this.dashboardIv = dashboardIv;
+        this.dashboardTv = dashboardTv;
+        this.dvrItemview = dvrItemview;
+        this.dvrIv = dvrIv;
+        this.dvrTv = dvrTv;
+        this.fileItemview = fileItemview;
+        this.fileIv = fileIv;
+        this.fileTv = fileTv;
+        this.fragmentTwoLl = fragmentTwoLl;
     }
 
     public BcVieModel getViewModel() {
@@ -60,7 +60,7 @@ public abstract class AudiMib3TwoDataCls extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3TwoDataCls inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AudiMib3TwoDataCls) ViewDataBinding.inflateInternal(inflater, R.layout.audi_mib3_fragment_two, root, attachToRoot, component);
+        return (AudiMib3TwoDataCls) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_mib3_fragment_two, root, attachToRoot, component);
     }
 
     public static AudiMib3TwoDataCls inflate(LayoutInflater inflater) {
@@ -69,7 +69,7 @@ public abstract class AudiMib3TwoDataCls extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3TwoDataCls inflate(LayoutInflater inflater, Object component) {
-        return (AudiMib3TwoDataCls) ViewDataBinding.inflateInternal(inflater, R.layout.audi_mib3_fragment_two, (ViewGroup) null, false, component);
+        return (AudiMib3TwoDataCls) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_mib3_fragment_two, null, false, component);
     }
 
     public static AudiMib3TwoDataCls bind(View view) {
@@ -78,6 +78,6 @@ public abstract class AudiMib3TwoDataCls extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3TwoDataCls bind(View view, Object component) {
-        return (AudiMib3TwoDataCls) bind(component, view, R.layout.audi_mib3_fragment_two);
+        return (AudiMib3TwoDataCls) bind(component, view, C0899R.C0902layout.audi_mib3_fragment_two);
     }
 }

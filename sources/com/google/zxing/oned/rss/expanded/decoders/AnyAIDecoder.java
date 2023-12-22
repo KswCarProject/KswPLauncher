@@ -4,6 +4,7 @@ import com.google.zxing.FormatException;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.common.BitArray;
 
+/* loaded from: classes.dex */
 final class AnyAIDecoder extends AbstractExpandedDecoder {
     private static final int HEADER_SIZE = 5;
 
@@ -11,7 +12,9 @@ final class AnyAIDecoder extends AbstractExpandedDecoder {
         super(information);
     }
 
+    @Override // com.google.zxing.oned.rss.expanded.decoders.AbstractExpandedDecoder
     public String parseInformation() throws NotFoundException, FormatException {
-        return getGeneralDecoder().decodeAllCodes(new StringBuilder(), 5);
+        StringBuilder buf = new StringBuilder();
+        return getGeneralDecoder().decodeAllCodes(buf, 5);
     }
 }

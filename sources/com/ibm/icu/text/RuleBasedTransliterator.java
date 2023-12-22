@@ -5,35 +5,35 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Deprecated
+/* loaded from: classes.dex */
 public class RuleBasedTransliterator extends Transliterator {
     private final Data data;
 
-    RuleBasedTransliterator(String ID, Data data2, UnicodeFilter filter) {
+    RuleBasedTransliterator(String ID, Data data, UnicodeFilter filter) {
         super(ID, filter);
-        this.data = data2;
-        setMaximumContextLength(data2.ruleSet.getMaximumContextLength());
+        this.data = data;
+        setMaximumContextLength(data.ruleSet.getMaximumContextLength());
     }
 
-    /* access modifiers changed from: protected */
+    @Override // com.ibm.icu.text.Transliterator
     @Deprecated
-    public void handleTransliterate(Replaceable text, Transliterator.Position index, boolean incremental) {
+    protected void handleTransliterate(Replaceable text, Transliterator.Position index, boolean incremental) {
         synchronized (this.data) {
-            int loopCount = 0;
             int loopLimit = (index.limit - index.start) << 4;
             if (loopLimit < 0) {
                 loopLimit = Integer.MAX_VALUE;
             }
-            while (index.start < index.limit && loopCount <= loopLimit && this.data.ruleSet.transliterate(text, index, incremental)) {
-                loopCount++;
+            for (int loopCount = 0; index.start < index.limit && loopCount <= loopLimit && this.data.ruleSet.transliterate(text, index, incremental); loopCount++) {
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static class Data {
-        public TransliterationRuleSet ruleSet = new TransliterationRuleSet();
-        Map<String, char[]> variableNames = new HashMap();
         Object[] variables;
         char variablesBase;
+        Map<String, char[]> variableNames = new HashMap();
+        public TransliterationRuleSet ruleSet = new TransliterationRuleSet();
 
         public UnicodeMatcher lookupMatcher(int standIn) {
             int i = standIn - this.variablesBase;
@@ -58,11 +58,13 @@ public class RuleBasedTransliterator extends Transliterator {
         }
     }
 
+    @Override // com.ibm.icu.text.Transliterator
     @Deprecated
     public String toRules(boolean escapeUnprintable) {
         return this.data.ruleSet.toRules(escapeUnprintable);
     }
 
+    @Override // com.ibm.icu.text.Transliterator
     @Deprecated
     public void addSourceTargetSet(UnicodeSet filter, UnicodeSet sourceSet, UnicodeSet targetSet) {
         this.data.ruleSet.addSourceTargetSet(filter, sourceSet, targetSet);

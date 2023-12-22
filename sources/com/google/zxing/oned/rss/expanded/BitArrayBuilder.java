@@ -3,6 +3,7 @@ package com.google.zxing.oned.rss.expanded;
 import com.google.zxing.common.BitArray;
 import java.util.List;
 
+/* loaded from: classes.dex */
 final class BitArrayBuilder {
     private BitArrayBuilder() {
     }
@@ -12,7 +13,8 @@ final class BitArrayBuilder {
         if (pairs.get(pairs.size() - 1).getRightChar() == null) {
             charNumber--;
         }
-        BitArray binary = new BitArray(charNumber * 12);
+        int size = charNumber * 12;
+        BitArray binary = new BitArray(size);
         int accPos = 0;
         int firstValue = pairs.get(0).getRightChar().getValue();
         for (int i = 11; i >= 0; i--) {
@@ -22,9 +24,8 @@ final class BitArrayBuilder {
             accPos++;
         }
         for (int i2 = 1; i2 < pairs.size(); i2++) {
-            ExpandedPair expandedPair = pairs.get(i2);
-            ExpandedPair currentPair = expandedPair;
-            int leftValue = expandedPair.getLeftChar().getValue();
+            ExpandedPair currentPair = pairs.get(i2);
+            int leftValue = currentPair.getLeftChar().getValue();
             for (int j = 11; j >= 0; j--) {
                 if (((1 << j) & leftValue) != 0) {
                     binary.set(accPos);

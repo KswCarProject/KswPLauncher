@@ -2,25 +2,26 @@ package skin.support.design.widget;
 
 import android.content.Context;
 import android.support.design.widget.TextInputEditText;
-import android.support.v7.appcompat.R;
+import android.support.p004v7.appcompat.C0365R;
 import android.util.AttributeSet;
 import skin.support.widget.SkinCompatBackgroundHelper;
 import skin.support.widget.SkinCompatSupportable;
 import skin.support.widget.SkinCompatTextHelper;
 
+/* loaded from: classes.dex */
 public class SkinMaterialTextInputEditText extends TextInputEditText implements SkinCompatSupportable {
     private SkinCompatBackgroundHelper mBackgroundTintHelper;
     private SkinCompatTextHelper mTextHelper;
 
     public SkinMaterialTextInputEditText(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public SkinMaterialTextInputEditText(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.editTextStyle);
+        this(context, attrs, C0365R.attr.editTextStyle);
     }
 
-    /* JADX WARNING: type inference failed for: r1v0, types: [android.widget.TextView, android.view.View, skin.support.design.widget.SkinMaterialTextInputEditText] */
+    /* JADX WARN: Multi-variable type inference failed */
     public SkinMaterialTextInputEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = new SkinCompatBackgroundHelper(this);
@@ -32,7 +33,7 @@ public class SkinMaterialTextInputEditText extends TextInputEditText implements 
     }
 
     public void setBackgroundResource(int resId) {
-        SkinMaterialTextInputEditText.super.setBackgroundResource(resId);
+        super.setBackgroundResource(resId);
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
         if (skinCompatBackgroundHelper != null) {
             skinCompatBackgroundHelper.onSetBackgroundResource(resId);
@@ -44,7 +45,7 @@ public class SkinMaterialTextInputEditText extends TextInputEditText implements 
     }
 
     public void setTextAppearance(Context context, int resId) {
-        SkinMaterialTextInputEditText.super.setTextAppearance(context, resId);
+        super.setTextAppearance(context, resId);
         SkinCompatTextHelper skinCompatTextHelper = this.mTextHelper;
         if (skinCompatTextHelper != null) {
             skinCompatTextHelper.onSetTextAppearance(context, resId);
@@ -60,7 +61,7 @@ public class SkinMaterialTextInputEditText extends TextInputEditText implements 
     }
 
     public void setCompoundDrawablesRelativeWithIntrinsicBounds(int start, int top, int end, int bottom) {
-        SkinMaterialTextInputEditText.super.setCompoundDrawablesRelativeWithIntrinsicBounds(start, top, end, bottom);
+        super.setCompoundDrawablesRelativeWithIntrinsicBounds(start, top, end, bottom);
         SkinCompatTextHelper skinCompatTextHelper = this.mTextHelper;
         if (skinCompatTextHelper != null) {
             skinCompatTextHelper.onSetCompoundDrawablesRelativeWithIntrinsicBounds(start, top, end, bottom);
@@ -68,13 +69,14 @@ public class SkinMaterialTextInputEditText extends TextInputEditText implements 
     }
 
     public void setCompoundDrawablesWithIntrinsicBounds(int left, int top, int right, int bottom) {
-        SkinMaterialTextInputEditText.super.setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom);
+        super.setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom);
         SkinCompatTextHelper skinCompatTextHelper = this.mTextHelper;
         if (skinCompatTextHelper != null) {
             skinCompatTextHelper.onSetCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom);
         }
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
         if (skinCompatBackgroundHelper != null) {

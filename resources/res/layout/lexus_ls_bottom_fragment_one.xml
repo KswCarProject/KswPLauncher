@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="horizontal" android:id="@+id/lexus_ls_ll_bottom_frag_one" android:tag="layout/lexus_ls_bottom_fragment_one_0" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="40dp" android:layout_marginRight="40dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="horizontal" android:id="@+id/lexus_ls_ll_bottom_frag_one" android:tag="layout/lexus_ls_bottom_fragment_one_0" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="40dp" android:layout_marginRight="40dp">
     <RelativeLayout android:orientation="vertical" style="@style/lexusLsBottomIvStyle">
         <ImageView android:id="@+id/iv_lexus_ls_navi" android:nextFocusUp="@+id/iv_lexus_ls_navi" android:nextFocusDown="@+id/iv_lexus_ls_music" android:src="@drawable/lexus_ls_bottom_sel_navi" style="@style/lexusLsBottomIvStyle"/>
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ksw_id7_navi" style="@style/lexusLsBottomTxStyle"/>

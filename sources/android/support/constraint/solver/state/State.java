@@ -12,23 +12,26 @@ import android.support.constraint.solver.widgets.HelperWidget;
 import java.util.HashMap;
 import java.util.Iterator;
 
+/* loaded from: classes.dex */
 public class State {
     static final int CONSTRAINT_RATIO = 2;
     static final int CONSTRAINT_SPREAD = 0;
     static final int CONSTRAINT_WRAP = 1;
     public static final Integer PARENT = 0;
     static final int UNKNOWN = -1;
-    protected HashMap<Object, HelperReference> mHelperReferences = new HashMap<>();
     public final ConstraintReference mParent;
-    protected HashMap<Object, Reference> mReferences = new HashMap<>();
     private int numHelpers;
+    protected HashMap<Object, Reference> mReferences = new HashMap<>();
+    protected HashMap<Object, HelperReference> mHelperReferences = new HashMap<>();
 
+    /* loaded from: classes.dex */
     public enum Chain {
         SPREAD,
         SPREAD_INSIDE,
         PACKED
     }
 
+    /* loaded from: classes.dex */
     public enum Constraint {
         LEFT_TO_LEFT,
         LEFT_TO_RIGHT,
@@ -47,6 +50,7 @@ public class State {
         CENTER_VERTICALLY
     }
 
+    /* loaded from: classes.dex */
     public enum Direction {
         LEFT,
         RIGHT,
@@ -56,6 +60,7 @@ public class State {
         BOTTOM
     }
 
+    /* loaded from: classes.dex */
     public enum Helper {
         HORIZONTAL_CHAIN,
         VERTICAL_CHAIN,
@@ -109,8 +114,7 @@ public class State {
         return this;
     }
 
-    /* access modifiers changed from: package-private */
-    public Reference reference(Object key) {
+    Reference reference(Object key) {
         return this.mReferences.get(key);
     }
 
@@ -140,7 +144,7 @@ public class State {
         }
         HelperReference reference = this.mHelperReferences.get(key);
         if (reference == null) {
-            switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$state$State$Helper[type.ordinal()]) {
+            switch (C01011.$SwitchMap$android$support$constraint$solver$state$State$Helper[type.ordinal()]) {
                 case 1:
                     reference = new HorizontalChainReference(this);
                     break;
@@ -165,8 +169,9 @@ public class State {
         return reference;
     }
 
-    /* renamed from: android.support.constraint.solver.state.State$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
+    /* renamed from: android.support.constraint.solver.state.State$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C01011 {
         static final /* synthetic */ int[] $SwitchMap$android$support$constraint$solver$state$State$Helper;
 
         static {
@@ -222,37 +227,39 @@ public class State {
     }
 
     public VerticalChainReference verticalChain(Object... references) {
-        VerticalChainReference reference = (VerticalChainReference) helper((Object) null, Helper.VERTICAL_CHAIN);
+        VerticalChainReference reference = (VerticalChainReference) helper(null, Helper.VERTICAL_CHAIN);
         reference.add(references);
         return reference;
     }
 
     public HorizontalChainReference horizontalChain(Object... references) {
-        HorizontalChainReference reference = (HorizontalChainReference) helper((Object) null, Helper.HORIZONTAL_CHAIN);
+        HorizontalChainReference reference = (HorizontalChainReference) helper(null, Helper.HORIZONTAL_CHAIN);
         reference.add(references);
         return reference;
     }
 
     public AlignHorizontallyReference centerHorizontally(Object... references) {
-        AlignHorizontallyReference reference = (AlignHorizontallyReference) helper((Object) null, Helper.ALIGN_HORIZONTALLY);
+        AlignHorizontallyReference reference = (AlignHorizontallyReference) helper(null, Helper.ALIGN_HORIZONTALLY);
         reference.add(references);
         return reference;
     }
 
     public AlignVerticallyReference centerVertically(Object... references) {
-        AlignVerticallyReference reference = (AlignVerticallyReference) helper((Object) null, Helper.ALIGN_VERTICALLY);
+        AlignVerticallyReference reference = (AlignVerticallyReference) helper(null, Helper.ALIGN_VERTICALLY);
         reference.add(references);
         return reference;
     }
 
     public void directMapping() {
         for (Object key : this.mReferences.keySet()) {
-            constraints(key).setView(key);
+            ConstraintReference reference = constraints(key);
+            reference.setView(key);
         }
     }
 
     public void map(Object key, Object view) {
-        constraints(key).setView(view);
+        ConstraintReference reference = constraints(key);
+        reference.setView(view);
     }
 
     public void apply(ConstraintWidgetContainer container) {
@@ -273,7 +280,7 @@ public class State {
             Reference reference = this.mReferences.get(key2);
             if (reference != this.mParent) {
                 ConstraintWidget widget = reference.getConstraintWidget();
-                widget.setParent((ConstraintWidget) null);
+                widget.setParent(null);
                 if (reference instanceof GuidelineReference) {
                     reference.apply();
                 }
@@ -287,7 +294,8 @@ public class State {
             if (reference2.getHelperWidget() != null) {
                 Iterator<Object> it = reference2.mReferences.iterator();
                 while (it.hasNext()) {
-                    reference2.getHelperWidget().add(this.mReferences.get(it.next()).getConstraintWidget());
+                    Object keyRef = it.next();
+                    reference2.getHelperWidget().add(this.mReferences.get(keyRef).getConstraintWidget());
                 }
                 reference2.apply();
             }

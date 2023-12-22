@@ -1,10 +1,11 @@
 package com.wits.ksw.launcher.pagerlayoutmanager;
 
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.RecyclerView;
+import android.support.p004v7.widget.LinearSmoothScroller;
+import android.support.p004v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+/* loaded from: classes7.dex */
 public class PagerGridSmoothScroller extends LinearSmoothScroller {
     private RecyclerView mRecyclerView;
 
@@ -13,11 +14,13 @@ public class PagerGridSmoothScroller extends LinearSmoothScroller {
         this.mRecyclerView = recyclerView;
     }
 
-    /* access modifiers changed from: protected */
-    public void onTargetFound(View targetView, RecyclerView.State state, RecyclerView.SmoothScroller.Action action) {
+    @Override // android.support.p004v7.widget.LinearSmoothScroller, android.support.p004v7.widget.RecyclerView.SmoothScroller
+    protected void onTargetFound(View targetView, RecyclerView.State state, RecyclerView.SmoothScroller.Action action) {
         RecyclerView.LayoutManager manager = this.mRecyclerView.getLayoutManager();
         if (manager != null && (manager instanceof PagerGridLayoutManager)) {
-            int[] snapDistances = ((PagerGridLayoutManager) manager).getSnapOffset(this.mRecyclerView.getChildAdapterPosition(targetView));
+            PagerGridLayoutManager layoutManager = (PagerGridLayoutManager) manager;
+            int pos = this.mRecyclerView.getChildAdapterPosition(targetView);
+            int[] snapDistances = layoutManager.getSnapOffset(pos);
             int dx = snapDistances[0];
             int dy = snapDistances[1];
             PagerConfig.Logi("dx = " + dx);
@@ -29,8 +32,8 @@ public class PagerGridSmoothScroller extends LinearSmoothScroller {
         }
     }
 
-    /* access modifiers changed from: protected */
-    public float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
-        return PagerConfig.getMillisecondsPreInch() / ((float) displayMetrics.densityDpi);
+    @Override // android.support.p004v7.widget.LinearSmoothScroller
+    protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+        return PagerConfig.getMillisecondsPreInch() / displayMetrics.densityDpi;
     }
 }

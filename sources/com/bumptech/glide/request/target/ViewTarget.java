@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Deprecated
+/* loaded from: classes.dex */
 public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
     private static final String TAG = "ViewTarget";
     private static boolean isTagUsedAtLeastOnce;
@@ -27,14 +28,14 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
     private final SizeDeterminer sizeDeterminer;
     protected final T view;
 
-    public ViewTarget(T view2) {
-        this.view = (View) Preconditions.checkNotNull(view2);
-        this.sizeDeterminer = new SizeDeterminer(view2);
+    public ViewTarget(T view) {
+        this.view = (T) Preconditions.checkNotNull(view);
+        this.sizeDeterminer = new SizeDeterminer(view);
     }
 
     @Deprecated
-    public ViewTarget(T view2, boolean waitForLayout) {
-        this(view2);
+    public ViewTarget(T view, boolean waitForLayout) {
+        this(view);
         if (waitForLayout) {
             waitForLayout();
         }
@@ -44,11 +45,13 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
         if (this.attachStateListener != null) {
             return this;
         }
-        this.attachStateListener = new View.OnAttachStateChangeListener() {
+        this.attachStateListener = new View.OnAttachStateChangeListener() { // from class: com.bumptech.glide.request.target.ViewTarget.1
+            @Override // android.view.View.OnAttachStateChangeListener
             public void onViewAttachedToWindow(View v) {
                 ViewTarget.this.resumeMyRequest();
             }
 
+            @Override // android.view.View.OnAttachStateChangeListener
             public void onViewDetachedFromWindow(View v) {
                 ViewTarget.this.pauseMyRequest();
             }
@@ -57,16 +60,14 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
         return this;
     }
 
-    /* access modifiers changed from: package-private */
-    public void resumeMyRequest() {
+    void resumeMyRequest() {
         Request request = getRequest();
         if (request != null && request.isCleared()) {
             request.begin();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void pauseMyRequest() {
+    void pauseMyRequest() {
         Request request = getRequest();
         if (request != null) {
             this.isClearedByUs = true;
@@ -80,6 +81,7 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
         return this;
     }
 
+    @Override // com.bumptech.glide.request.target.BaseTarget, com.bumptech.glide.request.target.Target
     public void onLoadStarted(Drawable placeholder) {
         super.onLoadStarted(placeholder);
         maybeAddAttachStateListener();
@@ -87,32 +89,37 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
 
     private void maybeAddAttachStateListener() {
         View.OnAttachStateChangeListener onAttachStateChangeListener = this.attachStateListener;
-        if (onAttachStateChangeListener != null && !this.isAttachStateListenerAdded) {
-            this.view.addOnAttachStateChangeListener(onAttachStateChangeListener);
-            this.isAttachStateListenerAdded = true;
+        if (onAttachStateChangeListener == null || this.isAttachStateListenerAdded) {
+            return;
         }
+        this.view.addOnAttachStateChangeListener(onAttachStateChangeListener);
+        this.isAttachStateListenerAdded = true;
     }
 
     private void maybeRemoveAttachStateListener() {
         View.OnAttachStateChangeListener onAttachStateChangeListener = this.attachStateListener;
-        if (onAttachStateChangeListener != null && this.isAttachStateListenerAdded) {
-            this.view.removeOnAttachStateChangeListener(onAttachStateChangeListener);
-            this.isAttachStateListenerAdded = false;
+        if (onAttachStateChangeListener == null || !this.isAttachStateListenerAdded) {
+            return;
         }
+        this.view.removeOnAttachStateChangeListener(onAttachStateChangeListener);
+        this.isAttachStateListenerAdded = false;
     }
 
     public T getView() {
         return this.view;
     }
 
+    @Override // com.bumptech.glide.request.target.Target
     public void getSize(SizeReadyCallback cb) {
         this.sizeDeterminer.getSize(cb);
     }
 
+    @Override // com.bumptech.glide.request.target.Target
     public void removeCallback(SizeReadyCallback cb) {
         this.sizeDeterminer.removeCallback(cb);
     }
 
+    @Override // com.bumptech.glide.request.target.BaseTarget, com.bumptech.glide.request.target.Target
     public void onLoadCleared(Drawable placeholder) {
         super.onLoadCleared(placeholder);
         this.sizeDeterminer.clearCallbacksAndListener();
@@ -121,17 +128,20 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
         }
     }
 
+    @Override // com.bumptech.glide.request.target.BaseTarget, com.bumptech.glide.request.target.Target
     public void setRequest(Request request) {
         setTag(request);
     }
 
+    @Override // com.bumptech.glide.request.target.BaseTarget, com.bumptech.glide.request.target.Target
     public Request getRequest() {
         Object tag = getTag();
         if (tag == null) {
             return null;
         }
         if (tag instanceof Request) {
-            return (Request) tag;
+            Request request = (Request) tag;
+            return request;
         }
         throw new IllegalArgumentException("You must not call setTag() on a view Glide is targeting");
     }
@@ -165,6 +175,7 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
         tagId = Integer.valueOf(tagId2);
     }
 
+    /* loaded from: classes.dex */
     static final class SizeDeterminer {
         private static final int PENDING_SIZE = 0;
         static Integer maxDisplayLength;
@@ -173,13 +184,14 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
         private final View view;
         boolean waitForLayout;
 
-        SizeDeterminer(View view2) {
-            this.view = view2;
+        SizeDeterminer(View view) {
+            this.view = view;
         }
 
         private static int getMaxDisplayLength(Context context) {
             if (maxDisplayLength == null) {
-                Display display = ((WindowManager) Preconditions.checkNotNull((WindowManager) context.getSystemService("window"))).getDefaultDisplay();
+                WindowManager windowManager = (WindowManager) context.getSystemService("window");
+                Display display = ((WindowManager) Preconditions.checkNotNull(windowManager)).getDefaultDisplay();
                 Point displayDimensions = new Point();
                 display.getSize(displayDimensions);
                 maxDisplayLength = Integer.valueOf(Math.max(displayDimensions.x, displayDimensions.y));
@@ -190,24 +202,25 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
         private void notifyCbs(int width, int height) {
             Iterator it = new ArrayList(this.cbs).iterator();
             while (it.hasNext()) {
-                ((SizeReadyCallback) it.next()).onSizeReady(width, height);
+                SizeReadyCallback cb = (SizeReadyCallback) it.next();
+                cb.onSizeReady(width, height);
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void checkCurrentDimens() {
-            if (!this.cbs.isEmpty()) {
-                int currentWidth = getTargetWidth();
-                int currentHeight = getTargetHeight();
-                if (isViewStateAndSizeValid(currentWidth, currentHeight)) {
-                    notifyCbs(currentWidth, currentHeight);
-                    clearCallbacksAndListener();
-                }
+        void checkCurrentDimens() {
+            if (this.cbs.isEmpty()) {
+                return;
             }
+            int currentWidth = getTargetWidth();
+            int currentHeight = getTargetHeight();
+            if (!isViewStateAndSizeValid(currentWidth, currentHeight)) {
+                return;
+            }
+            notifyCbs(currentWidth, currentHeight);
+            clearCallbacksAndListener();
         }
 
-        /* access modifiers changed from: package-private */
-        public void getSize(SizeReadyCallback cb) {
+        void getSize(SizeReadyCallback cb) {
             int currentWidth = getTargetWidth();
             int currentHeight = getTargetHeight();
             if (isViewStateAndSizeValid(currentWidth, currentHeight)) {
@@ -225,13 +238,11 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void removeCallback(SizeReadyCallback cb) {
+        void removeCallback(SizeReadyCallback cb) {
             this.cbs.remove(cb);
         }
 
-        /* access modifiers changed from: package-private */
-        public void clearCallbacksAndListener() {
+        void clearCallbacksAndListener() {
             ViewTreeObserver observer = this.view.getViewTreeObserver();
             if (observer.isAlive()) {
                 observer.removeOnPreDrawListener(this.layoutListener);
@@ -247,13 +258,15 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
         private int getTargetHeight() {
             int verticalPadding = this.view.getPaddingTop() + this.view.getPaddingBottom();
             ViewGroup.LayoutParams layoutParams = this.view.getLayoutParams();
-            return getTargetDimen(this.view.getHeight(), layoutParams != null ? layoutParams.height : 0, verticalPadding);
+            int layoutParamSize = layoutParams != null ? layoutParams.height : 0;
+            return getTargetDimen(this.view.getHeight(), layoutParamSize, verticalPadding);
         }
 
         private int getTargetWidth() {
             int horizontalPadding = this.view.getPaddingLeft() + this.view.getPaddingRight();
             ViewGroup.LayoutParams layoutParams = this.view.getLayoutParams();
-            return getTargetDimen(this.view.getWidth(), layoutParams != null ? layoutParams.width : 0, horizontalPadding);
+            int layoutParamSize = layoutParams != null ? layoutParams.width : 0;
+            return getTargetDimen(this.view.getWidth(), layoutParamSize, horizontalPadding);
         }
 
         private int getTargetDimen(int viewSize, int paramSize, int paddingSize) {
@@ -281,6 +294,7 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
             return size > 0 || size == Integer.MIN_VALUE;
         }
 
+        /* loaded from: classes.dex */
         private static final class SizeDeterminerLayoutListener implements ViewTreeObserver.OnPreDrawListener {
             private final WeakReference<SizeDeterminer> sizeDeterminerRef;
 
@@ -288,15 +302,16 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
                 this.sizeDeterminerRef = new WeakReference<>(sizeDeterminer);
             }
 
+            @Override // android.view.ViewTreeObserver.OnPreDrawListener
             public boolean onPreDraw() {
                 if (Log.isLoggable(ViewTarget.TAG, 2)) {
                     Log.v(ViewTarget.TAG, "OnGlobalLayoutListener called attachStateListener=" + this);
                 }
-                SizeDeterminer sizeDeterminer = (SizeDeterminer) this.sizeDeterminerRef.get();
-                if (sizeDeterminer == null) {
+                SizeDeterminer sizeDeterminer = this.sizeDeterminerRef.get();
+                if (sizeDeterminer != null) {
+                    sizeDeterminer.checkCurrentDimens();
                     return true;
                 }
-                sizeDeterminer.checkCurrentDimens();
                 return true;
             }
         }

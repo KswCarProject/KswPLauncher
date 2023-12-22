@@ -11,23 +11,24 @@ import io.reactivex.internal.operators.maybe.MaybeMap;
 import io.reactivex.internal.operators.maybe.MaybeZipArray;
 import java.util.Arrays;
 
+/* loaded from: classes.dex */
 public final class MaybeZipIterable<T, R> extends Maybe<R> {
     final Iterable<? extends MaybeSource<? extends T>> sources;
     final Function<? super Object[], ? extends R> zipper;
 
-    public MaybeZipIterable(Iterable<? extends MaybeSource<? extends T>> sources2, Function<? super Object[], ? extends R> zipper2) {
-        this.sources = sources2;
-        this.zipper = zipper2;
+    public MaybeZipIterable(Iterable<? extends MaybeSource<? extends T>> sources, Function<? super Object[], ? extends R> zipper) {
+        this.sources = sources;
+        this.zipper = zipper;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super R> observer) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super R> observer) {
         MaybeSource<? extends T>[] a = new MaybeSource[8];
         int n = 0;
         try {
             for (MaybeSource<? extends T> source : this.sources) {
                 if (source == null) {
-                    EmptyDisposable.error((Throwable) new NullPointerException("One of the sources is null"), (MaybeObserver<?>) observer);
+                    EmptyDisposable.error(new NullPointerException("One of the sources is null"), observer);
                     return;
                 }
                 if (n == a.length) {
@@ -39,35 +40,36 @@ public final class MaybeZipIterable<T, R> extends Maybe<R> {
                     n = n2;
                 } catch (Throwable th) {
                     ex = th;
-                    int i = n2;
                     Exceptions.throwIfFatal(ex);
-                    EmptyDisposable.error(ex, (MaybeObserver<?>) observer);
+                    EmptyDisposable.error(ex, observer);
+                    return;
                 }
             }
             if (n == 0) {
-                EmptyDisposable.complete((MaybeObserver<?>) observer);
+                EmptyDisposable.complete(observer);
             } else if (n == 1) {
-                a[0].subscribe(new MaybeMap.MapMaybeObserver(observer, new SingletonArrayFunc()));
+                a[0].subscribe(new MaybeMap.MapMaybeObserver<>(observer, new SingletonArrayFunc()));
             } else {
                 MaybeZipArray.ZipCoordinator<T, R> parent = new MaybeZipArray.ZipCoordinator<>(observer, n, this.zipper);
                 observer.onSubscribe(parent);
-                for (int i2 = 0; i2 < n && !parent.isDisposed(); i2++) {
-                    a[i2].subscribe(parent.observers[i2]);
+                for (int i = 0; i < n && !parent.isDisposed(); i++) {
+                    a[i].subscribe(parent.observers[i]);
                 }
             }
         } catch (Throwable th2) {
             ex = th2;
-            Exceptions.throwIfFatal(ex);
-            EmptyDisposable.error(ex, (MaybeObserver<?>) observer);
         }
     }
 
+    /* loaded from: classes.dex */
     final class SingletonArrayFunc implements Function<T, R> {
         SingletonArrayFunc() {
         }
 
+        /* JADX WARN: Type inference failed for: r1v1, types: [java.lang.Object[], java.lang.Object] */
+        @Override // io.reactivex.functions.Function
         public R apply(T t) throws Exception {
-            return ObjectHelper.requireNonNull(MaybeZipIterable.this.zipper.apply(new Object[]{t}), "The zipper returned a null value");
+            return (R) ObjectHelper.requireNonNull(MaybeZipIterable.this.zipper.apply(new Object[]{t}), "The zipper returned a null value");
         }
     }
 }

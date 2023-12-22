@@ -1,19 +1,21 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableFloat;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
+import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
-import com.wits.ksw.launcher.bean.CarInfo;
+import android.widget.ImageView;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.AudiViewModel;
 import com.wits.ksw.launcher.model.DashboardViewModel;
 
+/* loaded from: classes7.dex */
 public class AudiRightCarinfoBindingSw600dpLandImpl extends AudiRightCarinfoBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -22,37 +24,38 @@ public class AudiRightCarinfoBindingSw600dpLandImpl extends AudiRightCarinfoBind
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.imageView5, 5);
-        sparseIntArray.put(R.id.textView4, 6);
-        sparseIntArray.put(R.id.imageView9, 7);
-        sparseIntArray.put(R.id.imageView10, 8);
-        sparseIntArray.put(R.id.imageView11, 9);
+        sparseIntArray.put(C0899R.C0901id.imageView5, 5);
+        sparseIntArray.put(C0899R.C0901id.textView4, 6);
+        sparseIntArray.put(C0899R.C0901id.imageView9, 7);
+        sparseIntArray.put(C0899R.C0901id.imageView10, 8);
+        sparseIntArray.put(C0899R.C0901id.imageView11, 9);
     }
 
     public AudiRightCarinfoBindingSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 10, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private AudiRightCarinfoBindingSw600dpLandImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 5, bindings[0], bindings[3], bindings[4], bindings[2], bindings[8], bindings[9], bindings[5], bindings[7], bindings[1], bindings[6]);
-        this.mDirtyFlags = -1;
-        this.KSWA4LRightTrafficInformation.setTag((Object) null);
-        this.TvDrivingRange.setTag((Object) null);
-        this.TvTemp.setTag((Object) null);
-        this.TvZhuanSu.setTag((Object) null);
-        this.pointerImageView.setTag((Object) null);
+        super(bindingComponent, root, 5, (ConstraintLayout) bindings[0], (TextView) bindings[3], (TextView) bindings[4], (TextView) bindings[2], (ImageView) bindings[8], (ImageView) bindings[9], (ImageView) bindings[5], (ImageView) bindings[7], (ImageView) bindings[1], (TextView) bindings[6]);
+        this.mDirtyFlags = -1L;
+        this.KSWA4LRightTrafficInformation.setTag(null);
+        this.TvDrivingRange.setTag(null);
+        this.TvTemp.setTag(null);
+        this.TvZhuanSu.setTag(null);
+        this.pointerImageView.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 64;
+            this.mDirtyFlags = 64L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -62,14 +65,16 @@ public class AudiRightCarinfoBindingSw600dpLandImpl extends AudiRightCarinfoBind
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((AudiViewModel) variable);
+            return true;
         }
-        setVm((AudiViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AudiRightCarinfoBinding
     public void setVm(AudiViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -79,8 +84,8 @@ public class AudiRightCarinfoBindingSw600dpLandImpl extends AudiRightCarinfoBind
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmCarInfoMileage((ObservableField) object, fieldId);
@@ -97,64 +102,64 @@ public class AudiRightCarinfoBindingSw600dpLandImpl extends AudiRightCarinfoBind
         }
     }
 
-    private boolean onChangeVmCarInfoMileage(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmCarInfoMileage(ObservableField<String> VmCarInfoMileage, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmCarInfoTurnSpeedAnge(ObservableFloat VmCarInfoTurnSpeedAnge, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmCarInfoView(ObservableInt VmCarInfoView, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmCarInfoTurnSpeed(ObservableInt VmCarInfoTurnSpeed, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmCarInfoTempStr(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmCarInfoTempStr(ObservableField<String> VmCarInfoTempStr, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 16;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 16;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         float vmCarInfoTurnSpeedAngeGet;
         ObservableField<String> vmCarInfoTempStr;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         String vmCarInfoTempStrGet = null;
         ObservableField<String> vmCarInfoMileage = null;
@@ -171,18 +176,20 @@ public class AudiRightCarinfoBindingSw600dpLandImpl extends AudiRightCarinfoBind
             if (vm != null) {
                 vmCarInfoView = vm.carInfoView;
             }
-            updateRegistration(2, (Observable) vmCarInfoView);
+            updateRegistration(2, vmCarInfoView);
             if (vmCarInfoView != null) {
                 vmCarInfoViewGet = vmCarInfoView.get();
             }
         }
-        if ((91 & dirtyFlags) != 0) {
-            CarInfo vmCarInfo = AudiViewModel.carInfo;
+        if ((91 & dirtyFlags) == 0) {
+            vmCarInfoTurnSpeedAngeGet = 0.0f;
+        } else {
+            com.wits.ksw.launcher.bean.CarInfo vmCarInfo = AudiViewModel.carInfo;
             if ((dirtyFlags & 65) != 0) {
                 if (vmCarInfo != null) {
                     vmCarInfoMileage = vmCarInfo.mileage;
                 }
-                updateRegistration(0, (Observable) vmCarInfoMileage);
+                updateRegistration(0, vmCarInfoMileage);
                 if (vmCarInfoMileage != null) {
                     vmCarInfoMileageGet = vmCarInfoMileage.get();
                 }
@@ -191,7 +198,7 @@ public class AudiRightCarinfoBindingSw600dpLandImpl extends AudiRightCarinfoBind
                 if (vmCarInfo != null) {
                     vmCarInfoTurnSpeedAnge = vmCarInfo.turnSpeedAnge;
                 }
-                updateRegistration(1, (Observable) vmCarInfoTurnSpeedAnge);
+                updateRegistration(1, vmCarInfoTurnSpeedAnge);
                 if (vmCarInfoTurnSpeedAnge != null) {
                     vmCarInfoTurnSpeedAngeGet2 = vmCarInfoTurnSpeedAnge.get();
                 }
@@ -200,32 +207,28 @@ public class AudiRightCarinfoBindingSw600dpLandImpl extends AudiRightCarinfoBind
                 if (vmCarInfo != null) {
                     vmCarInfoTurnSpeed = vmCarInfo.turnSpeed;
                 }
-                updateRegistration(3, (Observable) vmCarInfoTurnSpeed);
+                updateRegistration(3, vmCarInfoTurnSpeed);
                 if (vmCarInfoTurnSpeed != null) {
                     vmCarInfoTurnSpeedGet = vmCarInfoTurnSpeed.get();
                 }
                 stringValueOfVmCarInfoTurnSpeed = String.valueOf(vmCarInfoTurnSpeedGet);
             }
-            if ((dirtyFlags & 80) != 0) {
-                if (vmCarInfo != null) {
-                    vmCarInfoTempStr = vmCarInfo.tempStr;
-                } else {
+            if ((dirtyFlags & 80) == 0) {
+                vmCarInfoTurnSpeedAngeGet = vmCarInfoTurnSpeedAngeGet2;
+            } else {
+                if (vmCarInfo == null) {
                     vmCarInfoTempStr = null;
+                } else {
+                    vmCarInfoTempStr = vmCarInfo.tempStr;
                 }
-                updateRegistration(4, (Observable) vmCarInfoTempStr);
+                updateRegistration(4, vmCarInfoTempStr);
                 if (vmCarInfoTempStr != null) {
                     vmCarInfoTempStrGet = vmCarInfoTempStr.get();
-                    ObservableField<String> observableField = vmCarInfoTempStr;
                     vmCarInfoTurnSpeedAngeGet = vmCarInfoTurnSpeedAngeGet2;
                 } else {
-                    ObservableField<String> observableField2 = vmCarInfoTempStr;
                     vmCarInfoTurnSpeedAngeGet = vmCarInfoTurnSpeedAngeGet2;
                 }
-            } else {
-                vmCarInfoTurnSpeedAngeGet = vmCarInfoTurnSpeedAngeGet2;
             }
-        } else {
-            vmCarInfoTurnSpeedAngeGet = 0.0f;
         }
         if ((dirtyFlags & 100) != 0) {
             this.KSWA4LRightTrafficInformation.setVisibility(vmCarInfoViewGet);

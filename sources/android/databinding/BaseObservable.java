@@ -2,9 +2,11 @@ package android.databinding;
 
 import android.databinding.Observable;
 
+/* loaded from: classes.dex */
 public class BaseObservable implements Observable {
     private transient PropertyChangeRegistry mCallbacks;
 
+    @Override // android.databinding.Observable
     public void addOnPropertyChangedCallback(Observable.OnPropertyChangedCallback callback) {
         synchronized (this) {
             if (this.mCallbacks == null) {
@@ -14,30 +16,34 @@ public class BaseObservable implements Observable {
         this.mCallbacks.add(callback);
     }
 
+    @Override // android.databinding.Observable
     public void removeOnPropertyChangedCallback(Observable.OnPropertyChangedCallback callback) {
         synchronized (this) {
             PropertyChangeRegistry propertyChangeRegistry = this.mCallbacks;
-            if (propertyChangeRegistry != null) {
-                propertyChangeRegistry.remove(callback);
+            if (propertyChangeRegistry == null) {
+                return;
             }
+            propertyChangeRegistry.remove(callback);
         }
     }
 
     public void notifyChange() {
         synchronized (this) {
             PropertyChangeRegistry propertyChangeRegistry = this.mCallbacks;
-            if (propertyChangeRegistry != null) {
-                propertyChangeRegistry.notifyCallbacks(this, 0, null);
+            if (propertyChangeRegistry == null) {
+                return;
             }
+            propertyChangeRegistry.notifyCallbacks(this, 0, null);
         }
     }
 
     public void notifyPropertyChanged(int fieldId) {
         synchronized (this) {
             PropertyChangeRegistry propertyChangeRegistry = this.mCallbacks;
-            if (propertyChangeRegistry != null) {
-                propertyChangeRegistry.notifyCallbacks(this, fieldId, null);
+            if (propertyChangeRegistry == null) {
+                return;
             }
+            propertyChangeRegistry.notifyCallbacks(this, fieldId, null);
         }
     }
 }

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public class ResourceDecoderRegistry {
     private final List<String> bucketPriorityList = new ArrayList();
     private final Map<String, List<Entry<?, ?>>> decoders = new HashMap();
@@ -54,11 +55,11 @@ public class ResourceDecoderRegistry {
     }
 
     public synchronized <T, R> void append(String bucket, ResourceDecoder<T, R> decoder, Class<T> dataClass, Class<R> resourceClass) {
-        getOrAddEntryList(bucket).add(new Entry(dataClass, resourceClass, decoder));
+        getOrAddEntryList(bucket).add(new Entry<>(dataClass, resourceClass, decoder));
     }
 
     public synchronized <T, R> void prepend(String bucket, ResourceDecoder<T, R> decoder, Class<T> dataClass, Class<R> resourceClass) {
-        getOrAddEntryList(bucket).add(0, new Entry(dataClass, resourceClass, decoder));
+        getOrAddEntryList(bucket).add(0, new Entry<>(dataClass, resourceClass, decoder));
     }
 
     private synchronized List<Entry<?, ?>> getOrAddEntryList(String bucket) {
@@ -68,25 +69,26 @@ public class ResourceDecoderRegistry {
         }
         entries = this.decoders.get(bucket);
         if (entries == null) {
-            entries = new ArrayList<>();
+            entries = new ArrayList();
             this.decoders.put(bucket, entries);
         }
         return entries;
     }
 
+    /* loaded from: classes.dex */
     private static class Entry<T, R> {
         private final Class<T> dataClass;
         final ResourceDecoder<T, R> decoder;
         final Class<R> resourceClass;
 
-        public Entry(Class<T> dataClass2, Class<R> resourceClass2, ResourceDecoder<T, R> decoder2) {
-            this.dataClass = dataClass2;
-            this.resourceClass = resourceClass2;
-            this.decoder = decoder2;
+        public Entry(Class<T> dataClass, Class<R> resourceClass, ResourceDecoder<T, R> decoder) {
+            this.dataClass = dataClass;
+            this.resourceClass = resourceClass;
+            this.decoder = decoder;
         }
 
-        public boolean handles(Class<?> dataClass2, Class<?> resourceClass2) {
-            return this.dataClass.isAssignableFrom(dataClass2) && resourceClass2.isAssignableFrom(this.resourceClass);
+        public boolean handles(Class<?> dataClass, Class<?> resourceClass) {
+            return this.dataClass.isAssignableFrom(dataClass) && resourceClass.isAssignableFrom(this.resourceClass);
         }
     }
 }

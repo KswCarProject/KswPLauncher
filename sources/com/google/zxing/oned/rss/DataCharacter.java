@@ -1,12 +1,13 @@
 package com.google.zxing.oned.rss;
 
+/* loaded from: classes.dex */
 public class DataCharacter {
     private final int checksumPortion;
     private final int value;
 
-    public DataCharacter(int value2, int checksumPortion2) {
-        this.value = value2;
-        this.checksumPortion = checksumPortion2;
+    public DataCharacter(int value, int checksumPortion) {
+        this.value = value;
+        this.checksumPortion = checksumPortion;
     }
 
     public final int getValue() {
@@ -22,12 +23,9 @@ public class DataCharacter {
     }
 
     public final boolean equals(Object o) {
-        if (!(o instanceof DataCharacter)) {
-            return false;
-        }
-        DataCharacter that = (DataCharacter) o;
-        if (this.value == that.value && this.checksumPortion == that.checksumPortion) {
-            return true;
+        if (o instanceof DataCharacter) {
+            DataCharacter that = (DataCharacter) o;
+            return this.value == that.value && this.checksumPortion == that.checksumPortion;
         }
         return false;
     }

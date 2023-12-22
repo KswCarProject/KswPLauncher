@@ -6,34 +6,36 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.databinding.BmwId8SettingsSystemCameraLayoutBinding;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
+/* loaded from: classes8.dex */
 public class BmwId8SettingsSystemCameraLay extends RelativeLayout {
-    private final String TAG = "BmwId8SettingsSystemCameraLay";
+    private final String TAG;
     private Context context;
-    /* access modifiers changed from: private */
-    public BmwId8SettingsSystemCameraLayoutBinding mBinding;
-    private int mCameraType = 0;
-    /* access modifiers changed from: private */
-    public BmwId8SettingsViewModel mViewModel;
-    private int[] relativeLayoutId = {R.id.bmw_id8_settings_system_camera_after, R.id.bmw_id8_settings_system_camera_oem, R.id.bmw_id8_settings_system_camera_360};
+    private BmwId8SettingsSystemCameraLayoutBinding mBinding;
+    private int mCameraType;
+    private BmwId8SettingsViewModel mViewModel;
+    private int[] relativeLayoutId;
 
-    public BmwId8SettingsSystemCameraLay(Context context2) {
-        super(context2);
-        this.context = context2;
-        this.mBinding = (BmwId8SettingsSystemCameraLayoutBinding) DataBindingUtil.inflate(LayoutInflater.from(context2), R.layout.bmw_id8_settings_system_camera_layout, (ViewGroup) null, false);
-        this.mBinding.getRoot().setLayoutParams(new FrameLayout.LayoutParams(-1, -1));
-        BmwId8SettingsViewModel instance = BmwId8SettingsViewModel.getInstance();
-        this.mViewModel = instance;
-        this.mBinding.setViewModel(instance);
+    public BmwId8SettingsSystemCameraLay(Context context) {
+        super(context);
+        this.TAG = "BmwId8SettingsSystemCameraLay";
+        this.mCameraType = 0;
+        this.relativeLayoutId = new int[]{C0899R.C0901id.bmw_id8_settings_system_camera_after, C0899R.C0901id.bmw_id8_settings_system_camera_oem, C0899R.C0901id.bmw_id8_settings_system_camera_360, C0899R.C0901id.bmw_id8_settings_system_camera_360_built};
+        this.context = context;
+        this.mBinding = (BmwId8SettingsSystemCameraLayoutBinding) DataBindingUtil.inflate(LayoutInflater.from(context), C0899R.C0902layout.bmw_id8_settings_system_camera_layout, null, false);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(-1, -1);
+        this.mBinding.getRoot().setLayoutParams(layoutParams);
+        BmwId8SettingsViewModel bmwId8SettingsViewModel = BmwId8SettingsViewModel.getInstance();
+        this.mViewModel = bmwId8SettingsViewModel;
+        this.mBinding.setViewModel(bmwId8SettingsViewModel);
         addView(this.mBinding.getRoot());
         initView();
         initData();
@@ -41,7 +43,8 @@ public class BmwId8SettingsSystemCameraLay extends RelativeLayout {
 
     private void initView() {
         try {
-            this.mBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
+            this.mBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() { // from class: com.wits.ksw.settings.bmw_id8.layout.BmwId8SettingsSystemCameraLay.1
+                @Override // android.view.ViewTreeObserver.OnGlobalFocusChangeListener
                 public void onGlobalFocusChanged(View oldFocus, View newFocus) {
                     Log.i("BmwId8SettingsSystemCameraLay", "onGlobalFocusChanged: " + BmwId8SettingsSystemCameraLay.this.mBinding.bmwId8SettingsSystemCameraLay.hasFocus());
                     if (BmwId8SettingsSystemCameraLay.this.mBinding.bmwId8SettingsSystemCameraLay.hasFocus()) {
@@ -63,13 +66,14 @@ public class BmwId8SettingsSystemCameraLay extends RelativeLayout {
             while (true) {
                 int[] iArr = this.relativeLayoutId;
                 if (i < iArr.length) {
-                    findViewById(iArr[i]).setOnTouchListener(new View.OnTouchListener() {
+                    findViewById(iArr[i]).setOnTouchListener(new View.OnTouchListener() { // from class: com.wits.ksw.settings.bmw_id8.layout.BmwId8SettingsSystemCameraLay.2
+                        @Override // android.view.View.OnTouchListener
                         public boolean onTouch(View v, MotionEvent event) {
                             Log.i("BmwId8SettingsSystemCameraLay", " onTouch v " + v.toString() + " Action " + event.getAction() + " v.isFocused() " + v.isFocused());
-                            if (event.getAction() != 1 || v.isFocused()) {
+                            if (event.getAction() == 1 && !v.isFocused()) {
+                                v.requestFocus();
                                 return false;
                             }
-                            v.requestFocus();
                             return false;
                         }
                     });

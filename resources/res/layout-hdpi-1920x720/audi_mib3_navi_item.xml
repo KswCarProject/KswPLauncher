@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="@null" android:paddingLeft="115dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <ImageView android:id="@+id/naviItemIcon" android:layout_width="48dp" android:layout_height="48dp" android:layout_marginTop="7.5dp" android:layout_marginBottom="7.5dp" android:src="@android:drawable/btn_star_big_on" android:layout_alignParentLeft="true" android:layout_centerVertical="true"/>
+    <RadioButton android:id="@+id/naviItemTitle" android:background="@null" android:paddingRight="28dp" android:focusable="false" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:button="@null" android:text="@string/audi_set_android_time" android:drawableRight="@drawable/audi_mib3_radio_button_icon" android:layout_toRightOf="@+id/naviItemIcon" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:layout_marginStart="16dp" style="@style/audi_mib3_set_default_text"/>
+</RelativeLayout>

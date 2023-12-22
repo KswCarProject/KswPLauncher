@@ -5,10 +5,13 @@ import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.launcher.bmw_id8_ui.view.ID8HorizontalScrollView;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public class ActivityGsId8LauncherMainBindingImpl extends ActivityGsId8LauncherMainBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes;
     private static final SparseIntArray sViewsWithIds;
@@ -18,12 +21,12 @@ public class ActivityGsId8LauncherMainBindingImpl extends ActivityGsId8LauncherM
     static {
         ViewDataBinding.IncludedLayouts includedLayouts = new ViewDataBinding.IncludedLayouts(5);
         sIncludes = includedLayouts;
-        includedLayouts.setIncludes(0, new String[]{"id8_gs_launcher_left_bar"}, new int[]{1}, new int[]{R.layout.id8_gs_launcher_left_bar});
+        includedLayouts.setIncludes(0, new String[]{"id8_gs_launcher_left_bar"}, new int[]{1}, new int[]{C0899R.C0902layout.id8_gs_launcher_left_bar});
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.gs_scrollView, 2);
-        sparseIntArray.put(R.id.ll_containe, 3);
-        sparseIntArray.put(R.id.rl_modus_container, 4);
+        sparseIntArray.put(C0899R.C0901id.gs_scrollView, 2);
+        sparseIntArray.put(C0899R.C0901id.ll_containe, 3);
+        sparseIntArray.put(C0899R.C0901id.rl_modus_container, 4);
     }
 
     public ActivityGsId8LauncherMainBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -31,70 +34,45 @@ public class ActivityGsId8LauncherMainBindingImpl extends ActivityGsId8LauncherM
     }
 
     private ActivityGsId8LauncherMainBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 1, bindings[2], bindings[3], bindings[1], bindings[4]);
-        this.mDirtyFlags = -1;
+        super(bindingComponent, root, 1, (ID8HorizontalScrollView) bindings[2], (LinearLayout) bindings[3], (Id8GsLauncherLeftBarBinding) bindings[1], (RelativeLayout) bindings[4]);
+        this.mDirtyFlags = -1L;
         setContainedBinding(this.llLeftContainer);
-        RelativeLayout relativeLayout = bindings[0];
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
+        relativeLayout.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 4;
+            this.mDirtyFlags = 4L;
         }
         this.llLeftContainer.invalidateAll();
         requestRebind();
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:10:0x0016, code lost:
-        return false;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:8:0x0013, code lost:
-        if (r4.llLeftContainer.hasPendingBindings() == false) goto L_0x0016;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:9:0x0015, code lost:
-        return true;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
-        /*
-            r4 = this;
-            monitor-enter(r4)
-            long r0 = r4.mDirtyFlags     // Catch:{ all -> 0x0018 }
-            r2 = 0
-            int r0 = (r0 > r2 ? 1 : (r0 == r2 ? 0 : -1))
-            r1 = 1
-            if (r0 == 0) goto L_0x000c
-            monitor-exit(r4)     // Catch:{ all -> 0x0018 }
-            return r1
-        L_0x000c:
-            monitor-exit(r4)     // Catch:{ all -> 0x0018 }
-            com.wits.ksw.databinding.Id8GsLauncherLeftBarBinding r0 = r4.llLeftContainer
-            boolean r0 = r0.hasPendingBindings()
-            if (r0 == 0) goto L_0x0016
-            return r1
-        L_0x0016:
-            r0 = 0
-            return r0
-        L_0x0018:
-            r0 = move-exception
-            monitor-exit(r4)     // Catch:{ all -> 0x0018 }
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.ActivityGsId8LauncherMainBindingImpl.hasPendingBindings():boolean");
-    }
-
-    public boolean setVariable(int variableId, Object variable) {
-        if (7 != variableId) {
-            return false;
+        synchronized (this) {
+            if (this.mDirtyFlags != 0) {
+                return true;
+            }
+            return this.llLeftContainer.hasPendingBindings();
         }
-        setLauncherViewModel((LauncherViewModel) variable);
-        return true;
     }
 
+    @Override // android.databinding.ViewDataBinding
+    public boolean setVariable(int variableId, Object variable) {
+        if (7 == variableId) {
+            setLauncherViewModel((LauncherViewModel) variable);
+            return true;
+        }
+        return false;
+    }
+
+    @Override // com.wits.ksw.databinding.ActivityGsId8LauncherMainBinding
     public void setLauncherViewModel(LauncherViewModel LauncherViewModel) {
         this.mLauncherViewModel = LauncherViewModel;
         synchronized (this) {
@@ -104,13 +82,14 @@ public class ActivityGsId8LauncherMainBindingImpl extends ActivityGsId8LauncherM
         super.requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         super.setLifecycleOwner(lifecycleOwner);
         this.llLeftContainer.setLifecycleOwner(lifecycleOwner);
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeLlLeftContainer((Id8GsLauncherLeftBarBinding) object, fieldId);
@@ -120,21 +99,21 @@ public class ActivityGsId8LauncherMainBindingImpl extends ActivityGsId8LauncherM
     }
 
     private boolean onChangeLlLeftContainer(Id8GsLauncherLeftBarBinding LlLeftContainer, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         LauncherViewModel launcherViewModel = this.mLauncherViewModel;
         if ((6 & dirtyFlags) != 0) {

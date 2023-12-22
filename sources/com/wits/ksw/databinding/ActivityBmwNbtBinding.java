@@ -7,9 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BwmNbtModel;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityBmwNbtBinding extends ViewDataBinding {
     public final Button appLl;
     public final Button dashbroadLl;
@@ -22,18 +23,18 @@ public abstract class ActivityBmwNbtBinding extends ViewDataBinding {
     public final Button rlSettings;
     public final Button videoLl;
 
-    public abstract void setNbtModel(BwmNbtModel bwmNbtModel);
+    public abstract void setNbtModel(BwmNbtModel nbtModel);
 
-    protected ActivityBmwNbtBinding(Object _bindingComponent, View _root, int _localFieldCount, Button appLl2, Button dashbroadLl2, Button musicLl2, Button naviLl2, Button phoneLl2, Button rlCar2, Button rlSettings2, Button videoLl2) {
+    protected ActivityBmwNbtBinding(Object _bindingComponent, View _root, int _localFieldCount, Button appLl, Button dashbroadLl, Button musicLl, Button naviLl, Button phoneLl, Button rlCar, Button rlSettings, Button videoLl) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.appLl = appLl2;
-        this.dashbroadLl = dashbroadLl2;
-        this.musicLl = musicLl2;
-        this.naviLl = naviLl2;
-        this.phoneLl = phoneLl2;
-        this.rlCar = rlCar2;
-        this.rlSettings = rlSettings2;
-        this.videoLl = videoLl2;
+        this.appLl = appLl;
+        this.dashbroadLl = dashbroadLl;
+        this.musicLl = musicLl;
+        this.naviLl = naviLl;
+        this.phoneLl = phoneLl;
+        this.rlCar = rlCar;
+        this.rlSettings = rlSettings;
+        this.videoLl = videoLl;
     }
 
     public BwmNbtModel getNbtModel() {
@@ -46,7 +47,7 @@ public abstract class ActivityBmwNbtBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityBmwNbtBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityBmwNbtBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_bmw_nbt, root, attachToRoot, component);
+        return (ActivityBmwNbtBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_bmw_nbt, root, attachToRoot, component);
     }
 
     public static ActivityBmwNbtBinding inflate(LayoutInflater inflater) {
@@ -55,7 +56,7 @@ public abstract class ActivityBmwNbtBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityBmwNbtBinding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityBmwNbtBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_bmw_nbt, (ViewGroup) null, false, component);
+        return (ActivityBmwNbtBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_bmw_nbt, null, false, component);
     }
 
     public static ActivityBmwNbtBinding bind(View view) {
@@ -64,6 +65,6 @@ public abstract class ActivityBmwNbtBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityBmwNbtBinding bind(View view, Object component) {
-        return (ActivityBmwNbtBinding) bind(component, view, R.layout.activity_bmw_nbt);
+        return (ActivityBmwNbtBinding) bind(component, view, C0899R.C0902layout.activity_bmw_nbt);
     }
 }

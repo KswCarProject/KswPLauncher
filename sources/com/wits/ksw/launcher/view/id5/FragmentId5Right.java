@@ -3,7 +3,7 @@ package com.wits.ksw.launcher.view.id5;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.p001v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +13,12 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.MainActivity;
-import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.utils.KswUtils;
 
+/* loaded from: classes6.dex */
 public class FragmentId5Right extends Fragment implements View.OnKeyListener, View.OnClickListener {
     CheckBox id5ItemApps;
     ImageView id5ItemAppsCursor;
@@ -32,8 +33,7 @@ public class FragmentId5Right extends Fragment implements View.OnKeyListener, Vi
     CheckBox id5ItemVideo;
     ImageView id5ItemVideoCursor;
     ImageView imageView8;
-    /* access modifiers changed from: private */
-    public MainActivity mainActivity;
+    private MainActivity mainActivity;
     TextView textView11;
     TextView textView12;
     TextView textView13;
@@ -42,24 +42,28 @@ public class FragmentId5Right extends Fragment implements View.OnKeyListener, Vi
     TextView textView16;
     private LauncherViewModel viewModel;
 
+    @Override // android.support.p001v4.app.Fragment
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.mainActivity = (MainActivity) activity;
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LauncherViewModel launcherViewModel = (LauncherViewModel) ViewModelProviders.of(getActivity()).get(LauncherViewModel.class);
+        LauncherViewModel launcherViewModel = (LauncherViewModel) ViewModelProviders.m59of(getActivity()).get(LauncherViewModel.class);
         this.viewModel = launcherViewModel;
         launcherViewModel.setActivity(getActivity());
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.id5_fragment_two, container, false);
-        ButterKnife.inject((Object) this, view);
+        View view = inflater.inflate(C0899R.C0902layout.id5_fragment_two, container, false);
+        ButterKnife.inject(this, view);
         return view;
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setOnFocusChangeListener();
@@ -68,17 +72,18 @@ public class FragmentId5Right extends Fragment implements View.OnKeyListener, Vi
         setOnClickListener();
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onResume() {
         super.onResume();
         addCursorSelected();
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void setTextAnim(boolean hasFocus, TextView textView) {
         if (hasFocus) {
-            KswUtils.translate(textView, R.anim.id5_text_y_scale_in);
+            KswUtils.translate(textView, C0899R.anim.id5_text_y_scale_in);
         } else {
-            KswUtils.translate(textView, R.anim.id5_text_y_scale_out);
+            KswUtils.translate(textView, C0899R.anim.id5_text_y_scale_out);
         }
     }
 
@@ -101,37 +106,43 @@ public class FragmentId5Right extends Fragment implements View.OnKeyListener, Vi
     }
 
     private void setOnCheckedChangeListener() {
-        this.id5ItemVideo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        this.id5ItemVideo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.launcher.view.id5.FragmentId5Right.1
+            @Override // android.widget.CompoundButton.OnCheckedChangeListener
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 FragmentId5Right fragmentId5Right = FragmentId5Right.this;
                 fragmentId5Right.setTextAnim(isChecked, fragmentId5Right.textView11);
             }
         });
-        this.id5ItemJly.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        this.id5ItemJly.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.launcher.view.id5.FragmentId5Right.2
+            @Override // android.widget.CompoundButton.OnCheckedChangeListener
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 FragmentId5Right fragmentId5Right = FragmentId5Right.this;
                 fragmentId5Right.setTextAnim(isChecked, fragmentId5Right.textView12);
             }
         });
-        this.id5ItemSet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        this.id5ItemSet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.launcher.view.id5.FragmentId5Right.3
+            @Override // android.widget.CompoundButton.OnCheckedChangeListener
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 FragmentId5Right fragmentId5Right = FragmentId5Right.this;
                 fragmentId5Right.setTextAnim(isChecked, fragmentId5Right.textView13);
             }
         });
-        this.id5ItemDash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        this.id5ItemDash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.launcher.view.id5.FragmentId5Right.4
+            @Override // android.widget.CompoundButton.OnCheckedChangeListener
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 FragmentId5Right fragmentId5Right = FragmentId5Right.this;
                 fragmentId5Right.setTextAnim(isChecked, fragmentId5Right.textView14);
             }
         });
-        this.id5ItemSjhl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        this.id5ItemSjhl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.launcher.view.id5.FragmentId5Right.5
+            @Override // android.widget.CompoundButton.OnCheckedChangeListener
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 FragmentId5Right fragmentId5Right = FragmentId5Right.this;
                 fragmentId5Right.setTextAnim(isChecked, fragmentId5Right.textView15);
             }
         });
-        this.id5ItemApps.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        this.id5ItemApps.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.launcher.view.id5.FragmentId5Right.6
+            @Override // android.widget.CompoundButton.OnCheckedChangeListener
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 FragmentId5Right fragmentId5Right = FragmentId5Right.this;
                 fragmentId5Right.setTextAnim(isChecked, fragmentId5Right.textView16);
@@ -140,7 +151,8 @@ public class FragmentId5Right extends Fragment implements View.OnKeyListener, Vi
     }
 
     private void setOnFocusChangeListener() {
-        this.id5ItemVideo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        this.id5ItemVideo.setOnFocusChangeListener(new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.view.id5.FragmentId5Right.7
+            @Override // android.view.View.OnFocusChangeListener
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     try {
@@ -152,27 +164,32 @@ public class FragmentId5Right extends Fragment implements View.OnKeyListener, Vi
                 FragmentId5Right.this.setSelected(v);
             }
         });
-        this.id5ItemJly.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        this.id5ItemJly.setOnFocusChangeListener(new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.view.id5.FragmentId5Right.8
+            @Override // android.view.View.OnFocusChangeListener
             public void onFocusChange(View v, boolean hasFocus) {
                 FragmentId5Right.this.setSelected(v);
             }
         });
-        this.id5ItemSet.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        this.id5ItemSet.setOnFocusChangeListener(new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.view.id5.FragmentId5Right.9
+            @Override // android.view.View.OnFocusChangeListener
             public void onFocusChange(View v, boolean hasFocus) {
                 FragmentId5Right.this.setSelected(v);
             }
         });
-        this.id5ItemDash.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        this.id5ItemDash.setOnFocusChangeListener(new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.view.id5.FragmentId5Right.10
+            @Override // android.view.View.OnFocusChangeListener
             public void onFocusChange(View v, boolean hasFocus) {
                 FragmentId5Right.this.setSelected(v);
             }
         });
-        this.id5ItemSjhl.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        this.id5ItemSjhl.setOnFocusChangeListener(new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.view.id5.FragmentId5Right.11
+            @Override // android.view.View.OnFocusChangeListener
             public void onFocusChange(View v, boolean hasFocus) {
                 FragmentId5Right.this.setSelected(v);
             }
         });
-        this.id5ItemApps.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        this.id5ItemApps.setOnFocusChangeListener(new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.view.id5.FragmentId5Right.12
+            @Override // android.view.View.OnFocusChangeListener
             public void onFocusChange(View v, boolean hasFocus) {
                 FragmentId5Right.this.setSelected(v);
             }
@@ -220,52 +237,57 @@ public class FragmentId5Right extends Fragment implements View.OnKeyListener, Vi
         }
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void setSelected(View v) {
         addSelected(v);
         addCursorSelected();
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
     }
 
+    @Override // android.view.View.OnKeyListener
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (keyCode != 21) {
-            return keyCode == 22;
-        }
-        try {
-            this.mainActivity.id5MaindBind.id5MainViewPager.setCurrentItem(0);
+        if (keyCode == 21) {
+            try {
+                this.mainActivity.id5MaindBind.id5MainViewPager.setCurrentItem(0);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (keyCode == 22) {
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+        return false;
     }
 
+    @Override // android.view.View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.id5_item_apps /*2131296897*/:
+            case C0899R.C0901id.id5_item_apps /* 2131296929 */:
                 setSelected(v);
                 this.viewModel.openApps(v);
                 return;
-            case R.id.id5_item_dash /*2131296905*/:
+            case C0899R.C0901id.id5_item_dash /* 2131296937 */:
                 setSelected(v);
                 this.viewModel.openDashboard(v);
                 return;
-            case R.id.id5_item_jly /*2131296908*/:
+            case C0899R.C0901id.id5_item_jly /* 2131296940 */:
                 setSelected(v);
                 this.viewModel.openDvr(v);
                 return;
-            case R.id.id5_item_set /*2131296914*/:
+            case C0899R.C0901id.id5_item_set /* 2131296946 */:
                 setSelected(v);
                 this.viewModel.openSettings(v);
                 return;
-            case R.id.id5_item_sjhl /*2131296916*/:
+            case C0899R.C0901id.id5_item_sjhl /* 2131296948 */:
                 setSelected(v);
                 this.viewModel.openShouJiHuLian(v);
                 return;
-            case R.id.id5_item_video /*2131296918*/:
+            case C0899R.C0901id.id5_item_video /* 2131296950 */:
                 setSelected(v);
                 this.viewModel.openVideoMulti(v);
                 return;

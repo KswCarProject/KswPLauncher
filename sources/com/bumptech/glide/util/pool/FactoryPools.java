@@ -1,26 +1,31 @@
 package com.bumptech.glide.util.pool;
 
-import android.support.v4.util.Pools;
+import android.support.p001v4.util.Pools;
 import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public final class FactoryPools {
     private static final int DEFAULT_POOL_SIZE = 20;
-    private static final Resetter<Object> EMPTY_RESETTER = new Resetter<Object>() {
+    private static final Resetter<Object> EMPTY_RESETTER = new Resetter<Object>() { // from class: com.bumptech.glide.util.pool.FactoryPools.1
+        @Override // com.bumptech.glide.util.pool.FactoryPools.Resetter
         public void reset(Object object) {
         }
     };
     private static final String TAG = "FactoryPools";
 
+    /* loaded from: classes.dex */
     public interface Factory<T> {
         T create();
     }
 
+    /* loaded from: classes.dex */
     public interface Poolable {
         StateVerifier getVerifier();
     }
 
+    /* loaded from: classes.dex */
     public interface Resetter<T> {
         void reset(T t);
     }
@@ -41,11 +46,17 @@ public final class FactoryPools {
     }
 
     public static <T> Pools.Pool<List<T>> threadSafeList(int size) {
-        return build(new Pools.SynchronizedPool(size), new Factory<List<T>>() {
+        return build(new Pools.SynchronizedPool(size), new Factory<List<T>>() { // from class: com.bumptech.glide.util.pool.FactoryPools.2
+            @Override // com.bumptech.glide.util.pool.FactoryPools.Factory
             public List<T> create() {
                 return new ArrayList();
             }
-        }, new Resetter<List<T>>() {
+        }, new Resetter<List<T>>() { // from class: com.bumptech.glide.util.pool.FactoryPools.3
+            @Override // com.bumptech.glide.util.pool.FactoryPools.Resetter
+            public /* bridge */ /* synthetic */ void reset(Object obj) {
+                reset((List) ((List) obj));
+            }
+
             public void reset(List<T> object) {
                 object.clear();
             }
@@ -61,20 +72,22 @@ public final class FactoryPools {
     }
 
     private static <T> Resetter<T> emptyResetter() {
-        return EMPTY_RESETTER;
+        return (Resetter<T>) EMPTY_RESETTER;
     }
 
+    /* loaded from: classes.dex */
     private static final class FactoryPool<T> implements Pools.Pool<T> {
         private final Factory<T> factory;
         private final Pools.Pool<T> pool;
         private final Resetter<T> resetter;
 
-        FactoryPool(Pools.Pool<T> pool2, Factory<T> factory2, Resetter<T> resetter2) {
-            this.pool = pool2;
-            this.factory = factory2;
-            this.resetter = resetter2;
+        FactoryPool(Pools.Pool<T> pool, Factory<T> factory, Resetter<T> resetter) {
+            this.pool = pool;
+            this.factory = factory;
+            this.resetter = resetter;
         }
 
+        @Override // android.support.p001v4.util.Pools.Pool
         public T acquire() {
             T result = this.pool.acquire();
             if (result == null) {
@@ -89,6 +102,7 @@ public final class FactoryPools {
             return result;
         }
 
+        @Override // android.support.p001v4.util.Pools.Pool
         public boolean release(T instance) {
             if (instance instanceof Poolable) {
                 ((Poolable) instance).getVerifier().setRecycled(true);

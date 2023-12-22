@@ -1,8 +1,17 @@
 package com.google.zxing.oned;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.ChecksumException;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.FormatException;
 import com.google.zxing.NotFoundException;
+import com.google.zxing.Result;
+import com.google.zxing.ResultPoint;
 import com.google.zxing.common.BitArray;
+import java.util.ArrayList;
+import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class Code128Reader extends OneDReader {
     private static final int CODE_CODE_A = 101;
     private static final int CODE_CODE_B = 100;
@@ -29,7 +38,6 @@ public final class Code128Reader extends OneDReader {
         int patternStart = rowOffset;
         boolean isWhite = false;
         for (int i = rowOffset; i < width; i++) {
-            boolean z = true;
             if (row.get(i) != isWhite) {
                 counters[counterPosition] = counters[counterPosition] + 1;
             } else {
@@ -37,30 +45,25 @@ public final class Code128Reader extends OneDReader {
                     float bestVariance = MAX_AVG_VARIANCE;
                     int bestMatch = -1;
                     for (int startCode = 103; startCode <= 105; startCode++) {
-                        float patternMatchVariance = patternMatchVariance(counters, CODE_PATTERNS[startCode], MAX_INDIVIDUAL_VARIANCE);
-                        float variance = patternMatchVariance;
-                        if (patternMatchVariance < bestVariance) {
+                        float variance = patternMatchVariance(counters, CODE_PATTERNS[startCode], MAX_INDIVIDUAL_VARIANCE);
+                        if (variance < bestVariance) {
                             bestVariance = variance;
                             bestMatch = startCode;
                         }
                     }
-                    if (bestMatch < 0 || !row.isRange(Math.max(0, patternStart - ((i - patternStart) / 2)), patternStart, false)) {
-                        patternStart += counters[0] + counters[1];
-                        System.arraycopy(counters, 2, counters, 0, counterPosition - 1);
-                        counters[counterPosition - 1] = 0;
-                        counters[counterPosition] = 0;
-                        counterPosition--;
-                    } else {
+                    if (bestMatch >= 0 && row.isRange(Math.max(0, patternStart - ((i - patternStart) / 2)), patternStart, false)) {
                         return new int[]{patternStart, i, bestMatch};
                     }
+                    patternStart += counters[0] + counters[1];
+                    System.arraycopy(counters, 2, counters, 0, counterPosition - 1);
+                    counters[counterPosition - 1] = 0;
+                    counters[counterPosition] = 0;
+                    counterPosition--;
                 } else {
                     counterPosition++;
                 }
                 counters[counterPosition] = 1;
-                if (isWhite) {
-                    z = false;
-                }
-                isWhite = z;
+                isWhite = isWhite ? false : true;
             }
         }
         throw NotFoundException.getNotFoundInstance();
@@ -76,9 +79,9 @@ public final class Code128Reader extends OneDReader {
             if (d >= iArr.length) {
                 break;
             }
-            float patternMatchVariance = patternMatchVariance(counters, iArr[d], MAX_INDIVIDUAL_VARIANCE);
-            float variance = patternMatchVariance;
-            if (patternMatchVariance < bestVariance) {
+            int[] pattern = iArr[d];
+            float variance = patternMatchVariance(counters, pattern, MAX_INDIVIDUAL_VARIANCE);
+            if (variance < bestVariance) {
                 bestVariance = variance;
                 bestMatch = d;
             }
@@ -90,481 +93,323 @@ public final class Code128Reader extends OneDReader {
         throw NotFoundException.getNotFoundInstance();
     }
 
-    /* JADX WARNING: Can't fix incorrect switch cases order */
-    /* JADX WARNING: Code restructure failed: missing block: B:59:0x012d, code lost:
-        r5 = false;
-        r10 = 'd';
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:84:0x019d, code lost:
-        r5 = false;
-        r10 = 'd';
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:85:0x01a1, code lost:
-        r5 = false;
-        r10 = 'd';
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public com.google.zxing.Result decodeRow(int r25, com.google.zxing.common.BitArray r26, java.util.Map<com.google.zxing.DecodeHintType, ?> r27) throws com.google.zxing.NotFoundException, com.google.zxing.FormatException, com.google.zxing.ChecksumException {
-        /*
-            r24 = this;
-            r0 = r26
-            r1 = r27
-            r2 = 1
-            r3 = 0
-            if (r1 == 0) goto L_0x0012
-            com.google.zxing.DecodeHintType r4 = com.google.zxing.DecodeHintType.ASSUME_GS1
-            boolean r1 = r1.containsKey(r4)
-            if (r1 == 0) goto L_0x0012
-            r1 = r2
-            goto L_0x0013
-        L_0x0012:
-            r1 = r3
-        L_0x0013:
-            int[] r4 = findStartPattern(r26)
-            r5 = 2
-            r6 = r4[r5]
-            java.util.ArrayList r7 = new java.util.ArrayList
-            r8 = 20
-            r7.<init>(r8)
-            byte r9 = (byte) r6
-            java.lang.Byte r9 = java.lang.Byte.valueOf(r9)
-            r7.add(r9)
-            switch(r6) {
-                case 103: goto L_0x0039;
-                case 104: goto L_0x0035;
-                case 105: goto L_0x0031;
-                default: goto L_0x002c;
+    /* JADX WARN: Removed duplicated region for block: B:90:0x019d A[PHI: r17 
+      PHI: (r17v7 boolean) = (r17v5 boolean), (r17v5 boolean), (r17v5 boolean), (r17v8 boolean), (r17v8 boolean), (r17v8 boolean) binds: [B:71:0x014f, B:78:0x0162, B:77:0x015e, B:44:0x00d8, B:51:0x00ec, B:50:0x00e7] A[DONT_GENERATE, DONT_INLINE]] */
+    @Override // com.google.zxing.oned.OneDReader
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    public Result decodeRow(int i, BitArray bitArray, Map<DecodeHintType, ?> map) throws NotFoundException, FormatException, ChecksumException {
+        char c;
+        char c2;
+        boolean z;
+        boolean z2 = false;
+        boolean z3 = map != null && map.containsKey(DecodeHintType.ASSUME_GS1);
+        int[] findStartPattern = findStartPattern(bitArray);
+        int i2 = findStartPattern[2];
+        ArrayList arrayList = new ArrayList(20);
+        arrayList.add(Byte.valueOf((byte) i2));
+        switch (i2) {
+            case 103:
+                c = 'e';
+                break;
+            case 104:
+                c = 'd';
+                break;
+            case 105:
+                c = 'c';
+                break;
+            default:
+                throw FormatException.getFormatInstance();
+        }
+        StringBuilder sb = new StringBuilder(20);
+        int i3 = 6;
+        int[] iArr = new int[6];
+        boolean z4 = false;
+        boolean z5 = false;
+        boolean z6 = false;
+        int i4 = 0;
+        int i5 = 0;
+        int i6 = 0;
+        boolean z7 = true;
+        char c3 = c;
+        int i7 = findStartPattern[0];
+        int i8 = findStartPattern[1];
+        char c4 = c3;
+        while (!z5) {
+            int decodeCode = decodeCode(bitArray, iArr, i8);
+            arrayList.add(Byte.valueOf((byte) decodeCode));
+            if (decodeCode != 106) {
+                z7 = true;
             }
-        L_0x002c:
-            com.google.zxing.FormatException r0 = com.google.zxing.FormatException.getFormatInstance()
-            throw r0
-        L_0x0031:
-            r12 = 99
-            goto L_0x003c
-        L_0x0035:
-            r12 = 100
-            goto L_0x003c
-        L_0x0039:
-            r12 = 101(0x65, float:1.42E-43)
-        L_0x003c:
-            java.lang.StringBuilder r13 = new java.lang.StringBuilder
-            r13.<init>(r8)
-            r8 = r4[r3]
-            r14 = r4[r2]
-            r15 = 6
-            int[] r2 = new int[r15]
-            r9 = r3
-            r16 = r9
-            r18 = r16
-            r19 = r18
-            r20 = r19
-            r21 = r20
-            r17 = 1
-            r23 = r12
-            r12 = r8
-            r8 = r14
-            r14 = r23
-        L_0x0063:
-            if (r16 != 0) goto L_0x01f9
-            int r12 = decodeCode(r0, r2, r8)
-            byte r5 = (byte) r12
-            java.lang.Byte r5 = java.lang.Byte.valueOf(r5)
-            r7.add(r5)
-            r5 = 106(0x6a, float:1.49E-43)
-            if (r12 == r5) goto L_0x007a
-            r17 = 1
-        L_0x007a:
-            if (r12 == r5) goto L_0x0082
-            int r20 = r20 + 1
-            int r21 = r20 * r12
-            int r6 = r6 + r21
-        L_0x0082:
-            r21 = r8
-            r11 = 0
-        L_0x0086:
-            if (r11 >= r15) goto L_0x008f
-            r22 = r2[r11]
-            int r21 = r21 + r22
-            int r11 = r11 + 1
-            goto L_0x0086
-        L_0x008f:
-            switch(r12) {
-                case 103: goto L_0x009d;
-                case 104: goto L_0x009d;
-                case 105: goto L_0x009d;
-                default: goto L_0x0092;
+            if (decodeCode != 106) {
+                i5++;
+                i2 += i5 * decodeCode;
             }
-        L_0x0092:
-            r11 = 96
-            java.lang.String r15 = "]C1"
-            switch(r14) {
-                case 99: goto L_0x01a5;
-                case 100: goto L_0x0132;
-                case 101: goto L_0x00a2;
-                default: goto L_0x0099;
+            int i9 = i8;
+            for (int i10 = 0; i10 < i3; i10++) {
+                i9 += iArr[i10];
             }
-        L_0x0099:
-            r10 = 100
-            goto L_0x01dd
-        L_0x009d:
-            com.google.zxing.FormatException r0 = com.google.zxing.FormatException.getFormatInstance()
-            throw r0
-        L_0x00a2:
-            r10 = 64
-            if (r12 >= r10) goto L_0x00bd
-            if (r9 != r3) goto L_0x00af
-            int r5 = r12 + 32
-            char r5 = (char) r5
-            r13.append(r5)
-            goto L_0x00b7
-        L_0x00af:
-            int r5 = r12 + 32
-            int r5 = r5 + 128
-            char r5 = (char) r5
-            r13.append(r5)
-        L_0x00b7:
-            r5 = 0
-            r9 = 0
-            r10 = 100
-            goto L_0x01de
-        L_0x00bd:
-            if (r12 >= r11) goto L_0x00d4
-            if (r9 != r3) goto L_0x00c8
-            int r5 = r12 + -64
-            char r5 = (char) r5
-            r13.append(r5)
-            goto L_0x00ce
-        L_0x00c8:
-            int r5 = r12 + 64
-            char r5 = (char) r5
-            r13.append(r5)
-        L_0x00ce:
-            r5 = 0
-            r9 = 0
-            r10 = 100
-            goto L_0x01de
-        L_0x00d4:
-            if (r12 == r5) goto L_0x00d8
-            r17 = 0
-        L_0x00d8:
-            switch(r12) {
-                case 96: goto L_0x012b;
-                case 97: goto L_0x012b;
-                case 98: goto L_0x0122;
-                case 99: goto L_0x011a;
-                case 100: goto L_0x0112;
-                case 101: goto L_0x00f3;
-                case 102: goto L_0x00df;
-                case 103: goto L_0x00db;
-                case 104: goto L_0x00db;
-                case 105: goto L_0x00db;
-                case 106: goto L_0x00dc;
-                default: goto L_0x00db;
+            switch (decodeCode) {
+                case 103:
+                case 104:
+                case 105:
+                    throw FormatException.getFormatInstance();
+                default:
+                    switch (c4) {
+                        case 'c':
+                            c2 = 'd';
+                            if (decodeCode < 100) {
+                                if (decodeCode < 10) {
+                                    sb.append('0');
+                                }
+                                sb.append(decodeCode);
+                            } else {
+                                if (decodeCode != 106) {
+                                    z7 = false;
+                                }
+                                switch (decodeCode) {
+                                    case 100:
+                                        c4 = 'd';
+                                        z = false;
+                                        break;
+                                    case 101:
+                                        z = false;
+                                        c4 = 'e';
+                                        break;
+                                    case 102:
+                                        if (z3) {
+                                            if (sb.length() == 0) {
+                                                sb.append("]C1");
+                                            } else {
+                                                sb.append((char) 29);
+                                            }
+                                        }
+                                    case 103:
+                                    case 104:
+                                    case 105:
+                                    default:
+                                        z = false;
+                                        break;
+                                    case 106:
+                                        z = false;
+                                        z5 = true;
+                                        break;
+                                }
+                            }
+                            z = false;
+                        case 'd':
+                            if (decodeCode < 96) {
+                                if (z4 == z2) {
+                                    sb.append((char) (decodeCode + 32));
+                                } else {
+                                    sb.append((char) (decodeCode + 32 + 128));
+                                }
+                                z = false;
+                                z4 = false;
+                                c2 = 'd';
+                                break;
+                            } else {
+                                if (decodeCode != 106) {
+                                    z7 = false;
+                                }
+                                switch (decodeCode) {
+                                    case 96:
+                                    case 97:
+                                        z = false;
+                                        c2 = 'd';
+                                        break;
+                                    case 98:
+                                        z = true;
+                                        c2 = 'd';
+                                        c4 = 'e';
+                                        break;
+                                    case 99:
+                                        z = false;
+                                        c2 = 'd';
+                                        c4 = 'c';
+                                        break;
+                                    case 100:
+                                        if (!z2 && z4) {
+                                            z2 = true;
+                                            z = false;
+                                            z4 = false;
+                                            c2 = 'd';
+                                            break;
+                                        } else if (z2 && z4) {
+                                            z2 = false;
+                                            z = false;
+                                            z4 = false;
+                                            c2 = 'd';
+                                            break;
+                                        } else {
+                                            z = false;
+                                            z4 = true;
+                                            c2 = 'd';
+                                            break;
+                                        }
+                                    case 101:
+                                        z = false;
+                                        c2 = 'd';
+                                        c4 = 'e';
+                                        break;
+                                    case 102:
+                                        if (z3) {
+                                            if (sb.length() == 0) {
+                                                sb.append("]C1");
+                                            } else {
+                                                sb.append((char) 29);
+                                            }
+                                            z = false;
+                                            c2 = 'd';
+                                            break;
+                                        }
+                                        z = false;
+                                        c2 = 'd';
+                                        break;
+                                    case 106:
+                                        z5 = true;
+                                    case 103:
+                                    case 104:
+                                    case 105:
+                                    default:
+                                        z = false;
+                                        c2 = 'd';
+                                        break;
+                                }
+                            }
+                        case 'e':
+                            if (decodeCode < 64) {
+                                if (z4 == z2) {
+                                    sb.append((char) (decodeCode + 32));
+                                } else {
+                                    sb.append((char) (decodeCode + 32 + 128));
+                                }
+                                z = false;
+                                z4 = false;
+                                c2 = 'd';
+                                break;
+                            } else if (decodeCode < 96) {
+                                if (z4 == z2) {
+                                    sb.append((char) (decodeCode - 64));
+                                } else {
+                                    sb.append((char) (decodeCode + 64));
+                                }
+                                z = false;
+                                z4 = false;
+                                c2 = 'd';
+                                break;
+                            } else {
+                                if (decodeCode != 106) {
+                                    z7 = false;
+                                }
+                                switch (decodeCode) {
+                                    case 96:
+                                    case 97:
+                                        break;
+                                    case 98:
+                                        z = true;
+                                        c2 = 'd';
+                                        c4 = 'd';
+                                        break;
+                                    case 99:
+                                        z = false;
+                                        c2 = 'd';
+                                        c4 = 'c';
+                                        break;
+                                    case 100:
+                                        z = false;
+                                        c2 = 'd';
+                                        c4 = 'd';
+                                        break;
+                                    case 101:
+                                        if (!z2 && z4) {
+                                            z2 = true;
+                                            z = false;
+                                            z4 = false;
+                                            c2 = 'd';
+                                            break;
+                                        } else if (z2 && z4) {
+                                            z2 = false;
+                                            z = false;
+                                            z4 = false;
+                                            c2 = 'd';
+                                            break;
+                                        } else {
+                                            z = false;
+                                            z4 = true;
+                                            c2 = 'd';
+                                            break;
+                                        }
+                                    case 102:
+                                        if (z3) {
+                                            if (sb.length() == 0) {
+                                                sb.append("]C1");
+                                            } else {
+                                                sb.append((char) 29);
+                                            }
+                                            z = false;
+                                            c2 = 'd';
+                                            break;
+                                        }
+                                        z = false;
+                                        c2 = 'd';
+                                        break;
+                                    case 106:
+                                        z5 = true;
+                                    case 103:
+                                    case 104:
+                                    case 105:
+                                    default:
+                                        z = false;
+                                        c2 = 'd';
+                                        break;
+                                }
+                            }
+                        default:
+                            c2 = 'd';
+                            z = false;
+                            break;
+                    }
+                    if (z6) {
+                        c4 = c4 == 'e' ? c2 : 'e';
+                    }
+                    z6 = z;
+                    i3 = 6;
+                    i7 = i8;
+                    i8 = i9;
+                    i6 = i4;
+                    i4 = decodeCode;
             }
-        L_0x00db:
-            goto L_0x012d
-        L_0x00dc:
-            r16 = 1
-            goto L_0x012d
-        L_0x00df:
-            if (r1 == 0) goto L_0x012d
-            int r5 = r13.length()
-            if (r5 != 0) goto L_0x00ec
-            r13.append(r15)
-            goto L_0x019d
-        L_0x00ec:
-            r5 = 29
-            r13.append(r5)
-            goto L_0x019d
-        L_0x00f3:
-            if (r3 != 0) goto L_0x00ff
-            if (r9 == 0) goto L_0x00ff
-            r3 = 1
-            r5 = 0
-            r9 = 0
-            r10 = 100
-            goto L_0x01de
-        L_0x00ff:
-            if (r3 == 0) goto L_0x010b
-            if (r9 == 0) goto L_0x010b
-            r3 = 0
-            r5 = 0
-            r9 = 0
-            r10 = 100
-            goto L_0x01de
-        L_0x010b:
-            r5 = 0
-            r9 = 1
-            r10 = 100
-            goto L_0x01de
-        L_0x0112:
-            r5 = 0
-            r10 = 100
-            r14 = 100
-            goto L_0x01de
-        L_0x011a:
-            r5 = 0
-            r10 = 100
-            r14 = 99
-            goto L_0x01de
-        L_0x0122:
-            r5 = 1
-            r10 = 100
-            r14 = 100
-            goto L_0x01de
-        L_0x012b:
-            goto L_0x019d
-        L_0x012d:
-            r5 = 0
-            r10 = 100
-            goto L_0x01de
-        L_0x0132:
-            if (r12 >= r11) goto L_0x014b
-            if (r9 != r3) goto L_0x013d
-            int r5 = r12 + 32
-            char r5 = (char) r5
-            r13.append(r5)
-            goto L_0x0145
-        L_0x013d:
-            int r5 = r12 + 32
-            int r5 = r5 + 128
-            char r5 = (char) r5
-            r13.append(r5)
-        L_0x0145:
-            r5 = 0
-            r9 = 0
-            r10 = 100
-            goto L_0x01de
-        L_0x014b:
-            if (r12 == r5) goto L_0x014f
-            r17 = 0
-        L_0x014f:
-            switch(r12) {
-                case 96: goto L_0x019c;
-                case 97: goto L_0x019c;
-                case 98: goto L_0x0194;
-                case 99: goto L_0x018d;
-                case 100: goto L_0x0170;
-                case 101: goto L_0x0168;
-                case 102: goto L_0x0156;
-                case 103: goto L_0x0152;
-                case 104: goto L_0x0152;
-                case 105: goto L_0x0152;
-                case 106: goto L_0x0153;
-                default: goto L_0x0152;
+        }
+        int i11 = i8 - i7;
+        int nextUnset = bitArray.getNextUnset(i8);
+        if (!bitArray.isRange(nextUnset, Math.min(bitArray.getSize(), ((nextUnset - i7) / 2) + nextUnset), false)) {
+            throw NotFoundException.getNotFoundInstance();
+        }
+        int i12 = i6;
+        if ((i2 - (i5 * i12)) % 103 != i12) {
+            throw ChecksumException.getChecksumInstance();
+        }
+        int length = sb.length();
+        if (length == 0) {
+            throw NotFoundException.getNotFoundInstance();
+        }
+        if (length > 0 && z7) {
+            if (c4 == 'c') {
+                sb.delete(length - 2, length);
+            } else {
+                sb.delete(length - 1, length);
             }
-        L_0x0152:
-            goto L_0x01a1
-        L_0x0153:
-            r16 = 1
-            goto L_0x01a1
-        L_0x0156:
-            if (r1 == 0) goto L_0x01a1
-            int r5 = r13.length()
-            if (r5 != 0) goto L_0x0162
-            r13.append(r15)
-            goto L_0x019d
-        L_0x0162:
-            r5 = 29
-            r13.append(r5)
-            goto L_0x019d
-        L_0x0168:
-            r5 = 0
-            r10 = 100
-            r14 = 101(0x65, float:1.42E-43)
-            goto L_0x01de
-        L_0x0170:
-            if (r3 != 0) goto L_0x017c
-            if (r9 == 0) goto L_0x017c
-            r3 = 1
-            r5 = 0
-            r9 = 0
-            r10 = 100
-            goto L_0x01de
-        L_0x017c:
-            if (r3 == 0) goto L_0x0187
-            if (r9 == 0) goto L_0x0187
-            r3 = 0
-            r5 = 0
-            r9 = 0
-            r10 = 100
-            goto L_0x01de
-        L_0x0187:
-            r5 = 0
-            r9 = 1
-            r10 = 100
-            goto L_0x01de
-        L_0x018d:
-            r5 = 0
-            r10 = 100
-            r14 = 99
-            goto L_0x01de
-        L_0x0194:
-            r5 = 1
-            r10 = 100
-            r14 = 101(0x65, float:1.42E-43)
-            goto L_0x01de
-        L_0x019c:
-        L_0x019d:
-            r5 = 0
-            r10 = 100
-            goto L_0x01de
-        L_0x01a1:
-            r5 = 0
-            r10 = 100
-            goto L_0x01de
-        L_0x01a5:
-            r10 = 100
-            if (r12 >= r10) goto L_0x01b6
-            r5 = 10
-            if (r12 >= r5) goto L_0x01b2
-            r5 = 48
-            r13.append(r5)
-        L_0x01b2:
-            r13.append(r12)
-            goto L_0x01dd
-        L_0x01b6:
-            if (r12 == r5) goto L_0x01ba
-            r17 = 0
-        L_0x01ba:
-            switch(r12) {
-                case 100: goto L_0x01d9;
-                case 101: goto L_0x01d4;
-                case 102: goto L_0x01c2;
-                case 103: goto L_0x01bd;
-                case 104: goto L_0x01bd;
-                case 105: goto L_0x01bd;
-                case 106: goto L_0x01be;
-                default: goto L_0x01bd;
-            }
-        L_0x01bd:
-            goto L_0x01dd
-        L_0x01be:
-            r5 = 0
-            r16 = 1
-            goto L_0x01de
-        L_0x01c2:
-            if (r1 == 0) goto L_0x01dd
-            int r5 = r13.length()
-            if (r5 != 0) goto L_0x01ce
-            r13.append(r15)
-            goto L_0x01dd
-        L_0x01ce:
-            r5 = 29
-            r13.append(r5)
-            goto L_0x01dd
-        L_0x01d4:
-            r5 = 0
-            r14 = 101(0x65, float:1.42E-43)
-            goto L_0x01de
-        L_0x01d9:
-            r14 = r10
-            r5 = 0
-            goto L_0x01de
-        L_0x01dd:
-            r5 = 0
-        L_0x01de:
-            if (r18 == 0) goto L_0x01e8
-            r11 = 101(0x65, float:1.42E-43)
-            if (r14 != r11) goto L_0x01e6
-            r14 = r10
-            goto L_0x01ea
-        L_0x01e6:
-            r14 = r11
-            goto L_0x01ea
-        L_0x01e8:
-            r11 = 101(0x65, float:1.42E-43)
-        L_0x01ea:
-            r18 = r5
-            r5 = 2
-            r15 = 6
-            r23 = r12
-            r12 = r8
-            r8 = r21
-            r21 = r19
-            r19 = r23
-            goto L_0x0063
-        L_0x01f9:
-            int r1 = r8 - r12
-            int r2 = r0.getNextUnset(r8)
-            int r3 = r26.getSize()
-            int r5 = r2 - r12
-            r8 = 2
-            int r5 = r5 / r8
-            int r5 = r5 + r2
-            int r3 = java.lang.Math.min(r3, r5)
-            r5 = 0
-            boolean r0 = r0.isRange(r2, r3, r5)
-            if (r0 == 0) goto L_0x028a
-            r3 = r21
-            int r20 = r20 * r3
-            int r6 = r6 - r20
-            int r6 = r6 % 103
-            if (r6 != r3) goto L_0x0285
-            int r0 = r13.length()
-            if (r0 == 0) goto L_0x0280
-            if (r0 <= 0) goto L_0x0237
-            if (r17 == 0) goto L_0x0237
-            r2 = 99
-            if (r14 != r2) goto L_0x0232
-            int r2 = r0 + -2
-            r13.delete(r2, r0)
-            goto L_0x0237
-        L_0x0232:
-            int r2 = r0 + -1
-            r13.delete(r2, r0)
-        L_0x0237:
-            r0 = 1
-            r2 = r4[r0]
-            r0 = 0
-            r3 = r4[r0]
-            int r2 = r2 + r3
-            float r0 = (float) r2
-            r2 = 1073741824(0x40000000, float:2.0)
-            float r0 = r0 / r2
-            float r3 = (float) r12
-            float r1 = (float) r1
-            float r1 = r1 / r2
-            float r3 = r3 + r1
-            int r1 = r7.size()
-            byte[] r2 = new byte[r1]
-            r5 = 0
-        L_0x024d:
-            if (r5 >= r1) goto L_0x025e
-            java.lang.Object r4 = r7.get(r5)
-            java.lang.Byte r4 = (java.lang.Byte) r4
-            byte r4 = r4.byteValue()
-            r2[r5] = r4
-            int r5 = r5 + 1
-            goto L_0x024d
-        L_0x025e:
-            com.google.zxing.Result r1 = new com.google.zxing.Result
-            java.lang.String r4 = r13.toString()
-            r5 = 2
-            com.google.zxing.ResultPoint[] r5 = new com.google.zxing.ResultPoint[r5]
-            com.google.zxing.ResultPoint r6 = new com.google.zxing.ResultPoint
-            r7 = r25
-            float r7 = (float) r7
-            r6.<init>(r0, r7)
-            r0 = 0
-            r5[r0] = r6
-            com.google.zxing.ResultPoint r0 = new com.google.zxing.ResultPoint
-            r0.<init>(r3, r7)
-            r3 = 1
-            r5[r3] = r0
-            com.google.zxing.BarcodeFormat r0 = com.google.zxing.BarcodeFormat.CODE_128
-            r1.<init>(r4, r2, r5, r0)
-            return r1
-        L_0x0280:
-            com.google.zxing.NotFoundException r0 = com.google.zxing.NotFoundException.getNotFoundInstance()
-            throw r0
-        L_0x0285:
-            com.google.zxing.ChecksumException r0 = com.google.zxing.ChecksumException.getChecksumInstance()
-            throw r0
-        L_0x028a:
-            com.google.zxing.NotFoundException r0 = com.google.zxing.NotFoundException.getNotFoundInstance()
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.google.zxing.oned.Code128Reader.decodeRow(int, com.google.zxing.common.BitArray, java.util.Map):com.google.zxing.Result");
+        }
+        float f = (findStartPattern[1] + findStartPattern[0]) / 2.0f;
+        float f2 = i7 + (i11 / 2.0f);
+        int size = arrayList.size();
+        byte[] bArr = new byte[size];
+        for (int i13 = 0; i13 < size; i13++) {
+            bArr[i13] = ((Byte) arrayList.get(i13)).byteValue();
+        }
+        float f3 = i;
+        return new Result(sb.toString(), bArr, new ResultPoint[]{new ResultPoint(f, f3), new ResultPoint(f2, f3)}, BarcodeFormat.CODE_128);
     }
 }

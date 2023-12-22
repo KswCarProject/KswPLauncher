@@ -9,10 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView;
 
+/* loaded from: classes7.dex */
 public abstract class AudiMib3FyOneDataCls extends ViewDataBinding {
     public final BenzMbuxItemView appItemview;
     public final ImageView appIv;
@@ -42,36 +43,35 @@ public abstract class AudiMib3FyOneDataCls extends ViewDataBinding {
     public final ImageView videoIv;
     public final TextView videoTv;
 
-    public abstract void setViewModel(BcVieModel bcVieModel);
+    public abstract void setViewModel(BcVieModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected AudiMib3FyOneDataCls(Object _bindingComponent, View _root, int _localFieldCount, BenzMbuxItemView appItemview2, ImageView appIv2, TextView appTv2, BenzMbuxItemView btItemview2, ImageView btIv2, TextView btTv2, BenzMbuxItemView carItemview2, ImageView carIv2, TextView carTv2, LinearLayout fragmentOneLl2, BenzMbuxItemView musicItemview2, ImageView musicIv2, TextView musicTv2, BenzMbuxItemView naviItemview2, ImageView naviIv2, TextView naviTv2, BenzMbuxItemView phonelinkItemview2, ImageView phonelinkIv2, TextView phonelinkTv2, BenzMbuxItemView setItemview2, ImageView setIv2, TextView setTv2, BenzMbuxItemView videoItemview2, ImageView videoIv2, TextView videoTv2) {
+    protected AudiMib3FyOneDataCls(Object _bindingComponent, View _root, int _localFieldCount, BenzMbuxItemView appItemview, ImageView appIv, TextView appTv, BenzMbuxItemView btItemview, ImageView btIv, TextView btTv, BenzMbuxItemView carItemview, ImageView carIv, TextView carTv, LinearLayout fragmentOneLl, BenzMbuxItemView musicItemview, ImageView musicIv, TextView musicTv, BenzMbuxItemView naviItemview, ImageView naviIv, TextView naviTv, BenzMbuxItemView phonelinkItemview, ImageView phonelinkIv, TextView phonelinkTv, BenzMbuxItemView setItemview, ImageView setIv, TextView setTv, BenzMbuxItemView videoItemview, ImageView videoIv, TextView videoTv) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.appItemview = appItemview2;
-        this.appIv = appIv2;
-        this.appTv = appTv2;
-        this.btItemview = btItemview2;
-        this.btIv = btIv2;
-        this.btTv = btTv2;
-        this.carItemview = carItemview2;
-        this.carIv = carIv2;
-        this.carTv = carTv2;
-        this.fragmentOneLl = fragmentOneLl2;
-        this.musicItemview = musicItemview2;
-        this.musicIv = musicIv2;
-        this.musicTv = musicTv2;
-        this.naviItemview = naviItemview2;
-        this.naviIv = naviIv2;
-        this.naviTv = naviTv2;
-        this.phonelinkItemview = phonelinkItemview2;
-        this.phonelinkIv = phonelinkIv2;
-        this.phonelinkTv = phonelinkTv2;
-        this.setItemview = setItemview2;
-        this.setIv = setIv2;
-        this.setTv = setTv2;
-        this.videoItemview = videoItemview2;
-        this.videoIv = videoIv2;
-        this.videoTv = videoTv2;
+        this.appItemview = appItemview;
+        this.appIv = appIv;
+        this.appTv = appTv;
+        this.btItemview = btItemview;
+        this.btIv = btIv;
+        this.btTv = btTv;
+        this.carItemview = carItemview;
+        this.carIv = carIv;
+        this.carTv = carTv;
+        this.fragmentOneLl = fragmentOneLl;
+        this.musicItemview = musicItemview;
+        this.musicIv = musicIv;
+        this.musicTv = musicTv;
+        this.naviItemview = naviItemview;
+        this.naviIv = naviIv;
+        this.naviTv = naviTv;
+        this.phonelinkItemview = phonelinkItemview;
+        this.phonelinkIv = phonelinkIv;
+        this.phonelinkTv = phonelinkTv;
+        this.setItemview = setItemview;
+        this.setIv = setIv;
+        this.setTv = setTv;
+        this.videoItemview = videoItemview;
+        this.videoIv = videoIv;
+        this.videoTv = videoTv;
     }
 
     public BcVieModel getViewModel() {
@@ -84,7 +84,7 @@ public abstract class AudiMib3FyOneDataCls extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3FyOneDataCls inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AudiMib3FyOneDataCls) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_audi_mib3_fy_one, root, attachToRoot, component);
+        return (AudiMib3FyOneDataCls) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_audi_mib3_fy_one, root, attachToRoot, component);
     }
 
     public static AudiMib3FyOneDataCls inflate(LayoutInflater inflater) {
@@ -93,7 +93,7 @@ public abstract class AudiMib3FyOneDataCls extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3FyOneDataCls inflate(LayoutInflater inflater, Object component) {
-        return (AudiMib3FyOneDataCls) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_audi_mib3_fy_one, (ViewGroup) null, false, component);
+        return (AudiMib3FyOneDataCls) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_audi_mib3_fy_one, null, false, component);
     }
 
     public static AudiMib3FyOneDataCls bind(View view) {
@@ -102,6 +102,6 @@ public abstract class AudiMib3FyOneDataCls extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3FyOneDataCls bind(View view, Object component) {
-        return (AudiMib3FyOneDataCls) bind(component, view, R.layout.fragment_audi_mib3_fy_one);
+        return (AudiMib3FyOneDataCls) bind(component, view, C0899R.C0902layout.fragment_audi_mib3_fy_one);
     }
 }

@@ -8,27 +8,26 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
+/* loaded from: classes.dex */
 public final class JsonParser {
     public static JsonElement parseString(String json) throws JsonSyntaxException {
-        return parseReader((Reader) new StringReader(json));
+        return parseReader(new StringReader(json));
     }
 
     public static JsonElement parseReader(Reader reader) throws JsonIOException, JsonSyntaxException {
         try {
             JsonReader jsonReader = new JsonReader(reader);
             JsonElement element = parseReader(jsonReader);
-            if (!element.isJsonNull()) {
-                if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
-                    throw new JsonSyntaxException("Did not consume the entire document.");
-                }
+            if (!element.isJsonNull() && jsonReader.peek() != JsonToken.END_DOCUMENT) {
+                throw new JsonSyntaxException("Did not consume the entire document.");
             }
             return element;
         } catch (MalformedJsonException e) {
-            throw new JsonSyntaxException((Throwable) e);
+            throw new JsonSyntaxException(e);
         } catch (IOException e2) {
-            throw new JsonIOException((Throwable) e2);
+            throw new JsonIOException(e2);
         } catch (NumberFormatException e3) {
-            throw new JsonSyntaxException((Throwable) e3);
+            throw new JsonSyntaxException(e3);
         }
     }
 
@@ -36,16 +35,15 @@ public final class JsonParser {
         boolean lenient = reader.isLenient();
         reader.setLenient(true);
         try {
-            JsonElement parse = Streams.parse(reader);
+            try {
+                return Streams.parse(reader);
+            } catch (OutOfMemoryError e) {
+                throw new JsonParseException("Failed parsing JSON source: " + reader + " to Json", e);
+            } catch (StackOverflowError e2) {
+                throw new JsonParseException("Failed parsing JSON source: " + reader + " to Json", e2);
+            }
+        } finally {
             reader.setLenient(lenient);
-            return parse;
-        } catch (StackOverflowError e) {
-            throw new JsonParseException("Failed parsing JSON source: " + reader + " to Json", e);
-        } catch (OutOfMemoryError e2) {
-            throw new JsonParseException("Failed parsing JSON source: " + reader + " to Json", e2);
-        } catch (Throwable th) {
-            reader.setLenient(lenient);
-            throw th;
         }
     }
 

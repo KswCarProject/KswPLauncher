@@ -8,29 +8,32 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.exceptions.Exceptions;
 import java.util.concurrent.Callable;
 
+/* loaded from: classes.dex */
 public final class CompletableToSingle<T> extends Single<T> {
     final T completionValue;
     final Callable<? extends T> completionValueSupplier;
     final CompletableSource source;
 
-    public CompletableToSingle(CompletableSource source2, Callable<? extends T> completionValueSupplier2, T completionValue2) {
-        this.source = source2;
-        this.completionValue = completionValue2;
-        this.completionValueSupplier = completionValueSupplier2;
+    public CompletableToSingle(CompletableSource source, Callable<? extends T> completionValueSupplier, T completionValue) {
+        this.source = source;
+        this.completionValue = completionValue;
+        this.completionValueSupplier = completionValueSupplier;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         this.source.subscribe(new ToSingle(observer));
     }
 
+    /* loaded from: classes.dex */
     final class ToSingle implements CompletableObserver {
         private final SingleObserver<? super T> observer;
 
-        ToSingle(SingleObserver<? super T> observer2) {
-            this.observer = observer2;
+        ToSingle(SingleObserver<? super T> observer) {
+            this.observer = observer;
         }
 
+        @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
         public void onComplete() {
             T v;
             if (CompletableToSingle.this.completionValueSupplier != null) {
@@ -51,10 +54,12 @@ public final class CompletableToSingle<T> extends Single<T> {
             }
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onError(Throwable e) {
             this.observer.onError(e);
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onSubscribe(Disposable d) {
             this.observer.onSubscribe(d);
         }

@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+/* loaded from: classes.dex */
 public class LruBitmapPool implements BitmapPool {
     private static final Bitmap.Config DEFAULT_CONFIG = Bitmap.Config.ARGB_8888;
     private static final String TAG = "LruBitmapPool";
@@ -22,68 +23,68 @@ public class LruBitmapPool implements BitmapPool {
     private final LruPoolStrategy strategy;
     private final BitmapTracker tracker;
 
+    /* loaded from: classes.dex */
     private interface BitmapTracker {
         void add(Bitmap bitmap);
 
         void remove(Bitmap bitmap);
     }
 
-    LruBitmapPool(long maxSize2, LruPoolStrategy strategy2, Set<Bitmap.Config> allowedConfigs2) {
-        this.initialMaxSize = maxSize2;
-        this.maxSize = maxSize2;
-        this.strategy = strategy2;
-        this.allowedConfigs = allowedConfigs2;
+    LruBitmapPool(long maxSize, LruPoolStrategy strategy, Set<Bitmap.Config> allowedConfigs) {
+        this.initialMaxSize = maxSize;
+        this.maxSize = maxSize;
+        this.strategy = strategy;
+        this.allowedConfigs = allowedConfigs;
         this.tracker = new NullBitmapTracker();
     }
 
-    public LruBitmapPool(long maxSize2) {
-        this(maxSize2, getDefaultStrategy(), getDefaultAllowedConfigs());
+    public LruBitmapPool(long maxSize) {
+        this(maxSize, getDefaultStrategy(), getDefaultAllowedConfigs());
     }
 
-    public LruBitmapPool(long maxSize2, Set<Bitmap.Config> allowedConfigs2) {
-        this(maxSize2, getDefaultStrategy(), allowedConfigs2);
+    public LruBitmapPool(long maxSize, Set<Bitmap.Config> allowedConfigs) {
+        this(maxSize, getDefaultStrategy(), allowedConfigs);
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
     public long getMaxSize() {
         return this.maxSize;
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
     public synchronized void setSizeMultiplier(float sizeMultiplier) {
-        this.maxSize = (long) Math.round(((float) this.initialMaxSize) * sizeMultiplier);
+        this.maxSize = Math.round(((float) this.initialMaxSize) * sizeMultiplier);
         evict();
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
     public synchronized void put(Bitmap bitmap) {
-        if (bitmap != null) {
-            try {
-                if (!bitmap.isRecycled()) {
-                    if (bitmap.isMutable() && ((long) this.strategy.getSize(bitmap)) <= this.maxSize) {
-                        if (this.allowedConfigs.contains(bitmap.getConfig())) {
-                            int size = this.strategy.getSize(bitmap);
-                            this.strategy.put(bitmap);
-                            this.tracker.add(bitmap);
-                            this.puts++;
-                            this.currentSize += (long) size;
-                            if (Log.isLoggable(TAG, 2)) {
-                                Log.v(TAG, "Put bitmap in pool=" + this.strategy.logBitmap(bitmap));
-                            }
-                            dump();
-                            evict();
-                            return;
-                        }
-                    }
-                    if (Log.isLoggable(TAG, 2)) {
-                        Log.v(TAG, "Reject bitmap from pool, bitmap: " + this.strategy.logBitmap(bitmap) + ", is mutable: " + bitmap.isMutable() + ", is allowed config: " + this.allowedConfigs.contains(bitmap.getConfig()));
-                    }
-                    bitmap.recycle();
-                    return;
-                }
-                throw new IllegalStateException("Cannot pool recycled bitmap");
-            } catch (Throwable th) {
-                throw th;
+        try {
+            if (bitmap == null) {
+                throw new NullPointerException("Bitmap must not be null");
             }
-        } else {
-            throw new NullPointerException("Bitmap must not be null");
+            if (bitmap.isRecycled()) {
+                throw new IllegalStateException("Cannot pool recycled bitmap");
+            }
+            if (bitmap.isMutable() && this.strategy.getSize(bitmap) <= this.maxSize && this.allowedConfigs.contains(bitmap.getConfig())) {
+                int size = this.strategy.getSize(bitmap);
+                this.strategy.put(bitmap);
+                this.tracker.add(bitmap);
+                this.puts++;
+                this.currentSize += size;
+                if (Log.isLoggable(TAG, 2)) {
+                    Log.v(TAG, "Put bitmap in pool=" + this.strategy.logBitmap(bitmap));
+                }
+                dump();
+                evict();
+                return;
+            }
+            if (Log.isLoggable(TAG, 2)) {
+                Log.v(TAG, "Reject bitmap from pool, bitmap: " + this.strategy.logBitmap(bitmap) + ", is mutable: " + bitmap.isMutable() + ", is allowed config: " + this.allowedConfigs.contains(bitmap.getConfig()));
+            }
+            bitmap.recycle();
+        } catch (Throwable th) {
+            throw th;
         }
     }
 
@@ -91,15 +92,17 @@ public class LruBitmapPool implements BitmapPool {
         trimToSize(this.maxSize);
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
     public Bitmap get(int width, int height, Bitmap.Config config) {
         Bitmap result = getDirtyOrNull(width, height, config);
-        if (result == null) {
-            return createBitmap(width, height, config);
+        if (result != null) {
+            result.eraseColor(0);
+            return result;
         }
-        result.eraseColor(0);
-        return result;
+        return createBitmap(width, height, config);
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
     public Bitmap getDirty(int width, int height, Bitmap.Config config) {
         Bitmap result = getDirtyOrNull(width, height, config);
         if (result == null) {
@@ -129,7 +132,7 @@ public class LruBitmapPool implements BitmapPool {
             this.misses++;
         } else {
             this.hits++;
-            this.currentSize -= (long) this.strategy.getSize(result);
+            this.currentSize -= this.strategy.getSize(result);
             this.tracker.remove(result);
             normalize(result);
         }
@@ -151,13 +154,15 @@ public class LruBitmapPool implements BitmapPool {
         }
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
     public void clearMemory() {
         if (Log.isLoggable(TAG, 3)) {
             Log.d(TAG, "clearMemory");
         }
-        trimToSize(0);
+        trimToSize(0L);
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
     public void trimMemory(int level) {
         if (Log.isLoggable(TAG, 3)) {
             Log.d(TAG, "trimMemory, level=" + level);
@@ -177,11 +182,11 @@ public class LruBitmapPool implements BitmapPool {
                     Log.w(TAG, "Size mismatch, resetting");
                     dumpUnchecked();
                 }
-                this.currentSize = 0;
+                this.currentSize = 0L;
                 return;
             }
             this.tracker.remove(removed);
-            this.currentSize -= (long) this.strategy.getSize(removed);
+            this.currentSize -= this.strategy.getSize(removed);
             this.evictions++;
             if (Log.isLoggable(TAG, 3)) {
                 Log.d(TAG, "Evicting bitmap=" + this.strategy.logBitmap(removed));
@@ -203,15 +208,17 @@ public class LruBitmapPool implements BitmapPool {
 
     private static LruPoolStrategy getDefaultStrategy() {
         if (Build.VERSION.SDK_INT >= 19) {
-            return new SizeConfigStrategy();
+            LruPoolStrategy strategy = new SizeConfigStrategy();
+            return strategy;
         }
-        return new AttributeStrategy();
+        LruPoolStrategy strategy2 = new AttributeStrategy();
+        return strategy2;
     }
 
     private static Set<Bitmap.Config> getDefaultAllowedConfigs() {
         Set<Bitmap.Config> configs = new HashSet<>(Arrays.asList(Bitmap.Config.values()));
         if (Build.VERSION.SDK_INT >= 19) {
-            configs.add((Object) null);
+            configs.add(null);
         }
         if (Build.VERSION.SDK_INT >= 26) {
             configs.remove(Bitmap.Config.HARDWARE);
@@ -219,36 +226,40 @@ public class LruBitmapPool implements BitmapPool {
         return Collections.unmodifiableSet(configs);
     }
 
+    /* loaded from: classes.dex */
     private static class ThrowingBitmapTracker implements BitmapTracker {
         private final Set<Bitmap> bitmaps = Collections.synchronizedSet(new HashSet());
 
         private ThrowingBitmapTracker() {
         }
 
+        @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.BitmapTracker
         public void add(Bitmap bitmap) {
-            if (!this.bitmaps.contains(bitmap)) {
-                this.bitmaps.add(bitmap);
-                return;
+            if (this.bitmaps.contains(bitmap)) {
+                throw new IllegalStateException("Can't add already added bitmap: " + bitmap + " [" + bitmap.getWidth() + "x" + bitmap.getHeight() + "]");
             }
-            throw new IllegalStateException("Can't add already added bitmap: " + bitmap + " [" + bitmap.getWidth() + "x" + bitmap.getHeight() + "]");
+            this.bitmaps.add(bitmap);
         }
 
+        @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.BitmapTracker
         public void remove(Bitmap bitmap) {
-            if (this.bitmaps.contains(bitmap)) {
-                this.bitmaps.remove(bitmap);
-                return;
+            if (!this.bitmaps.contains(bitmap)) {
+                throw new IllegalStateException("Cannot remove bitmap not in tracker");
             }
-            throw new IllegalStateException("Cannot remove bitmap not in tracker");
+            this.bitmaps.remove(bitmap);
         }
     }
 
+    /* loaded from: classes.dex */
     private static final class NullBitmapTracker implements BitmapTracker {
         NullBitmapTracker() {
         }
 
+        @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.BitmapTracker
         public void add(Bitmap bitmap) {
         }
 
+        @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.BitmapTracker
         public void remove(Bitmap bitmap) {
         }
     }

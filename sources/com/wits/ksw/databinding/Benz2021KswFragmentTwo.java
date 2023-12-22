@@ -10,16 +10,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView;
 
+/* loaded from: classes7.dex */
 public abstract class Benz2021KswFragmentTwo extends ViewDataBinding {
     public final BenzMbuxItemView appItemview;
     public final RelativeLayout appRl;
     public final TextView appTip;
     public final TextView appTv;
     public final TextView btTip;
+    public final BenzMbuxItemView carItemview;
+    public final RelativeLayout carRl;
+    public final TextView carTip;
+    public final TextView carTv;
     public final BenzMbuxItemView dashboardItemview;
     public final RelativeLayout dashboardRl;
     public final TextView dashboardTip;
@@ -31,12 +36,16 @@ public abstract class Benz2021KswFragmentTwo extends ViewDataBinding {
     public final LinearLayout fragmentTwoLl;
     public final ImageView ivApps1;
     public final ImageView ivApps2;
+    public final ImageView ivCar1;
+    public final ImageView ivCar2;
     public final ImageView ivDash1;
     public final ImageView ivDash2;
     public final ImageView ivDvr1;
     public final ImageView ivDvr2;
     public final ImageView ivPhone1;
     public final ImageView ivPhone2;
+    public final ImageView ivSet1;
+    public final ImageView ivSet2;
     public final ImageView ivVideo1;
     public final ImageView ivVideo2;
     @Bindable
@@ -45,56 +54,75 @@ public abstract class Benz2021KswFragmentTwo extends ViewDataBinding {
     public final RelativeLayout phonelinkRl;
     public final TextView phonelinkTip;
     public final TextView phonelinkTv;
+    public final BenzMbuxItemView setItemview;
+    public final TextView setTip;
+    public final TextView setTv;
+    public final RelativeLayout settingRl;
     public final View space;
     public final View space1;
     public final View space2;
     public final View space3;
     public final View space5;
+    public final View space6;
+    public final View space7;
     public final BenzMbuxItemView videoItemview;
     public final RelativeLayout videoRl;
     public final TextView videoTv;
 
-    public abstract void setViewModel(BcVieModel bcVieModel);
+    public abstract void setViewModel(BcVieModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected Benz2021KswFragmentTwo(Object _bindingComponent, View _root, int _localFieldCount, BenzMbuxItemView appItemview2, RelativeLayout appRl2, TextView appTip2, TextView appTv2, TextView btTip2, BenzMbuxItemView dashboardItemview2, RelativeLayout dashboardRl2, TextView dashboardTip2, TextView dashboardTv2, BenzMbuxItemView dvrItemview2, RelativeLayout dvrRl2, TextView dvrTip2, TextView dvrTv2, LinearLayout fragmentTwoLl2, ImageView ivApps12, ImageView ivApps22, ImageView ivDash12, ImageView ivDash22, ImageView ivDvr12, ImageView ivDvr22, ImageView ivPhone12, ImageView ivPhone22, ImageView ivVideo12, ImageView ivVideo22, BenzMbuxItemView phonelinkItemview2, RelativeLayout phonelinkRl2, TextView phonelinkTip2, TextView phonelinkTv2, View space4, View space12, View space22, View space32, View space52, BenzMbuxItemView videoItemview2, RelativeLayout videoRl2, TextView videoTv2) {
+    protected Benz2021KswFragmentTwo(Object _bindingComponent, View _root, int _localFieldCount, BenzMbuxItemView appItemview, RelativeLayout appRl, TextView appTip, TextView appTv, TextView btTip, BenzMbuxItemView carItemview, RelativeLayout carRl, TextView carTip, TextView carTv, BenzMbuxItemView dashboardItemview, RelativeLayout dashboardRl, TextView dashboardTip, TextView dashboardTv, BenzMbuxItemView dvrItemview, RelativeLayout dvrRl, TextView dvrTip, TextView dvrTv, LinearLayout fragmentTwoLl, ImageView ivApps1, ImageView ivApps2, ImageView ivCar1, ImageView ivCar2, ImageView ivDash1, ImageView ivDash2, ImageView ivDvr1, ImageView ivDvr2, ImageView ivPhone1, ImageView ivPhone2, ImageView ivSet1, ImageView ivSet2, ImageView ivVideo1, ImageView ivVideo2, BenzMbuxItemView phonelinkItemview, RelativeLayout phonelinkRl, TextView phonelinkTip, TextView phonelinkTv, BenzMbuxItemView setItemview, TextView setTip, TextView setTv, RelativeLayout settingRl, View space, View space1, View space2, View space3, View space5, View space6, View space7, BenzMbuxItemView videoItemview, RelativeLayout videoRl, TextView videoTv) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.appItemview = appItemview2;
-        this.appRl = appRl2;
-        this.appTip = appTip2;
-        this.appTv = appTv2;
-        this.btTip = btTip2;
-        this.dashboardItemview = dashboardItemview2;
-        this.dashboardRl = dashboardRl2;
-        this.dashboardTip = dashboardTip2;
-        this.dashboardTv = dashboardTv2;
-        this.dvrItemview = dvrItemview2;
-        this.dvrRl = dvrRl2;
-        this.dvrTip = dvrTip2;
-        this.dvrTv = dvrTv2;
-        this.fragmentTwoLl = fragmentTwoLl2;
-        this.ivApps1 = ivApps12;
-        this.ivApps2 = ivApps22;
-        this.ivDash1 = ivDash12;
-        this.ivDash2 = ivDash22;
-        this.ivDvr1 = ivDvr12;
-        this.ivDvr2 = ivDvr22;
-        this.ivPhone1 = ivPhone12;
-        this.ivPhone2 = ivPhone22;
-        this.ivVideo1 = ivVideo12;
-        this.ivVideo2 = ivVideo22;
-        this.phonelinkItemview = phonelinkItemview2;
-        this.phonelinkRl = phonelinkRl2;
-        this.phonelinkTip = phonelinkTip2;
-        this.phonelinkTv = phonelinkTv2;
-        this.space = space4;
-        this.space1 = space12;
-        this.space2 = space22;
-        this.space3 = space32;
-        this.space5 = space52;
-        this.videoItemview = videoItemview2;
-        this.videoRl = videoRl2;
-        this.videoTv = videoTv2;
+        this.appItemview = appItemview;
+        this.appRl = appRl;
+        this.appTip = appTip;
+        this.appTv = appTv;
+        this.btTip = btTip;
+        this.carItemview = carItemview;
+        this.carRl = carRl;
+        this.carTip = carTip;
+        this.carTv = carTv;
+        this.dashboardItemview = dashboardItemview;
+        this.dashboardRl = dashboardRl;
+        this.dashboardTip = dashboardTip;
+        this.dashboardTv = dashboardTv;
+        this.dvrItemview = dvrItemview;
+        this.dvrRl = dvrRl;
+        this.dvrTip = dvrTip;
+        this.dvrTv = dvrTv;
+        this.fragmentTwoLl = fragmentTwoLl;
+        this.ivApps1 = ivApps1;
+        this.ivApps2 = ivApps2;
+        this.ivCar1 = ivCar1;
+        this.ivCar2 = ivCar2;
+        this.ivDash1 = ivDash1;
+        this.ivDash2 = ivDash2;
+        this.ivDvr1 = ivDvr1;
+        this.ivDvr2 = ivDvr2;
+        this.ivPhone1 = ivPhone1;
+        this.ivPhone2 = ivPhone2;
+        this.ivSet1 = ivSet1;
+        this.ivSet2 = ivSet2;
+        this.ivVideo1 = ivVideo1;
+        this.ivVideo2 = ivVideo2;
+        this.phonelinkItemview = phonelinkItemview;
+        this.phonelinkRl = phonelinkRl;
+        this.phonelinkTip = phonelinkTip;
+        this.phonelinkTv = phonelinkTv;
+        this.setItemview = setItemview;
+        this.setTip = setTip;
+        this.setTv = setTv;
+        this.settingRl = settingRl;
+        this.space = space;
+        this.space1 = space1;
+        this.space2 = space2;
+        this.space3 = space3;
+        this.space5 = space5;
+        this.space6 = space6;
+        this.space7 = space7;
+        this.videoItemview = videoItemview;
+        this.videoRl = videoRl;
+        this.videoTv = videoTv;
     }
 
     public BcVieModel getViewModel() {
@@ -107,7 +135,7 @@ public abstract class Benz2021KswFragmentTwo extends ViewDataBinding {
 
     @Deprecated
     public static Benz2021KswFragmentTwo inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (Benz2021KswFragmentTwo) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_benz_mbux2021_ksw_two, root, attachToRoot, component);
+        return (Benz2021KswFragmentTwo) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_benz_mbux2021_ksw_two, root, attachToRoot, component);
     }
 
     public static Benz2021KswFragmentTwo inflate(LayoutInflater inflater) {
@@ -116,7 +144,7 @@ public abstract class Benz2021KswFragmentTwo extends ViewDataBinding {
 
     @Deprecated
     public static Benz2021KswFragmentTwo inflate(LayoutInflater inflater, Object component) {
-        return (Benz2021KswFragmentTwo) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_benz_mbux2021_ksw_two, (ViewGroup) null, false, component);
+        return (Benz2021KswFragmentTwo) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_benz_mbux2021_ksw_two, null, false, component);
     }
 
     public static Benz2021KswFragmentTwo bind(View view) {
@@ -125,6 +153,6 @@ public abstract class Benz2021KswFragmentTwo extends ViewDataBinding {
 
     @Deprecated
     public static Benz2021KswFragmentTwo bind(View view, Object component) {
-        return (Benz2021KswFragmentTwo) bind(component, view, R.layout.fragment_benz_mbux2021_ksw_two);
+        return (Benz2021KswFragmentTwo) bind(component, view, C0899R.C0902layout.fragment_benz_mbux2021_ksw_two);
     }
 }

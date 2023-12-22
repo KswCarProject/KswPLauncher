@@ -3,20 +3,21 @@ package android.support.constraint.solver.widgets;
 import android.support.constraint.solver.widgets.ConstraintWidget;
 import android.support.constraint.solver.widgets.analyzer.BasicMeasure;
 
+/* loaded from: classes.dex */
 public class VirtualLayout extends HelperWidget {
-    protected BasicMeasure.Measure mMeasure = new BasicMeasure.Measure();
-    private int mMeasuredHeight = 0;
-    private int mMeasuredWidth = 0;
-    BasicMeasure.Measurer mMeasurer = null;
-    private boolean mNeedsCallFromSolver = false;
+    private int mPaddingTop = 0;
     private int mPaddingBottom = 0;
-    private int mPaddingEnd = 0;
     private int mPaddingLeft = 0;
     private int mPaddingRight = 0;
     private int mPaddingStart = 0;
-    private int mPaddingTop = 0;
+    private int mPaddingEnd = 0;
     private int mResolvedPaddingLeft = 0;
     private int mResolvedPaddingRight = 0;
+    private boolean mNeedsCallFromSolver = false;
+    private int mMeasuredWidth = 0;
+    private int mMeasuredHeight = 0;
+    protected BasicMeasure.Measure mMeasure = new BasicMeasure.Measure();
+    BasicMeasure.Measurer mMeasurer = null;
 
     public void setPadding(int value) {
         this.mPaddingLeft = value;
@@ -44,16 +45,15 @@ public class VirtualLayout extends HelperWidget {
 
     public void applyRtl(boolean isRtl) {
         int i = this.mPaddingStart;
-        if (i <= 0 && this.mPaddingEnd <= 0) {
-            return;
+        if (i > 0 || this.mPaddingEnd > 0) {
+            if (isRtl) {
+                this.mResolvedPaddingLeft = this.mPaddingEnd;
+                this.mResolvedPaddingRight = i;
+                return;
+            }
+            this.mResolvedPaddingLeft = i;
+            this.mResolvedPaddingRight = this.mPaddingEnd;
         }
-        if (isRtl) {
-            this.mResolvedPaddingLeft = this.mPaddingEnd;
-            this.mResolvedPaddingRight = i;
-            return;
-        }
-        this.mResolvedPaddingLeft = i;
-        this.mResolvedPaddingRight = this.mPaddingEnd;
     }
 
     public void setPaddingTop(int value) {
@@ -85,8 +85,7 @@ public class VirtualLayout extends HelperWidget {
         return this.mResolvedPaddingRight;
     }
 
-    /* access modifiers changed from: protected */
-    public void needsCallbackFromSolver(boolean value) {
+    protected void needsCallbackFromSolver(boolean value) {
         this.mNeedsCallFromSolver = value;
     }
 
@@ -97,6 +96,7 @@ public class VirtualLayout extends HelperWidget {
     public void measure(int widthMode, int widthSize, int heightMode, int heightSize) {
     }
 
+    @Override // android.support.constraint.solver.widgets.HelperWidget, android.support.constraint.solver.widgets.Helper
     public void updateConstraints(ConstraintWidgetContainer container) {
         captureWidgets();
     }
@@ -123,8 +123,7 @@ public class VirtualLayout extends HelperWidget {
         this.mMeasuredHeight = height;
     }
 
-    /* access modifiers changed from: protected */
-    public boolean measureChildren() {
+    protected boolean measureChildren() {
         BasicMeasure.Measurer measurer = null;
         if (this.mParent != null) {
             measurer = ((ConstraintWidgetContainer) this.mParent).getMeasurer();
@@ -166,10 +165,10 @@ public class VirtualLayout extends HelperWidget {
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void measure(ConstraintWidget widget, ConstraintWidget.DimensionBehaviour horizontalBehavior, int horizontalDimension, ConstraintWidget.DimensionBehaviour verticalBehavior, int verticalDimension) {
+    protected void measure(ConstraintWidget widget, ConstraintWidget.DimensionBehaviour horizontalBehavior, int horizontalDimension, ConstraintWidget.DimensionBehaviour verticalBehavior, int verticalDimension) {
         while (this.mMeasurer == null && getParent() != null) {
-            this.mMeasurer = ((ConstraintWidgetContainer) getParent()).getMeasurer();
+            ConstraintWidgetContainer parent = (ConstraintWidgetContainer) getParent();
+            this.mMeasurer = parent.getMeasurer();
         }
         this.mMeasure.horizontalBehavior = horizontalBehavior;
         this.mMeasure.verticalBehavior = verticalBehavior;

@@ -6,6 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.nio.ByteBuffer;
 
+/* loaded from: classes.dex */
 public interface GifDecoder {
     public static final int STATUS_FORMAT_ERROR = 1;
     public static final int STATUS_OK = 0;
@@ -13,6 +14,7 @@ public interface GifDecoder {
     public static final int STATUS_PARTIAL_DECODE = 3;
     public static final int TOTAL_ITERATION_COUNT_FOREVER = 0;
 
+    /* loaded from: classes.dex */
     public interface BitmapProvider {
         Bitmap obtain(int i, int i2, Bitmap.Config config);
 
@@ -28,6 +30,7 @@ public interface GifDecoder {
     }
 
     @Retention(RetentionPolicy.SOURCE)
+    /* loaded from: classes.dex */
     public @interface GifDecodeStatus {
     }
 

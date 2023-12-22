@@ -3,16 +3,17 @@ package com.wits.ksw.databinding;
 import android.databinding.Bindable;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.v4.view.ViewPager;
+import android.support.p001v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BcVieModel;
 
+/* loaded from: classes7.dex */
 public abstract class BenzNtg6FyBindCls extends ViewDataBinding {
     public final ViewPager benzNtg6FyViewpager;
     public final ImageView controlBtn;
@@ -24,17 +25,17 @@ public abstract class BenzNtg6FyBindCls extends ViewDataBinding {
     protected BcVieModel mViewModel;
     public final TextView tvCoatFyTip;
 
-    public abstract void setViewModel(BcVieModel bcVieModel);
+    public abstract void setViewModel(BcVieModel viewModel);
 
-    protected BenzNtg6FyBindCls(Object _bindingComponent, View _root, int _localFieldCount, ViewPager benzNtg6FyViewpager2, ImageView controlBtn2, LinearLayout indicatorBenzNtg6Fy2, ImageView ivCoatFy2, LinearLayout layoutCoatBenzFy2, LinearLayout layoutMainNtgFy2, TextView tvCoatFyTip2) {
+    protected BenzNtg6FyBindCls(Object _bindingComponent, View _root, int _localFieldCount, ViewPager benzNtg6FyViewpager, ImageView controlBtn, LinearLayout indicatorBenzNtg6Fy, ImageView ivCoatFy, LinearLayout layoutCoatBenzFy, LinearLayout layoutMainNtgFy, TextView tvCoatFyTip) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.benzNtg6FyViewpager = benzNtg6FyViewpager2;
-        this.controlBtn = controlBtn2;
-        this.indicatorBenzNtg6Fy = indicatorBenzNtg6Fy2;
-        this.ivCoatFy = ivCoatFy2;
-        this.layoutCoatBenzFy = layoutCoatBenzFy2;
-        this.layoutMainNtgFy = layoutMainNtgFy2;
-        this.tvCoatFyTip = tvCoatFyTip2;
+        this.benzNtg6FyViewpager = benzNtg6FyViewpager;
+        this.controlBtn = controlBtn;
+        this.indicatorBenzNtg6Fy = indicatorBenzNtg6Fy;
+        this.ivCoatFy = ivCoatFy;
+        this.layoutCoatBenzFy = layoutCoatBenzFy;
+        this.layoutMainNtgFy = layoutMainNtgFy;
+        this.tvCoatFyTip = tvCoatFyTip;
     }
 
     public BcVieModel getViewModel() {
@@ -47,7 +48,7 @@ public abstract class BenzNtg6FyBindCls extends ViewDataBinding {
 
     @Deprecated
     public static BenzNtg6FyBindCls inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BenzNtg6FyBindCls) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_benz_ntg6_fy, root, attachToRoot, component);
+        return (BenzNtg6FyBindCls) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_benz_ntg6_fy, root, attachToRoot, component);
     }
 
     public static BenzNtg6FyBindCls inflate(LayoutInflater inflater) {
@@ -56,7 +57,7 @@ public abstract class BenzNtg6FyBindCls extends ViewDataBinding {
 
     @Deprecated
     public static BenzNtg6FyBindCls inflate(LayoutInflater inflater, Object component) {
-        return (BenzNtg6FyBindCls) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_benz_ntg6_fy, (ViewGroup) null, false, component);
+        return (BenzNtg6FyBindCls) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_benz_ntg6_fy, null, false, component);
     }
 
     public static BenzNtg6FyBindCls bind(View view) {
@@ -65,6 +66,6 @@ public abstract class BenzNtg6FyBindCls extends ViewDataBinding {
 
     @Deprecated
     public static BenzNtg6FyBindCls bind(View view, Object component) {
-        return (BenzNtg6FyBindCls) bind(component, view, R.layout.activity_main_benz_ntg6_fy);
+        return (BenzNtg6FyBindCls) bind(component, view, C0899R.C0902layout.activity_main_benz_ntg6_fy);
     }
 }

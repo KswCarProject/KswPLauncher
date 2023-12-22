@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:focusable="true" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="55dp">
-    <com.wits.ksw.settings.utlis_view.RtlNaviRadioButton android:enabled="false" android:gravity="center_vertical" android:id="@+id/rbt_navi" android:background="@drawable/ntg6_czhong_item" android:focusable="true" android:layout_width="match_parent" android:layout_height="55dp" android:button="@drawable/ntg6_rad_btn_sel"/>
-    <com.wits.ksw.launcher.view.MarqueeTextView android:textSize="21sp" android:textColor="@color/color1" android:ellipsize="marquee" android:gravity="left|center_vertical|center_horizontal|center" android:id="@+id/mtv_tv" android:layout_width="match_parent" android:layout_height="match_parent" android:singleLine="true" android:marqueeRepeatLimit="marquee_forever" android:layout_marginStart="80dp"/>
-</RelativeLayout>

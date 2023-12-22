@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.AudiViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class AudiRightNaviBinding extends ViewDataBinding {
     public final ImageView AmapautoIcon;
     public final ImageView ImgRemainDis;
@@ -28,22 +29,22 @@ public abstract class AudiRightNaviBinding extends ViewDataBinding {
     @Bindable
     protected AudiViewModel mVm;
 
-    public abstract void setVm(AudiViewModel audiViewModel);
+    public abstract void setVm(AudiViewModel vm);
 
-    protected AudiRightNaviBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView AmapautoIcon2, ImageView ImgRemainDis2, ImageView ImgRemainTime2, RelativeLayout KSWA4LRightShowNavi2, RelativeLayout NaviAmapautoInfo2, TextView TvNextRouadName2, TextView TvRouteRemainDis2, TextView TvRouteRemainTime2, TextView TvSegRemainDisInfor2, ImageView bg12, ImageView bg22, ImageView bg32) {
+    protected AudiRightNaviBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView AmapautoIcon, ImageView ImgRemainDis, ImageView ImgRemainTime, RelativeLayout KSWA4LRightShowNavi, RelativeLayout NaviAmapautoInfo, TextView TvNextRouadName, TextView TvRouteRemainDis, TextView TvRouteRemainTime, TextView TvSegRemainDisInfor, ImageView bg1, ImageView bg2, ImageView bg3) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.AmapautoIcon = AmapautoIcon2;
-        this.ImgRemainDis = ImgRemainDis2;
-        this.ImgRemainTime = ImgRemainTime2;
-        this.KSWA4LRightShowNavi = KSWA4LRightShowNavi2;
-        this.NaviAmapautoInfo = NaviAmapautoInfo2;
-        this.TvNextRouadName = TvNextRouadName2;
-        this.TvRouteRemainDis = TvRouteRemainDis2;
-        this.TvRouteRemainTime = TvRouteRemainTime2;
-        this.TvSegRemainDisInfor = TvSegRemainDisInfor2;
-        this.bg1 = bg12;
-        this.bg2 = bg22;
-        this.bg3 = bg32;
+        this.AmapautoIcon = AmapautoIcon;
+        this.ImgRemainDis = ImgRemainDis;
+        this.ImgRemainTime = ImgRemainTime;
+        this.KSWA4LRightShowNavi = KSWA4LRightShowNavi;
+        this.NaviAmapautoInfo = NaviAmapautoInfo;
+        this.TvNextRouadName = TvNextRouadName;
+        this.TvRouteRemainDis = TvRouteRemainDis;
+        this.TvRouteRemainTime = TvRouteRemainTime;
+        this.TvSegRemainDisInfor = TvSegRemainDisInfor;
+        this.bg1 = bg1;
+        this.bg2 = bg2;
+        this.bg3 = bg3;
     }
 
     public AudiViewModel getVm() {
@@ -56,7 +57,7 @@ public abstract class AudiRightNaviBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiRightNaviBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AudiRightNaviBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_right_navi, root, attachToRoot, component);
+        return (AudiRightNaviBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_right_navi, root, attachToRoot, component);
     }
 
     public static AudiRightNaviBinding inflate(LayoutInflater inflater) {
@@ -65,7 +66,7 @@ public abstract class AudiRightNaviBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiRightNaviBinding inflate(LayoutInflater inflater, Object component) {
-        return (AudiRightNaviBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_right_navi, (ViewGroup) null, false, component);
+        return (AudiRightNaviBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_right_navi, null, false, component);
     }
 
     public static AudiRightNaviBinding bind(View view) {
@@ -74,6 +75,6 @@ public abstract class AudiRightNaviBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiRightNaviBinding bind(View view, Object component) {
-        return (AudiRightNaviBinding) bind(component, view, R.layout.audi_right_navi);
+        return (AudiRightNaviBinding) bind(component, view, C0899R.C0902layout.audi_right_navi);
     }
 }

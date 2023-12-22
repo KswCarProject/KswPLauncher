@@ -2,21 +2,21 @@ package com.wits.ksw.databinding;
 
 import android.content.Context;
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.content.res.AppCompatResources;
+import android.support.p001v4.media.session.PlaybackStateCompat;
+import android.support.p004v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 
+/* loaded from: classes7.dex */
 public class BmwId8SettingsSystemFuelLayoutBindingImpl extends BmwId8SettingsSystemFuelLayoutBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -31,7 +31,7 @@ public class BmwId8SettingsSystemFuelLayoutBindingImpl extends BmwId8SettingsSys
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.bmw_id8_settings_system_fuel_lay, 8);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_system_fuel_lay, 8);
     }
 
     public BmwId8SettingsSystemFuelLayoutBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -39,37 +39,39 @@ public class BmwId8SettingsSystemFuelLayoutBindingImpl extends BmwId8SettingsSys
     }
 
     private BmwId8SettingsSystemFuelLayoutBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 2, bindings[2], bindings[8], bindings[6], bindings[4]);
-        this.mDirtyFlags = -1;
-        this.bmwId8SettingsSystemFuelL.setTag((Object) null);
-        this.bmwId8SettingsSystemFuelUk.setTag((Object) null);
-        this.bmwId8SettingsSystemFuelUs.setTag((Object) null);
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 2, (RelativeLayout) bindings[2], (RelativeLayout) bindings[8], (RelativeLayout) bindings[6], (RelativeLayout) bindings[4]);
+        this.mDirtyFlags = -1L;
+        this.bmwId8SettingsSystemFuelL.setTag(null);
+        this.bmwId8SettingsSystemFuelUk.setTag(null);
+        this.bmwId8SettingsSystemFuelUs.setTag(null);
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
-        ImageView imageView = bindings[1];
+        relativeLayout.setTag(null);
+        ImageView imageView = (ImageView) bindings[1];
         this.mboundView1 = imageView;
-        imageView.setTag((Object) null);
-        ImageView imageView2 = bindings[3];
+        imageView.setTag(null);
+        ImageView imageView2 = (ImageView) bindings[3];
         this.mboundView3 = imageView2;
-        imageView2.setTag((Object) null);
-        ImageView imageView3 = bindings[5];
+        imageView2.setTag(null);
+        ImageView imageView3 = (ImageView) bindings[5];
         this.mboundView5 = imageView3;
-        imageView3.setTag((Object) null);
-        ImageView imageView4 = bindings[7];
+        imageView3.setTag(null);
+        ImageView imageView4 = (ImageView) bindings[7];
         this.mboundView7 = imageView4;
-        imageView4.setTag((Object) null);
+        imageView4.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 8;
+            this.mDirtyFlags = 8L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -79,14 +81,16 @@ public class BmwId8SettingsSystemFuelLayoutBindingImpl extends BmwId8SettingsSys
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (25 != variableId) {
-            return false;
+        if (25 == variableId) {
+            setViewModel((BmwId8SettingsViewModel) variable);
+            return true;
         }
-        setViewModel((BmwId8SettingsViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.BmwId8SettingsSystemFuelLayoutBinding
     public void setViewModel(BmwId8SettingsViewModel ViewModel) {
         this.mViewModel = ViewModel;
         synchronized (this) {
@@ -96,8 +100,8 @@ public class BmwId8SettingsSystemFuelLayoutBindingImpl extends BmwId8SettingsSys
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeViewModelSystemBgShow((ObservableBoolean) object, fieldId);
@@ -109,31 +113,31 @@ public class BmwId8SettingsSystemFuelLayoutBindingImpl extends BmwId8SettingsSys
     }
 
     private boolean onChangeViewModelSystemBgShow(ObservableBoolean ViewModelSystemBgShow, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelFuelUnit(ObservableInt ViewModelFuelUnit, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         Drawable viewModelFuelUnitInt0MboundView3AndroidDrawableId8SettingsSystemSelectSelMboundView3AndroidDrawableId8SettingsSystemSelectN = null;
         boolean viewModelSystemBgShowGet = false;
@@ -146,7 +150,7 @@ public class BmwId8SettingsSystemFuelLayoutBindingImpl extends BmwId8SettingsSys
         ObservableInt viewModelFuelUnit = null;
         BmwId8SettingsViewModel viewModel = this.mViewModel;
         if ((dirtyFlags & 15) != 0) {
-            if (!((dirtyFlags & 12) == 0 || viewModel == null)) {
+            if ((dirtyFlags & 12) != 0 && viewModel != null) {
                 OnClickListenerImpl onClickListenerImpl = this.mViewModelOnClickAndroidViewViewOnClickListener;
                 if (onClickListenerImpl == null) {
                     onClickListenerImpl = new OnClickListenerImpl();
@@ -158,7 +162,7 @@ public class BmwId8SettingsSystemFuelLayoutBindingImpl extends BmwId8SettingsSys
                 if (viewModel != null) {
                     viewModelSystemBgShow = viewModel.systemBgShow;
                 }
-                updateRegistration(0, (Observable) viewModelSystemBgShow);
+                updateRegistration(0, viewModelSystemBgShow);
                 if (viewModelSystemBgShow != null) {
                     viewModelSystemBgShowGet = viewModelSystemBgShow.get();
                 }
@@ -171,11 +175,13 @@ public class BmwId8SettingsSystemFuelLayoutBindingImpl extends BmwId8SettingsSys
                 }
                 viewModelSystemBgShowViewGONEViewVISIBLE = viewModelSystemBgShowGet ? 8 : 0;
             }
-            if ((dirtyFlags & 14) != 0) {
+            if ((dirtyFlags & 14) == 0) {
+                viewModelFuelUnitInt0MboundView3AndroidDrawableId8SettingsSystemSelectSelMboundView3AndroidDrawableId8SettingsSystemSelectN = null;
+            } else {
                 if (viewModel != null) {
                     viewModelFuelUnit = viewModel.fuelUnit;
                 }
-                updateRegistration(1, (Observable) viewModelFuelUnit);
+                updateRegistration(1, viewModelFuelUnit);
                 if (viewModelFuelUnit != null) {
                     viewModelFuelUnitGet = viewModelFuelUnit.get();
                 }
@@ -203,16 +209,14 @@ public class BmwId8SettingsSystemFuelLayoutBindingImpl extends BmwId8SettingsSys
                         dirtyFlags |= 16;
                     }
                 }
-                int i = R.drawable.id8_settings_system_select_sel;
+                int i = C0899R.C0900drawable.id8_settings_system_select_sel;
                 Context context = this.mboundView5.getContext();
                 if (!viewModelFuelUnitInt1) {
-                    i = R.drawable.id8_settings_system_select_n;
+                    i = C0899R.C0900drawable.id8_settings_system_select_n;
                 }
                 viewModelFuelUnitInt1MboundView5AndroidDrawableId8SettingsSystemSelectSelMboundView5AndroidDrawableId8SettingsSystemSelectN = AppCompatResources.getDrawable(context, i);
-                viewModelFuelUnitInt2MboundView7AndroidDrawableId8SettingsSystemSelectSelMboundView7AndroidDrawableId8SettingsSystemSelectN = AppCompatResources.getDrawable(this.mboundView7.getContext(), viewModelFuelUnitInt2 ? R.drawable.id8_settings_system_select_sel : R.drawable.id8_settings_system_select_n);
-                viewModelFuelUnitInt0MboundView3AndroidDrawableId8SettingsSystemSelectSelMboundView3AndroidDrawableId8SettingsSystemSelectN = AppCompatResources.getDrawable(this.mboundView3.getContext(), viewModelFuelUnitInt0 ? R.drawable.id8_settings_system_select_sel : R.drawable.id8_settings_system_select_n);
-            } else {
-                viewModelFuelUnitInt0MboundView3AndroidDrawableId8SettingsSystemSelectSelMboundView3AndroidDrawableId8SettingsSystemSelectN = null;
+                viewModelFuelUnitInt2MboundView7AndroidDrawableId8SettingsSystemSelectSelMboundView7AndroidDrawableId8SettingsSystemSelectN = AppCompatResources.getDrawable(this.mboundView7.getContext(), viewModelFuelUnitInt2 ? C0899R.C0900drawable.id8_settings_system_select_sel : C0899R.C0900drawable.id8_settings_system_select_n);
+                viewModelFuelUnitInt0MboundView3AndroidDrawableId8SettingsSystemSelectSelMboundView3AndroidDrawableId8SettingsSystemSelectN = AppCompatResources.getDrawable(this.mboundView3.getContext(), viewModelFuelUnitInt0 ? C0899R.C0900drawable.id8_settings_system_select_sel : C0899R.C0900drawable.id8_settings_system_select_n);
             }
         }
         if ((dirtyFlags & 12) != 0) {
@@ -230,17 +234,19 @@ public class BmwId8SettingsSystemFuelLayoutBindingImpl extends BmwId8SettingsSys
         }
     }
 
+    /* loaded from: classes7.dex */
     public static class OnClickListenerImpl implements View.OnClickListener {
         private BmwId8SettingsViewModel value;
 
-        public OnClickListenerImpl setValue(BmwId8SettingsViewModel value2) {
-            this.value = value2;
-            if (value2 == null) {
+        public OnClickListenerImpl setValue(BmwId8SettingsViewModel value) {
+            this.value = value;
+            if (value == null) {
                 return null;
             }
             return this;
         }
 
+        @Override // android.view.View.OnClickListener
         public void onClick(View arg0) {
             this.value.onClick(arg0);
         }

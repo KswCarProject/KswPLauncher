@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class ID6FragmentOne extends ViewDataBinding {
     public final ImageView id6BtImageView;
     public final TextView id6BtMess;
@@ -26,21 +27,21 @@ public abstract class ID6FragmentOne extends ViewDataBinding {
     @Bindable
     protected LauncherViewModel mViewModel;
 
-    public abstract void setViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setViewModel(LauncherViewModel viewModel);
 
-    protected ID6FragmentOne(Object _bindingComponent, View _root, int _localFieldCount, ImageView id6BtImageView2, TextView id6BtMess2, TextView id6BtTextView2, TextView id6MusicArtisTextView2, ImageView id6MusicIamgeView2, ImageView id6MusicIcon2, TextView id6MusicNameTextView2, TextView id6MusicTextView2, ImageView id6NavImageView2, TextView id6NaviMess2, TextView id6NaviTextView2) {
+    protected ID6FragmentOne(Object _bindingComponent, View _root, int _localFieldCount, ImageView id6BtImageView, TextView id6BtMess, TextView id6BtTextView, TextView id6MusicArtisTextView, ImageView id6MusicIamgeView, ImageView id6MusicIcon, TextView id6MusicNameTextView, TextView id6MusicTextView, ImageView id6NavImageView, TextView id6NaviMess, TextView id6NaviTextView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.id6BtImageView = id6BtImageView2;
-        this.id6BtMess = id6BtMess2;
-        this.id6BtTextView = id6BtTextView2;
-        this.id6MusicArtisTextView = id6MusicArtisTextView2;
-        this.id6MusicIamgeView = id6MusicIamgeView2;
-        this.id6MusicIcon = id6MusicIcon2;
-        this.id6MusicNameTextView = id6MusicNameTextView2;
-        this.id6MusicTextView = id6MusicTextView2;
-        this.id6NavImageView = id6NavImageView2;
-        this.id6NaviMess = id6NaviMess2;
-        this.id6NaviTextView = id6NaviTextView2;
+        this.id6BtImageView = id6BtImageView;
+        this.id6BtMess = id6BtMess;
+        this.id6BtTextView = id6BtTextView;
+        this.id6MusicArtisTextView = id6MusicArtisTextView;
+        this.id6MusicIamgeView = id6MusicIamgeView;
+        this.id6MusicIcon = id6MusicIcon;
+        this.id6MusicNameTextView = id6MusicNameTextView;
+        this.id6MusicTextView = id6MusicTextView;
+        this.id6NavImageView = id6NavImageView;
+        this.id6NaviMess = id6NaviMess;
+        this.id6NaviTextView = id6NaviTextView;
     }
 
     public LauncherViewModel getViewModel() {
@@ -53,7 +54,7 @@ public abstract class ID6FragmentOne extends ViewDataBinding {
 
     @Deprecated
     public static ID6FragmentOne inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ID6FragmentOne) ViewDataBinding.inflateInternal(inflater, R.layout.id6_fragment_one, root, attachToRoot, component);
+        return (ID6FragmentOne) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id6_fragment_one, root, attachToRoot, component);
     }
 
     public static ID6FragmentOne inflate(LayoutInflater inflater) {
@@ -62,7 +63,7 @@ public abstract class ID6FragmentOne extends ViewDataBinding {
 
     @Deprecated
     public static ID6FragmentOne inflate(LayoutInflater inflater, Object component) {
-        return (ID6FragmentOne) ViewDataBinding.inflateInternal(inflater, R.layout.id6_fragment_one, (ViewGroup) null, false, component);
+        return (ID6FragmentOne) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id6_fragment_one, null, false, component);
     }
 
     public static ID6FragmentOne bind(View view) {
@@ -71,6 +72,6 @@ public abstract class ID6FragmentOne extends ViewDataBinding {
 
     @Deprecated
     public static ID6FragmentOne bind(View view, Object component) {
-        return (ID6FragmentOne) bind(component, view, R.layout.id6_fragment_one);
+        return (ID6FragmentOne) bind(component, view, C0899R.C0902layout.id6_fragment_one);
     }
 }

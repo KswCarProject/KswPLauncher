@@ -2,11 +2,12 @@ package com.wits.ksw.launcher.utils;
 
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/* loaded from: classes11.dex */
 public class NaviInfo {
     public static final String AUTONAVI_STANDARD_BROADCAST_SEND = "AUTONAVI_STANDARD_BROADCAST_SEND";
     public static final String CAMERA_DIST = "CAMERA_DIST";
@@ -33,48 +34,51 @@ public class NaviInfo {
     private static final String TAG = "NaviInfo";
     public static final String TRAFFIC_LIGHT_NUM = "TRAFFIC_LIGHT_NUM";
     public static final String TYPE = "TYPE";
-    public static int[] iconId = {R.drawable.amap_info_01, R.drawable.amap_info_02, R.drawable.amap_info_03, R.drawable.amap_info_04, R.drawable.amap_info_05, R.drawable.amap_info_06, R.drawable.amap_info_07, R.drawable.amap_info_08, R.drawable.amap_info_09, R.drawable.amap_info_10, R.drawable.amap_info_11, R.drawable.amap_info_12, R.drawable.amap_info_13, R.drawable.amap_info_14, R.drawable.amap_info_15, R.drawable.amap_info_16, R.drawable.amap_info_17, R.drawable.amap_info_18, R.drawable.amap_info_19, R.drawable.amap_info_20, R.drawable.amap_info_21, R.drawable.amap_info_22, R.drawable.amap_info_23, R.drawable.amap_info_24, R.drawable.amap_info_25, R.drawable.amap_info_26, R.drawable.amap_info_27, R.drawable.amap_info_28};
-    public final ObservableField<Integer> camera_speed = new ObservableField<>();
-    public final ObservableField<Integer> camera_type = new ObservableField<>();
-    public final ObservableField<Integer> icon = new ObservableField<>();
-    public final ObservableField<String> next_road_name = new ObservableField<>();
-    public final ObservableField<String> route_remain_dis = new ObservableField<>();
-    public final ObservableField<String> route_remain_time = new ObservableField<>();
-    public final ObservableField<String> seg_remain_dis = new ObservableField<>();
+    public static int[] iconId = {C0899R.C0900drawable.amap_info_01, C0899R.C0900drawable.amap_info_02, C0899R.C0900drawable.amap_info_03, C0899R.C0900drawable.amap_info_04, C0899R.C0900drawable.amap_info_05, C0899R.C0900drawable.amap_info_06, C0899R.C0900drawable.amap_info_07, C0899R.C0900drawable.amap_info_08, C0899R.C0900drawable.amap_info_09, C0899R.C0900drawable.amap_info_10, C0899R.C0900drawable.amap_info_11, C0899R.C0900drawable.amap_info_12, C0899R.C0900drawable.amap_info_13, C0899R.C0900drawable.amap_info_14, C0899R.C0900drawable.amap_info_15, C0899R.C0900drawable.amap_info_16, C0899R.C0900drawable.amap_info_17, C0899R.C0900drawable.amap_info_18, C0899R.C0900drawable.amap_info_19, C0899R.C0900drawable.amap_info_20, C0899R.C0900drawable.amap_info_21, C0899R.C0900drawable.amap_info_22, C0899R.C0900drawable.amap_info_23, C0899R.C0900drawable.amap_info_24, C0899R.C0900drawable.amap_info_25, C0899R.C0900drawable.amap_info_26, C0899R.C0900drawable.amap_info_27, C0899R.C0900drawable.amap_info_28};
     private Boolean showGuideEnable = false;
     public final ObservableInt showGuideView = new ObservableInt(-1);
     public final ObservableField<Integer> type = new ObservableField<>();
+    public final ObservableField<String> next_road_name = new ObservableField<>();
+    public final ObservableField<Integer> camera_type = new ObservableField<>();
+    public final ObservableField<Integer> camera_speed = new ObservableField<>();
+    public final ObservableField<Integer> icon = new ObservableField<>();
+    public final ObservableField<String> route_remain_dis = new ObservableField<>();
+    public final ObservableField<String> route_remain_time = new ObservableField<>();
+    public final ObservableField<String> seg_remain_dis = new ObservableField<>();
 
     public boolean isGuideEnable() {
         return this.showGuideEnable.booleanValue();
     }
 
-    public void setShowGuideEnable(Boolean showGuideEnable2) {
-        this.showGuideEnable = showGuideEnable2;
+    public void setShowGuideEnable(Boolean showGuideEnable) {
+        this.showGuideEnable = showGuideEnable;
     }
 
     public static String formatDistance(int m) {
-        if (m < 1000) {
-            return m + " M";
+        if (m >= 1000) {
+            DecimalFormat decimalFormat = new DecimalFormat("0.0");
+            return decimalFormat.format(m / 1000.0d) + " KM";
         }
-        return new DecimalFormat("0.0").format(((double) m) / 1000.0d) + " KM";
+        return m + " M";
     }
 
     public static String formatTime(int time) {
-        if (((double) (time % 60)) > 0.5d) {
+        if (time % 60 > 0.5d) {
             time += 60;
         }
-        return new SimpleDateFormat("HH:mm").format(new Date(0, 0, 0, 0, 0, time));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        Date date = new Date(0, 0, 0, 0, 0, time);
+        return simpleDateFormat.format(date);
     }
 
     public static int formatIcon(int iconIndex) {
         int index = iconIndex - 1;
-        if (index < 0) {
+        if (index >= 0) {
+            int[] iArr = iconId;
+            if (index < iArr.length) {
+                return iArr[index];
+            }
             return 0;
-        }
-        int[] iArr = iconId;
-        if (index < iArr.length) {
-            return iArr[index];
         }
         return 0;
     }

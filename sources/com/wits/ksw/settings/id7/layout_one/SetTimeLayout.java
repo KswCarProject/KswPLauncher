@@ -1,16 +1,17 @@
 package com.wits.ksw.settings.id7.layout_one;
 
 import android.content.Context;
-import android.support.v4.internal.view.SupportMenu;
+import android.support.p001v4.internal.view.SupportMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.settings.id7.interfaces.IUpdateTwoLayout;
 
+/* loaded from: classes11.dex */
 public class SetTimeLayout extends RelativeLayout implements View.OnClickListener {
     private Context context;
     private TextView tv_timeSync;
@@ -21,10 +22,10 @@ public class SetTimeLayout extends RelativeLayout implements View.OnClickListene
         this.updateTwoLayout = twoLayout;
     }
 
-    public SetTimeLayout(Context context2) {
-        super(context2);
-        this.context = context2;
-        View view = LayoutInflater.from(context2).inflate(R.layout.layout_set_time, (ViewGroup) null);
+    public SetTimeLayout(Context context) {
+        super(context);
+        this.context = context;
+        View view = LayoutInflater.from(context).inflate(C0899R.C0902layout.layout_set_time, (ViewGroup) null);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(-1, -1);
         initData();
         initView(view);
@@ -36,8 +37,8 @@ public class SetTimeLayout extends RelativeLayout implements View.OnClickListene
     }
 
     private void initView(View view) {
-        this.tv_timeSync = (TextView) view.findViewById(R.id.tv_timeSync);
-        this.tv_timeZhis = (TextView) view.findViewById(R.id.tv_timeZhis);
+        this.tv_timeSync = (TextView) view.findViewById(C0899R.C0901id.tv_timeSync);
+        this.tv_timeZhis = (TextView) view.findViewById(C0899R.C0901id.tv_timeZhis);
         this.tv_timeSync.setOnClickListener(this);
         this.tv_timeZhis.setOnClickListener(this);
     }
@@ -51,9 +52,10 @@ public class SetTimeLayout extends RelativeLayout implements View.OnClickListene
         }
     }
 
+    @Override // android.view.View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_timeSync /*2131297941*/:
+            case C0899R.C0901id.tv_timeSync /* 2131297993 */:
                 this.tv_timeSync.setTextColor(SupportMenu.CATEGORY_MASK);
                 this.tv_timeZhis.setTextColor(-1);
                 IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
@@ -62,7 +64,7 @@ public class SetTimeLayout extends RelativeLayout implements View.OnClickListene
                     return;
                 }
                 return;
-            case R.id.tv_timeZhis /*2131297942*/:
+            case C0899R.C0901id.tv_timeZhis /* 2131297994 */:
                 this.tv_timeZhis.setTextColor(SupportMenu.CATEGORY_MASK);
                 this.tv_timeSync.setTextColor(-1);
                 IUpdateTwoLayout iUpdateTwoLayout2 = this.updateTwoLayout;

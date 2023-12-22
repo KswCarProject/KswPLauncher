@@ -2,6 +2,7 @@ package com.ibm.icu.text;
 
 import com.ibm.icu.util.ByteArrayWrapper;
 
+/* loaded from: classes.dex */
 public final class RawCollationKey extends ByteArrayWrapper {
     public RawCollationKey() {
     }
@@ -19,7 +20,7 @@ public final class RawCollationKey extends ByteArrayWrapper {
     }
 
     public int compareTo(RawCollationKey rhs) {
-        int result = RawCollationKey.super.compareTo(rhs);
+        int result = super.compareTo(rhs);
         if (result < 0) {
             return -1;
         }

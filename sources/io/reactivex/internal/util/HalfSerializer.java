@@ -5,11 +5,13 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.reactivestreams.Subscriber;
 
+/* loaded from: classes.dex */
 public final class HalfSerializer {
     private HalfSerializer() {
         throw new IllegalStateException("No instances!");
     }
 
+    /* JADX WARN: Multi-variable type inference failed */
     public static <T> void onNext(Subscriber<? super T> subscriber, T value, AtomicInteger wip, AtomicThrowable error) {
         if (wip.get() == 0 && wip.compareAndSet(0, 1)) {
             subscriber.onNext(value);
@@ -25,11 +27,14 @@ public final class HalfSerializer {
     }
 
     public static void onError(Subscriber<?> subscriber, Throwable ex, AtomicInteger wip, AtomicThrowable error) {
-        if (!error.addThrowable(ex)) {
-            RxJavaPlugins.onError(ex);
-        } else if (wip.getAndIncrement() == 0) {
-            subscriber.onError(error.terminate());
+        if (error.addThrowable(ex)) {
+            if (wip.getAndIncrement() == 0) {
+                subscriber.onError(error.terminate());
+                return;
+            }
+            return;
         }
+        RxJavaPlugins.onError(ex);
     }
 
     public static void onComplete(Subscriber<?> subscriber, AtomicInteger wip, AtomicThrowable error) {
@@ -43,6 +48,7 @@ public final class HalfSerializer {
         }
     }
 
+    /* JADX WARN: Multi-variable type inference failed */
     public static <T> void onNext(Observer<? super T> observer, T value, AtomicInteger wip, AtomicThrowable error) {
         if (wip.get() == 0 && wip.compareAndSet(0, 1)) {
             observer.onNext(value);
@@ -58,11 +64,14 @@ public final class HalfSerializer {
     }
 
     public static void onError(Observer<?> observer, Throwable ex, AtomicInteger wip, AtomicThrowable error) {
-        if (!error.addThrowable(ex)) {
-            RxJavaPlugins.onError(ex);
-        } else if (wip.getAndIncrement() == 0) {
-            observer.onError(error.terminate());
+        if (error.addThrowable(ex)) {
+            if (wip.getAndIncrement() == 0) {
+                observer.onError(error.terminate());
+                return;
+            }
+            return;
         }
+        RxJavaPlugins.onError(ex);
     }
 
     public static void onComplete(Observer<?> observer, AtomicInteger wip, AtomicThrowable error) {

@@ -3,17 +3,17 @@ package com.chad.library.adapter.base.util;
 import android.util.SparseIntArray;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public abstract class MultiTypeDelegate<T> {
     private static final int DEFAULT_VIEW_TYPE = -255;
     private boolean autoMode;
     private SparseIntArray layouts;
     private boolean selfMode;
 
-    /* access modifiers changed from: protected */
-    public abstract int getItemType(T t);
+    protected abstract int getItemType(T t);
 
-    public MultiTypeDelegate(SparseIntArray layouts2) {
-        this.layouts = layouts2;
+    public MultiTypeDelegate(SparseIntArray layouts) {
+        this.layouts = layouts;
     }
 
     public MultiTypeDelegate() {

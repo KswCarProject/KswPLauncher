@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <array name="all_months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </array>
     <array name="bc_home_netg6_als_6208_item_text_array">
         <item>Navigation</item>
         <item>Video</item>
@@ -233,7 +247,8 @@
     <array name="suport_music_apps_pkg">
         <item>com.tencent.qqmusic</item>
         <item>com.netease.cloudmusic</item>
-        <item>com.wits.ksw.media</item>
+        <item>com.wits.ksw.music</item>
+        <item>com.wits.ksw.video</item>
     </array>
     <array name="suport_navi_apps">
         <item>com.baidu.BaiduMap</item>

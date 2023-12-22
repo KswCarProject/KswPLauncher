@@ -12,79 +12,92 @@ import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.internal.functions.ObjectHelper;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class MaybeFlatMapSingleElement<T, R> extends Maybe<R> {
     final Function<? super T, ? extends SingleSource<? extends R>> mapper;
     final MaybeSource<T> source;
 
-    public MaybeFlatMapSingleElement(MaybeSource<T> source2, Function<? super T, ? extends SingleSource<? extends R>> mapper2) {
-        this.source = source2;
-        this.mapper = mapper2;
+    public MaybeFlatMapSingleElement(MaybeSource<T> source, Function<? super T, ? extends SingleSource<? extends R>> mapper) {
+        this.source = source;
+        this.mapper = mapper;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super R> downstream) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super R> downstream) {
         this.source.subscribe(new FlatMapMaybeObserver(downstream, this.mapper));
     }
 
+    /* loaded from: classes.dex */
     static final class FlatMapMaybeObserver<T, R> extends AtomicReference<Disposable> implements MaybeObserver<T>, Disposable {
         private static final long serialVersionUID = 4827726964688405508L;
         final MaybeObserver<? super R> downstream;
         final Function<? super T, ? extends SingleSource<? extends R>> mapper;
 
-        FlatMapMaybeObserver(MaybeObserver<? super R> actual, Function<? super T, ? extends SingleSource<? extends R>> mapper2) {
+        FlatMapMaybeObserver(MaybeObserver<? super R> actual, Function<? super T, ? extends SingleSource<? extends R>> mapper) {
             this.downstream = actual;
-            this.mapper = mapper2;
+            this.mapper = mapper;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             DisposableHelper.dispose(this);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return DisposableHelper.isDisposed((Disposable) get());
+            return DisposableHelper.isDisposed(get());
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.setOnce(this, d)) {
                 this.downstream.onSubscribe(this);
             }
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSuccess(T value) {
             try {
-                ((SingleSource) ObjectHelper.requireNonNull(this.mapper.apply(value), "The mapper returned a null SingleSource")).subscribe(new FlatMapSingleObserver(this, this.downstream));
+                SingleSource<? extends R> ss = (SingleSource) ObjectHelper.requireNonNull(this.mapper.apply(value), "The mapper returned a null SingleSource");
+                ss.subscribe(new FlatMapSingleObserver<>(this, this.downstream));
             } catch (Throwable ex) {
                 Exceptions.throwIfFatal(ex);
                 onError(ex);
             }
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onError(Throwable e) {
             this.downstream.onError(e);
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onComplete() {
             this.downstream.onComplete();
         }
     }
 
+    /* loaded from: classes.dex */
     static final class FlatMapSingleObserver<R> implements SingleObserver<R> {
         final MaybeObserver<? super R> downstream;
         final AtomicReference<Disposable> parent;
 
-        FlatMapSingleObserver(AtomicReference<Disposable> parent2, MaybeObserver<? super R> downstream2) {
-            this.parent = parent2;
-            this.downstream = downstream2;
+        FlatMapSingleObserver(AtomicReference<Disposable> parent, MaybeObserver<? super R> downstream) {
+            this.parent = parent;
+            this.downstream = downstream;
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
             DisposableHelper.replace(this.parent, d);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSuccess(R value) {
             this.downstream.onSuccess(value);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
             this.downstream.onError(e);
         }

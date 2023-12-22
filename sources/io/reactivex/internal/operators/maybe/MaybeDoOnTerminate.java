@@ -8,20 +8,22 @@ import io.reactivex.exceptions.CompositeException;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Action;
 
+/* loaded from: classes.dex */
 public final class MaybeDoOnTerminate<T> extends Maybe<T> {
     final Action onTerminate;
     final MaybeSource<T> source;
 
-    public MaybeDoOnTerminate(MaybeSource<T> source2, Action onTerminate2) {
-        this.source = source2;
-        this.onTerminate = onTerminate2;
+    public MaybeDoOnTerminate(MaybeSource<T> source, Action onTerminate) {
+        this.source = source;
+        this.onTerminate = onTerminate;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super T> observer) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super T> observer) {
         this.source.subscribe(new DoOnTerminate(observer));
     }
 
+    /* loaded from: classes.dex */
     final class DoOnTerminate implements MaybeObserver<T> {
         final MaybeObserver<? super T> downstream;
 
@@ -29,10 +31,12 @@ public final class MaybeDoOnTerminate<T> extends Maybe<T> {
             this.downstream = observer;
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSubscribe(Disposable d) {
             this.downstream.onSubscribe(d);
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSuccess(T value) {
             try {
                 MaybeDoOnTerminate.this.onTerminate.run();
@@ -43,6 +47,7 @@ public final class MaybeDoOnTerminate<T> extends Maybe<T> {
             }
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onError(Throwable e) {
             try {
                 MaybeDoOnTerminate.this.onTerminate.run();
@@ -53,6 +58,7 @@ public final class MaybeDoOnTerminate<T> extends Maybe<T> {
             this.downstream.onError(e);
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onComplete() {
             try {
                 MaybeDoOnTerminate.this.onTerminate.run();

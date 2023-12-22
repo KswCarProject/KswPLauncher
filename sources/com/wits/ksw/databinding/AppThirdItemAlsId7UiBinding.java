@@ -8,10 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean;
 import com.wits.ksw.settings.utlis_view.CustomRadioButton;
 
+/* loaded from: classes7.dex */
 public abstract class AppThirdItemAlsId7UiBinding extends ViewDataBinding {
     @Bindable
     protected LexusLsAppSelBean mListItem;
@@ -19,13 +20,13 @@ public abstract class AppThirdItemAlsId7UiBinding extends ViewDataBinding {
     public final CustomRadioButton rbtApps;
     public final TextView textView;
 
-    public abstract void setListItem(LexusLsAppSelBean lexusLsAppSelBean);
+    public abstract void setListItem(LexusLsAppSelBean listItem);
 
-    protected AppThirdItemAlsId7UiBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView nameImageView2, CustomRadioButton rbtApps2, TextView textView2) {
+    protected AppThirdItemAlsId7UiBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView nameImageView, CustomRadioButton rbtApps, TextView textView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.nameImageView = nameImageView2;
-        this.rbtApps = rbtApps2;
-        this.textView = textView2;
+        this.nameImageView = nameImageView;
+        this.rbtApps = rbtApps;
+        this.textView = textView;
     }
 
     public LexusLsAppSelBean getListItem() {
@@ -38,7 +39,7 @@ public abstract class AppThirdItemAlsId7UiBinding extends ViewDataBinding {
 
     @Deprecated
     public static AppThirdItemAlsId7UiBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AppThirdItemAlsId7UiBinding) ViewDataBinding.inflateInternal(inflater, R.layout.app_third_item_als_id7_ui, root, attachToRoot, component);
+        return (AppThirdItemAlsId7UiBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.app_third_item_als_id7_ui, root, attachToRoot, component);
     }
 
     public static AppThirdItemAlsId7UiBinding inflate(LayoutInflater inflater) {
@@ -47,7 +48,7 @@ public abstract class AppThirdItemAlsId7UiBinding extends ViewDataBinding {
 
     @Deprecated
     public static AppThirdItemAlsId7UiBinding inflate(LayoutInflater inflater, Object component) {
-        return (AppThirdItemAlsId7UiBinding) ViewDataBinding.inflateInternal(inflater, R.layout.app_third_item_als_id7_ui, (ViewGroup) null, false, component);
+        return (AppThirdItemAlsId7UiBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.app_third_item_als_id7_ui, null, false, component);
     }
 
     public static AppThirdItemAlsId7UiBinding bind(View view) {
@@ -56,6 +57,6 @@ public abstract class AppThirdItemAlsId7UiBinding extends ViewDataBinding {
 
     @Deprecated
     public static AppThirdItemAlsId7UiBinding bind(View view, Object component) {
-        return (AppThirdItemAlsId7UiBinding) bind(component, view, R.layout.app_third_item_als_id7_ui);
+        return (AppThirdItemAlsId7UiBinding) bind(component, view, C0899R.C0902layout.app_third_item_als_id7_ui);
     }
 }

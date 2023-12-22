@@ -3,14 +3,15 @@ package com.wits.ksw.databinding;
 import android.databinding.Bindable;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.v4.view.ViewPager;
+import android.support.p001v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class MainKswID7Binding extends ViewDataBinding {
     public final ImageView controlBtn;
     public final ImageView ivBottomHome;
@@ -21,16 +22,16 @@ public abstract class MainKswID7Binding extends ViewDataBinding {
     protected LauncherViewModel mLauncherViewModel;
     public final ViewPager viewPage;
 
-    public abstract void setLauncherViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setLauncherViewModel(LauncherViewModel LauncherViewModel);
 
-    protected MainKswID7Binding(Object _bindingComponent, View _root, int _localFieldCount, ImageView controlBtn2, ImageView ivBottomHome2, ImageView ivBottomLine2, ImageView ivBottomPoint2, ImageView ivTopLine2, ViewPager viewPage2) {
+    protected MainKswID7Binding(Object _bindingComponent, View _root, int _localFieldCount, ImageView controlBtn, ImageView ivBottomHome, ImageView ivBottomLine, ImageView ivBottomPoint, ImageView ivTopLine, ViewPager viewPage) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.controlBtn = controlBtn2;
-        this.ivBottomHome = ivBottomHome2;
-        this.ivBottomLine = ivBottomLine2;
-        this.ivBottomPoint = ivBottomPoint2;
-        this.ivTopLine = ivTopLine2;
-        this.viewPage = viewPage2;
+        this.controlBtn = controlBtn;
+        this.ivBottomHome = ivBottomHome;
+        this.ivBottomLine = ivBottomLine;
+        this.ivBottomPoint = ivBottomPoint;
+        this.ivTopLine = ivTopLine;
+        this.viewPage = viewPage;
     }
 
     public LauncherViewModel getLauncherViewModel() {
@@ -43,7 +44,7 @@ public abstract class MainKswID7Binding extends ViewDataBinding {
 
     @Deprecated
     public static MainKswID7Binding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (MainKswID7Binding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_ksw_id7, root, attachToRoot, component);
+        return (MainKswID7Binding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_ksw_id7, root, attachToRoot, component);
     }
 
     public static MainKswID7Binding inflate(LayoutInflater inflater) {
@@ -52,7 +53,7 @@ public abstract class MainKswID7Binding extends ViewDataBinding {
 
     @Deprecated
     public static MainKswID7Binding inflate(LayoutInflater inflater, Object component) {
-        return (MainKswID7Binding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_ksw_id7, (ViewGroup) null, false, component);
+        return (MainKswID7Binding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_ksw_id7, null, false, component);
     }
 
     public static MainKswID7Binding bind(View view) {
@@ -61,6 +62,6 @@ public abstract class MainKswID7Binding extends ViewDataBinding {
 
     @Deprecated
     public static MainKswID7Binding bind(View view, Object component) {
-        return (MainKswID7Binding) bind(component, view, R.layout.activity_main_ksw_id7);
+        return (MainKswID7Binding) bind(component, view, C0899R.C0902layout.activity_main_ksw_id7);
     }
 }

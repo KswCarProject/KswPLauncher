@@ -4,47 +4,55 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PointF;
 import android.os.SystemClock;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.p001v4.view.PagerAdapter;
+import android.support.p001v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 
+/* loaded from: classes11.dex */
 public class ImageGallery extends FrameLayout implements View.OnTouchListener {
     private boolean isClickMode;
     private OnGalleryPageSelectListener mOnGalleryPageSelectListener;
     private BasePageTransformer mPageTransformer;
-    private long mStartDownTime = -1;
-    private PointF mStartPoint = new PointF();
+    private long mStartDownTime;
+    private PointF mStartPoint;
     private int mTapTimeout;
     private int mTouchSlop;
     private ViewPager mViewPager;
     private int mViewPagerWidth;
 
+    /* loaded from: classes11.dex */
     public interface OnGalleryPageSelectListener {
-        void onGalleryPageSelected(int i);
+        void onGalleryPageSelected(int position);
     }
 
     public ImageGallery(Context context) {
         super(context);
-        init(context, (AttributeSet) null, 0);
+        this.mStartDownTime = -1L;
+        this.mStartPoint = new PointF();
+        init(context, null, 0);
     }
 
     public ImageGallery(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.mStartDownTime = -1L;
+        this.mStartPoint = new PointF();
         init(context, attrs, 0);
     }
 
     public ImageGallery(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.mStartDownTime = -1L;
+        this.mStartPoint = new PointF();
         init(context, attrs, defStyleAttr);
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.dStyableImageGallery, defStyleAttr, 0);
+        TypedArray a = context.obtainStyledAttributes(attrs, C0899R.styleable.dStyableImageGallery, defStyleAttr, 0);
         int itemWidth = a.getDimensionPixelOffset(1, -1);
         int itemHeight = a.getDimensionPixelOffset(0, -1);
         a.recycle();
@@ -65,6 +73,7 @@ public class ImageGallery extends FrameLayout implements View.OnTouchListener {
         this.mViewPagerWidth = itemWidth;
     }
 
+    @Override // android.view.View.OnTouchListener
     public boolean onTouch(View v, MotionEvent event) {
         if (this.mViewPager.getAdapter() == null || this.mViewPager.getAdapter().getCount() == 0) {
             return true;
@@ -83,30 +92,36 @@ public class ImageGallery extends FrameLayout implements View.OnTouchListener {
                     performClickItem(this.mStartPoint.x);
                 }
                 this.isClickMode = false;
-                this.mStartDownTime = -1;
+                this.mStartDownTime = -1L;
                 break;
             case 2:
-                if (Math.abs(x - this.mStartPoint.x) > ((float) this.mTouchSlop) || Math.abs(y - this.mStartPoint.y) > ((float) this.mTouchSlop)) {
+                if (Math.abs(x - this.mStartPoint.x) > this.mTouchSlop || Math.abs(y - this.mStartPoint.y) > this.mTouchSlop) {
                     this.isClickMode = false;
                     break;
                 }
+                break;
         }
         return this.mViewPager.dispatchTouchEvent(event);
     }
 
     private void performClickItem(float x) {
-        float centerDistance = x - (((float) getWidth()) / 2.0f);
+        float centerDistance = x - (getWidth() / 2.0f);
         boolean isRightSide = centerDistance >= 0.0f;
         float abs = Math.abs(centerDistance);
         int i = this.mViewPagerWidth;
-        int space = ((int) (abs + (((float) i) / 2.0f))) / i;
+        int space = ((int) (abs + (i / 2.0f))) / i;
         int position = this.mViewPager.getCurrentItem() + (isRightSide ? space : -space);
-        if (position >= 0 && position < this.mViewPager.getAdapter().getCount() && this.mViewPager.getCurrentItem() != position) {
-            this.mViewPager.setCurrentItem(position, true);
-            OnGalleryPageSelectListener onGalleryPageSelectListener = this.mOnGalleryPageSelectListener;
-            if (onGalleryPageSelectListener != null) {
-                onGalleryPageSelectListener.onGalleryPageSelected(position);
-            }
+        if (position < 0 || position >= this.mViewPager.getAdapter().getCount()) {
+            return;
+        }
+        int currentItem = this.mViewPager.getCurrentItem();
+        if (currentItem == position) {
+            return;
+        }
+        this.mViewPager.setCurrentItem(position, true);
+        OnGalleryPageSelectListener onGalleryPageSelectListener = this.mOnGalleryPageSelectListener;
+        if (onGalleryPageSelectListener != null) {
+            onGalleryPageSelectListener.onGalleryPageSelected(position);
         }
     }
 

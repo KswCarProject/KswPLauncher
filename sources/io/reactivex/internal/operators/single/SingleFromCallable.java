@@ -9,30 +9,32 @@ import io.reactivex.internal.functions.ObjectHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.Callable;
 
+/* loaded from: classes.dex */
 public final class SingleFromCallable<T> extends Single<T> {
     final Callable<? extends T> callable;
 
-    public SingleFromCallable(Callable<? extends T> callable2) {
-        this.callable = callable2;
+    public SingleFromCallable(Callable<? extends T> callable) {
+        this.callable = callable;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         Disposable d = Disposables.empty();
         observer.onSubscribe(d);
-        if (!d.isDisposed()) {
-            try {
-                T value = ObjectHelper.requireNonNull(this.callable.call(), "The callable returned a null value");
-                if (!d.isDisposed()) {
-                    observer.onSuccess(value);
-                }
-            } catch (Throwable ex) {
-                Exceptions.throwIfFatal(ex);
-                if (!d.isDisposed()) {
-                    observer.onError(ex);
-                } else {
-                    RxJavaPlugins.onError(ex);
-                }
+        if (d.isDisposed()) {
+            return;
+        }
+        try {
+            Object obj = (Object) ObjectHelper.requireNonNull(this.callable.call(), "The callable returned a null value");
+            if (!d.isDisposed()) {
+                observer.onSuccess(obj);
+            }
+        } catch (Throwable ex) {
+            Exceptions.throwIfFatal(ex);
+            if (!d.isDisposed()) {
+                observer.onError(ex);
+            } else {
+                RxJavaPlugins.onError(ex);
             }
         }
     }

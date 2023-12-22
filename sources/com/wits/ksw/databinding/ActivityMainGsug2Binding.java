@@ -7,10 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
-import com.wits.ksw.launcher.view.ug.UgViewPager;
+import com.wits.ksw.launcher.view.p006ug.UgViewPager;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityMainGsug2Binding extends ViewDataBinding {
     @Bindable
     protected LauncherViewModel mViewModel;
@@ -19,14 +20,14 @@ public abstract class ActivityMainGsug2Binding extends ViewDataBinding {
     public final ImageView settingButton;
     public final UgViewPager ugViewPage;
 
-    public abstract void setViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setViewModel(LauncherViewModel viewModel);
 
-    protected ActivityMainGsug2Binding(Object _bindingComponent, View _root, int _localFieldCount, ImageView musicButton2, ImageView naviButton2, ImageView settingButton2, UgViewPager ugViewPage2) {
+    protected ActivityMainGsug2Binding(Object _bindingComponent, View _root, int _localFieldCount, ImageView musicButton, ImageView naviButton, ImageView settingButton, UgViewPager ugViewPage) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.musicButton = musicButton2;
-        this.naviButton = naviButton2;
-        this.settingButton = settingButton2;
-        this.ugViewPage = ugViewPage2;
+        this.musicButton = musicButton;
+        this.naviButton = naviButton;
+        this.settingButton = settingButton;
+        this.ugViewPage = ugViewPage;
     }
 
     public LauncherViewModel getViewModel() {
@@ -39,7 +40,7 @@ public abstract class ActivityMainGsug2Binding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainGsug2Binding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityMainGsug2Binding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_gsug2, root, attachToRoot, component);
+        return (ActivityMainGsug2Binding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_gsug2, root, attachToRoot, component);
     }
 
     public static ActivityMainGsug2Binding inflate(LayoutInflater inflater) {
@@ -48,7 +49,7 @@ public abstract class ActivityMainGsug2Binding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainGsug2Binding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityMainGsug2Binding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_gsug2, (ViewGroup) null, false, component);
+        return (ActivityMainGsug2Binding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_gsug2, null, false, component);
     }
 
     public static ActivityMainGsug2Binding bind(View view) {
@@ -57,6 +58,6 @@ public abstract class ActivityMainGsug2Binding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainGsug2Binding bind(View view, Object component) {
-        return (ActivityMainGsug2Binding) bind(component, view, R.layout.activity_main_gsug2);
+        return (ActivityMainGsug2Binding) bind(component, view, C0899R.C0902layout.activity_main_gsug2);
     }
 }

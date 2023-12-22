@@ -8,22 +8,26 @@ import io.reactivex.plugins.RxJavaPlugins;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public abstract class BasicFuseableSubscriber<T, R> implements FlowableSubscriber<T>, QueueSubscription<R> {
     protected boolean done;
     protected final Subscriber<? super R> downstream;
-    protected QueueSubscription<T> qs;
+
+    /* renamed from: qs */
+    protected QueueSubscription<T> f345qs;
     protected int sourceMode;
     protected Subscription upstream;
 
-    public BasicFuseableSubscriber(Subscriber<? super R> downstream2) {
-        this.downstream = downstream2;
+    public BasicFuseableSubscriber(Subscriber<? super R> downstream) {
+        this.downstream = downstream;
     }
 
+    @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
     public final void onSubscribe(Subscription s) {
         if (SubscriptionHelper.validate(this.upstream, s)) {
             this.upstream = s;
             if (s instanceof QueueSubscription) {
-                this.qs = (QueueSubscription) s;
+                this.f345qs = (QueueSubscription) s;
             }
             if (beforeDownstream()) {
                 this.downstream.onSubscribe(this);
@@ -32,15 +36,14 @@ public abstract class BasicFuseableSubscriber<T, R> implements FlowableSubscribe
         }
     }
 
-    /* access modifiers changed from: protected */
-    public boolean beforeDownstream() {
+    protected boolean beforeDownstream() {
         return true;
     }
 
-    /* access modifiers changed from: protected */
-    public void afterDownstream() {
+    protected void afterDownstream() {
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onError(Throwable t) {
         if (this.done) {
             RxJavaPlugins.onError(t);
@@ -50,54 +53,59 @@ public abstract class BasicFuseableSubscriber<T, R> implements FlowableSubscribe
         this.downstream.onError(t);
     }
 
-    /* access modifiers changed from: protected */
-    public final void fail(Throwable t) {
+    protected final void fail(Throwable t) {
         Exceptions.throwIfFatal(t);
         this.upstream.cancel();
         onError(t);
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onComplete() {
-        if (!this.done) {
-            this.done = true;
-            this.downstream.onComplete();
+        if (this.done) {
+            return;
         }
+        this.done = true;
+        this.downstream.onComplete();
     }
 
-    /* access modifiers changed from: protected */
-    public final int transitiveBoundaryFusion(int mode) {
-        QueueSubscription<T> qs2 = this.qs;
-        if (qs2 == null || (mode & 4) != 0) {
-            return 0;
+    protected final int transitiveBoundaryFusion(int mode) {
+        QueueSubscription<T> qs = this.f345qs;
+        if (qs != null && (mode & 4) == 0) {
+            int m = qs.requestFusion(mode);
+            if (m != 0) {
+                this.sourceMode = m;
+            }
+            return m;
         }
-        int m = qs2.requestFusion(mode);
-        if (m != 0) {
-            this.sourceMode = m;
-        }
-        return m;
+        return 0;
     }
 
+    @Override // org.reactivestreams.Subscription
     public void request(long n) {
         this.upstream.request(n);
     }
 
+    @Override // org.reactivestreams.Subscription
     public void cancel() {
         this.upstream.cancel();
     }
 
+    @Override // io.reactivex.internal.fuseable.SimpleQueue
     public boolean isEmpty() {
-        return this.qs.isEmpty();
+        return this.f345qs.isEmpty();
     }
 
     public void clear() {
-        this.qs.clear();
+        this.f345qs.clear();
     }
 
-    public final boolean offer(R r) {
+    @Override // io.reactivex.internal.fuseable.SimpleQueue
+    public final boolean offer(R e) {
         throw new UnsupportedOperationException("Should not be called!");
     }
 
-    public final boolean offer(R r, R r2) {
+    @Override // io.reactivex.internal.fuseable.SimpleQueue
+    public final boolean offer(R v1, R v2) {
         throw new UnsupportedOperationException("Should not be called!");
     }
 }

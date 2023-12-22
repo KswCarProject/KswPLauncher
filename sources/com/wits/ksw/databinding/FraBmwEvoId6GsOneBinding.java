@@ -8,9 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.view.bmwevoid6gs.BmwId6gsViewMode;
 
+/* loaded from: classes7.dex */
 public abstract class FraBmwEvoId6GsOneBinding extends ViewDataBinding {
     public final TextView bmwEvoId6GsHmoeMusicHintTextview;
     public final TextView bmwEvoId6GsHmoeMusicNameTextview;
@@ -21,16 +22,16 @@ public abstract class FraBmwEvoId6GsOneBinding extends ViewDataBinding {
     protected BmwId6gsViewMode mVm;
     public final TextView textView17;
 
-    public abstract void setVm(BmwId6gsViewMode bmwId6gsViewMode);
+    public abstract void setVm(BmwId6gsViewMode vm);
 
-    protected FraBmwEvoId6GsOneBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView bmwEvoId6GsHmoeMusicHintTextview2, TextView bmwEvoId6GsHmoeMusicNameTextview2, ConstraintLayout bmwEvoId6GsHmoeNaviBtn2, TextView bmwEvoId6GsHmoeNaviHintTextview2, TextView bmwEvoId6GsHmoeVideoHintTextview2, TextView textView172) {
+    protected FraBmwEvoId6GsOneBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView bmwEvoId6GsHmoeMusicHintTextview, TextView bmwEvoId6GsHmoeMusicNameTextview, ConstraintLayout bmwEvoId6GsHmoeNaviBtn, TextView bmwEvoId6GsHmoeNaviHintTextview, TextView bmwEvoId6GsHmoeVideoHintTextview, TextView textView17) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.bmwEvoId6GsHmoeMusicHintTextview = bmwEvoId6GsHmoeMusicHintTextview2;
-        this.bmwEvoId6GsHmoeMusicNameTextview = bmwEvoId6GsHmoeMusicNameTextview2;
-        this.bmwEvoId6GsHmoeNaviBtn = bmwEvoId6GsHmoeNaviBtn2;
-        this.bmwEvoId6GsHmoeNaviHintTextview = bmwEvoId6GsHmoeNaviHintTextview2;
-        this.bmwEvoId6GsHmoeVideoHintTextview = bmwEvoId6GsHmoeVideoHintTextview2;
-        this.textView17 = textView172;
+        this.bmwEvoId6GsHmoeMusicHintTextview = bmwEvoId6GsHmoeMusicHintTextview;
+        this.bmwEvoId6GsHmoeMusicNameTextview = bmwEvoId6GsHmoeMusicNameTextview;
+        this.bmwEvoId6GsHmoeNaviBtn = bmwEvoId6GsHmoeNaviBtn;
+        this.bmwEvoId6GsHmoeNaviHintTextview = bmwEvoId6GsHmoeNaviHintTextview;
+        this.bmwEvoId6GsHmoeVideoHintTextview = bmwEvoId6GsHmoeVideoHintTextview;
+        this.textView17 = textView17;
     }
 
     public BmwId6gsViewMode getVm() {
@@ -43,7 +44,7 @@ public abstract class FraBmwEvoId6GsOneBinding extends ViewDataBinding {
 
     @Deprecated
     public static FraBmwEvoId6GsOneBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (FraBmwEvoId6GsOneBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fra_bmw_evo_id6_gs_one, root, attachToRoot, component);
+        return (FraBmwEvoId6GsOneBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fra_bmw_evo_id6_gs_one, root, attachToRoot, component);
     }
 
     public static FraBmwEvoId6GsOneBinding inflate(LayoutInflater inflater) {
@@ -52,7 +53,7 @@ public abstract class FraBmwEvoId6GsOneBinding extends ViewDataBinding {
 
     @Deprecated
     public static FraBmwEvoId6GsOneBinding inflate(LayoutInflater inflater, Object component) {
-        return (FraBmwEvoId6GsOneBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fra_bmw_evo_id6_gs_one, (ViewGroup) null, false, component);
+        return (FraBmwEvoId6GsOneBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fra_bmw_evo_id6_gs_one, null, false, component);
     }
 
     public static FraBmwEvoId6GsOneBinding bind(View view) {
@@ -61,6 +62,6 @@ public abstract class FraBmwEvoId6GsOneBinding extends ViewDataBinding {
 
     @Deprecated
     public static FraBmwEvoId6GsOneBinding bind(View view, Object component) {
-        return (FraBmwEvoId6GsOneBinding) bind(component, view, R.layout.fra_bmw_evo_id6_gs_one);
+        return (FraBmwEvoId6GsOneBinding) bind(component, view, C0899R.C0902layout.fra_bmw_evo_id6_gs_one);
     }
 }

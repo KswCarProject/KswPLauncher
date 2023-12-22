@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:tag="layout-sw600dp-land/audi_right_weather_0" android:layout_width="match_parent" android:layout_height="match_parent">
+    <android.support.constraint.ConstraintLayout android:id="@+id/cl_weather" android:tag="binding_1" android:visibility="visible" android:layout_width="212dp" android:layout_height="283dp" android:layout_marginTop="115dp" android:layout_marginRight="44dp" android:layout_alignParentRight="true">
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/audi_right_weather_bk" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+        <ImageView android:id="@+id/iv_icon" android:tag="binding_2" android:layout_width="104dp" android:layout_height="104dp" android:layout_marginTop="42dp" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+        <LinearLayout android:gravity="center" android:orientation="vertical" android:tag="binding_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="50dp" android:layout_centerInParent="true" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="20dp" android:src="@drawable/weather_error" android:scaleType="fitXY"/>
+            <TextView android:textSize="17sp" android:textColor="@android:color/darker_gray" android:tag="binding_4" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <TextView android:textSize="43sp" android:textColor="@color/white" android:id="@+id/temperature_tv" android:tag="binding_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:layout_marginStart="12dp" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+        <TextView android:textSize="14sp" android:textColor="@android:color/white" android:id="@+id/unit_weather" android:tag="binding_6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:layout_toRightOf="@+id/temperature_tv" android:layout_alignTop="@+id/temperature_tv" app:layout_constraintStart_toEndOf="@+id/temperature_tv" app:layout_constraintTop_toTopOf="0"/>
+        <TextView android:textSize="18sp" android:textColor="@android:color/white" android:gravity="center" android:tag="binding_7" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:layout_marginEnd="12dp" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="0"/>
+        <TextView android:textSize="17sp" android:textColor="#929292" android:tag="binding_8" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@+id/iv_icon"/>
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="33dp" android:layout_marginBottom="72dp" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0">
+            <ImageView android:tag="binding_9" android:layout_width="32dp" android:layout_height="32dp" android:layout_marginStart="50dp" android:layout_marginEnd="16dp"/>
+            <TextView android:tag="binding_10" style="@style/audi_main_weather_desc"/>
+        </LinearLayout>
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="33dp" android:layout_marginBottom="37dp" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0">
+            <ImageView android:tag="binding_11" android:layout_width="32dp" android:layout_height="32dp" android:layout_marginStart="50dp" android:layout_marginEnd="16dp"/>
+            <TextView android:tag="binding_12" style="@style/audi_main_weather_desc"/>
+        </LinearLayout>
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="33dp" android:layout_marginBottom="1dp" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0">
+            <ImageView android:tag="binding_13" android:layout_width="32dp" android:layout_height="32dp" android:layout_marginStart="50dp" android:layout_marginEnd="16dp"/>
+            <TextView android:tag="binding_14" style="@style/audi_main_weather_desc"/>
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+    <com.wits.ksw.launcher.view.MarqueeTextView android:textSize="20sp" android:textColor="@color/white" android:ellipsize="marquee" android:gravity="center" android:tag="binding_15" android:focusable="true" android:layout_width="212dp" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:layout_marginRight="44dp" android:maxWidth="265dp" android:maxLines="1" android:layout_below="@+id/cl_weather" android:layout_alignParentRight="true" android:marqueeRepeatLimit="marquee_forever" android:textAllCaps="false"/>
+</RelativeLayout>

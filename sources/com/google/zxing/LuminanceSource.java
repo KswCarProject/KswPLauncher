@@ -1,5 +1,8 @@
 package com.google.zxing;
 
+import kotlin.UByte;
+
+/* loaded from: classes.dex */
 public abstract class LuminanceSource {
     private final int height;
     private final int width;
@@ -8,9 +11,9 @@ public abstract class LuminanceSource {
 
     public abstract byte[] getRow(int i, byte[] bArr);
 
-    protected LuminanceSource(int width2, int height2) {
-        this.width = width2;
-        this.height = height2;
+    protected LuminanceSource(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
     public final int getWidth() {
@@ -25,7 +28,7 @@ public abstract class LuminanceSource {
         return false;
     }
 
-    public LuminanceSource crop(int left, int top, int width2, int height2) {
+    public LuminanceSource crop(int left, int top, int width, int height) {
         throw new UnsupportedOperationException("This luminance source does not support cropping.");
     }
 
@@ -52,20 +55,23 @@ public abstract class LuminanceSource {
         for (int y = 0; y < this.height; y++) {
             row = getRow(y, row);
             for (int x = 0; x < this.width; x++) {
-                int i = row[x] & 255;
-                int luminance = i;
-                if (i < 64) {
-                    c = '#';
-                } else if (luminance < 128) {
-                    c = '+';
-                } else if (luminance < 192) {
-                    c = '.';
+                int luminance = row[x] & UByte.MAX_VALUE;
+                if (luminance >= 64) {
+                    if (luminance >= 128) {
+                        if (luminance < 192) {
+                            c = '.';
+                        } else {
+                            c = ' ';
+                        }
+                    } else {
+                        c = '+';
+                    }
                 } else {
-                    c = ' ';
+                    c = '#';
                 }
                 result.append(c);
             }
-            result.append(10);
+            result.append('\n');
         }
         return result.toString();
     }

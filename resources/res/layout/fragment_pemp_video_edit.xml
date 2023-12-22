@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:tag="layout/fragment_pemp_video_edit_0" style="@style/id8_edit_main_card_container_left_padding">
+    <RelativeLayout android:id="@+id/layout" style="@style/id8_pemp_main_card_size_edit">
+        <ImageView android:src="@drawable/pemp_id8_main_edit_icon_video" style="@style/id8_pemp_main_card_size_edit"/>
+        <LinearLayout android:orientation="vertical" style="@style/id8_pemp_main_card_container_edit">
+            <TextView android:text="@string/ksw_id8_hd_video" style="@style/id8_pemp_main_card_title_edit"/>
+            <ImageView android:background="@drawable/id8_main_edit_icon_weather_line" style="@style/id8_pemp_main_card_divider"/>
+            <TextView android:textSize="13sp" android:textColor="@color/id8_font_warning" android:text="@string/ksw_id8_video_desc" style="@style/id8_pemp_main_card_desc_edit"/>
+            <ImageView android:layout_gravity="center" android:tag="binding_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="60dp"/>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

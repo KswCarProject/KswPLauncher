@@ -7,17 +7,19 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
+/* loaded from: classes.dex */
 public class ConstraintAnchor {
     private static final boolean ALLOW_BINARY = false;
     private static final int UNSET_GONE_MARGIN = -1;
-    private HashSet<ConstraintAnchor> mDependents = null;
-    int mGoneMargin = -1;
-    public int mMargin = 0;
     public final ConstraintWidget mOwner;
     SolverVariable mSolverVariable;
     public ConstraintAnchor mTarget;
     public final Type mType;
+    private HashSet<ConstraintAnchor> mDependents = null;
+    public int mMargin = 0;
+    int mGoneMargin = -1;
 
+    /* loaded from: classes.dex */
     public enum Type {
         NONE,
         LEFT,
@@ -32,10 +34,7 @@ public class ConstraintAnchor {
 
     public boolean hasDependents() {
         HashSet<ConstraintAnchor> hashSet = this.mDependents;
-        if (hashSet != null && hashSet.size() > 0) {
-            return true;
-        }
-        return false;
+        return hashSet != null && hashSet.size() > 0;
     }
 
     public boolean hasCenteredDependents() {
@@ -45,7 +44,9 @@ public class ConstraintAnchor {
         }
         Iterator<ConstraintAnchor> it = hashSet.iterator();
         while (it.hasNext()) {
-            if (it.next().getOpposite().isConnected()) {
+            ConstraintAnchor anchor = it.next();
+            ConstraintAnchor opposite = anchor.getOpposite();
+            if (opposite.isConnected()) {
                 return true;
             }
         }
@@ -55,12 +56,14 @@ public class ConstraintAnchor {
     public void copyFrom(ConstraintAnchor source, HashMap<ConstraintWidget, ConstraintWidget> map) {
         HashSet<ConstraintAnchor> hashSet;
         ConstraintAnchor constraintAnchor = this.mTarget;
-        if (!(constraintAnchor == null || (hashSet = constraintAnchor.mDependents) == null)) {
+        if (constraintAnchor != null && (hashSet = constraintAnchor.mDependents) != null) {
             hashSet.remove(this);
         }
         ConstraintAnchor constraintAnchor2 = source.mTarget;
         if (constraintAnchor2 != null) {
-            this.mTarget = map.get(source.mTarget.mOwner).getAnchor(constraintAnchor2.getType());
+            Type type = constraintAnchor2.getType();
+            ConstraintWidget owner = map.get(source.mTarget.mOwner);
+            this.mTarget = owner.getAnchor(type);
         } else {
             this.mTarget = null;
         }
@@ -106,10 +109,10 @@ public class ConstraintAnchor {
         if (this.mOwner.getVisibility() == 8) {
             return 0;
         }
-        if (this.mGoneMargin <= -1 || (constraintAnchor = this.mTarget) == null || constraintAnchor.mOwner.getVisibility() != 8) {
-            return this.mMargin;
+        if (this.mGoneMargin > -1 && (constraintAnchor = this.mTarget) != null && constraintAnchor.mOwner.getVisibility() == 8) {
+            return this.mGoneMargin;
         }
-        return this.mGoneMargin;
+        return this.mMargin;
     }
 
     public ConstraintAnchor getTarget() {
@@ -119,7 +122,7 @@ public class ConstraintAnchor {
     public void reset() {
         HashSet<ConstraintAnchor> hashSet;
         ConstraintAnchor constraintAnchor = this.mTarget;
-        if (!(constraintAnchor == null || (hashSet = constraintAnchor.mDependents) == null)) {
+        if (constraintAnchor != null && (hashSet = constraintAnchor.mDependents) != null) {
             hashSet.remove(this);
         }
         this.mTarget = null;
@@ -164,96 +167,93 @@ public class ConstraintAnchor {
         }
         Type target = anchor.getType();
         Type type = this.mType;
-        if (target != type) {
-            switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[this.mType.ordinal()]) {
-                case 1:
-                    if (target == Type.BASELINE || target == Type.CENTER_X || target == Type.CENTER_Y) {
-                        return false;
-                    }
-                    return true;
-                case 2:
-                case 3:
-                    boolean isCompatible2 = target == Type.LEFT || target == Type.RIGHT;
-                    if (!(anchor.getOwner() instanceof Guideline)) {
-                        return isCompatible2;
-                    }
+        if (target == type) {
+            return type != Type.BASELINE || (anchor.getOwner().hasBaseline() && getOwner().hasBaseline());
+        }
+        switch (C01051.f28x1d400623[this.mType.ordinal()]) {
+            case 1:
+                return (target == Type.BASELINE || target == Type.CENTER_X || target == Type.CENTER_Y) ? false : true;
+            case 2:
+            case 3:
+                boolean isCompatible2 = target == Type.LEFT || target == Type.RIGHT;
+                if (anchor.getOwner() instanceof Guideline) {
                     if (isCompatible2 || target == Type.CENTER_X) {
                         isCompatible = true;
                     }
                     return isCompatible;
-                case 4:
-                case 5:
-                    boolean isCompatible3 = target == Type.TOP || target == Type.BOTTOM;
-                    if (!(anchor.getOwner() instanceof Guideline)) {
-                        return isCompatible3;
-                    }
+                }
+                return isCompatible2;
+            case 4:
+            case 5:
+                boolean isCompatible3 = target == Type.TOP || target == Type.BOTTOM;
+                if (anchor.getOwner() instanceof Guideline) {
                     if (isCompatible3 || target == Type.CENTER_Y) {
                         isCompatible = true;
                     }
                     return isCompatible;
-                case 6:
-                case 7:
-                case 8:
-                case 9:
-                    return false;
-                default:
-                    throw new AssertionError(this.mType.name());
-            }
-        } else if (type != Type.BASELINE || (anchor.getOwner().hasBaseline() && getOwner().hasBaseline())) {
-            return true;
-        } else {
-            return false;
+                }
+                return isCompatible3;
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                return false;
+            default:
+                throw new AssertionError(this.mType.name());
         }
     }
 
-    /* renamed from: android.support.constraint.solver.widgets.ConstraintAnchor$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
-        static final /* synthetic */ int[] $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type;
+    /* renamed from: android.support.constraint.solver.widgets.ConstraintAnchor$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C01051 {
+
+        /* renamed from: $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type */
+        static final /* synthetic */ int[] f28x1d400623;
 
         static {
             int[] iArr = new int[Type.values().length];
-            $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type = iArr;
+            f28x1d400623 = iArr;
             try {
                 iArr[Type.CENTER.ordinal()] = 1;
             } catch (NoSuchFieldError e) {
             }
             try {
-                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[Type.LEFT.ordinal()] = 2;
+                f28x1d400623[Type.LEFT.ordinal()] = 2;
             } catch (NoSuchFieldError e2) {
             }
             try {
-                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[Type.RIGHT.ordinal()] = 3;
+                f28x1d400623[Type.RIGHT.ordinal()] = 3;
             } catch (NoSuchFieldError e3) {
             }
             try {
-                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[Type.TOP.ordinal()] = 4;
+                f28x1d400623[Type.TOP.ordinal()] = 4;
             } catch (NoSuchFieldError e4) {
             }
             try {
-                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[Type.BOTTOM.ordinal()] = 5;
+                f28x1d400623[Type.BOTTOM.ordinal()] = 5;
             } catch (NoSuchFieldError e5) {
             }
             try {
-                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[Type.BASELINE.ordinal()] = 6;
+                f28x1d400623[Type.BASELINE.ordinal()] = 6;
             } catch (NoSuchFieldError e6) {
             }
             try {
-                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[Type.CENTER_X.ordinal()] = 7;
+                f28x1d400623[Type.CENTER_X.ordinal()] = 7;
             } catch (NoSuchFieldError e7) {
             }
             try {
-                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[Type.CENTER_Y.ordinal()] = 8;
+                f28x1d400623[Type.CENTER_Y.ordinal()] = 8;
             } catch (NoSuchFieldError e8) {
             }
             try {
-                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[Type.NONE.ordinal()] = 9;
+                f28x1d400623[Type.NONE.ordinal()] = 9;
             } catch (NoSuchFieldError e9) {
             }
         }
     }
 
     public boolean isSideAnchor() {
-        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[this.mType.ordinal()]) {
+        switch (C01051.f28x1d400623[this.mType.ordinal()]) {
             case 1:
             case 6:
             case 7:
@@ -275,27 +275,18 @@ public class ConstraintAnchor {
         if (target == this.mType) {
             return true;
         }
-        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[this.mType.ordinal()]) {
+        switch (C01051.f28x1d400623[this.mType.ordinal()]) {
             case 1:
-                if (target != Type.BASELINE) {
-                    return true;
-                }
-                return false;
+                return target != Type.BASELINE;
             case 2:
             case 3:
             case 7:
-                if (target == Type.LEFT || target == Type.RIGHT || target == Type.CENTER_X) {
-                    return true;
-                }
-                return false;
+                return target == Type.LEFT || target == Type.RIGHT || target == Type.CENTER_X;
             case 4:
             case 5:
             case 6:
             case 8:
-                if (target == Type.TOP || target == Type.BOTTOM || target == Type.CENTER_Y || target == Type.BASELINE) {
-                    return true;
-                }
-                return false;
+                return target == Type.TOP || target == Type.BOTTOM || target == Type.CENTER_Y || target == Type.BASELINE;
             case 9:
                 return false;
             default:
@@ -316,7 +307,7 @@ public class ConstraintAnchor {
     }
 
     public boolean isVerticalAnchor() {
-        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[this.mType.ordinal()]) {
+        switch (C01051.f28x1d400623[this.mType.ordinal()]) {
             case 1:
             case 2:
             case 3:
@@ -342,14 +333,12 @@ public class ConstraintAnchor {
     }
 
     public boolean isConnectionAllowed(ConstraintWidget target) {
-        if (isConnectionToMe(target, new HashSet<>())) {
+        HashSet<ConstraintWidget> checked = new HashSet<>();
+        if (isConnectionToMe(target, checked)) {
             return false;
         }
         ConstraintWidget parent = getOwner().getParent();
-        if (parent == target || target.getParent() == parent) {
-            return true;
-        }
-        return false;
+        return parent == target || target.getParent() == parent;
     }
 
     private boolean isConnectionToMe(ConstraintWidget target, HashSet<ConstraintWidget> checked) {
@@ -372,7 +361,7 @@ public class ConstraintAnchor {
     }
 
     public final ConstraintAnchor getOpposite() {
-        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[this.mType.ordinal()]) {
+        switch (C01051.f28x1d400623[this.mType.ordinal()]) {
             case 1:
             case 6:
             case 7:

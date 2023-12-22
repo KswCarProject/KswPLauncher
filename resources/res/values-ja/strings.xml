@@ -249,10 +249,17 @@
     <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">パスワードが違います！</string>
     <string name="mcu_file_corrupted">アップデートファイルが壊れています！</string>
+    <string name="mic_control">MIC外部内蔵トグルスイッチ</string>
+    <string name="mic_external">外部</string>
+    <string name="mic_internal">内蔵</string>
     <string name="mic_text">MIC 利得</string>
     <string name="music_app_sel">音楽アプリを選択してください</string>
+    <string name="music_player">音楽プレーヤー</string>
     <string name="ntg6_dvr_toast">デバイスなし！!</string>
     <string name="oil_size">油: %s</string>
+    <string name="original_radar_reverse">オリジナルレーダーディスプレイリバース</string>
+    <string name="radar_normal">ノーマル</string>
+    <string name="radar_reverse">リバース</string>
     <string name="raw_car_text1">全画面表示</string>
     <string name="raw_car_text2">現在の設定:</string>
     <string name="reverse_exit_time_agreement">原車合意により脱退</string>
@@ -331,6 +338,8 @@
     <string name="touch_continuous_send">継続的に送信されるタッチデータ</string>
     <string name="track_1">トラック1</string>
     <string name="track_2">トラック2</string>
+    <string name="tv_id8_brake">ブレーキ</string>
+    <string name="tv_id8_seat_belt">シートベルト</string>
     <string name="txz_oil_text">同行者油量警報設定</string>
     <string name="txz_speed_text">同行者速度アラーム設定</string>
     <string name="txz_temp_text">同行者環境温度アラーム設定</string>

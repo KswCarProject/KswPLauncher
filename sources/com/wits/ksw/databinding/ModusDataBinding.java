@@ -8,21 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class ModusDataBinding extends ViewDataBinding {
     public final ImageView ivMask;
     public final RelativeLayout llContainer;
     @Bindable
     protected LauncherViewModel mModusViewModel;
 
-    public abstract void setModusViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setModusViewModel(LauncherViewModel ModusViewModel);
 
-    protected ModusDataBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivMask2, RelativeLayout llContainer2) {
+    protected ModusDataBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivMask, RelativeLayout llContainer) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.ivMask = ivMask2;
-        this.llContainer = llContainer2;
+        this.ivMask = ivMask;
+        this.llContainer = llContainer;
     }
 
     public LauncherViewModel getModusViewModel() {
@@ -35,7 +36,7 @@ public abstract class ModusDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static ModusDataBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ModusDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_modus, root, attachToRoot, component);
+        return (ModusDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_modus, root, attachToRoot, component);
     }
 
     public static ModusDataBinding inflate(LayoutInflater inflater) {
@@ -44,7 +45,7 @@ public abstract class ModusDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static ModusDataBinding inflate(LayoutInflater inflater, Object component) {
-        return (ModusDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_modus, (ViewGroup) null, false, component);
+        return (ModusDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_modus, null, false, component);
     }
 
     public static ModusDataBinding bind(View view) {
@@ -53,6 +54,6 @@ public abstract class ModusDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static ModusDataBinding bind(View view, Object component) {
-        return (ModusDataBinding) bind(component, view, R.layout.fragment_modus);
+        return (ModusDataBinding) bind(component, view, C0899R.C0902layout.fragment_modus);
     }
 }

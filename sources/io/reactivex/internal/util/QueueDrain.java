@@ -2,6 +2,7 @@ package io.reactivex.internal.util;
 
 import org.reactivestreams.Subscriber;
 
+/* loaded from: classes.dex */
 public interface QueueDrain<T, U> {
     boolean accept(Subscriber<? super U> subscriber, T t);
 

@@ -1,27 +1,29 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.content.res.AppCompatResources;
+import android.support.p001v4.media.session.PlaybackStateCompat;
+import android.support.p004v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.ControlBean;
 import com.wits.ksw.launcher.view.benzgs.BenzGsViewMoel;
+import com.wits.ksw.launcher.view.benzgs.BenzGsViewPage;
 
+/* loaded from: classes7.dex */
 public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback314;
-    private final View.OnClickListener mCallback315;
+    private final View.OnClickListener mCallback448;
+    private final View.OnClickListener mCallback449;
     private long mDirtyFlags;
     private OnClickListenerImpl mVmOnControlClickAndroidViewViewOnClickListener;
     private final RelativeLayout mboundView0;
@@ -31,28 +33,30 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
     }
 
     private ActivityMainBenzGsBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 3, bindings[2], bindings[3], bindings[1], bindings[4]);
-        this.mDirtyFlags = -1;
-        this.benzgsHomeLeftBtn.setTag((Object) null);
-        this.benzgsHomeRightBtn.setTag((Object) null);
-        this.benzgsViewpage.setTag((Object) null);
-        this.controlBtn.setTag((Object) null);
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 3, (ImageView) bindings[2], (ImageView) bindings[3], (BenzGsViewPage) bindings[1], (ImageView) bindings[4]);
+        this.mDirtyFlags = -1L;
+        this.benzgsHomeLeftBtn.setTag(null);
+        this.benzgsHomeRightBtn.setTag(null);
+        this.benzgsViewpage.setTag(null);
+        this.controlBtn.setTag(null);
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
+        relativeLayout.setTag(null);
         setRootTag(root);
-        this.mCallback314 = new OnClickListener(this, 1);
-        this.mCallback315 = new OnClickListener(this, 2);
+        this.mCallback449 = new OnClickListener(this, 2);
+        this.mCallback448 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 16;
+            this.mDirtyFlags = 16L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -62,14 +66,16 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((BenzGsViewMoel) variable);
+            return true;
         }
-        setVm((BenzGsViewMoel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.ActivityMainBenzGsBinding
     public void setVm(BenzGsViewMoel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -79,8 +85,8 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmControlBeanBenzControlPanelState((ObservableBoolean) object, fieldId);
@@ -94,44 +100,44 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
     }
 
     private boolean onChangeVmControlBeanBenzControlPanelState(ObservableBoolean VmControlBeanBenzControlPanelState, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmPageIndex(ObservableInt VmPageIndex, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmControlBeanControlPanelClose(ObservableBoolean VmControlBeanControlPanelClose, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         int vmPageIndexGet;
         int vmPageIndexInt1ViewVISIBLEViewINVISIBLE;
         int vmPageIndexInt0ViewVISIBLEViewINVISIBLE;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         ControlBean vmControlBean = null;
         BenzGsViewMoel vm = this.mVm;
@@ -152,7 +158,7 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
                     if (vmControlBean != null) {
                         vmControlBeanBenzControlPanelState = vmControlBean.benzControlPanelState;
                     }
-                    updateRegistration(0, (Observable) vmControlBeanBenzControlPanelState);
+                    updateRegistration(0, vmControlBeanBenzControlPanelState);
                     if (vmControlBeanBenzControlPanelState != null) {
                         vmControlBeanBenzControlPanelStateGet = vmControlBeanBenzControlPanelState.get();
                     }
@@ -163,13 +169,13 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
                             dirtyFlags |= 128;
                         }
                     }
-                    vmControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = vmControlBeanBenzControlPanelStateGet ? AppCompatResources.getDrawable(this.controlBtn.getContext(), R.drawable.ntg55_ctrlpanel_down_selector) : AppCompatResources.getDrawable(this.controlBtn.getContext(), R.drawable.ntg55_ctrlpanel_up_selector);
+                    vmControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = vmControlBeanBenzControlPanelStateGet ? AppCompatResources.getDrawable(this.controlBtn.getContext(), C0899R.C0900drawable.ntg55_ctrlpanel_down_selector) : AppCompatResources.getDrawable(this.controlBtn.getContext(), C0899R.C0900drawable.ntg55_ctrlpanel_up_selector);
                 }
                 if ((dirtyFlags & 28) != 0) {
                     if (vmControlBean != null) {
                         vmControlBeanControlPanelClose = vmControlBean.controlPanelClose;
                     }
-                    updateRegistration(2, (Observable) vmControlBeanControlPanelClose);
+                    updateRegistration(2, vmControlBeanControlPanelClose);
                     if (vmControlBeanControlPanelClose != null) {
                         vmControlBeanControlPanelCloseGet = vmControlBeanControlPanelClose.get();
                     }
@@ -183,7 +189,7 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
                     vmControlBeanControlPanelCloseViewGONEViewVISIBLE = vmControlBeanControlPanelCloseGet ? 8 : 0;
                 }
             }
-            if (!((dirtyFlags & 24) == 0 || vm == null)) {
+            if ((dirtyFlags & 24) != 0 && vm != null) {
                 OnClickListenerImpl onClickListenerImpl = this.mVmOnControlClickAndroidViewViewOnClickListener;
                 if (onClickListenerImpl == null) {
                     onClickListenerImpl = new OnClickListenerImpl();
@@ -191,22 +197,23 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
                 }
                 vmOnControlClickAndroidViewViewOnClickListener = onClickListenerImpl.setValue(vm);
             }
-            if ((dirtyFlags & 26) != 0) {
+            if ((dirtyFlags & 26) == 0) {
+                vmPageIndexGet = 0;
+                vmPageIndexInt1ViewVISIBLEViewINVISIBLE = 0;
+                vmPageIndexInt0ViewVISIBLEViewINVISIBLE = 0;
+            } else {
                 if (vm != null) {
                     vmPageIndex = vm.pageIndex;
                 }
-                boolean z = true;
-                updateRegistration(1, (Observable) vmPageIndex);
-                if (vmPageIndex != null) {
-                    vmPageIndexGet = vmPageIndex.get();
-                } else {
+                updateRegistration(1, vmPageIndex);
+                if (vmPageIndex == null) {
                     vmPageIndexGet = 0;
+                } else {
+                    int vmPageIndexGet2 = vmPageIndex.get();
+                    vmPageIndexGet = vmPageIndexGet2;
                 }
                 boolean vmPageIndexInt0 = vmPageIndexGet == 0;
-                if (vmPageIndexGet != 1) {
-                    z = false;
-                }
-                boolean vmPageIndexInt1 = z;
+                boolean vmPageIndexInt1 = vmPageIndexGet == 1;
                 if ((dirtyFlags & 26) != 0) {
                     if (vmPageIndexInt0) {
                         dirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
@@ -221,18 +228,9 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
                         dirtyFlags |= 512;
                     }
                 }
-                vmPageIndexInt1ViewVISIBLEViewINVISIBLE = 4;
                 int vmPageIndexInt0ViewVISIBLEViewINVISIBLE2 = vmPageIndexInt0 ? 0 : 4;
-                if (vmPageIndexInt1) {
-                    vmPageIndexInt1ViewVISIBLEViewINVISIBLE = 0;
-                }
-                ControlBean controlBean = vmControlBean;
+                vmPageIndexInt1ViewVISIBLEViewINVISIBLE = vmPageIndexInt1 ? 0 : 4;
                 vmPageIndexInt0ViewVISIBLEViewINVISIBLE = vmPageIndexInt0ViewVISIBLEViewINVISIBLE2;
-            } else {
-                vmPageIndexGet = 0;
-                vmPageIndexInt1ViewVISIBLEViewINVISIBLE = 0;
-                ControlBean controlBean2 = vmControlBean;
-                vmPageIndexInt0ViewVISIBLEViewINVISIBLE = 0;
             }
         } else {
             vmPageIndexGet = 0;
@@ -240,12 +238,8 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
             vmPageIndexInt0ViewVISIBLEViewINVISIBLE = 0;
         }
         if ((dirtyFlags & 16) != 0) {
-            BenzGsViewMoel benzGsViewMoel = vm;
-            boolean z2 = vmControlBeanBenzControlPanelStateGet;
-            this.benzgsHomeLeftBtn.setOnClickListener(this.mCallback314);
-            this.benzgsHomeRightBtn.setOnClickListener(this.mCallback315);
-        } else {
-            boolean z3 = vmControlBeanBenzControlPanelStateGet;
+            this.benzgsHomeLeftBtn.setOnClickListener(this.mCallback448);
+            this.benzgsHomeRightBtn.setOnClickListener(this.mCallback449);
         }
         if ((dirtyFlags & 26) != 0) {
             this.benzgsHomeLeftBtn.setVisibility(vmPageIndexInt1ViewVISIBLEViewINVISIBLE);
@@ -263,31 +257,30 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         }
     }
 
+    /* loaded from: classes7.dex */
     public static class OnClickListenerImpl implements View.OnClickListener {
         private BenzGsViewMoel value;
 
-        public OnClickListenerImpl setValue(BenzGsViewMoel value2) {
-            this.value = value2;
-            if (value2 == null) {
+        public OnClickListenerImpl setValue(BenzGsViewMoel value) {
+            this.value = value;
+            if (value == null) {
                 return null;
             }
             return this;
         }
 
+        @Override // android.view.View.OnClickListener
         public void onClick(View arg0) {
             this.value.onControlClick(arg0);
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean vmJavaLangObjectNull = true;
-        boolean vmJavaLangObjectNull2 = false;
         switch (sourceId) {
             case 1:
                 BenzGsViewMoel vm = this.mVm;
-                if (vm == null) {
-                    vmJavaLangObjectNull = false;
-                }
+                boolean vmJavaLangObjectNull = vm != null;
                 if (vmJavaLangObjectNull) {
                     vm.setCurrentItem(callbackArg_0, 0);
                     return;
@@ -295,9 +288,7 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
                 return;
             case 2:
                 BenzGsViewMoel vm2 = this.mVm;
-                if (vm2 != null) {
-                    vmJavaLangObjectNull2 = true;
-                }
+                boolean vmJavaLangObjectNull2 = vm2 != null;
                 if (vmJavaLangObjectNull2) {
                     vm2.setCurrentItem(callbackArg_0, 1);
                     return;

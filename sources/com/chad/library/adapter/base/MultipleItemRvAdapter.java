@@ -10,14 +10,13 @@ import com.chad.library.adapter.base.util.MultiTypeDelegate;
 import com.chad.library.adapter.base.util.ProviderDelegate;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public abstract class MultipleItemRvAdapter<T, V extends BaseViewHolder> extends BaseQuickAdapter<T, V> {
-    /* access modifiers changed from: private */
-    public SparseArray<BaseItemProvider> mItemProviders;
+    private SparseArray<BaseItemProvider> mItemProviders;
     private MultiTypeDelegate<T> mMultiTypeDelegate;
     protected ProviderDelegate mProviderDelegate;
 
-    /* access modifiers changed from: protected */
-    public abstract int getViewType(T t);
+    protected abstract int getViewType(T t);
 
     public abstract void registerItemProvider();
 
@@ -27,9 +26,9 @@ public abstract class MultipleItemRvAdapter<T, V extends BaseViewHolder> extends
 
     public void finishInitialize() {
         this.mProviderDelegate = new ProviderDelegate();
-        setMultiTypeDelegate(new MultiTypeDelegate<T>() {
-            /* access modifiers changed from: protected */
-            public int getItemType(T t) {
+        setMultiTypeDelegate(new MultiTypeDelegate<T>() { // from class: com.chad.library.adapter.base.MultipleItemRvAdapter.1
+            @Override // com.chad.library.adapter.base.util.MultiTypeDelegate
+            protected int getItemType(T t) {
                 return MultipleItemRvAdapter.this.getViewType(t);
             }
         });
@@ -43,69 +42,86 @@ public abstract class MultipleItemRvAdapter<T, V extends BaseViewHolder> extends
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void bindViewClickListener(V baseViewHolder) {
-        if (baseViewHolder != null) {
-            bindClick(baseViewHolder);
-            super.bindViewClickListener(baseViewHolder);
+    @Override // com.chad.library.adapter.base.BaseQuickAdapter
+    protected void bindViewClickListener(V baseViewHolder) {
+        if (baseViewHolder == null) {
+            return;
         }
+        bindClick(baseViewHolder);
+        super.bindViewClickListener(baseViewHolder);
     }
 
-    /* access modifiers changed from: protected */
-    public V onCreateDefViewHolder(ViewGroup parent, int viewType) {
-        if (getMultiTypeDelegate() != null) {
-            return createBaseViewHolder(parent, getMultiTypeDelegate().getLayoutId(viewType));
+    @Override // com.chad.library.adapter.base.BaseQuickAdapter
+    protected V onCreateDefViewHolder(ViewGroup parent, int viewType) {
+        if (getMultiTypeDelegate() == null) {
+            throw new IllegalStateException("please use setMultiTypeDelegate first!");
         }
-        throw new IllegalStateException("please use setMultiTypeDelegate first!");
+        int layoutId = getMultiTypeDelegate().getLayoutId(viewType);
+        return (V) createBaseViewHolder(parent, layoutId);
     }
 
-    /* access modifiers changed from: protected */
-    public int getDefItemViewType(int position) {
-        if (getMultiTypeDelegate() != null) {
-            return getMultiTypeDelegate().getDefItemViewType(this.mData, position);
+    @Override // com.chad.library.adapter.base.BaseQuickAdapter
+    protected int getDefItemViewType(int position) {
+        if (getMultiTypeDelegate() == null) {
+            throw new IllegalStateException("please use setMultiTypeDelegate first!");
         }
-        throw new IllegalStateException("please use setMultiTypeDelegate first!");
+        return getMultiTypeDelegate().getDefItemViewType(this.mData, position);
     }
 
-    /* access modifiers changed from: protected */
-    public void convert(V helper, T item) {
-        BaseItemProvider provider = this.mItemProviders.get(helper.getItemViewType());
+    @Override // com.chad.library.adapter.base.BaseQuickAdapter
+    protected void convert(V helper, T item) {
+        int itemViewType = helper.getItemViewType();
+        BaseItemProvider provider = this.mItemProviders.get(itemViewType);
         provider.mContext = helper.itemView.getContext();
-        provider.convert(helper, item, helper.getLayoutPosition() - getHeaderLayoutCount());
+        int position = helper.getLayoutPosition() - getHeaderLayoutCount();
+        provider.convert(helper, item, position);
     }
 
-    /* access modifiers changed from: protected */
-    public void convertPayloads(V helper, T item, List<Object> payloads) {
-        this.mItemProviders.get(helper.getItemViewType()).convertPayloads(helper, item, helper.getLayoutPosition() - getHeaderLayoutCount(), payloads);
+    @Override // com.chad.library.adapter.base.BaseQuickAdapter
+    protected void convertPayloads(V helper, T item, List<Object> payloads) {
+        int itemViewType = helper.getItemViewType();
+        BaseItemProvider provider = this.mItemProviders.get(itemViewType);
+        int position = helper.getLayoutPosition() - getHeaderLayoutCount();
+        provider.convertPayloads(helper, item, position, payloads);
     }
 
     private void bindClick(final V helper) {
         BaseQuickAdapter.OnItemClickListener clickListener = getOnItemClickListener();
         BaseQuickAdapter.OnItemLongClickListener longClickListener = getOnItemLongClickListener();
-        if (clickListener == null || longClickListener == null) {
-            if (clickListener == null) {
-                helper.itemView.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        int position = helper.getAdapterPosition();
-                        if (position != -1) {
-                            int position2 = position - MultipleItemRvAdapter.this.getHeaderLayoutCount();
-                            ((BaseItemProvider) MultipleItemRvAdapter.this.mItemProviders.get(helper.getItemViewType())).onClick(helper, MultipleItemRvAdapter.this.mData.get(position2), position2);
-                        }
+        if (clickListener != null && longClickListener != null) {
+            return;
+        }
+        if (clickListener == null) {
+            helper.itemView.setOnClickListener(new View.OnClickListener() { // from class: com.chad.library.adapter.base.MultipleItemRvAdapter.2
+                /* JADX WARN: Multi-variable type inference failed */
+                @Override // android.view.View.OnClickListener
+                public void onClick(View v) {
+                    int position = helper.getAdapterPosition();
+                    if (position == -1) {
+                        return;
                     }
-                });
-            }
-            if (longClickListener == null) {
-                helper.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                    public boolean onLongClick(View v) {
-                        int position = helper.getAdapterPosition();
-                        if (position == -1) {
-                            return false;
-                        }
-                        int position2 = position - MultipleItemRvAdapter.this.getHeaderLayoutCount();
-                        return ((BaseItemProvider) MultipleItemRvAdapter.this.mItemProviders.get(helper.getItemViewType())).onLongClick(helper, MultipleItemRvAdapter.this.mData.get(position2), position2);
+                    int position2 = position - MultipleItemRvAdapter.this.getHeaderLayoutCount();
+                    int itemViewType = helper.getItemViewType();
+                    BaseItemProvider provider = (BaseItemProvider) MultipleItemRvAdapter.this.mItemProviders.get(itemViewType);
+                    provider.onClick(helper, MultipleItemRvAdapter.this.mData.get(position2), position2);
+                }
+            });
+        }
+        if (longClickListener == null) {
+            helper.itemView.setOnLongClickListener(new View.OnLongClickListener() { // from class: com.chad.library.adapter.base.MultipleItemRvAdapter.3
+                /* JADX WARN: Multi-variable type inference failed */
+                @Override // android.view.View.OnLongClickListener
+                public boolean onLongClick(View v) {
+                    int position = helper.getAdapterPosition();
+                    if (position == -1) {
+                        return false;
                     }
-                });
-            }
+                    int position2 = position - MultipleItemRvAdapter.this.getHeaderLayoutCount();
+                    int itemViewType = helper.getItemViewType();
+                    BaseItemProvider provider = (BaseItemProvider) MultipleItemRvAdapter.this.mItemProviders.get(itemViewType);
+                    return provider.onLongClick(helper, MultipleItemRvAdapter.this.mData.get(position2), position2);
+                }
+            });
         }
     }
 

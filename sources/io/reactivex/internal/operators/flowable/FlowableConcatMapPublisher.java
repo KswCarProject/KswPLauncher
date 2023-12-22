@@ -6,23 +6,25 @@ import io.reactivex.internal.util.ErrorMode;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 
+/* loaded from: classes.dex */
 public final class FlowableConcatMapPublisher<T, R> extends Flowable<R> {
     final ErrorMode errorMode;
     final Function<? super T, ? extends Publisher<? extends R>> mapper;
     final int prefetch;
     final Publisher<T> source;
 
-    public FlowableConcatMapPublisher(Publisher<T> source2, Function<? super T, ? extends Publisher<? extends R>> mapper2, int prefetch2, ErrorMode errorMode2) {
-        this.source = source2;
-        this.mapper = mapper2;
-        this.prefetch = prefetch2;
-        this.errorMode = errorMode2;
+    public FlowableConcatMapPublisher(Publisher<T> source, Function<? super T, ? extends Publisher<? extends R>> mapper, int prefetch, ErrorMode errorMode) {
+        this.source = source;
+        this.mapper = mapper;
+        this.prefetch = prefetch;
+        this.errorMode = errorMode;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super R> s) {
-        if (!FlowableScalarXMap.tryScalarXMapSubscribe(this.source, s, this.mapper)) {
-            this.source.subscribe(FlowableConcatMap.subscribe(s, this.mapper, this.prefetch, this.errorMode));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super R> s) {
+        if (FlowableScalarXMap.tryScalarXMapSubscribe(this.source, s, this.mapper)) {
+            return;
         }
+        this.source.subscribe(FlowableConcatMap.subscribe(s, this.mapper, this.prefetch, this.errorMode));
     }
 }

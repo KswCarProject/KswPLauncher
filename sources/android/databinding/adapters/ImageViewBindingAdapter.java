@@ -4,10 +4,11 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.widget.ImageView;
 
+/* loaded from: classes.dex */
 public class ImageViewBindingAdapter {
     public static void setImageUri(ImageView view, String imageUri) {
         if (imageUri == null) {
-            view.setImageURI((Uri) null);
+            view.setImageURI(null);
         } else {
             view.setImageURI(Uri.parse(imageUri));
         }

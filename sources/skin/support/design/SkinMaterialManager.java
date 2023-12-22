@@ -4,6 +4,7 @@ import android.content.Context;
 import skin.support.SkinCompatManager;
 import skin.support.design.app.SkinMaterialViewInflater;
 
+/* loaded from: classes.dex */
 public class SkinMaterialManager {
     private static volatile SkinMaterialManager sInstance;
 

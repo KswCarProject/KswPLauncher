@@ -6,32 +6,33 @@ import android.graphics.drawable.Drawable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.util.AttributeSet;
 import skin.support.content.res.SkinCompatResources;
-import skin.support.design.R;
+import skin.support.design.C1911R;
 import skin.support.widget.SkinCompatBackgroundHelper;
 import skin.support.widget.SkinCompatHelper;
 import skin.support.widget.SkinCompatSupportable;
 
+/* loaded from: classes.dex */
 public class SkinMaterialCollapsingToolbarLayout extends CollapsingToolbarLayout implements SkinCompatSupportable {
     private SkinCompatBackgroundHelper mBackgroundTintHelper;
     private int mContentScrimResId;
     private int mStatusBarScrimResId;
 
     public SkinMaterialCollapsingToolbarLayout(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public SkinMaterialCollapsingToolbarLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    /* JADX WARNING: type inference failed for: r3v0, types: [android.view.View, skin.support.design.widget.SkinMaterialCollapsingToolbarLayout] */
+    /* JADX WARN: Multi-variable type inference failed */
     public SkinMaterialCollapsingToolbarLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContentScrimResId = 0;
         this.mStatusBarScrimResId = 0;
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CollapsingToolbarLayout, defStyleAttr, R.style.Widget_Design_CollapsingToolbar);
-        this.mContentScrimResId = a.getResourceId(R.styleable.CollapsingToolbarLayout_contentScrim, 0);
-        this.mStatusBarScrimResId = a.getResourceId(R.styleable.CollapsingToolbarLayout_statusBarScrim, 0);
+        TypedArray a = context.obtainStyledAttributes(attrs, C1911R.styleable.CollapsingToolbarLayout, defStyleAttr, C1911R.style.Widget_Design_CollapsingToolbar);
+        this.mContentScrimResId = a.getResourceId(C1911R.styleable.CollapsingToolbarLayout_contentScrim, 0);
+        this.mStatusBarScrimResId = a.getResourceId(C1911R.styleable.CollapsingToolbarLayout_statusBarScrim, 0);
         a.recycle();
         applyContentScrimResource();
         applyStatusBarScrimResource();
@@ -58,6 +59,7 @@ public class SkinMaterialCollapsingToolbarLayout extends CollapsingToolbarLayout
         }
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         applyContentScrimResource();
         applyStatusBarScrimResource();

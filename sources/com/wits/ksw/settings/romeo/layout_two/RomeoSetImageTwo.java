@@ -7,17 +7,18 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 
+/* loaded from: classes17.dex */
 public class RomeoSetImageTwo extends RelativeLayout {
     private Context context;
     private ImageView img_twoDefaul_right;
 
-    public RomeoSetImageTwo(Context context2) {
-        super(context2);
-        this.context = context2;
-        View view = LayoutInflater.from(context2).inflate(R.layout.lexus_layout_set_image_two, (ViewGroup) null);
-        this.img_twoDefaul_right = (ImageView) view.findViewById(R.id.img_twoDefaul_right);
+    public RomeoSetImageTwo(Context context) {
+        super(context);
+        this.context = context;
+        View view = LayoutInflater.from(context).inflate(C0899R.C0902layout.lexus_layout_set_image_two, (ViewGroup) null);
+        this.img_twoDefaul_right = (ImageView) view.findViewById(C0899R.C0901id.img_twoDefaul_right);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(-1, -1);
         initView(view);
         view.setLayoutParams(layoutParams);

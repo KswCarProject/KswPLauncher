@@ -4,6 +4,7 @@ import com.ibm.icu.impl.ICULocaleService;
 import com.ibm.icu.impl.ICUResourceBundle;
 import com.ibm.icu.impl.ICUService;
 import com.ibm.icu.impl.coll.CollationLoader;
+import com.ibm.icu.impl.coll.CollationTailoring;
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.util.ICUCloneNotSupportedException;
 import com.ibm.icu.util.Output;
@@ -12,46 +13,51 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.Set;
 
+/* loaded from: classes.dex */
 final class CollatorServiceShim extends Collator.ServiceShim {
     private static ICULocaleService service = new CService();
 
     CollatorServiceShim() {
     }
 
-    /* access modifiers changed from: package-private */
-    public Collator getInstance(ULocale locale) {
+    @Override // com.ibm.icu.text.Collator.ServiceShim
+    Collator getInstance(ULocale locale) {
         try {
-            Collator coll = (Collator) service.get(locale, new ULocale[1]);
-            if (coll != null) {
-                return (Collator) coll.clone();
+            ULocale[] actualLoc = new ULocale[1];
+            Collator coll = (Collator) service.get(locale, actualLoc);
+            if (coll == null) {
+                throw new MissingResourceException("Could not locate Collator data", "", "");
             }
-            throw new MissingResourceException("Could not locate Collator data", "", "");
+            return (Collator) coll.clone();
         } catch (CloneNotSupportedException e) {
             throw new ICUCloneNotSupportedException(e);
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public Object registerInstance(Collator collator, ULocale locale) {
+    @Override // com.ibm.icu.text.Collator.ServiceShim
+    Object registerInstance(Collator collator, ULocale locale) {
         collator.setLocale(locale, locale);
         return service.registerObject(collator, locale);
     }
 
-    /* access modifiers changed from: package-private */
-    public Object registerFactory(Collator.CollatorFactory f) {
-        return service.registerFactory(new ICULocaleService.LocaleKeyFactory(f) {
+    @Override // com.ibm.icu.text.Collator.ServiceShim
+    Object registerFactory(Collator.CollatorFactory f) {
+        return service.registerFactory(new ICULocaleService.LocaleKeyFactory(f) { // from class: com.ibm.icu.text.CollatorServiceShim.1CFactory
             Collator.CollatorFactory delegate;
 
             {
-                this.delegate = fctry;
+                super(f.visible());
+                this.delegate = f;
             }
 
             public Object handleCreate(ULocale loc, int kind, ICUService srvc) {
-                return this.delegate.createCollator(loc);
+                Object coll = this.delegate.createCollator(loc);
+                return coll;
             }
 
             public String getDisplayName(String id, ULocale displayLocale) {
-                return this.delegate.getDisplayName(new ULocale(id), displayLocale);
+                ULocale objectLocale = new ULocale(id);
+                return this.delegate.getDisplayName(objectLocale, displayLocale);
             }
 
             public Set<String> getSupportedIDs() {
@@ -60,38 +66,43 @@ final class CollatorServiceShim extends Collator.ServiceShim {
         });
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean unregister(Object registryKey) {
+    @Override // com.ibm.icu.text.Collator.ServiceShim
+    boolean unregister(Object registryKey) {
         return service.unregisterFactory((ICUService.Factory) registryKey);
     }
 
-    /* access modifiers changed from: package-private */
-    public Locale[] getAvailableLocales() {
+    @Override // com.ibm.icu.text.Collator.ServiceShim
+    Locale[] getAvailableLocales() {
         if (service.isDefault()) {
-            return ICUResourceBundle.getAvailableLocales("com/ibm/icu/impl/data/icudt63b/coll", ICUResourceBundle.ICU_DATA_CLASS_LOADER);
+            Locale[] result = ICUResourceBundle.getAvailableLocales("com/ibm/icu/impl/data/icudt63b/coll", ICUResourceBundle.ICU_DATA_CLASS_LOADER);
+            return result;
         }
-        return service.getAvailableLocales();
+        Locale[] result2 = service.getAvailableLocales();
+        return result2;
     }
 
-    /* access modifiers changed from: package-private */
-    public ULocale[] getAvailableULocales() {
+    @Override // com.ibm.icu.text.Collator.ServiceShim
+    ULocale[] getAvailableULocales() {
         if (service.isDefault()) {
-            return ICUResourceBundle.getAvailableULocales("com/ibm/icu/impl/data/icudt63b/coll", ICUResourceBundle.ICU_DATA_CLASS_LOADER);
+            ULocale[] result = ICUResourceBundle.getAvailableULocales("com/ibm/icu/impl/data/icudt63b/coll", ICUResourceBundle.ICU_DATA_CLASS_LOADER);
+            return result;
         }
-        return service.getAvailableULocales();
+        ULocale[] result2 = service.getAvailableULocales();
+        return result2;
     }
 
-    /* access modifiers changed from: package-private */
-    public String getDisplayName(ULocale objectLocale, ULocale displayLocale) {
-        return service.getDisplayName(objectLocale.getName(), displayLocale);
+    @Override // com.ibm.icu.text.Collator.ServiceShim
+    String getDisplayName(ULocale objectLocale, ULocale displayLocale) {
+        String id = objectLocale.getName();
+        return service.getDisplayName(id, displayLocale);
     }
 
+    /* loaded from: classes.dex */
     private static class CService extends ICULocaleService {
         CService() {
             super("Collator");
-            registerFactory(new ICULocaleService.ICUResourceBundleFactory() {
-                /* access modifiers changed from: protected */
-                public Object handleCreate(ULocale uloc, int kind, ICUService srvc) {
+            registerFactory(new ICULocaleService.ICUResourceBundleFactory() { // from class: com.ibm.icu.text.CollatorServiceShim.CService.1CollatorFactory
+                protected Object handleCreate(ULocale uloc, int kind, ICUService srvc) {
                     return CollatorServiceShim.makeInstance(uloc);
                 }
             });
@@ -102,8 +113,7 @@ final class CollatorServiceShim extends Collator.ServiceShim {
             return "";
         }
 
-        /* access modifiers changed from: protected */
-        public Object handleDefault(ICUService.Key key, String[] actualIDReturn) {
+        protected Object handleDefault(ICUService.Key key, String[] actualIDReturn) {
             if (actualIDReturn != null) {
                 actualIDReturn[0] = "root";
             }
@@ -115,9 +125,10 @@ final class CollatorServiceShim extends Collator.ServiceShim {
         }
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public static final Collator makeInstance(ULocale desiredLocale) {
         Output<ULocale> validLocale = new Output<>(ULocale.ROOT);
-        return new RuleBasedCollator(CollationLoader.loadTailoring(desiredLocale, validLocale), (ULocale) validLocale.value);
+        CollationTailoring t = CollationLoader.loadTailoring(desiredLocale, validLocale);
+        return new RuleBasedCollator(t, (ULocale) validLocale.value);
     }
 }

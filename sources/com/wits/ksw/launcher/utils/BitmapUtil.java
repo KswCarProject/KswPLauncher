@@ -18,12 +18,12 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.ViewCompat;
+import android.support.p001v4.view.MotionEventCompat;
+import android.support.p001v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.view.View;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.MainActivity;
-import com.wits.ksw.R;
 import com.wits.ksw.launcher.view.benzmbux2021.BenzMbux2021Configs;
 import com.wits.ksw.launcher.view.benzmbux2021ksw.bean.BenzMbux2021KswConfigs;
 import com.wits.ksw.launcher.view.lexusls.drag.LOGE;
@@ -33,17 +33,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
 
+/* loaded from: classes11.dex */
 public class BitmapUtil {
     public static Bitmap getDownBitMap() {
-        return drawableToBitmap(zoomDrawable(MainActivity.mainActivity.getDrawable(R.drawable.benz_mbux_2021_album_selector), ScreenUtil.dip2px(200.0f), ScreenUtil.dip2px(200.0f)));
+        return drawableToBitmap(zoomDrawable(MainActivity.mainActivity.getDrawable(C0899R.C0900drawable.benz_mbux_2021_album_selector), ScreenUtil.dip2px(200.0f), ScreenUtil.dip2px(200.0f)));
     }
 
     public static Drawable getDefaultMBUX2021BG_OTHER() {
         String bgIndex;
-        if (UiThemeUtils.isBenz_MBUX_2021_KSW(MainActivity.mainActivity) || UiThemeUtils.isBenz_MBUX_2021_KSW_V2(MainActivity.mainActivity)) {
+        if (UiThemeUtils.isBenz_MBUX_2021_KSW(MainActivity.mainActivity) || UiThemeUtils.isBenz_MBUX_2021_KSW_V2(MainActivity.mainActivity) || UiThemeUtils.isUI_MBUX_2021_KSW_1024(MainActivity.mainActivity) || UiThemeUtils.isUI_MBUX_2021_KSW_1024_V2(MainActivity.mainActivity)) {
             bgIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), "BG_INDEX");
         } else {
             bgIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), "BG_INDEX");
@@ -52,8 +54,8 @@ public class BitmapUtil {
             bgIndex = TxzMessage.TXZ_SHOW;
         }
         int iBgIndex = Integer.parseInt(bgIndex);
-        LOGE.D("liuhaoMedia____________________getDefaultMBUX2021BG_OTHER_______________ iBgIndex = " + iBgIndex);
-        if (UiThemeUtils.isBenz_MBUX_2021_KSW(MainActivity.mainActivity) || UiThemeUtils.isBenz_MBUX_2021_KSW_V2(MainActivity.mainActivity)) {
+        LOGE.m44D("liuhaoMedia____________________getDefaultMBUX2021BG_OTHER_______________ iBgIndex = " + iBgIndex);
+        if (UiThemeUtils.isBenz_MBUX_2021_KSW(MainActivity.mainActivity) || UiThemeUtils.isBenz_MBUX_2021_KSW_V2(MainActivity.mainActivity) || UiThemeUtils.isUI_MBUX_2021_KSW_1024(MainActivity.mainActivity) || UiThemeUtils.isUI_MBUX_2021_KSW_1024_V2(MainActivity.mainActivity)) {
             return MainActivity.mainActivity.getDrawable(BenzMbux2021KswConfigs.BG_OTHER[iBgIndex - 1]);
         }
         return MainActivity.mainActivity.getDrawable(BenzMbux2021Configs.BG_OTHER[iBgIndex - 1]);
@@ -61,7 +63,7 @@ public class BitmapUtil {
 
     public static Drawable getDefaultMBUX2021BG_ONE() {
         String bgIndex;
-        if (UiThemeUtils.isBenz_MBUX_2021_KSW(MainActivity.mainActivity) || UiThemeUtils.isBenz_MBUX_2021_KSW_V2(MainActivity.mainActivity)) {
+        if (UiThemeUtils.isBenz_MBUX_2021_KSW(MainActivity.mainActivity) || UiThemeUtils.isBenz_MBUX_2021_KSW_V2(MainActivity.mainActivity) || UiThemeUtils.isUI_MBUX_2021_KSW_1024(MainActivity.mainActivity) || UiThemeUtils.isUI_MBUX_2021_KSW_1024_V2(MainActivity.mainActivity)) {
             bgIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), "BG_INDEX");
         } else {
             bgIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), "BG_INDEX");
@@ -70,8 +72,8 @@ public class BitmapUtil {
             bgIndex = TxzMessage.TXZ_SHOW;
         }
         int iBgIndex = Integer.parseInt(bgIndex);
-        LOGE.D("liuhaoMedia____________________getDefaultMBUX2021BG_ONE_______________ iBgIndex = " + iBgIndex);
-        if (UiThemeUtils.isBenz_MBUX_2021_KSW(MainActivity.mainActivity) || UiThemeUtils.isBenz_MBUX_2021_KSW_V2(MainActivity.mainActivity)) {
+        LOGE.m44D("liuhaoMedia____________________getDefaultMBUX2021BG_ONE_______________ iBgIndex = " + iBgIndex);
+        if (UiThemeUtils.isBenz_MBUX_2021_KSW(MainActivity.mainActivity) || UiThemeUtils.isBenz_MBUX_2021_KSW_V2(MainActivity.mainActivity) || UiThemeUtils.isUI_MBUX_2021_KSW_1024(MainActivity.mainActivity) || UiThemeUtils.isUI_MBUX_2021_KSW_1024_V2(MainActivity.mainActivity)) {
             return MainActivity.mainActivity.getDrawable(BenzMbux2021KswConfigs.BG_ONE[iBgIndex - 1]);
         }
         return MainActivity.mainActivity.getDrawable(BenzMbux2021Configs.BG_ONE[iBgIndex - 1]);
@@ -98,8 +100,11 @@ public class BitmapUtil {
         int w = bitmap.getWidth();
         int h = bitmap.getHeight();
         Matrix matrix = new Matrix();
-        matrix.postScale(((float) width) / ((float) w), ((float) height) / ((float) h));
-        return Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
+        float scaleWidth = width / w;
+        float scaleHeight = height / h;
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap newbmp = Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
+        return newbmp;
     }
 
     public static Drawable zoomDrawable(Drawable drawable, int w, int h) {
@@ -107,25 +112,23 @@ public class BitmapUtil {
         int height = drawable.getIntrinsicHeight();
         Bitmap oldbmp = drawableToBitmap(drawable);
         Matrix matrix = new Matrix();
-        matrix.postScale(((float) w) / ((float) width), ((float) h) / ((float) height));
-        return new BitmapDrawable((Resources) null, Bitmap.createBitmap(oldbmp, 0, 0, width, height, matrix, true));
+        float scaleWidth = w / width;
+        float scaleHeight = h / height;
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap newbmp = Bitmap.createBitmap(oldbmp, 0, 0, width, height, matrix, true);
+        return new BitmapDrawable((Resources) null, newbmp);
     }
 
     public static Bitmap drawableToBitmap(Drawable drawable) {
-        Bitmap.Config config;
         if (drawable == null) {
-            return BitmapFactory.decodeResource(MainActivity.mainActivity.getResources(), R.color.transparent);
+            return BitmapFactory.decodeResource(MainActivity.mainActivity.getResources(), C0899R.color.transparent);
         }
         int w = drawable.getIntrinsicWidth();
         int h = drawable.getIntrinsicHeight();
         if (w <= 0 || h <= 0) {
-            return BitmapFactory.decodeResource(MainActivity.mainActivity.getResources(), R.color.transparent);
+            return BitmapFactory.decodeResource(MainActivity.mainActivity.getResources(), C0899R.color.transparent);
         }
-        if (drawable.getOpacity() != -1) {
-            config = Bitmap.Config.ARGB_8888;
-        } else {
-            config = Bitmap.Config.RGB_565;
-        }
+        Bitmap.Config config = drawable.getOpacity() != -1 ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;
         Bitmap bitmap = Bitmap.createBitmap(w, h, config);
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, w, h);
@@ -159,18 +162,20 @@ public class BitmapUtil {
         Bitmap bitmapWithReflection = Bitmap.createBitmap(w, (h / 2) + h, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmapWithReflection);
         canvas.drawBitmap(bitmap, 0.0f, 0.0f, (Paint) null);
-        Canvas canvas2 = canvas;
-        canvas2.drawRect(0.0f, (float) h, (float) w, (float) (h + 4), new Paint());
-        canvas.drawBitmap(reflectionImage, 0.0f, (float) (h + 4), (Paint) null);
+        Paint deafalutPaint = new Paint();
+        canvas.drawRect(0.0f, h, w, h + 4, deafalutPaint);
+        canvas.drawBitmap(reflectionImage, 0.0f, h + 4, (Paint) null);
         Paint paint = new Paint();
-        paint.setShader(new LinearGradient(0.0f, (float) bitmap.getHeight(), 0.0f, (float) (bitmapWithReflection.getHeight() + 4), 1895825407, ViewCompat.MEASURED_SIZE_MASK, Shader.TileMode.CLAMP));
+        LinearGradient shader = new LinearGradient(0.0f, bitmap.getHeight(), 0.0f, bitmapWithReflection.getHeight() + 4, 1895825407, (int) ViewCompat.MEASURED_SIZE_MASK, Shader.TileMode.CLAMP);
+        paint.setShader(shader);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-        canvas.drawRect(0.0f, (float) h, (float) w, (float) (bitmapWithReflection.getHeight() + 4), paint);
+        canvas.drawRect(0.0f, h, w, bitmapWithReflection.getHeight() + 4, paint);
         return bitmapWithReflection;
     }
 
     public static Drawable bitmapToDrawable(Bitmap bitmap) {
-        return new BitmapDrawable(bitmap);
+        BitmapDrawable bd = new BitmapDrawable(bitmap);
+        return bd;
     }
 
     public static Bitmap getViewBitmap(View v) {
@@ -202,29 +207,33 @@ public class BitmapUtil {
             fileOutputStream.flush();
             fileOutputStream.close();
         } catch (FileNotFoundException e) {
-            LOGE.D("Exception:FileNotFoundException");
+            LOGE.m44D("Exception:FileNotFoundException");
             e.printStackTrace();
         } catch (IOException e2) {
-            LOGE.D("IOException:IOException");
+            LOGE.m44D("IOException:IOException");
             e2.printStackTrace();
         }
     }
 
     public static Drawable getResourceDrawable(Context context, int resId) {
-        return context.getResources().getDrawable(resId);
+        Resources resources = context.getResources();
+        return resources.getDrawable(resId);
     }
 
     public static Bitmap getResourceBitmap(Context context, int resId) {
-        return BitmapFactory.decodeStream(context.getResources().openRawResource(resId));
+        InputStream is = context.getResources().openRawResource(resId);
+        return BitmapFactory.decodeStream(is);
     }
 
     public static Uri bitmapToUri(Bitmap bitmap, Context context) {
-        return Uri.parse(MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, (String) null, (String) null));
+        Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, (String) null, (String) null));
+        return uri;
     }
 
     public static Bitmap uriToBitmap(Uri uri, Context context) {
         try {
-            return zoomBitmap(MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri), 200, 200);
+            Bitmap bitmap = zoomBitmap(MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri), 200, 200);
+            return bitmap;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -245,82 +254,73 @@ public class BitmapUtil {
     private static Bitmap big(Bitmap bitmap) {
         Matrix matrix = new Matrix();
         matrix.postScale(1.5f, 1.5f);
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        Bitmap resizeBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        return resizeBmp;
     }
 
     public static File small(File file) {
-        File resultFile = file;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        Bitmap bitmap = BitmapFactory.decodeFile(resultFile.getPath(), options);
+        BitmapFactory.decodeFile(file.getPath(), options);
         int height = options.outHeight;
         int width = options.outWidth;
         int scale = 1;
-        if (height > 1000 || width > 1000) {
-            scale = 2;
-        }
-        if (height > 2000 || width > 2000) {
-            scale = 3;
-        }
-        if (height > 300 || width > 3000) {
-            scale = 4;
-        }
+        scale = (height > 1000 || width > 1000) ? 2 : 2;
+        scale = (height > 2000 || width > 2000) ? 3 : 3;
+        scale = (height > 300 || width > 3000) ? 4 : 4;
         options.inSampleSize = scale;
         options.inJustDecodeBounds = false;
-        Bitmap bitmap2 = BitmapFactory.decodeFile(resultFile.getPath(), options);
+        Bitmap bitmap2 = BitmapFactory.decodeFile(file.getPath(), options);
         try {
-            bitmap2.compress(Bitmap.CompressFormat.PNG, 30, new FileOutputStream(resultFile, false));
+            FileOutputStream out = new FileOutputStream(file, false);
+            bitmap2.compress(Bitmap.CompressFormat.PNG, 30, out);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return resultFile;
+        return file;
     }
 
     public static Bitmap toRoundBitmap(Bitmap bitmap) {
-        float dst_right;
-        float dst_top;
-        float dst_left;
-        float bottom;
-        float top;
+        float roundPx;
+        float clip;
         float right;
         float left;
-        float clip;
-        float roundPx;
+        float top;
+        float bottom;
+        float dst_left;
+        float dst_top;
+        float dst_right;
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         if (width <= height) {
-            roundPx = (float) (width / 2);
+            roundPx = width / 2;
             clip = 0.0f;
             left = 0.0f;
-            right = (float) width;
-            top = (float) width;
+            right = width;
+            top = width;
             height = width;
             bottom = 0.0f;
             dst_left = 0.0f;
-            dst_top = (float) width;
-            dst_right = (float) width;
+            dst_top = width;
+            dst_right = width;
         } else {
-            roundPx = (float) (height / 2);
-            clip = (float) ((width - height) / 2);
-            float f = clip;
-            right = ((float) width) - clip;
+            roundPx = height / 2;
+            clip = (width - height) / 2;
+            right = width - clip;
+            float bottom2 = height;
             width = height;
+            float dst_right2 = height;
             left = 0.0f;
-            top = (float) height;
+            top = bottom2;
             bottom = 0.0f;
             dst_left = 0.0f;
-            dst_top = (float) height;
-            dst_right = (float) height;
+            dst_top = dst_right2;
+            dst_right = height;
         }
         Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
         Paint paint = new Paint();
-        int i = width;
-        int i2 = height;
-        float f2 = clip;
-        float f3 = left;
         Rect src = new Rect((int) clip, (int) left, (int) right, (int) top);
-        float f4 = right;
         Rect dst = new Rect((int) bottom, (int) dst_left, (int) dst_top, (int) dst_right);
         new RectF(dst);
         paint.setAntiAlias(true);
@@ -335,7 +335,6 @@ public class BitmapUtil {
     public static Bitmap createBlurBitmap(Bitmap sentBitmap, int radius) {
         int i;
         int i2;
-        int i3;
         int p = radius;
         Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
         if (p < 1) {
@@ -343,7 +342,7 @@ public class BitmapUtil {
         }
         int w = bitmap.getWidth();
         int rbs = bitmap.getHeight();
-        int[] pix = new int[(w * rbs)];
+        int[] pix = new int[w * rbs];
         bitmap.getPixels(pix, 0, w, 0, 0, w, rbs);
         int wm = w - 1;
         int p2 = rbs - 1;
@@ -355,24 +354,16 @@ public class BitmapUtil {
         int[] vmin = new int[Math.max(w, rbs)];
         int divsum = (div + 1) >> 1;
         int divsum2 = divsum * divsum;
-        int[] dv = new int[(divsum2 * 256)];
-        int i4 = 0;
-        while (i4 < divsum2 * 256) {
-            dv[i4] = i4 / divsum2;
-            i4++;
-            Bitmap bitmap2 = sentBitmap;
+        int[] dv = new int[divsum2 * 256];
+        for (int i3 = 0; i3 < divsum2 * 256; i3++) {
+            dv[i3] = i3 / divsum2;
         }
         int yi = 0;
         int yw = 0;
-        int i5 = i4;
-        int[] iArr = new int[2];
-        iArr[1] = 3;
-        iArr[0] = div;
-        int[][] stack = (int[][]) Array.newInstance(int.class, iArr);
+        int[][] stack = (int[][]) Array.newInstance(int.class, div, 3);
         int r1 = p + 1;
-        int divsum3 = divsum2;
-        int y = 0;
-        while (y < rbs) {
+        int divsum3 = 0;
+        while (divsum3 < rbs) {
             int hm = 0;
             int rsum = 0;
             int boutsum = 0;
@@ -382,24 +373,26 @@ public class BitmapUtil {
             int ginsum = 0;
             int rinsum = 0;
             int wh = bsum;
-            int gsum = 0;
-            Bitmap bitmap3 = bitmap;
-            int i6 = -p;
+            int wh2 = -p;
+            int i4 = 0;
+            Bitmap bitmap2 = bitmap;
+            int p3 = wh2;
             int bsum2 = 0;
-            while (i6 <= p) {
+            while (p3 <= p) {
                 int h = rbs;
                 int h2 = hm;
                 int hm2 = p2;
-                int p3 = pix[yi + Math.min(wm, Math.max(i6, h2))];
-                int[] sir = stack[i6 + p];
-                sir[h2] = (p3 & 16711680) >> 16;
-                sir[1] = (p3 & MotionEventCompat.ACTION_POINTER_INDEX_MASK) >> 8;
-                sir[2] = p3 & 255;
-                int rbs2 = r1 - Math.abs(i6);
+                int hm3 = Math.max(p3, h2);
+                int p4 = pix[yi + Math.min(wm, hm3)];
+                int[] sir = stack[p3 + p];
+                sir[h2] = (p4 & 16711680) >> 16;
+                sir[1] = (p4 & MotionEventCompat.ACTION_POINTER_INDEX_MASK) >> 8;
+                sir[2] = p4 & 255;
+                int rbs2 = r1 - Math.abs(p3);
                 rsum += sir[0] * rbs2;
-                gsum += sir[1] * rbs2;
+                i4 += sir[1] * rbs2;
                 bsum2 += sir[2] * rbs2;
-                if (i6 > 0) {
+                if (p3 > 0) {
                     rinsum += sir[0];
                     ginsum += sir[1];
                     binsum += sir[2];
@@ -408,42 +401,46 @@ public class BitmapUtil {
                     goutsum += sir[1];
                     boutsum += sir[2];
                 }
-                i6++;
+                p3++;
                 p2 = hm2;
                 rbs = h;
                 hm = 0;
             }
-            int hm3 = p2;
+            int hm4 = p2;
             int h3 = rbs;
             int stackpointer = radius;
             int x = 0;
             while (x < w) {
                 r[yi] = dv[rsum];
-                g[yi] = dv[gsum];
+                g[yi] = dv[i4];
                 b[yi] = dv[bsum2];
                 int rsum2 = rsum - routsum;
-                int gsum2 = gsum - goutsum;
+                int gsum = i4 - goutsum;
                 int bsum3 = bsum2 - boutsum;
-                int[] sir2 = stack[((stackpointer - p) + div) % div];
+                int stackstart = (stackpointer - p) + div;
+                int[] sir2 = stack[stackstart % div];
                 int routsum2 = routsum - sir2[0];
                 int goutsum2 = goutsum - sir2[1];
                 int boutsum2 = boutsum - sir2[2];
-                if (y == 0) {
-                    i3 = i6;
-                    vmin[x] = Math.min(x + p + 1, wm);
+                if (divsum3 != 0) {
+                    i2 = p3;
                 } else {
-                    i3 = i6;
+                    i2 = p3;
+                    int i5 = x + p + 1;
+                    vmin[x] = Math.min(i5, wm);
                 }
-                int p4 = pix[yw + vmin[x]];
-                sir2[0] = (p4 & 16711680) >> 16;
-                sir2[1] = (p4 & MotionEventCompat.ACTION_POINTER_INDEX_MASK) >> 8;
+                int i6 = vmin[x];
+                int p5 = pix[yw + i6];
+                sir2[0] = (p5 & 16711680) >> 16;
+                sir2[1] = (p5 & MotionEventCompat.ACTION_POINTER_INDEX_MASK) >> 8;
                 int wm2 = wm;
-                sir2[2] = p4 & 255;
+                int wm3 = p5 & 255;
+                sir2[2] = wm3;
                 int rinsum2 = rinsum + sir2[0];
                 int ginsum2 = ginsum + sir2[1];
                 int binsum2 = binsum + sir2[2];
                 rsum = rsum2 + rinsum2;
-                gsum = gsum2 + ginsum2;
+                i4 = gsum + ginsum2;
                 bsum2 = bsum3 + binsum2;
                 stackpointer = (stackpointer + 1) % div;
                 int[] sir3 = stack[stackpointer % div];
@@ -456,136 +453,121 @@ public class BitmapUtil {
                 yi++;
                 x++;
                 wm = wm2;
-                i6 = i3;
+                p3 = i2;
             }
-            int i7 = i6;
-            int i8 = wm;
             yw += w;
-            y++;
-            p2 = hm3;
-            bitmap = bitmap3;
+            divsum3++;
+            p2 = hm4;
+            bitmap = bitmap2;
             bsum = wh;
             rbs = h3;
-            int gsum3 = i7;
         }
-        Bitmap bitmap4 = bitmap;
-        int wh2 = bsum;
-        int hm4 = p2;
+        Bitmap bitmap3 = bitmap;
+        int hm5 = p2;
         int h4 = rbs;
-        int i9 = wm;
         int x2 = 0;
-        int h5 = y;
+        int h5 = divsum3;
         while (x2 < w) {
             int bsum4 = 0;
-            int gsum4 = 0;
+            int gsum2 = 0;
             int rsum3 = 0;
-            int boutsum3 = 0;
-            int i10 = h5;
-            int i11 = -p;
             int yp = (-p) * w;
+            int yp2 = -p;
+            int i7 = 0;
+            int y = yp2;
+            int yp3 = yp;
             int rinsum3 = 0;
             int ginsum3 = 0;
             int binsum3 = 0;
+            int binsum4 = 0;
             int routsum3 = 0;
-            int goutsum3 = 0;
-            int goutsum4 = i10;
-            while (i11 <= p) {
+            while (y <= p) {
                 int[] vmin2 = vmin;
-                int yi2 = Math.max(0, yp) + x2;
-                int[] sir4 = stack[i11 + p];
+                int yi2 = Math.max(0, yp3) + x2;
+                int[] sir4 = stack[y + p];
                 sir4[0] = r[yi2];
                 sir4[1] = g[yi2];
                 sir4[2] = b[yi2];
-                int rbs3 = r1 - Math.abs(i11);
+                int rbs3 = r1 - Math.abs(y);
                 rsum3 += r[yi2] * rbs3;
-                gsum4 += g[yi2] * rbs3;
+                gsum2 += g[yi2] * rbs3;
                 bsum4 += b[yi2] * rbs3;
-                if (i11 > 0) {
+                if (y > 0) {
                     rinsum3 += sir4[0];
                     ginsum3 += sir4[1];
                     binsum3 += sir4[2];
                 } else {
-                    routsum3 += sir4[0];
-                    goutsum3 += sir4[1];
-                    boutsum3 += sir4[2];
+                    binsum4 += sir4[0];
+                    routsum3 += sir4[1];
+                    i7 += sir4[2];
                 }
-                int i12 = rbs3;
-                int hm5 = hm4;
-                if (i11 < hm5) {
-                    yp += w;
+                int rbs4 = hm5;
+                if (y < rbs4) {
+                    yp3 += w;
                 }
-                i11++;
-                hm4 = hm5;
+                y++;
+                hm5 = rbs4;
                 vmin = vmin2;
             }
             int[] vmin3 = vmin;
-            int hm6 = hm4;
-            int rsum4 = rsum3;
-            int y2 = 0;
-            int stackpointer2 = radius;
-            int boutsum4 = boutsum3;
+            int hm6 = hm5;
             int yi3 = x2;
+            int yi4 = rsum3;
+            int rsum4 = 0;
+            int stackpointer2 = radius;
+            int stackpointer3 = i7;
+            int boutsum3 = yi3;
             while (true) {
-                i = i11;
-                i2 = h4;
-                if (y2 >= i2) {
-                    break;
+                int i8 = y;
+                i = h4;
+                if (rsum4 < i) {
+                    pix[boutsum3] = (pix[boutsum3] & ViewCompat.MEASURED_STATE_MASK) | (dv[yi4] << 16) | (dv[gsum2] << 8) | dv[bsum4];
+                    int rsum5 = yi4 - binsum4;
+                    int gsum3 = gsum2 - routsum3;
+                    int bsum5 = bsum4 - stackpointer3;
+                    int stackstart2 = (stackpointer2 - p) + div;
+                    int[] sir5 = stack[stackstart2 % div];
+                    int routsum4 = binsum4 - sir5[0];
+                    int goutsum3 = routsum3 - sir5[1];
+                    int boutsum4 = stackpointer3 - sir5[2];
+                    if (x2 == 0) {
+                        vmin3[rsum4] = Math.min(rsum4 + r1, hm6) * w;
+                    }
+                    int p6 = vmin3[rsum4] + x2;
+                    sir5[0] = r[p6];
+                    sir5[1] = g[p6];
+                    sir5[2] = b[p6];
+                    int rinsum4 = rinsum3 + sir5[0];
+                    int ginsum4 = ginsum3 + sir5[1];
+                    int binsum5 = binsum3 + sir5[2];
+                    yi4 = rsum5 + rinsum4;
+                    gsum2 = gsum3 + ginsum4;
+                    bsum4 = bsum5 + binsum5;
+                    stackpointer2 = (stackpointer2 + 1) % div;
+                    int[] sir6 = stack[stackpointer2];
+                    binsum4 = routsum4 + sir6[0];
+                    routsum3 = goutsum3 + sir6[1];
+                    stackpointer3 = boutsum4 + sir6[2];
+                    rinsum3 = rinsum4 - sir6[0];
+                    ginsum3 = ginsum4 - sir6[1];
+                    binsum3 = binsum5 - sir6[2];
+                    boutsum3 += w;
+                    rsum4++;
+                    p = radius;
+                    h4 = i;
+                    y = i8;
                 }
-                pix[yi3] = (pix[yi3] & ViewCompat.MEASURED_STATE_MASK) | (dv[rsum4] << 16) | (dv[gsum4] << 8) | dv[bsum4];
-                int rsum5 = rsum4 - routsum3;
-                int gsum5 = gsum4 - goutsum3;
-                int bsum5 = bsum4 - boutsum4;
-                int[] sir5 = stack[((stackpointer2 - p) + div) % div];
-                int routsum4 = routsum3 - sir5[0];
-                int goutsum5 = goutsum3 - sir5[1];
-                int boutsum5 = boutsum4 - sir5[2];
-                if (x2 == 0) {
-                    vmin3[y2] = Math.min(y2 + r1, hm6) * w;
-                }
-                int p5 = vmin3[y2] + x2;
-                sir5[0] = r[p5];
-                sir5[1] = g[p5];
-                sir5[2] = b[p5];
-                int rinsum4 = rinsum3 + sir5[0];
-                int ginsum4 = ginsum3 + sir5[1];
-                int binsum4 = binsum3 + sir5[2];
-                rsum4 = rsum5 + rinsum4;
-                gsum4 = gsum5 + ginsum4;
-                bsum4 = bsum5 + binsum4;
-                stackpointer2 = (stackpointer2 + 1) % div;
-                int[] sir6 = stack[stackpointer2];
-                routsum3 = routsum4 + sir6[0];
-                goutsum3 = goutsum5 + sir6[1];
-                boutsum4 = boutsum5 + sir6[2];
-                rinsum3 = rinsum4 - sir6[0];
-                ginsum3 = ginsum4 - sir6[1];
-                binsum3 = binsum4 - sir6[2];
-                yi3 += w;
-                y2++;
-                p = radius;
-                h4 = i2;
-                i11 = i;
             }
             x2++;
             p = radius;
-            hm4 = hm6;
-            h4 = i2;
-            h5 = y2;
-            int rsum6 = yi3;
-            int yi4 = i;
+            hm5 = hm6;
+            h4 = i;
+            h5 = rsum4;
             vmin = vmin3;
         }
-        int i13 = h5;
-        int[] iArr2 = dv;
-        int i14 = divsum3;
-        int i15 = hm4;
-        int[] iArr3 = vmin;
-        int[] iArr4 = b;
-        int[] iArr5 = g;
-        int[] iArr6 = r;
-        int i16 = wh2;
-        bitmap4.setPixels(pix, 0, w, 0, 0, w, h4);
-        return bitmap4;
+        int y2 = h4;
+        bitmap3.setPixels(pix, 0, w, 0, 0, w, y2);
+        return bitmap3;
     }
 
     public static Bitmap cropBitmap(Bitmap bitmap) {
@@ -593,7 +575,9 @@ public class BitmapUtil {
         int h = bitmap.getHeight();
         int cropWidth = w >= (h * 16) / 9 ? h : w;
         int cropHeight = (cropWidth * 720) / 1280;
-        return Bitmap.createBitmap(bitmap, (w - cropWidth) / 2, (h - cropHeight) / 2, cropWidth, cropHeight, (Matrix) null, false);
+        int xTopLeft = (w - cropWidth) / 2;
+        int yTopLeft = (h - cropHeight) / 2;
+        return Bitmap.createBitmap(bitmap, xTopLeft, yTopLeft, cropWidth, cropHeight, (Matrix) null, false);
     }
 
     public static Bitmap compoundBitmap(Bitmap downBitmap, Bitmap upBitmap) {
@@ -603,7 +587,8 @@ public class BitmapUtil {
         if (mBitmapWidth == upBitmap.getWidth() && mBitmapHeight == upBitmap.getHeight()) {
             for (int i = 0; i < mBitmapHeight; i++) {
                 for (int j = 0; j < mBitmapWidth; j++) {
-                    if (upBitmap.getPixel(j, i) != -16777216) {
+                    int color = upBitmap.getPixel(j, i);
+                    if (color != -16777216) {
                         mBitmap.setPixel(j, i, upBitmap.getPixel(j, i));
                     }
                 }
@@ -615,7 +600,7 @@ public class BitmapUtil {
     public static Bitmap mergeBitmap(Bitmap firstBitmap, Bitmap secondBitmap) {
         Bitmap bitmap = Bitmap.createBitmap(firstBitmap.getWidth(), firstBitmap.getHeight(), firstBitmap.getConfig());
         Canvas canvas = new Canvas(bitmap);
-        canvas.drawBitmap(firstBitmap, new Matrix(), (Paint) null);
+        canvas.drawBitmap(firstBitmap, new Matrix(), null);
         canvas.drawBitmap(secondBitmap, 0.0f, 0.0f, (Paint) null);
         return bitmap;
     }
@@ -626,7 +611,7 @@ public class BitmapUtil {
 
     public static Drawable maskDrawable(Drawable in) {
         Bitmap before = IconUtils.DrawableToBitmap(in);
-        Bitmap shade = BitmapFactory.decodeResource(MainActivity.mainActivity.getResources(), R.drawable.benz_mbux_2021_album_selector);
+        Bitmap shade = BitmapFactory.decodeResource(MainActivity.mainActivity.getResources(), C0899R.C0900drawable.benz_mbux_2021_album_selector);
         Bitmap before2 = scaleBitmap(before, shade.getWidth(), shade.getHeight());
         Bitmap after = Bitmap.createBitmap(shade.getWidth(), shade.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(after);
@@ -635,7 +620,8 @@ public class BitmapUtil {
         canvas.drawBitmap(shade, 0.0f, 0.0f, (Paint) null);
         canvas.drawBitmap(before2, 0.0f, 0.0f, (Paint) null);
         canvas.drawBitmap(shade, 0.0f, 0.0f, paint);
-        return new BitmapDrawable(MainActivity.mainActivity.getResources(), after);
+        BitmapDrawable drawable = new BitmapDrawable(MainActivity.mainActivity.getResources(), after);
+        return drawable;
     }
 
     private static Bitmap scaleBitmap(Bitmap origin, int newWidth, int newHeight) {
@@ -644,8 +630,10 @@ public class BitmapUtil {
         }
         int height = origin.getHeight();
         int width = origin.getWidth();
+        float scaleWidth = newWidth / width;
+        float scaleHeight = newHeight / height;
         Matrix matrix = new Matrix();
-        matrix.postScale(((float) newWidth) / ((float) width), ((float) newHeight) / ((float) height));
+        matrix.postScale(scaleWidth, scaleHeight);
         Bitmap newBM = Bitmap.createBitmap(origin, 0, 0, width, height, matrix, true);
         if (!origin.isRecycled()) {
             origin.recycle();
@@ -661,8 +649,11 @@ public class BitmapUtil {
         int height = drawable.getIntrinsicHeight();
         Bitmap oldbmp = drawableToBitmap(drawable);
         Matrix matrix = new Matrix();
-        matrix.preScale(((float) w) / ((float) width), ((float) h) / ((float) height));
+        float scaleWidth = w / width;
+        float scaleHeight = h / height;
+        matrix.preScale(scaleWidth, scaleHeight);
         matrix.postRotate(angle);
-        return Bitmap.createBitmap(oldbmp, 0, 0, width, height, matrix, true);
+        Bitmap newbmp = Bitmap.createBitmap(oldbmp, 0, 0, width, height, matrix, true);
+        return newbmp;
     }
 }

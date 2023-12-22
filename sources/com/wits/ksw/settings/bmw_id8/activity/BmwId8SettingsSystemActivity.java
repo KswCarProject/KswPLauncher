@@ -3,7 +3,6 @@ package com.wits.ksw.settings.bmw_id8.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
-import android.databinding.ObservableBoolean;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -12,7 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.databinding.BmwId8SettingsSystemLayoutBinding;
 import com.wits.ksw.launcher.utils.AnimationUtils;
 import com.wits.ksw.launcher.utils.KswUtils;
@@ -24,39 +23,36 @@ import com.wits.ksw.settings.bmw_id8.layout.BmwId8SettingsSystemFuelLay;
 import com.wits.ksw.settings.bmw_id8.layout.BmwId8SettingsSystemMusicLay;
 import com.wits.ksw.settings.bmw_id8.layout.BmwId8SettingsSystemTempLay;
 import com.wits.ksw.settings.bmw_id8.layout.BmwId8SettingsSystemVideoLay;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
+/* loaded from: classes11.dex */
 public class BmwId8SettingsSystemActivity extends BaseSkinActivity implements View.OnClickListener {
-    private final String TAG = "BmwId8SettingsSystemActivity";
-    private int[] isSecondViewId = {R.id.bmw_id8_settings_system_camera, R.id.bmw_id8_settings_system_brightness, R.id.bmw_id8_settings_system_temp, R.id.bmw_id8_settings_system_fuel, R.id.bmw_id8_settings_system_music, R.id.bmw_id8_settings_system_video};
-    /* access modifiers changed from: private */
-    public BmwId8SettingsSystemLayoutBinding mBinding;
+    private BmwId8SettingsSystemLayoutBinding mBinding;
     private BmwId8SettingsSystemBrightnessLay mBrightnessLay;
     private BmwId8SettingsSystemCameraLay mCameraLay;
     private CountDownTimer mCountDownTimer;
     private BmwId8SettingsSystemFuelLay mFuelLay;
     private BmwId8SettingsSystemMusicLay mMusicLay;
-    /* access modifiers changed from: private */
-    public int mOffset = ScreenUtil.dip2px(4.0f);
     private BmwId8SettingsSystemTempLay mTempLay;
     private BmwId8SettingsSystemVideoLay mVideoLay;
-    /* access modifiers changed from: private */
-    public BmwId8SettingsViewModel mViewModel;
-    private int[] relativeLayoutId = {R.id.bmw_id8_settings_system_mirror, R.id.bmw_id8_settings_system_motion, R.id.bmw_id8_settings_system_lines, R.id.bmw_id8_settings_system_radar, R.id.bmw_id8_settings_system_mute, R.id.bmw_id8_settings_system_camera, R.id.bmw_id8_settings_system_brightness, R.id.bmw_id8_settings_system_temp, R.id.bmw_id8_settings_system_fuel, R.id.bmw_id8_settings_system_music, R.id.bmw_id8_settings_system_video};
-    /* access modifiers changed from: private */
-    public int scrollActualHeight;
+    private BmwId8SettingsViewModel mViewModel;
+    private int scrollActualHeight;
+    private final String TAG = "BmwId8SettingsSystemActivity";
+    private int[] relativeLayoutId = {C0899R.C0901id.bmw_id8_settings_system_mirror, C0899R.C0901id.bmw_id8_settings_system_motion, C0899R.C0901id.bmw_id8_settings_system_lines, C0899R.C0901id.bmw_id8_settings_system_radar, C0899R.C0901id.bmw_id8_settings_system_mute, C0899R.C0901id.bmw_id8_settings_system_camera, C0899R.C0901id.bmw_id8_settings_system_brightness, C0899R.C0901id.bmw_id8_settings_system_temp, C0899R.C0901id.bmw_id8_settings_system_fuel, C0899R.C0901id.bmw_id8_settings_system_music, C0899R.C0901id.bmw_id8_settings_system_video};
+    private int[] isSecondViewId = {C0899R.C0901id.bmw_id8_settings_system_camera, C0899R.C0901id.bmw_id8_settings_system_brightness, C0899R.C0901id.bmw_id8_settings_system_temp, C0899R.C0901id.bmw_id8_settings_system_fuel, C0899R.C0901id.bmw_id8_settings_system_music, C0899R.C0901id.bmw_id8_settings_system_video};
+    private int mOffset = ScreenUtil.dip2px(4.0f);
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override // com.wits.ksw.settings.BaseSkinActivity, android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("BmwId8SettingsSystemActivity", " onCreate ");
-        this.mBinding = (BmwId8SettingsSystemLayoutBinding) DataBindingUtil.setContentView(this, R.layout.bmw_id8_settings_system_layout);
-        BmwId8SettingsViewModel instance = BmwId8SettingsViewModel.getInstance();
-        this.mViewModel = instance;
-        this.mBinding.setViewModel(instance);
+        this.mBinding = (BmwId8SettingsSystemLayoutBinding) DataBindingUtil.setContentView(this, C0899R.C0902layout.bmw_id8_settings_system_layout);
+        BmwId8SettingsViewModel bmwId8SettingsViewModel = BmwId8SettingsViewModel.getInstance();
+        this.mViewModel = bmwId8SettingsViewModel;
+        this.mBinding.setViewModel(bmwId8SettingsViewModel);
         initView();
     }
 
@@ -75,29 +71,26 @@ public class BmwId8SettingsSystemActivity extends BaseSkinActivity implements Vi
                     break;
                 }
                 findViewById(iArr[i]).setOnClickListener(this);
-                findViewById(this.relativeLayoutId[i]).setOnTouchListener(new View.OnTouchListener() {
+                findViewById(this.relativeLayoutId[i]).setOnTouchListener(new View.OnTouchListener() { // from class: com.wits.ksw.settings.bmw_id8.activity.BmwId8SettingsSystemActivity.1
+                    @Override // android.view.View.OnTouchListener
                     public boolean onTouch(View v, MotionEvent event) {
                         Log.i("BmwId8SettingsSystemActivity", " onTouch v " + v.toString() + " Action " + event.getAction() + " v.isFocused() " + v.isFocused());
-                        if (event.getAction() != 1 || v.isFocused()) {
+                        if (event.getAction() == 1 && !v.isFocused()) {
+                            v.requestFocus();
                             return false;
                         }
-                        v.requestFocus();
                         return false;
                     }
                 });
                 i++;
             }
-            boolean z = false;
             this.mViewModel.rearMirror.set(PowerManagerApp.getSettingsInt(KeyConfig.HOU_SHI_SX) != 0);
             this.mViewModel.disableVideo.set(PowerManagerApp.getSettingsInt(KeyConfig.XING_CHE_JZSP) != 0);
             this.mViewModel.parkLines.set(PowerManagerApp.getSettingsInt(KeyConfig.DAO_CHE_GJ) != 0);
             this.mViewModel.parkRadar.set(PowerManagerApp.getSettingsInt(KeyConfig.DAO_CHE_LD) != 0);
-            ObservableBoolean observableBoolean = this.mViewModel.parkMute;
-            if (PowerManagerApp.getSettingsInt(KeyConfig.DAO_CHE_JY) != 0) {
-                z = true;
-            }
-            observableBoolean.set(z);
-            this.mBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
+            this.mViewModel.parkMute.set(PowerManagerApp.getSettingsInt(KeyConfig.DAO_CHE_JY) != 0);
+            this.mBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() { // from class: com.wits.ksw.settings.bmw_id8.activity.BmwId8SettingsSystemActivity.2
+                @Override // android.view.ViewTreeObserver.OnGlobalFocusChangeListener
                 public void onGlobalFocusChanged(View oldFocus, View newFocus) {
                     Log.i("BmwId8SettingsSystemActivity", "onGlobalFocusChanged: " + BmwId8SettingsSystemActivity.this.mBinding.bmwId8SettingsSystemScroll.hasFocus());
                     if (BmwId8SettingsSystemActivity.this.mBinding.bmwId8SettingsSystemScroll.hasFocus()) {
@@ -111,7 +104,8 @@ public class BmwId8SettingsSystemActivity extends BaseSkinActivity implements Vi
                     }
                 }
             });
-            this.mViewModel.systemBgShow.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            this.mViewModel.systemBgShow.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() { // from class: com.wits.ksw.settings.bmw_id8.activity.BmwId8SettingsSystemActivity.3
+                @Override // android.databinding.Observable.OnPropertyChangedCallback
                 public void onPropertyChanged(Observable sender, int propertyId) {
                     Log.i("BmwId8SettingsSystemActivity", " onPropertyChanged systemBgShow " + BmwId8SettingsSystemActivity.this.mViewModel.systemBgShow.get());
                     if (BmwId8SettingsSystemActivity.this.mViewModel.systemBgShow.get()) {
@@ -123,7 +117,8 @@ public class BmwId8SettingsSystemActivity extends BaseSkinActivity implements Vi
                     AnimationUtils.playAnimation(BmwId8SettingsSystemActivity.this.getApplicationContext(), BmwId8SettingsSystemActivity.this.mBinding.bmwId8SettingsSystemRightArrow, false);
                 }
             });
-            this.mBinding.bmwId8SettingsSystemScroll.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            this.mBinding.bmwId8SettingsSystemScroll.setOnScrollChangeListener(new View.OnScrollChangeListener() { // from class: com.wits.ksw.settings.bmw_id8.activity.BmwId8SettingsSystemActivity.4
+                @Override // android.view.View.OnScrollChangeListener
                 public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                     Log.i("BmwId8SettingsSystemActivity", " onScrollChange oldScrollY " + oldScrollY + " scrollY " + scrollY);
                     BmwId8SettingsSystemActivity.this.startCount();
@@ -134,14 +129,14 @@ public class BmwId8SettingsSystemActivity extends BaseSkinActivity implements Vi
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void onNewIntent(Intent intent) {
+    @Override // android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Log.i("BmwId8SettingsSystemActivity", " onNewIntent ");
     }
 
-    /* access modifiers changed from: protected */
-    public void onResume() {
+    @Override // android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onResume() {
         super.onResume();
         Log.i("BmwId8SettingsSystemActivity", " onResume ");
         initData();
@@ -149,7 +144,7 @@ public class BmwId8SettingsSystemActivity extends BaseSkinActivity implements Vi
 
     private void initData() {
         try {
-            selectLayout((View) null, 0);
+            selectLayout(null, 0);
             this.mViewModel.systemBgShow.set(true);
             this.mBinding.bmwId8SettingsSystemScroll.scrollTo(0, 0);
             if (getCurrentFocus() == null) {
@@ -160,57 +155,59 @@ public class BmwId8SettingsSystemActivity extends BaseSkinActivity implements Vi
         }
     }
 
+    @Override // android.view.Window.Callback
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
 
+    @Override // android.view.View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.bmw_id8_settings_system_brightness /*2131296595*/:
+            case C0899R.C0901id.bmw_id8_settings_system_brightness /* 2131296620 */:
                 selectLayout(this.mBrightnessLay, v.getId());
                 this.mBrightnessLay.requestFocus();
                 return;
-            case R.id.bmw_id8_settings_system_camera /*2131296596*/:
+            case C0899R.C0901id.bmw_id8_settings_system_camera /* 2131296621 */:
                 selectLayout(this.mCameraLay, v.getId());
                 this.mCameraLay.requestFocus();
                 return;
-            case R.id.bmw_id8_settings_system_fuel /*2131296602*/:
+            case C0899R.C0901id.bmw_id8_settings_system_fuel /* 2131296628 */:
                 selectLayout(this.mFuelLay, v.getId());
                 this.mFuelLay.requestFocus();
                 return;
-            case R.id.bmw_id8_settings_system_lines /*2131296609*/:
+            case C0899R.C0901id.bmw_id8_settings_system_lines /* 2131296635 */:
                 this.mViewModel.parkLines.set(!this.mViewModel.parkLines.get());
                 FileUtils.savaData(KeyConfig.DAO_CHE_GJ, this.mViewModel.parkLines.get());
-                selectLayout((View) null, 0);
+                selectLayout(null, 0);
                 return;
-            case R.id.bmw_id8_settings_system_mirror /*2131296610*/:
+            case C0899R.C0901id.bmw_id8_settings_system_mirror /* 2131296636 */:
                 this.mViewModel.rearMirror.set(!this.mViewModel.rearMirror.get());
                 FileUtils.savaData(KeyConfig.HOU_SHI_SX, this.mViewModel.rearMirror.get());
-                selectLayout((View) null, 0);
+                selectLayout(null, 0);
                 return;
-            case R.id.bmw_id8_settings_system_motion /*2131296611*/:
+            case C0899R.C0901id.bmw_id8_settings_system_motion /* 2131296637 */:
                 this.mViewModel.disableVideo.set(!this.mViewModel.disableVideo.get());
                 FileUtils.savaData(KeyConfig.XING_CHE_JZSP, this.mViewModel.disableVideo.get());
-                selectLayout((View) null, 0);
+                selectLayout(null, 0);
                 return;
-            case R.id.bmw_id8_settings_system_music /*2131296612*/:
-                selectLayout(this.mMusicLay, R.id.bmw_id8_settings_system_music);
+            case C0899R.C0901id.bmw_id8_settings_system_music /* 2131296638 */:
+                selectLayout(this.mMusicLay, C0899R.C0901id.bmw_id8_settings_system_music);
                 this.mMusicLay.requestFocus();
                 return;
-            case R.id.bmw_id8_settings_system_mute /*2131296615*/:
+            case C0899R.C0901id.bmw_id8_settings_system_mute /* 2131296641 */:
                 this.mViewModel.parkMute.set(!this.mViewModel.parkMute.get());
                 FileUtils.savaData(KeyConfig.DAO_CHE_JY, this.mViewModel.parkMute.get());
-                selectLayout((View) null, 0);
+                selectLayout(null, 0);
                 return;
-            case R.id.bmw_id8_settings_system_radar /*2131296616*/:
+            case C0899R.C0901id.bmw_id8_settings_system_radar /* 2131296642 */:
                 this.mViewModel.parkRadar.set(!this.mViewModel.parkRadar.get());
                 FileUtils.savaData(KeyConfig.DAO_CHE_LD, this.mViewModel.parkRadar.get());
-                selectLayout((View) null, 0);
+                selectLayout(null, 0);
                 return;
-            case R.id.bmw_id8_settings_system_temp /*2131296619*/:
+            case C0899R.C0901id.bmw_id8_settings_system_temp /* 2131296645 */:
                 selectLayout(this.mTempLay, v.getId());
                 this.mTempLay.requestFocus();
                 return;
-            case R.id.bmw_id8_settings_system_video /*2131296623*/:
+            case C0899R.C0901id.bmw_id8_settings_system_video /* 2131296649 */:
                 selectLayout(this.mVideoLay, v.getId());
                 this.mVideoLay.requestFocus();
                 return;
@@ -247,6 +244,7 @@ public class BmwId8SettingsSystemActivity extends BaseSkinActivity implements Vi
         }
     }
 
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity, android.view.Window.Callback
     public boolean dispatchKeyEvent(KeyEvent event) {
         int keyCode = event.getKeyCode();
         int action = event.getAction();
@@ -259,23 +257,26 @@ public class BmwId8SettingsSystemActivity extends BaseSkinActivity implements Vi
                     KswUtils.sendKeyDownUpSync(4);
                     return true;
                 }
+                break;
         }
         return super.dispatchKeyEvent(event);
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public boolean isSecondId(int viewId) {
         int i = 0;
         while (true) {
             try {
                 int[] iArr = this.isSecondViewId;
-                if (i >= iArr.length) {
+                if (i < iArr.length) {
+                    if (viewId != iArr[i]) {
+                        i++;
+                    } else {
+                        return true;
+                    }
+                } else {
                     return false;
                 }
-                if (viewId == iArr[i]) {
-                    return true;
-                }
-                i++;
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
@@ -286,10 +287,12 @@ public class BmwId8SettingsSystemActivity extends BaseSkinActivity implements Vi
     public CountDownTimer getCountDownTimer() {
         try {
             if (this.mCountDownTimer == null) {
-                this.mCountDownTimer = new CountDownTimer(100, 50) {
+                this.mCountDownTimer = new CountDownTimer(100L, 50L) { // from class: com.wits.ksw.settings.bmw_id8.activity.BmwId8SettingsSystemActivity.5
+                    @Override // android.os.CountDownTimer
                     public void onTick(long millisUntilFinished) {
                     }
 
+                    @Override // android.os.CountDownTimer
                     public void onFinish() {
                         int scrolly = BmwId8SettingsSystemActivity.this.mBinding.bmwId8SettingsSystemScroll.getScrollY();
                         if (BmwId8SettingsSystemActivity.this.mBinding.bmwId8SettingsSystemScroll.hasFocus()) {
@@ -299,12 +302,12 @@ public class BmwId8SettingsSystemActivity extends BaseSkinActivity implements Vi
                                 int itemHeight = BmwId8SettingsSystemActivity.this.mBinding.bmwId8SettingsSystemMirror.getHeight() - BmwId8SettingsSystemActivity.this.mOffset;
                                 int scrollHeight = BmwId8SettingsSystemActivity.this.mBinding.bmwId8SettingsSystemScroll.getHeight() + scrolly;
                                 BmwId8SettingsSystemActivity bmwId8SettingsSystemActivity = BmwId8SettingsSystemActivity.this;
-                                int unused = bmwId8SettingsSystemActivity.scrollActualHeight = ((LinearLayout) bmwId8SettingsSystemActivity.mBinding.bmwId8SettingsSystemScroll.getChildAt(0)).getBottom();
+                                bmwId8SettingsSystemActivity.scrollActualHeight = ((LinearLayout) bmwId8SettingsSystemActivity.mBinding.bmwId8SettingsSystemScroll.getChildAt(0)).getBottom();
                                 int focusViewHeight = (focusIndex + 1) * itemHeight;
                                 int focusViewHeight2 = focusViewHeight > BmwId8SettingsSystemActivity.this.scrollActualHeight ? BmwId8SettingsSystemActivity.this.scrollActualHeight : focusViewHeight;
                                 Log.e("BmwId8SettingsSystemActivity", "onFinish: focusViewHeight " + focusViewHeight2 + " itemHeight " + itemHeight + " scrollHeight " + scrollHeight);
                                 if (focusViewHeight2 < scrolly || (focusViewHeight2 - itemHeight) + BmwId8SettingsSystemActivity.this.mOffset > scrollHeight) {
-                                    int refresIndex = (int) Math.ceil((double) ((((float) scrolly) * 1.0f) / ((float) BmwId8SettingsSystemActivity.this.mBinding.bmwId8SettingsSystemMirror.getHeight())));
+                                    int refresIndex = (int) Math.ceil((scrolly * 1.0f) / BmwId8SettingsSystemActivity.this.mBinding.bmwId8SettingsSystemMirror.getHeight());
                                     Log.e("BmwId8SettingsSystemActivity", "onFinish: refresIndex " + refresIndex);
                                     View focusView = ((LinearLayout) BmwId8SettingsSystemActivity.this.mBinding.bmwId8SettingsSystemScroll.getChildAt(0)).getChildAt(refresIndex);
                                     focusView.setFocusableInTouchMode(true);
@@ -326,22 +329,22 @@ public class BmwId8SettingsSystemActivity extends BaseSkinActivity implements Vi
         getCountDownTimer().start();
     }
 
-    /* access modifiers changed from: protected */
-    public void onPause() {
+    @Override // android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onPause() {
         super.onPause();
         Log.i("BmwId8SettingsSystemActivity", " onPause ");
         getCountDownTimer().cancel();
     }
 
-    /* access modifiers changed from: protected */
-    public void onStop() {
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onStop() {
         super.onStop();
         Log.i("BmwId8SettingsSystemActivity", " onStop ");
         getCountDownTimer().cancel();
     }
 
-    /* access modifiers changed from: protected */
-    public void onDestroy() {
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onDestroy() {
         super.onDestroy();
         Log.i("BmwId8SettingsSystemActivity", " onDestroy ");
     }

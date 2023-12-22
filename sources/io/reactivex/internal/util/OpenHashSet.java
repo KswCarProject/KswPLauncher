@@ -1,5 +1,6 @@
 package io.reactivex.internal.util;
 
+/* loaded from: classes.dex */
 public final class OpenHashSet<T> {
     private static final int INT_PHI = -1640531527;
     T[] keys;
@@ -16,12 +17,12 @@ public final class OpenHashSet<T> {
         this(capacity, 0.75f);
     }
 
-    public OpenHashSet(int capacity, float loadFactor2) {
-        this.loadFactor = loadFactor2;
+    public OpenHashSet(int capacity, float loadFactor) {
+        this.loadFactor = loadFactor;
         int c = Pow2.roundToPowerOfTwo(capacity);
         this.mask = c - 1;
-        this.maxSize = (int) (((float) c) * loadFactor2);
-        this.keys = (Object[]) new Object[c];
+        this.maxSize = (int) (c * loadFactor);
+        this.keys = (T[]) new Object[c];
     }
 
     public boolean add(T value) {
@@ -73,8 +74,7 @@ public final class OpenHashSet<T> {
         return removeEntry(pos, a, m);
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean removeEntry(int pos, T[] a, int m) {
+    boolean removeEntry(int pos, T[] a, int m) {
         T curr;
         this.size--;
         while (true) {
@@ -87,15 +87,12 @@ public final class OpenHashSet<T> {
                     return true;
                 }
                 int slot = mix(curr.hashCode()) & m;
-                if (last <= pos) {
-                    if (last >= slot || slot > pos) {
-                        break;
-                    }
-                    pos = (pos + 1) & m;
-                } else {
+                if (last > pos) {
                     if (last >= slot && slot > pos) {
                         break;
                     }
+                    pos = (pos + 1) & m;
+                } else if (last < slot && slot <= pos) {
                     pos = (pos + 1) & m;
                 }
             }
@@ -103,13 +100,12 @@ public final class OpenHashSet<T> {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void rehash() {
+    void rehash() {
         T[] a = this.keys;
         int i = a.length;
         int newCap = i << 1;
         int m = newCap - 1;
-        T[] b = (Object[]) new Object[newCap];
+        T[] b = (T[]) new Object[newCap];
         int pos = this.size;
         while (true) {
             int j = pos - 1;
@@ -127,7 +123,7 @@ public final class OpenHashSet<T> {
                 pos = j;
             } else {
                 this.mask = m;
-                this.maxSize = (int) (((float) newCap) * this.loadFactor);
+                this.maxSize = (int) (newCap * this.loadFactor);
                 this.keys = b;
                 return;
             }

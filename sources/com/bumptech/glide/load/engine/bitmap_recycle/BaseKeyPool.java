@@ -4,19 +4,18 @@ import com.bumptech.glide.load.engine.bitmap_recycle.Poolable;
 import com.bumptech.glide.util.Util;
 import java.util.Queue;
 
+/* loaded from: classes.dex */
 abstract class BaseKeyPool<T extends Poolable> {
     private static final int MAX_SIZE = 20;
     private final Queue<T> keyPool = Util.createQueue(20);
 
-    /* access modifiers changed from: package-private */
-    public abstract T create();
+    abstract T create();
 
     BaseKeyPool() {
     }
 
-    /* access modifiers changed from: package-private */
-    public T get() {
-        T result = (Poolable) this.keyPool.poll();
+    T get() {
+        T result = this.keyPool.poll();
         if (result == null) {
             return create();
         }

@@ -4,24 +4,26 @@ import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.land_rover.model.LandroverViewModel;
 
+/* loaded from: classes7.dex */
 public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBottomLayBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback101;
-    private final View.OnClickListener mCallback102;
-    private final View.OnClickListener mCallback103;
-    private final View.OnClickListener mCallback104;
-    private final View.OnClickListener mCallback105;
-    private final View.OnClickListener mCallback106;
-    private final View.OnClickListener mCallback107;
-    private final View.OnClickListener mCallback108;
-    private final View.OnClickListener mCallback109;
-    private final View.OnClickListener mCallback110;
-    private final View.OnClickListener mCallback111;
+    private final View.OnClickListener mCallback156;
+    private final View.OnClickListener mCallback157;
+    private final View.OnClickListener mCallback158;
+    private final View.OnClickListener mCallback159;
+    private final View.OnClickListener mCallback160;
+    private final View.OnClickListener mCallback161;
+    private final View.OnClickListener mCallback162;
+    private final View.OnClickListener mCallback163;
+    private final View.OnClickListener mCallback164;
+    private final View.OnClickListener mCallback165;
+    private final View.OnClickListener mCallback166;
     private long mDirtyFlags;
     private final RelativeLayout mboundView0;
 
@@ -29,46 +31,47 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
         this(bindingComponent, root, mapBindings(bindingComponent, root, 12, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private LandroverMainBottomLayBinding1280x660Impl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[8], bindings[6], bindings[4], bindings[5], bindings[2], bindings[11], bindings[10], bindings[9], bindings[1], bindings[3], bindings[7]);
-        this.mDirtyFlags = -1;
-        this.landroverMainBottomAirBtn.setTag((Object) null);
-        this.landroverMainBottomBtBtn.setTag((Object) null);
-        this.landroverMainBottomDvrBtn.setTag((Object) null);
-        this.landroverMainBottomGpsBtn.setTag((Object) null);
-        this.landroverMainBottomMenuBtn.setTag((Object) null);
-        this.landroverMainBottomOffBtn.setTag((Object) null);
-        this.landroverMainBottomParkassistBtn.setTag((Object) null);
-        this.landroverMainBottomRadarBtn.setTag((Object) null);
-        this.landroverMainBottomReturnBtn.setTag((Object) null);
-        this.landroverMainBottomSetupBtn.setTag((Object) null);
-        this.landroverMainBottomVideoBtn.setTag((Object) null);
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 0, (ImageView) bindings[8], (ImageView) bindings[6], (ImageView) bindings[4], (ImageView) bindings[5], (ImageView) bindings[2], (ImageView) bindings[11], (ImageView) bindings[10], (ImageView) bindings[9], (ImageView) bindings[1], (ImageView) bindings[3], (ImageView) bindings[7]);
+        this.mDirtyFlags = -1L;
+        this.landroverMainBottomAirBtn.setTag(null);
+        this.landroverMainBottomBtBtn.setTag(null);
+        this.landroverMainBottomDvrBtn.setTag(null);
+        this.landroverMainBottomGpsBtn.setTag(null);
+        this.landroverMainBottomMenuBtn.setTag(null);
+        this.landroverMainBottomOffBtn.setTag(null);
+        this.landroverMainBottomParkassistBtn.setTag(null);
+        this.landroverMainBottomRadarBtn.setTag(null);
+        this.landroverMainBottomReturnBtn.setTag(null);
+        this.landroverMainBottomSetupBtn.setTag(null);
+        this.landroverMainBottomVideoBtn.setTag(null);
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
+        relativeLayout.setTag(null);
         setRootTag(root);
-        this.mCallback106 = new OnClickListener(this, 6);
-        this.mCallback104 = new OnClickListener(this, 4);
-        this.mCallback102 = new OnClickListener(this, 2);
-        this.mCallback110 = new OnClickListener(this, 10);
-        this.mCallback108 = new OnClickListener(this, 8);
-        this.mCallback107 = new OnClickListener(this, 7);
-        this.mCallback105 = new OnClickListener(this, 5);
-        this.mCallback103 = new OnClickListener(this, 3);
-        this.mCallback111 = new OnClickListener(this, 11);
-        this.mCallback101 = new OnClickListener(this, 1);
-        this.mCallback109 = new OnClickListener(this, 9);
+        this.mCallback158 = new OnClickListener(this, 3);
+        this.mCallback166 = new OnClickListener(this, 11);
+        this.mCallback156 = new OnClickListener(this, 1);
+        this.mCallback164 = new OnClickListener(this, 9);
+        this.mCallback162 = new OnClickListener(this, 7);
+        this.mCallback160 = new OnClickListener(this, 5);
+        this.mCallback159 = new OnClickListener(this, 4);
+        this.mCallback157 = new OnClickListener(this, 2);
+        this.mCallback165 = new OnClickListener(this, 10);
+        this.mCallback163 = new OnClickListener(this, 8);
+        this.mCallback161 = new OnClickListener(this, 6);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 2;
+            this.mDirtyFlags = 2L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -78,14 +81,16 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (7 != variableId) {
-            return false;
+        if (7 == variableId) {
+            setLauncherViewModel((LandroverViewModel) variable);
+            return true;
         }
-        setLauncherViewModel((LandroverViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.LandroverMainBottomLayBinding
     public void setLauncherViewModel(LandroverViewModel LauncherViewModel) {
         this.mLauncherViewModel = LauncherViewModel;
         synchronized (this) {
@@ -95,42 +100,41 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         LandroverViewModel landroverViewModel = this.mLauncherViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.landroverMainBottomAirBtn.setOnClickListener(this.mCallback108);
-            this.landroverMainBottomBtBtn.setOnClickListener(this.mCallback106);
-            this.landroverMainBottomDvrBtn.setOnClickListener(this.mCallback104);
-            this.landroverMainBottomGpsBtn.setOnClickListener(this.mCallback105);
-            this.landroverMainBottomMenuBtn.setOnClickListener(this.mCallback102);
-            this.landroverMainBottomOffBtn.setOnClickListener(this.mCallback111);
-            this.landroverMainBottomParkassistBtn.setOnClickListener(this.mCallback110);
-            this.landroverMainBottomRadarBtn.setOnClickListener(this.mCallback109);
-            this.landroverMainBottomReturnBtn.setOnClickListener(this.mCallback101);
-            this.landroverMainBottomSetupBtn.setOnClickListener(this.mCallback103);
-            this.landroverMainBottomVideoBtn.setOnClickListener(this.mCallback107);
+            this.landroverMainBottomAirBtn.setOnClickListener(this.mCallback163);
+            this.landroverMainBottomBtBtn.setOnClickListener(this.mCallback161);
+            this.landroverMainBottomDvrBtn.setOnClickListener(this.mCallback159);
+            this.landroverMainBottomGpsBtn.setOnClickListener(this.mCallback160);
+            this.landroverMainBottomMenuBtn.setOnClickListener(this.mCallback157);
+            this.landroverMainBottomOffBtn.setOnClickListener(this.mCallback166);
+            this.landroverMainBottomParkassistBtn.setOnClickListener(this.mCallback165);
+            this.landroverMainBottomRadarBtn.setOnClickListener(this.mCallback164);
+            this.landroverMainBottomReturnBtn.setOnClickListener(this.mCallback156);
+            this.landroverMainBottomSetupBtn.setOnClickListener(this.mCallback158);
+            this.landroverMainBottomVideoBtn.setOnClickListener(this.mCallback162);
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean launcherViewModelJavaLangObjectNull = true;
+        boolean launcherViewModelJavaLangObjectNull;
         switch (sourceId) {
             case 1:
                 LandroverViewModel launcherViewModel = this.mLauncherViewModel;
-                if (launcherViewModel == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel.backKeyClick();
                     return;
@@ -138,9 +142,7 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
                 return;
             case 2:
                 LandroverViewModel launcherViewModel2 = this.mLauncherViewModel;
-                if (launcherViewModel2 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel2 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel2.homeKeyClick();
                     return;
@@ -148,9 +150,7 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
                 return;
             case 3:
                 LandroverViewModel launcherViewModel3 = this.mLauncherViewModel;
-                if (launcherViewModel3 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel3 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel3.openSettings(callbackArg_0);
                     return;
@@ -158,9 +158,7 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
                 return;
             case 4:
                 LandroverViewModel launcherViewModel4 = this.mLauncherViewModel;
-                if (launcherViewModel4 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel4 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel4.openDvr();
                     return;
@@ -168,9 +166,7 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
                 return;
             case 5:
                 LandroverViewModel launcherViewModel5 = this.mLauncherViewModel;
-                if (launcherViewModel5 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel5 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel5.openNaviApp();
                     return;
@@ -178,9 +174,7 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
                 return;
             case 6:
                 LandroverViewModel launcherViewModel6 = this.mLauncherViewModel;
-                if (launcherViewModel6 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel6 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel6.openBtApp();
                     return;
@@ -188,9 +182,7 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
                 return;
             case 7:
                 LandroverViewModel launcherViewModel7 = this.mLauncherViewModel;
-                if (launcherViewModel7 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel7 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel7.openVideo();
                     return;
@@ -198,9 +190,7 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
                 return;
             case 8:
                 LandroverViewModel launcherViewModel8 = this.mLauncherViewModel;
-                if (launcherViewModel8 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel8 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel8.airClick();
                     return;
@@ -208,9 +198,7 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
                 return;
             case 9:
                 LandroverViewModel launcherViewModel9 = this.mLauncherViewModel;
-                if (launcherViewModel9 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel9 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel9.radarClick();
                     return;
@@ -218,9 +206,7 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
                 return;
             case 10:
                 LandroverViewModel launcherViewModel10 = this.mLauncherViewModel;
-                if (launcherViewModel10 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel10 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel10.parkClick();
                     return;
@@ -228,9 +214,7 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
                 return;
             case 11:
                 LandroverViewModel launcherViewModel11 = this.mLauncherViewModel;
-                if (launcherViewModel11 == null) {
-                    launcherViewModelJavaLangObjectNull = false;
-                }
+                launcherViewModelJavaLangObjectNull = launcherViewModel11 != null;
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel11.screenOff();
                     return;

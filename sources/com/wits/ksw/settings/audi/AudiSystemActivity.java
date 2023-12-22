@@ -3,61 +3,62 @@ package com.wits.ksw.settings.audi;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.databinding.AudiSystemSetBinding;
-import com.wits.ksw.settings.audi.vm.AudiSystemViewModel;
+import com.wits.ksw.settings.audi.p007vm.AudiSystemViewModel;
 
+/* loaded from: classes13.dex */
 public class AudiSystemActivity extends AudiSubActivity {
     private AudiSystemSetBinding binding;
     private AudiSystemViewModel viewModel;
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override // com.wits.ksw.settings.audi.AudiSubActivity, com.wits.ksw.settings.BaseActivity, android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AudiSystemSetBinding audiSystemSetBinding = (AudiSystemSetBinding) DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.audi_system_set, (ViewGroup) null, false);
+        AudiSystemSetBinding audiSystemSetBinding = (AudiSystemSetBinding) DataBindingUtil.inflate(LayoutInflater.from(this), C0899R.C0902layout.audi_system_set, null, false);
         this.binding = audiSystemSetBinding;
-        this.contentLayout.addView(audiSystemSetBinding.getRoot(), -1, -1);
-        AudiSystemViewModel audiSystemViewModel = (AudiSystemViewModel) ViewModelProviders.of((FragmentActivity) AudiSettingMainActivity.getInstance).get(AudiSystemViewModel.class);
+        View view = audiSystemSetBinding.getRoot();
+        this.contentLayout.addView(view, -1, -1);
+        AudiSystemViewModel audiSystemViewModel = (AudiSystemViewModel) ViewModelProviders.m59of(AudiSettingMainActivity.getInstance).get(AudiSystemViewModel.class);
         this.viewModel = audiSystemViewModel;
         this.binding.setVm(audiSystemViewModel);
         int childView = this.binding.audiSystemSetParentPanel.getChildCount();
         for (int i = 0; i < childView; i++) {
-            this.binding.audiSystemSetParentPanel.getChildAt(i).setOnClickListener(new View.OnClickListener() {
-                public final void onClick(View view) {
-                    AudiSystemActivity.this.onClick(view);
+            this.binding.audiSystemSetParentPanel.getChildAt(i).setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.settings.audi.-$$Lambda$AudiSystemActivity$2W3iY3WAmuZY5AXaTzdQ8wVNwEU
+                @Override // android.view.View.OnClickListener
+                public final void onClick(View view2) {
+                    AudiSystemActivity.this.onClick(view2);
                 }
             });
         }
-        this.tv_title_set.setText(getResources().getString(R.string.item1));
+        this.tv_title_set.setText(getResources().getString(C0899R.string.item1));
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void onClick(View view) {
         this.binding.audiSystemSetParentPanel.setSeleted(view);
         switch (view.getId()) {
-            case R.id.audi_system_aux_postion /*2131296399*/:
+            case C0899R.C0901id.audi_system_aux_postion /* 2131296402 */:
                 StartUtil.AudiAuxActivity(this);
                 return;
-            case R.id.audi_system_brightness /*2131296400*/:
+            case C0899R.C0901id.audi_system_brightness /* 2131296403 */:
                 StartUtil.AudiBrightnessActivity(this);
                 return;
-            case R.id.audi_system_rever_camera /*2131296402*/:
+            case C0899R.C0901id.audi_system_rever_camera /* 2131296405 */:
                 StartUtil.AudiReverCameraActivity(this);
                 return;
-            case R.id.audi_system_speed_unit /*2131296407*/:
+            case C0899R.C0901id.audi_system_speed_unit /* 2131296410 */:
                 StartUtil.AudiSpeedUnitActivity(this);
                 return;
-            case R.id.audi_system_temp_unit /*2131296408*/:
+            case C0899R.C0901id.audi_system_temp_unit /* 2131296411 */:
                 StartUtil.AudiTempActivity(this);
                 return;
-            case R.id.tv_music_app /*2131297900*/:
+            case C0899R.C0901id.tv_music_app /* 2131297952 */:
                 StartUtil.toAudiSelMusicApp(this);
                 return;
-            case R.id.tv_video_app /*2131297951*/:
+            case C0899R.C0901id.tv_video_app /* 2131298003 */:
                 StartUtil.toAudiSelVideoApp(this);
                 return;
             default:

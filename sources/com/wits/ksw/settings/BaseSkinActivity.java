@@ -5,15 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.app.SkinAppCompatDelegateImpl;
+import android.support.p004v7.app.AppCompatActivity;
+import android.support.p004v7.app.AppCompatDelegate;
+import android.support.p004v7.app.SkinAppCompatDelegateImpl;
 import android.util.Log;
 import android.view.Window;
+import java.lang.reflect.Method;
 
+/* loaded from: classes3.dex */
 public class BaseSkinActivity extends AppCompatActivity {
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = getWindow();
@@ -28,7 +30,8 @@ public class BaseSkinActivity extends AppCompatActivity {
         try {
             forceStopPackage(this, "com.android.settings");
             Log.d("BaseActivity", "sendToApp ");
-            startActivity(new Intent("android.settings.SETTINGS"));
+            Intent intent = new Intent("android.settings.SETTINGS");
+            startActivity(intent);
         } catch (Exception e) {
             e.getMessage();
         }
@@ -38,7 +41,8 @@ public class BaseSkinActivity extends AppCompatActivity {
         Log.d("BaseActivity", "forceStopPackage " + pkgName);
         ActivityManager am = (ActivityManager) context.getSystemService("activity");
         try {
-            Class.forName("android.app.ActivityManager").getMethod("forceStopPackage", new Class[]{String.class}).invoke(am, new Object[]{pkgName});
+            Method forceStopPackage = Class.forName("android.app.ActivityManager").getMethod("forceStopPackage", String.class);
+            forceStopPackage.invoke(am, pkgName);
         } catch (Exception e) {
         }
     }
@@ -65,6 +69,7 @@ public class BaseSkinActivity extends AppCompatActivity {
         setStatusBarTranslucent();
     }
 
+    @Override // android.support.p004v7.app.AppCompatActivity
     public AppCompatDelegate getDelegate() {
         return SkinAppCompatDelegateImpl.get(this, this);
     }

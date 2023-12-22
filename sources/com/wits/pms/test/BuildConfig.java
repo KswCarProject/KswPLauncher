@@ -1,5 +1,6 @@
 package com.wits.pms.test;
 
+/* loaded from: classes.dex */
 public final class BuildConfig {
     public static final String APPLICATION_ID = "com.wits.pms.test";
     public static final String BUILD_TYPE = "release";

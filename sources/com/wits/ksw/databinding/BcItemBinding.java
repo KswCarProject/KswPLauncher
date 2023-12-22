@@ -7,10 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bean.BcItem;
 import com.wits.ksw.launcher.model.BcVieModel;
 
+/* loaded from: classes7.dex */
 public abstract class BcItemBinding extends ViewDataBinding {
     @Bindable
     protected BcItem mListItem;
@@ -18,13 +19,13 @@ public abstract class BcItemBinding extends ViewDataBinding {
     protected BcVieModel mMBcVieModel;
     public final LinearLayout naviCusLinearLayout;
 
-    public abstract void setListItem(BcItem bcItem);
+    public abstract void setListItem(BcItem listItem);
 
-    public abstract void setMBcVieModel(BcVieModel bcVieModel);
+    public abstract void setMBcVieModel(BcVieModel mBcVieModel);
 
-    protected BcItemBinding(Object _bindingComponent, View _root, int _localFieldCount, LinearLayout naviCusLinearLayout2) {
+    protected BcItemBinding(Object _bindingComponent, View _root, int _localFieldCount, LinearLayout naviCusLinearLayout) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.naviCusLinearLayout = naviCusLinearLayout2;
+        this.naviCusLinearLayout = naviCusLinearLayout;
     }
 
     public BcItem getListItem() {
@@ -41,7 +42,7 @@ public abstract class BcItemBinding extends ViewDataBinding {
 
     @Deprecated
     public static BcItemBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BcItemBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bc_item, root, attachToRoot, component);
+        return (BcItemBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bc_item, root, attachToRoot, component);
     }
 
     public static BcItemBinding inflate(LayoutInflater inflater) {
@@ -50,7 +51,7 @@ public abstract class BcItemBinding extends ViewDataBinding {
 
     @Deprecated
     public static BcItemBinding inflate(LayoutInflater inflater, Object component) {
-        return (BcItemBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bc_item, (ViewGroup) null, false, component);
+        return (BcItemBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bc_item, null, false, component);
     }
 
     public static BcItemBinding bind(View view) {
@@ -59,6 +60,6 @@ public abstract class BcItemBinding extends ViewDataBinding {
 
     @Deprecated
     public static BcItemBinding bind(View view, Object component) {
-        return (BcItemBinding) bind(component, view, R.layout.bc_item);
+        return (BcItemBinding) bind(component, view, C0899R.C0902layout.bc_item);
     }
 }

@@ -4,45 +4,40 @@ import com.google.zxing.Result;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/* loaded from: classes.dex */
 public final class GeoResultParser extends ResultParser {
     private static final Pattern GEO_URL_PATTERN = Pattern.compile("geo:([\\-0-9.]+),([\\-0-9.]+)(?:,([\\-0-9.]+))?(?:\\?(.*))?", 2);
 
+    @Override // com.google.zxing.client.result.ResultParser
     public GeoParsedResult parse(Result result) {
         double altitude;
-        Matcher matcher = GEO_URL_PATTERN.matcher(getMassagedText(result));
-        Matcher matcher2 = matcher;
-        if (!matcher.matches()) {
-            return null;
-        }
-        String query = matcher2.group(4);
-        try {
-            double parseDouble = Double.parseDouble(matcher2.group(1));
-            double latitude = parseDouble;
-            if (parseDouble <= 90.0d) {
-                if (latitude >= -90.0d) {
-                    double parseDouble2 = Double.parseDouble(matcher2.group(2));
-                    double longitude = parseDouble2;
-                    if (parseDouble2 <= 180.0d) {
-                        if (longitude >= -180.0d) {
-                            if (matcher2.group(3) == null) {
-                                altitude = 0.0d;
-                            } else {
-                                double parseDouble3 = Double.parseDouble(matcher2.group(3));
-                                double altitude2 = parseDouble3;
-                                if (parseDouble3 < 0.0d) {
-                                    return null;
-                                }
-                                altitude = altitude2;
+        CharSequence rawText = getMassagedText(result);
+        Matcher matcher = GEO_URL_PATTERN.matcher(rawText);
+        if (matcher.matches()) {
+            String query = matcher.group(4);
+            try {
+                double latitude = Double.parseDouble(matcher.group(1));
+                if (latitude <= 90.0d && latitude >= -90.0d) {
+                    double longitude = Double.parseDouble(matcher.group(2));
+                    if (longitude <= 180.0d && longitude >= -180.0d) {
+                        if (matcher.group(3) == null) {
+                            altitude = 0.0d;
+                        } else {
+                            double altitude2 = Double.parseDouble(matcher.group(3));
+                            if (altitude2 < 0.0d) {
+                                return null;
                             }
-                            return new GeoParsedResult(latitude, longitude, altitude, query);
+                            altitude = altitude2;
                         }
+                        return new GeoParsedResult(latitude, longitude, altitude, query);
                     }
                     return null;
                 }
+                return null;
+            } catch (NumberFormatException e) {
+                return null;
             }
-            return null;
-        } catch (NumberFormatException e) {
-            return null;
         }
+        return null;
     }
 }

@@ -12,6 +12,7 @@ import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.internal.disposables.EmptyDisposable;
 import io.reactivex.plugins.RxJavaPlugins;
 
+/* loaded from: classes.dex */
 public final class CompletablePeek extends Completable {
     final Action onAfterTerminate;
     final Action onComplete;
@@ -21,29 +22,31 @@ public final class CompletablePeek extends Completable {
     final Action onTerminate;
     final CompletableSource source;
 
-    public CompletablePeek(CompletableSource source2, Consumer<? super Disposable> onSubscribe2, Consumer<? super Throwable> onError2, Action onComplete2, Action onTerminate2, Action onAfterTerminate2, Action onDispose2) {
-        this.source = source2;
-        this.onSubscribe = onSubscribe2;
-        this.onError = onError2;
-        this.onComplete = onComplete2;
-        this.onTerminate = onTerminate2;
-        this.onAfterTerminate = onAfterTerminate2;
-        this.onDispose = onDispose2;
+    public CompletablePeek(CompletableSource source, Consumer<? super Disposable> onSubscribe, Consumer<? super Throwable> onError, Action onComplete, Action onTerminate, Action onAfterTerminate, Action onDispose) {
+        this.source = source;
+        this.onSubscribe = onSubscribe;
+        this.onError = onError;
+        this.onComplete = onComplete;
+        this.onTerminate = onTerminate;
+        this.onAfterTerminate = onAfterTerminate;
+        this.onDispose = onDispose;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         this.source.subscribe(new CompletableObserverImplementation(observer));
     }
 
+    /* loaded from: classes.dex */
     final class CompletableObserverImplementation implements CompletableObserver, Disposable {
         final CompletableObserver downstream;
         Disposable upstream;
 
-        CompletableObserverImplementation(CompletableObserver downstream2) {
-            this.downstream = downstream2;
+        CompletableObserverImplementation(CompletableObserver downstream) {
+            this.downstream = downstream;
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onSubscribe(Disposable d) {
             try {
                 CompletablePeek.this.onSubscribe.accept(d);
@@ -59,6 +62,7 @@ public final class CompletablePeek extends Completable {
             }
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onError(Throwable e) {
             if (this.upstream == DisposableHelper.DISPOSED) {
                 RxJavaPlugins.onError(e);
@@ -75,22 +79,23 @@ public final class CompletablePeek extends Completable {
             doAfter();
         }
 
+        @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
         public void onComplete() {
-            if (this.upstream != DisposableHelper.DISPOSED) {
-                try {
-                    CompletablePeek.this.onComplete.run();
-                    CompletablePeek.this.onTerminate.run();
-                    this.downstream.onComplete();
-                    doAfter();
-                } catch (Throwable e) {
-                    Exceptions.throwIfFatal(e);
-                    this.downstream.onError(e);
-                }
+            if (this.upstream == DisposableHelper.DISPOSED) {
+                return;
+            }
+            try {
+                CompletablePeek.this.onComplete.run();
+                CompletablePeek.this.onTerminate.run();
+                this.downstream.onComplete();
+                doAfter();
+            } catch (Throwable e) {
+                Exceptions.throwIfFatal(e);
+                this.downstream.onError(e);
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void doAfter() {
+        void doAfter() {
             try {
                 CompletablePeek.this.onAfterTerminate.run();
             } catch (Throwable ex) {
@@ -99,6 +104,7 @@ public final class CompletablePeek extends Completable {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             try {
                 CompletablePeek.this.onDispose.run();
@@ -109,6 +115,7 @@ public final class CompletablePeek extends Completable {
             this.upstream.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }

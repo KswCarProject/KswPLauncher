@@ -1,12 +1,15 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.v4.util.Pools;
+import android.support.p001v4.util.Pools;
 import com.bumptech.glide.util.Preconditions;
 import com.bumptech.glide.util.pool.FactoryPools;
 import com.bumptech.glide.util.pool.StateVerifier;
 
+/* loaded from: classes.dex */
 final class LockedResource<Z> implements Resource<Z>, FactoryPools.Poolable {
-    private static final Pools.Pool<LockedResource<?>> POOL = FactoryPools.threadSafe(20, new FactoryPools.Factory<LockedResource<?>>() {
+    private static final Pools.Pool<LockedResource<?>> POOL = FactoryPools.threadSafe(20, new FactoryPools.Factory<LockedResource<?>>() { // from class: com.bumptech.glide.load.engine.LockedResource.1
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // com.bumptech.glide.util.pool.FactoryPools.Factory
         public LockedResource<?> create() {
             return new LockedResource<>();
         }
@@ -25,10 +28,10 @@ final class LockedResource<Z> implements Resource<Z>, FactoryPools.Poolable {
     LockedResource() {
     }
 
-    private void init(Resource<Z> toWrap2) {
+    private void init(Resource<Z> toWrap) {
         this.isRecycled = false;
         this.isLocked = true;
-        this.toWrap = toWrap2;
+        this.toWrap = toWrap;
     }
 
     private void release() {
@@ -36,31 +39,33 @@ final class LockedResource<Z> implements Resource<Z>, FactoryPools.Poolable {
         POOL.release(this);
     }
 
-    /* access modifiers changed from: package-private */
-    public synchronized void unlock() {
+    synchronized void unlock() {
         this.stateVerifier.throwIfRecycled();
-        if (this.isLocked) {
-            this.isLocked = false;
-            if (this.isRecycled) {
-                recycle();
-            }
-        } else {
+        if (!this.isLocked) {
             throw new IllegalStateException("Already unlocked");
+        }
+        this.isLocked = false;
+        if (this.isRecycled) {
+            recycle();
         }
     }
 
+    @Override // com.bumptech.glide.load.engine.Resource
     public Class<Z> getResourceClass() {
         return this.toWrap.getResourceClass();
     }
 
+    @Override // com.bumptech.glide.load.engine.Resource
     public Z get() {
         return this.toWrap.get();
     }
 
+    @Override // com.bumptech.glide.load.engine.Resource
     public int getSize() {
         return this.toWrap.getSize();
     }
 
+    @Override // com.bumptech.glide.load.engine.Resource
     public synchronized void recycle() {
         this.stateVerifier.throwIfRecycled();
         this.isRecycled = true;
@@ -70,6 +75,7 @@ final class LockedResource<Z> implements Resource<Z>, FactoryPools.Poolable {
         }
     }
 
+    @Override // com.bumptech.glide.util.pool.FactoryPools.Poolable
     public StateVerifier getVerifier() {
         return this.stateVerifier;
     }

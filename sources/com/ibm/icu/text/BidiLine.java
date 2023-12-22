@@ -3,6 +3,7 @@ package com.ibm.icu.text;
 import com.ibm.icu.text.Bidi;
 import java.util.Arrays;
 
+/* loaded from: classes.dex */
 final class BidiLine {
     BidiLine() {
     }
@@ -53,42 +54,7 @@ final class BidiLine {
         lineBidi.levels = lineBidi.levelsMemory;
         System.arraycopy(paraBidi.levels, start, lineBidi.levels, 0, length);
         lineBidi.runCount = -1;
-        if (paraBidi.direction == 2) {
-            byte[] levels = lineBidi.levels;
-            setTrailingWSStart(lineBidi);
-            int trailingWSStart = lineBidi.trailingWSStart;
-            if (trailingWSStart == 0) {
-                lineBidi.direction = (byte) (lineBidi.paraLevel & 1);
-            } else {
-                byte level = (byte) (levels[0] & 1);
-                if (trailingWSStart >= length || (lineBidi.paraLevel & 1) == level) {
-                    int i = 1;
-                    while (true) {
-                        if (i == trailingWSStart) {
-                            lineBidi.direction = level;
-                            break;
-                        } else if ((levels[i] & 1) != level) {
-                            lineBidi.direction = 2;
-                            break;
-                        } else {
-                            i++;
-                        }
-                    }
-                } else {
-                    lineBidi.direction = 2;
-                }
-            }
-            switch (lineBidi.direction) {
-                case 0:
-                    lineBidi.paraLevel = (byte) ((lineBidi.paraLevel + 1) & -2);
-                    lineBidi.trailingWSStart = 0;
-                    break;
-                case 1:
-                    lineBidi.paraLevel = (byte) (lineBidi.paraLevel | 1);
-                    lineBidi.trailingWSStart = 0;
-                    break;
-            }
-        } else {
+        if (paraBidi.direction != 2) {
             lineBidi.direction = paraBidi.direction;
             if (paraBidi.trailingWSStart <= start) {
                 lineBidi.trailingWSStart = 0;
@@ -96,6 +62,41 @@ final class BidiLine {
                 lineBidi.trailingWSStart = paraBidi.trailingWSStart - start;
             } else {
                 lineBidi.trailingWSStart = length;
+            }
+        } else {
+            byte[] levels = lineBidi.levels;
+            setTrailingWSStart(lineBidi);
+            int trailingWSStart = lineBidi.trailingWSStart;
+            if (trailingWSStart == 0) {
+                lineBidi.direction = (byte) (lineBidi.paraLevel & 1);
+            } else {
+                byte level = (byte) (levels[0] & 1);
+                if (trailingWSStart < length && (lineBidi.paraLevel & 1) != level) {
+                    lineBidi.direction = (byte) 2;
+                } else {
+                    int i = 1;
+                    while (true) {
+                        if (i == trailingWSStart) {
+                            lineBidi.direction = level;
+                            break;
+                        } else if ((levels[i] & 1) == level) {
+                            i++;
+                        } else {
+                            lineBidi.direction = (byte) 2;
+                            break;
+                        }
+                    }
+                }
+            }
+            switch (lineBidi.direction) {
+                case 0:
+                    lineBidi.paraLevel = (byte) ((lineBidi.paraLevel + 1) & (-2));
+                    lineBidi.trailingWSStart = 0;
+                    break;
+                case 1:
+                    lineBidi.paraLevel = (byte) (lineBidi.paraLevel | 1);
+                    lineBidi.trailingWSStart = 0;
+                    break;
             }
         }
         lineBidi.paraBidi = paraBidi;
@@ -116,12 +117,12 @@ final class BidiLine {
             Arrays.fill(bidi.levels, start, length, bidi.paraLevel);
             bidi.trailingWSStart = length;
         }
-        if (length >= bidi.levels.length) {
-            return bidi.levels;
+        if (length < bidi.levels.length) {
+            byte[] levels = new byte[length];
+            System.arraycopy(bidi.levels, 0, levels, 0, length);
+            return levels;
         }
-        byte[] levels = new byte[length];
-        System.arraycopy(bidi.levels, 0, levels, 0, length);
-        return levels;
+        return bidi.levels;
     }
 
     static BidiRun getLogicalRun(Bidi bidi, int logicalPosition) {
@@ -139,7 +140,8 @@ final class BidiLine {
             }
             visualStart = iRun.limit;
         }
-        newRun.start = iRun.start;
+        int i2 = iRun.start;
+        newRun.start = i2;
         newRun.limit = logicalLimit;
         newRun.level = iRun.level;
         return newRun;
@@ -163,87 +165,63 @@ final class BidiLine {
         bidi.runs[0] = new BidiRun(0, bidi.length, level);
     }
 
-    /* JADX WARNING: Incorrect type for immutable var: ssa=byte, code=int, for r10v0, types: [byte] */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private static void reorderLine(com.ibm.icu.text.Bidi r8, byte r9, int r10) {
-        /*
-            r0 = r9 | 1
-            if (r10 > r0) goto L_0x0005
-            return
-        L_0x0005:
-            int r0 = r9 + 1
-            byte r9 = (byte) r0
-            com.ibm.icu.text.BidiRun[] r0 = r8.runs
-            byte[] r1 = r8.levels
-            int r2 = r8.runCount
-            int r3 = r8.trailingWSStart
-            int r4 = r8.length
-            if (r3 >= r4) goto L_0x0016
-            int r2 = r2 + -1
-        L_0x0016:
-            int r3 = r10 + -1
-            byte r10 = (byte) r3
-            if (r10 < r9) goto L_0x0051
-            r3 = 0
-        L_0x001c:
-            if (r3 >= r2) goto L_0x0029
-            r4 = r0[r3]
-            int r4 = r4.start
-            byte r4 = r1[r4]
-            if (r4 >= r10) goto L_0x0029
-            int r3 = r3 + 1
-            goto L_0x001c
-        L_0x0029:
-            if (r3 < r2) goto L_0x002c
-            goto L_0x0016
-        L_0x002c:
-            r4 = r3
-        L_0x002d:
-            int r4 = r4 + 1
-            if (r4 >= r2) goto L_0x003a
-            r5 = r0[r4]
-            int r5 = r5.start
-            byte r5 = r1[r5]
-            if (r5 < r10) goto L_0x003a
-            goto L_0x002d
-        L_0x003a:
-            int r5 = r4 + -1
-        L_0x003c:
-            if (r3 >= r5) goto L_0x004b
-            r6 = r0[r3]
-            r7 = r0[r5]
-            r0[r3] = r7
-            r0[r5] = r6
-            int r3 = r3 + 1
-            int r5 = r5 + -1
-            goto L_0x003c
-        L_0x004b:
-            if (r4 != r2) goto L_0x004e
-            goto L_0x0016
-        L_0x004e:
-            int r3 = r4 + 1
-            goto L_0x001c
-        L_0x0051:
-            r3 = r9 & 1
-            if (r3 != 0) goto L_0x006d
-            r3 = 0
-            int r4 = r8.trailingWSStart
-            int r5 = r8.length
-            if (r4 != r5) goto L_0x005e
-            int r2 = r2 + -1
-        L_0x005e:
-            if (r3 >= r2) goto L_0x006d
-            r4 = r0[r3]
-            r5 = r0[r2]
-            r0[r3] = r5
-            r0[r2] = r4
-            int r3 = r3 + 1
-            int r2 = r2 + -1
-            goto L_0x005e
-        L_0x006d:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.BidiLine.reorderLine(com.ibm.icu.text.Bidi, byte, byte):void");
+    private static void reorderLine(Bidi bidi, byte minLevel, byte maxLevel) {
+        if (maxLevel <= (minLevel | 1)) {
+            return;
+        }
+        byte minLevel2 = (byte) (minLevel + 1);
+        BidiRun[] runs = bidi.runs;
+        byte[] levels = bidi.levels;
+        int runCount = bidi.runCount;
+        if (bidi.trailingWSStart < bidi.length) {
+            runCount--;
+        }
+        while (true) {
+            maxLevel = (byte) (maxLevel - 1);
+            if (maxLevel < minLevel2) {
+                break;
+            }
+            int firstRun = 0;
+            while (true) {
+                if (firstRun < runCount && levels[runs[firstRun].start] < maxLevel) {
+                    firstRun++;
+                } else if (firstRun >= runCount) {
+                    break;
+                } else {
+                    int limitRun = firstRun;
+                    do {
+                        limitRun++;
+                        if (limitRun >= runCount) {
+                            break;
+                        }
+                    } while (levels[runs[limitRun].start] >= maxLevel);
+                    for (int endRun = limitRun - 1; firstRun < endRun; endRun--) {
+                        BidiRun tempRun = runs[firstRun];
+                        runs[firstRun] = runs[endRun];
+                        runs[endRun] = tempRun;
+                        firstRun++;
+                    }
+                    if (limitRun == runCount) {
+                        break;
+                    }
+                    firstRun = limitRun + 1;
+                }
+            }
+        }
+        int firstRun2 = minLevel2 & 1;
+        if (firstRun2 == 0) {
+            int firstRun3 = 0;
+            if (bidi.trailingWSStart == bidi.length) {
+                runCount--;
+            }
+            while (firstRun3 < runCount) {
+                BidiRun tempRun2 = runs[firstRun3];
+                runs[firstRun3] = runs[runCount];
+                runs[runCount] = tempRun2;
+                firstRun3++;
+                runCount--;
+            }
+        }
     }
 
     static int getRunFromLogicalIndex(Bidi bidi, int logicalIndex) {
@@ -262,91 +240,93 @@ final class BidiLine {
     }
 
     static void getRuns(Bidi bidi) {
-        Bidi bidi2 = bidi;
-        if (bidi2.runCount < 0) {
-            if (bidi2.direction != 2) {
-                getSingleRun(bidi2, bidi2.paraLevel);
-            } else {
-                int length = bidi2.length;
-                byte[] levels = bidi2.levels;
-                byte level = -1;
-                int limit = bidi2.trailingWSStart;
-                int runCount = 0;
-                for (int i = 0; i < limit; i++) {
-                    if (levels[i] != level) {
-                        runCount++;
-                        level = levels[i];
-                    }
+        if (bidi.runCount >= 0) {
+            return;
+        }
+        if (bidi.direction != 2) {
+            getSingleRun(bidi, bidi.paraLevel);
+        } else {
+            int length = bidi.length;
+            byte[] levels = bidi.levels;
+            byte level = -1;
+            int limit = bidi.trailingWSStart;
+            int runCount = 0;
+            for (int i = 0; i < limit; i++) {
+                if (levels[i] != level) {
+                    runCount++;
+                    level = levels[i];
                 }
-                if (runCount == 1 && limit == length) {
-                    getSingleRun(bidi2, levels[0]);
-                } else {
-                    byte minLevel = Bidi.LEVEL_DEFAULT_LTR;
-                    byte maxLevel = 0;
-                    if (limit < length) {
-                        runCount++;
+            }
+            if (runCount == 1 && limit == length) {
+                getSingleRun(bidi, levels[0]);
+            } else {
+                byte minLevel = Bidi.LEVEL_DEFAULT_LTR;
+                byte maxLevel = 0;
+                if (limit < length) {
+                    runCount++;
+                }
+                bidi.getRunsMemory(runCount);
+                BidiRun[] runs = bidi.runsMemory;
+                int runIndex = 0;
+                int i2 = 0;
+                while (true) {
+                    int start = i2;
+                    byte level2 = levels[i2];
+                    if (level2 < minLevel) {
+                        minLevel = level2;
                     }
-                    bidi2.getRunsMemory(runCount);
-                    BidiRun[] runs = bidi2.runsMemory;
-                    int runIndex = 0;
-                    int i2 = 0;
-                    while (true) {
-                        int start = i2;
-                        byte level2 = levels[i2];
-                        if (level2 < minLevel) {
-                            minLevel = level2;
-                        }
-                        if (level2 > maxLevel) {
-                            maxLevel = level2;
-                        }
-                        do {
-                            i2++;
-                            if (i2 >= limit || levels[i2] != level2) {
-                                runs[runIndex] = new BidiRun(start, i2 - start, level2);
-                                runIndex++;
-                            }
-                            i2++;
-                            break;
-                        } while (levels[i2] != level2);
-                        runs[runIndex] = new BidiRun(start, i2 - start, level2);
-                        runIndex++;
+                    if (level2 > maxLevel) {
+                        maxLevel = level2;
+                    }
+                    do {
+                        i2++;
                         if (i2 >= limit) {
                             break;
                         }
-                    }
-                    if (limit < length) {
-                        runs[runIndex] = new BidiRun(limit, length - limit, bidi2.paraLevel);
-                        if (bidi2.paraLevel < minLevel) {
-                            minLevel = bidi2.paraLevel;
-                        }
-                    }
-                    bidi2.runs = runs;
-                    bidi2.runCount = runCount;
-                    reorderLine(bidi2, minLevel, maxLevel);
-                    int limit2 = 0;
-                    for (int i3 = 0; i3 < runCount; i3++) {
-                        runs[i3].level = levels[runs[i3].start];
-                        BidiRun bidiRun = runs[i3];
-                        int i4 = bidiRun.limit + limit2;
-                        bidiRun.limit = i4;
-                        limit2 = i4;
-                    }
-                    if (runIndex < runCount) {
-                        runs[(bidi2.paraLevel & 1) != 0 ? 0 : runIndex].level = bidi2.paraLevel;
+                    } while (levels[i2] == level2);
+                    runs[runIndex] = new BidiRun(start, i2 - start, level2);
+                    runIndex++;
+                    if (i2 >= limit) {
+                        break;
                     }
                 }
-            }
-            if (bidi2.insertPoints.size > 0) {
-                for (int ip = 0; ip < bidi2.insertPoints.size; ip++) {
-                    Bidi.Point point = bidi2.insertPoints.points[ip];
-                    bidi2.runs[getRunFromLogicalIndex(bidi2, point.pos)].insertRemove |= point.flag;
+                if (limit < length) {
+                    runs[runIndex] = new BidiRun(limit, length - limit, bidi.paraLevel);
+                    if (bidi.paraLevel < minLevel) {
+                        minLevel = bidi.paraLevel;
+                    }
+                }
+                bidi.runs = runs;
+                bidi.runCount = runCount;
+                reorderLine(bidi, minLevel, maxLevel);
+                int limit2 = 0;
+                for (int i3 = 0; i3 < runCount; i3++) {
+                    runs[i3].level = levels[runs[i3].start];
+                    BidiRun bidiRun = runs[i3];
+                    int i4 = bidiRun.limit + limit2;
+                    bidiRun.limit = i4;
+                    limit2 = i4;
+                }
+                if (runIndex < runCount) {
+                    int trailingRun = (bidi.paraLevel & 1) != 0 ? 0 : runIndex;
+                    runs[trailingRun].level = bidi.paraLevel;
                 }
             }
-            if (bidi2.controlCount > 0) {
-                for (int ic = 0; ic < bidi2.length; ic++) {
-                    if (Bidi.IsBidiControlChar(bidi2.text[ic])) {
-                        bidi2.runs[getRunFromLogicalIndex(bidi2, ic)].insertRemove--;
-                    }
+        }
+        if (bidi.insertPoints.size > 0) {
+            for (int ip = 0; ip < bidi.insertPoints.size; ip++) {
+                Bidi.Point point = bidi.insertPoints.points[ip];
+                int runIndex2 = getRunFromLogicalIndex(bidi, point.pos);
+                bidi.runs[runIndex2].insertRemove |= point.flag;
+            }
+        }
+        int ip2 = bidi.controlCount;
+        if (ip2 > 0) {
+            for (int ic = 0; ic < bidi.length; ic++) {
+                char c = bidi.text[ic];
+                if (Bidi.IsBidiControlChar(c)) {
+                    int runIndex3 = getRunFromLogicalIndex(bidi, ic);
+                    bidi.runs[runIndex3].insertRemove--;
                 }
             }
         }
@@ -407,15 +387,13 @@ final class BidiLine {
                     int limit = start;
                     do {
                         limit++;
-                        if (limit >= levels.length || levels[limit] < maxLevel) {
-                            int sumOfSosEos = (start + limit) - 1;
+                        if (limit >= levels.length) {
+                            break;
                         }
-                        limit++;
-                        break;
-                    } while (levels[limit] < maxLevel);
-                    int sumOfSosEos2 = (start + limit) - 1;
+                    } while (levels[limit] >= maxLevel);
+                    int sumOfSosEos = (start + limit) - 1;
                     do {
-                        indexMap[start] = sumOfSosEos2 - indexMap[start];
+                        indexMap[start] = sumOfSosEos - indexMap[start];
                         start++;
                     } while (start < limit);
                     if (limit == levels.length) {
@@ -424,7 +402,8 @@ final class BidiLine {
                     start = limit + 1;
                 }
             }
-            maxLevel = (byte) (maxLevel - 1);
+            int limit2 = maxLevel - 1;
+            maxLevel = (byte) limit2;
         } while (maxLevel >= minLevel2);
         return indexMap;
     }
@@ -453,32 +432,33 @@ final class BidiLine {
                     int limit = start;
                     do {
                         limit++;
-                        if (limit >= levels.length || levels[limit] < maxLevel) {
+                        if (limit >= levels.length) {
+                            break;
                         }
-                        limit++;
-                        break;
-                    } while (levels[limit] < maxLevel);
+                    } while (levels[limit] >= maxLevel);
                     for (int end = limit - 1; start < end; end--) {
                         int temp = indexMap[start];
                         indexMap[start] = indexMap[end];
                         indexMap[end] = temp;
                         start++;
                     }
-                    if (limit == levels.length) {
+                    int temp2 = levels.length;
+                    if (limit == temp2) {
                         break;
                     }
                     start = limit + 1;
                 }
             }
-            maxLevel = (byte) (maxLevel - 1);
+            int limit2 = maxLevel - 1;
+            maxLevel = (byte) limit2;
         } while (maxLevel >= minLevel2);
         return indexMap;
     }
 
     static int getVisualIndex(Bidi bidi, int logicalIndex) {
         int visualIndex;
-        int limit;
         int start;
+        int limit;
         int visualIndex2 = -1;
         switch (bidi.direction) {
             case 0:
@@ -496,13 +476,11 @@ final class BidiLine {
                     if (i < bidi.runCount) {
                         int length = runs[i].limit - visualStart;
                         int offset = logicalIndex - runs[i].start;
-                        if (offset < 0 || offset >= length) {
+                        if (offset >= 0 && offset < length) {
+                            visualIndex2 = runs[i].isEvenRun() ? visualStart + offset : ((visualStart + length) - offset) - 1;
+                        } else {
                             visualStart += length;
                             i++;
-                        } else if (runs[i].isEvenRun()) {
-                            visualIndex2 = visualStart + offset;
-                        } else {
-                            visualIndex2 = ((visualStart + length) - offset) - 1;
                         }
                     }
                 }
@@ -533,13 +511,12 @@ final class BidiLine {
                 i2++;
                 visualStart2 += length2;
             }
-        } else if (bidi.controlCount <= 0) {
-            return visualIndex;
-        } else {
+        } else if (bidi.controlCount > 0) {
             BidiRun[] runs3 = bidi.runs;
             int visualStart3 = 0;
             int controlFound = 0;
-            if (Bidi.IsBidiControlChar(bidi.text[logicalIndex])) {
+            char uchar = bidi.text[logicalIndex];
+            if (Bidi.IsBidiControlChar(uchar)) {
                 return -1;
             }
             int i3 = 0;
@@ -561,21 +538,24 @@ final class BidiLine {
                         limit = runs3[i3].start + length3;
                     }
                     for (int j = start; j < limit; j++) {
-                        if (Bidi.IsBidiControlChar(bidi.text[j])) {
+                        char uchar2 = bidi.text[j];
+                        if (Bidi.IsBidiControlChar(uchar2)) {
                             controlFound++;
                         }
                     }
                     return visualIndex - controlFound;
                 }
             }
+        } else {
+            return visualIndex;
         }
     }
 
     static int getLogicalIndex(Bidi bidi, int visualIndex) {
-        int i;
-        int i2;
         int length;
         int insertRemove;
+        int i;
+        int i2;
         Bidi bidi2 = bidi;
         int visualIndex2 = visualIndex;
         BidiRun[] runs = bidi2.runs;
@@ -606,81 +586,85 @@ final class BidiLine {
                 i3++;
                 visualStart += length2;
             }
-        } else if (bidi2.controlCount > 0) {
-            int controlFound = 0;
-            int visualStart2 = 0;
-            int i4 = 0;
-            while (true) {
-                length = runs[i4].limit - visualStart2;
-                insertRemove = runs[i4].insertRemove;
-                if (visualIndex2 < (runs[i4].limit - controlFound) + insertRemove) {
-                    break;
-                }
-                controlFound -= insertRemove;
-                i4++;
-                visualStart2 += length;
-            }
-            if (insertRemove == 0) {
-                visualIndex2 += controlFound;
-            } else {
-                int logicalStart = runs[i4].start;
-                boolean evenRun = runs[i4].isEvenRun();
-                int logicalEnd = (logicalStart + length) - 1;
-                int j = 0;
-                while (j < length) {
-                    if (Bidi.IsBidiControlChar(bidi2.text[evenRun ? logicalStart + j : logicalEnd - j])) {
-                        controlFound++;
-                    }
-                    if (visualIndex2 + controlFound == visualStart2 + j) {
+        } else {
+            int markFound2 = bidi2.controlCount;
+            if (markFound2 > 0) {
+                int controlFound = 0;
+                int visualStart2 = 0;
+                int i4 = 0;
+                while (true) {
+                    length = runs[i4].limit - visualStart2;
+                    insertRemove = runs[i4].insertRemove;
+                    if (visualIndex2 < (runs[i4].limit - controlFound) + insertRemove) {
                         break;
                     }
-                    j++;
-                    bidi2 = bidi;
+                    controlFound -= insertRemove;
+                    i4++;
+                    visualStart2 += length;
                 }
-                visualIndex2 += controlFound;
+                if (insertRemove == 0) {
+                    visualIndex2 += controlFound;
+                } else {
+                    int logicalStart = runs[i4].start;
+                    boolean evenRun = runs[i4].isEvenRun();
+                    int logicalEnd = (logicalStart + length) - 1;
+                    int j = 0;
+                    while (j < length) {
+                        int k = evenRun ? logicalStart + j : logicalEnd - j;
+                        char uchar = bidi2.text[k];
+                        if (Bidi.IsBidiControlChar(uchar)) {
+                            controlFound++;
+                        }
+                        if (visualIndex2 + controlFound == visualStart2 + j) {
+                            break;
+                        }
+                        j++;
+                        bidi2 = bidi;
+                    }
+                    visualIndex2 += controlFound;
+                }
             }
         }
         if (runCount <= 10) {
-            i = 0;
-            while (visualIndex2 >= runs[i].limit) {
-                i++;
+            i2 = 0;
+            while (visualIndex2 >= runs[i2].limit) {
+                i2++;
             }
         } else {
             int begin = 0;
             int limit = runCount;
             while (true) {
-                i2 = (begin + limit) >>> 1;
-                if (visualIndex2 >= runs[i2].limit) {
-                    begin = i2 + 1;
-                } else if (i2 == 0 || visualIndex2 >= runs[i2 - 1].limit) {
-                    i = i2;
+                i = (begin + limit) >>> 1;
+                if (visualIndex2 >= runs[i].limit) {
+                    begin = i + 1;
+                } else if (i == 0 || visualIndex2 >= runs[i - 1].limit) {
+                    break;
                 } else {
-                    limit = i2;
+                    limit = i;
                 }
             }
-            i = i2;
+            i2 = i;
         }
-        int start = runs[i].start;
-        if (!runs[i].isEvenRun()) {
-            return ((runs[i].limit + start) - visualIndex2) - 1;
+        int start = runs[i2].start;
+        if (runs[i2].isEvenRun()) {
+            if (i2 > 0) {
+                visualIndex2 -= runs[i2 - 1].limit;
+            }
+            return start + visualIndex2;
         }
-        if (i > 0) {
-            visualIndex2 -= runs[i - 1].limit;
-        }
-        return start + visualIndex2;
+        return ((runs[i2].limit + start) - visualIndex2) - 1;
     }
 
     static int[] getLogicalMap(Bidi bidi) {
         int visualStart;
         int visualStart2;
-        Bidi bidi2 = bidi;
-        BidiRun[] runs = bidi2.runs;
-        int[] indexMap = new int[bidi2.length];
-        if (bidi2.length > bidi2.resultLength) {
+        BidiRun[] runs = bidi.runs;
+        int[] indexMap = new int[bidi.length];
+        if (bidi.length > bidi.resultLength) {
             Arrays.fill(indexMap, -1);
         }
         int visualStart3 = 0;
-        for (int j = 0; j < bidi2.runCount; j++) {
+        for (int j = 0; j < bidi.runCount; j++) {
             int logicalStart = runs[j].start;
             int visualLimit = runs[j].limit;
             if (runs[j].isEvenRun()) {
@@ -703,17 +687,16 @@ final class BidiLine {
                     indexMap[logicalStart3] = visualStart3;
                     visualStart3 = visualStart;
                 } while (visualStart < visualLimit);
-                int visualStart4 = logicalStart3;
             }
         }
-        if (bidi2.insertPoints.size > 0) {
+        if (bidi.insertPoints.size > 0) {
             int markFound = 0;
-            int runCount = bidi2.runCount;
-            BidiRun[] runs2 = bidi2.runs;
-            int visualStart5 = 0;
+            int runCount = bidi.runCount;
+            BidiRun[] runs2 = bidi.runs;
+            int visualStart4 = 0;
             int i = 0;
             while (i < runCount) {
-                int length = runs2[i].limit - visualStart5;
+                int length = runs2[i].limit - visualStart4;
                 int insertRemove = runs2[i].insertRemove;
                 if ((insertRemove & 5) > 0) {
                     markFound++;
@@ -729,16 +712,16 @@ final class BidiLine {
                     markFound++;
                 }
                 i++;
-                visualStart5 += length;
+                visualStart4 += length;
             }
-        } else if (bidi2.controlCount > 0) {
+        } else if (bidi.controlCount > 0) {
             int controlFound = 0;
-            int runCount2 = bidi2.runCount;
-            BidiRun[] runs3 = bidi2.runs;
-            int visualStart6 = 0;
+            int runCount2 = bidi.runCount;
+            BidiRun[] runs3 = bidi.runs;
+            int visualStart5 = 0;
             int i2 = 0;
             while (i2 < runCount2) {
-                int length2 = runs3[i2].limit - visualStart6;
+                int length2 = runs3[i2].limit - visualStart5;
                 int insertRemove2 = runs3[i2].insertRemove;
                 if (controlFound - insertRemove2 != 0) {
                     int logicalStart5 = runs3[i2].start;
@@ -751,7 +734,8 @@ final class BidiLine {
                     } else {
                         for (int j4 = 0; j4 < length2; j4++) {
                             int k = evenRun ? logicalStart5 + j4 : (logicalLimit2 - j4) - 1;
-                            if (Bidi.IsBidiControlChar(bidi2.text[k])) {
+                            char uchar = bidi.text[k];
+                            if (Bidi.IsBidiControlChar(uchar)) {
                                 controlFound++;
                                 indexMap[k] = -1;
                             } else {
@@ -761,20 +745,19 @@ final class BidiLine {
                     }
                 }
                 i2++;
-                visualStart6 += length2;
+                visualStart5 += length2;
             }
         }
         return indexMap;
     }
 
     static int[] getVisualMap(Bidi bidi) {
-        Bidi bidi2 = bidi;
-        BidiRun[] runs = bidi2.runs;
-        int allocLength = bidi2.length > bidi2.resultLength ? bidi2.length : bidi2.resultLength;
+        BidiRun[] runs = bidi.runs;
+        int allocLength = bidi.length > bidi.resultLength ? bidi.length : bidi.resultLength;
         int[] indexMap = new int[allocLength];
         int visualStart = 0;
         int idx = 0;
-        for (int j = 0; j < bidi2.runCount; j++) {
+        for (int j = 0; j < bidi.runCount; j++) {
             int logicalStart = runs[j].start;
             int visualLimit = runs[j].limit;
             if (runs[j].isEvenRun()) {
@@ -796,13 +779,12 @@ final class BidiLine {
                     visualStart++;
                     idx++;
                 } while (visualStart < visualLimit);
-                int idx2 = logicalStart3;
             }
         }
-        if (bidi2.insertPoints.size > 0) {
+        if (bidi.insertPoints.size > 0) {
             int markFound = 0;
-            int runCount = bidi2.runCount;
-            BidiRun[] runs2 = bidi2.runs;
+            int runCount = bidi.runCount;
+            BidiRun[] runs2 = bidi.runs;
             for (int i = 0; i < runCount; i++) {
                 int insertRemove = runs2[i].insertRemove;
                 if ((insertRemove & 5) > 0) {
@@ -812,7 +794,7 @@ final class BidiLine {
                     markFound++;
                 }
             }
-            int k = bidi2.resultLength;
+            int k = bidi.resultLength;
             int i2 = runCount - 1;
             while (i2 >= 0 && markFound > 0) {
                 int insertRemove2 = runs2[i2].insertRemove;
@@ -833,9 +815,9 @@ final class BidiLine {
                 }
                 i2--;
             }
-        } else if (bidi2.controlCount > 0) {
-            int runCount2 = bidi2.runCount;
-            BidiRun[] runs3 = bidi2.runs;
+        } else if (bidi.controlCount > 0) {
+            int runCount2 = bidi.runCount;
+            BidiRun[] runs3 = bidi.runs;
             int visualStart3 = 0;
             int k2 = 0;
             int i3 = 0;
@@ -858,7 +840,8 @@ final class BidiLine {
                     int logicalEnd = (logicalStart4 + length) - 1;
                     for (int j4 = 0; j4 < length; j4++) {
                         int m = evenRun ? logicalStart4 + j4 : logicalEnd - j4;
-                        if (!Bidi.IsBidiControlChar(bidi2.text[m])) {
+                        char uchar = bidi.text[m];
+                        if (!Bidi.IsBidiControlChar(uchar)) {
                             indexMap[k2] = m;
                             k2++;
                         }
@@ -868,15 +851,17 @@ final class BidiLine {
                 visualStart3 += length;
             }
         }
-        if (allocLength == bidi2.resultLength) {
+        int runCount3 = bidi.resultLength;
+        if (allocLength == runCount3) {
             return indexMap;
         }
-        int[] newMap = new int[bidi2.resultLength];
-        System.arraycopy(indexMap, 0, newMap, 0, bidi2.resultLength);
+        int[] newMap = new int[bidi.resultLength];
+        System.arraycopy(indexMap, 0, newMap, 0, bidi.resultLength);
         return newMap;
     }
 
     static int[] invertMap(int[] srcMap) {
+        int srcLength = srcMap.length;
         int destLength = -1;
         int count = 0;
         for (int srcEntry : srcMap) {

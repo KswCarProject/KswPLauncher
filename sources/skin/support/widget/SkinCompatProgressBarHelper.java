@@ -3,7 +3,6 @@ package skin.support.widget;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
-import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,26 +15,26 @@ import android.graphics.drawable.shapes.Shape;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
-import skin.support.R;
+import skin.support.C1899R;
 import skin.support.content.res.SkinCompatResources;
 import skin.support.utils.SkinCompatVersionUtils;
 
+/* loaded from: classes.dex */
 public class SkinCompatProgressBarHelper extends SkinCompatHelper {
-    private int mIndeterminateDrawableResId = 0;
-    private int mIndeterminateTintResId = 0;
-    private int mProgressDrawableResId = 0;
     private Bitmap mSampleTile;
     private final ProgressBar mView;
+    private int mIndeterminateDrawableResId = 0;
+    private int mProgressDrawableResId = 0;
+    private int mIndeterminateTintResId = 0;
 
     SkinCompatProgressBarHelper(ProgressBar view) {
         this.mView = view;
     }
 
-    /* access modifiers changed from: package-private */
-    public void loadFromAttributes(AttributeSet attrs, int defStyleAttr) {
-        TypedArray a = this.mView.getContext().obtainStyledAttributes(attrs, R.styleable.SkinCompatProgressBar, defStyleAttr, 0);
-        this.mIndeterminateDrawableResId = a.getResourceId(R.styleable.SkinCompatProgressBar_android_indeterminateDrawable, 0);
-        this.mProgressDrawableResId = a.getResourceId(R.styleable.SkinCompatProgressBar_android_progressDrawable, 0);
+    void loadFromAttributes(AttributeSet attrs, int defStyleAttr) {
+        TypedArray a = this.mView.getContext().obtainStyledAttributes(attrs, C1899R.styleable.SkinCompatProgressBar, defStyleAttr, 0);
+        this.mIndeterminateDrawableResId = a.getResourceId(C1899R.styleable.SkinCompatProgressBar_android_indeterminateDrawable, 0);
+        this.mProgressDrawableResId = a.getResourceId(C1899R.styleable.SkinCompatProgressBar_android_progressDrawable, 0);
         a.recycle();
         if (Build.VERSION.SDK_INT > 21) {
             TypedArray a2 = this.mView.getContext().obtainStyledAttributes(attrs, new int[]{16843881}, defStyleAttr, 0);
@@ -76,7 +75,8 @@ public class SkinCompatProgressBarHelper extends SkinCompatHelper {
                 this.mSampleTile = tileBitmap;
             }
             ShapeDrawable shapeDrawable = new ShapeDrawable(getDrawableShape());
-            shapeDrawable.getPaint().setShader(new BitmapShader(tileBitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP));
+            BitmapShader bitmapShader = new BitmapShader(tileBitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP);
+            shapeDrawable.getPaint().setShader(bitmapShader);
             shapeDrawable.getPaint().setColorFilter(bitmapDrawable.getPaint().getColorFilter());
             return clip ? new ClipDrawable(shapeDrawable, 3, 1) : shapeDrawable;
         }
@@ -84,26 +84,28 @@ public class SkinCompatProgressBarHelper extends SkinCompatHelper {
     }
 
     private Drawable tileifyIndeterminate(Drawable drawable) {
-        if (!(drawable instanceof AnimationDrawable)) {
-            return drawable;
+        if (drawable instanceof AnimationDrawable) {
+            AnimationDrawable background = (AnimationDrawable) drawable;
+            int N = background.getNumberOfFrames();
+            AnimationDrawable newBg = new AnimationDrawable();
+            newBg.setOneShot(background.isOneShot());
+            for (int i = 0; i < N; i++) {
+                Drawable frame = tileify(background.getFrame(i), true);
+                frame.setLevel(10000);
+                newBg.addFrame(frame, background.getDuration(i));
+            }
+            newBg.setLevel(10000);
+            return newBg;
         }
-        AnimationDrawable background = (AnimationDrawable) drawable;
-        int N = background.getNumberOfFrames();
-        AnimationDrawable newBg = new AnimationDrawable();
-        newBg.setOneShot(background.isOneShot());
-        for (int i = 0; i < N; i++) {
-            Drawable frame = tileify(background.getFrame(i), true);
-            frame.setLevel(10000);
-            newBg.addFrame(frame, background.getDuration(i));
-        }
-        newBg.setLevel(10000);
-        return newBg;
+        return drawable;
     }
 
     private Shape getDrawableShape() {
-        return new RoundRectShape(new float[]{5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f}, (RectF) null, (float[]) null);
+        float[] roundedCorners = {5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f};
+        return new RoundRectShape(roundedCorners, null, null);
     }
 
+    @Override // skin.support.widget.SkinCompatHelper
     public void applySkin() {
         int checkResourceId = checkResourceId(this.mIndeterminateDrawableResId);
         this.mIndeterminateDrawableResId = checkResourceId;
@@ -127,10 +129,10 @@ public class SkinCompatProgressBarHelper extends SkinCompatHelper {
         }
     }
 
-    private int checkProgressDrawableResId(int mProgressDrawableResId2) {
-        if (mProgressDrawableResId2 == R.drawable.abc_ratingbar_material) {
+    private int checkProgressDrawableResId(int mProgressDrawableResId) {
+        if (mProgressDrawableResId == C1899R.C1900drawable.abc_ratingbar_material) {
             return 0;
         }
-        return checkResourceId(mProgressDrawableResId2);
+        return checkResourceId(mProgressDrawableResId);
     }
 }

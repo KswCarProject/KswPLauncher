@@ -4,11 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+/* loaded from: classes.dex */
 public class SkinCompatLinearLayout extends LinearLayout implements SkinCompatSupportable {
     private SkinCompatBackgroundHelper mBackgroundTintHelper;
 
     public SkinCompatLinearLayout(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public SkinCompatLinearLayout(Context context, AttributeSet attrs) {
@@ -22,6 +23,7 @@ public class SkinCompatLinearLayout extends LinearLayout implements SkinCompatSu
         skinCompatBackgroundHelper.loadFromAttributes(attrs, defStyleAttr);
     }
 
+    @Override // android.view.View
     public void setBackgroundResource(int resId) {
         super.setBackgroundResource(resId);
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
@@ -30,6 +32,7 @@ public class SkinCompatLinearLayout extends LinearLayout implements SkinCompatSu
         }
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
         if (skinCompatBackgroundHelper != null) {

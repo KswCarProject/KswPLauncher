@@ -3,6 +3,7 @@ package kotlin.jvm.internal;
 import kotlin.reflect.KCallable;
 import kotlin.reflect.KProperty;
 
+/* loaded from: classes.dex */
 public abstract class PropertyReference extends CallableReference implements KProperty {
     public PropertyReference() {
     }
@@ -11,20 +12,22 @@ public abstract class PropertyReference extends CallableReference implements KPr
         super(receiver);
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     public PropertyReference(Object receiver, Class owner, String name, String signature, int flags) {
-        super(receiver, owner, name, signature, (flags & 1) != 1 ? false : true);
+        super(receiver, owner, name, signature, (flags & 1) == 1);
     }
 
-    /* access modifiers changed from: protected */
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // kotlin.jvm.internal.CallableReference
     public KProperty getReflected() {
         return (KProperty) super.getReflected();
     }
 
+    @Override // kotlin.reflect.KProperty
     public boolean isLateinit() {
         return getReflected().isLateinit();
     }
 
+    @Override // kotlin.reflect.KProperty
     public boolean isConst() {
         return getReflected().isConst();
     }
@@ -35,10 +38,7 @@ public abstract class PropertyReference extends CallableReference implements KPr
         }
         if (obj instanceof PropertyReference) {
             PropertyReference other = (PropertyReference) obj;
-            if (!getOwner().equals(other.getOwner()) || !getName().equals(other.getName()) || !getSignature().equals(other.getSignature()) || !Intrinsics.areEqual(getBoundReceiver(), other.getBoundReceiver())) {
-                return false;
-            }
-            return true;
+            return getOwner().equals(other.getOwner()) && getName().equals(other.getName()) && getSignature().equals(other.getSignature()) && Intrinsics.areEqual(getBoundReceiver(), other.getBoundReceiver());
         } else if (obj instanceof KProperty) {
             return obj.equals(compute());
         } else {

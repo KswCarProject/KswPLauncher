@@ -9,6 +9,7 @@ import com.bumptech.glide.util.Util;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 
+/* loaded from: classes.dex */
 final class ResourceCacheKey implements Key {
     private static final LruCache<Class<?>, byte[]> RESOURCE_CLASS_BYTES = new LruCache<>(50);
     private final ArrayPool arrayPool;
@@ -20,46 +21,47 @@ final class ResourceCacheKey implements Key {
     private final Transformation<?> transformation;
     private final int width;
 
-    ResourceCacheKey(ArrayPool arrayPool2, Key sourceKey2, Key signature2, int width2, int height2, Transformation<?> appliedTransformation, Class<?> decodedResourceClass2, Options options2) {
-        this.arrayPool = arrayPool2;
-        this.sourceKey = sourceKey2;
-        this.signature = signature2;
-        this.width = width2;
-        this.height = height2;
+    ResourceCacheKey(ArrayPool arrayPool, Key sourceKey, Key signature, int width, int height, Transformation<?> appliedTransformation, Class<?> decodedResourceClass, Options options) {
+        this.arrayPool = arrayPool;
+        this.sourceKey = sourceKey;
+        this.signature = signature;
+        this.width = width;
+        this.height = height;
         this.transformation = appliedTransformation;
-        this.decodedResourceClass = decodedResourceClass2;
-        this.options = options2;
+        this.decodedResourceClass = decodedResourceClass;
+        this.options = options;
     }
 
+    @Override // com.bumptech.glide.load.Key
     public boolean equals(Object o) {
-        if (!(o instanceof ResourceCacheKey)) {
-            return false;
+        if (o instanceof ResourceCacheKey) {
+            ResourceCacheKey other = (ResourceCacheKey) o;
+            return this.height == other.height && this.width == other.width && Util.bothNullOrEqual(this.transformation, other.transformation) && this.decodedResourceClass.equals(other.decodedResourceClass) && this.sourceKey.equals(other.sourceKey) && this.signature.equals(other.signature) && this.options.equals(other.options);
         }
-        ResourceCacheKey other = (ResourceCacheKey) o;
-        if (this.height != other.height || this.width != other.width || !Util.bothNullOrEqual(this.transformation, other.transformation) || !this.decodedResourceClass.equals(other.decodedResourceClass) || !this.sourceKey.equals(other.sourceKey) || !this.signature.equals(other.signature) || !this.options.equals(other.options)) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
+    @Override // com.bumptech.glide.load.Key
     public int hashCode() {
-        int result = (((((this.sourceKey.hashCode() * 31) + this.signature.hashCode()) * 31) + this.width) * 31) + this.height;
-        Transformation<?> transformation2 = this.transformation;
-        if (transformation2 != null) {
-            result = (result * 31) + transformation2.hashCode();
+        int result = this.sourceKey.hashCode();
+        int result2 = (((((result * 31) + this.signature.hashCode()) * 31) + this.width) * 31) + this.height;
+        Transformation<?> transformation = this.transformation;
+        if (transformation != null) {
+            result2 = (result2 * 31) + transformation.hashCode();
         }
-        return (((result * 31) + this.decodedResourceClass.hashCode()) * 31) + this.options.hashCode();
+        return (((result2 * 31) + this.decodedResourceClass.hashCode()) * 31) + this.options.hashCode();
     }
 
+    @Override // com.bumptech.glide.load.Key
     public void updateDiskCacheKey(MessageDigest messageDigest) {
         byte[] dimensions = (byte[]) this.arrayPool.getExact(8, byte[].class);
         ByteBuffer.wrap(dimensions).putInt(this.width).putInt(this.height).array();
         this.signature.updateDiskCacheKey(messageDigest);
         this.sourceKey.updateDiskCacheKey(messageDigest);
         messageDigest.update(dimensions);
-        Transformation<?> transformation2 = this.transformation;
-        if (transformation2 != null) {
-            transformation2.updateDiskCacheKey(messageDigest);
+        Transformation<?> transformation = this.transformation;
+        if (transformation != null) {
+            transformation.updateDiskCacheKey(messageDigest);
         }
         this.options.updateDiskCacheKey(messageDigest);
         messageDigest.update(getResourceClassBytes());
@@ -69,15 +71,15 @@ final class ResourceCacheKey implements Key {
     private byte[] getResourceClassBytes() {
         LruCache<Class<?>, byte[]> lruCache = RESOURCE_CLASS_BYTES;
         byte[] result = lruCache.get(this.decodedResourceClass);
-        if (result != null) {
-            return result;
+        if (result == null) {
+            byte[] result2 = this.decodedResourceClass.getName().getBytes(CHARSET);
+            lruCache.put(this.decodedResourceClass, result2);
+            return result2;
         }
-        byte[] result2 = this.decodedResourceClass.getName().getBytes(CHARSET);
-        lruCache.put(this.decodedResourceClass, result2);
-        return result2;
+        return result;
     }
 
     public String toString() {
-        return "ResourceCacheKey{sourceKey=" + this.sourceKey + ", signature=" + this.signature + ", width=" + this.width + ", height=" + this.height + ", decodedResourceClass=" + this.decodedResourceClass + ", transformation='" + this.transformation + '\'' + ", options=" + this.options + '}';
+        return "ResourceCacheKey{sourceKey=" + this.sourceKey + ", signature=" + this.signature + ", width=" + this.width + ", height=" + this.height + ", decodedResourceClass=" + this.decodedResourceClass + ", transformation='" + this.transformation + "', options=" + this.options + '}';
     }
 }

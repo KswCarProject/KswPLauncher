@@ -11,6 +11,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ByteBufferUtil {
     private static final AtomicReference<byte[]> BUFFER_REF = new AtomicReference<>();
     private static final int BUFFER_SIZE = 16384;
@@ -25,32 +26,32 @@ public final class ByteBufferUtil {
             long fileLength = file.length();
             if (fileLength > 2147483647L) {
                 throw new IOException("File too large to map into memory");
-            } else if (fileLength != 0) {
-                RandomAccessFile raf2 = new RandomAccessFile(file, "r");
-                FileChannel channel2 = raf2.getChannel();
-                MappedByteBuffer load = channel2.map(FileChannel.MapMode.READ_ONLY, 0, fileLength).load();
-                if (channel2 != null) {
-                    try {
-                        channel2.close();
-                    } catch (IOException e) {
-                    }
-                }
-                try {
-                    raf2.close();
-                } catch (IOException e2) {
-                }
-                return load;
-            } else {
+            }
+            if (fileLength == 0) {
                 throw new IOException("File unsuitable for memory mapping");
             }
+            RandomAccessFile raf2 = new RandomAccessFile(file, "r");
+            FileChannel channel2 = raf2.getChannel();
+            MappedByteBuffer load = channel2.map(FileChannel.MapMode.READ_ONLY, 0L, fileLength).load();
+            if (channel2 != null) {
+                try {
+                    channel2.close();
+                } catch (IOException e) {
+                }
+            }
+            try {
+                raf2.close();
+            } catch (IOException e2) {
+            }
+            return load;
         } catch (Throwable th) {
-            if (channel != null) {
+            if (0 != 0) {
                 try {
                     channel.close();
                 } catch (IOException e3) {
                 }
             }
-            if (raf != null) {
+            if (0 != 0) {
                 try {
                     raf.close();
                 } catch (IOException e4) {
@@ -104,7 +105,7 @@ public final class ByteBufferUtil {
             os.write(safeArray.data, safeArray.offset, safeArray.offset + safeArray.limit);
             return;
         }
-        byte[] buffer = BUFFER_REF.getAndSet((Object) null);
+        byte[] buffer = BUFFER_REF.getAndSet(null);
         if (buffer == null) {
             buffer = new byte[16384];
         }
@@ -134,14 +135,13 @@ public final class ByteBufferUtil {
 
     public static ByteBuffer fromStream(InputStream stream) throws IOException {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream(16384);
-        byte[] buffer = BUFFER_REF.getAndSet((Object) null);
+        byte[] buffer = BUFFER_REF.getAndSet(null);
         if (buffer == null) {
             buffer = new byte[16384];
         }
         while (true) {
-            int read = stream.read(buffer);
-            int n = read;
-            if (read >= 0) {
+            int n = stream.read(buffer);
+            if (n >= 0) {
                 outStream.write(buffer, 0, n);
             } else {
                 BUFFER_REF.set(buffer);
@@ -152,37 +152,41 @@ public final class ByteBufferUtil {
     }
 
     private static SafeArray getSafeArray(ByteBuffer byteBuffer) {
-        if (byteBuffer.isReadOnly() || !byteBuffer.hasArray()) {
-            return null;
+        if (!byteBuffer.isReadOnly() && byteBuffer.hasArray()) {
+            return new SafeArray(byteBuffer.array(), byteBuffer.arrayOffset(), byteBuffer.limit());
         }
-        return new SafeArray(byteBuffer.array(), byteBuffer.arrayOffset(), byteBuffer.limit());
+        return null;
     }
 
+    /* loaded from: classes.dex */
     static final class SafeArray {
         final byte[] data;
         final int limit;
         final int offset;
 
-        SafeArray(byte[] data2, int offset2, int limit2) {
-            this.data = data2;
-            this.offset = offset2;
-            this.limit = limit2;
+        SafeArray(byte[] data, int offset, int limit) {
+            this.data = data;
+            this.offset = offset;
+            this.limit = limit;
         }
     }
 
+    /* loaded from: classes.dex */
     private static class ByteBufferStream extends InputStream {
         private static final int UNSET = -1;
         private final ByteBuffer byteBuffer;
         private int markPos = -1;
 
-        ByteBufferStream(ByteBuffer byteBuffer2) {
-            this.byteBuffer = byteBuffer2;
+        ByteBufferStream(ByteBuffer byteBuffer) {
+            this.byteBuffer = byteBuffer;
         }
 
+        @Override // java.io.InputStream
         public int available() {
             return this.byteBuffer.remaining();
         }
 
+        @Override // java.io.InputStream
         public int read() {
             if (!this.byteBuffer.hasRemaining()) {
                 return -1;
@@ -190,14 +194,17 @@ public final class ByteBufferUtil {
             return this.byteBuffer.get();
         }
 
+        @Override // java.io.InputStream
         public synchronized void mark(int readLimit) {
             this.markPos = this.byteBuffer.position();
         }
 
+        @Override // java.io.InputStream
         public boolean markSupported() {
             return true;
         }
 
+        @Override // java.io.InputStream
         public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
             if (!this.byteBuffer.hasRemaining()) {
                 return -1;
@@ -207,22 +214,23 @@ public final class ByteBufferUtil {
             return toRead;
         }
 
+        @Override // java.io.InputStream
         public synchronized void reset() throws IOException {
             int i = this.markPos;
-            if (i != -1) {
-                this.byteBuffer.position(i);
-            } else {
+            if (i == -1) {
                 throw new IOException("Cannot reset to unset mark position");
             }
+            this.byteBuffer.position(i);
         }
 
+        @Override // java.io.InputStream
         public long skip(long byteCount) throws IOException {
             if (!this.byteBuffer.hasRemaining()) {
-                return -1;
+                return -1L;
             }
-            long toSkip = Math.min(byteCount, (long) available());
-            ByteBuffer byteBuffer2 = this.byteBuffer;
-            byteBuffer2.position((int) (((long) byteBuffer2.position()) + toSkip));
+            long toSkip = Math.min(byteCount, available());
+            ByteBuffer byteBuffer = this.byteBuffer;
+            byteBuffer.position((int) (byteBuffer.position() + toSkip));
             return toSkip;
         }
     }

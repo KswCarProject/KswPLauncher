@@ -1,5 +1,6 @@
 package com.chad.library.adapter.base.util;
 
+/* loaded from: classes.dex */
 public class TouchEventUtil {
     public static String getTouchAction(int actionId) {
         String actionName = "Unknow:id=" + actionId;

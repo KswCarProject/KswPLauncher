@@ -8,13 +8,15 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.internal.observers.DeferredScalarDisposable;
 
+/* loaded from: classes.dex */
 public final class SingleToObservable<T> extends Observable<T> {
     final SingleSource<? extends T> source;
 
-    public SingleToObservable(SingleSource<? extends T> source2) {
-        this.source = source2;
+    public SingleToObservable(SingleSource<? extends T> source) {
+        this.source = source;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super T> observer) {
         this.source.subscribe(create(observer));
     }
@@ -23,6 +25,7 @@ public final class SingleToObservable<T> extends Observable<T> {
         return new SingleToObservableObserver(downstream);
     }
 
+    /* loaded from: classes.dex */
     static final class SingleToObservableObserver<T> extends DeferredScalarDisposable<T> implements SingleObserver<T> {
         private static final long serialVersionUID = 3786543492451018833L;
         Disposable upstream;
@@ -31,6 +34,7 @@ public final class SingleToObservable<T> extends Observable<T> {
             super(downstream);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -38,14 +42,17 @@ public final class SingleToObservable<T> extends Observable<T> {
             }
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSuccess(T value) {
             complete(value);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
             error(e);
         }
 
+        @Override // io.reactivex.internal.observers.DeferredScalarDisposable, io.reactivex.disposables.Disposable
         public void dispose() {
             super.dispose();
             this.upstream.dispose();

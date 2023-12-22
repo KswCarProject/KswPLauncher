@@ -1,5 +1,6 @@
 package android.arch.persistence.room;
 
+/* loaded from: classes.dex */
 public @interface ForeignKey {
     public static final int CASCADE = 5;
     public static final int NO_ACTION = 1;
@@ -7,6 +8,7 @@ public @interface ForeignKey {
     public static final int SET_DEFAULT = 4;
     public static final int SET_NULL = 3;
 
+    /* loaded from: classes.dex */
     public @interface Action {
     }
 

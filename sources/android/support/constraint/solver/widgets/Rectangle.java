@@ -1,89 +1,49 @@
 package android.support.constraint.solver.widgets;
 
+/* loaded from: classes.dex */
 public class Rectangle {
     public int height;
     public int width;
-    public int x;
-    public int y;
 
-    public void setBounds(int x2, int y2, int width2, int height2) {
-        this.x = x2;
-        this.y = y2;
-        this.width = width2;
-        this.height = height2;
+    /* renamed from: x */
+    public int f34x;
+
+    /* renamed from: y */
+    public int f35y;
+
+    public void setBounds(int x, int y, int width, int height) {
+        this.f34x = x;
+        this.f35y = y;
+        this.width = width;
+        this.height = height;
     }
 
-    /* access modifiers changed from: package-private */
-    public void grow(int w, int h) {
-        this.x -= w;
-        this.y -= h;
+    void grow(int w, int h) {
+        this.f34x -= w;
+        this.f35y -= h;
         this.width += w * 2;
         this.height += h * 2;
     }
 
-    /* access modifiers changed from: package-private */
-    /* JADX WARNING: Code restructure failed: missing block: B:4:0x000b, code lost:
-        r0 = r3.y;
-        r1 = r4.y;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public boolean intersects(android.support.constraint.solver.widgets.Rectangle r4) {
-        /*
-            r3 = this;
-            int r0 = r3.x
-            int r1 = r4.x
-            if (r0 < r1) goto L_0x0018
-            int r2 = r4.width
-            int r1 = r1 + r2
-            if (r0 >= r1) goto L_0x0018
-            int r0 = r3.y
-            int r1 = r4.y
-            if (r0 < r1) goto L_0x0018
-            int r2 = r4.height
-            int r1 = r1 + r2
-            if (r0 >= r1) goto L_0x0018
-            r0 = 1
-            goto L_0x0019
-        L_0x0018:
-            r0 = 0
-        L_0x0019:
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.support.constraint.solver.widgets.Rectangle.intersects(android.support.constraint.solver.widgets.Rectangle):boolean");
+    boolean intersects(Rectangle bounds) {
+        int i;
+        int i2;
+        int i3 = this.f34x;
+        int i4 = bounds.f34x;
+        return i3 >= i4 && i3 < i4 + bounds.width && (i = this.f35y) >= (i2 = bounds.f35y) && i < i2 + bounds.height;
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:4:0x0009, code lost:
-        r0 = r2.y;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public boolean contains(int r3, int r4) {
-        /*
-            r2 = this;
-            int r0 = r2.x
-            if (r3 < r0) goto L_0x0014
-            int r1 = r2.width
-            int r0 = r0 + r1
-            if (r3 >= r0) goto L_0x0014
-            int r0 = r2.y
-            if (r4 < r0) goto L_0x0014
-            int r1 = r2.height
-            int r0 = r0 + r1
-            if (r4 >= r0) goto L_0x0014
-            r0 = 1
-            goto L_0x0015
-        L_0x0014:
-            r0 = 0
-        L_0x0015:
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.support.constraint.solver.widgets.Rectangle.contains(int, int):boolean");
+    public boolean contains(int x, int y) {
+        int i;
+        int i2 = this.f34x;
+        return x >= i2 && x < i2 + this.width && y >= (i = this.f35y) && y < i + this.height;
     }
 
     public int getCenterX() {
-        return (this.x + this.width) / 2;
+        return (this.f34x + this.width) / 2;
     }
 
     public int getCenterY() {
-        return (this.y + this.height) / 2;
+        return (this.f35y + this.height) / 2;
     }
 }

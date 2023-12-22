@@ -1,12 +1,13 @@
 package skin.support.widget;
 
 import android.content.res.TypedArray;
-import android.support.v4.widget.CompoundButtonCompat;
+import android.support.p001v4.widget.CompoundButtonCompat;
 import android.util.AttributeSet;
 import android.widget.CompoundButton;
-import skin.support.R;
+import skin.support.C1899R;
 import skin.support.content.res.SkinCompatResources;
 
+/* loaded from: classes.dex */
 public class SkinCompatCompoundButtonHelper extends SkinCompatHelper {
     private int mButtonResourceId = 0;
     private int mButtonTintResId = 0;
@@ -16,16 +17,14 @@ public class SkinCompatCompoundButtonHelper extends SkinCompatHelper {
         this.mView = view;
     }
 
-    /* JADX INFO: finally extract failed */
-    /* access modifiers changed from: package-private */
-    public void loadFromAttributes(AttributeSet attrs, int defStyleAttr) {
-        TypedArray a = this.mView.getContext().obtainStyledAttributes(attrs, R.styleable.CompoundButton, defStyleAttr, 0);
+    void loadFromAttributes(AttributeSet attrs, int defStyleAttr) {
+        TypedArray a = this.mView.getContext().obtainStyledAttributes(attrs, C1899R.styleable.CompoundButton, defStyleAttr, 0);
         try {
-            if (a.hasValue(R.styleable.CompoundButton_android_button)) {
-                this.mButtonResourceId = a.getResourceId(R.styleable.CompoundButton_android_button, 0);
+            if (a.hasValue(C1899R.styleable.CompoundButton_android_button)) {
+                this.mButtonResourceId = a.getResourceId(C1899R.styleable.CompoundButton_android_button, 0);
             }
-            if (a.hasValue(R.styleable.CompoundButton_buttonTint)) {
-                this.mButtonTintResId = a.getResourceId(R.styleable.CompoundButton_buttonTint, 0);
+            if (a.hasValue(C1899R.styleable.CompoundButton_buttonTint)) {
+                this.mButtonTintResId = a.getResourceId(C1899R.styleable.CompoundButton_buttonTint, 0);
             }
             a.recycle();
             applySkin();
@@ -40,6 +39,7 @@ public class SkinCompatCompoundButtonHelper extends SkinCompatHelper {
         applySkin();
     }
 
+    @Override // skin.support.widget.SkinCompatHelper
     public void applySkin() {
         int checkResourceId = SkinCompatHelper.checkResourceId(this.mButtonResourceId);
         this.mButtonResourceId = checkResourceId;

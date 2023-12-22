@@ -50,8 +50,8 @@
     <string name="benz_mbux_2021_style_classical_tip">классический</string>
     <string name="benz_mbux_2021_style_modern_tip">Современный</string>
     <string name="benz_mbux_2021_theme_settings">Настройки темы</string>
-    <string name="benz_mbux_2021_weather">Глабальнае надвор\'е</string>
-    <string name="benz_mbux_2021_weather_content">Пераключыць інтэрфейс надвор\'я</string>
+    <string name="benz_mbux_2021_weather">погода</string>
+    <string name="benz_mbux_2021_weather_content">Переключить интерфейс</string>
     <string name="benz_ntg6_fy_theme_settings">тем</string>
     <string name="boot_record_mode">Помните последний режим</string>
     <string name="boot_record_mode_radio1">Включить</string>
@@ -244,10 +244,17 @@
     <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Ошибка пароля!</string>
     <string name="mcu_file_corrupted">Файл поврежден!</string>
+    <string name="mic_control">Внешний встроенный тумблер MIC</string>
+    <string name="mic_external">Внешний</string>
+    <string name="mic_internal">Встроенный</string>
     <string name="mic_text">MIC Прирост</string>
     <string name="music_app_sel">Выберите музыкальное приложение</string>
+    <string name="music_player">Музыкальный проигрыватель</string>
     <string name="ntg6_dvr_toast">Нет устройств!</string>
     <string name="oil_size">Масло: %s</string>
+    <string name="original_radar_reverse">Оригинальный реверс дисплея радара</string>
+    <string name="radar_normal">Нормальный</string>
+    <string name="radar_reverse">Реверс</string>
     <string name="raw_car_text1">Полный экран</string>
     <string name="raw_car_text2">Текущий выбор:</string>
     <string name="reverse_exit_time_agreement">выход по протокольному соглашению</string>
@@ -324,6 +331,8 @@
     <string name="text_logo_two">P2</string>
     <string name="text_ram">ОЗУ:%s</string>
     <string name="touch_continuous_send">Сенсорные данные непрерывно отправляются</string>
+    <string name="tv_id8_brake">Тормоз</string>
+    <string name="tv_id8_seat_belt">Ремень безопасности</string>
     <string name="txz_oil_text">Настройка оповещения о дозах топлива</string>
     <string name="txz_speed_text">Настройка оповещения о скорости</string>
     <string name="txz_temp_text">установка оповещения о температуре окружающей среды</string>

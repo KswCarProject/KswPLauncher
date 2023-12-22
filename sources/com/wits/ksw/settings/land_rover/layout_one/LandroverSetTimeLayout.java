@@ -8,12 +8,13 @@ import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.settings.land_rover.interfaces.IUpdateTwoLayout;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
+/* loaded from: classes3.dex */
 public class LandroverSetTimeLayout extends RelativeLayout implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     private Context context;
     private RadioGroup rdg_timeSy;
@@ -28,10 +29,10 @@ public class LandroverSetTimeLayout extends RelativeLayout implements View.OnCli
         this.updateTwoLayout = twoLayout;
     }
 
-    public LandroverSetTimeLayout(Context context2) {
-        super(context2);
-        this.context = context2;
-        View view = LayoutInflater.from(context2).inflate(R.layout.land_rover_layout_set_time, (ViewGroup) null);
+    public LandroverSetTimeLayout(Context context) {
+        super(context);
+        this.context = context;
+        View view = LayoutInflater.from(context).inflate(C0899R.C0902layout.land_rover_layout_set_time, (ViewGroup) null);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(-1, -1);
         initData();
         initView(view);
@@ -49,24 +50,24 @@ public class LandroverSetTimeLayout extends RelativeLayout implements View.OnCli
     }
 
     private void initView(View view) {
-        this.tv_timeSync = (TextView) view.findViewById(R.id.tv_timeSync);
-        this.tv_timeZhis = (TextView) view.findViewById(R.id.tv_timeZhis);
-        this.rdg_timeSy = (RadioGroup) view.findViewById(R.id.rdg_timeSy);
-        this.rdg_timeZhis = (RadioGroup) view.findViewById(R.id.rdg_timeZhis);
+        this.tv_timeSync = (TextView) view.findViewById(C0899R.C0901id.tv_timeSync);
+        this.tv_timeZhis = (TextView) view.findViewById(C0899R.C0901id.tv_timeZhis);
+        this.rdg_timeSy = (RadioGroup) view.findViewById(C0899R.C0901id.rdg_timeSy);
+        this.rdg_timeZhis = (RadioGroup) view.findViewById(C0899R.C0901id.rdg_timeZhis);
         switch (this.timeSync) {
             case 0:
-                this.rdg_timeSy.check(R.id.rdb_sync2);
+                this.rdg_timeSy.check(C0899R.C0901id.rdb_sync2);
                 break;
             case 1:
-                this.rdg_timeSy.check(R.id.rdb_sync1);
+                this.rdg_timeSy.check(C0899R.C0901id.rdb_sync1);
                 break;
         }
         switch (this.timeZhis) {
             case 0:
-                this.rdg_timeZhis.check(R.id.rdb_zhis2);
+                this.rdg_timeZhis.check(C0899R.C0901id.rdb_zhis2);
                 break;
             case 1:
-                this.rdg_timeZhis.check(R.id.rdb_zhis1);
+                this.rdg_timeZhis.check(C0899R.C0901id.rdb_zhis1);
                 break;
         }
         this.rdg_timeSy.setOnCheckedChangeListener(this);
@@ -79,10 +80,10 @@ public class LandroverSetTimeLayout extends RelativeLayout implements View.OnCli
         if (radioGroup != null) {
             switch (this.timeSync) {
                 case 0:
-                    radioGroup.check(R.id.rdb_sync2);
+                    radioGroup.check(C0899R.C0901id.rdb_sync2);
                     break;
                 case 1:
-                    radioGroup.check(R.id.rdb_sync1);
+                    radioGroup.check(C0899R.C0901id.rdb_sync1);
                     break;
             }
         }
@@ -90,10 +91,10 @@ public class LandroverSetTimeLayout extends RelativeLayout implements View.OnCli
         if (radioGroup2 != null) {
             switch (this.timeZhis) {
                 case 0:
-                    radioGroup2.check(R.id.rdb_zhis2);
+                    radioGroup2.check(C0899R.C0901id.rdb_zhis2);
                     return;
                 case 1:
-                    radioGroup2.check(R.id.rdb_zhis1);
+                    radioGroup2.check(C0899R.C0901id.rdb_zhis1);
                     return;
                 default:
                     return;
@@ -107,10 +108,11 @@ public class LandroverSetTimeLayout extends RelativeLayout implements View.OnCli
         updateView();
     }
 
+    @Override // android.view.View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_timeSync /*2131297941*/:
-                this.tv_timeSync.setTextColor(this.context.getColor(R.color.alsid7_text_bule));
+            case C0899R.C0901id.tv_timeSync /* 2131297993 */:
+                this.tv_timeSync.setTextColor(this.context.getColor(C0899R.color.alsid7_text_bule));
                 this.tv_timeZhis.setTextColor(-1);
                 IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
                 if (iUpdateTwoLayout != null) {
@@ -118,8 +120,8 @@ public class LandroverSetTimeLayout extends RelativeLayout implements View.OnCli
                     return;
                 }
                 return;
-            case R.id.tv_timeZhis /*2131297942*/:
-                this.tv_timeZhis.setTextColor(this.context.getColor(R.color.alsid7_text_bule));
+            case C0899R.C0901id.tv_timeZhis /* 2131297994 */:
+                this.tv_timeZhis.setTextColor(this.context.getColor(C0899R.color.alsid7_text_bule));
                 this.tv_timeSync.setTextColor(-1);
                 IUpdateTwoLayout iUpdateTwoLayout2 = this.updateTwoLayout;
                 if (iUpdateTwoLayout2 != null) {
@@ -132,18 +134,19 @@ public class LandroverSetTimeLayout extends RelativeLayout implements View.OnCli
         }
     }
 
+    @Override // android.widget.RadioGroup.OnCheckedChangeListener
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.rdb_sync1 /*2131297461*/:
+            case C0899R.C0901id.rdb_sync1 /* 2131297495 */:
                 FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 1);
                 return;
-            case R.id.rdb_sync2 /*2131297462*/:
+            case C0899R.C0901id.rdb_sync2 /* 2131297496 */:
                 FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 0);
                 return;
-            case R.id.rdb_zhis1 /*2131297469*/:
+            case C0899R.C0901id.rdb_zhis1 /* 2131297503 */:
                 FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 1);
                 return;
-            case R.id.rdb_zhis2 /*2131297470*/:
+            case C0899R.C0901id.rdb_zhis2 /* 2131297504 */:
                 FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 0);
                 return;
             default:

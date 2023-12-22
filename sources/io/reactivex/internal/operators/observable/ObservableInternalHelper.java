@@ -17,16 +17,24 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+/* loaded from: classes.dex */
 public final class ObservableInternalHelper {
     private ObservableInternalHelper() {
         throw new IllegalStateException("No instances!");
     }
 
+    /* loaded from: classes.dex */
     static final class SimpleGenerator<T, S> implements BiFunction<S, Emitter<T>, S> {
         final Consumer<Emitter<T>> consumer;
 
-        SimpleGenerator(Consumer<Emitter<T>> consumer2) {
-            this.consumer = consumer2;
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.BiFunction
+        public /* bridge */ /* synthetic */ Object apply(Object obj, Object obj2) throws Exception {
+            return apply((SimpleGenerator<T, S>) obj, (Emitter) ((Emitter) obj2));
+        }
+
+        SimpleGenerator(Consumer<Emitter<T>> consumer) {
+            this.consumer = consumer;
         }
 
         public S apply(S t1, Emitter<T> t2) throws Exception {
@@ -39,11 +47,18 @@ public final class ObservableInternalHelper {
         return new SimpleGenerator(consumer);
     }
 
+    /* loaded from: classes.dex */
     static final class SimpleBiGenerator<T, S> implements BiFunction<S, Emitter<T>, S> {
         final BiConsumer<S, Emitter<T>> consumer;
 
-        SimpleBiGenerator(BiConsumer<S, Emitter<T>> consumer2) {
-            this.consumer = consumer2;
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.BiFunction
+        public /* bridge */ /* synthetic */ Object apply(Object obj, Object obj2) throws Exception {
+            return apply((SimpleBiGenerator<T, S>) obj, (Emitter) ((Emitter) obj2));
+        }
+
+        SimpleBiGenerator(BiConsumer<S, Emitter<T>> consumer) {
+            this.consumer = consumer;
         }
 
         public S apply(S t1, Emitter<T> t2) throws Exception {
@@ -56,15 +71,24 @@ public final class ObservableInternalHelper {
         return new SimpleBiGenerator(consumer);
     }
 
+    /* loaded from: classes.dex */
     static final class ItemDelayFunction<T, U> implements Function<T, ObservableSource<T>> {
         final Function<? super T, ? extends ObservableSource<U>> itemDelay;
 
-        ItemDelayFunction(Function<? super T, ? extends ObservableSource<U>> itemDelay2) {
-            this.itemDelay = itemDelay2;
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.Function
+        public /* bridge */ /* synthetic */ Object apply(Object obj) throws Exception {
+            return apply((ItemDelayFunction<T, U>) obj);
         }
 
+        ItemDelayFunction(Function<? super T, ? extends ObservableSource<U>> itemDelay) {
+            this.itemDelay = itemDelay;
+        }
+
+        @Override // io.reactivex.functions.Function
         public ObservableSource<T> apply(T v) throws Exception {
-            return new ObservableTake((ObservableSource) ObjectHelper.requireNonNull(this.itemDelay.apply(v), "The itemDelay returned a null ObservableSource"), 1).map(Functions.justFunction(v)).defaultIfEmpty(v);
+            ObservableSource<U> o = (ObservableSource) ObjectHelper.requireNonNull(this.itemDelay.apply(v), "The itemDelay returned a null ObservableSource");
+            return new ObservableTake(o, 1L).map(Functions.justFunction(v)).defaultIfEmpty(v);
         }
     }
 
@@ -72,37 +96,43 @@ public final class ObservableInternalHelper {
         return new ItemDelayFunction(itemDelay);
     }
 
+    /* loaded from: classes.dex */
     static final class ObserverOnNext<T> implements Consumer<T> {
         final Observer<T> observer;
 
-        ObserverOnNext(Observer<T> observer2) {
-            this.observer = observer2;
+        ObserverOnNext(Observer<T> observer) {
+            this.observer = observer;
         }
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(T v) throws Exception {
             this.observer.onNext(v);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ObserverOnError<T> implements Consumer<Throwable> {
         final Observer<T> observer;
 
-        ObserverOnError(Observer<T> observer2) {
-            this.observer = observer2;
+        ObserverOnError(Observer<T> observer) {
+            this.observer = observer;
         }
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(Throwable v) throws Exception {
             this.observer.onError(v);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ObserverOnComplete<T> implements Action {
         final Observer<T> observer;
 
-        ObserverOnComplete(Observer<T> observer2) {
-            this.observer = observer2;
+        ObserverOnComplete(Observer<T> observer) {
+            this.observer = observer;
         }
 
+        @Override // io.reactivex.functions.Action
         public void run() throws Exception {
             this.observer.onComplete();
         }
@@ -120,31 +150,44 @@ public final class ObservableInternalHelper {
         return new ObserverOnComplete(observer);
     }
 
+    /* loaded from: classes.dex */
     static final class FlatMapWithCombinerInner<U, R, T> implements Function<U, R> {
         private final BiFunction<? super T, ? super U, ? extends R> combiner;
-        private final T t;
 
-        FlatMapWithCombinerInner(BiFunction<? super T, ? super U, ? extends R> combiner2, T t2) {
-            this.combiner = combiner2;
-            this.t = t2;
+        /* renamed from: t */
+        private final T f320t;
+
+        FlatMapWithCombinerInner(BiFunction<? super T, ? super U, ? extends R> combiner, T t) {
+            this.combiner = combiner;
+            this.f320t = t;
         }
 
+        @Override // io.reactivex.functions.Function
         public R apply(U w) throws Exception {
-            return this.combiner.apply(this.t, w);
+            return this.combiner.apply((T) this.f320t, w);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class FlatMapWithCombinerOuter<T, R, U> implements Function<T, ObservableSource<R>> {
         private final BiFunction<? super T, ? super U, ? extends R> combiner;
         private final Function<? super T, ? extends ObservableSource<? extends U>> mapper;
 
-        FlatMapWithCombinerOuter(BiFunction<? super T, ? super U, ? extends R> combiner2, Function<? super T, ? extends ObservableSource<? extends U>> mapper2) {
-            this.combiner = combiner2;
-            this.mapper = mapper2;
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.Function
+        public /* bridge */ /* synthetic */ Object apply(Object obj) throws Exception {
+            return apply((FlatMapWithCombinerOuter<T, R, U>) obj);
         }
 
+        FlatMapWithCombinerOuter(BiFunction<? super T, ? super U, ? extends R> combiner, Function<? super T, ? extends ObservableSource<? extends U>> mapper) {
+            this.combiner = combiner;
+            this.mapper = mapper;
+        }
+
+        @Override // io.reactivex.functions.Function
         public ObservableSource<R> apply(T t) throws Exception {
-            return new ObservableMap((ObservableSource) ObjectHelper.requireNonNull(this.mapper.apply(t), "The mapper returned a null ObservableSource"), new FlatMapWithCombinerInner(this.combiner, t));
+            ObservableSource<U> u = (ObservableSource) ObjectHelper.requireNonNull(this.mapper.apply(t), "The mapper returned a null ObservableSource");
+            return new ObservableMap(u, new FlatMapWithCombinerInner(this.combiner, t));
         }
     }
 
@@ -152,13 +195,21 @@ public final class ObservableInternalHelper {
         return new FlatMapWithCombinerOuter(combiner, mapper);
     }
 
+    /* loaded from: classes.dex */
     static final class FlatMapIntoIterable<T, U> implements Function<T, ObservableSource<U>> {
         private final Function<? super T, ? extends Iterable<? extends U>> mapper;
 
-        FlatMapIntoIterable(Function<? super T, ? extends Iterable<? extends U>> mapper2) {
-            this.mapper = mapper2;
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.Function
+        public /* bridge */ /* synthetic */ Object apply(Object obj) throws Exception {
+            return apply((FlatMapIntoIterable<T, U>) obj);
         }
 
+        FlatMapIntoIterable(Function<? super T, ? extends Iterable<? extends U>> mapper) {
+            this.mapper = mapper;
+        }
+
+        @Override // io.reactivex.functions.Function
         public ObservableSource<U> apply(T t) throws Exception {
             return new ObservableFromIterable((Iterable) ObjectHelper.requireNonNull(this.mapper.apply(t), "The mapper returned a null Iterable"));
         }
@@ -168,9 +219,11 @@ public final class ObservableInternalHelper {
         return new FlatMapIntoIterable(mapper);
     }
 
+    /* loaded from: classes.dex */
     enum MapToInt implements Function<Object, Object> {
         INSTANCE;
 
+        @Override // io.reactivex.functions.Function
         public Object apply(Object t) throws Exception {
             return 0;
         }
@@ -196,11 +249,17 @@ public final class ObservableInternalHelper {
         return new ReplayFunction(selector, scheduler);
     }
 
+    /* loaded from: classes.dex */
     static final class ZipIterableFunction<T, R> implements Function<List<ObservableSource<? extends T>>, ObservableSource<? extends R>> {
         private final Function<? super Object[], ? extends R> zipper;
 
-        ZipIterableFunction(Function<? super Object[], ? extends R> zipper2) {
-            this.zipper = zipper2;
+        @Override // io.reactivex.functions.Function
+        public /* bridge */ /* synthetic */ Object apply(Object obj) throws Exception {
+            return apply((List) ((List) obj));
+        }
+
+        ZipIterableFunction(Function<? super Object[], ? extends R> zipper) {
+            this.zipper = zipper;
         }
 
         public ObservableSource<? extends R> apply(List<ObservableSource<? extends T>> list) {
@@ -212,32 +271,37 @@ public final class ObservableInternalHelper {
         return new ZipIterableFunction(zipper);
     }
 
+    /* loaded from: classes.dex */
     static final class ReplayCallable<T> implements Callable<ConnectableObservable<T>> {
         private final Observable<T> parent;
 
-        ReplayCallable(Observable<T> parent2) {
-            this.parent = parent2;
+        ReplayCallable(Observable<T> parent) {
+            this.parent = parent;
         }
 
+        @Override // java.util.concurrent.Callable
         public ConnectableObservable<T> call() {
             return this.parent.replay();
         }
     }
 
+    /* loaded from: classes.dex */
     static final class BufferedReplayCallable<T> implements Callable<ConnectableObservable<T>> {
         private final int bufferSize;
         private final Observable<T> parent;
 
-        BufferedReplayCallable(Observable<T> parent2, int bufferSize2) {
-            this.parent = parent2;
-            this.bufferSize = bufferSize2;
+        BufferedReplayCallable(Observable<T> parent, int bufferSize) {
+            this.parent = parent;
+            this.bufferSize = bufferSize;
         }
 
+        @Override // java.util.concurrent.Callable
         public ConnectableObservable<T> call() {
             return this.parent.replay(this.bufferSize);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class BufferedTimedReplayCallable<T> implements Callable<ConnectableObservable<T>> {
         private final int bufferSize;
         private final Observable<T> parent;
@@ -245,48 +309,58 @@ public final class ObservableInternalHelper {
         private final long time;
         private final TimeUnit unit;
 
-        BufferedTimedReplayCallable(Observable<T> parent2, int bufferSize2, long time2, TimeUnit unit2, Scheduler scheduler2) {
-            this.parent = parent2;
-            this.bufferSize = bufferSize2;
-            this.time = time2;
-            this.unit = unit2;
-            this.scheduler = scheduler2;
+        BufferedTimedReplayCallable(Observable<T> parent, int bufferSize, long time, TimeUnit unit, Scheduler scheduler) {
+            this.parent = parent;
+            this.bufferSize = bufferSize;
+            this.time = time;
+            this.unit = unit;
+            this.scheduler = scheduler;
         }
 
+        @Override // java.util.concurrent.Callable
         public ConnectableObservable<T> call() {
             return this.parent.replay(this.bufferSize, this.time, this.unit, this.scheduler);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class TimedReplayCallable<T> implements Callable<ConnectableObservable<T>> {
         private final Observable<T> parent;
         private final Scheduler scheduler;
         private final long time;
         private final TimeUnit unit;
 
-        TimedReplayCallable(Observable<T> parent2, long time2, TimeUnit unit2, Scheduler scheduler2) {
-            this.parent = parent2;
-            this.time = time2;
-            this.unit = unit2;
-            this.scheduler = scheduler2;
+        TimedReplayCallable(Observable<T> parent, long time, TimeUnit unit, Scheduler scheduler) {
+            this.parent = parent;
+            this.time = time;
+            this.unit = unit;
+            this.scheduler = scheduler;
         }
 
+        @Override // java.util.concurrent.Callable
         public ConnectableObservable<T> call() {
             return this.parent.replay(this.time, this.unit, this.scheduler);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ReplayFunction<T, R> implements Function<Observable<T>, ObservableSource<R>> {
         private final Scheduler scheduler;
         private final Function<? super Observable<T>, ? extends ObservableSource<R>> selector;
 
-        ReplayFunction(Function<? super Observable<T>, ? extends ObservableSource<R>> selector2, Scheduler scheduler2) {
-            this.selector = selector2;
-            this.scheduler = scheduler2;
+        @Override // io.reactivex.functions.Function
+        public /* bridge */ /* synthetic */ Object apply(Object obj) throws Exception {
+            return apply((Observable) ((Observable) obj));
+        }
+
+        ReplayFunction(Function<? super Observable<T>, ? extends ObservableSource<R>> selector, Scheduler scheduler) {
+            this.selector = selector;
+            this.scheduler = scheduler;
         }
 
         public ObservableSource<R> apply(Observable<T> t) throws Exception {
-            return Observable.wrap((ObservableSource) ObjectHelper.requireNonNull(this.selector.apply(t), "The selector returned a null ObservableSource")).observeOn(this.scheduler);
+            ObservableSource<R> apply = (ObservableSource) ObjectHelper.requireNonNull(this.selector.apply(t), "The selector returned a null ObservableSource");
+            return Observable.wrap(apply).observeOn(this.scheduler);
         }
     }
 }

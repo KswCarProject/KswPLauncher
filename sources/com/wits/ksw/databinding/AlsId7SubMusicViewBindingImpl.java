@@ -4,28 +4,42 @@ import android.databinding.DataBindingComponent;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
+import android.databinding.adapters.ImageViewBindingAdapter;
+import android.databinding.adapters.SeekBarBindingAdapter;
+import android.databinding.adapters.TextViewBindingAdapter;
+import android.databinding.adapters.ViewBindingAdapter;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.v4.media.session.PlaybackStateCompat;
+import android.graphics.drawable.Drawable;
+import android.support.constraint.ConstraintLayout;
+import android.support.p001v4.media.session.PlaybackStateCompat;
+import android.support.p004v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
+import android.widget.ImageView;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
+import com.wits.ksw.launcher.als_id7.view.MusicSeekBar;
+import com.wits.ksw.launcher.base.BaseBindingModel;
+import com.wits.ksw.launcher.bean.MediaInfo;
+import com.wits.ksw.launcher.view.CustomBmwMusicLayout;
 
+/* loaded from: classes7.dex */
 public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback113;
-    private final View.OnClickListener mCallback114;
-    private final View.OnClickListener mCallback115;
-    private final View.OnClickListener mCallback116;
+    private final View.OnClickListener mCallback174;
+    private final View.OnClickListener mCallback175;
+    private final View.OnClickListener mCallback176;
+    private final View.OnClickListener mCallback177;
     private long mDirtyFlags;
 
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.music_title, 12);
-        sparseIntArray.put(R.id.music_sub_title, 13);
+        sparseIntArray.put(C0899R.C0901id.music_title, 12);
+        sparseIntArray.put(C0899R.C0901id.music_sub_title, 13);
     }
 
     public AlsId7SubMusicViewBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -33,28 +47,29 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
     }
 
     private AlsId7SubMusicViewBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 10, bindings[9], bindings[8], bindings[6], bindings[5], bindings[4], bindings[10], bindings[1], bindings[2], bindings[0], bindings[13], bindings[12], bindings[7], bindings[3], bindings[11]);
-        this.mDirtyFlags = -1;
-        this.albumTextView.setTag((Object) null);
-        this.artistTextView.setTag((Object) null);
-        this.btnMusicNext.setTag((Object) null);
-        this.btnMusicPause.setTag((Object) null);
-        this.btnMusicPrev.setTag((Object) null);
-        this.currentTimeTextView.setTag((Object) null);
-        this.imageFrameLayout.setTag((Object) null);
-        this.musicAlbumBg.setTag((Object) null);
-        this.musicConstraintLayout.setTag((Object) null);
-        this.nameTextView.setTag((Object) null);
-        this.seekBar.setTag((Object) null);
-        this.totalTimeTextView.setTag((Object) null);
+        super(bindingComponent, root, 10, (TextView) bindings[9], (TextView) bindings[8], (ImageView) bindings[6], (ImageView) bindings[5], (ImageView) bindings[4], (TextView) bindings[10], (CustomBmwMusicLayout) bindings[1], (ImageView) bindings[2], (ConstraintLayout) bindings[0], (TextView) bindings[13], (TextView) bindings[12], (TextView) bindings[7], (MusicSeekBar) bindings[3], (TextView) bindings[11]);
+        this.mDirtyFlags = -1L;
+        this.albumTextView.setTag(null);
+        this.artistTextView.setTag(null);
+        this.btnMusicNext.setTag(null);
+        this.btnMusicPause.setTag(null);
+        this.btnMusicPrev.setTag(null);
+        this.currentTimeTextView.setTag(null);
+        this.imageFrameLayout.setTag(null);
+        this.musicAlbumBg.setTag(null);
+        this.musicConstraintLayout.setTag(null);
+        this.nameTextView.setTag(null);
+        this.seekBar.setTag(null);
+        this.totalTimeTextView.setTag(null);
         setRootTag(root);
-        this.mCallback116 = new OnClickListener(this, 4);
-        this.mCallback113 = new OnClickListener(this, 1);
-        this.mCallback114 = new OnClickListener(this, 2);
-        this.mCallback115 = new OnClickListener(this, 3);
+        this.mCallback176 = new OnClickListener(this, 3);
+        this.mCallback177 = new OnClickListener(this, 4);
+        this.mCallback174 = new OnClickListener(this, 1);
+        this.mCallback175 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
             this.mDirtyFlags = PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
@@ -62,6 +77,7 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -71,14 +87,16 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (12 != variableId) {
-            return false;
+        if (12 == variableId) {
+            setMusicPhoneViewModel((AlsID7ViewModel) variable);
+            return true;
         }
-        setMusicPhoneViewModel((AlsID7ViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AlsId7SubMusicViewBinding
     public void setMusicPhoneViewModel(AlsID7ViewModel MusicPhoneViewModel) {
         this.mMusicPhoneViewModel = MusicPhoneViewModel;
         synchronized (this) {
@@ -88,8 +106,8 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeMusicPhoneViewModelMediaInfoMusicPlay((ObservableField) object, fieldId);
@@ -116,750 +134,426 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
         }
     }
 
-    private boolean onChangeMusicPhoneViewModelMediaInfoMusicPlay(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeMusicPhoneViewModelMediaInfoMusicPlay(ObservableField<Boolean> MusicPhoneViewModelMediaInfoMusicPlay, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeMusicPhoneViewModelMediaInfoMusicAtist(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeMusicPhoneViewModelMediaInfoMusicAtist(ObservableField<String> MusicPhoneViewModelMediaInfoMusicAtist, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeMusicPhoneViewModelMediaInfoProgress(ObservableInt MusicPhoneViewModelMediaInfoProgress, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeMusicPhoneViewModelMediaInfoMusicName(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeMusicPhoneViewModelMediaInfoMusicName(ObservableField<String> MusicPhoneViewModelMediaInfoMusicName, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeMusicPhoneViewModelMediaInfoPic(ObservableField<BitmapDrawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeMusicPhoneViewModelMediaInfoPic(ObservableField<BitmapDrawable> MusicPhoneViewModelMediaInfoPic, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 16;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 16;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeMusicPhoneViewModelMediaInfoCurrentTime(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeMusicPhoneViewModelMediaInfoCurrentTime(ObservableField<String> MusicPhoneViewModelMediaInfoCurrentTime, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 32;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 32;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeMusicPhoneViewModelMediaInfoMaxProgress(ObservableInt MusicPhoneViewModelMediaInfoMaxProgress, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 64;
+            }
+            return true;
         }
+        return false;
+    }
+
+    private boolean onChangeMusicPhoneViewModelMediaInfoTotalTime(ObservableField<String> MusicPhoneViewModelMediaInfoTotalTime, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 128;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private boolean onChangeMusicPhoneViewModelMediaInfoMusicAlbum(ObservableField<String> MusicPhoneViewModelMediaInfoMusicAlbum, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 256;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private boolean onChangeMusicPhoneViewModelBThirdMusic(ObservableField<Boolean> MusicPhoneViewModelBThirdMusic, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 512;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
+        long dirtyFlags;
+        String musicPhoneViewModelMediaInfoTotalTimeGet;
+        Drawable musicPhoneViewModelMediaInfoMusicPlayBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPauseBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPlay;
+        int musicPhoneViewModelMediaInfoMaxProgressGet;
+        String musicPhoneViewModelMediaInfoMusicAlbumGet;
+        Drawable musicPhoneViewModelBThirdMusicBooleanTrueImageFrameLayoutAndroidDrawableAlsId7MainMusicItemSelector2ImageFrameLayoutAndroidDrawableAlsId7MainMusicItemSelector;
+        int musicPhoneViewModelBThirdMusicBooleanTrueViewGONEViewVISIBLE;
+        String musicPhoneViewModelMediaInfoMusicAlbumJavaLangObjectNullAlbumTextViewAndroidStringKswIdf7UnkonwAlbumMusicPhoneViewModelMediaInfoMusicAlbum;
+        String musicPhoneViewModelMediaInfoMusicAtistJavaLangObjectNullArtistTextViewAndroidStringKswIdf7UnknowArtisMusicPhoneViewModelMediaInfoMusicAtist;
+        String musicPhoneViewModelMediaInfoMusicNameJavaLangObjectNullNameTextViewAndroidStringKswIdf7UnkonwSoungMusicPhoneViewModelMediaInfoMusicName;
+        long dirtyFlags2;
+        Drawable drawable;
+        int musicPhoneViewModelMediaInfoProgressGet;
+        int musicPhoneViewModelMediaInfoProgressGet2;
+        int musicPhoneViewModelMediaInfoProgressGet3;
+        ObservableField<String> musicPhoneViewModelMediaInfoMusicAlbum;
+        ObservableField<String> musicPhoneViewModelMediaInfoTotalTime;
+        ObservableInt musicPhoneViewModelMediaInfoMaxProgress;
+        ObservableField<String> musicPhoneViewModelMediaInfoCurrentTime;
+        ObservableField<BitmapDrawable> musicPhoneViewModelMediaInfoPic;
+        ObservableField<String> musicPhoneViewModelMediaInfoMusicName;
+        ObservableInt musicPhoneViewModelMediaInfoProgress;
+        Drawable drawable2;
         synchronized (this) {
-            this.mDirtyFlags |= 64;
+            dirtyFlags = this.mDirtyFlags;
+            this.mDirtyFlags = 0L;
         }
-        return true;
+        int musicPhoneViewModelMediaInfoProgressGet4 = 0;
+        View.OnFocusChangeListener musicPhoneViewModelMusicViewFocusChangeListener = null;
+        BitmapDrawable musicPhoneViewModelMediaInfoPicGet = null;
+        String musicPhoneViewModelMediaInfoCurrentTimeGet = null;
+        AlsID7ViewModel musicPhoneViewModel = this.mMusicPhoneViewModel;
+        boolean musicPhoneViewModelMediaInfoMusicAlbumJavaLangObjectNull = false;
+        String musicPhoneViewModelMediaInfoMusicAlbumGet2 = null;
+        ObservableField<Boolean> musicPhoneViewModelMediaInfoMusicPlay = null;
+        Boolean musicPhoneViewModelBThirdMusicGet = null;
+        boolean musicPhoneViewModelMediaInfoMusicNameJavaLangObjectNull = false;
+        ObservableField<String> musicPhoneViewModelMediaInfoMusicAtist = null;
+        String musicPhoneViewModelMediaInfoTotalTimeGet2 = null;
+        String musicPhoneViewModelMediaInfoMusicNameGet = null;
+        boolean musicPhoneViewModelMediaInfoMusicAtistJavaLangObjectNull = false;
+        String musicPhoneViewModelMediaInfoMusicAtistGet = null;
+        Drawable musicPhoneViewModelMediaInfoMusicPlayBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPauseBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPlay2 = null;
+        int musicPhoneViewModelMediaInfoMaxProgressGet2 = 0;
+        Boolean musicPhoneViewModelMediaInfoMusicPlayGet = null;
+        if ((dirtyFlags & 3072) != 0 && musicPhoneViewModel != null) {
+            musicPhoneViewModelMusicViewFocusChangeListener = musicPhoneViewModel.musicViewFocusChangeListener;
+        }
+        if ((dirtyFlags & 2559) == 0) {
+            musicPhoneViewModelMediaInfoTotalTimeGet = null;
+            musicPhoneViewModelMediaInfoMusicPlayBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPauseBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPlay = null;
+            musicPhoneViewModelMediaInfoMaxProgressGet = 0;
+        } else {
+            MediaInfo musicPhoneViewModelMediaInfo = AlsID7ViewModel.mediaInfo;
+            if ((dirtyFlags & 2049) == 0) {
+                musicPhoneViewModelMediaInfoProgressGet = 0;
+            } else {
+                if (musicPhoneViewModelMediaInfo != null) {
+                    musicPhoneViewModelMediaInfoMusicPlay = musicPhoneViewModelMediaInfo.musicPlay;
+                }
+                updateRegistration(0, musicPhoneViewModelMediaInfoMusicPlay);
+                if (musicPhoneViewModelMediaInfoMusicPlay != null) {
+                    Boolean musicPhoneViewModelMediaInfoMusicPlayGet2 = musicPhoneViewModelMediaInfoMusicPlay.get();
+                    musicPhoneViewModelMediaInfoMusicPlayGet = musicPhoneViewModelMediaInfoMusicPlayGet2;
+                }
+                boolean androidDatabindingViewDataBindingSafeUnboxMusicPhoneViewModelMediaInfoMusicPlayGet = ViewDataBinding.safeUnbox(musicPhoneViewModelMediaInfoMusicPlayGet);
+                if ((dirtyFlags & 2049) != 0) {
+                    if (androidDatabindingViewDataBindingSafeUnboxMusicPhoneViewModelMediaInfoMusicPlayGet) {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID;
+                    } else {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE;
+                    }
+                }
+                if (androidDatabindingViewDataBindingSafeUnboxMusicPhoneViewModelMediaInfoMusicPlayGet) {
+                    musicPhoneViewModelMediaInfoProgressGet = 0;
+                    drawable2 = AppCompatResources.getDrawable(this.btnMusicPause.getContext(), C0899R.C0900drawable.als_id7_main_music_btn_pause);
+                } else {
+                    musicPhoneViewModelMediaInfoProgressGet = 0;
+                    drawable2 = AppCompatResources.getDrawable(this.btnMusicPause.getContext(), C0899R.C0900drawable.als_id7_main_music_btn_play);
+                }
+                musicPhoneViewModelMediaInfoMusicPlayBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPauseBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPlay2 = drawable2;
+            }
+            if ((dirtyFlags & 2050) != 0) {
+                if (musicPhoneViewModelMediaInfo != null) {
+                    musicPhoneViewModelMediaInfoMusicAtist = musicPhoneViewModelMediaInfo.musicAtist;
+                }
+                updateRegistration(1, musicPhoneViewModelMediaInfoMusicAtist);
+                if (musicPhoneViewModelMediaInfoMusicAtist != null) {
+                    musicPhoneViewModelMediaInfoMusicAtistGet = musicPhoneViewModelMediaInfoMusicAtist.get();
+                }
+                musicPhoneViewModelMediaInfoMusicAtistJavaLangObjectNull = musicPhoneViewModelMediaInfoMusicAtistGet == null;
+                if ((dirtyFlags & 2050) != 0) {
+                    if (musicPhoneViewModelMediaInfoMusicAtistJavaLangObjectNull) {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_URI;
+                    } else {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH;
+                    }
+                }
+            }
+            if ((dirtyFlags & 2052) == 0) {
+                musicPhoneViewModelMediaInfoProgressGet2 = musicPhoneViewModelMediaInfoProgressGet;
+            } else {
+                if (musicPhoneViewModelMediaInfo == null) {
+                    musicPhoneViewModelMediaInfoProgress = null;
+                } else {
+                    musicPhoneViewModelMediaInfoProgress = musicPhoneViewModelMediaInfo.progress;
+                }
+                updateRegistration(2, musicPhoneViewModelMediaInfoProgress);
+                musicPhoneViewModelMediaInfoProgressGet2 = musicPhoneViewModelMediaInfoProgress != null ? musicPhoneViewModelMediaInfoProgress.get() : musicPhoneViewModelMediaInfoProgressGet;
+            }
+            if ((dirtyFlags & 2056) == 0) {
+                musicPhoneViewModelMediaInfoProgressGet3 = musicPhoneViewModelMediaInfoProgressGet2;
+            } else {
+                if (musicPhoneViewModelMediaInfo == null) {
+                    musicPhoneViewModelMediaInfoMusicName = null;
+                } else {
+                    musicPhoneViewModelMediaInfoMusicName = musicPhoneViewModelMediaInfo.musicName;
+                }
+                musicPhoneViewModelMediaInfoProgressGet3 = musicPhoneViewModelMediaInfoProgressGet2;
+                updateRegistration(3, musicPhoneViewModelMediaInfoMusicName);
+                if (musicPhoneViewModelMediaInfoMusicName != null) {
+                    musicPhoneViewModelMediaInfoMusicNameGet = musicPhoneViewModelMediaInfoMusicName.get();
+                }
+                musicPhoneViewModelMediaInfoMusicNameJavaLangObjectNull = musicPhoneViewModelMediaInfoMusicNameGet == null;
+                if ((dirtyFlags & 2056) != 0) {
+                    if (musicPhoneViewModelMediaInfoMusicNameJavaLangObjectNull) {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE_ENABLED;
+                    } else {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_REPEAT_MODE;
+                    }
+                }
+            }
+            if ((dirtyFlags & 2064) != 0) {
+                if (musicPhoneViewModelMediaInfo == null) {
+                    musicPhoneViewModelMediaInfoPic = null;
+                } else {
+                    musicPhoneViewModelMediaInfoPic = musicPhoneViewModelMediaInfo.pic;
+                }
+                updateRegistration(4, musicPhoneViewModelMediaInfoPic);
+                if (musicPhoneViewModelMediaInfoPic != null) {
+                    musicPhoneViewModelMediaInfoPicGet = musicPhoneViewModelMediaInfoPic.get();
+                }
+            }
+            if ((dirtyFlags & 2080) != 0) {
+                if (musicPhoneViewModelMediaInfo == null) {
+                    musicPhoneViewModelMediaInfoCurrentTime = null;
+                } else {
+                    musicPhoneViewModelMediaInfoCurrentTime = musicPhoneViewModelMediaInfo.currentTime;
+                }
+                updateRegistration(5, musicPhoneViewModelMediaInfoCurrentTime);
+                if (musicPhoneViewModelMediaInfoCurrentTime != null) {
+                    musicPhoneViewModelMediaInfoCurrentTimeGet = musicPhoneViewModelMediaInfoCurrentTime.get();
+                }
+            }
+            if ((dirtyFlags & 2112) != 0) {
+                if (musicPhoneViewModelMediaInfo == null) {
+                    musicPhoneViewModelMediaInfoMaxProgress = null;
+                } else {
+                    musicPhoneViewModelMediaInfoMaxProgress = musicPhoneViewModelMediaInfo.maxProgress;
+                }
+                updateRegistration(6, musicPhoneViewModelMediaInfoMaxProgress);
+                if (musicPhoneViewModelMediaInfoMaxProgress != null) {
+                    musicPhoneViewModelMediaInfoMaxProgressGet2 = musicPhoneViewModelMediaInfoMaxProgress.get();
+                }
+            }
+            if ((dirtyFlags & 2176) != 0) {
+                if (musicPhoneViewModelMediaInfo == null) {
+                    musicPhoneViewModelMediaInfoTotalTime = null;
+                } else {
+                    musicPhoneViewModelMediaInfoTotalTime = musicPhoneViewModelMediaInfo.totalTime;
+                }
+                updateRegistration(7, musicPhoneViewModelMediaInfoTotalTime);
+                if (musicPhoneViewModelMediaInfoTotalTime != null) {
+                    musicPhoneViewModelMediaInfoTotalTimeGet2 = musicPhoneViewModelMediaInfoTotalTime.get();
+                }
+            }
+            if ((dirtyFlags & 2304) != 0) {
+                if (musicPhoneViewModelMediaInfo == null) {
+                    musicPhoneViewModelMediaInfoMusicAlbum = null;
+                } else {
+                    musicPhoneViewModelMediaInfoMusicAlbum = musicPhoneViewModelMediaInfo.musicAlbum;
+                }
+                updateRegistration(8, musicPhoneViewModelMediaInfoMusicAlbum);
+                if (musicPhoneViewModelMediaInfoMusicAlbum != null) {
+                    musicPhoneViewModelMediaInfoMusicAlbumGet2 = musicPhoneViewModelMediaInfoMusicAlbum.get();
+                }
+                musicPhoneViewModelMediaInfoMusicAlbumJavaLangObjectNull = musicPhoneViewModelMediaInfoMusicAlbumGet2 == null;
+                if ((dirtyFlags & 2304) == 0) {
+                    musicPhoneViewModelMediaInfoProgressGet4 = musicPhoneViewModelMediaInfoProgressGet3;
+                    musicPhoneViewModelMediaInfoMusicPlayBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPauseBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPlay = musicPhoneViewModelMediaInfoMusicPlayBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPauseBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPlay2;
+                    musicPhoneViewModelMediaInfoTotalTimeGet = musicPhoneViewModelMediaInfoTotalTimeGet2;
+                    musicPhoneViewModelMediaInfoMaxProgressGet = musicPhoneViewModelMediaInfoMaxProgressGet2;
+                } else if (musicPhoneViewModelMediaInfoMusicAlbumJavaLangObjectNull) {
+                    dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
+                    musicPhoneViewModelMediaInfoProgressGet4 = musicPhoneViewModelMediaInfoProgressGet3;
+                    musicPhoneViewModelMediaInfoMusicPlayBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPauseBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPlay = musicPhoneViewModelMediaInfoMusicPlayBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPauseBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPlay2;
+                    musicPhoneViewModelMediaInfoTotalTimeGet = musicPhoneViewModelMediaInfoTotalTimeGet2;
+                    musicPhoneViewModelMediaInfoMaxProgressGet = musicPhoneViewModelMediaInfoMaxProgressGet2;
+                } else {
+                    dirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
+                    musicPhoneViewModelMediaInfoProgressGet4 = musicPhoneViewModelMediaInfoProgressGet3;
+                    musicPhoneViewModelMediaInfoMusicPlayBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPauseBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPlay = musicPhoneViewModelMediaInfoMusicPlayBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPauseBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPlay2;
+                    musicPhoneViewModelMediaInfoTotalTimeGet = musicPhoneViewModelMediaInfoTotalTimeGet2;
+                    musicPhoneViewModelMediaInfoMaxProgressGet = musicPhoneViewModelMediaInfoMaxProgressGet2;
+                }
+            } else {
+                musicPhoneViewModelMediaInfoProgressGet4 = musicPhoneViewModelMediaInfoProgressGet3;
+                musicPhoneViewModelMediaInfoMusicPlayBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPauseBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPlay = musicPhoneViewModelMediaInfoMusicPlayBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPauseBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPlay2;
+                musicPhoneViewModelMediaInfoTotalTimeGet = musicPhoneViewModelMediaInfoTotalTimeGet2;
+                musicPhoneViewModelMediaInfoMaxProgressGet = musicPhoneViewModelMediaInfoMaxProgressGet2;
+            }
+        }
+        if ((dirtyFlags & 2560) == 0) {
+            musicPhoneViewModelMediaInfoMusicAlbumGet = musicPhoneViewModelMediaInfoMusicAlbumGet2;
+            musicPhoneViewModelBThirdMusicBooleanTrueImageFrameLayoutAndroidDrawableAlsId7MainMusicItemSelector2ImageFrameLayoutAndroidDrawableAlsId7MainMusicItemSelector = null;
+            musicPhoneViewModelBThirdMusicBooleanTrueViewGONEViewVISIBLE = 0;
+        } else {
+            musicPhoneViewModelMediaInfoMusicAlbumGet = musicPhoneViewModelMediaInfoMusicAlbumGet2;
+            ObservableField<Boolean> musicPhoneViewModelBThirdMusic = AlsID7ViewModel.bThirdMusic;
+            updateRegistration(9, musicPhoneViewModelBThirdMusic);
+            if (musicPhoneViewModelBThirdMusic != null) {
+                musicPhoneViewModelBThirdMusicGet = musicPhoneViewModelBThirdMusic.get();
+            }
+            boolean androidDatabindingViewDataBindingSafeUnboxMusicPhoneViewModelBThirdMusicGet = ViewDataBinding.safeUnbox(musicPhoneViewModelBThirdMusicGet);
+            boolean musicPhoneViewModelBThirdMusicBooleanTrue = androidDatabindingViewDataBindingSafeUnboxMusicPhoneViewModelBThirdMusicGet;
+            if ((dirtyFlags & 2560) != 0) {
+                if (musicPhoneViewModelBThirdMusicBooleanTrue) {
+                    dirtyFlags = dirtyFlags | PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE | 8388608;
+                } else {
+                    dirtyFlags = dirtyFlags | PlaybackStateCompat.ACTION_SET_CAPTIONING_ENABLED | 4194304;
+                }
+            }
+            if (musicPhoneViewModelBThirdMusicBooleanTrue) {
+                dirtyFlags2 = dirtyFlags;
+                drawable = AppCompatResources.getDrawable(this.imageFrameLayout.getContext(), C0899R.C0900drawable.als_id7_main_music_item_selector2);
+            } else {
+                dirtyFlags2 = dirtyFlags;
+                drawable = AppCompatResources.getDrawable(this.imageFrameLayout.getContext(), C0899R.C0900drawable.als_id7_main_music_item_selector);
+            }
+            Drawable musicPhoneViewModelBThirdMusicBooleanTrueImageFrameLayoutAndroidDrawableAlsId7MainMusicItemSelector2ImageFrameLayoutAndroidDrawableAlsId7MainMusicItemSelector2 = drawable;
+            int musicPhoneViewModelBThirdMusicBooleanTrueViewGONEViewVISIBLE2 = musicPhoneViewModelBThirdMusicBooleanTrue ? 8 : 0;
+            musicPhoneViewModelBThirdMusicBooleanTrueImageFrameLayoutAndroidDrawableAlsId7MainMusicItemSelector2ImageFrameLayoutAndroidDrawableAlsId7MainMusicItemSelector = musicPhoneViewModelBThirdMusicBooleanTrueImageFrameLayoutAndroidDrawableAlsId7MainMusicItemSelector2ImageFrameLayoutAndroidDrawableAlsId7MainMusicItemSelector2;
+            musicPhoneViewModelBThirdMusicBooleanTrueViewGONEViewVISIBLE = musicPhoneViewModelBThirdMusicBooleanTrueViewGONEViewVISIBLE2;
+            dirtyFlags = dirtyFlags2;
+        }
+        if ((dirtyFlags & 2304) == 0) {
+            musicPhoneViewModelMediaInfoMusicAlbumJavaLangObjectNullAlbumTextViewAndroidStringKswIdf7UnkonwAlbumMusicPhoneViewModelMediaInfoMusicAlbum = null;
+        } else {
+            musicPhoneViewModelMediaInfoMusicAlbumJavaLangObjectNullAlbumTextViewAndroidStringKswIdf7UnkonwAlbumMusicPhoneViewModelMediaInfoMusicAlbum = musicPhoneViewModelMediaInfoMusicAlbumJavaLangObjectNull ? this.albumTextView.getResources().getString(C0899R.string.ksw_idf7_unkonw_album) : musicPhoneViewModelMediaInfoMusicAlbumGet;
+        }
+        if ((dirtyFlags & 2050) == 0) {
+            musicPhoneViewModelMediaInfoMusicAtistJavaLangObjectNullArtistTextViewAndroidStringKswIdf7UnknowArtisMusicPhoneViewModelMediaInfoMusicAtist = null;
+        } else {
+            musicPhoneViewModelMediaInfoMusicAtistJavaLangObjectNullArtistTextViewAndroidStringKswIdf7UnknowArtisMusicPhoneViewModelMediaInfoMusicAtist = musicPhoneViewModelMediaInfoMusicAtistJavaLangObjectNull ? this.artistTextView.getResources().getString(C0899R.string.ksw_idf7_unknow_artis) : musicPhoneViewModelMediaInfoMusicAtistGet;
+        }
+        if ((dirtyFlags & 2056) == 0) {
+            musicPhoneViewModelMediaInfoMusicNameJavaLangObjectNullNameTextViewAndroidStringKswIdf7UnkonwSoungMusicPhoneViewModelMediaInfoMusicName = null;
+        } else {
+            musicPhoneViewModelMediaInfoMusicNameJavaLangObjectNullNameTextViewAndroidStringKswIdf7UnkonwSoungMusicPhoneViewModelMediaInfoMusicName = musicPhoneViewModelMediaInfoMusicNameJavaLangObjectNull ? this.nameTextView.getResources().getString(C0899R.string.ksw_idf7_unkonw_soung) : musicPhoneViewModelMediaInfoMusicNameGet;
+        }
+        if ((dirtyFlags & 2304) != 0) {
+            TextViewBindingAdapter.setText(this.albumTextView, musicPhoneViewModelMediaInfoMusicAlbumJavaLangObjectNullAlbumTextViewAndroidStringKswIdf7UnkonwAlbumMusicPhoneViewModelMediaInfoMusicAlbum);
+        }
+        if ((dirtyFlags & 2560) != 0) {
+            this.albumTextView.setVisibility(musicPhoneViewModelBThirdMusicBooleanTrueViewGONEViewVISIBLE);
+            this.artistTextView.setVisibility(musicPhoneViewModelBThirdMusicBooleanTrueViewGONEViewVISIBLE);
+            this.btnMusicNext.setVisibility(musicPhoneViewModelBThirdMusicBooleanTrueViewGONEViewVISIBLE);
+            this.btnMusicPause.setVisibility(musicPhoneViewModelBThirdMusicBooleanTrueViewGONEViewVISIBLE);
+            this.btnMusicPrev.setVisibility(musicPhoneViewModelBThirdMusicBooleanTrueViewGONEViewVISIBLE);
+            this.currentTimeTextView.setVisibility(musicPhoneViewModelBThirdMusicBooleanTrueViewGONEViewVISIBLE);
+            ViewBindingAdapter.setBackground(this.imageFrameLayout, musicPhoneViewModelBThirdMusicBooleanTrueImageFrameLayoutAndroidDrawableAlsId7MainMusicItemSelector2ImageFrameLayoutAndroidDrawableAlsId7MainMusicItemSelector);
+            this.musicAlbumBg.setVisibility(musicPhoneViewModelBThirdMusicBooleanTrueViewGONEViewVISIBLE);
+            this.nameTextView.setVisibility(musicPhoneViewModelBThirdMusicBooleanTrueViewGONEViewVISIBLE);
+            this.seekBar.setVisibility(musicPhoneViewModelBThirdMusicBooleanTrueViewGONEViewVISIBLE);
+            this.totalTimeTextView.setVisibility(musicPhoneViewModelBThirdMusicBooleanTrueViewGONEViewVISIBLE);
+        }
+        if ((dirtyFlags & 2050) != 0) {
+            TextViewBindingAdapter.setText(this.artistTextView, musicPhoneViewModelMediaInfoMusicAtistJavaLangObjectNullArtistTextViewAndroidStringKswIdf7UnknowArtisMusicPhoneViewModelMediaInfoMusicAtist);
+        }
+        if ((dirtyFlags & PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH) != 0) {
+            this.btnMusicNext.setOnClickListener(this.mCallback177);
+            this.btnMusicPause.setOnClickListener(this.mCallback176);
+            this.btnMusicPrev.setOnClickListener(this.mCallback175);
+            this.imageFrameLayout.setOnClickListener(this.mCallback174);
+        }
+        if ((dirtyFlags & 2049) != 0) {
+            ImageViewBindingAdapter.setImageDrawable(this.btnMusicPause, musicPhoneViewModelMediaInfoMusicPlayBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPauseBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPlay);
+        }
+        if ((dirtyFlags & 2080) != 0) {
+            TextViewBindingAdapter.setText(this.currentTimeTextView, musicPhoneViewModelMediaInfoCurrentTimeGet);
+        }
+        if ((dirtyFlags & 3072) != 0) {
+            this.imageFrameLayout.setOnFocusChangeListener(musicPhoneViewModelMusicViewFocusChangeListener);
+        }
+        if ((dirtyFlags & 2064) != 0) {
+            BaseBindingModel.setAlsID7AlbumIcon(this.musicAlbumBg, musicPhoneViewModelMediaInfoPicGet);
+        }
+        if ((dirtyFlags & 2056) != 0) {
+            TextViewBindingAdapter.setText(this.nameTextView, musicPhoneViewModelMediaInfoMusicNameJavaLangObjectNullNameTextViewAndroidStringKswIdf7UnkonwSoungMusicPhoneViewModelMediaInfoMusicName);
+        }
+        if ((dirtyFlags & 2112) != 0) {
+            this.seekBar.setMax(musicPhoneViewModelMediaInfoMaxProgressGet);
+        }
+        if ((dirtyFlags & 2052) != 0) {
+            SeekBarBindingAdapter.setProgress(this.seekBar, musicPhoneViewModelMediaInfoProgressGet4);
+        }
+        if ((dirtyFlags & 2176) != 0) {
+            TextViewBindingAdapter.setText(this.totalTimeTextView, musicPhoneViewModelMediaInfoTotalTimeGet);
+        }
     }
 
-    private boolean onChangeMusicPhoneViewModelMediaInfoTotalTime(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
-        }
-        synchronized (this) {
-            this.mDirtyFlags |= 128;
-        }
-        return true;
-    }
-
-    private boolean onChangeMusicPhoneViewModelMediaInfoMusicAlbum(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
-        }
-        synchronized (this) {
-            this.mDirtyFlags |= 256;
-        }
-        return true;
-    }
-
-    private boolean onChangeMusicPhoneViewModelBThirdMusic(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
-        }
-        synchronized (this) {
-            this.mDirtyFlags |= 512;
-        }
-        return true;
-    }
-
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r12v7, resolved type: java.lang.Object} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v12, resolved type: java.lang.Boolean} */
-    /* access modifiers changed from: protected */
-    /* JADX WARNING: Multi-variable type inference failed */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void executeBindings() {
-        /*
-            r69 = this;
-            r1 = r69
-            r2 = 0
-            monitor-enter(r69)
-            long r4 = r1.mDirtyFlags     // Catch:{ all -> 0x0441 }
-            r2 = r4
-            r4 = 0
-            r1.mDirtyFlags = r4     // Catch:{ all -> 0x0441 }
-            monitor-exit(r69)     // Catch:{ all -> 0x0441 }
-            r0 = 0
-            r6 = 0
-            r7 = 0
-            r8 = 0
-            com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel r9 = r1.mMusicPhoneViewModel
-            r10 = 0
-            r11 = 0
-            r12 = 0
-            r13 = 0
-            r14 = 0
-            r15 = 0
-            r16 = 0
-            r17 = 0
-            r18 = 0
-            r19 = 0
-            r20 = 0
-            r21 = 0
-            r22 = 0
-            r23 = 0
-            r24 = 0
-            r25 = 0
-            r26 = 0
-            r27 = 0
-            r28 = 0
-            r29 = 0
-            r30 = 0
-            r31 = 0
-            r32 = 0
-            r33 = 0
-            r34 = 0
-            r35 = 0
-            r36 = 0
-            r37 = 0
-            r38 = 0
-            r39 = 0
-            r40 = 3072(0xc00, double:1.518E-320)
-            long r42 = r2 & r40
-            int r42 = (r42 > r4 ? 1 : (r42 == r4 ? 0 : -1))
-            if (r42 == 0) goto L_0x0055
-            if (r9 == 0) goto L_0x0055
-            android.view.View$OnFocusChangeListener r6 = r9.musicViewFocusChangeListener
-        L_0x0055:
-            r42 = 2559(0x9ff, double:1.2643E-320)
-            long r42 = r2 & r42
-            int r42 = (r42 > r4 ? 1 : (r42 == r4 ? 0 : -1))
-            r45 = 2176(0x880, double:1.075E-320)
-            r47 = 2112(0x840, double:1.0435E-320)
-            r49 = 2080(0x820, double:1.0277E-320)
-            r51 = 2064(0x810, double:1.0198E-320)
-            r53 = 2052(0x804, double:1.014E-320)
-            r55 = 2049(0x801, double:1.0123E-320)
-            r57 = 2056(0x808, double:1.016E-320)
-            r59 = 2050(0x802, double:1.013E-320)
-            r61 = 2304(0x900, double:1.1383E-320)
-            r5 = 0
-            if (r42 == 0) goto L_0x025e
-            com.wits.ksw.launcher.bean.MediaInfo r4 = com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel.mediaInfo
-            long r64 = r2 & r55
-            r43 = 0
-            int r20 = (r64 > r43 ? 1 : (r64 == r43 ? 0 : -1))
-            if (r20 == 0) goto L_0x00c7
-            if (r4 == 0) goto L_0x007e
-            android.databinding.ObservableField<java.lang.Boolean> r12 = r4.musicPlay
-        L_0x007e:
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r12)
-            if (r12 == 0) goto L_0x008b
-            java.lang.Object r20 = r12.get()
-            r39 = r20
-            java.lang.Boolean r39 = (java.lang.Boolean) r39
-        L_0x008b:
-            boolean r38 = android.databinding.ViewDataBinding.safeUnbox((java.lang.Boolean) r39)
-            long r64 = r2 & r55
-            r43 = 0
-            int r20 = (r64 > r43 ? 1 : (r64 == r43 ? 0 : -1))
-            if (r20 == 0) goto L_0x00a3
-            if (r38 == 0) goto L_0x009f
-            r64 = 32768(0x8000, double:1.61895E-319)
-            long r2 = r2 | r64
-            goto L_0x00a3
-        L_0x009f:
-            r64 = 16384(0x4000, double:8.0948E-320)
-            long r2 = r2 | r64
-        L_0x00a3:
-            if (r38 == 0) goto L_0x00b5
-            android.widget.ImageView r5 = r1.btnMusicPause
-            android.content.Context r5 = r5.getContext()
-            r65 = r0
-            r0 = 2131230978(0x7f080102, float:1.8078024E38)
-            android.graphics.drawable.Drawable r0 = android.support.v7.content.res.AppCompatResources.getDrawable(r5, r0)
-            goto L_0x00c4
-        L_0x00b5:
-            r65 = r0
-            android.widget.ImageView r0 = r1.btnMusicPause
-            android.content.Context r0 = r0.getContext()
-            r5 = 2131230979(0x7f080103, float:1.8078026E38)
-            android.graphics.drawable.Drawable r0 = android.support.v7.content.res.AppCompatResources.getDrawable(r0, r5)
-        L_0x00c4:
-            r27 = r0
-            goto L_0x00c9
-        L_0x00c7:
-            r65 = r0
-        L_0x00c9:
-            long r66 = r2 & r59
-            r43 = 0
-            int r0 = (r66 > r43 ? 1 : (r66 == r43 ? 0 : -1))
-            if (r0 == 0) goto L_0x00ff
-            if (r4 == 0) goto L_0x00d5
-            android.databinding.ObservableField<java.lang.String> r15 = r4.musicAtist
-        L_0x00d5:
-            r0 = 1
-            r1.updateRegistration((int) r0, (android.databinding.Observable) r15)
-            if (r15 == 0) goto L_0x00e3
-            java.lang.Object r0 = r15.get()
-            r26 = r0
-            java.lang.String r26 = (java.lang.String) r26
-        L_0x00e3:
-            if (r26 != 0) goto L_0x00e7
-            r0 = 1
-            goto L_0x00e8
-        L_0x00e7:
-            r0 = 0
-        L_0x00e8:
-            r23 = r0
-            long r66 = r2 & r59
-            r43 = 0
-            int r0 = (r66 > r43 ? 1 : (r66 == r43 ? 0 : -1))
-            if (r0 == 0) goto L_0x00ff
-            if (r23 == 0) goto L_0x00fa
-            r66 = 131072(0x20000, double:6.47582E-319)
-            long r2 = r2 | r66
-            goto L_0x00ff
-        L_0x00fa:
-            r66 = 65536(0x10000, double:3.2379E-319)
-            long r2 = r2 | r66
-        L_0x00ff:
-            long r66 = r2 & r53
-            r43 = 0
-            int r0 = (r66 > r43 ? 1 : (r66 == r43 ? 0 : -1))
-            if (r0 == 0) goto L_0x0121
-            if (r4 == 0) goto L_0x010c
-            android.databinding.ObservableInt r0 = r4.progress
-            goto L_0x010e
-        L_0x010c:
-            r0 = r18
-        L_0x010e:
-            r5 = 2
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r0)
-            if (r0 == 0) goto L_0x011c
-            int r5 = r0.get()
-            r18 = r0
-            r0 = r5
-            goto L_0x0123
-        L_0x011c:
-            r18 = r0
-            r0 = r65
-            goto L_0x0123
-        L_0x0121:
-            r0 = r65
-        L_0x0123:
-            long r65 = r2 & r57
-            r43 = 0
-            int r5 = (r65 > r43 ? 1 : (r65 == r43 ? 0 : -1))
-            if (r5 == 0) goto L_0x0165
-            if (r4 == 0) goto L_0x0130
-            android.databinding.ObservableField<java.lang.String> r5 = r4.musicName
-            goto L_0x0132
-        L_0x0130:
-            r5 = r19
-        L_0x0132:
-            r20 = r0
-            r0 = 3
-            r1.updateRegistration((int) r0, (android.databinding.Observable) r5)
-            if (r5 == 0) goto L_0x0142
-            java.lang.Object r0 = r5.get()
-            r22 = r0
-            java.lang.String r22 = (java.lang.String) r22
-        L_0x0142:
-            if (r22 != 0) goto L_0x0146
-            r0 = 1
-            goto L_0x0147
-        L_0x0146:
-            r0 = 0
-        L_0x0147:
-            r14 = r0
-            long r65 = r2 & r57
-            r43 = 0
-            int r0 = (r65 > r43 ? 1 : (r65 == r43 ? 0 : -1))
-            if (r0 == 0) goto L_0x0162
-            if (r14 == 0) goto L_0x015a
-            r65 = 524288(0x80000, double:2.590327E-318)
-            long r2 = r2 | r65
-            r19 = r5
-            goto L_0x0167
-        L_0x015a:
-            r65 = 262144(0x40000, double:1.295163E-318)
-            long r2 = r2 | r65
-            r19 = r5
-            goto L_0x0167
-        L_0x0162:
-            r19 = r5
-            goto L_0x0167
-        L_0x0165:
-            r20 = r0
-        L_0x0167:
-            long r65 = r2 & r51
-            r43 = 0
-            int r0 = (r65 > r43 ? 1 : (r65 == r43 ? 0 : -1))
-            if (r0 == 0) goto L_0x0188
-            if (r4 == 0) goto L_0x0174
-            android.databinding.ObservableField<android.graphics.drawable.BitmapDrawable> r0 = r4.pic
-            goto L_0x0176
-        L_0x0174:
-            r0 = r21
-        L_0x0176:
-            r5 = 4
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r0)
-            if (r0 == 0) goto L_0x0186
-            java.lang.Object r5 = r0.get()
-            r7 = r5
-            android.graphics.drawable.BitmapDrawable r7 = (android.graphics.drawable.BitmapDrawable) r7
-            r21 = r0
-            goto L_0x0188
-        L_0x0186:
-            r21 = r0
-        L_0x0188:
-            long r65 = r2 & r49
-            r43 = 0
-            int r0 = (r65 > r43 ? 1 : (r65 == r43 ? 0 : -1))
-            if (r0 == 0) goto L_0x01a9
-            if (r4 == 0) goto L_0x0195
-            android.databinding.ObservableField<java.lang.String> r0 = r4.currentTime
-            goto L_0x0197
-        L_0x0195:
-            r0 = r24
-        L_0x0197:
-            r5 = 5
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r0)
-            if (r0 == 0) goto L_0x01a7
-            java.lang.Object r5 = r0.get()
-            r8 = r5
-            java.lang.String r8 = (java.lang.String) r8
-            r24 = r0
-            goto L_0x01a9
-        L_0x01a7:
-            r24 = r0
-        L_0x01a9:
-            long r65 = r2 & r47
-            r43 = 0
-            int r0 = (r65 > r43 ? 1 : (r65 == r43 ? 0 : -1))
-            if (r0 == 0) goto L_0x01c7
-            if (r4 == 0) goto L_0x01b6
-            android.databinding.ObservableInt r0 = r4.maxProgress
-            goto L_0x01b8
-        L_0x01b6:
-            r0 = r30
-        L_0x01b8:
-            r5 = 6
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r0)
-            if (r0 == 0) goto L_0x01c5
-            int r29 = r0.get()
-            r30 = r0
-            goto L_0x01c7
-        L_0x01c5:
-            r30 = r0
-        L_0x01c7:
-            long r65 = r2 & r45
-            r43 = 0
-            int r0 = (r65 > r43 ? 1 : (r65 == r43 ? 0 : -1))
-            if (r0 == 0) goto L_0x01e9
-            if (r4 == 0) goto L_0x01d4
-            android.databinding.ObservableField<java.lang.String> r0 = r4.totalTime
-            goto L_0x01d6
-        L_0x01d4:
-            r0 = r31
-        L_0x01d6:
-            r5 = 7
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r0)
-            if (r0 == 0) goto L_0x01e7
-            java.lang.Object r5 = r0.get()
-            r17 = r5
-            java.lang.String r17 = (java.lang.String) r17
-            r31 = r0
-            goto L_0x01e9
-        L_0x01e7:
-            r31 = r0
-        L_0x01e9:
-            long r65 = r2 & r61
-            r43 = 0
-            int r0 = (r65 > r43 ? 1 : (r65 == r43 ? 0 : -1))
-            if (r0 == 0) goto L_0x024f
-            if (r4 == 0) goto L_0x01f6
-            android.databinding.ObservableField<java.lang.String> r0 = r4.musicAlbum
-            goto L_0x01f8
-        L_0x01f6:
-            r0 = r34
-        L_0x01f8:
-            r5 = 8
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r0)
-            if (r0 == 0) goto L_0x0207
-            java.lang.Object r34 = r0.get()
-            r11 = r34
-            java.lang.String r11 = (java.lang.String) r11
-        L_0x0207:
-            if (r11 != 0) goto L_0x020c
-            r34 = 1
-            goto L_0x020e
-        L_0x020c:
-            r34 = 0
-        L_0x020e:
-            r10 = r34
-            long r65 = r2 & r61
-            r43 = 0
-            int r34 = (r65 > r43 ? 1 : (r65 == r43 ? 0 : -1))
-            if (r34 == 0) goto L_0x0240
-            if (r10 == 0) goto L_0x022d
-            r65 = 8192(0x2000, double:4.0474E-320)
-            long r2 = r2 | r65
-            r34 = r0
-            r0 = r20
-            r5 = r27
-            r20 = r4
-            r4 = r17
-            r17 = r9
-            r9 = r29
-            goto L_0x026a
-        L_0x022d:
-            r65 = 4096(0x1000, double:2.0237E-320)
-            long r2 = r2 | r65
-            r34 = r0
-            r0 = r20
-            r5 = r27
-            r20 = r4
-            r4 = r17
-            r17 = r9
-            r9 = r29
-            goto L_0x026a
-        L_0x0240:
-            r34 = r0
-            r0 = r20
-            r5 = r27
-            r20 = r4
-            r4 = r17
-            r17 = r9
-            r9 = r29
-            goto L_0x026a
-        L_0x024f:
-            r5 = 8
-            r0 = r20
-            r5 = r27
-            r20 = r4
-            r4 = r17
-            r17 = r9
-            r9 = r29
-            goto L_0x026a
-        L_0x025e:
-            r65 = r0
-            r5 = 8
-            r4 = r17
-            r5 = r27
-            r17 = r9
-            r9 = r29
-        L_0x026a:
-            r65 = 2560(0xa00, double:1.265E-320)
-            long r67 = r2 & r65
-            r43 = 0
-            int r27 = (r67 > r43 ? 1 : (r67 == r43 ? 0 : -1))
-            if (r27 == 0) goto L_0x02e9
-            r27 = r11
-            android.databinding.ObservableField r11 = com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel.bThirdMusic
-            r29 = r12
-            r12 = 9
-            r1.updateRegistration((int) r12, (android.databinding.Observable) r11)
-            if (r11 == 0) goto L_0x0288
-            java.lang.Object r12 = r11.get()
-            r13 = r12
-            java.lang.Boolean r13 = (java.lang.Boolean) r13
-        L_0x0288:
-            boolean r12 = android.databinding.ViewDataBinding.safeUnbox((java.lang.Boolean) r13)
-            r37 = r11
-            r11 = 1
-            if (r12 != r11) goto L_0x0292
-            goto L_0x0293
-        L_0x0292:
-            r11 = 0
-        L_0x0293:
-            r25 = r11
-            long r67 = r2 & r65
-            r42 = 0
-            int r11 = (r67 > r42 ? 1 : (r67 == r42 ? 0 : -1))
-            if (r11 == 0) goto L_0x02b4
-            if (r25 == 0) goto L_0x02aa
-            r67 = 2097152(0x200000, double:1.0361308E-317)
-            long r2 = r2 | r67
-            r67 = 8388608(0x800000, double:4.144523E-317)
-            long r2 = r2 | r67
-            goto L_0x02b4
-        L_0x02aa:
-            r67 = 1048576(0x100000, double:5.180654E-318)
-            long r2 = r2 | r67
-            r67 = 4194304(0x400000, double:2.0722615E-317)
-            long r2 = r2 | r67
-        L_0x02b4:
-            if (r25 == 0) goto L_0x02c6
-            com.wits.ksw.launcher.view.CustomBmwMusicLayout r11 = r1.imageFrameLayout
-            android.content.Context r11 = r11.getContext()
-            r67 = r2
-            r2 = 2131230985(0x7f080109, float:1.8078038E38)
-            android.graphics.drawable.Drawable r2 = android.support.v7.content.res.AppCompatResources.getDrawable(r11, r2)
-            goto L_0x02d5
-        L_0x02c6:
-            r67 = r2
-            com.wits.ksw.launcher.view.CustomBmwMusicLayout r2 = r1.imageFrameLayout
-            android.content.Context r2 = r2.getContext()
-            r3 = 2131230984(0x7f080108, float:1.8078036E38)
-            android.graphics.drawable.Drawable r2 = android.support.v7.content.res.AppCompatResources.getDrawable(r2, r3)
-        L_0x02d5:
-            r33 = r2
-            if (r25 == 0) goto L_0x02dc
-            r63 = 8
-            goto L_0x02de
-        L_0x02dc:
-            r63 = 0
-        L_0x02de:
-            r35 = r63
-            r36 = r12
-            r11 = r33
-            r12 = r35
-            r2 = r67
-            goto L_0x02f1
-        L_0x02e9:
-            r27 = r11
-            r29 = r12
-            r11 = r33
-            r12 = r35
-        L_0x02f1:
-            long r63 = r2 & r61
-            r42 = 0
-            int r33 = (r63 > r42 ? 1 : (r63 == r42 ? 0 : -1))
-            if (r33 == 0) goto L_0x0316
-            if (r10 == 0) goto L_0x030d
-            r33 = r10
-            android.widget.TextView r10 = r1.albumTextView
-            android.content.res.Resources r10 = r10.getResources()
-            r35 = r13
-            r13 = 2131558824(0x7f0d01a8, float:1.8742975E38)
-            java.lang.String r10 = r10.getString(r13)
-            goto L_0x0313
-        L_0x030d:
-            r33 = r10
-            r35 = r13
-            r10 = r27
-        L_0x0313:
-            r16 = r10
-            goto L_0x031c
-        L_0x0316:
-            r33 = r10
-            r35 = r13
-            r10 = r16
-        L_0x031c:
-            long r63 = r2 & r59
-            r42 = 0
-            int r13 = (r63 > r42 ? 1 : (r63 == r42 ? 0 : -1))
-            if (r13 == 0) goto L_0x033d
-            if (r23 == 0) goto L_0x0336
-            android.widget.TextView r13 = r1.artistTextView
-            android.content.res.Resources r13 = r13.getResources()
-            r16 = r15
-            r15 = 2131558823(0x7f0d01a7, float:1.8742973E38)
-            java.lang.String r13 = r13.getString(r15)
-            goto L_0x033a
-        L_0x0336:
-            r16 = r15
-            r13 = r26
-        L_0x033a:
-            r28 = r13
-            goto L_0x0341
-        L_0x033d:
-            r16 = r15
-            r13 = r28
-        L_0x0341:
-            long r63 = r2 & r57
-            r42 = 0
-            int r15 = (r63 > r42 ? 1 : (r63 == r42 ? 0 : -1))
-            if (r15 == 0) goto L_0x0362
-            if (r14 == 0) goto L_0x035b
-            android.widget.TextView r15 = r1.nameTextView
-            android.content.res.Resources r15 = r15.getResources()
-            r28 = r14
-            r14 = 2131558825(0x7f0d01a9, float:1.8742977E38)
-            java.lang.String r14 = r15.getString(r14)
-            goto L_0x035f
-        L_0x035b:
-            r28 = r14
-            r14 = r22
-        L_0x035f:
-            r32 = r14
-            goto L_0x0366
-        L_0x0362:
-            r28 = r14
-            r14 = r32
-        L_0x0366:
-            long r61 = r2 & r61
-            r42 = 0
-            int r15 = (r61 > r42 ? 1 : (r61 == r42 ? 0 : -1))
-            if (r15 == 0) goto L_0x0373
-            android.widget.TextView r15 = r1.albumTextView
-            android.databinding.adapters.TextViewBindingAdapter.setText(r15, r10)
-        L_0x0373:
-            long r61 = r2 & r65
-            int r15 = (r61 > r42 ? 1 : (r61 == r42 ? 0 : -1))
-            if (r15 == 0) goto L_0x03b0
-            android.widget.TextView r15 = r1.albumTextView
-            r15.setVisibility(r12)
-            android.widget.TextView r15 = r1.artistTextView
-            r15.setVisibility(r12)
-            android.widget.ImageView r15 = r1.btnMusicNext
-            r15.setVisibility(r12)
-            android.widget.ImageView r15 = r1.btnMusicPause
-            r15.setVisibility(r12)
-            android.widget.ImageView r15 = r1.btnMusicPrev
-            r15.setVisibility(r12)
-            android.widget.TextView r15 = r1.currentTimeTextView
-            r15.setVisibility(r12)
-            com.wits.ksw.launcher.view.CustomBmwMusicLayout r15 = r1.imageFrameLayout
-            android.databinding.adapters.ViewBindingAdapter.setBackground(r15, r11)
-            android.widget.ImageView r15 = r1.musicAlbumBg
-            r15.setVisibility(r12)
-            android.widget.TextView r15 = r1.nameTextView
-            r15.setVisibility(r12)
-            com.wits.ksw.launcher.als_id7.view.MusicSeekBar r15 = r1.seekBar
-            r15.setVisibility(r12)
-            android.widget.TextView r15 = r1.totalTimeTextView
-            r15.setVisibility(r12)
-        L_0x03b0:
-            long r59 = r2 & r59
-            r42 = 0
-            int r15 = (r59 > r42 ? 1 : (r59 == r42 ? 0 : -1))
-            if (r15 == 0) goto L_0x03bd
-            android.widget.TextView r15 = r1.artistTextView
-            android.databinding.adapters.TextViewBindingAdapter.setText(r15, r13)
-        L_0x03bd:
-            r59 = 2048(0x800, double:1.0118E-320)
-            long r59 = r2 & r59
-            int r15 = (r59 > r42 ? 1 : (r59 == r42 ? 0 : -1))
-            if (r15 == 0) goto L_0x03e4
-            android.widget.ImageView r15 = r1.btnMusicNext
-            r32 = r10
-            android.view.View$OnClickListener r10 = r1.mCallback116
-            r15.setOnClickListener(r10)
-            android.widget.ImageView r10 = r1.btnMusicPause
-            android.view.View$OnClickListener r15 = r1.mCallback115
-            r10.setOnClickListener(r15)
-            android.widget.ImageView r10 = r1.btnMusicPrev
-            android.view.View$OnClickListener r15 = r1.mCallback114
-            r10.setOnClickListener(r15)
-            com.wits.ksw.launcher.view.CustomBmwMusicLayout r10 = r1.imageFrameLayout
-            android.view.View$OnClickListener r15 = r1.mCallback113
-            r10.setOnClickListener(r15)
-            goto L_0x03e6
-        L_0x03e4:
-            r32 = r10
-        L_0x03e6:
-            long r55 = r2 & r55
-            r42 = 0
-            int r10 = (r55 > r42 ? 1 : (r55 == r42 ? 0 : -1))
-            if (r10 == 0) goto L_0x03f3
-            android.widget.ImageView r10 = r1.btnMusicPause
-            android.databinding.adapters.ImageViewBindingAdapter.setImageDrawable(r10, r5)
-        L_0x03f3:
-            long r49 = r2 & r49
-            int r10 = (r49 > r42 ? 1 : (r49 == r42 ? 0 : -1))
-            if (r10 == 0) goto L_0x03fe
-            android.widget.TextView r10 = r1.currentTimeTextView
-            android.databinding.adapters.TextViewBindingAdapter.setText(r10, r8)
-        L_0x03fe:
-            long r40 = r2 & r40
-            int r10 = (r40 > r42 ? 1 : (r40 == r42 ? 0 : -1))
-            if (r10 == 0) goto L_0x0409
-            com.wits.ksw.launcher.view.CustomBmwMusicLayout r10 = r1.imageFrameLayout
-            r10.setOnFocusChangeListener(r6)
-        L_0x0409:
-            long r40 = r2 & r51
-            int r10 = (r40 > r42 ? 1 : (r40 == r42 ? 0 : -1))
-            if (r10 == 0) goto L_0x0414
-            android.widget.ImageView r10 = r1.musicAlbumBg
-            com.wits.ksw.launcher.base.BaseBindingModel.setAlsID7AlbumIcon(r10, r7)
-        L_0x0414:
-            long r40 = r2 & r57
-            int r10 = (r40 > r42 ? 1 : (r40 == r42 ? 0 : -1))
-            if (r10 == 0) goto L_0x041f
-            android.widget.TextView r10 = r1.nameTextView
-            android.databinding.adapters.TextViewBindingAdapter.setText(r10, r14)
-        L_0x041f:
-            long r40 = r2 & r47
-            int r10 = (r40 > r42 ? 1 : (r40 == r42 ? 0 : -1))
-            if (r10 == 0) goto L_0x042a
-            com.wits.ksw.launcher.als_id7.view.MusicSeekBar r10 = r1.seekBar
-            r10.setMax(r9)
-        L_0x042a:
-            long r40 = r2 & r53
-            int r10 = (r40 > r42 ? 1 : (r40 == r42 ? 0 : -1))
-            if (r10 == 0) goto L_0x0435
-            com.wits.ksw.launcher.als_id7.view.MusicSeekBar r10 = r1.seekBar
-            android.databinding.adapters.SeekBarBindingAdapter.setProgress(r10, r0)
-        L_0x0435:
-            long r40 = r2 & r45
-            int r10 = (r40 > r42 ? 1 : (r40 == r42 ? 0 : -1))
-            if (r10 == 0) goto L_0x0440
-            android.widget.TextView r10 = r1.totalTimeTextView
-            android.databinding.adapters.TextViewBindingAdapter.setText(r10, r4)
-        L_0x0440:
-            return
-        L_0x0441:
-            r0 = move-exception
-            monitor-exit(r69)     // Catch:{ all -> 0x0441 }
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.AlsId7SubMusicViewBindingImpl.executeBindings():void");
-    }
-
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean musicPhoneViewModelJavaLangObjectNull = true;
+        boolean musicPhoneViewModelJavaLangObjectNull;
         switch (sourceId) {
             case 1:
                 AlsID7ViewModel musicPhoneViewModel = this.mMusicPhoneViewModel;
-                if (musicPhoneViewModel == null) {
-                    musicPhoneViewModelJavaLangObjectNull = false;
-                }
+                musicPhoneViewModelJavaLangObjectNull = musicPhoneViewModel != null;
                 if (musicPhoneViewModelJavaLangObjectNull) {
                     musicPhoneViewModel.openMusicMulti(callbackArg_0);
                     return;
@@ -867,9 +561,7 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
                 return;
             case 2:
                 AlsID7ViewModel musicPhoneViewModel2 = this.mMusicPhoneViewModel;
-                if (musicPhoneViewModel2 == null) {
-                    musicPhoneViewModelJavaLangObjectNull = false;
-                }
+                musicPhoneViewModelJavaLangObjectNull = musicPhoneViewModel2 != null;
                 if (musicPhoneViewModelJavaLangObjectNull) {
                     musicPhoneViewModel2.btnMusicPrev(callbackArg_0);
                     return;
@@ -877,9 +569,7 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
                 return;
             case 3:
                 AlsID7ViewModel musicPhoneViewModel3 = this.mMusicPhoneViewModel;
-                if (musicPhoneViewModel3 == null) {
-                    musicPhoneViewModelJavaLangObjectNull = false;
-                }
+                musicPhoneViewModelJavaLangObjectNull = musicPhoneViewModel3 != null;
                 if (musicPhoneViewModelJavaLangObjectNull) {
                     musicPhoneViewModel3.btnMusicPlayPause(callbackArg_0);
                     return;
@@ -887,9 +577,7 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
                 return;
             case 4:
                 AlsID7ViewModel musicPhoneViewModel4 = this.mMusicPhoneViewModel;
-                if (musicPhoneViewModel4 == null) {
-                    musicPhoneViewModelJavaLangObjectNull = false;
-                }
+                musicPhoneViewModelJavaLangObjectNull = musicPhoneViewModel4 != null;
                 if (musicPhoneViewModelJavaLangObjectNull) {
                     musicPhoneViewModel4.btnMusicNext(callbackArg_0);
                     return;

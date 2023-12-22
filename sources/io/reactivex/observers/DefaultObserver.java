@@ -5,9 +5,11 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.internal.util.EndConsumerHelper;
 
+/* loaded from: classes.dex */
 public abstract class DefaultObserver<T> implements Observer<T> {
     private Disposable upstream;
 
+    @Override // io.reactivex.Observer
     public final void onSubscribe(Disposable d) {
         if (EndConsumerHelper.validate(this.upstream, d, getClass())) {
             this.upstream = d;
@@ -15,14 +17,12 @@ public abstract class DefaultObserver<T> implements Observer<T> {
         }
     }
 
-    /* access modifiers changed from: protected */
-    public final void cancel() {
-        Disposable upstream2 = this.upstream;
+    protected final void cancel() {
+        Disposable upstream = this.upstream;
         this.upstream = DisposableHelper.DISPOSED;
-        upstream2.dispose();
+        upstream.dispose();
     }
 
-    /* access modifiers changed from: protected */
-    public void onStart() {
+    protected void onStart() {
     }
 }

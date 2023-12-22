@@ -4,38 +4,39 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.appwidget.AppWidgetManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.widget.RemoteViews;
 import com.squareup.picasso.Picasso;
 
+/* loaded from: classes.dex */
 abstract class RemoteViewsAction extends Action<RemoteViewsTarget> {
     final RemoteViews remoteViews;
     private RemoteViewsTarget target;
     final int viewId;
 
-    /* access modifiers changed from: package-private */
-    public abstract void update();
+    abstract void update();
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    RemoteViewsAction(Picasso picasso, Request data, RemoteViews remoteViews2, int viewId2, int errorResId, int memoryPolicy, int networkPolicy, Object tag, String key) {
-        super(picasso, null, data, memoryPolicy, networkPolicy, errorResId, (Drawable) null, key, tag, false);
-        this.remoteViews = remoteViews2;
-        this.viewId = viewId2;
+    RemoteViewsAction(Picasso picasso, Request data, RemoteViews remoteViews, int viewId, int errorResId, int memoryPolicy, int networkPolicy, Object tag, String key) {
+        super(picasso, null, data, memoryPolicy, networkPolicy, errorResId, null, key, tag, false);
+        this.remoteViews = remoteViews;
+        this.viewId = viewId;
     }
 
-    /* access modifiers changed from: package-private */
-    public void complete(Bitmap result, Picasso.LoadedFrom from) {
+    @Override // com.squareup.picasso.Action
+    void complete(Bitmap result, Picasso.LoadedFrom from) {
         this.remoteViews.setImageViewBitmap(this.viewId, result);
         update();
     }
 
+    @Override // com.squareup.picasso.Action
     public void error() {
         if (this.errorResId != 0) {
             setImageResource(this.errorResId);
         }
     }
 
-    /* access modifiers changed from: package-private */
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* JADX WARN: Can't rename method to resolve collision */
+    @Override // com.squareup.picasso.Action
     public RemoteViewsTarget getTarget() {
         if (this.target == null) {
             this.target = new RemoteViewsTarget(this.remoteViews, this.viewId);
@@ -43,19 +44,19 @@ abstract class RemoteViewsAction extends Action<RemoteViewsTarget> {
         return this.target;
     }
 
-    /* access modifiers changed from: package-private */
-    public void setImageResource(int resId) {
+    void setImageResource(int resId) {
         this.remoteViews.setImageViewResource(this.viewId, resId);
         update();
     }
 
+    /* loaded from: classes.dex */
     static class RemoteViewsTarget {
         final RemoteViews remoteViews;
         final int viewId;
 
-        RemoteViewsTarget(RemoteViews remoteViews2, int viewId2) {
-            this.remoteViews = remoteViews2;
-            this.viewId = viewId2;
+        RemoteViewsTarget(RemoteViews remoteViews, int viewId) {
+            this.remoteViews = remoteViews;
+            this.viewId = viewId;
         }
 
         public boolean equals(Object o) {
@@ -66,10 +67,10 @@ abstract class RemoteViewsAction extends Action<RemoteViewsTarget> {
                 return false;
             }
             RemoteViewsTarget remoteViewsTarget = (RemoteViewsTarget) o;
-            if (this.viewId != remoteViewsTarget.viewId || !this.remoteViews.equals(remoteViewsTarget.remoteViews)) {
-                return false;
+            if (this.viewId == remoteViewsTarget.viewId && this.remoteViews.equals(remoteViewsTarget.remoteViews)) {
+                return true;
             }
-            return true;
+            return false;
         }
 
         public int hashCode() {
@@ -77,44 +78,47 @@ abstract class RemoteViewsAction extends Action<RemoteViewsTarget> {
         }
     }
 
+    /* loaded from: classes.dex */
     static class AppWidgetAction extends RemoteViewsAction {
         private final int[] appWidgetIds;
 
-        /* access modifiers changed from: package-private */
-        public /* bridge */ /* synthetic */ Object getTarget() {
-            return RemoteViewsAction.super.getTarget();
+        @Override // com.squareup.picasso.RemoteViewsAction, com.squareup.picasso.Action
+        /* bridge */ /* synthetic */ RemoteViewsTarget getTarget() {
+            return super.getTarget();
         }
 
-        AppWidgetAction(Picasso picasso, Request data, RemoteViews remoteViews, int viewId, int[] appWidgetIds2, int memoryPolicy, int networkPolicy, String key, Object tag, int errorResId) {
+        AppWidgetAction(Picasso picasso, Request data, RemoteViews remoteViews, int viewId, int[] appWidgetIds, int memoryPolicy, int networkPolicy, String key, Object tag, int errorResId) {
             super(picasso, data, remoteViews, viewId, errorResId, memoryPolicy, networkPolicy, tag, key);
-            this.appWidgetIds = appWidgetIds2;
+            this.appWidgetIds = appWidgetIds;
         }
 
-        /* access modifiers changed from: package-private */
-        public void update() {
-            AppWidgetManager.getInstance(this.picasso.context).updateAppWidget(this.appWidgetIds, this.remoteViews);
+        @Override // com.squareup.picasso.RemoteViewsAction
+        void update() {
+            AppWidgetManager manager = AppWidgetManager.getInstance(this.picasso.context);
+            manager.updateAppWidget(this.appWidgetIds, this.remoteViews);
         }
     }
 
+    /* loaded from: classes.dex */
     static class NotificationAction extends RemoteViewsAction {
         private final Notification notification;
         private final int notificationId;
 
-        /* access modifiers changed from: package-private */
-        public /* bridge */ /* synthetic */ Object getTarget() {
-            return RemoteViewsAction.super.getTarget();
+        @Override // com.squareup.picasso.RemoteViewsAction, com.squareup.picasso.Action
+        /* bridge */ /* synthetic */ RemoteViewsTarget getTarget() {
+            return super.getTarget();
         }
 
-        /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-        NotificationAction(Picasso picasso, Request data, RemoteViews remoteViews, int viewId, int notificationId2, Notification notification2, int memoryPolicy, int networkPolicy, String key, Object tag, int errorResId) {
+        NotificationAction(Picasso picasso, Request data, RemoteViews remoteViews, int viewId, int notificationId, Notification notification, int memoryPolicy, int networkPolicy, String key, Object tag, int errorResId) {
             super(picasso, data, remoteViews, viewId, errorResId, memoryPolicy, networkPolicy, tag, key);
-            this.notificationId = notificationId2;
-            this.notification = notification2;
+            this.notificationId = notificationId;
+            this.notification = notification;
         }
 
-        /* access modifiers changed from: package-private */
-        public void update() {
-            ((NotificationManager) Utils.getService(this.picasso.context, "notification")).notify(this.notificationId, this.notification);
+        @Override // com.squareup.picasso.RemoteViewsAction
+        void update() {
+            NotificationManager manager = (NotificationManager) Utils.getService(this.picasso.context, "notification");
+            manager.notify(this.notificationId, this.notification);
         }
     }
 }

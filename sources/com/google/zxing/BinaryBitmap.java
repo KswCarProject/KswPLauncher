@@ -3,16 +3,16 @@ package com.google.zxing;
 import com.google.zxing.common.BitArray;
 import com.google.zxing.common.BitMatrix;
 
+/* loaded from: classes.dex */
 public final class BinaryBitmap {
     private final Binarizer binarizer;
     private BitMatrix matrix;
 
-    public BinaryBitmap(Binarizer binarizer2) {
-        if (binarizer2 != null) {
-            this.binarizer = binarizer2;
-            return;
+    public BinaryBitmap(Binarizer binarizer) {
+        if (binarizer == null) {
+            throw new IllegalArgumentException("Binarizer must be non-null.");
         }
-        throw new IllegalArgumentException("Binarizer must be non-null.");
+        this.binarizer = binarizer;
     }
 
     public int getWidth() {
@@ -39,7 +39,8 @@ public final class BinaryBitmap {
     }
 
     public BinaryBitmap crop(int left, int top, int width, int height) {
-        return new BinaryBitmap(this.binarizer.createBinarizer(this.binarizer.getLuminanceSource().crop(left, top, width, height)));
+        LuminanceSource newSource = this.binarizer.getLuminanceSource().crop(left, top, width, height);
+        return new BinaryBitmap(this.binarizer.createBinarizer(newSource));
     }
 
     public boolean isRotateSupported() {
@@ -47,11 +48,13 @@ public final class BinaryBitmap {
     }
 
     public BinaryBitmap rotateCounterClockwise() {
-        return new BinaryBitmap(this.binarizer.createBinarizer(this.binarizer.getLuminanceSource().rotateCounterClockwise()));
+        LuminanceSource newSource = this.binarizer.getLuminanceSource().rotateCounterClockwise();
+        return new BinaryBitmap(this.binarizer.createBinarizer(newSource));
     }
 
     public BinaryBitmap rotateCounterClockwise45() {
-        return new BinaryBitmap(this.binarizer.createBinarizer(this.binarizer.getLuminanceSource().rotateCounterClockwise45()));
+        LuminanceSource newSource = this.binarizer.getLuminanceSource().rotateCounterClockwise45();
+        return new BinaryBitmap(this.binarizer.createBinarizer(newSource));
     }
 
     public String toString() {

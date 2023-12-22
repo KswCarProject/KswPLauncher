@@ -9,10 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.DashboardViewModel;
 import com.wits.ksw.launcher.view.ID7SpeedImageView;
 
+/* loaded from: classes7.dex */
 public abstract class DasoardBind extends ViewDataBinding {
     public final ImageView brakeTextView;
     public final ImageView carImageView;
@@ -33,27 +34,26 @@ public abstract class DasoardBind extends ViewDataBinding {
     public final TextView tempTextView;
     public final ImageView zspeedPointerImageView;
 
-    public abstract void setViewModel(DashboardViewModel dashboardViewModel);
+    public abstract void setViewModel(DashboardViewModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected DasoardBind(Object _bindingComponent, View _root, int _localFieldCount, ImageView brakeTextView2, ImageView carImageView2, ConstraintLayout constraintLayout2, ImageView dorrBackImageView2, ImageView dorrLeftFlImageView2, ImageView dorrLeftFrImageView2, ImageView dorrLeftRlImageView2, ImageView imageView192, ConstraintLayout linearLayout22, TextView oilTextView2, ImageView seatBeltTextView2, ID7SpeedImageView speedPointerImageView2, ID7SpeedImageView speedometerImageView2, ImageView tachometerImageView2, TextView tempTextView2, ImageView zspeedPointerImageView2) {
+    protected DasoardBind(Object _bindingComponent, View _root, int _localFieldCount, ImageView brakeTextView, ImageView carImageView, ConstraintLayout constraintLayout, ImageView dorrBackImageView, ImageView dorrLeftFlImageView, ImageView dorrLeftFrImageView, ImageView dorrLeftRlImageView, ImageView imageView19, ConstraintLayout linearLayout2, TextView oilTextView, ImageView seatBeltTextView, ID7SpeedImageView speedPointerImageView, ID7SpeedImageView speedometerImageView, ImageView tachometerImageView, TextView tempTextView, ImageView zspeedPointerImageView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.brakeTextView = brakeTextView2;
-        this.carImageView = carImageView2;
-        this.constraintLayout = constraintLayout2;
-        this.dorrBackImageView = dorrBackImageView2;
-        this.dorrLeftFlImageView = dorrLeftFlImageView2;
-        this.dorrLeftFrImageView = dorrLeftFrImageView2;
-        this.dorrLeftRlImageView = dorrLeftRlImageView2;
-        this.imageView19 = imageView192;
-        this.linearLayout2 = linearLayout22;
-        this.oilTextView = oilTextView2;
-        this.seatBeltTextView = seatBeltTextView2;
-        this.speedPointerImageView = speedPointerImageView2;
-        this.speedometerImageView = speedometerImageView2;
-        this.tachometerImageView = tachometerImageView2;
-        this.tempTextView = tempTextView2;
-        this.zspeedPointerImageView = zspeedPointerImageView2;
+        this.brakeTextView = brakeTextView;
+        this.carImageView = carImageView;
+        this.constraintLayout = constraintLayout;
+        this.dorrBackImageView = dorrBackImageView;
+        this.dorrLeftFlImageView = dorrLeftFlImageView;
+        this.dorrLeftFrImageView = dorrLeftFrImageView;
+        this.dorrLeftRlImageView = dorrLeftRlImageView;
+        this.imageView19 = imageView19;
+        this.linearLayout2 = linearLayout2;
+        this.oilTextView = oilTextView;
+        this.seatBeltTextView = seatBeltTextView;
+        this.speedPointerImageView = speedPointerImageView;
+        this.speedometerImageView = speedometerImageView;
+        this.tachometerImageView = tachometerImageView;
+        this.tempTextView = tempTextView;
+        this.zspeedPointerImageView = zspeedPointerImageView;
     }
 
     public DashboardViewModel getViewModel() {
@@ -66,7 +66,7 @@ public abstract class DasoardBind extends ViewDataBinding {
 
     @Deprecated
     public static DasoardBind inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (DasoardBind) ViewDataBinding.inflateInternal(inflater, R.layout.activity_dash_board, root, attachToRoot, component);
+        return (DasoardBind) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_dash_board, root, attachToRoot, component);
     }
 
     public static DasoardBind inflate(LayoutInflater inflater) {
@@ -75,7 +75,7 @@ public abstract class DasoardBind extends ViewDataBinding {
 
     @Deprecated
     public static DasoardBind inflate(LayoutInflater inflater, Object component) {
-        return (DasoardBind) ViewDataBinding.inflateInternal(inflater, R.layout.activity_dash_board, (ViewGroup) null, false, component);
+        return (DasoardBind) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_dash_board, null, false, component);
     }
 
     public static DasoardBind bind(View view) {
@@ -84,6 +84,6 @@ public abstract class DasoardBind extends ViewDataBinding {
 
     @Deprecated
     public static DasoardBind bind(View view, Object component) {
-        return (DasoardBind) bind(component, view, R.layout.activity_dash_board);
+        return (DasoardBind) bind(component, view, C0899R.C0902layout.activity_dash_board);
     }
 }

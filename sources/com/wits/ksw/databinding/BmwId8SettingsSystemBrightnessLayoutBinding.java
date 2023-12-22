@@ -9,10 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bmw_id8_ui.view.ID8ProgressBar;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class BmwId8SettingsSystemBrightnessLayoutBinding extends ViewDataBinding {
     public final ImageButton bmwId8SettingsBrightnessAddBtn;
     public final RelativeLayout bmwId8SettingsBrightnessLay;
@@ -22,15 +23,15 @@ public abstract class BmwId8SettingsSystemBrightnessLayoutBinding extends ViewDa
     @Bindable
     protected BmwId8SettingsViewModel mViewModel;
 
-    public abstract void setViewModel(BmwId8SettingsViewModel bmwId8SettingsViewModel);
+    public abstract void setViewModel(BmwId8SettingsViewModel viewModel);
 
-    protected BmwId8SettingsSystemBrightnessLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageButton bmwId8SettingsBrightnessAddBtn2, RelativeLayout bmwId8SettingsBrightnessLay2, ID8ProgressBar bmwId8SettingsBrightnessSeekbar2, ImageButton bmwId8SettingsBrightnessSubBtn2, TextView bmwId8SettingsBrightnessText2) {
+    protected BmwId8SettingsSystemBrightnessLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageButton bmwId8SettingsBrightnessAddBtn, RelativeLayout bmwId8SettingsBrightnessLay, ID8ProgressBar bmwId8SettingsBrightnessSeekbar, ImageButton bmwId8SettingsBrightnessSubBtn, TextView bmwId8SettingsBrightnessText) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.bmwId8SettingsBrightnessAddBtn = bmwId8SettingsBrightnessAddBtn2;
-        this.bmwId8SettingsBrightnessLay = bmwId8SettingsBrightnessLay2;
-        this.bmwId8SettingsBrightnessSeekbar = bmwId8SettingsBrightnessSeekbar2;
-        this.bmwId8SettingsBrightnessSubBtn = bmwId8SettingsBrightnessSubBtn2;
-        this.bmwId8SettingsBrightnessText = bmwId8SettingsBrightnessText2;
+        this.bmwId8SettingsBrightnessAddBtn = bmwId8SettingsBrightnessAddBtn;
+        this.bmwId8SettingsBrightnessLay = bmwId8SettingsBrightnessLay;
+        this.bmwId8SettingsBrightnessSeekbar = bmwId8SettingsBrightnessSeekbar;
+        this.bmwId8SettingsBrightnessSubBtn = bmwId8SettingsBrightnessSubBtn;
+        this.bmwId8SettingsBrightnessText = bmwId8SettingsBrightnessText;
     }
 
     public BmwId8SettingsViewModel getViewModel() {
@@ -43,7 +44,7 @@ public abstract class BmwId8SettingsSystemBrightnessLayoutBinding extends ViewDa
 
     @Deprecated
     public static BmwId8SettingsSystemBrightnessLayoutBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BmwId8SettingsSystemBrightnessLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_system_brightness_layout, root, attachToRoot, component);
+        return (BmwId8SettingsSystemBrightnessLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_system_brightness_layout, root, attachToRoot, component);
     }
 
     public static BmwId8SettingsSystemBrightnessLayoutBinding inflate(LayoutInflater inflater) {
@@ -52,7 +53,7 @@ public abstract class BmwId8SettingsSystemBrightnessLayoutBinding extends ViewDa
 
     @Deprecated
     public static BmwId8SettingsSystemBrightnessLayoutBinding inflate(LayoutInflater inflater, Object component) {
-        return (BmwId8SettingsSystemBrightnessLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_system_brightness_layout, (ViewGroup) null, false, component);
+        return (BmwId8SettingsSystemBrightnessLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_system_brightness_layout, null, false, component);
     }
 
     public static BmwId8SettingsSystemBrightnessLayoutBinding bind(View view) {
@@ -61,6 +62,6 @@ public abstract class BmwId8SettingsSystemBrightnessLayoutBinding extends ViewDa
 
     @Deprecated
     public static BmwId8SettingsSystemBrightnessLayoutBinding bind(View view, Object component) {
-        return (BmwId8SettingsSystemBrightnessLayoutBinding) bind(component, view, R.layout.bmw_id8_settings_system_brightness_layout);
+        return (BmwId8SettingsSystemBrightnessLayoutBinding) bind(component, view, C0899R.C0902layout.bmw_id8_settings_system_brightness_layout);
     }
 }

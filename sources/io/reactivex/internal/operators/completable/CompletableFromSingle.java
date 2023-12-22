@@ -6,35 +6,42 @@ import io.reactivex.SingleObserver;
 import io.reactivex.SingleSource;
 import io.reactivex.disposables.Disposable;
 
+/* loaded from: classes.dex */
 public final class CompletableFromSingle<T> extends Completable {
     final SingleSource<T> single;
 
-    public CompletableFromSingle(SingleSource<T> single2) {
-        this.single = single2;
+    public CompletableFromSingle(SingleSource<T> single) {
+        this.single = single;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         this.single.subscribe(new CompletableFromSingleObserver(observer));
     }
 
+    /* loaded from: classes.dex */
     static final class CompletableFromSingleObserver<T> implements SingleObserver<T> {
-        final CompletableObserver co;
 
-        CompletableFromSingleObserver(CompletableObserver co2) {
-            this.co = co2;
+        /* renamed from: co */
+        final CompletableObserver f277co;
+
+        CompletableFromSingleObserver(CompletableObserver co) {
+            this.f277co = co;
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
-            this.co.onError(e);
+            this.f277co.onError(e);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
-            this.co.onSubscribe(d);
+            this.f277co.onSubscribe(d);
         }
 
-        public void onSuccess(T t) {
-            this.co.onComplete();
+        @Override // io.reactivex.SingleObserver
+        public void onSuccess(T value) {
+            this.f277co.onComplete();
         }
     }
 }

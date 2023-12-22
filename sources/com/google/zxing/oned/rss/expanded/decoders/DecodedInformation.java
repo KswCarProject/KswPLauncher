@@ -1,36 +1,34 @@
 package com.google.zxing.oned.rss.expanded.decoders;
 
+/* loaded from: classes.dex */
 final class DecodedInformation extends DecodedObject {
     private final String newString;
     private final boolean remaining;
     private final int remainingValue;
 
-    DecodedInformation(int newPosition, String newString2) {
+    DecodedInformation(int newPosition, String newString) {
         super(newPosition);
-        this.newString = newString2;
+        this.newString = newString;
         this.remaining = false;
         this.remainingValue = 0;
     }
 
-    DecodedInformation(int newPosition, String newString2, int remainingValue2) {
+    DecodedInformation(int newPosition, String newString, int remainingValue) {
         super(newPosition);
         this.remaining = true;
-        this.remainingValue = remainingValue2;
-        this.newString = newString2;
+        this.remainingValue = remainingValue;
+        this.newString = newString;
     }
 
-    /* access modifiers changed from: package-private */
-    public String getNewString() {
+    String getNewString() {
         return this.newString;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isRemaining() {
+    boolean isRemaining() {
         return this.remaining;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getRemainingValue() {
+    int getRemainingValue() {
         return this.remainingValue;
     }
 }

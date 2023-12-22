@@ -6,35 +6,40 @@ import io.reactivex.CompletableSource;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 
+/* loaded from: classes.dex */
 public final class CompletableHide extends Completable {
     final CompletableSource source;
 
-    public CompletableHide(CompletableSource source2) {
-        this.source = source2;
+    public CompletableHide(CompletableSource source) {
+        this.source = source;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         this.source.subscribe(new HideCompletableObserver(observer));
     }
 
+    /* loaded from: classes.dex */
     static final class HideCompletableObserver implements CompletableObserver, Disposable {
         final CompletableObserver downstream;
         Disposable upstream;
 
-        HideCompletableObserver(CompletableObserver downstream2) {
-            this.downstream = downstream2;
+        HideCompletableObserver(CompletableObserver downstream) {
+            this.downstream = downstream;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
             this.upstream = DisposableHelper.DISPOSED;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -42,10 +47,12 @@ public final class CompletableHide extends Completable {
             }
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onError(Throwable e) {
             this.downstream.onError(e);
         }
 
+        @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
         public void onComplete() {
             this.downstream.onComplete();
         }

@@ -2,12 +2,16 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
+import android.support.constraint.ConstraintLayout;
+import android.support.p004v7.widget.AppCompatTextView;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi_mib3.vm.AudiMib3VolumeViewModel;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi_mib3.p008vm.AudiMib3VolumeViewModel;
 
+/* loaded from: classes7.dex */
 public class ActivityAudiMib3SoundBindingHdpi1920x720Impl extends ActivityAudiMib3SoundBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -17,12 +21,12 @@ public class ActivityAudiMib3SoundBindingHdpi1920x720Impl extends ActivityAudiMi
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.title, 1);
-        sparseIntArray.put(R.id.title_divider, 2);
-        sparseIntArray.put(R.id.linearLayout4, 3);
-        sparseIntArray.put(R.id.hzTextView, 4);
-        sparseIntArray.put(R.id.carVolumeTextView, 5);
-        sparseIntArray.put(R.id.v_divider, 6);
+        sparseIntArray.put(C0899R.C0901id.title, 1);
+        sparseIntArray.put(C0899R.C0901id.title_divider, 2);
+        sparseIntArray.put(C0899R.C0901id.linearLayout4, 3);
+        sparseIntArray.put(C0899R.C0901id.hzTextView, 4);
+        sparseIntArray.put(C0899R.C0901id.carVolumeTextView, 5);
+        sparseIntArray.put(C0899R.C0901id.v_divider, 6);
     }
 
     public ActivityAudiMib3SoundBindingHdpi1920x720Impl(DataBindingComponent bindingComponent, View root) {
@@ -30,22 +34,24 @@ public class ActivityAudiMib3SoundBindingHdpi1920x720Impl extends ActivityAudiMi
     }
 
     private ActivityAudiMib3SoundBindingHdpi1920x720Impl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[5], bindings[4], bindings[3], bindings[1], bindings[2], bindings[6]);
-        this.mDirtyFlags = -1;
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 0, (TextView) bindings[5], (TextView) bindings[4], (ConstraintLayout) bindings[3], (AppCompatTextView) bindings[1], (View) bindings[2], (View) bindings[6]);
+        this.mDirtyFlags = -1L;
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
+        relativeLayout.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 2;
+            this.mDirtyFlags = 2L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -55,28 +61,30 @@ public class ActivityAudiMib3SoundBindingHdpi1920x720Impl extends ActivityAudiMi
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((AudiMib3VolumeViewModel) variable);
+            return true;
         }
-        setVm((AudiMib3VolumeViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.ActivityAudiMib3SoundBinding
     public void setVm(AudiMib3VolumeViewModel Vm) {
         this.mVm = Vm;
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         synchronized (this) {
-            long dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            long j = this.mDirtyFlags;
+            this.mDirtyFlags = 0L;
         }
     }
 }

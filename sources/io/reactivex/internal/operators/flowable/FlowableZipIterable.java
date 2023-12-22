@@ -12,24 +12,27 @@ import java.util.Iterator;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableZipIterable<T, U, V> extends AbstractFlowableWithUpstream<T, V> {
     final Iterable<U> other;
     final BiFunction<? super T, ? super U, ? extends V> zipper;
 
-    public FlowableZipIterable(Flowable<T> source, Iterable<U> other2, BiFunction<? super T, ? super U, ? extends V> zipper2) {
+    public FlowableZipIterable(Flowable<T> source, Iterable<U> other, BiFunction<? super T, ? super U, ? extends V> zipper) {
         super(source);
-        this.other = other2;
-        this.zipper = zipper2;
+        this.other = other;
+        this.zipper = zipper;
     }
 
+    @Override // io.reactivex.Flowable
     public void subscribeActual(Subscriber<? super V> t) {
         try {
             Iterator<U> it = (Iterator) ObjectHelper.requireNonNull(this.other.iterator(), "The iterator returned by other is null");
             try {
-                if (!it.hasNext()) {
+                boolean b = it.hasNext();
+                if (!b) {
                     EmptySubscription.complete(t);
                 } else {
-                    this.source.subscribe(new ZipIterableSubscriber(t, it, this.zipper));
+                    this.source.subscribe((FlowableSubscriber) new ZipIterableSubscriber(t, it, this.zipper));
                 }
             } catch (Throwable e) {
                 Exceptions.throwIfFatal(e);
@@ -41,6 +44,7 @@ public final class FlowableZipIterable<T, U, V> extends AbstractFlowableWithUpst
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ZipIterableSubscriber<T, U, V> implements FlowableSubscriber<T>, Subscription {
         boolean done;
         final Subscriber<? super V> downstream;
@@ -48,12 +52,13 @@ public final class FlowableZipIterable<T, U, V> extends AbstractFlowableWithUpst
         Subscription upstream;
         final BiFunction<? super T, ? super U, ? extends V> zipper;
 
-        ZipIterableSubscriber(Subscriber<? super V> actual, Iterator<U> iterator2, BiFunction<? super T, ? super U, ? extends V> zipper2) {
+        ZipIterableSubscriber(Subscriber<? super V> actual, Iterator<U> iterator, BiFunction<? super T, ? super U, ? extends V> zipper) {
             this.downstream = actual;
-            this.iterator = iterator2;
-            this.zipper = zipper2;
+            this.iterator = iterator;
+            this.zipper = zipper;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -61,37 +66,40 @@ public final class FlowableZipIterable<T, U, V> extends AbstractFlowableWithUpst
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            if (!this.done) {
+            if (this.done) {
+                return;
+            }
+            try {
                 try {
+                    this.downstream.onNext(ObjectHelper.requireNonNull(this.zipper.apply(t, ObjectHelper.requireNonNull(this.iterator.next(), "The iterator returned a null value")), "The zipper function returned a null value"));
                     try {
-                        this.downstream.onNext(ObjectHelper.requireNonNull(this.zipper.apply(t, ObjectHelper.requireNonNull(this.iterator.next(), "The iterator returned a null value")), "The zipper function returned a null value"));
-                        try {
-                            if (!this.iterator.hasNext()) {
-                                this.done = true;
-                                this.upstream.cancel();
-                                this.downstream.onComplete();
-                            }
-                        } catch (Throwable e) {
-                            error(e);
+                        boolean b = this.iterator.hasNext();
+                        if (!b) {
+                            this.done = true;
+                            this.upstream.cancel();
+                            this.downstream.onComplete();
                         }
-                    } catch (Throwable e2) {
-                        error(e2);
+                    } catch (Throwable e) {
+                        error(e);
                     }
-                } catch (Throwable e3) {
-                    error(e3);
+                } catch (Throwable e2) {
+                    error(e2);
                 }
+            } catch (Throwable e3) {
+                error(e3);
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void error(Throwable e) {
+        void error(Throwable e) {
             Exceptions.throwIfFatal(e);
             this.done = true;
             this.upstream.cancel();
             this.downstream.onError(e);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -101,17 +109,21 @@ public final class FlowableZipIterable<T, U, V> extends AbstractFlowableWithUpst
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                this.downstream.onComplete();
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            this.downstream.onComplete();
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             this.upstream.request(n);
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             this.upstream.cancel();
         }

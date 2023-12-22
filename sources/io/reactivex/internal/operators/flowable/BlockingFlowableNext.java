@@ -1,6 +1,7 @@
 package io.reactivex.internal.operators.flowable;
 
 import io.reactivex.Flowable;
+import io.reactivex.FlowableSubscriber;
 import io.reactivex.Notification;
 import io.reactivex.internal.util.BlockingHelper;
 import io.reactivex.internal.util.ExceptionHelper;
@@ -13,17 +14,21 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.reactivestreams.Publisher;
 
+/* loaded from: classes.dex */
 public final class BlockingFlowableNext<T> implements Iterable<T> {
     final Publisher<? extends T> source;
 
-    public BlockingFlowableNext(Publisher<? extends T> source2) {
-        this.source = source2;
+    public BlockingFlowableNext(Publisher<? extends T> source) {
+        this.source = source;
     }
 
+    @Override // java.lang.Iterable
     public Iterator<T> iterator() {
-        return new NextIterator(this.source, new NextSubscriber<>());
+        NextSubscriber<T> nextSubscriber = new NextSubscriber<>();
+        return new NextIterator(this.source, nextSubscriber);
     }
 
+    /* loaded from: classes.dex */
     static final class NextIterator<T> implements Iterator<T> {
         private Throwable error;
         private boolean hasNext = true;
@@ -33,23 +38,21 @@ public final class BlockingFlowableNext<T> implements Iterable<T> {
         private boolean started;
         private final NextSubscriber<T> subscriber;
 
-        NextIterator(Publisher<? extends T> items2, NextSubscriber<T> subscriber2) {
-            this.items = items2;
-            this.subscriber = subscriber2;
+        NextIterator(Publisher<? extends T> items, NextSubscriber<T> subscriber) {
+            this.items = items;
+            this.subscriber = subscriber;
         }
 
+        @Override // java.util.Iterator
         public boolean hasNext() {
             Throwable th = this.error;
             if (th != null) {
                 throw ExceptionHelper.wrapOrThrow(th);
-            } else if (!this.hasNext) {
-                return false;
-            } else {
-                if (!this.isNextConsumed || moveToNext()) {
-                    return true;
-                }
-                return false;
             }
+            if (this.hasNext) {
+                return !this.isNextConsumed || moveToNext();
+            }
+            return false;
         }
 
         private boolean moveToNext() {
@@ -57,7 +60,7 @@ public final class BlockingFlowableNext<T> implements Iterable<T> {
                 if (!this.started) {
                     this.started = true;
                     this.subscriber.setWaiting();
-                    Flowable.fromPublisher(this.items).materialize().subscribe(this.subscriber);
+                    Flowable.fromPublisher(this.items).materialize().subscribe((FlowableSubscriber<? super Notification<T>>) this.subscriber);
                 }
                 Notification<T> nextNotification = this.subscriber.takeNext();
                 if (nextNotification.isOnNext()) {
@@ -70,9 +73,9 @@ public final class BlockingFlowableNext<T> implements Iterable<T> {
                     return false;
                 }
                 if (nextNotification.isOnError()) {
-                    Throwable error2 = nextNotification.getError();
-                    this.error = error2;
-                    throw ExceptionHelper.wrapOrThrow(error2);
+                    Throwable error = nextNotification.getError();
+                    this.error = error;
+                    throw ExceptionHelper.wrapOrThrow(error);
                 }
                 throw new IllegalStateException("Should not reach here");
             } catch (InterruptedException e) {
@@ -82,23 +85,26 @@ public final class BlockingFlowableNext<T> implements Iterable<T> {
             }
         }
 
+        @Override // java.util.Iterator
         public T next() {
             Throwable th = this.error;
             if (th != null) {
                 throw ExceptionHelper.wrapOrThrow(th);
-            } else if (hasNext()) {
+            }
+            if (hasNext()) {
                 this.isNextConsumed = true;
                 return this.next;
-            } else {
-                throw new NoSuchElementException("No more elements");
             }
+            throw new NoSuchElementException("No more elements");
         }
 
+        @Override // java.util.Iterator
         public void remove() {
             throw new UnsupportedOperationException("Read only iterator");
         }
     }
 
+    /* loaded from: classes.dex */
     static final class NextSubscriber<T> extends DisposableSubscriber<Notification<T>> {
         private final BlockingQueue<Notification<T>> buf = new ArrayBlockingQueue(1);
         final AtomicInteger waiting = new AtomicInteger();
@@ -106,9 +112,16 @@ public final class BlockingFlowableNext<T> implements Iterable<T> {
         NextSubscriber() {
         }
 
+        @Override // org.reactivestreams.Subscriber
+        public /* bridge */ /* synthetic */ void onNext(Object obj) {
+            onNext((Notification) ((Notification) obj));
+        }
+
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable e) {
             RxJavaPlugins.onError(e);
         }
@@ -117,7 +130,7 @@ public final class BlockingFlowableNext<T> implements Iterable<T> {
             if (this.waiting.getAndSet(0) == 1 || !args.isOnNext()) {
                 Notification<T> toOffer = args;
                 while (!this.buf.offer(toOffer)) {
-                    Notification<T> concurrentItem = (Notification) this.buf.poll();
+                    Notification<T> concurrentItem = this.buf.poll();
                     if (concurrentItem != null && !concurrentItem.isOnNext()) {
                         toOffer = concurrentItem;
                     }
@@ -131,8 +144,7 @@ public final class BlockingFlowableNext<T> implements Iterable<T> {
             return this.buf.take();
         }
 
-        /* access modifiers changed from: package-private */
-        public void setWaiting() {
+        void setWaiting() {
             this.waiting.set(1);
         }
     }

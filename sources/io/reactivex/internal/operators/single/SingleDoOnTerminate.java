@@ -8,20 +8,22 @@ import io.reactivex.exceptions.CompositeException;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Action;
 
+/* loaded from: classes.dex */
 public final class SingleDoOnTerminate<T> extends Single<T> {
     final Action onTerminate;
     final SingleSource<T> source;
 
-    public SingleDoOnTerminate(SingleSource<T> source2, Action onTerminate2) {
-        this.source = source2;
-        this.onTerminate = onTerminate2;
+    public SingleDoOnTerminate(SingleSource<T> source, Action onTerminate) {
+        this.source = source;
+        this.onTerminate = onTerminate;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         this.source.subscribe(new DoOnTerminate(observer));
     }
 
+    /* loaded from: classes.dex */
     final class DoOnTerminate implements SingleObserver<T> {
         final SingleObserver<? super T> downstream;
 
@@ -29,10 +31,12 @@ public final class SingleDoOnTerminate<T> extends Single<T> {
             this.downstream = observer;
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
             this.downstream.onSubscribe(d);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSuccess(T value) {
             try {
                 SingleDoOnTerminate.this.onTerminate.run();
@@ -43,6 +47,7 @@ public final class SingleDoOnTerminate<T> extends Single<T> {
             }
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
             try {
                 SingleDoOnTerminate.this.onTerminate.run();

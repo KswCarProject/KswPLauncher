@@ -8,23 +8,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
+/* loaded from: classes.dex */
 public final class ExifInterfaceImageHeaderParser implements ImageHeaderParser {
+    @Override // com.bumptech.glide.load.ImageHeaderParser
     public ImageHeaderParser.ImageType getType(InputStream is) throws IOException {
         return ImageHeaderParser.ImageType.UNKNOWN;
     }
 
+    @Override // com.bumptech.glide.load.ImageHeaderParser
     public ImageHeaderParser.ImageType getType(ByteBuffer byteBuffer) throws IOException {
         return ImageHeaderParser.ImageType.UNKNOWN;
     }
 
+    @Override // com.bumptech.glide.load.ImageHeaderParser
     public int getOrientation(InputStream is, ArrayPool byteArrayPool) throws IOException {
-        int result = new ExifInterface(is).getAttributeInt("Orientation", 1);
+        ExifInterface exifInterface = new ExifInterface(is);
+        int result = exifInterface.getAttributeInt("Orientation", 1);
         if (result == 0) {
             return -1;
         }
         return result;
     }
 
+    @Override // com.bumptech.glide.load.ImageHeaderParser
     public int getOrientation(ByteBuffer byteBuffer, ArrayPool byteArrayPool) throws IOException {
         return getOrientation(ByteBufferUtil.toStream(byteBuffer), byteArrayPool);
     }

@@ -217,10 +217,17 @@
     <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Şifre hatası!</string>
     <string name="mcu_file_corrupted">Yükseltme dosyası bozuk!</string>
+    <string name="mic_control">MIC harici dahili geçiş anahtarı</string>
+    <string name="mic_external">Harici</string>
+    <string name="mic_internal">Yerleşik</string>
     <string name="mic_text">MIC Kazanmak</string>
     <string name="music_app_sel">Bir müzik uygulaması seçin</string>
+    <string name="music_player">Müzik çalar</string>
     <string name="ntg6_dvr_toast">Cihaz yok!</string>
     <string name="oil_size">oil: %s</string>
+    <string name="original_radar_reverse">Orijinal radar ekranı ters</string>
+    <string name="radar_normal">Normal</string>
+    <string name="radar_reverse">Ters</string>
     <string name="raw_car_text1">tam ekran görüntüsü</string>
     <string name="raw_car_text2">Geçerli seçim:</string>
     <string name="reverse_exit_time_agreement">Orijinal araç anlaşmasına göre çıkın.</string>
@@ -295,6 +302,8 @@
     <string name="text_logo_two">P2</string>
     <string name="text_ram">RAM: %s</string>
     <string name="touch_continuous_send">Sürekli gönderilen dokunmatik veriler</string>
+    <string name="tv_id8_brake">Fren</string>
+    <string name="tv_id8_seat_belt">Emniyet Kemeri</string>
     <string name="txz_oil_text">Yağmur sesi alarm ı ayarlaması</string>
     <string name="txz_speed_text">Erkek yolculuk hızlı alarm ayarlaması</string>
     <string name="txz_temp_text">Şirket çevre sıcaklık alarm ı ayarlaması</string>

@@ -31,16 +31,15 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+/* loaded from: classes.dex */
 public class DateTimePatternGenerator implements Freezable<DateTimePatternGenerator>, Cloneable {
     private static final DisplayWidth APPENDITEM_WIDTH;
     private static final int APPENDITEM_WIDTH_INT;
-    /* access modifiers changed from: private */
-    public static final String[] CANONICAL_ITEMS;
+    private static final String[] CANONICAL_ITEMS;
     private static final Set<String> CANONICAL_SET;
-    private static final String[] CLDR_FIELD_APPEND = {"Era", "Year", "Quarter", "Month", "Week", "*", "Day-Of-Week", "Day", "*", "*", "*", "Hour", "Minute", "Second", "*", "Timezone"};
-    private static final String[] CLDR_FIELD_NAME = {"era", "year", "quarter", "month", "week", "weekOfMonth", "weekday", "day", "dayOfYear", "weekdayOfMonth", "dayperiod", "hour", "minute", "second", "*", "zone"};
-    /* access modifiers changed from: private */
-    public static final DisplayWidth[] CLDR_FIELD_WIDTH = DisplayWidth.values();
+    private static final String[] CLDR_FIELD_APPEND;
+    private static final String[] CLDR_FIELD_NAME;
+    private static final DisplayWidth[] CLDR_FIELD_WIDTH;
     private static final int DATE_MASK = 1023;
     public static final int DAY = 7;
     public static final int DAYPERIOD = 10;
@@ -48,10 +47,10 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     public static final int DAY_OF_YEAR = 8;
     private static final boolean DEBUG = false;
     private static final int DELTA = 16;
-    private static ICUCache<String, DateTimePatternGenerator> DTPNG_CACHE = new SimpleCache();
+    private static ICUCache<String, DateTimePatternGenerator> DTPNG_CACHE = null;
     public static final int ERA = 0;
     private static final int EXTRA_FIELD = 65536;
-    private static final String[] FIELD_NAME = {"Era", "Year", "Quarter", "Month", "Week_in_Year", "Week_in_Month", "Weekday", "Day", "Day_Of_Year", "Day_of_Week_in_Month", "Dayperiod", "Hour", "Minute", "Second", "Fractional_Second", "Zone"};
+    private static final String[] FIELD_NAME;
     private static final int FRACTIONAL_MASK = 16384;
     public static final int FRACTIONAL_SECOND = 14;
     public static final int HOUR = 11;
@@ -84,31 +83,36 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     public static final int WEEK_OF_YEAR = 4;
     public static final int YEAR = 1;
     public static final int ZONE = 15;
-    /* access modifiers changed from: private */
-    public static final int[][] types = {new int[]{71, 0, SHORT, 1, 3}, new int[]{71, 0, LONG, 4}, new int[]{71, 0, NARROW, 5}, new int[]{121, 1, 256, 1, 20}, new int[]{89, 1, 272, 1, 20}, new int[]{117, 1, 288, 1, 20}, new int[]{114, 1, 304, 1, 20}, new int[]{85, 1, SHORT, 1, 3}, new int[]{85, 1, LONG, 4}, new int[]{85, 1, NARROW, 5}, new int[]{81, 2, 256, 1, 2}, new int[]{81, 2, SHORT, 3}, new int[]{81, 2, LONG, 4}, new int[]{81, 2, NARROW, 5}, new int[]{113, 2, 272, 1, 2}, new int[]{113, 2, -275, 3}, new int[]{113, 2, -276, 4}, new int[]{113, 2, -273, 5}, new int[]{77, 3, 256, 1, 2}, new int[]{77, 3, SHORT, 3}, new int[]{77, 3, LONG, 4}, new int[]{77, 3, NARROW, 5}, new int[]{76, 3, 272, 1, 2}, new int[]{76, 3, -275, 3}, new int[]{76, 3, -276, 4}, new int[]{76, 3, -273, 5}, new int[]{108, 3, 272, 1, 1}, new int[]{119, 4, 256, 1, 2}, new int[]{87, 5, 256, 1}, new int[]{69, 6, SHORT, 1, 3}, new int[]{69, 6, LONG, 4}, new int[]{69, 6, NARROW, 5}, new int[]{69, 6, SHORTER, 6}, new int[]{99, 6, 288, 1, 2}, new int[]{99, 6, -291, 3}, new int[]{99, 6, -292, 4}, new int[]{99, 6, -289, 5}, new int[]{99, 6, -290, 6}, new int[]{101, 6, 272, 1, 2}, new int[]{101, 6, -275, 3}, new int[]{101, 6, -276, 4}, new int[]{101, 6, -273, 5}, new int[]{101, 6, -274, 6}, new int[]{100, 7, 256, 1, 2}, new int[]{103, 7, 272, 1, 20}, new int[]{68, 8, 256, 1, 3}, new int[]{70, 9, 256, 1}, new int[]{97, 10, SHORT, 1, 3}, new int[]{97, 10, LONG, 4}, new int[]{97, 10, NARROW, 5}, new int[]{98, 10, -275, 1, 3}, new int[]{98, 10, -276, 4}, new int[]{98, 10, -273, 5}, new int[]{66, 10, -307, 1, 3}, new int[]{66, 10, -308, 4}, new int[]{66, 10, -305, 5}, new int[]{72, 11, 416, 1, 2}, new int[]{107, 11, 432, 1, 2}, new int[]{104, 11, 256, 1, 2}, new int[]{75, 11, 272, 1, 2}, new int[]{109, 12, 256, 1, 2}, new int[]{115, 13, 256, 1, 2}, new int[]{65, 13, 272, 1, 1000}, new int[]{83, 14, 256, 1, 1000}, new int[]{118, 15, -291, 1}, new int[]{118, 15, -292, 4}, new int[]{122, 15, SHORT, 1, 3}, new int[]{122, 15, LONG, 4}, new int[]{90, 15, -273, 1, 3}, new int[]{90, 15, -276, 4}, new int[]{90, 15, -275, 5}, new int[]{79, 15, -275, 1}, new int[]{79, 15, -276, 4}, new int[]{86, 15, -275, 1}, new int[]{86, 15, -276, 2}, new int[]{86, 15, -277, 3}, new int[]{86, 15, -278, 4}, new int[]{88, 15, -273, 1}, new int[]{88, 15, -275, 2}, new int[]{88, 15, -276, 4}, new int[]{120, 15, -273, 1}, new int[]{120, 15, -275, 2}, new int[]{120, 15, -276, 4}};
-    private transient DistanceInfo _distanceInfo;
+    private static final int[][] types;
     private String[] allowedHourFormats;
-    private String[] appendItemFormats = new String[16];
-    private TreeMap<String, PatternWithSkeletonFlag> basePattern_pattern = new TreeMap<>();
-    private Set<String> cldrAvailableFormatKeys;
-    private transient DateTimeMatcher current;
-    private String dateTimeFormat = "{1} {0}";
-    private String decimal = "?";
-    private char defaultHourFormatChar;
-    private String[][] fieldDisplayNames;
-    private transient FormatParser fp;
-    private volatile boolean frozen;
     private TreeMap<DateTimeMatcher, PatternWithSkeletonFlag> skeleton2pattern = new TreeMap<>();
+    private TreeMap<String, PatternWithSkeletonFlag> basePattern_pattern = new TreeMap<>();
+    private String decimal = "?";
+    private String dateTimeFormat = "{1} {0}";
+    private String[] appendItemFormats = new String[16];
+    private String[][] fieldDisplayNames = (String[][]) Array.newInstance(String.class, 16, DisplayWidth.COUNT);
+    private char defaultHourFormatChar = 'H';
+    private volatile boolean frozen = false;
+    private transient DateTimeMatcher current = new DateTimeMatcher();
 
+    /* renamed from: fp */
+    private transient FormatParser f147fp = new FormatParser();
+    private transient DistanceInfo _distanceInfo = new DistanceInfo();
+    private Set<String> cldrAvailableFormatKeys = new HashSet(20);
+
+    /* loaded from: classes.dex */
     private enum DTPGflags {
         FIX_FRACTIONAL_SECONDS,
         SKELETON_USES_CAP_J
     }
 
+    /* loaded from: classes.dex */
     public static final class PatternInfo {
         public static final int BASE_CONFLICT = 1;
         public static final int CONFLICT = 2;
-        public static final int OK = 0;
+
+        /* renamed from: OK */
+        public static final int f148OK = 0;
         public String conflictingPattern;
         public int status;
     }
@@ -121,16 +125,6 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     }
 
     protected DateTimePatternGenerator() {
-        int[] iArr = new int[2];
-        iArr[1] = DisplayWidth.COUNT;
-        iArr[0] = 16;
-        this.fieldDisplayNames = (String[][]) Array.newInstance(String.class, iArr);
-        this.defaultHourFormatChar = 'H';
-        this.frozen = false;
-        this.current = new DateTimeMatcher();
-        this.fp = new FormatParser();
-        this._distanceInfo = new DistanceInfo();
-        this.cldrAvailableFormatKeys = new HashSet(20);
     }
 
     public static DateTimePatternGenerator getInstance() {
@@ -138,7 +132,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     }
 
     public static DateTimePatternGenerator getInstance(ULocale uLocale) {
-        return getFrozenInstance(uLocale).cloneAsThawed();
+        return getFrozenInstance(uLocale).m77cloneAsThawed();
     }
 
     public static DateTimePatternGenerator getInstance(Locale locale) {
@@ -154,7 +148,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         }
         DateTimePatternGenerator result2 = new DateTimePatternGenerator();
         result2.initData(uLocale);
-        result2.freeze();
+        result2.m78freeze();
         DTPNG_CACHE.put(localeKey, result2);
         return result2;
     }
@@ -184,7 +178,8 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     private String getCalendarTypeToUse(ULocale uLocale) {
         String calendarTypeToUse = uLocale.getKeywordValue("calendar");
         if (calendarTypeToUse == null) {
-            calendarTypeToUse = Calendar.getKeywordValuesForLocale("calendar", uLocale, true)[0];
+            String[] preferredCalendarTypes = Calendar.getKeywordValuesForLocale("calendar", uLocale, true);
+            calendarTypeToUse = preferredCalendarTypes[0];
         }
         if (calendarTypeToUse == null) {
             return "gregorian";
@@ -193,9 +188,9 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     }
 
     private void consumeShortTimePattern(String shortTimePattern, PatternInfo returnInfo) {
-        FormatParser fp2 = new FormatParser();
-        fp2.set(shortTimePattern);
-        List<Object> items = fp2.getItems();
+        FormatParser fp = new FormatParser();
+        fp.set(shortTimePattern);
+        List<Object> items = fp.getItems();
         int idx = 0;
         while (true) {
             if (idx >= items.size()) {
@@ -214,33 +209,28 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         hackTimes(returnInfo, shortTimePattern);
     }
 
+    /* loaded from: classes.dex */
     private class AppendItemFormatsSink extends UResource.Sink {
         static final /* synthetic */ boolean $assertionsDisabled = false;
-
-        static {
-            Class<DateTimePatternGenerator> cls = DateTimePatternGenerator.class;
-        }
 
         private AppendItemFormatsSink() {
         }
 
         public void put(UResource.Key key, UResource.Value value, boolean noFallback) {
             UResource.Table itemsTable = value.getTable();
-            int i = 0;
-            while (itemsTable.getKeyAndValue(i, key, value)) {
+            for (int i = 0; itemsTable.getKeyAndValue(i, key, value); i++) {
                 int field = DateTimePatternGenerator.getAppendFormatNumber(key);
-                if (field != -1) {
-                    if (DateTimePatternGenerator.this.getAppendItemFormat(field) == null) {
-                        DateTimePatternGenerator.this.setAppendItemFormat(field, value.toString());
-                    }
-                    i++;
-                } else {
+                if (field == -1) {
                     throw new AssertionError();
+                }
+                if (DateTimePatternGenerator.this.getAppendItemFormat(field) == null) {
+                    DateTimePatternGenerator.this.setAppendItemFormat(field, value.toString());
                 }
             }
         }
     }
 
+    /* loaded from: classes.dex */
     private class AppendItemNamesSink extends UResource.Sink {
         private AppendItemNamesSink() {
         }
@@ -271,7 +261,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     private void fillInMissing() {
         for (int i = 0; i < 16; i++) {
             if (getAppendItemFormat(i) == null) {
-                setAppendItemFormat(i, "{0} ├{2}: {1}┤");
+                setAppendItemFormat(i, "{0} \u251c{2}: {1}\u2524");
             }
             if (getFieldDisplayName(i, DisplayWidth.WIDE) == null) {
                 setFieldDisplayName(i, DisplayWidth.WIDE, "F" + i);
@@ -285,11 +275,12 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         }
     }
 
+    /* loaded from: classes.dex */
     private class AvailableFormatsSink extends UResource.Sink {
         PatternInfo returnInfo;
 
-        public AvailableFormatsSink(PatternInfo returnInfo2) {
-            this.returnInfo = returnInfo2;
+        public AvailableFormatsSink(PatternInfo returnInfo) {
+            this.returnInfo = returnInfo;
         }
 
         public void put(UResource.Key key, UResource.Value value, boolean isRoot) {
@@ -298,7 +289,8 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
                 String formatKey = key.toString();
                 if (!DateTimePatternGenerator.this.isAvailableFormatSet(formatKey)) {
                     DateTimePatternGenerator.this.setAvailableFormat(formatKey);
-                    DateTimePatternGenerator.this.addPatternWithSkeleton(value.toString(), formatKey, !isRoot, this.returnInfo);
+                    String formatValue = value.toString();
+                    DateTimePatternGenerator.this.addPatternWithSkeleton(formatValue, formatKey, !isRoot, this.returnInfo);
                 }
             }
         }
@@ -307,38 +299,51 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     private void addCLDRData(PatternInfo returnInfo, ULocale uLocale) {
         ICUResourceBundle rb = UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b", uLocale);
         String calendarTypeToUse = getCalendarTypeToUse(uLocale);
+        AppendItemFormatsSink appendItemFormatsSink = new AppendItemFormatsSink();
         try {
-            rb.getAllItemsWithFallback("calendar/" + calendarTypeToUse + "/appendItems", new AppendItemFormatsSink());
+            rb.getAllItemsWithFallback("calendar/" + calendarTypeToUse + "/appendItems", appendItemFormatsSink);
         } catch (MissingResourceException e) {
         }
+        AppendItemNamesSink appendItemNamesSink = new AppendItemNamesSink();
         try {
-            rb.getAllItemsWithFallback("fields", new AppendItemNamesSink());
+            rb.getAllItemsWithFallback("fields", appendItemNamesSink);
         } catch (MissingResourceException e2) {
         }
+        AvailableFormatsSink availableFormatsSink = new AvailableFormatsSink(returnInfo);
         try {
-            rb.getAllItemsWithFallback("calendar/" + calendarTypeToUse + "/availableFormats", new AvailableFormatsSink(returnInfo));
+            rb.getAllItemsWithFallback("calendar/" + calendarTypeToUse + "/availableFormats", availableFormatsSink);
         } catch (MissingResourceException e3) {
         }
     }
 
     private void setDateTimeFromCalendar(ULocale uLocale) {
-        setDateTimeFormat(Calendar.getDateTimePattern(Calendar.getInstance(uLocale), uLocale, 2));
+        String dateTimeFormat = Calendar.getDateTimePattern(Calendar.getInstance(uLocale), uLocale, 2);
+        setDateTimeFormat(dateTimeFormat);
     }
 
     private void setDecimalSymbols(ULocale uLocale) {
-        setDecimal(String.valueOf(new DecimalFormatSymbols(uLocale).getDecimalSeparator()));
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(uLocale);
+        setDecimal(String.valueOf(dfs.getDecimalSeparator()));
     }
 
     static {
         HashMap<String, String[]> temp = new HashMap<>();
-        ICUResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b", "supplementalData", ICUResourceBundle.ICU_DATA_CLASS_LOADER).getAllItemsWithFallback("timeData", new DayPeriodAllowedHoursSink(temp));
+        ICUResourceBundle suppData = ICUResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b", "supplementalData", ICUResourceBundle.ICU_DATA_CLASS_LOADER);
+        DayPeriodAllowedHoursSink allowedHoursSink = new DayPeriodAllowedHoursSink(temp);
+        suppData.getAllItemsWithFallback("timeData", allowedHoursSink);
         LOCALE_TO_ALLOWED_HOUR = Collections.unmodifiableMap(temp);
         DisplayWidth displayWidth = DisplayWidth.WIDE;
         APPENDITEM_WIDTH = displayWidth;
         APPENDITEM_WIDTH_INT = displayWidth.ordinal();
+        CLDR_FIELD_WIDTH = DisplayWidth.values();
+        DTPNG_CACHE = new SimpleCache();
+        CLDR_FIELD_APPEND = new String[]{"Era", "Year", "Quarter", "Month", "Week", "*", "Day-Of-Week", "Day", "*", "*", "*", "Hour", "Minute", "Second", "*", "Timezone"};
+        CLDR_FIELD_NAME = new String[]{"era", "year", "quarter", "month", "week", "weekOfMonth", "weekday", "day", "dayOfYear", "weekdayOfMonth", "dayperiod", "hour", "minute", "second", "*", "zone"};
+        FIELD_NAME = new String[]{"Era", "Year", "Quarter", "Month", "Week_in_Year", "Week_in_Month", "Weekday", "Day", "Day_Of_Year", "Day_of_Week_in_Month", "Dayperiod", "Hour", "Minute", "Second", "Fractional_Second", "Zone"};
         String[] strArr = {"G", DateFormat.YEAR, "Q", DateFormat.NUM_MONTH, "w", "W", DateFormat.ABBR_WEEKDAY, DateFormat.DAY, "D", "F", "a", DateFormat.HOUR24, DateFormat.MINUTE, DateFormat.SECOND, "S", DateFormat.ABBR_GENERIC_TZ};
         CANONICAL_ITEMS = strArr;
         CANONICAL_SET = new HashSet(Arrays.asList(strArr));
+        types = new int[][]{new int[]{71, 0, SHORT, 1, 3}, new int[]{71, 0, LONG, 4}, new int[]{71, 0, NARROW, 5}, new int[]{121, 1, 256, 1, 20}, new int[]{89, 1, 272, 1, 20}, new int[]{117, 1, 288, 1, 20}, new int[]{114, 1, 304, 1, 20}, new int[]{85, 1, SHORT, 1, 3}, new int[]{85, 1, LONG, 4}, new int[]{85, 1, NARROW, 5}, new int[]{81, 2, 256, 1, 2}, new int[]{81, 2, SHORT, 3}, new int[]{81, 2, LONG, 4}, new int[]{81, 2, NARROW, 5}, new int[]{113, 2, 272, 1, 2}, new int[]{113, 2, -275, 3}, new int[]{113, 2, -276, 4}, new int[]{113, 2, -273, 5}, new int[]{77, 3, 256, 1, 2}, new int[]{77, 3, SHORT, 3}, new int[]{77, 3, LONG, 4}, new int[]{77, 3, NARROW, 5}, new int[]{76, 3, 272, 1, 2}, new int[]{76, 3, -275, 3}, new int[]{76, 3, -276, 4}, new int[]{76, 3, -273, 5}, new int[]{108, 3, 272, 1, 1}, new int[]{119, 4, 256, 1, 2}, new int[]{87, 5, 256, 1}, new int[]{69, 6, SHORT, 1, 3}, new int[]{69, 6, LONG, 4}, new int[]{69, 6, NARROW, 5}, new int[]{69, 6, SHORTER, 6}, new int[]{99, 6, 288, 1, 2}, new int[]{99, 6, -291, 3}, new int[]{99, 6, -292, 4}, new int[]{99, 6, -289, 5}, new int[]{99, 6, -290, 6}, new int[]{101, 6, 272, 1, 2}, new int[]{101, 6, -275, 3}, new int[]{101, 6, -276, 4}, new int[]{101, 6, -273, 5}, new int[]{101, 6, -274, 6}, new int[]{100, 7, 256, 1, 2}, new int[]{103, 7, 272, 1, 20}, new int[]{68, 8, 256, 1, 3}, new int[]{70, 9, 256, 1}, new int[]{97, 10, SHORT, 1, 3}, new int[]{97, 10, LONG, 4}, new int[]{97, 10, NARROW, 5}, new int[]{98, 10, -275, 1, 3}, new int[]{98, 10, -276, 4}, new int[]{98, 10, -273, 5}, new int[]{66, 10, -307, 1, 3}, new int[]{66, 10, -308, 4}, new int[]{66, 10, -305, 5}, new int[]{72, 11, 416, 1, 2}, new int[]{107, 11, 432, 1, 2}, new int[]{104, 11, 256, 1, 2}, new int[]{75, 11, 272, 1, 2}, new int[]{109, 12, 256, 1, 2}, new int[]{115, 13, 256, 1, 2}, new int[]{65, 13, 272, 1, 1000}, new int[]{83, 14, 256, 1, 1000}, new int[]{118, 15, -291, 1}, new int[]{118, 15, -292, 4}, new int[]{122, 15, SHORT, 1, 3}, new int[]{122, 15, LONG, 4}, new int[]{90, 15, -273, 1, 3}, new int[]{90, 15, -276, 4}, new int[]{90, 15, -275, 5}, new int[]{79, 15, -275, 1}, new int[]{79, 15, -276, 4}, new int[]{86, 15, -275, 1}, new int[]{86, 15, -276, 2}, new int[]{86, 15, -277, 3}, new int[]{86, 15, -278, 4}, new int[]{88, 15, -273, 1}, new int[]{88, 15, -275, 2}, new int[]{88, 15, -276, 4}, new int[]{120, 15, -273, 1}, new int[]{120, 15, -275, 2}, new int[]{120, 15, -276, 4}};
     }
 
     private void getAllowedHourFormats(ULocale uLocale) {
@@ -347,19 +352,21 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         if (country.isEmpty()) {
             country = "001";
         }
+        String langCountry = max.getLanguage() + "_" + country;
         Map<String, String[]> map = LOCALE_TO_ALLOWED_HOUR;
-        String[] list = map.get(max.getLanguage() + "_" + country);
+        String[] list = map.get(langCountry);
         if (list == null && (list = map.get(country)) == null) {
             list = LAST_RESORT_ALLOWED_HOUR_FORMAT;
         }
         this.allowedHourFormats = list;
     }
 
+    /* loaded from: classes.dex */
     private static class DayPeriodAllowedHoursSink extends UResource.Sink {
         HashMap<String, String[]> tempMap;
 
-        private DayPeriodAllowedHoursSink(HashMap<String, String[]> tempMap2) {
-            this.tempMap = tempMap2;
+        private DayPeriodAllowedHoursSink(HashMap<String, String[]> tempMap) {
+            this.tempMap = tempMap;
         }
 
         public void put(UResource.Key key, UResource.Value value, boolean noFallback) {
@@ -382,67 +389,66 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     }
 
     @Deprecated
-    public void setDefaultHourFormatChar(char defaultHourFormatChar2) {
-        this.defaultHourFormatChar = defaultHourFormatChar2;
+    public void setDefaultHourFormatChar(char defaultHourFormatChar) {
+        this.defaultHourFormatChar = defaultHourFormatChar;
     }
 
     private void hackTimes(PatternInfo returnInfo, String shortTimePattern) {
-        this.fp.set(shortTimePattern);
+        this.f147fp.set(shortTimePattern);
         StringBuilder mmss = new StringBuilder();
         boolean gotMm = false;
         int i = 0;
         while (true) {
-            if (i >= this.fp.items.size()) {
+            if (i >= this.f147fp.items.size()) {
                 break;
             }
-            Object item = this.fp.items.get(i);
-            if (!(item instanceof String)) {
+            Object item = this.f147fp.items.get(i);
+            if (item instanceof String) {
+                if (gotMm) {
+                    mmss.append(this.f147fp.quoteLiteral(item.toString()));
+                }
+            } else {
                 char ch = item.toString().charAt(0);
-                if (ch != 'm') {
-                    if (ch != 's') {
-                        if (gotMm || ch == 'z' || ch == 'Z' || ch == 'v' || ch == 'V') {
-                            break;
-                        }
-                    } else if (gotMm) {
+                if (ch == 'm') {
+                    gotMm = true;
+                    mmss.append(item);
+                } else if (ch == 's') {
+                    if (gotMm) {
                         mmss.append(item);
                         addPattern(mmss.toString(), false, returnInfo);
                     }
-                } else {
-                    gotMm = true;
-                    mmss.append(item);
+                } else if (gotMm || ch == 'z' || ch == 'Z' || ch == 'v' || ch == 'V') {
+                    break;
                 }
-            } else if (gotMm) {
-                mmss.append(this.fp.quoteLiteral(item.toString()));
             }
             i++;
         }
         BitSet variables = new BitSet();
         BitSet nuke = new BitSet();
-        for (int i2 = 0; i2 < this.fp.items.size(); i2++) {
-            Object item2 = this.fp.items.get(i2);
+        for (int i2 = 0; i2 < this.f147fp.items.size(); i2++) {
+            Object item2 = this.f147fp.items.get(i2);
             if (item2 instanceof VariableField) {
                 variables.set(i2);
                 char ch2 = item2.toString().charAt(0);
                 if (ch2 == 's' || ch2 == 'S') {
                     nuke.set(i2);
-                    int j = i2 - 1;
-                    while (j >= 0 && !variables.get(j)) {
+                    for (int j = i2 - 1; j >= 0 && !variables.get(j); j++) {
                         nuke.set(i2);
-                        j++;
                     }
                 }
             }
         }
-        addPattern(getFilteredPattern(this.fp, nuke), false, returnInfo);
+        String hhmm = getFilteredPattern(this.f147fp, nuke);
+        addPattern(hhmm, false, returnInfo);
     }
 
-    private static String getFilteredPattern(FormatParser fp2, BitSet nuke) {
+    private static String getFilteredPattern(FormatParser fp, BitSet nuke) {
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i < fp2.items.size(); i++) {
+        for (int i = 0; i < fp.items.size(); i++) {
             if (!nuke.get(i)) {
-                Object item = fp2.items.get(i);
+                Object item = fp.items.get(i);
                 if (item instanceof String) {
-                    result.append(fp2.quoteLiteral(item.toString()));
+                    result.append(fp.quoteLiteral(item.toString()));
                 } else {
                     result.append(item.toString());
                 }
@@ -456,13 +462,15 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         int i = 0;
         while (true) {
             String[] strArr = CLDR_FIELD_APPEND;
-            if (i >= strArr.length) {
+            if (i < strArr.length) {
+                if (!key.contentEquals(strArr[i])) {
+                    i++;
+                } else {
+                    return i;
+                }
+            } else {
                 return -1;
             }
-            if (key.contentEquals(strArr[i])) {
-                return i;
-            }
-            i++;
         }
     }
 
@@ -471,21 +479,24 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         int i = 0;
         while (true) {
             String[] strArr = CLDR_FIELD_APPEND;
-            if (i >= strArr.length) {
+            if (i < strArr.length) {
+                if (!strArr[i].equals(string)) {
+                    i++;
+                } else {
+                    return i;
+                }
+            } else {
                 return -1;
             }
-            if (strArr[i].equals(string)) {
-                return i;
-            }
-            i++;
         }
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public static int getCLDRFieldAndWidthNumber(UResource.Key key) {
         for (int i = 0; i < CLDR_FIELD_NAME.length; i++) {
             for (int j = 0; j < DisplayWidth.COUNT; j++) {
-                if (key.contentEquals(CLDR_FIELD_NAME[i].concat(CLDR_FIELD_WIDTH[j].cldrKey()))) {
+                String fullKey = CLDR_FIELD_NAME[i].concat(CLDR_FIELD_WIDTH[j].cldrKey());
+                if (key.contentEquals(fullKey)) {
                     return (DisplayWidth.COUNT * i) + j;
                 }
             }
@@ -494,156 +505,63 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     }
 
     public String getBestPattern(String skeleton) {
-        return getBestPattern(skeleton, (DateTimeMatcher) null, 0);
+        return getBestPattern(skeleton, null, 0);
     }
 
     public String getBestPattern(String skeleton, int options) {
-        return getBestPattern(skeleton, (DateTimeMatcher) null, options);
+        return getBestPattern(skeleton, null, options);
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:18:0x006a, code lost:
-        if (r16 != null) goto L_0x0073;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:19:0x006c, code lost:
-        if (r0 != null) goto L_0x0071;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:20:0x006e, code lost:
-        return "";
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:22:0x0073, code lost:
-        if (r0 != null) goto L_0x0076;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:23:0x0075, code lost:
-        return r16;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:25:0x0087, code lost:
-        return com.ibm.icu.impl.SimpleFormatterImpl.formatRawPattern(getDateTimeFormat(), 2, 2, new java.lang.CharSequence[]{r0, r16});
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:34:?, code lost:
-        return r0;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private java.lang.String getBestPattern(java.lang.String r18, com.ibm.icu.text.DateTimePatternGenerator.DateTimeMatcher r19, int r20) {
-        /*
-            r17 = this;
-            r8 = r17
-            java.lang.Class<com.ibm.icu.text.DateTimePatternGenerator$DTPGflags> r0 = com.ibm.icu.text.DateTimePatternGenerator.DTPGflags.class
-            java.util.EnumSet r9 = java.util.EnumSet.noneOf(r0)
-            r10 = r18
-            java.lang.String r11 = r8.mapSkeletonMetacharacters(r10, r9)
-            monitor-enter(r17)
-            com.ibm.icu.text.DateTimePatternGenerator$DateTimeMatcher r0 = r8.current     // Catch:{ all -> 0x008a }
-            com.ibm.icu.text.DateTimePatternGenerator$FormatParser r1 = r8.fp     // Catch:{ all -> 0x008a }
-            r12 = 0
-            r0.set(r11, r1, r12)     // Catch:{ all -> 0x008a }
-            com.ibm.icu.text.DateTimePatternGenerator$DateTimeMatcher r0 = r8.current     // Catch:{ all -> 0x008a }
-            r1 = -1
-            com.ibm.icu.text.DateTimePatternGenerator$DistanceInfo r2 = r8._distanceInfo     // Catch:{ all -> 0x008a }
-            r13 = r19
-            com.ibm.icu.text.DateTimePatternGenerator$PatternWithMatcher r0 = r8.getBestRaw(r0, r1, r2, r13)     // Catch:{ all -> 0x0088 }
-            com.ibm.icu.text.DateTimePatternGenerator$DistanceInfo r1 = r8._distanceInfo     // Catch:{ all -> 0x0088 }
-            int r1 = r1.missingFieldMask     // Catch:{ all -> 0x0088 }
-            if (r1 != 0) goto L_0x0038
-            com.ibm.icu.text.DateTimePatternGenerator$DistanceInfo r1 = r8._distanceInfo     // Catch:{ all -> 0x0088 }
-            int r1 = r1.extraFieldMask     // Catch:{ all -> 0x0088 }
-            if (r1 != 0) goto L_0x0038
-            com.ibm.icu.text.DateTimePatternGenerator$DateTimeMatcher r1 = r8.current     // Catch:{ all -> 0x0088 }
-            r14 = r20
-            java.lang.String r1 = r8.adjustFieldTypes(r0, r1, r9, r14)     // Catch:{ all -> 0x0091 }
-            monitor-exit(r17)     // Catch:{ all -> 0x0091 }
-            return r1
-        L_0x0038:
-            r14 = r20
-            com.ibm.icu.text.DateTimePatternGenerator$DateTimeMatcher r1 = r8.current     // Catch:{ all -> 0x0091 }
-            int r1 = r1.getFieldMask()     // Catch:{ all -> 0x0091 }
-            r15 = r1
-            com.ibm.icu.text.DateTimePatternGenerator$DateTimeMatcher r2 = r8.current     // Catch:{ all -> 0x0091 }
-            r3 = r15 & 1023(0x3ff, float:1.434E-42)
-            com.ibm.icu.text.DateTimePatternGenerator$DistanceInfo r4 = r8._distanceInfo     // Catch:{ all -> 0x0091 }
-            r1 = r17
-            r5 = r19
-            r6 = r9
-            r7 = r20
-            java.lang.String r1 = r1.getBestAppending(r2, r3, r4, r5, r6, r7)     // Catch:{ all -> 0x0091 }
-            r16 = r1
-            com.ibm.icu.text.DateTimePatternGenerator$DateTimeMatcher r2 = r8.current     // Catch:{ all -> 0x0091 }
-            r1 = 64512(0xfc00, float:9.04E-41)
-            r3 = r15 & r1
-            com.ibm.icu.text.DateTimePatternGenerator$DistanceInfo r4 = r8._distanceInfo     // Catch:{ all -> 0x0091 }
-            r1 = r17
-            r5 = r19
-            r6 = r9
-            r7 = r20
-            java.lang.String r1 = r1.getBestAppending(r2, r3, r4, r5, r6, r7)     // Catch:{ all -> 0x0091 }
-            r0 = r1
-            monitor-exit(r17)     // Catch:{ all -> 0x0091 }
-            if (r16 != 0) goto L_0x0073
-            if (r0 != 0) goto L_0x0071
-            java.lang.String r1 = ""
-            goto L_0x0072
-        L_0x0071:
-            r1 = r0
-        L_0x0072:
-            return r1
-        L_0x0073:
-            if (r0 != 0) goto L_0x0076
-            return r16
-        L_0x0076:
-            java.lang.String r1 = r17.getDateTimeFormat()
-            r2 = 2
-            java.lang.CharSequence[] r3 = new java.lang.CharSequence[r2]
-            r3[r12] = r0
-            r4 = 1
-            r3[r4] = r16
-            java.lang.String r1 = com.ibm.icu.impl.SimpleFormatterImpl.formatRawPattern(r1, r2, r2, r3)
-            return r1
-        L_0x0088:
-            r0 = move-exception
-            goto L_0x008d
-        L_0x008a:
-            r0 = move-exception
-            r13 = r19
-        L_0x008d:
-            r14 = r20
-        L_0x008f:
-            monitor-exit(r17)     // Catch:{ all -> 0x0091 }
-            throw r0
-        L_0x0091:
-            r0 = move-exception
-            goto L_0x008f
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.DateTimePatternGenerator.getBestPattern(java.lang.String, com.ibm.icu.text.DateTimePatternGenerator$DateTimeMatcher, int):java.lang.String");
+    private String getBestPattern(String skeleton, DateTimeMatcher skipMatcher, int options) {
+        EnumSet<DTPGflags> flags = EnumSet.noneOf(DTPGflags.class);
+        String skeletonMapped = mapSkeletonMetacharacters(skeleton, flags);
+        synchronized (this) {
+            try {
+                try {
+                    this.current.set(skeletonMapped, this.f147fp, false);
+                } catch (Throwable th) {
+                    th = th;
+                }
+                try {
+                    PatternWithMatcher bestWithMatcher = getBestRaw(this.current, -1, this._distanceInfo, skipMatcher);
+                    if (this._distanceInfo.missingFieldMask == 0 && this._distanceInfo.extraFieldMask == 0) {
+                        return adjustFieldTypes(bestWithMatcher, this.current, flags, options);
+                    }
+                    int neededFields = this.current.getFieldMask();
+                    String datePattern = getBestAppending(this.current, neededFields & 1023, this._distanceInfo, skipMatcher, flags, options);
+                    String timePattern = getBestAppending(this.current, neededFields & TIME_MASK, this._distanceInfo, skipMatcher, flags, options);
+                    return datePattern == null ? timePattern == null ? "" : timePattern : timePattern == null ? datePattern : SimpleFormatterImpl.formatRawPattern(getDateTimeFormat(), 2, 2, new CharSequence[]{timePattern, datePattern});
+                } catch (Throwable th2) {
+                    th = th2;
+                    throw th;
+                }
+            } catch (Throwable th3) {
+                th = th3;
+                throw th;
+            }
+        }
     }
 
     private String mapSkeletonMetacharacters(String skeleton, EnumSet<DTPGflags> flags) {
         char hourChar;
-        String str = skeleton;
         StringBuilder skeletonCopy = new StringBuilder();
         boolean inQuoted = false;
         int patPos = 0;
         while (patPos < skeleton.length()) {
-            char patChr = str.charAt(patPos);
-            boolean z = false;
+            char patChr = skeleton.charAt(patPos);
             if (patChr == '\'') {
-                if (!inQuoted) {
-                    z = true;
-                }
-                inQuoted = z;
-                EnumSet<DTPGflags> enumSet = flags;
+                inQuoted = inQuoted ? false : true;
             } else if (!inQuoted) {
-                if (patChr == 'j') {
-                    EnumSet<DTPGflags> enumSet2 = flags;
-                } else if (patChr == 'C') {
-                    EnumSet<DTPGflags> enumSet3 = flags;
-                } else if (patChr == 'J') {
-                    skeletonCopy.append('H');
-                    flags.add(DTPGflags.SKELETON_USES_CAP_J);
-                } else {
-                    EnumSet<DTPGflags> enumSet4 = flags;
-                    skeletonCopy.append(patChr);
+                if (patChr != 'j' && patChr != 'C') {
+                    if (patChr == 'J') {
+                        skeletonCopy.append('H');
+                        flags.add(DTPGflags.SKELETON_USES_CAP_J);
+                    } else {
+                        skeletonCopy.append(patChr);
+                    }
                 }
                 int extraLen = 0;
-                while (patPos + 1 < skeleton.length() && str.charAt(patPos + 1) == patChr) {
+                while (patPos + 1 < skeleton.length() && skeleton.charAt(patPos + 1) == patChr) {
                     extraLen++;
                     patPos++;
                 }
@@ -660,9 +578,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
                         dayPeriodChar = last;
                     }
                 }
-                if (hourChar == 'H' || hourChar == 'k') {
-                    dayPeriodLen = 0;
-                }
+                dayPeriodLen = (hourChar == 'H' || hourChar == 'k') ? 0 : 0;
                 while (true) {
                     int dayPeriodLen2 = dayPeriodLen - 1;
                     if (dayPeriodLen <= 0) {
@@ -673,34 +589,29 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
                 }
                 while (true) {
                     int hourLen2 = hourLen - 1;
-                    if (hourLen <= 0) {
-                        break;
+                    if (hourLen > 0) {
+                        skeletonCopy.append(hourChar);
+                        hourLen = hourLen2;
                     }
-                    skeletonCopy.append(hourChar);
-                    hourLen = hourLen2;
                 }
-            } else {
-                EnumSet<DTPGflags> enumSet5 = flags;
             }
             patPos++;
         }
-        EnumSet<DTPGflags> enumSet6 = flags;
         return skeletonCopy.toString();
     }
 
     public DateTimePatternGenerator addPattern(String pattern, boolean override, PatternInfo returnInfo) {
-        return addPatternWithSkeleton(pattern, (String) null, override, returnInfo);
+        return addPatternWithSkeleton(pattern, null, override, returnInfo);
     }
 
     @Deprecated
     public DateTimePatternGenerator addPatternWithSkeleton(String pattern, String skeletonToUse, boolean override, PatternInfo returnInfo) {
         DateTimeMatcher matcher;
         checkFrozen();
-        boolean z = false;
         if (skeletonToUse == null) {
-            matcher = new DateTimeMatcher().set(pattern, this.fp, false);
+            matcher = new DateTimeMatcher().set(pattern, this.f147fp, false);
         } else {
-            matcher = new DateTimeMatcher().set(skeletonToUse, this.fp, false);
+            matcher = new DateTimeMatcher().set(skeletonToUse, this.f147fp, false);
         }
         String basePattern = matcher.getBasePattern();
         PatternWithSkeletonFlag previousPatternWithSameBase = this.basePattern_pattern.get(basePattern);
@@ -721,10 +632,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         }
         returnInfo.status = 0;
         returnInfo.conflictingPattern = "";
-        if (skeletonToUse != null) {
-            z = true;
-        }
-        PatternWithSkeletonFlag patWithSkelFlag = new PatternWithSkeletonFlag(pattern, z);
+        PatternWithSkeletonFlag patWithSkelFlag = new PatternWithSkeletonFlag(pattern, skeletonToUse != null);
         this.skeleton2pattern.put(matcher, patWithSkelFlag);
         this.basePattern_pattern.put(basePattern, patWithSkelFlag);
         return this;
@@ -733,7 +641,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     public String getSkeleton(String pattern) {
         String dateTimeMatcher;
         synchronized (this) {
-            this.current.set(pattern, this.fp, false);
+            this.current.set(pattern, this.f147fp, false);
             dateTimeMatcher = this.current.toString();
         }
         return dateTimeMatcher;
@@ -743,7 +651,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     public String getSkeletonAllowingDuplicates(String pattern) {
         String dateTimeMatcher;
         synchronized (this) {
-            this.current.set(pattern, this.fp, true);
+            this.current.set(pattern, this.f147fp, true);
             dateTimeMatcher = this.current.toString();
         }
         return dateTimeMatcher;
@@ -753,7 +661,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     public String getCanonicalSkeletonAllowingDuplicates(String pattern) {
         String canonicalString;
         synchronized (this) {
-            this.current.set(pattern, this.fp, true);
+            this.current.set(pattern, this.f147fp, true);
             canonicalString = this.current.toCanonicalString();
         }
         return canonicalString;
@@ -762,7 +670,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     public String getBaseSkeleton(String pattern) {
         String basePattern;
         synchronized (this) {
-            this.current.set(pattern, this.fp, false);
+            this.current.set(pattern, this.f147fp, false);
             basePattern = this.current.getBasePattern();
         }
         return basePattern;
@@ -770,10 +678,11 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
 
     public Map<String, String> getSkeletons(Map<String, String> result) {
         if (result == null) {
-            result = new LinkedHashMap<>();
+            result = new LinkedHashMap();
         }
         for (DateTimeMatcher item : this.skeleton2pattern.keySet()) {
-            String pattern = this.skeleton2pattern.get(item).pattern;
+            PatternWithSkeletonFlag patternWithSkelFlag = this.skeleton2pattern.get(item);
+            String pattern = patternWithSkelFlag.pattern;
             if (!CANONICAL_SET.contains(pattern)) {
                 result.put(item.toString(), pattern);
             }
@@ -783,7 +692,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
 
     public Set<String> getBaseSkeletons(Set<String> result) {
         if (result == null) {
-            result = new HashSet<>();
+            result = new HashSet();
         }
         result.addAll(this.basePattern_pattern.keySet());
         return result;
@@ -796,23 +705,24 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     public String replaceFieldTypes(String pattern, String skeleton, int options) {
         String adjustFieldTypes;
         synchronized (this) {
-            adjustFieldTypes = adjustFieldTypes(new PatternWithMatcher(pattern, (DateTimeMatcher) null), this.current.set(skeleton, this.fp, false), EnumSet.noneOf(DTPGflags.class), options);
+            PatternWithMatcher patternNoMatcher = new PatternWithMatcher(pattern, null);
+            adjustFieldTypes = adjustFieldTypes(patternNoMatcher, this.current.set(skeleton, this.f147fp, false), EnumSet.noneOf(DTPGflags.class), options);
         }
         return adjustFieldTypes;
     }
 
-    public void setDateTimeFormat(String dateTimeFormat2) {
+    public void setDateTimeFormat(String dateTimeFormat) {
         checkFrozen();
-        this.dateTimeFormat = dateTimeFormat2;
+        this.dateTimeFormat = dateTimeFormat;
     }
 
     public String getDateTimeFormat() {
         return this.dateTimeFormat;
     }
 
-    public void setDecimal(String decimal2) {
+    public void setDecimal(String decimal) {
         checkFrozen();
-        this.decimal = decimal2;
+        this.decimal = decimal;
     }
 
     public String getDecimal() {
@@ -823,12 +733,14 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     public Collection<String> getRedundants(Collection<String> output) {
         synchronized (this) {
             if (output == null) {
-                output = new LinkedHashSet<>();
+                output = new LinkedHashSet();
             }
             for (DateTimeMatcher cur : this.skeleton2pattern.keySet()) {
-                String pattern = this.skeleton2pattern.get(cur).pattern;
+                PatternWithSkeletonFlag patternWithSkelFlag = this.skeleton2pattern.get(cur);
+                String pattern = patternWithSkelFlag.pattern;
                 if (!CANONICAL_SET.contains(pattern)) {
-                    if (getBestPattern(cur.toString(), cur, 0).equals(pattern)) {
+                    String trial = getBestPattern(cur.toString(), cur, 0);
+                    if (trial.equals(pattern)) {
                         output.add(pattern);
                     }
                 }
@@ -837,25 +749,21 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         return output;
     }
 
+    /* loaded from: classes.dex */
     public enum DisplayWidth {
         WIDE(""),
         ABBREVIATED("-short"),
         NARROW("-narrow");
         
-        /* access modifiers changed from: private */
         @Deprecated
-        public static int COUNT;
+        private static int COUNT = values().length;
         private final String cldrKey;
 
-        static {
-            COUNT = values().length;
+        DisplayWidth(String cldrKey) {
+            this.cldrKey = cldrKey;
         }
 
-        private DisplayWidth(String cldrKey2) {
-            this.cldrKey = cldrKey2;
-        }
-
-        /* access modifiers changed from: private */
+        /* JADX INFO: Access modifiers changed from: private */
         public String cldrKey() {
             return this.cldrKey;
         }
@@ -878,7 +786,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         return getFieldDisplayName(field, APPENDITEM_WIDTH);
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     @Deprecated
     public void setFieldDisplayName(int field, DisplayWidth width, String value) {
         checkFrozen();
@@ -905,13 +813,13 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         return true;
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void setAvailableFormat(String key) {
         checkFrozen();
         this.cldrAvailableFormatKeys.add(key);
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public boolean isAvailableFormatSet(String key) {
         return this.cldrAvailableFormatKeys.contains(key);
     }
@@ -920,12 +828,14 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         return this.frozen;
     }
 
-    public DateTimePatternGenerator freeze() {
+    /* renamed from: freeze */
+    public DateTimePatternGenerator m78freeze() {
         this.frozen = true;
         return this;
     }
 
-    public DateTimePatternGenerator cloneAsThawed() {
+    /* renamed from: cloneAsThawed */
+    public DateTimePatternGenerator m77cloneAsThawed() {
         DateTimePatternGenerator result = (DateTimePatternGenerator) clone();
         this.frozen = false;
         return result;
@@ -939,7 +849,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
             result.appendItemFormats = (String[]) this.appendItemFormats.clone();
             result.fieldDisplayNames = (String[][]) this.fieldDisplayNames.clone();
             result.current = new DateTimeMatcher();
-            result.fp = new FormatParser();
+            result.f147fp = new FormatParser();
             result._distanceInfo = new DistanceInfo();
             result.frozen = false;
             return result;
@@ -949,24 +859,24 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     }
 
     @Deprecated
+    /* loaded from: classes.dex */
     public static class VariableField {
         private final int canonicalIndex;
         private final String string;
 
         @Deprecated
-        public VariableField(String string2) {
-            this(string2, false);
+        public VariableField(String string) {
+            this(string, false);
         }
 
         @Deprecated
-        public VariableField(String string2, boolean strict) {
-            int access$1300 = DateTimePatternGenerator.getCanonicalIndex(string2, strict);
-            this.canonicalIndex = access$1300;
-            if (access$1300 >= 0) {
-                this.string = string2;
-                return;
+        public VariableField(String string, boolean strict) {
+            int canonicalIndex = DateTimePatternGenerator.getCanonicalIndex(string, strict);
+            this.canonicalIndex = canonicalIndex;
+            if (canonicalIndex < 0) {
+                throw new IllegalArgumentException("Illegal datetime field:\t" + string);
             }
-            throw new IllegalArgumentException("Illegal datetime field:\t" + string2);
+            this.string = string;
         }
 
         @Deprecated
@@ -988,7 +898,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
             return DateTimePatternGenerator.types[this.canonicalIndex][2] > 0;
         }
 
-        /* access modifiers changed from: private */
+        /* JADX INFO: Access modifiers changed from: private */
         public int getCanonicalIndex() {
             return this.canonicalIndex;
         }
@@ -1000,12 +910,12 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     }
 
     @Deprecated
+    /* loaded from: classes.dex */
     public static class FormatParser {
-        private static final UnicodeSet QUOTING_CHARS = new UnicodeSet("[[[:script=Latn:][:script=Cyrl:]]&[[:L:][:M:]]]").freeze();
-        private static final UnicodeSet SYNTAX_CHARS = new UnicodeSet("[a-zA-Z]").freeze();
-        /* access modifiers changed from: private */
-        public List<Object> items = new ArrayList();
+        private static final UnicodeSet SYNTAX_CHARS = new UnicodeSet("[a-zA-Z]").m87freeze();
+        private static final UnicodeSet QUOTING_CHARS = new UnicodeSet("[[[:script=Latn:][:script=Cyrl:]]&[[:L:][:M:]]]").m87freeze();
         private transient PatternTokenizer tokenizer = new PatternTokenizer().setSyntaxCharacters(SYNTAX_CHARS).setExtraQuotingCharacters(QUOTING_CHARS).setUsingQuote(true);
+        private List<Object> items = new ArrayList();
 
         @Deprecated
         public final FormatParser set(String string) {
@@ -1024,17 +934,19 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
             while (true) {
                 buffer.setLength(0);
                 int status = this.tokenizer.next(buffer);
-                if (status == 0) {
-                    addVariable(variable, false);
-                    return this;
-                } else if (status == 1) {
-                    if (!(variable.length() == 0 || buffer.charAt(0) == variable.charAt(0))) {
+                if (status != 0) {
+                    if (status == 1) {
+                        if (variable.length() != 0 && buffer.charAt(0) != variable.charAt(0)) {
+                            addVariable(variable, false);
+                        }
+                        variable.append(buffer);
+                    } else {
                         addVariable(variable, false);
+                        this.items.add(buffer.toString());
                     }
-                    variable.append(buffer);
                 } else {
                     addVariable(variable, false);
-                    this.items.add(buffer.toString());
+                    return this;
                 }
             }
         }
@@ -1062,7 +974,8 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
             for (int i = start; i < limit; i++) {
                 Object item = this.items.get(i);
                 if (item instanceof String) {
-                    result.append(this.tokenizer.quoteLiteral((String) item));
+                    String itemString = (String) item;
+                    result.append(this.tokenizer.quoteLiteral(itemString));
                 } else {
                     result.append(this.items.get(i).toString());
                 }
@@ -1075,15 +988,13 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
             int foundMask = 0;
             for (Object item : this.items) {
                 if (item instanceof VariableField) {
-                    foundMask |= 1 << ((VariableField) item).getType();
+                    int type = ((VariableField) item).getType();
+                    foundMask |= 1 << type;
                 }
             }
             boolean isDate = (foundMask & 1023) != 0;
             boolean isTime = (DateTimePatternGenerator.TIME_MASK & foundMask) != 0;
-            if (!isDate || !isTime) {
-                return false;
-            }
-            return true;
+            return isDate && isTime;
         }
 
         @Deprecated
@@ -1105,8 +1016,10 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         Iterator<String> it2 = parser2.iterator();
         Iterator<String> it = parser1.iterator();
         while (it.hasNext()) {
-            int index1 = getCanonicalIndex(it.next(), false);
-            int index2 = getCanonicalIndex(it2.next(), false);
+            String item = it.next();
+            int index1 = getCanonicalIndex(item, false);
+            String item2 = it2.next();
+            int index2 = getCanonicalIndex(item2, false);
             int[][] iArr = types;
             if (iArr[index1][1] != iArr[index2][1]) {
                 return false;
@@ -1116,7 +1029,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     }
 
     private TreeSet<String> getSet(String id) {
-        List<Object> items = this.fp.set(id).getItems();
+        List<Object> items = this.f147fp.set(id).getItems();
         TreeSet<String> result = new TreeSet<>();
         for (Object obj : items) {
             String item = obj.toString();
@@ -1127,6 +1040,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         return result;
     }
 
+    /* loaded from: classes.dex */
     private static class PatternWithMatcher {
         public DateTimeMatcher matcherWithSkeleton;
         public String pattern;
@@ -1137,6 +1051,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         }
     }
 
+    /* loaded from: classes.dex */
     private static class PatternWithSkeletonFlag {
         public String pattern;
         public boolean skeletonWasSpecified;
@@ -1160,34 +1075,29 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     private String getBestAppending(DateTimeMatcher source, int missingFields, DistanceInfo distInfo, DateTimeMatcher skipMatcher, EnumSet<DTPGflags> flags, int options) {
         DateTimePatternGenerator dateTimePatternGenerator = this;
         DateTimeMatcher dateTimeMatcher = source;
-        int i = missingFields;
-        DistanceInfo distanceInfo = distInfo;
-        int i2 = options;
         String resultPattern = null;
-        if (i != 0) {
+        if (missingFields != 0) {
             PatternWithMatcher resultPatternWithMatcher = getBestRaw(source, missingFields, distInfo, skipMatcher);
             EnumSet<DTPGflags> flags2 = flags;
-            resultPattern = dateTimePatternGenerator.adjustFieldTypes(resultPatternWithMatcher, dateTimeMatcher, flags2, i2);
-            while (distanceInfo.missingFieldMask != 0) {
-                if ((distanceInfo.missingFieldMask & SECOND_AND_FRACTIONAL_MASK) == 16384 && (i & SECOND_AND_FRACTIONAL_MASK) == SECOND_AND_FRACTIONAL_MASK) {
+            resultPattern = dateTimePatternGenerator.adjustFieldTypes(resultPatternWithMatcher, dateTimeMatcher, flags2, options);
+            while (distInfo.missingFieldMask != 0) {
+                if ((distInfo.missingFieldMask & SECOND_AND_FRACTIONAL_MASK) == 16384 && (missingFields & SECOND_AND_FRACTIONAL_MASK) == SECOND_AND_FRACTIONAL_MASK) {
                     resultPatternWithMatcher.pattern = resultPattern;
-                    flags2 = EnumSet.copyOf(flags2);
+                    flags2 = EnumSet.copyOf((EnumSet) flags2);
                     flags2.add(DTPGflags.FIX_FRACTIONAL_SECONDS);
-                    resultPattern = dateTimePatternGenerator.adjustFieldTypes(resultPatternWithMatcher, dateTimeMatcher, flags2, i2);
-                    distanceInfo.missingFieldMask &= -16385;
+                    resultPattern = dateTimePatternGenerator.adjustFieldTypes(resultPatternWithMatcher, dateTimeMatcher, flags2, options);
+                    distInfo.missingFieldMask &= -16385;
                 } else {
-                    int startingMask = distanceInfo.missingFieldMask;
-                    String temp = dateTimePatternGenerator.adjustFieldTypes(dateTimePatternGenerator.getBestRaw(dateTimeMatcher, distanceInfo.missingFieldMask, distanceInfo, skipMatcher), dateTimeMatcher, flags2, i2);
-                    int topField = dateTimePatternGenerator.getTopBitNumber((~distanceInfo.missingFieldMask) & startingMask);
+                    int startingMask = distInfo.missingFieldMask;
+                    PatternWithMatcher tempWithMatcher = dateTimePatternGenerator.getBestRaw(dateTimeMatcher, distInfo.missingFieldMask, distInfo, skipMatcher);
+                    String temp = dateTimePatternGenerator.adjustFieldTypes(tempWithMatcher, dateTimeMatcher, flags2, options);
+                    int foundMask = (~distInfo.missingFieldMask) & startingMask;
+                    int topField = dateTimePatternGenerator.getTopBitNumber(foundMask);
                     resultPattern = SimpleFormatterImpl.formatRawPattern(dateTimePatternGenerator.getAppendFormat(topField), 2, 3, new CharSequence[]{resultPattern, temp, dateTimePatternGenerator.getAppendName(topField)});
                     dateTimePatternGenerator = this;
                     dateTimeMatcher = source;
                 }
             }
-            DateTimeMatcher dateTimeMatcher2 = skipMatcher;
-        } else {
-            DateTimeMatcher dateTimeMatcher3 = skipMatcher;
-            EnumSet<DTPGflags> enumSet = flags;
         }
         return resultPattern;
     }
@@ -1226,7 +1136,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     private PatternWithMatcher getBestRaw(DateTimeMatcher source, int includeMask, DistanceInfo missingFields, DateTimeMatcher skipMatcher) {
         int distance;
         int bestDistance = Integer.MAX_VALUE;
-        PatternWithMatcher bestPatternWithMatcher = new PatternWithMatcher("", (DateTimeMatcher) null);
+        PatternWithMatcher bestPatternWithMatcher = new PatternWithMatcher("", null);
         DistanceInfo tempInfo = new DistanceInfo();
         for (DateTimeMatcher trial : this.skeleton2pattern.keySet()) {
             if (!trial.equals(skipMatcher) && (distance = source.getDistance(trial, includeMask, tempInfo)) < bestDistance) {
@@ -1248,20 +1158,16 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
     }
 
     private String adjustFieldTypes(PatternWithMatcher patternWithMatcher, DateTimeMatcher inputRequest, EnumSet<DTPGflags> flags, int options) {
-        char c;
-        PatternWithMatcher patternWithMatcher2 = patternWithMatcher;
-        EnumSet<DTPGflags> enumSet = flags;
-        int i = options;
-        this.fp.set(patternWithMatcher2.pattern);
+        this.f147fp.set(patternWithMatcher.pattern);
         StringBuilder newPattern = new StringBuilder();
-        for (Object item : this.fp.getItems()) {
+        for (Object item : this.f147fp.getItems()) {
             if (item instanceof String) {
-                newPattern.append(this.fp.quoteLiteral((String) item));
+                newPattern.append(this.f147fp.quoteLiteral((String) item));
             } else {
                 VariableField variableField = (VariableField) item;
                 StringBuilder fieldBuilder = new StringBuilder(variableField.toString());
                 int type = variableField.getType();
-                if (enumSet.contains(DTPGflags.FIX_FRACTIONAL_SECONDS) && type == 13) {
+                if (flags.contains(DTPGflags.FIX_FRACTIONAL_SECONDS) && type == 13) {
                     fieldBuilder.append(this.decimal);
                     inputRequest.original.appendFieldTo(14, fieldBuilder);
                 } else if (inputRequest.type[type] != 0) {
@@ -1271,8 +1177,8 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
                         reqFieldLen = 3;
                     }
                     int adjFieldLen = reqFieldLen;
-                    DateTimeMatcher matcherWithSkeleton = patternWithMatcher2.matcherWithSkeleton;
-                    if ((type == 11 && (i & 2048) == 0) || ((type == 12 && (i & 4096) == 0) || (type == 13 && (i & 8192) == 0))) {
+                    DateTimeMatcher matcherWithSkeleton = patternWithMatcher.matcherWithSkeleton;
+                    if ((type == 11 && (options & 2048) == 0) || ((type == 12 && (options & 4096) == 0) || (type == 13 && (options & 8192) == 0))) {
                         adjFieldLen = fieldBuilder.length();
                     } else if (matcherWithSkeleton != null) {
                         int skelFieldLen = matcherWithSkeleton.original.getFieldLength(type);
@@ -1282,20 +1188,16 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
                             adjFieldLen = fieldBuilder.length();
                         }
                     }
-                    if (type == 11 || type == 3 || type == 6 || (type == 1 && reqFieldChar != 'Y')) {
-                        c = fieldBuilder.charAt(0);
-                    } else {
-                        c = reqFieldChar;
-                    }
-                    if (type == 11 && enumSet.contains(DTPGflags.SKELETON_USES_CAP_J)) {
+                    char c = (type == 11 || type == 3 || type == 6 || (type == 1 && reqFieldChar != 'Y')) ? fieldBuilder.charAt(0) : reqFieldChar;
+                    if (type == 11 && flags.contains(DTPGflags.SKELETON_USES_CAP_J)) {
                         c = this.defaultHourFormatChar;
                     }
                     fieldBuilder = new StringBuilder();
-                    for (int i2 = adjFieldLen; i2 > 0; i2--) {
+                    for (int i = adjFieldLen; i > 0; i--) {
                         fieldBuilder.append(c);
                     }
                 }
-                newPattern.append(fieldBuilder);
+                newPattern.append((CharSequence) fieldBuilder);
             }
         }
         return newPattern.toString();
@@ -1303,11 +1205,11 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
 
     @Deprecated
     public String getFields(String pattern) {
-        this.fp.set(pattern);
+        this.f147fp.set(pattern);
         StringBuilder newPattern = new StringBuilder();
-        for (Object item : this.fp.getItems()) {
+        for (Object item : this.f147fp.getItems()) {
             if (item instanceof String) {
-                newPattern.append(this.fp.quoteLiteral((String) item));
+                newPattern.append(this.f147fp.quoteLiteral((String) item));
             } else {
                 newPattern.append("{" + getName(item.toString()) + "}");
             }
@@ -1315,7 +1217,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         return newPattern.toString();
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public static String showMask(int mask) {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < 16; i++) {
@@ -1341,7 +1243,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         return name + ":N";
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public static int getCanonicalIndex(String s, boolean strict) {
         int len = s.length();
         if (len == 0) {
@@ -1374,7 +1276,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         }
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public static char getCanonicalChar(int field, char reference) {
         if (reference == 'h' || reference == 'K') {
             return 'h';
@@ -1384,26 +1286,24 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
             int[][] iArr = types;
             if (i < iArr.length) {
                 int[] row = iArr[i];
-                if (row[1] == field) {
+                if (row[1] != field) {
+                    i++;
+                } else {
                     return (char) row[0];
                 }
-                i++;
             } else {
                 throw new IllegalArgumentException("Could not find field " + field);
             }
         }
     }
 
+    /* loaded from: classes.dex */
     private static class SkeletonFields {
         static final /* synthetic */ boolean $assertionsDisabled = false;
         private static final byte DEFAULT_CHAR = 0;
         private static final byte DEFAULT_LENGTH = 0;
         private byte[] chars;
         private byte[] lengths;
-
-        static {
-            Class<DateTimePatternGenerator> cls = DateTimePatternGenerator.class;
-        }
 
         private SkeletonFields() {
             this.chars = new byte[16];
@@ -1415,53 +1315,43 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
             Arrays.fill(this.lengths, (byte) 0);
         }
 
-        /* access modifiers changed from: package-private */
-        public void copyFieldFrom(SkeletonFields other, int field) {
+        void copyFieldFrom(SkeletonFields other, int field) {
             this.chars[field] = other.chars[field];
             this.lengths[field] = other.lengths[field];
         }
 
-        /* access modifiers changed from: package-private */
-        public void clearField(int field) {
+        void clearField(int field) {
             this.chars[field] = 0;
             this.lengths[field] = 0;
         }
 
-        /* access modifiers changed from: package-private */
-        public char getFieldChar(int field) {
+        char getFieldChar(int field) {
             return (char) this.chars[field];
         }
 
-        /* access modifiers changed from: package-private */
-        public int getFieldLength(int field) {
+        int getFieldLength(int field) {
             return this.lengths[field];
         }
 
-        /* access modifiers changed from: package-private */
-        public void populate(int field, String value) {
-            char[] charArray = value.toCharArray();
-            int length = charArray.length;
-            int i = 0;
-            while (i < length) {
-                if (charArray[i] == value.charAt(0)) {
-                    i++;
-                } else {
+        void populate(int field, String value) {
+            char[] charArray;
+            for (char ch : value.toCharArray()) {
+                if (ch != value.charAt(0)) {
                     throw new AssertionError();
                 }
             }
             populate(field, value.charAt(0), value.length());
         }
 
-        /* access modifiers changed from: package-private */
-        public void populate(int field, char ch, int length) {
-            if (ch > 127) {
-                throw new AssertionError();
-            } else if (length <= 127) {
-                this.chars[field] = (byte) ch;
-                this.lengths[field] = (byte) length;
-            } else {
+        void populate(int field, char ch, int length) {
+            if (ch > '\u007f') {
                 throw new AssertionError();
             }
+            if (length > 127) {
+                throw new AssertionError();
+            }
+            this.chars[field] = (byte) ch;
+            this.lengths[field] = (byte) length;
         }
 
         public boolean isFieldEmpty(int field) {
@@ -1503,7 +1393,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
 
         private StringBuilder appendFieldTo(int field, StringBuilder sb, boolean canonical) {
             char ch = (char) this.chars[field];
-            byte length = this.lengths[field];
+            int length = this.lengths[field];
             if (canonical) {
                 ch = DateTimePatternGenerator.getCanonicalChar(field, ch);
             }
@@ -1536,13 +1426,12 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         }
     }
 
+    /* loaded from: classes.dex */
     private static class DateTimeMatcher implements Comparable<DateTimeMatcher> {
         private boolean addedDefaultDayPeriod;
         private SkeletonFields baseOriginal;
-        /* access modifiers changed from: private */
-        public SkeletonFields original;
-        /* access modifiers changed from: private */
-        public int[] type;
+        private SkeletonFields original;
+        private int[] type;
 
         private DateTimeMatcher() {
             this.type = new int[16];
@@ -1563,13 +1452,11 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
             return this.original.toCanonicalString(this.addedDefaultDayPeriod);
         }
 
-        /* access modifiers changed from: package-private */
-        public String getBasePattern() {
+        String getBasePattern() {
             return this.baseOriginal.toString(this.addedDefaultDayPeriod);
         }
 
-        /* access modifiers changed from: package-private */
-        public DateTimeMatcher set(String pattern, FormatParser fp, boolean allowDuplicateFields) {
+        DateTimeMatcher set(String pattern, FormatParser fp, boolean allowDuplicateFields) {
             Arrays.fill(this.type, 0);
             this.original.clear();
             this.baseOriginal.clear();
@@ -1579,13 +1466,16 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
                 if (obj instanceof VariableField) {
                     VariableField item = (VariableField) obj;
                     String value = item.toString();
-                    int[] row = DateTimePatternGenerator.types[item.getCanonicalIndex()];
+                    int canonicalIndex = item.getCanonicalIndex();
+                    int[] row = DateTimePatternGenerator.types[canonicalIndex];
                     int field = row[1];
                     if (!this.original.isFieldEmpty(field)) {
                         char ch1 = this.original.getFieldChar(field);
                         char ch2 = value.charAt(0);
-                        if (!allowDuplicateFields && !((ch1 == 'r' && ch2 == 'U') || (ch1 == 'U' && ch2 == 'r'))) {
-                            throw new IllegalArgumentException("Conflicting fields:\t" + ch1 + ", " + value + "\t in " + pattern);
+                        if (!allowDuplicateFields && (ch1 != 'r' || ch2 != 'U')) {
+                            if (ch1 != 'U' || ch2 != 'r') {
+                                throw new IllegalArgumentException("Conflicting fields:\t" + ch1 + ", " + value + "\t in " + pattern);
+                            }
                         }
                     } else {
                         this.original.populate(field, value);
@@ -1612,14 +1502,15 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
                                 break;
                             }
                             int[] row2 = DateTimePatternGenerator.types[i];
-                            if (row2[1] == 10) {
+                            if (row2[1] != 10) {
+                                i++;
+                            } else {
                                 this.original.populate(10, (char) row2[0], row2[3]);
                                 this.baseOriginal.populate(10, (char) row2[0], row2[3]);
                                 this.type[10] = row2[2];
                                 this.addedDefaultDayPeriod = true;
                                 break;
                             }
-                            i++;
                         }
                     }
                 } else if (!this.original.isFieldEmpty(10)) {
@@ -1631,24 +1522,23 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
             return this;
         }
 
-        /* access modifiers changed from: package-private */
-        public int getFieldMask() {
+        int getFieldMask() {
             int result = 0;
             int i = 0;
             while (true) {
                 int[] iArr = this.type;
-                if (i >= iArr.length) {
+                if (i < iArr.length) {
+                    if (iArr[i] != 0) {
+                        result |= 1 << i;
+                    }
+                    i++;
+                } else {
                     return result;
                 }
-                if (iArr[i] != 0) {
-                    result |= 1 << i;
-                }
-                i++;
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void extractFrom(DateTimeMatcher source, int fieldMask) {
+        void extractFrom(DateTimeMatcher source, int fieldMask) {
             int i = 0;
             while (true) {
                 int[] iArr = this.type;
@@ -1667,8 +1557,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public int getDistance(DateTimeMatcher other, int includeMask, DistanceInfo distanceInfo) {
+        int getDistance(DateTimeMatcher other, int includeMask, DistanceInfo distanceInfo) {
             int result = 0;
             distanceInfo.clear();
             for (int i = 0; i < 16; i++) {
@@ -1689,6 +1578,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
             return result;
         }
 
+        @Override // java.lang.Comparable
         public int compareTo(DateTimeMatcher that) {
             int result = this.original.compareTo(that.original);
             if (result > 0) {
@@ -1706,6 +1596,7 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         }
     }
 
+    /* loaded from: classes.dex */
     private static class DistanceInfo {
         int extraFieldMask;
         int missingFieldMask;
@@ -1713,25 +1604,21 @@ public class DateTimePatternGenerator implements Freezable<DateTimePatternGenera
         private DistanceInfo() {
         }
 
-        /* access modifiers changed from: package-private */
-        public void clear() {
+        void clear() {
             this.extraFieldMask = 0;
             this.missingFieldMask = 0;
         }
 
-        /* access modifiers changed from: package-private */
-        public void setTo(DistanceInfo other) {
+        void setTo(DistanceInfo other) {
             this.missingFieldMask = other.missingFieldMask;
             this.extraFieldMask = other.extraFieldMask;
         }
 
-        /* access modifiers changed from: package-private */
-        public void addMissing(int field) {
+        void addMissing(int field) {
             this.missingFieldMask |= 1 << field;
         }
 
-        /* access modifiers changed from: package-private */
-        public void addExtra(int field) {
+        void addExtra(int field) {
             this.extraFieldMask |= 1 << field;
         }
 

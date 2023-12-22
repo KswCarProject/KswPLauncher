@@ -2,13 +2,15 @@ package skin.support.observe;
 
 import java.util.ArrayList;
 
+/* loaded from: classes.dex */
 public class SkinObservable {
     private final ArrayList<SkinObserver> observers = new ArrayList<>();
 
     public synchronized void addObserver(SkinObserver o) {
         if (o == null) {
             throw new NullPointerException();
-        } else if (!this.observers.contains(o)) {
+        }
+        if (!this.observers.contains(o)) {
             this.observers.add(o);
         }
     }
@@ -18,7 +20,7 @@ public class SkinObservable {
     }
 
     public void notifyUpdateSkin() {
-        notifyUpdateSkin((Object) null);
+        notifyUpdateSkin(null);
     }
 
     public void notifyUpdateSkin(Object arg) {

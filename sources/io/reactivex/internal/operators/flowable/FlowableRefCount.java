@@ -8,6 +8,7 @@ import io.reactivex.flowables.ConnectableFlowable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.internal.disposables.ResettableConnectable;
+import io.reactivex.internal.disposables.SequentialDisposable;
 import io.reactivex.internal.subscriptions.SubscriptionHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.TimeUnit;
@@ -16,28 +17,31 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableRefCount<T> extends Flowable<T> {
     RefConnection connection;
-    final int n;
+
+    /* renamed from: n */
+    final int f291n;
     final Scheduler scheduler;
     final ConnectableFlowable<T> source;
     final long timeout;
     final TimeUnit unit;
 
-    public FlowableRefCount(ConnectableFlowable<T> source2) {
-        this(source2, 1, 0, TimeUnit.NANOSECONDS, (Scheduler) null);
+    public FlowableRefCount(ConnectableFlowable<T> source) {
+        this(source, 1, 0L, TimeUnit.NANOSECONDS, null);
     }
 
-    public FlowableRefCount(ConnectableFlowable<T> source2, int n2, long timeout2, TimeUnit unit2, Scheduler scheduler2) {
-        this.source = source2;
-        this.n = n2;
-        this.timeout = timeout2;
-        this.unit = unit2;
-        this.scheduler = scheduler2;
+    public FlowableRefCount(ConnectableFlowable<T> source, int n, long timeout, TimeUnit unit, Scheduler scheduler) {
+        this.source = source;
+        this.f291n = n;
+        this.timeout = timeout;
+        this.unit = unit;
+        this.scheduler = scheduler;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
         RefConnection conn;
         boolean connect = false;
         synchronized (this) {
@@ -51,75 +55,37 @@ public final class FlowableRefCount<T> extends Flowable<T> {
                 conn.timer.dispose();
             }
             conn.subscriberCount = c + 1;
-            if (!conn.connected && 1 + c == ((long) this.n)) {
+            if (!conn.connected && 1 + c == this.f291n) {
                 connect = true;
                 conn.connected = true;
             }
         }
-        this.source.subscribe(new RefCountSubscriber(s, this, conn));
+        this.source.subscribe((FlowableSubscriber) new RefCountSubscriber(s, this, conn));
         if (connect) {
             this.source.connect(conn);
         }
     }
 
-    /* access modifiers changed from: package-private */
-    /* JADX WARNING: Code restructure failed: missing block: B:24:0x003e, code lost:
-        return;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void cancel(io.reactivex.internal.operators.flowable.FlowableRefCount.RefConnection r7) {
-        /*
-            r6 = this;
-            monitor-enter(r6)
-            io.reactivex.internal.operators.flowable.FlowableRefCount$RefConnection r0 = r6.connection     // Catch:{ all -> 0x003f }
-            if (r0 == 0) goto L_0x003d
-            if (r0 == r7) goto L_0x0008
-            goto L_0x003d
-        L_0x0008:
-            long r0 = r7.subscriberCount     // Catch:{ all -> 0x003f }
-            r2 = 1
-            long r0 = r0 - r2
-            r7.subscriberCount = r0     // Catch:{ all -> 0x003f }
-            r2 = 0
-            int r4 = (r0 > r2 ? 1 : (r0 == r2 ? 0 : -1))
-            if (r4 != 0) goto L_0x003b
-            boolean r4 = r7.connected     // Catch:{ all -> 0x003f }
-            if (r4 != 0) goto L_0x001a
-            goto L_0x003b
-        L_0x001a:
-            long r4 = r6.timeout     // Catch:{ all -> 0x003f }
-            int r2 = (r4 > r2 ? 1 : (r4 == r2 ? 0 : -1))
-            if (r2 != 0) goto L_0x0025
-            r6.timeout(r7)     // Catch:{ all -> 0x003f }
-            monitor-exit(r6)     // Catch:{ all -> 0x003f }
-            return
-        L_0x0025:
-            io.reactivex.internal.disposables.SequentialDisposable r2 = new io.reactivex.internal.disposables.SequentialDisposable     // Catch:{ all -> 0x003f }
-            r2.<init>()     // Catch:{ all -> 0x003f }
-            r7.timer = r2     // Catch:{ all -> 0x003f }
-            monitor-exit(r6)     // Catch:{ all -> 0x003f }
-            io.reactivex.Scheduler r0 = r6.scheduler
-            long r3 = r6.timeout
-            java.util.concurrent.TimeUnit r1 = r6.unit
-            io.reactivex.disposables.Disposable r0 = r0.scheduleDirect(r7, r3, r1)
-            r2.replace(r0)
-            return
-        L_0x003b:
-            monitor-exit(r6)     // Catch:{ all -> 0x003f }
-            return
-        L_0x003d:
-            monitor-exit(r6)     // Catch:{ all -> 0x003f }
-            return
-        L_0x003f:
-            r0 = move-exception
-            monitor-exit(r6)     // Catch:{ all -> 0x003f }
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.operators.flowable.FlowableRefCount.cancel(io.reactivex.internal.operators.flowable.FlowableRefCount$RefConnection):void");
+    void cancel(RefConnection rc) {
+        synchronized (this) {
+            RefConnection refConnection = this.connection;
+            if (refConnection != null && refConnection == rc) {
+                long c = rc.subscriberCount - 1;
+                rc.subscriberCount = c;
+                if (c == 0 && rc.connected) {
+                    if (this.timeout == 0) {
+                        timeout(rc);
+                        return;
+                    }
+                    SequentialDisposable sd = new SequentialDisposable();
+                    rc.timer = sd;
+                    sd.replace(this.scheduler.scheduleDirect(rc, this.timeout, this.unit));
+                }
+            }
+        }
     }
 
-    /* access modifiers changed from: package-private */
-    public void terminated(RefConnection rc) {
+    void terminated(RefConnection rc) {
         synchronized (this) {
             if (this.source instanceof FlowablePublishClassic) {
                 RefConnection refConnection = this.connection;
@@ -147,30 +113,27 @@ public final class FlowableRefCount<T> extends Flowable<T> {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void clearTimer(RefConnection rc) {
+    void clearTimer(RefConnection rc) {
         if (rc.timer != null) {
             rc.timer.dispose();
             rc.timer = null;
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void reset(RefConnection rc) {
+    void reset(RefConnection rc) {
         ConnectableFlowable<T> connectableFlowable = this.source;
         if (connectableFlowable instanceof Disposable) {
             ((Disposable) connectableFlowable).dispose();
         } else if (connectableFlowable instanceof ResettableConnectable) {
-            ((ResettableConnectable) connectableFlowable).resetIf((Disposable) rc.get());
+            ((ResettableConnectable) connectableFlowable).resetIf(rc.get());
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void timeout(RefConnection rc) {
+    void timeout(RefConnection rc) {
         synchronized (this) {
             if (rc.subscriberCount == 0 && rc == this.connection) {
                 this.connection = null;
-                Disposable connectionObject = (Disposable) rc.get();
+                Disposable connectionObject = rc.get();
                 DisposableHelper.dispose(rc);
                 ConnectableFlowable<T> connectableFlowable = this.source;
                 if (connectableFlowable instanceof Disposable) {
@@ -186,6 +149,7 @@ public final class FlowableRefCount<T> extends Flowable<T> {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class RefConnection extends AtomicReference<Disposable> implements Runnable, Consumer<Disposable> {
         private static final long serialVersionUID = -4552101107598366241L;
         boolean connected;
@@ -194,14 +158,16 @@ public final class FlowableRefCount<T> extends Flowable<T> {
         long subscriberCount;
         Disposable timer;
 
-        RefConnection(FlowableRefCount<?> parent2) {
-            this.parent = parent2;
+        RefConnection(FlowableRefCount<?> parent) {
+            this.parent = parent;
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             this.parent.timeout(this);
         }
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(Disposable t) throws Exception {
             DisposableHelper.replace(this, t);
             synchronized (this.parent) {
@@ -212,6 +178,7 @@ public final class FlowableRefCount<T> extends Flowable<T> {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class RefCountSubscriber<T> extends AtomicBoolean implements FlowableSubscriber<T>, Subscription {
         private static final long serialVersionUID = -7419642935409022375L;
         final RefConnection connection;
@@ -219,16 +186,18 @@ public final class FlowableRefCount<T> extends Flowable<T> {
         final FlowableRefCount<T> parent;
         Subscription upstream;
 
-        RefCountSubscriber(Subscriber<? super T> actual, FlowableRefCount<T> parent2, RefConnection connection2) {
+        RefCountSubscriber(Subscriber<? super T> actual, FlowableRefCount<T> parent, RefConnection connection) {
             this.downstream = actual;
-            this.parent = parent2;
-            this.connection = connection2;
+            this.parent = parent;
+            this.connection = connection;
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             this.downstream.onNext(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (compareAndSet(false, true)) {
                 this.parent.terminated(this.connection);
@@ -238,6 +207,7 @@ public final class FlowableRefCount<T> extends Flowable<T> {
             RxJavaPlugins.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             if (compareAndSet(false, true)) {
                 this.parent.terminated(this.connection);
@@ -245,10 +215,12 @@ public final class FlowableRefCount<T> extends Flowable<T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             this.upstream.request(n);
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             this.upstream.cancel();
             if (compareAndSet(false, true)) {
@@ -256,6 +228,7 @@ public final class FlowableRefCount<T> extends Flowable<T> {
             }
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;

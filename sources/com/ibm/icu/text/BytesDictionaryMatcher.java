@@ -4,14 +4,15 @@ import com.ibm.icu.impl.Assert;
 import com.ibm.icu.util.BytesTrie;
 import java.text.CharacterIterator;
 
+/* loaded from: classes.dex */
 class BytesDictionaryMatcher extends DictionaryMatcher {
     private final byte[] characters;
     private final int transform;
 
-    public BytesDictionaryMatcher(byte[] chars, int transform2) {
+    public BytesDictionaryMatcher(byte[] chars, int transform) {
         this.characters = chars;
-        Assert.assrt((2130706432 & transform2) == 16777216);
-        this.transform = transform2;
+        Assert.assrt((2130706432 & transform) == 16777216);
+        this.transform = transform;
     }
 
     private int transform(int c) {
@@ -28,6 +29,7 @@ class BytesDictionaryMatcher extends DictionaryMatcher {
         return delta;
     }
 
+    @Override // com.ibm.icu.text.DictionaryMatcher
     public int matches(CharacterIterator text_, int maxLength, int[] lengths, int[] count_, int limit, int[] values) {
         int c;
         UCharacterIterator text = UCharacterIterator.getInstance(text_);
@@ -40,11 +42,7 @@ class BytesDictionaryMatcher extends DictionaryMatcher {
         int numChars = 1;
         int count = 0;
         while (true) {
-            if (!result.hasValue()) {
-                if (result == BytesTrie.Result.NO_MATCH) {
-                    break;
-                }
-            } else {
+            if (result.hasValue()) {
                 if (count < limit) {
                     if (values != null) {
                         values[count] = bt.getValue();
@@ -55,17 +53,28 @@ class BytesDictionaryMatcher extends DictionaryMatcher {
                 if (result == BytesTrie.Result.FINAL_VALUE) {
                     break;
                 }
+                if (numChars < maxLength || (c = text.nextCodePoint()) == -1) {
+                    break;
+                }
+                numChars++;
+                result = bt.next(transform(c));
+            } else {
+                if (result == BytesTrie.Result.NO_MATCH) {
+                    break;
+                }
+                if (numChars < maxLength) {
+                    break;
+                    break;
+                }
+                numChars++;
+                result = bt.next(transform(c));
             }
-            if (numChars >= maxLength || (c = text.nextCodePoint()) == -1) {
-                break;
-            }
-            numChars++;
-            result = bt.next(transform(c));
         }
         count_[0] = count;
         return numChars;
     }
 
+    @Override // com.ibm.icu.text.DictionaryMatcher
     public int getType() {
         return 0;
     }

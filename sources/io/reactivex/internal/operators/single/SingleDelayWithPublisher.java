@@ -14,20 +14,22 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class SingleDelayWithPublisher<T, U> extends Single<T> {
     final Publisher<U> other;
     final SingleSource<T> source;
 
-    public SingleDelayWithPublisher(SingleSource<T> source2, Publisher<U> other2) {
-        this.source = source2;
-        this.other = other2;
+    public SingleDelayWithPublisher(SingleSource<T> source, Publisher<U> other) {
+        this.source = source;
+        this.other = other;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         this.other.subscribe(new OtherSubscriber(observer, this.source));
     }
 
+    /* loaded from: classes.dex */
     static final class OtherSubscriber<T, U> extends AtomicReference<Disposable> implements FlowableSubscriber<U>, Disposable {
         private static final long serialVersionUID = -8565274649390031272L;
         boolean done;
@@ -35,11 +37,12 @@ public final class SingleDelayWithPublisher<T, U> extends Single<T> {
         final SingleSource<T> source;
         Subscription upstream;
 
-        OtherSubscriber(SingleObserver<? super T> actual, SingleSource<T> source2) {
+        OtherSubscriber(SingleObserver<? super T> actual, SingleSource<T> source) {
             this.downstream = actual;
-            this.source = source2;
+            this.source = source;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -48,11 +51,13 @@ public final class SingleDelayWithPublisher<T, U> extends Single<T> {
             }
         }
 
-        public void onNext(U u) {
+        @Override // org.reactivestreams.Subscriber
+        public void onNext(U value) {
             this.upstream.cancel();
             onComplete();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable e) {
             if (this.done) {
                 RxJavaPlugins.onError(e);
@@ -62,20 +67,24 @@ public final class SingleDelayWithPublisher<T, U> extends Single<T> {
             this.downstream.onError(e);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                this.source.subscribe(new ResumeSingleObserver(this, this.downstream));
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            this.source.subscribe(new ResumeSingleObserver(this, this.downstream));
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.cancel();
             DisposableHelper.dispose(this);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return DisposableHelper.isDisposed((Disposable) get());
+            return DisposableHelper.isDisposed(get());
         }
     }
 }

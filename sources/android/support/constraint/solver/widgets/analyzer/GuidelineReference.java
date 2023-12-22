@@ -3,6 +3,7 @@ package android.support.constraint.solver.widgets.analyzer;
 import android.support.constraint.solver.widgets.ConstraintWidget;
 import android.support.constraint.solver.widgets.Guideline;
 
+/* loaded from: classes.dex */
 class GuidelineReference extends WidgetRun {
     public GuidelineReference(ConstraintWidget widget) {
         super(widget);
@@ -11,19 +12,19 @@ class GuidelineReference extends WidgetRun {
         this.orientation = ((Guideline) widget).getOrientation();
     }
 
-    /* access modifiers changed from: package-private */
-    public void clear() {
+    @Override // android.support.constraint.solver.widgets.analyzer.WidgetRun
+    void clear() {
         this.start.clear();
     }
 
-    /* access modifiers changed from: package-private */
-    public void reset() {
+    @Override // android.support.constraint.solver.widgets.analyzer.WidgetRun
+    void reset() {
         this.start.resolved = false;
         this.end.resolved = false;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean supportsWrapComputation() {
+    @Override // android.support.constraint.solver.widgets.analyzer.WidgetRun
+    boolean supportsWrapComputation() {
         return false;
     }
 
@@ -32,18 +33,23 @@ class GuidelineReference extends WidgetRun {
         node.targets.add(this.start);
     }
 
+    @Override // android.support.constraint.solver.widgets.analyzer.WidgetRun, android.support.constraint.solver.widgets.analyzer.Dependency
     public void update(Dependency dependency) {
-        if (this.start.readyToSolve && !this.start.resolved) {
-            this.start.resolve((int) ((((float) this.start.targets.get(0).value) * ((Guideline) this.widget).getRelativePercent()) + 0.5f));
+        if (!this.start.readyToSolve || this.start.resolved) {
+            return;
         }
+        DependencyNode startTarget = this.start.targets.get(0);
+        Guideline guideline = (Guideline) this.widget;
+        int startPos = (int) ((startTarget.value * guideline.getRelativePercent()) + 0.5f);
+        this.start.resolve(startPos);
     }
 
-    /* access modifiers changed from: package-private */
-    public void apply() {
+    @Override // android.support.constraint.solver.widgets.analyzer.WidgetRun
+    void apply() {
         Guideline guideline = (Guideline) this.widget;
         int relativeBegin = guideline.getRelativeBegin();
         int relativeEnd = guideline.getRelativeEnd();
-        float relativePercent = guideline.getRelativePercent();
+        guideline.getRelativePercent();
         if (guideline.getOrientation() == 1) {
             if (relativeBegin != -1) {
                 this.start.targets.add(this.widget.mParent.horizontalRun.start);
@@ -79,8 +85,10 @@ class GuidelineReference extends WidgetRun {
         addDependency(this.widget.verticalRun.end);
     }
 
+    @Override // android.support.constraint.solver.widgets.analyzer.WidgetRun
     public void applyToWidget() {
-        if (((Guideline) this.widget).getOrientation() == 1) {
+        Guideline guideline = (Guideline) this.widget;
+        if (guideline.getOrientation() == 1) {
             this.widget.setX(this.start.value);
         } else {
             this.widget.setY(this.start.value);

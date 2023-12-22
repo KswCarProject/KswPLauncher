@@ -4,13 +4,16 @@ import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public class ModusDataGsBindingImpl extends ModusDataGsBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback131;
+    private final View.OnClickListener mCallback208;
     private long mDirtyFlags;
 
     public ModusDataGsBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -18,22 +21,24 @@ public class ModusDataGsBindingImpl extends ModusDataGsBinding implements OnClic
     }
 
     private ModusDataGsBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[1], bindings[0]);
-        this.mDirtyFlags = -1;
-        this.ivMask.setTag((Object) null);
-        this.llContainerGs.setTag((Object) null);
+        super(bindingComponent, root, 0, (ImageView) bindings[1], (RelativeLayout) bindings[0]);
+        this.mDirtyFlags = -1L;
+        this.ivMask.setTag(null);
+        this.llContainerGs.setTag(null);
         setRootTag(root);
-        this.mCallback131 = new OnClickListener(this, 1);
+        this.mCallback208 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 2;
+            this.mDirtyFlags = 2L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -43,14 +48,16 @@ public class ModusDataGsBindingImpl extends ModusDataGsBinding implements OnClic
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (11 != variableId) {
-            return false;
+        if (11 == variableId) {
+            setModusViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setModusViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.ModusDataGsBinding
     public void setModusViewModel(LauncherViewModel ModusViewModel) {
         this.mModusViewModel = ModusViewModel;
         synchronized (this) {
@@ -60,27 +67,29 @@ public class ModusDataGsBindingImpl extends ModusDataGsBinding implements OnClic
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         LauncherViewModel launcherViewModel = this.mModusViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ivMask.setOnClickListener(this.mCallback131);
+            this.ivMask.setOnClickListener(this.mCallback208);
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
         LauncherViewModel modusViewModel = this.mModusViewModel;
-        if (modusViewModel != null) {
+        boolean modusViewModelJavaLangObjectNull = modusViewModel != null;
+        if (modusViewModelJavaLangObjectNull) {
             modusViewModel.enterGsChangeModus(callbackArg_0);
         }
     }

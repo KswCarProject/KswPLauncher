@@ -6,6 +6,7 @@ import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory;
 import java.io.File;
 
 @Deprecated
+/* loaded from: classes.dex */
 public final class ExternalCacheDiskCacheFactory extends DiskLruCacheFactory {
     public ExternalCacheDiskCacheFactory(Context context) {
         this(context, DiskCache.Factory.DEFAULT_DISK_CACHE_DIR, DiskCache.Factory.DEFAULT_DISK_CACHE_SIZE);
@@ -16,7 +17,8 @@ public final class ExternalCacheDiskCacheFactory extends DiskLruCacheFactory {
     }
 
     public ExternalCacheDiskCacheFactory(final Context context, final String diskCacheName, int diskCacheSize) {
-        super((DiskLruCacheFactory.CacheDirectoryGetter) new DiskLruCacheFactory.CacheDirectoryGetter() {
+        super(new DiskLruCacheFactory.CacheDirectoryGetter() { // from class: com.bumptech.glide.load.engine.cache.ExternalCacheDiskCacheFactory.1
+            @Override // com.bumptech.glide.load.engine.cache.DiskLruCacheFactory.CacheDirectoryGetter
             public File getCacheDirectory() {
                 File cacheDirectory = context.getExternalCacheDir();
                 if (cacheDirectory == null) {
@@ -27,6 +29,6 @@ public final class ExternalCacheDiskCacheFactory extends DiskLruCacheFactory {
                 }
                 return cacheDirectory;
             }
-        }, (long) diskCacheSize);
+        }, diskCacheSize);
     }
 }

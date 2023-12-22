@@ -7,10 +7,11 @@ import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
-import com.wits.ksw.launcher.view.ug.UgHomeImageView;
+import com.wits.ksw.launcher.view.p006ug.UgHomeImageView;
 
+/* loaded from: classes7.dex */
 public abstract class UgHomeFour2Binding extends ViewDataBinding {
     public final ConstraintLayout carConstraintLayout;
     @Bindable
@@ -19,14 +20,14 @@ public abstract class UgHomeFour2Binding extends ViewDataBinding {
     public final UgHomeImageView ugHomeDvrVaiw;
     public final UgHomeImageView ugHomeFileVaiw;
 
-    public abstract void setViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setViewModel(LauncherViewModel viewModel);
 
-    protected UgHomeFour2Binding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout carConstraintLayout2, UgHomeImageView ugHomeBrowserVaiw2, UgHomeImageView ugHomeDvrVaiw2, UgHomeImageView ugHomeFileVaiw2) {
+    protected UgHomeFour2Binding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout carConstraintLayout, UgHomeImageView ugHomeBrowserVaiw, UgHomeImageView ugHomeDvrVaiw, UgHomeImageView ugHomeFileVaiw) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.carConstraintLayout = carConstraintLayout2;
-        this.ugHomeBrowserVaiw = ugHomeBrowserVaiw2;
-        this.ugHomeDvrVaiw = ugHomeDvrVaiw2;
-        this.ugHomeFileVaiw = ugHomeFileVaiw2;
+        this.carConstraintLayout = carConstraintLayout;
+        this.ugHomeBrowserVaiw = ugHomeBrowserVaiw;
+        this.ugHomeDvrVaiw = ugHomeDvrVaiw;
+        this.ugHomeFileVaiw = ugHomeFileVaiw;
     }
 
     public LauncherViewModel getViewModel() {
@@ -39,7 +40,7 @@ public abstract class UgHomeFour2Binding extends ViewDataBinding {
 
     @Deprecated
     public static UgHomeFour2Binding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (UgHomeFour2Binding) ViewDataBinding.inflateInternal(inflater, R.layout.ug_home_four2, root, attachToRoot, component);
+        return (UgHomeFour2Binding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.ug_home_four2, root, attachToRoot, component);
     }
 
     public static UgHomeFour2Binding inflate(LayoutInflater inflater) {
@@ -48,7 +49,7 @@ public abstract class UgHomeFour2Binding extends ViewDataBinding {
 
     @Deprecated
     public static UgHomeFour2Binding inflate(LayoutInflater inflater, Object component) {
-        return (UgHomeFour2Binding) ViewDataBinding.inflateInternal(inflater, R.layout.ug_home_four2, (ViewGroup) null, false, component);
+        return (UgHomeFour2Binding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.ug_home_four2, null, false, component);
     }
 
     public static UgHomeFour2Binding bind(View view) {
@@ -57,6 +58,6 @@ public abstract class UgHomeFour2Binding extends ViewDataBinding {
 
     @Deprecated
     public static UgHomeFour2Binding bind(View view, Object component) {
-        return (UgHomeFour2Binding) bind(component, view, R.layout.ug_home_four2);
+        return (UgHomeFour2Binding) bind(component, view, C0899R.C0902layout.ug_home_four2);
     }
 }

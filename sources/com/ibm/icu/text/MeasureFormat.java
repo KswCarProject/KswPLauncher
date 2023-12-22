@@ -28,6 +28,7 @@ import java.math.RoundingMode;
 import java.text.FieldPosition;
 import java.text.ParsePosition;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -36,6 +37,7 @@ import java.util.MissingResourceException;
 import java.util.concurrent.ConcurrentHashMap;
 import kotlin.UByte;
 
+/* loaded from: classes.dex */
 public class MeasureFormat extends UFormat {
     static final /* synthetic */ boolean $assertionsDisabled = false;
     private static final int CURRENCY_FORMAT = 2;
@@ -45,7 +47,7 @@ public class MeasureFormat extends UFormat {
     static final int NUMBER_FORMATTER_STANDARD = 1;
     private static final int TIME_UNIT_FORMAT = 1;
     private static final Map<MeasureUnit, Integer> hmsTo012;
-    private static final Map<ULocale, String> localeIdToRangeFormat = new ConcurrentHashMap();
+    private static final Map<ULocale, String> localeIdToRangeFormat;
     private static final SimpleCache<ULocale, NumericFormatters> localeToNumericDurationFormatters = new SimpleCache<>();
     static final long serialVersionUID = -7182021401701778240L;
     private final transient FormatWidth formatWidth;
@@ -63,8 +65,10 @@ public class MeasureFormat extends UFormat {
         hashMap.put(MeasureUnit.HOUR, 0);
         hashMap.put(MeasureUnit.MINUTE, 1);
         hashMap.put(MeasureUnit.SECOND, 2);
+        localeIdToRangeFormat = new ConcurrentHashMap();
     }
 
+    /* loaded from: classes.dex */
     public enum FormatWidth {
         WIDE(ListFormatter.Style.DURATION, NumberFormatter.UnitWidth.FULL_NAME, NumberFormatter.UnitWidth.FULL_NAME),
         SHORT(ListFormatter.Style.DURATION_SHORT, NumberFormatter.UnitWidth.SHORT, NumberFormatter.UnitWidth.ISO_CODE),
@@ -76,110 +80,67 @@ public class MeasureFormat extends UFormat {
         private final ListFormatter.Style listFormatterStyle;
         final NumberFormatter.UnitWidth unitWidth;
 
-        private FormatWidth(ListFormatter.Style style, NumberFormatter.UnitWidth unitWidth2, NumberFormatter.UnitWidth currencyWidth2) {
+        FormatWidth(ListFormatter.Style style, NumberFormatter.UnitWidth unitWidth, NumberFormatter.UnitWidth currencyWidth) {
             this.listFormatterStyle = style;
-            this.unitWidth = unitWidth2;
-            this.currencyWidth = currencyWidth2;
+            this.unitWidth = unitWidth;
+            this.currencyWidth = currencyWidth;
         }
 
-        /* access modifiers changed from: package-private */
-        public ListFormatter.Style getListFormatterStyle() {
+        ListFormatter.Style getListFormatterStyle() {
             return this.listFormatterStyle;
         }
     }
 
-    public static MeasureFormat getInstance(ULocale locale, FormatWidth formatWidth2) {
-        return getInstance(locale, formatWidth2, NumberFormat.getInstance(locale));
+    public static MeasureFormat getInstance(ULocale locale, FormatWidth formatWidth) {
+        return getInstance(locale, formatWidth, NumberFormat.getInstance(locale));
     }
 
-    public static MeasureFormat getInstance(Locale locale, FormatWidth formatWidth2) {
-        return getInstance(ULocale.forLocale(locale), formatWidth2);
+    public static MeasureFormat getInstance(Locale locale, FormatWidth formatWidth) {
+        return getInstance(ULocale.forLocale(locale), formatWidth);
     }
 
-    public static MeasureFormat getInstance(ULocale locale, FormatWidth formatWidth2, NumberFormat format) {
-        return new MeasureFormat(locale, formatWidth2, format, (PluralRules) null, (NumericFormatters) null);
+    public static MeasureFormat getInstance(ULocale locale, FormatWidth formatWidth, NumberFormat format) {
+        return new MeasureFormat(locale, formatWidth, format, null, null);
     }
 
-    public static MeasureFormat getInstance(Locale locale, FormatWidth formatWidth2, NumberFormat format) {
-        return getInstance(ULocale.forLocale(locale), formatWidth2, format);
+    public static MeasureFormat getInstance(Locale locale, FormatWidth formatWidth, NumberFormat format) {
+        return getInstance(ULocale.forLocale(locale), formatWidth, format);
     }
 
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r5v1, resolved type: java.lang.Object} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r7v0, resolved type: com.ibm.icu.util.Measure} */
-    /* JADX WARNING: Multi-variable type inference failed */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public java.lang.StringBuffer format(java.lang.Object r9, java.lang.StringBuffer r10, java.text.FieldPosition r11) {
-        /*
-            r8 = this;
-            int r0 = r10.length()
-            r1 = 0
-            r11.setBeginIndex(r1)
-            r11.setEndIndex(r1)
-            boolean r1 = r9 instanceof java.util.Collection
-            if (r1 == 0) goto L_0x0042
-            r1 = r9
-            java.util.Collection r1 = (java.util.Collection) r1
-            int r2 = r1.size()
-            com.ibm.icu.util.Measure[] r2 = new com.ibm.icu.util.Measure[r2]
-            r3 = 0
-            java.util.Iterator r4 = r1.iterator()
-        L_0x001d:
-            boolean r5 = r4.hasNext()
-            if (r5 == 0) goto L_0x003e
-            java.lang.Object r5 = r4.next()
-            boolean r6 = r5 instanceof com.ibm.icu.util.Measure
-            if (r6 == 0) goto L_0x0034
-            int r6 = r3 + 1
-            r7 = r5
-            com.ibm.icu.util.Measure r7 = (com.ibm.icu.util.Measure) r7
-            r2[r3] = r7
-            r3 = r6
-            goto L_0x001d
-        L_0x0034:
-            java.lang.IllegalArgumentException r4 = new java.lang.IllegalArgumentException
-            java.lang.String r6 = r9.toString()
-            r4.<init>(r6)
-            throw r4
-        L_0x003e:
-            r8.formatMeasuresInternal(r10, r11, r2)
-            goto L_0x0061
-        L_0x0042:
-            boolean r1 = r9 instanceof com.ibm.icu.util.Measure[]
-            if (r1 == 0) goto L_0x004f
-            r1 = r9
-            com.ibm.icu.util.Measure[] r1 = (com.ibm.icu.util.Measure[]) r1
-            com.ibm.icu.util.Measure[] r1 = (com.ibm.icu.util.Measure[]) r1
-            r8.formatMeasuresInternal(r10, r11, r1)
-            goto L_0x0061
-        L_0x004f:
-            boolean r1 = r9 instanceof com.ibm.icu.util.Measure
-            if (r1 == 0) goto L_0x007a
-            r1 = r9
-            com.ibm.icu.util.Measure r1 = (com.ibm.icu.util.Measure) r1
-            com.ibm.icu.number.FormattedNumber r1 = r8.formatMeasure(r1)
-            r1.populateFieldPosition(r11)
-            r1.appendTo(r10)
-        L_0x0061:
-            if (r0 <= 0) goto L_0x0079
-            int r1 = r11.getEndIndex()
-            if (r1 == 0) goto L_0x0079
-            int r1 = r11.getBeginIndex()
-            int r1 = r1 + r0
-            r11.setBeginIndex(r1)
-            int r1 = r11.getEndIndex()
-            int r1 = r1 + r0
-            r11.setEndIndex(r1)
-        L_0x0079:
-            return r10
-        L_0x007a:
-            java.lang.IllegalArgumentException r1 = new java.lang.IllegalArgumentException
-            java.lang.String r2 = r9.toString()
-            r1.<init>(r2)
-            throw r1
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.MeasureFormat.format(java.lang.Object, java.lang.StringBuffer, java.text.FieldPosition):java.lang.StringBuffer");
+    @Override // java.text.Format
+    public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition fpos) {
+        int prevLength = toAppendTo.length();
+        fpos.setBeginIndex(0);
+        fpos.setEndIndex(0);
+        if (obj instanceof Collection) {
+            Collection<?> coll = (Collection) obj;
+            Measure[] measures = new Measure[coll.size()];
+            int idx = 0;
+            for (Object o : coll) {
+                if (!(o instanceof Measure)) {
+                    throw new IllegalArgumentException(obj.toString());
+                }
+                measures[idx] = (Measure) o;
+                idx++;
+            }
+            formatMeasuresInternal(toAppendTo, fpos, measures);
+        } else if (obj instanceof Measure[]) {
+            formatMeasuresInternal(toAppendTo, fpos, (Measure[]) obj);
+        } else if (obj instanceof Measure) {
+            FormattedNumber result = formatMeasure((Measure) obj);
+            result.populateFieldPosition(fpos);
+            result.appendTo(toAppendTo);
+        } else {
+            throw new IllegalArgumentException(obj.toString());
+        }
+        if (prevLength > 0 && fpos.getEndIndex() != 0) {
+            fpos.setBeginIndex(fpos.getBeginIndex() + prevLength);
+            fpos.setEndIndex(fpos.getEndIndex() + prevLength);
+        }
+        return toAppendTo;
     }
 
+    @Override // java.text.Format
     public Measure parseObject(String source, ParsePosition pos) {
         throw new UnsupportedOperationException();
     }
@@ -207,29 +168,31 @@ public class MeasureFormat extends UFormat {
 
     private void formatMeasuresInternal(Appendable appendTo, FieldPosition fieldPosition, Measure... measures) {
         Number[] hms;
-        if (measures.length != 0) {
-            if (measures.length == 1) {
-                FormattedNumber result = formatMeasure(measures[0]);
-                result.populateFieldPosition(fieldPosition);
-                result.appendTo(appendTo);
-            } else if (this.formatWidth != FormatWidth.NUMERIC || (hms = toHMS(measures)) == null) {
-                ListFormatter listFormatter = ListFormatter.getInstance(getLocale(), this.formatWidth.getListFormatterStyle());
-                if (fieldPosition != DontCareFieldPosition.INSTANCE) {
-                    formatMeasuresSlowTrack(listFormatter, appendTo, fieldPosition, measures);
-                    return;
-                }
-                String[] results = new String[measures.length];
-                for (int i = 0; i < measures.length; i++) {
-                    if (i == measures.length - 1) {
-                        results[i] = formatMeasure(measures[i]).toString();
-                    } else {
-                        results[i] = formatMeasureInteger(measures[i]).toString();
-                    }
-                }
-                listFormatter.format(Arrays.asList(results), -1).appendTo(appendTo);
-            } else {
-                formatNumeric(hms, appendTo);
+        if (measures.length == 0) {
+            return;
+        }
+        if (measures.length == 1) {
+            FormattedNumber result = formatMeasure(measures[0]);
+            result.populateFieldPosition(fieldPosition);
+            result.appendTo(appendTo);
+        } else if (this.formatWidth == FormatWidth.NUMERIC && (hms = toHMS(measures)) != null) {
+            formatNumeric(hms, appendTo);
+        } else {
+            ListFormatter listFormatter = ListFormatter.getInstance(getLocale(), this.formatWidth.getListFormatterStyle());
+            if (fieldPosition != DontCareFieldPosition.INSTANCE) {
+                formatMeasuresSlowTrack(listFormatter, appendTo, fieldPosition, measures);
+                return;
             }
+            String[] results = new String[measures.length];
+            for (int i = 0; i < measures.length; i++) {
+                if (i == measures.length - 1) {
+                    results[i] = formatMeasure(measures[i]).toString();
+                } else {
+                    results[i] = formatMeasureInteger(measures[i]).toString();
+                }
+            }
+            ListFormatter.FormattedListBuilder builder = listFormatter.format(Arrays.asList(results), -1);
+            builder.appendTo(appendTo);
         }
     }
 
@@ -241,14 +204,11 @@ public class MeasureFormat extends UFormat {
         if (this == other) {
             return true;
         }
-        if (!(other instanceof MeasureFormat)) {
-            return false;
+        if (other instanceof MeasureFormat) {
+            MeasureFormat rhs = (MeasureFormat) other;
+            return getWidth() == rhs.getWidth() && getLocale().equals(rhs.getLocale()) && getNumberFormatInternal().equals(rhs.getNumberFormatInternal());
         }
-        MeasureFormat rhs = (MeasureFormat) other;
-        if (getWidth() != rhs.getWidth() || !getLocale().equals(rhs.getLocale()) || !getNumberFormatInternal().equals(rhs.getNumberFormatInternal())) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
     public final int hashCode() {
@@ -270,8 +230,7 @@ public class MeasureFormat extends UFormat {
         return (NumberFormat) this.numberFormat.clone();
     }
 
-    /* access modifiers changed from: package-private */
-    public NumberFormat getNumberFormatInternal() {
+    NumberFormat getNumberFormatInternal() {
         return this.numberFormat;
     }
 
@@ -287,95 +246,64 @@ public class MeasureFormat extends UFormat {
         return getCurrencyFormat(ULocale.getDefault(ULocale.Category.FORMAT));
     }
 
-    /* access modifiers changed from: package-private */
-    public MeasureFormat withLocale(ULocale locale) {
+    MeasureFormat withLocale(ULocale locale) {
         return getInstance(locale, getWidth());
     }
 
-    /* access modifiers changed from: package-private */
-    public MeasureFormat withNumberFormat(NumberFormat format) {
+    MeasureFormat withNumberFormat(NumberFormat format) {
         return new MeasureFormat(getLocale(), this.formatWidth, format, this.rules, this.numericFormatters);
     }
 
-    MeasureFormat(ULocale locale, FormatWidth formatWidth2) {
-        this(locale, formatWidth2, (NumberFormat) null, (PluralRules) null, (NumericFormatters) null);
+    MeasureFormat(ULocale locale, FormatWidth formatWidth) {
+        this(locale, formatWidth, null, null, null);
     }
 
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v1, resolved type: java.lang.Object} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r7v2, resolved type: com.ibm.icu.text.MeasureFormat$NumericFormatters} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v10, resolved type: java.lang.Object} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r5v2, resolved type: com.ibm.icu.text.NumberFormat} */
-    /* JADX WARNING: Multi-variable type inference failed */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private MeasureFormat(com.ibm.icu.util.ULocale r3, com.ibm.icu.text.MeasureFormat.FormatWidth r4, com.ibm.icu.text.NumberFormat r5, com.ibm.icu.text.PluralRules r6, com.ibm.icu.text.MeasureFormat.NumericFormatters r7) {
-        /*
-            r2 = this;
-            r2.<init>()
-            r0 = 0
-            r2.formatter1 = r0
-            r2.formatter2 = r0
-            r2.formatter3 = r0
-            r2.setLocale(r3, r3)
-            r2.formatWidth = r4
-            if (r6 != 0) goto L_0x0015
-            com.ibm.icu.text.PluralRules r6 = com.ibm.icu.text.PluralRules.forLocale((com.ibm.icu.util.ULocale) r3)
-        L_0x0015:
-            r2.rules = r6
-            if (r5 != 0) goto L_0x001e
-            com.ibm.icu.text.NumberFormat r5 = com.ibm.icu.text.NumberFormat.getInstance((com.ibm.icu.util.ULocale) r3)
-            goto L_0x0025
-        L_0x001e:
-            java.lang.Object r0 = r5.clone()
-            r5 = r0
-            com.ibm.icu.text.NumberFormat r5 = (com.ibm.icu.text.NumberFormat) r5
-        L_0x0025:
-            r2.numberFormat = r5
-            if (r7 != 0) goto L_0x003f
-            com.ibm.icu.text.MeasureFormat$FormatWidth r0 = com.ibm.icu.text.MeasureFormat.FormatWidth.NUMERIC
-            if (r4 != r0) goto L_0x003f
-            com.ibm.icu.impl.SimpleCache<com.ibm.icu.util.ULocale, com.ibm.icu.text.MeasureFormat$NumericFormatters> r0 = localeToNumericDurationFormatters
-            java.lang.Object r1 = r0.get(r3)
-            r7 = r1
-            com.ibm.icu.text.MeasureFormat$NumericFormatters r7 = (com.ibm.icu.text.MeasureFormat.NumericFormatters) r7
-            if (r7 != 0) goto L_0x003f
-            com.ibm.icu.text.MeasureFormat$NumericFormatters r7 = loadNumericFormatters(r3)
-            r0.put(r3, r7)
-        L_0x003f:
-            r2.numericFormatters = r7
-            boolean r0 = r5 instanceof com.ibm.icu.text.DecimalFormat
-            if (r0 == 0) goto L_0x0057
-            r0 = r5
-            com.ibm.icu.text.DecimalFormat r0 = (com.ibm.icu.text.DecimalFormat) r0
-            com.ibm.icu.number.LocalizedNumberFormatter r0 = r0.toNumberFormatter()
-            com.ibm.icu.number.NumberFormatter$UnitWidth r1 = r4.unitWidth
-            com.ibm.icu.number.NumberFormatterSettings r0 = r0.unitWidth(r1)
-            com.ibm.icu.number.LocalizedNumberFormatter r0 = (com.ibm.icu.number.LocalizedNumberFormatter) r0
-            r2.numberFormatter = r0
-            return
-        L_0x0057:
-            java.lang.IllegalArgumentException r0 = new java.lang.IllegalArgumentException
-            r0.<init>()
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.MeasureFormat.<init>(com.ibm.icu.util.ULocale, com.ibm.icu.text.MeasureFormat$FormatWidth, com.ibm.icu.text.NumberFormat, com.ibm.icu.text.PluralRules, com.ibm.icu.text.MeasureFormat$NumericFormatters):void");
+    private MeasureFormat(ULocale locale, FormatWidth formatWidth, NumberFormat numberFormat, PluralRules rules, NumericFormatters formatters) {
+        NumberFormat numberFormat2;
+        this.formatter1 = null;
+        this.formatter2 = null;
+        this.formatter3 = null;
+        setLocale(locale, locale);
+        this.formatWidth = formatWidth;
+        this.rules = rules == null ? PluralRules.forLocale(locale) : rules;
+        if (numberFormat == null) {
+            numberFormat2 = NumberFormat.getInstance(locale);
+        } else {
+            numberFormat2 = (NumberFormat) numberFormat.clone();
+        }
+        this.numberFormat = numberFormat2;
+        if (formatters == null && formatWidth == FormatWidth.NUMERIC) {
+            SimpleCache<ULocale, NumericFormatters> simpleCache = localeToNumericDurationFormatters;
+            formatters = (NumericFormatters) simpleCache.get(locale);
+            if (formatters == null) {
+                formatters = loadNumericFormatters(locale);
+                simpleCache.put(locale, formatters);
+            }
+        }
+        this.numericFormatters = formatters;
+        if (!(numberFormat2 instanceof DecimalFormat)) {
+            throw new IllegalArgumentException();
+        }
+        this.numberFormatter = ((DecimalFormat) numberFormat2).toNumberFormatter().unitWidth(formatWidth.unitWidth);
     }
 
-    MeasureFormat(ULocale locale, FormatWidth formatWidth2, NumberFormat numberFormat2, PluralRules rules2) {
-        this(locale, formatWidth2, numberFormat2, rules2, (NumericFormatters) null);
-        if (formatWidth2 == FormatWidth.NUMERIC) {
+    MeasureFormat(ULocale locale, FormatWidth formatWidth, NumberFormat numberFormat, PluralRules rules) {
+        this(locale, formatWidth, numberFormat, rules, null);
+        if (formatWidth == FormatWidth.NUMERIC) {
             throw new IllegalArgumentException("The format width 'numeric' is not allowed by this constructor");
         }
     }
 
+    /* loaded from: classes.dex */
     static class NumericFormatters {
         private DateFormat hourMinute;
         private DateFormat hourMinuteSecond;
         private DateFormat minuteSecond;
 
-        public NumericFormatters(DateFormat hourMinute2, DateFormat minuteSecond2, DateFormat hourMinuteSecond2) {
-            this.hourMinute = hourMinute2;
-            this.minuteSecond = minuteSecond2;
-            this.hourMinuteSecond = hourMinuteSecond2;
+        public NumericFormatters(DateFormat hourMinute, DateFormat minuteSecond, DateFormat hourMinuteSecond) {
+            this.hourMinute = hourMinute;
+            this.minuteSecond = minuteSecond;
+            this.hourMinuteSecond = hourMinuteSecond;
         }
 
         public DateFormat getHourMinute() {
@@ -396,6 +324,7 @@ public class MeasureFormat extends UFormat {
         return new NumericFormatters(loadNumericDurationFormat(r, "hm"), loadNumericDurationFormat(r, DateFormat.MINUTE_SECOND), loadNumericDurationFormat(r, "hms"));
     }
 
+    /* loaded from: classes.dex */
     static class NumberFormatterCacheEntry {
         LocalizedNumberFormatter formatter;
         MeasureUnit perUnit;
@@ -428,10 +357,10 @@ public class MeasureFormat extends UFormat {
             formatter = (LocalizedNumberFormatter) getNumberFormatter().unit(unit).perUnit(perUnit).unitWidth(this.formatWidth.unitWidth);
         } else if (type == 2) {
             formatter = (LocalizedNumberFormatter) NumberFormatter.withLocale(getLocale()).unit(unit).perUnit(perUnit).unitWidth(this.formatWidth.currencyWidth);
-        } else if (type == 3) {
-            formatter = (LocalizedNumberFormatter) getNumberFormatter().unit(unit).perUnit(perUnit).unitWidth(this.formatWidth.unitWidth).rounding(Precision.integer().withMode(RoundingMode.DOWN));
-        } else {
+        } else if (type != 3) {
             throw new AssertionError();
+        } else {
+            formatter = getNumberFormatter().unit(unit).perUnit(perUnit).unitWidth(this.formatWidth.unitWidth).rounding(Precision.integer().withMode(RoundingMode.DOWN));
         }
         this.formatter3 = this.formatter2;
         this.formatter2 = this.formatter1;
@@ -444,28 +373,26 @@ public class MeasureFormat extends UFormat {
         return formatter;
     }
 
-    /* access modifiers changed from: package-private */
-    public synchronized void clearCache() {
+    synchronized void clearCache() {
         this.formatter1 = null;
         this.formatter2 = null;
         this.formatter3 = null;
     }
 
-    /* access modifiers changed from: package-private */
-    public LocalizedNumberFormatter getNumberFormatter() {
+    LocalizedNumberFormatter getNumberFormatter() {
         return this.numberFormatter;
     }
 
     private FormattedNumber formatMeasure(Measure measure) {
         MeasureUnit unit = measure.getUnit();
         if (unit instanceof Currency) {
-            return getUnitFormatterFromCache(2, unit, (MeasureUnit) null).format(measure.getNumber());
+            return getUnitFormatterFromCache(2, unit, null).format(measure.getNumber());
         }
-        return getUnitFormatterFromCache(1, unit, (MeasureUnit) null).format(measure.getNumber());
+        return getUnitFormatterFromCache(1, unit, null).format(measure.getNumber());
     }
 
     private FormattedNumber formatMeasureInteger(Measure measure) {
-        return getUnitFormatterFromCache(3, measure.getUnit(), (MeasureUnit) null).format(measure.getNumber());
+        return getUnitFormatterFromCache(3, measure.getUnit(), null).format(measure.getNumber());
     }
 
     private void formatMeasuresSlowTrack(ListFormatter listFormatter, Appendable appendTo, FieldPosition fieldPosition, Measure... measures) {
@@ -496,7 +423,7 @@ public class MeasureFormat extends UFormat {
     }
 
     private static DateFormat loadNumericDurationFormat(ICUResourceBundle r, String type) {
-        DateFormat result = new SimpleDateFormat(r.getWithFallback(String.format("durationUnits/%s", new Object[]{type})).getString().replace("h", DateFormat.HOUR24));
+        DateFormat result = new SimpleDateFormat(r.getWithFallback(String.format("durationUnits/%s", type)).getString().replace("h", DateFormat.HOUR24));
         result.setTimeZone(TimeZone.GMT_ZONE);
         return result;
     }
@@ -516,30 +443,34 @@ public class MeasureFormat extends UFormat {
         return result;
     }
 
+    /* JADX WARN: Incorrect condition in loop: B:4:0x0009 */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
     private void formatNumeric(Number[] hms, Appendable appendable) {
-        Number[] numberArr = hms;
         int startIndex = -1;
         int endIndex = -1;
-        for (int i = 0; i < numberArr.length; i++) {
-            if (numberArr[i] != null) {
+        for (int i = 0; i < startIndex; i++) {
+            if (hms[i] != null) {
                 int endIndex2 = i;
-                if (startIndex == -1) {
+                if (startIndex != -1) {
                     endIndex = endIndex2;
-                    startIndex = endIndex2;
                 } else {
                     endIndex = endIndex2;
+                    startIndex = endIndex2;
                 }
             } else {
-                numberArr[i] = 0;
+                hms[i] = 0;
             }
         }
-        Date d = new Date((long) (((((Math.floor(numberArr[0].doubleValue()) * 60.0d) + Math.floor(numberArr[1].doubleValue())) * 60.0d) + Math.floor(numberArr[2].doubleValue())) * 1000.0d));
+        long millis = (long) (((((Math.floor(hms[0].doubleValue()) * 60.0d) + Math.floor(hms[1].doubleValue())) * 60.0d) + Math.floor(hms[2].doubleValue())) * 1000.0d);
+        Date d = new Date(millis);
         if (startIndex == 0 && endIndex == 2) {
-            formatNumeric(d, this.numericFormatters.getHourMinuteSecond(), DateFormat.Field.SECOND, numberArr[endIndex], appendable);
+            formatNumeric(d, this.numericFormatters.getHourMinuteSecond(), DateFormat.Field.SECOND, hms[endIndex], appendable);
         } else if (startIndex == 1 && endIndex == 2) {
-            formatNumeric(d, this.numericFormatters.getMinuteSecond(), DateFormat.Field.SECOND, numberArr[endIndex], appendable);
+            formatNumeric(d, this.numericFormatters.getMinuteSecond(), DateFormat.Field.SECOND, hms[endIndex], appendable);
         } else if (startIndex == 0 && endIndex == 1) {
-            formatNumeric(d, this.numericFormatters.getHourMinute(), DateFormat.Field.MINUTE, numberArr[endIndex], appendable);
+            formatNumeric(d, this.numericFormatters.getHourMinute(), DateFormat.Field.MINUTE, hms[endIndex], appendable);
         } else {
             throw new IllegalStateException();
         }
@@ -559,11 +490,9 @@ public class MeasureFormat extends UFormat {
             draft = formatter.format(duration, new StringBuffer(), smallestFieldPosition).toString();
         }
         try {
-            if (smallestFieldPosition.getBeginIndex() == 0) {
-                if (smallestFieldPosition.getEndIndex() == 0) {
-                    appendTo.append(draft);
-                    return;
-                }
+            if (smallestFieldPosition.getBeginIndex() == 0 && smallestFieldPosition.getEndIndex() == 0) {
+                appendTo.append(draft);
+                return;
             }
             appendTo.append(draft, 0, smallestFieldPosition.getBeginIndex());
             appendTo.append(smallestAmountFormatted, 0, intFieldPosition.getBeginIndex());
@@ -575,13 +504,11 @@ public class MeasureFormat extends UFormat {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public Object toTimeUnitProxy() {
+    Object toTimeUnitProxy() {
         return new MeasureProxy(getLocale(), this.formatWidth, getNumberFormatInternal(), 1);
     }
 
-    /* access modifiers changed from: package-private */
-    public Object toCurrencyProxy() {
+    Object toCurrencyProxy() {
         return new MeasureProxy(getLocale(), this.formatWidth, getNumberFormatInternal(), 2);
     }
 
@@ -589,6 +516,7 @@ public class MeasureFormat extends UFormat {
         return new MeasureProxy(getLocale(), this.formatWidth, getNumberFormatInternal(), 0);
     }
 
+    /* loaded from: classes.dex */
     static class MeasureProxy implements Externalizable {
         private static final long serialVersionUID = -6033308329886716770L;
         private FormatWidth formatWidth;
@@ -597,17 +525,18 @@ public class MeasureFormat extends UFormat {
         private NumberFormat numberFormat;
         private int subClass;
 
-        public MeasureProxy(ULocale locale2, FormatWidth width, NumberFormat numberFormat2, int subClass2) {
-            this.locale = locale2;
+        public MeasureProxy(ULocale locale, FormatWidth width, NumberFormat numberFormat, int subClass) {
+            this.locale = locale;
             this.formatWidth = width;
-            this.numberFormat = numberFormat2;
-            this.subClass = subClass2;
+            this.numberFormat = numberFormat;
+            this.subClass = subClass;
             this.keyValues = new HashMap<>();
         }
 
         public MeasureProxy() {
         }
 
+        @Override // java.io.Externalizable
         public void writeExternal(ObjectOutput out) throws IOException {
             out.writeByte(0);
             out.writeUTF(this.locale.toLanguageTag());
@@ -617,22 +546,22 @@ public class MeasureFormat extends UFormat {
             out.writeObject(this.keyValues);
         }
 
+        @Override // java.io.Externalizable
         public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
             in.readByte();
             this.locale = ULocale.forLanguageTag(in.readUTF());
             this.formatWidth = MeasureFormat.fromFormatWidthOrdinal(in.readByte() & UByte.MAX_VALUE);
-            NumberFormat numberFormat2 = (NumberFormat) in.readObject();
-            this.numberFormat = numberFormat2;
-            if (numberFormat2 != null) {
-                this.subClass = in.readByte() & UByte.MAX_VALUE;
-                HashMap<Object, Object> hashMap = (HashMap) in.readObject();
-                this.keyValues = hashMap;
-                if (hashMap == null) {
-                    throw new InvalidObjectException("Missing optional values map.");
-                }
-                return;
+            NumberFormat numberFormat = (NumberFormat) in.readObject();
+            this.numberFormat = numberFormat;
+            if (numberFormat == null) {
+                throw new InvalidObjectException("Missing number format.");
             }
-            throw new InvalidObjectException("Missing number format.");
+            this.subClass = in.readByte() & UByte.MAX_VALUE;
+            HashMap<Object, Object> hashMap = (HashMap) in.readObject();
+            this.keyValues = hashMap;
+            if (hashMap == null) {
+                throw new InvalidObjectException("Missing optional values map.");
+            }
         }
 
         private TimeUnitFormat createTimeUnitFormat() throws InvalidObjectException {
@@ -663,7 +592,7 @@ public class MeasureFormat extends UFormat {
         }
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public static FormatWidth fromFormatWidthOrdinal(int ordinal) {
         FormatWidth[] values = FormatWidth.values();
         if (ordinal < 0 || ordinal >= values.length) {
@@ -684,21 +613,21 @@ public class MeasureFormat extends UFormat {
         if (result2 == null) {
             ICUResourceBundle rb = UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b", forLocale);
             ULocale realLocale = rb.getULocale();
-            if (forLocale.equals(realLocale) || (result = map.get(forLocale)) == null) {
-                try {
-                    resultString = rb.getStringWithFallback("NumberElements/" + NumberingSystem.getInstance(forLocale).getName() + "/miscPatterns/range");
-                } catch (MissingResourceException e) {
-                    resultString = rb.getStringWithFallback("NumberElements/latn/patterns/range");
-                }
-                result2 = SimpleFormatterImpl.compileToStringMinMaxArguments(resultString, new StringBuilder(), 2, 2);
-                Map<ULocale, String> map2 = localeIdToRangeFormat;
-                map2.put(forLocale, result2);
-                if (!forLocale.equals(realLocale)) {
-                    map2.put(realLocale, result2);
-                }
-            } else {
+            if (!forLocale.equals(realLocale) && (result = map.get(forLocale)) != null) {
                 map.put(forLocale, result);
                 return result;
+            }
+            NumberingSystem ns = NumberingSystem.getInstance(forLocale);
+            try {
+                resultString = rb.getStringWithFallback("NumberElements/" + ns.getName() + "/miscPatterns/range");
+            } catch (MissingResourceException e) {
+                resultString = rb.getStringWithFallback("NumberElements/latn/patterns/range");
+            }
+            result2 = SimpleFormatterImpl.compileToStringMinMaxArguments(resultString, new StringBuilder(), 2, 2);
+            Map<ULocale, String> map2 = localeIdToRangeFormat;
+            map2.put(forLocale, result2);
+            if (!forLocale.equals(realLocale)) {
+                map2.put(realLocale, result2);
             }
         }
         return result2;

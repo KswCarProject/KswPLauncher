@@ -10,24 +10,27 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 
+/* loaded from: classes.dex */
 public final class ObservableDoOnEach<T> extends AbstractObservableWithUpstream<T, T> {
     final Action onAfterTerminate;
     final Action onComplete;
     final Consumer<? super Throwable> onError;
     final Consumer<? super T> onNext;
 
-    public ObservableDoOnEach(ObservableSource<T> source, Consumer<? super T> onNext2, Consumer<? super Throwable> onError2, Action onComplete2, Action onAfterTerminate2) {
+    public ObservableDoOnEach(ObservableSource<T> source, Consumer<? super T> onNext, Consumer<? super Throwable> onError, Action onComplete, Action onAfterTerminate) {
         super(source);
-        this.onNext = onNext2;
-        this.onError = onError2;
-        this.onComplete = onComplete2;
-        this.onAfterTerminate = onAfterTerminate2;
+        this.onNext = onNext;
+        this.onError = onError;
+        this.onComplete = onComplete;
+        this.onAfterTerminate = onAfterTerminate;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super T> t) {
         this.source.subscribe(new DoOnEachObserver(t, this.onNext, this.onError, this.onComplete, this.onAfterTerminate));
     }
 
+    /* loaded from: classes.dex */
     static final class DoOnEachObserver<T> implements Observer<T>, Disposable {
         boolean done;
         final Observer<? super T> downstream;
@@ -37,14 +40,15 @@ public final class ObservableDoOnEach<T> extends AbstractObservableWithUpstream<
         final Consumer<? super T> onNext;
         Disposable upstream;
 
-        DoOnEachObserver(Observer<? super T> actual, Consumer<? super T> onNext2, Consumer<? super Throwable> onError2, Action onComplete2, Action onAfterTerminate2) {
+        DoOnEachObserver(Observer<? super T> actual, Consumer<? super T> onNext, Consumer<? super Throwable> onError, Action onComplete, Action onAfterTerminate) {
             this.downstream = actual;
-            this.onNext = onNext2;
-            this.onError = onError2;
-            this.onComplete = onComplete2;
-            this.onAfterTerminate = onAfterTerminate2;
+            this.onNext = onNext;
+            this.onError = onError;
+            this.onComplete = onComplete;
+            this.onAfterTerminate = onAfterTerminate;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -52,27 +56,32 @@ public final class ObservableDoOnEach<T> extends AbstractObservableWithUpstream<
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
-            if (!this.done) {
-                try {
-                    this.onNext.accept(t);
-                    this.downstream.onNext(t);
-                } catch (Throwable e) {
-                    Exceptions.throwIfFatal(e);
-                    this.upstream.dispose();
-                    onError(e);
-                }
+            if (this.done) {
+                return;
+            }
+            try {
+                this.onNext.accept(t);
+                this.downstream.onNext(t);
+            } catch (Throwable e) {
+                Exceptions.throwIfFatal(e);
+                this.upstream.dispose();
+                onError(e);
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -94,22 +103,24 @@ public final class ObservableDoOnEach<T> extends AbstractObservableWithUpstream<
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
-            if (!this.done) {
+            if (this.done) {
+                return;
+            }
+            try {
+                this.onComplete.run();
+                this.done = true;
+                this.downstream.onComplete();
                 try {
-                    this.onComplete.run();
-                    this.done = true;
-                    this.downstream.onComplete();
-                    try {
-                        this.onAfterTerminate.run();
-                    } catch (Throwable e) {
-                        Exceptions.throwIfFatal(e);
-                        RxJavaPlugins.onError(e);
-                    }
-                } catch (Throwable e2) {
-                    Exceptions.throwIfFatal(e2);
-                    onError(e2);
+                    this.onAfterTerminate.run();
+                } catch (Throwable e) {
+                    Exceptions.throwIfFatal(e);
+                    RxJavaPlugins.onError(e);
                 }
+            } catch (Throwable e2) {
+                Exceptions.throwIfFatal(e2);
+                onError(e2);
             }
         }
     }

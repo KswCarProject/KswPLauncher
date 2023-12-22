@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class AsyncSubscription extends AtomicLong implements Subscription, Disposable {
     private static final long serialVersionUID = 7028635084060361255L;
     final AtomicReference<Subscription> actual;
@@ -16,24 +17,28 @@ public final class AsyncSubscription extends AtomicLong implements Subscription,
         this.actual = new AtomicReference<>();
     }
 
-    public AsyncSubscription(Disposable resource2) {
+    public AsyncSubscription(Disposable resource) {
         this();
-        this.resource.lazySet(resource2);
+        this.resource.lazySet(resource);
     }
 
+    @Override // org.reactivestreams.Subscription
     public void request(long n) {
         SubscriptionHelper.deferredRequest(this.actual, this, n);
     }
 
+    @Override // org.reactivestreams.Subscription
     public void cancel() {
         dispose();
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public void dispose() {
         SubscriptionHelper.cancel(this.actual);
         DisposableHelper.dispose(this.resource);
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public boolean isDisposed() {
         return this.actual.get() == SubscriptionHelper.CANCELLED;
     }

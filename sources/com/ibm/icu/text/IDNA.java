@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
+/* loaded from: classes.dex */
 public abstract class IDNA {
     @Deprecated
     public static final int ALLOW_UNASSIGNED = 1;
@@ -17,6 +18,7 @@ public abstract class IDNA {
     public static final int NONTRANSITIONAL_TO_UNICODE = 32;
     public static final int USE_STD3_RULES = 2;
 
+    /* loaded from: classes.dex */
     public enum Error {
         EMPTY_LABEL,
         LABEL_TOO_LONG,
@@ -47,17 +49,13 @@ public abstract class IDNA {
         return new UTS46(options);
     }
 
+    /* loaded from: classes.dex */
     public static final class Info {
-        /* access modifiers changed from: private */
-        public EnumSet<Error> errors = EnumSet.noneOf(Error.class);
-        /* access modifiers changed from: private */
-        public boolean isBiDi = false;
-        /* access modifiers changed from: private */
-        public boolean isOkBiDi = true;
-        /* access modifiers changed from: private */
-        public boolean isTransDiff = false;
-        /* access modifiers changed from: private */
-        public EnumSet<Error> labelErrors = EnumSet.noneOf(Error.class);
+        private EnumSet<Error> errors = EnumSet.noneOf(Error.class);
+        private EnumSet<Error> labelErrors = EnumSet.noneOf(Error.class);
+        private boolean isTransDiff = false;
+        private boolean isBiDi = false;
+        private boolean isOkBiDi = true;
 
         public boolean hasErrors() {
             return !this.errors.isEmpty();
@@ -71,7 +69,7 @@ public abstract class IDNA {
             return this.isTransDiff;
         }
 
-        /* access modifiers changed from: private */
+        /* JADX INFO: Access modifiers changed from: private */
         public void reset() {
             this.errors.clear();
             this.labelErrors.clear();
@@ -88,12 +86,12 @@ public abstract class IDNA {
 
     @Deprecated
     protected static boolean hasCertainErrors(Info info, EnumSet<Error> errors) {
-        return !info.errors.isEmpty() && !Collections.disjoint(info.errors, errors);
+        return (info.errors.isEmpty() || Collections.disjoint(info.errors, errors)) ? false : true;
     }
 
     @Deprecated
     protected static boolean hasCertainLabelErrors(Info info, EnumSet<Error> errors) {
-        return !info.labelErrors.isEmpty() && !Collections.disjoint(info.labelErrors, errors);
+        return (info.labelErrors.isEmpty() || Collections.disjoint(info.labelErrors, errors)) ? false : true;
     }
 
     @Deprecated
@@ -116,12 +114,12 @@ public abstract class IDNA {
 
     @Deprecated
     protected static void setTransitionalDifferent(Info info) {
-        boolean unused = info.isTransDiff = true;
+        info.isTransDiff = true;
     }
 
     @Deprecated
     protected static void setBiDi(Info info) {
-        boolean unused = info.isBiDi = true;
+        info.isBiDi = true;
     }
 
     @Deprecated
@@ -131,7 +129,7 @@ public abstract class IDNA {
 
     @Deprecated
     protected static void setNotOkBiDi(Info info) {
-        boolean unused = info.isOkBiDi = false;
+        info.isOkBiDi = false;
     }
 
     @Deprecated
@@ -145,12 +143,14 @@ public abstract class IDNA {
 
     @Deprecated
     public static StringBuffer convertToASCII(String src, int options) throws StringPrepParseException {
-        return convertToASCII(UCharacterIterator.getInstance(src), options);
+        UCharacterIterator iter = UCharacterIterator.getInstance(src);
+        return convertToASCII(iter, options);
     }
 
     @Deprecated
     public static StringBuffer convertToASCII(StringBuffer src, int options) throws StringPrepParseException {
-        return convertToASCII(UCharacterIterator.getInstance(src), options);
+        UCharacterIterator iter = UCharacterIterator.getInstance(src);
+        return convertToASCII(iter, options);
     }
 
     @Deprecated
@@ -175,12 +175,14 @@ public abstract class IDNA {
 
     @Deprecated
     public static StringBuffer convertToUnicode(String src, int options) throws StringPrepParseException {
-        return convertToUnicode(UCharacterIterator.getInstance(src), options);
+        UCharacterIterator iter = UCharacterIterator.getInstance(src);
+        return convertToUnicode(iter, options);
     }
 
     @Deprecated
     public static StringBuffer convertToUnicode(StringBuffer src, int options) throws StringPrepParseException {
-        return convertToUnicode(UCharacterIterator.getInstance(src), options);
+        UCharacterIterator iter = UCharacterIterator.getInstance(src);
+        return convertToUnicode(iter, options);
     }
 
     @Deprecated
@@ -205,25 +207,25 @@ public abstract class IDNA {
 
     @Deprecated
     public static int compare(StringBuffer s1, StringBuffer s2, int options) throws StringPrepParseException {
-        if (s1 != null && s2 != null) {
-            return IDNA2003.compare(s1.toString(), s2.toString(), options);
+        if (s1 == null || s2 == null) {
+            throw new IllegalArgumentException("One of the source buffers is null");
         }
-        throw new IllegalArgumentException("One of the source buffers is null");
+        return IDNA2003.compare(s1.toString(), s2.toString(), options);
     }
 
     @Deprecated
     public static int compare(String s1, String s2, int options) throws StringPrepParseException {
-        if (s1 != null && s2 != null) {
-            return IDNA2003.compare(s1, s2, options);
+        if (s1 == null || s2 == null) {
+            throw new IllegalArgumentException("One of the source buffers is null");
         }
-        throw new IllegalArgumentException("One of the source buffers is null");
+        return IDNA2003.compare(s1, s2, options);
     }
 
     @Deprecated
     public static int compare(UCharacterIterator s1, UCharacterIterator s2, int options) throws StringPrepParseException {
-        if (s1 != null && s2 != null) {
-            return IDNA2003.compare(s1.getText(), s2.getText(), options);
+        if (s1 == null || s2 == null) {
+            throw new IllegalArgumentException("One of the source buffers is null");
         }
-        throw new IllegalArgumentException("One of the source buffers is null");
+        return IDNA2003.compare(s1.getText(), s2.getText(), options);
     }
 }

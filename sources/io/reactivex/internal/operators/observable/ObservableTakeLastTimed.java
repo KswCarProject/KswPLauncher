@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import kotlin.jvm.internal.LongCompanionObject;
 
+/* loaded from: classes.dex */
 public final class ObservableTakeLastTimed<T> extends AbstractObservableWithUpstream<T, T> {
     final int bufferSize;
     final long count;
@@ -18,20 +19,22 @@ public final class ObservableTakeLastTimed<T> extends AbstractObservableWithUpst
     final long time;
     final TimeUnit unit;
 
-    public ObservableTakeLastTimed(ObservableSource<T> source, long count2, long time2, TimeUnit unit2, Scheduler scheduler2, int bufferSize2, boolean delayError2) {
+    public ObservableTakeLastTimed(ObservableSource<T> source, long count, long time, TimeUnit unit, Scheduler scheduler, int bufferSize, boolean delayError) {
         super(source);
-        this.count = count2;
-        this.time = time2;
-        this.unit = unit2;
-        this.scheduler = scheduler2;
-        this.bufferSize = bufferSize2;
-        this.delayError = delayError2;
+        this.count = count;
+        this.time = time;
+        this.unit = unit;
+        this.scheduler = scheduler;
+        this.bufferSize = bufferSize;
+        this.delayError = delayError;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super T> t) {
         this.source.subscribe(new TakeLastTimedObserver(t, this.count, this.time, this.unit, this.scheduler, this.bufferSize, this.delayError));
     }
 
+    /* loaded from: classes.dex */
     static final class TakeLastTimedObserver<T> extends AtomicBoolean implements Observer<T>, Disposable {
         private static final long serialVersionUID = -5677354903406201275L;
         volatile boolean cancelled;
@@ -45,16 +48,17 @@ public final class ObservableTakeLastTimed<T> extends AbstractObservableWithUpst
         final TimeUnit unit;
         Disposable upstream;
 
-        TakeLastTimedObserver(Observer<? super T> actual, long count2, long time2, TimeUnit unit2, Scheduler scheduler2, int bufferSize, boolean delayError2) {
+        TakeLastTimedObserver(Observer<? super T> actual, long count, long time, TimeUnit unit, Scheduler scheduler, int bufferSize, boolean delayError) {
             this.downstream = actual;
-            this.count = count2;
-            this.time = time2;
-            this.unit = unit2;
-            this.scheduler = scheduler2;
+            this.count = count;
+            this.time = time;
+            this.unit = unit;
+            this.scheduler = scheduler;
             this.queue = new SpscLinkedArrayQueue<>(bufferSize);
-            this.delayError = delayError2;
+            this.delayError = delayError;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -62,15 +66,17 @@ public final class ObservableTakeLastTimed<T> extends AbstractObservableWithUpst
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             SpscLinkedArrayQueue<Object> q = this.queue;
             long now = this.scheduler.now(this.unit);
-            long time2 = this.time;
+            long time = this.time;
             long c = this.count;
             boolean unbounded = c == LongCompanionObject.MAX_VALUE;
             q.offer(Long.valueOf(now), t);
             while (!q.isEmpty()) {
-                if (((Long) q.peek()).longValue() <= now - time2 || (!unbounded && ((long) (q.size() >> 1)) > c)) {
+                long ts = ((Long) q.peek()).longValue();
+                if (ts <= now - time || (!unbounded && (q.size() >> 1) > c)) {
                     q.poll();
                     q.poll();
                 } else {
@@ -79,15 +85,18 @@ public final class ObservableTakeLastTimed<T> extends AbstractObservableWithUpst
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             this.error = t;
             drain();
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             drain();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             if (!this.cancelled) {
                 this.cancelled = true;
@@ -98,44 +107,44 @@ public final class ObservableTakeLastTimed<T> extends AbstractObservableWithUpst
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.cancelled;
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
+        void drain() {
             Throwable ex;
-            if (compareAndSet(false, true)) {
-                Observer<? super T> a = this.downstream;
-                SpscLinkedArrayQueue<Object> q = this.queue;
-                boolean delayError2 = this.delayError;
-                long timestampLimit = this.scheduler.now(this.unit) - this.time;
-                while (!this.cancelled) {
-                    if (delayError2 || (ex = this.error) == null) {
-                        Object ts = q.poll();
-                        if (ts == null) {
-                            Throwable ex2 = this.error;
-                            if (ex2 != null) {
-                                a.onError(ex2);
-                                return;
-                            } else {
-                                a.onComplete();
-                                return;
-                            }
-                        } else {
-                            T o = q.poll();
-                            if (((Long) ts).longValue() >= timestampLimit) {
-                                a.onNext(o);
-                            }
-                        }
+            if (!compareAndSet(false, true)) {
+                return;
+            }
+            Observer<? super T> a = this.downstream;
+            SpscLinkedArrayQueue<Object> q = this.queue;
+            boolean delayError = this.delayError;
+            long timestampLimit = this.scheduler.now(this.unit) - this.time;
+            while (!this.cancelled) {
+                if (!delayError && (ex = this.error) != null) {
+                    q.clear();
+                    a.onError(ex);
+                    return;
+                }
+                Object ts = q.poll();
+                boolean empty = ts == null;
+                if (empty) {
+                    Throwable ex2 = this.error;
+                    if (ex2 != null) {
+                        a.onError(ex2);
+                        return;
                     } else {
-                        q.clear();
-                        a.onError(ex);
+                        a.onComplete();
                         return;
                     }
                 }
-                q.clear();
+                Object poll = q.poll();
+                if (((Long) ts).longValue() >= timestampLimit) {
+                    a.onNext(poll);
+                }
             }
+            q.clear();
         }
     }
 }

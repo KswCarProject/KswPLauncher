@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="55dp">
+    <com.wits.ksw.settings.utlis_view.RtlRadioButton android:textSize="25sp" android:textColor="@android:color/white" android:id="@+id/tv_functionItem" android:background="@drawable/ntg6_czhong_item" android:paddingLeft="10dp" android:paddingRight="10dp" android:focusable="true" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="10dp" android:button="@drawable/ntg6_rad_btn_sel" android:layout_centerVertical="true"/>
+</RelativeLayout>

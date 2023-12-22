@@ -2,22 +2,23 @@ package com.ibm.icu.text;
 
 import java.util.Iterator;
 
+/* loaded from: classes.dex */
 public class UnicodeSetIterator {
     public static int IS_STRING = -1;
     public int codepoint;
     public int codepointEnd;
     @Deprecated
     protected int endElement;
-    private int endRange = 0;
     @Deprecated
     protected int nextElement;
-    private int range = 0;
     private UnicodeSet set;
     public String string;
+    private int endRange = 0;
+    private int range = 0;
     private Iterator<String> stringIterator = null;
 
-    public UnicodeSetIterator(UnicodeSet set2) {
-        reset(set2);
+    public UnicodeSetIterator(UnicodeSet set) {
+        reset(set);
     }
 
     public UnicodeSetIterator() {
@@ -121,9 +122,8 @@ public class UnicodeSetIterator {
         return this.set;
     }
 
-    /* access modifiers changed from: protected */
     @Deprecated
-    public void loadRange(int aRange) {
+    protected void loadRange(int aRange) {
         this.nextElement = this.set.getRangeStart(aRange);
         this.endElement = this.set.getRangeEnd(aRange);
     }

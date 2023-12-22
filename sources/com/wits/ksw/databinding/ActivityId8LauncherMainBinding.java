@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityId8LauncherMainBinding extends ViewDataBinding {
     public final LinearLayout llContainer;
     public final Id8LauncherLeftBarBinding llLeftContainer;
@@ -18,13 +19,13 @@ public abstract class ActivityId8LauncherMainBinding extends ViewDataBinding {
     protected LauncherViewModel mLauncherViewModel;
     public final HorizontalScrollView scrollView;
 
-    public abstract void setLauncherViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setLauncherViewModel(LauncherViewModel LauncherViewModel);
 
-    protected ActivityId8LauncherMainBinding(Object _bindingComponent, View _root, int _localFieldCount, LinearLayout llContainer2, Id8LauncherLeftBarBinding llLeftContainer2, HorizontalScrollView scrollView2) {
+    protected ActivityId8LauncherMainBinding(Object _bindingComponent, View _root, int _localFieldCount, LinearLayout llContainer, Id8LauncherLeftBarBinding llLeftContainer, HorizontalScrollView scrollView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.llContainer = llContainer2;
-        this.llLeftContainer = llLeftContainer2;
-        this.scrollView = scrollView2;
+        this.llContainer = llContainer;
+        this.llLeftContainer = llLeftContainer;
+        this.scrollView = scrollView;
     }
 
     public LauncherViewModel getLauncherViewModel() {
@@ -37,7 +38,7 @@ public abstract class ActivityId8LauncherMainBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityId8LauncherMainBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityId8LauncherMainBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_id8_launcher_main, root, attachToRoot, component);
+        return (ActivityId8LauncherMainBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_id8_launcher_main, root, attachToRoot, component);
     }
 
     public static ActivityId8LauncherMainBinding inflate(LayoutInflater inflater) {
@@ -46,7 +47,7 @@ public abstract class ActivityId8LauncherMainBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityId8LauncherMainBinding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityId8LauncherMainBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_id8_launcher_main, (ViewGroup) null, false, component);
+        return (ActivityId8LauncherMainBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_id8_launcher_main, null, false, component);
     }
 
     public static ActivityId8LauncherMainBinding bind(View view) {
@@ -55,6 +56,6 @@ public abstract class ActivityId8LauncherMainBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityId8LauncherMainBinding bind(View view, Object component) {
-        return (ActivityId8LauncherMainBinding) bind(component, view, R.layout.activity_id8_launcher_main);
+        return (ActivityId8LauncherMainBinding) bind(component, view, C0899R.C0902layout.activity_id8_launcher_main);
     }
 }

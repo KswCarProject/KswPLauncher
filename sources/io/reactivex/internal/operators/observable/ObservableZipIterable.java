@@ -11,36 +11,40 @@ import io.reactivex.internal.functions.ObjectHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.Iterator;
 
+/* loaded from: classes.dex */
 public final class ObservableZipIterable<T, U, V> extends Observable<V> {
     final Iterable<U> other;
     final Observable<? extends T> source;
     final BiFunction<? super T, ? super U, ? extends V> zipper;
 
-    public ObservableZipIterable(Observable<? extends T> source2, Iterable<U> other2, BiFunction<? super T, ? super U, ? extends V> zipper2) {
-        this.source = source2;
-        this.other = other2;
-        this.zipper = zipper2;
+    public ObservableZipIterable(Observable<? extends T> source, Iterable<U> other, BiFunction<? super T, ? super U, ? extends V> zipper) {
+        this.source = source;
+        this.other = other;
+        this.zipper = zipper;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super V> t) {
         try {
             Iterator<U> it = (Iterator) ObjectHelper.requireNonNull(this.other.iterator(), "The iterator returned by other is null");
             try {
-                if (!it.hasNext()) {
-                    EmptyDisposable.complete((Observer<?>) t);
+                boolean b = it.hasNext();
+                if (!b) {
+                    EmptyDisposable.complete(t);
                 } else {
                     this.source.subscribe(new ZipIterableObserver(t, it, this.zipper));
                 }
             } catch (Throwable e) {
                 Exceptions.throwIfFatal(e);
-                EmptyDisposable.error(e, (Observer<?>) t);
+                EmptyDisposable.error(e, t);
             }
         } catch (Throwable e2) {
             Exceptions.throwIfFatal(e2);
-            EmptyDisposable.error(e2, (Observer<?>) t);
+            EmptyDisposable.error(e2, t);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ZipIterableObserver<T, U, V> implements Observer<T>, Disposable {
         boolean done;
         final Observer<? super V> downstream;
@@ -48,12 +52,13 @@ public final class ObservableZipIterable<T, U, V> extends Observable<V> {
         Disposable upstream;
         final BiFunction<? super T, ? super U, ? extends V> zipper;
 
-        ZipIterableObserver(Observer<? super V> actual, Iterator<U> iterator2, BiFunction<? super T, ? super U, ? extends V> zipper2) {
+        ZipIterableObserver(Observer<? super V> actual, Iterator<U> iterator, BiFunction<? super T, ? super U, ? extends V> zipper) {
             this.downstream = actual;
-            this.iterator = iterator2;
-            this.zipper = zipper2;
+            this.iterator = iterator;
+            this.zipper = zipper;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -61,47 +66,52 @@ public final class ObservableZipIterable<T, U, V> extends Observable<V> {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
-            if (!this.done) {
+            if (this.done) {
+                return;
+            }
+            try {
                 try {
+                    this.downstream.onNext(ObjectHelper.requireNonNull(this.zipper.apply(t, ObjectHelper.requireNonNull(this.iterator.next(), "The iterator returned a null value")), "The zipper function returned a null value"));
                     try {
-                        this.downstream.onNext(ObjectHelper.requireNonNull(this.zipper.apply(t, ObjectHelper.requireNonNull(this.iterator.next(), "The iterator returned a null value")), "The zipper function returned a null value"));
-                        try {
-                            if (!this.iterator.hasNext()) {
-                                this.done = true;
-                                this.upstream.dispose();
-                                this.downstream.onComplete();
-                            }
-                        } catch (Throwable e) {
-                            Exceptions.throwIfFatal(e);
-                            error(e);
+                        boolean b = this.iterator.hasNext();
+                        if (!b) {
+                            this.done = true;
+                            this.upstream.dispose();
+                            this.downstream.onComplete();
                         }
-                    } catch (Throwable e2) {
-                        Exceptions.throwIfFatal(e2);
-                        error(e2);
+                    } catch (Throwable e) {
+                        Exceptions.throwIfFatal(e);
+                        error(e);
                     }
-                } catch (Throwable e3) {
-                    Exceptions.throwIfFatal(e3);
-                    error(e3);
+                } catch (Throwable e2) {
+                    Exceptions.throwIfFatal(e2);
+                    error(e2);
                 }
+            } catch (Throwable e3) {
+                Exceptions.throwIfFatal(e3);
+                error(e3);
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void error(Throwable e) {
+        void error(Throwable e) {
             this.done = true;
             this.upstream.dispose();
             this.downstream.onError(e);
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -111,11 +121,13 @@ public final class ObservableZipIterable<T, U, V> extends Observable<V> {
             this.downstream.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                this.downstream.onComplete();
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            this.downstream.onComplete();
         }
     }
 }

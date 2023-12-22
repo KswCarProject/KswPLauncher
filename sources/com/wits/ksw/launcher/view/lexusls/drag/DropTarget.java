@@ -2,24 +2,25 @@ package com.wits.ksw.launcher.view.lexusls.drag;
 
 import android.graphics.Rect;
 
+/* loaded from: classes13.dex */
 public interface DropTarget {
-    boolean acceptDrop(DragSource dragSource, int i, int i2, int i3, int i4, DragView dragView, Object obj);
+    boolean acceptDrop(DragSource source, int x, int y, int xOffset, int yOffset, DragView dragView, Object dragInfo);
 
-    Rect estimateDropLocation(DragSource dragSource, int i, int i2, int i3, int i4, DragView dragView, Object obj, Rect rect);
+    Rect estimateDropLocation(DragSource source, int x, int y, int xOffset, int yOffset, DragView dragView, Object dragInfo, Rect recycle);
 
-    void getHitRect(Rect rect);
+    void getHitRect(Rect outRect);
 
     int getLeft();
 
-    void getLocationOnScreen(int[] iArr);
+    void getLocationOnScreen(int[] loc);
 
     int getTop();
 
-    void onDragEnter(DragSource dragSource, int i, int i2, int i3, int i4, DragView dragView, Object obj);
+    void onDragEnter(DragSource source, int x, int y, int xOffset, int yOffset, DragView dragView, Object dragInfo);
 
-    void onDragExit(DragSource dragSource, int i, int i2, int i3, int i4, DragView dragView, Object obj);
+    void onDragExit(DragSource source, int x, int y, int xOffset, int yOffset, DragView dragView, Object dragInfo);
 
-    void onDragOver(DragSource dragSource, int i, int i2, int i3, int i4, DragView dragView, Object obj);
+    void onDragOver(DragSource source, int x, int y, int xOffset, int yOffset, DragView dragView, Object dragInfo);
 
-    void onDrop(DragSource dragSource, int i, int i2, int i3, int i4, DragView dragView, Object obj);
+    void onDrop(DragSource source, int x, int y, int xOffset, int yOffset, DragView dragView, Object dragInfo);
 }

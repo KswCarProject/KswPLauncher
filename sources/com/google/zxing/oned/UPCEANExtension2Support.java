@@ -9,6 +9,7 @@ import com.google.zxing.common.BitArray;
 import java.util.EnumMap;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 final class UPCEANExtension2Support {
     private final int[] decodeMiddleCounters = new int[4];
     private final StringBuilder decodeRowStringBuffer = new StringBuilder();
@@ -16,16 +17,13 @@ final class UPCEANExtension2Support {
     UPCEANExtension2Support() {
     }
 
-    /* access modifiers changed from: package-private */
-    public Result decodeRow(int rowNumber, BitArray row, int[] extensionStartRange) throws NotFoundException {
-        StringBuilder sb = this.decodeRowStringBuffer;
-        StringBuilder result = sb;
-        sb.setLength(0);
+    Result decodeRow(int rowNumber, BitArray row, int[] extensionStartRange) throws NotFoundException {
+        StringBuilder result = this.decodeRowStringBuffer;
+        result.setLength(0);
         int end = decodeMiddle(row, extensionStartRange, result);
-        String sb2 = result.toString();
-        String resultString = sb2;
-        Map<ResultMetadataType, Object> extensionData = parseExtensionString(sb2);
-        Result extensionResult = new Result(resultString, (byte[]) null, new ResultPoint[]{new ResultPoint(((float) (extensionStartRange[0] + extensionStartRange[1])) / 2.0f, (float) rowNumber), new ResultPoint((float) end, (float) rowNumber)}, BarcodeFormat.UPC_EAN_EXTENSION);
+        String resultString = result.toString();
+        Map<ResultMetadataType, Object> extensionData = parseExtensionString(resultString);
+        Result extensionResult = new Result(resultString, null, new ResultPoint[]{new ResultPoint((extensionStartRange[0] + extensionStartRange[1]) / 2.0f, rowNumber), new ResultPoint(end, rowNumber)}, BarcodeFormat.UPC_EAN_EXTENSION);
         if (extensionData != null) {
             extensionResult.putAllMetadata(extensionData);
         }
@@ -33,9 +31,8 @@ final class UPCEANExtension2Support {
     }
 
     private int decodeMiddle(BitArray row, int[] startRange, StringBuilder resultString) throws NotFoundException {
-        int[] iArr = this.decodeMiddleCounters;
-        int[] counters = iArr;
-        iArr[0] = 0;
+        int[] counters = this.decodeMiddleCounters;
+        counters[0] = 0;
         counters[1] = 0;
         counters[2] = 0;
         counters[3] = 0;
@@ -57,20 +54,19 @@ final class UPCEANExtension2Support {
         }
         if (resultString.length() != 2) {
             throw NotFoundException.getNotFoundInstance();
-        } else if (Integer.parseInt(resultString.toString()) % 4 == checkParity) {
-            return rowOffset;
-        } else {
+        }
+        if (Integer.parseInt(resultString.toString()) % 4 != checkParity) {
             throw NotFoundException.getNotFoundInstance();
         }
+        return rowOffset;
     }
 
     private static Map<ResultMetadataType, Object> parseExtensionString(String raw) {
         if (raw.length() != 2) {
             return null;
         }
-        Map<ResultMetadataType, Object> enumMap = new EnumMap<>(ResultMetadataType.class);
-        Map<ResultMetadataType, Object> result = enumMap;
-        enumMap.put(ResultMetadataType.ISSUE_NUMBER, Integer.valueOf(raw));
+        Map<ResultMetadataType, Object> result = new EnumMap<>(ResultMetadataType.class);
+        result.put(ResultMetadataType.ISSUE_NUMBER, Integer.valueOf(raw));
         return result;
     }
 }

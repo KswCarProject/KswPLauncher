@@ -5,6 +5,7 @@ import com.ibm.icu.text.UnicodeSet;
 import com.ibm.icu.util.ICUUncheckedIOException;
 import java.io.IOException;
 
+/* loaded from: classes.dex */
 public class FilteredNormalizer2 extends Normalizer2 {
     private Normalizer2 norm2;
     private UnicodeSet set;
@@ -14,30 +15,35 @@ public class FilteredNormalizer2 extends Normalizer2 {
         this.set = filterSet;
     }
 
+    @Override // com.ibm.icu.text.Normalizer2
     public StringBuilder normalize(CharSequence src, StringBuilder dest) {
-        if (dest != src) {
-            dest.setLength(0);
-            normalize(src, dest, UnicodeSet.SpanCondition.SIMPLE);
-            return dest;
+        if (dest == src) {
+            throw new IllegalArgumentException();
         }
-        throw new IllegalArgumentException();
+        dest.setLength(0);
+        normalize(src, dest, UnicodeSet.SpanCondition.SIMPLE);
+        return dest;
     }
 
+    @Override // com.ibm.icu.text.Normalizer2
     public Appendable normalize(CharSequence src, Appendable dest) {
-        if (dest != src) {
-            return normalize(src, dest, UnicodeSet.SpanCondition.SIMPLE);
+        if (dest == src) {
+            throw new IllegalArgumentException();
         }
-        throw new IllegalArgumentException();
+        return normalize(src, dest, UnicodeSet.SpanCondition.SIMPLE);
     }
 
+    @Override // com.ibm.icu.text.Normalizer2
     public StringBuilder normalizeSecondAndAppend(StringBuilder first, CharSequence second) {
         return normalizeSecondAndAppend(first, second, true);
     }
 
+    @Override // com.ibm.icu.text.Normalizer2
     public StringBuilder append(StringBuilder first, CharSequence second) {
         return normalizeSecondAndAppend(first, second, false);
     }
 
+    @Override // com.ibm.icu.text.Normalizer2
     public String getDecomposition(int c) {
         if (this.set.contains(c)) {
             return this.norm2.getDecomposition(c);
@@ -45,6 +51,7 @@ public class FilteredNormalizer2 extends Normalizer2 {
         return null;
     }
 
+    @Override // com.ibm.icu.text.Normalizer2
     public String getRawDecomposition(int c) {
         if (this.set.contains(c)) {
             return this.norm2.getRawDecomposition(c);
@@ -52,13 +59,15 @@ public class FilteredNormalizer2 extends Normalizer2 {
         return null;
     }
 
+    @Override // com.ibm.icu.text.Normalizer2
     public int composePair(int a, int b) {
-        if (!this.set.contains(a) || !this.set.contains(b)) {
-            return -1;
+        if (this.set.contains(a) && this.set.contains(b)) {
+            return this.norm2.composePair(a, b);
         }
-        return this.norm2.composePair(a, b);
+        return -1;
     }
 
+    @Override // com.ibm.icu.text.Normalizer2
     public int getCombiningClass(int c) {
         if (this.set.contains(c)) {
             return this.norm2.getCombiningClass(c);
@@ -66,6 +75,7 @@ public class FilteredNormalizer2 extends Normalizer2 {
         return 0;
     }
 
+    @Override // com.ibm.icu.text.Normalizer2
     public boolean isNormalized(CharSequence s) {
         UnicodeSet.SpanCondition spanCondition = UnicodeSet.SpanCondition.SIMPLE;
         int prevSpanLimit = 0;
@@ -83,6 +93,7 @@ public class FilteredNormalizer2 extends Normalizer2 {
         return true;
     }
 
+    @Override // com.ibm.icu.text.Normalizer2
     public Normalizer.QuickCheckResult quickCheck(CharSequence s) {
         Normalizer.QuickCheckResult result = Normalizer.YES;
         UnicodeSet.SpanCondition spanCondition = UnicodeSet.SpanCondition.SIMPLE;
@@ -93,7 +104,7 @@ public class FilteredNormalizer2 extends Normalizer2 {
                 spanCondition = UnicodeSet.SpanCondition.SIMPLE;
             } else {
                 Normalizer.QuickCheckResult qcResult = this.norm2.quickCheck(s.subSequence(prevSpanLimit, spanLimit));
-                if (qcResult == Normalizer.NO) {
+                if (qcResult == Normalizer.f149NO) {
                     return qcResult;
                 }
                 if (qcResult == Normalizer.MAYBE) {
@@ -106,6 +117,7 @@ public class FilteredNormalizer2 extends Normalizer2 {
         return result;
     }
 
+    @Override // com.ibm.icu.text.Normalizer2
     public int spanQuickCheckYes(CharSequence s) {
         UnicodeSet.SpanCondition spanCondition = UnicodeSet.SpanCondition.SIMPLE;
         int prevSpanLimit = 0;
@@ -122,17 +134,21 @@ public class FilteredNormalizer2 extends Normalizer2 {
             }
             prevSpanLimit = spanLimit;
         }
-        return s.length();
+        int prevSpanLimit2 = s.length();
+        return prevSpanLimit2;
     }
 
+    @Override // com.ibm.icu.text.Normalizer2
     public boolean hasBoundaryBefore(int c) {
         return !this.set.contains(c) || this.norm2.hasBoundaryBefore(c);
     }
 
+    @Override // com.ibm.icu.text.Normalizer2
     public boolean hasBoundaryAfter(int c) {
         return !this.set.contains(c) || this.norm2.hasBoundaryAfter(c);
     }
 
+    @Override // com.ibm.icu.text.Normalizer2
     public boolean isInert(int c) {
         return !this.set.contains(c) || this.norm2.isInert(c);
     }
@@ -166,38 +182,41 @@ public class FilteredNormalizer2 extends Normalizer2 {
     private StringBuilder normalizeSecondAndAppend(StringBuilder first, CharSequence second, boolean doNormalize) {
         if (first == second) {
             throw new IllegalArgumentException();
-        } else if (first.length() != 0) {
-            int prefixLimit = this.set.span(second, 0, UnicodeSet.SpanCondition.SIMPLE);
-            if (prefixLimit != 0) {
-                CharSequence prefix = second.subSequence(0, prefixLimit);
-                int suffixStart = this.set.spanBack(first, Integer.MAX_VALUE, UnicodeSet.SpanCondition.SIMPLE);
-                if (suffixStart != 0) {
-                    StringBuilder middle = new StringBuilder(first.subSequence(suffixStart, first.length()));
-                    if (doNormalize) {
-                        this.norm2.normalizeSecondAndAppend(middle, prefix);
-                    } else {
-                        this.norm2.append(middle, prefix);
-                    }
-                    first.delete(suffixStart, Integer.MAX_VALUE).append(middle);
-                } else if (doNormalize) {
+        }
+        if (first.length() == 0) {
+            if (doNormalize) {
+                return normalize(second, first);
+            }
+            return first.append(second);
+        }
+        int prefixLimit = this.set.span(second, 0, UnicodeSet.SpanCondition.SIMPLE);
+        if (prefixLimit != 0) {
+            CharSequence prefix = second.subSequence(0, prefixLimit);
+            int suffixStart = this.set.spanBack(first, Integer.MAX_VALUE, UnicodeSet.SpanCondition.SIMPLE);
+            if (suffixStart == 0) {
+                if (doNormalize) {
                     this.norm2.normalizeSecondAndAppend(first, prefix);
                 } else {
                     this.norm2.append(first, prefix);
                 }
-            }
-            if (prefixLimit < second.length()) {
-                CharSequence rest = second.subSequence(prefixLimit, second.length());
+            } else {
+                StringBuilder middle = new StringBuilder(first.subSequence(suffixStart, first.length()));
                 if (doNormalize) {
-                    normalize(rest, first, UnicodeSet.SpanCondition.NOT_CONTAINED);
+                    this.norm2.normalizeSecondAndAppend(middle, prefix);
                 } else {
-                    first.append(rest);
+                    this.norm2.append(middle, prefix);
                 }
+                first.delete(suffixStart, Integer.MAX_VALUE).append((CharSequence) middle);
             }
-            return first;
-        } else if (doNormalize) {
-            return normalize(second, first);
-        } else {
-            return first.append(second);
         }
+        if (prefixLimit < second.length()) {
+            CharSequence rest = second.subSequence(prefixLimit, second.length());
+            if (doNormalize) {
+                normalize(rest, first, UnicodeSet.SpanCondition.NOT_CONTAINED);
+            } else {
+                first.append(rest);
+            }
+        }
+        return first;
     }
 }

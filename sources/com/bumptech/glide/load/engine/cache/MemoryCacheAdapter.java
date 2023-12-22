@@ -4,39 +4,48 @@ import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.engine.Resource;
 import com.bumptech.glide.load.engine.cache.MemoryCache;
 
+/* loaded from: classes.dex */
 public class MemoryCacheAdapter implements MemoryCache {
     private MemoryCache.ResourceRemovedListener listener;
 
+    @Override // com.bumptech.glide.load.engine.cache.MemoryCache
     public long getCurrentSize() {
-        return 0;
+        return 0L;
     }
 
+    @Override // com.bumptech.glide.load.engine.cache.MemoryCache
     public long getMaxSize() {
-        return 0;
+        return 0L;
     }
 
+    @Override // com.bumptech.glide.load.engine.cache.MemoryCache
     public void setSizeMultiplier(float multiplier) {
     }
 
+    @Override // com.bumptech.glide.load.engine.cache.MemoryCache
     public Resource<?> remove(Key key) {
         return null;
     }
 
+    @Override // com.bumptech.glide.load.engine.cache.MemoryCache
     public Resource<?> put(Key key, Resource<?> resource) {
-        if (resource == null) {
+        if (resource != null) {
+            this.listener.onResourceRemoved(resource);
             return null;
         }
-        this.listener.onResourceRemoved(resource);
         return null;
     }
 
-    public void setResourceRemovedListener(MemoryCache.ResourceRemovedListener listener2) {
-        this.listener = listener2;
+    @Override // com.bumptech.glide.load.engine.cache.MemoryCache
+    public void setResourceRemovedListener(MemoryCache.ResourceRemovedListener listener) {
+        this.listener = listener;
     }
 
+    @Override // com.bumptech.glide.load.engine.cache.MemoryCache
     public void clearMemory() {
     }
 
+    @Override // com.bumptech.glide.load.engine.cache.MemoryCache
     public void trimMemory(int level) {
     }
 }

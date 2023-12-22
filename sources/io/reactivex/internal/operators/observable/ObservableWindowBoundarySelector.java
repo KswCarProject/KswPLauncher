@@ -22,24 +22,27 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ObservableWindowBoundarySelector<T, B, V> extends AbstractObservableWithUpstream<T, Observable<T>> {
     final int bufferSize;
     final Function<? super B, ? extends ObservableSource<V>> close;
     final ObservableSource<B> open;
 
-    public ObservableWindowBoundarySelector(ObservableSource<T> source, ObservableSource<B> open2, Function<? super B, ? extends ObservableSource<V>> close2, int bufferSize2) {
+    public ObservableWindowBoundarySelector(ObservableSource<T> source, ObservableSource<B> open, Function<? super B, ? extends ObservableSource<V>> close, int bufferSize) {
         super(source);
-        this.open = open2;
-        this.close = close2;
-        this.bufferSize = bufferSize2;
+        this.open = open;
+        this.close = close;
+        this.bufferSize = bufferSize;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super Observable<T>> t) {
         this.source.subscribe(new WindowBoundaryMainObserver(new SerializedObserver(t), this.open, this.close, this.bufferSize));
     }
 
+    /* loaded from: classes.dex */
     static final class WindowBoundaryMainObserver<T, B, V> extends QueueDrainObserver<T, Object, Observable<T>> implements Disposable {
-        final AtomicReference<Disposable> boundary = new AtomicReference<>();
+        final AtomicReference<Disposable> boundary;
         final int bufferSize;
         final Function<? super B, ? extends ObservableSource<V>> close;
         final ObservableSource<B> open;
@@ -47,37 +50,43 @@ public final class ObservableWindowBoundarySelector<T, B, V> extends AbstractObs
         final AtomicBoolean stopWindows;
         Disposable upstream;
         final AtomicLong windows;
-        final List<UnicastSubject<T>> ws;
 
-        WindowBoundaryMainObserver(Observer<? super Observable<T>> actual, ObservableSource<B> open2, Function<? super B, ? extends ObservableSource<V>> close2, int bufferSize2) {
+        /* renamed from: ws */
+        final List<UnicastSubject<T>> f330ws;
+
+        WindowBoundaryMainObserver(Observer<? super Observable<T>> actual, ObservableSource<B> open, Function<? super B, ? extends ObservableSource<V>> close, int bufferSize) {
             super(actual, new MpscLinkedQueue());
+            this.boundary = new AtomicReference<>();
             AtomicLong atomicLong = new AtomicLong();
             this.windows = atomicLong;
             this.stopWindows = new AtomicBoolean();
-            this.open = open2;
-            this.close = close2;
-            this.bufferSize = bufferSize2;
+            this.open = open;
+            this.close = close;
+            this.bufferSize = bufferSize;
             this.resources = new CompositeDisposable();
-            this.ws = new ArrayList();
-            atomicLong.lazySet(1);
+            this.f330ws = new ArrayList();
+            atomicLong.lazySet(1L);
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
                 this.downstream.onSubscribe(this);
-                if (!this.stopWindows.get()) {
-                    OperatorWindowBoundaryOpenObserver<T, B> os = new OperatorWindowBoundaryOpenObserver<>(this);
-                    if (this.boundary.compareAndSet((Object) null, os)) {
-                        this.open.subscribe(os);
-                    }
+                if (this.stopWindows.get()) {
+                    return;
+                }
+                OperatorWindowBoundaryOpenObserver<T, B> os = new OperatorWindowBoundaryOpenObserver<>(this);
+                if (this.boundary.compareAndSet(null, os)) {
+                    this.open.subscribe(os);
                 }
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             if (fastEnter()) {
-                for (UnicastSubject<T> w : this.ws) {
+                for (UnicastSubject<T> w : this.f330ws) {
                     w.onNext(t);
                 }
                 if (leave(-1) == 0) {
@@ -92,6 +101,7 @@ public final class ObservableWindowBoundarySelector<T, B, V> extends AbstractObs
             drainLoop();
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -108,26 +118,28 @@ public final class ObservableWindowBoundarySelector<T, B, V> extends AbstractObs
             this.downstream.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                if (enter()) {
-                    drainLoop();
-                }
-                if (this.windows.decrementAndGet() == 0) {
-                    this.resources.dispose();
-                }
-                this.downstream.onComplete();
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            if (enter()) {
+                drainLoop();
+            }
+            if (this.windows.decrementAndGet() == 0) {
+                this.resources.dispose();
+            }
+            this.downstream.onComplete();
         }
 
-        /* access modifiers changed from: package-private */
-        public void error(Throwable t) {
+        void error(Throwable t) {
             this.upstream.dispose();
             this.resources.dispose();
             onError(t);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             if (this.stopWindows.compareAndSet(false, true)) {
                 DisposableHelper.dispose(this.boundary);
@@ -137,21 +149,20 @@ public final class ObservableWindowBoundarySelector<T, B, V> extends AbstractObs
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.stopWindows.get();
         }
 
-        /* access modifiers changed from: package-private */
-        public void disposeBoundary() {
+        void disposeBoundary() {
             this.resources.dispose();
             DisposableHelper.dispose(this.boundary);
         }
 
-        /* access modifiers changed from: package-private */
-        public void drainLoop() {
+        void drainLoop() {
             MpscLinkedQueue<Object> q = (MpscLinkedQueue) this.queue;
-            Observer<? super Observable<T>> a = this.downstream;
-            List<UnicastSubject<T>> ws2 = this.ws;
+            Observer<? super V> observer = this.downstream;
+            List<UnicastSubject<T>> ws = this.f330ws;
             int missed = 1;
             while (true) {
                 boolean d = this.done;
@@ -161,124 +172,137 @@ public final class ObservableWindowBoundarySelector<T, B, V> extends AbstractObs
                     disposeBoundary();
                     Throwable e = this.error;
                     if (e != null) {
-                        for (UnicastSubject<T> w : ws2) {
+                        for (UnicastSubject<T> w : ws) {
                             w.onError(e);
                         }
                     } else {
-                        for (UnicastSubject<T> w2 : ws2) {
+                        for (UnicastSubject<T> w2 : ws) {
                             w2.onComplete();
                         }
                     }
-                    ws2.clear();
+                    ws.clear();
                     return;
-                } else if (empty) {
-                    missed = leave(-missed);
-                    if (missed == 0) {
-                        return;
-                    }
-                } else if (o instanceof WindowOperation) {
-                    WindowOperation<T, B> wo = (WindowOperation) o;
-                    if (wo.w != null) {
-                        if (ws2.remove(wo.w)) {
-                            wo.w.onComplete();
-                            if (this.windows.decrementAndGet() == 0) {
-                                disposeBoundary();
-                                return;
+                } else if (!empty) {
+                    if (o instanceof WindowOperation) {
+                        WindowOperation<T, B> wo = (WindowOperation) o;
+                        if (wo.f331w != null) {
+                            if (ws.remove(wo.f331w)) {
+                                wo.f331w.onComplete();
+                                if (this.windows.decrementAndGet() == 0) {
+                                    disposeBoundary();
+                                    return;
+                                }
+                            } else {
+                                continue;
                             }
-                        } else {
-                            continue;
+                        } else if (!this.stopWindows.get()) {
+                            UnicastSubject<T> w3 = UnicastSubject.create(this.bufferSize);
+                            ws.add(w3);
+                            observer.onNext(w3);
+                            try {
+                                ObservableSource<V> p = (ObservableSource) ObjectHelper.requireNonNull(this.close.apply((B) wo.open), "The ObservableSource supplied is null");
+                                OperatorWindowBoundaryCloseObserver<T, V> cl = new OperatorWindowBoundaryCloseObserver<>(this, w3);
+                                if (this.resources.add(cl)) {
+                                    this.windows.getAndIncrement();
+                                    p.subscribe(cl);
+                                }
+                            } catch (Throwable e2) {
+                                Exceptions.throwIfFatal(e2);
+                                this.stopWindows.set(true);
+                                observer.onError(e2);
+                            }
                         }
-                    } else if (!this.stopWindows.get()) {
-                        UnicastSubject<T> w3 = UnicastSubject.create(this.bufferSize);
-                        ws2.add(w3);
-                        a.onNext(w3);
-                        try {
-                            ObservableSource observableSource = (ObservableSource) ObjectHelper.requireNonNull(this.close.apply(wo.open), "The ObservableSource supplied is null");
-                            OperatorWindowBoundaryCloseObserver<T, V> cl = new OperatorWindowBoundaryCloseObserver<>(this, w3);
-                            if (this.resources.add(cl)) {
-                                this.windows.getAndIncrement();
-                                observableSource.subscribe(cl);
-                            }
-                        } catch (Throwable e2) {
-                            Exceptions.throwIfFatal(e2);
-                            this.stopWindows.set(true);
-                            a.onError(e2);
+                    } else {
+                        for (UnicastSubject<T> w4 : ws) {
+                            w4.onNext((T) NotificationLite.getValue(o));
                         }
                     }
                 } else {
-                    for (UnicastSubject<T> w4 : ws2) {
-                        w4.onNext(NotificationLite.getValue(o));
+                    missed = leave(-missed);
+                    if (missed == 0) {
+                        return;
                     }
                 }
             }
         }
 
-        public void accept(Observer<? super Observable<T>> observer, Object v) {
+        @Override // io.reactivex.internal.observers.QueueDrainObserver, io.reactivex.internal.util.ObservableQueueDrain
+        public void accept(Observer<? super Observable<T>> a, Object v) {
         }
 
-        /* access modifiers changed from: package-private */
-        public void open(B b) {
-            this.queue.offer(new WindowOperation((UnicastSubject) null, b));
+        void open(B b) {
+            this.queue.offer(new WindowOperation(null, b));
             if (enter()) {
                 drainLoop();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void close(OperatorWindowBoundaryCloseObserver<T, V> w) {
+        void close(OperatorWindowBoundaryCloseObserver<T, V> w) {
             this.resources.delete(w);
-            this.queue.offer(new WindowOperation(w.w, null));
+            this.queue.offer(new WindowOperation(w.f329w, null));
             if (enter()) {
                 drainLoop();
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class WindowOperation<T, B> {
         final B open;
-        final UnicastSubject<T> w;
 
-        WindowOperation(UnicastSubject<T> w2, B open2) {
-            this.w = w2;
-            this.open = open2;
+        /* renamed from: w */
+        final UnicastSubject<T> f331w;
+
+        WindowOperation(UnicastSubject<T> w, B open) {
+            this.f331w = w;
+            this.open = open;
         }
     }
 
+    /* loaded from: classes.dex */
     static final class OperatorWindowBoundaryOpenObserver<T, B> extends DisposableObserver<B> {
         final WindowBoundaryMainObserver<T, B, ?> parent;
 
-        OperatorWindowBoundaryOpenObserver(WindowBoundaryMainObserver<T, B, ?> parent2) {
-            this.parent = parent2;
+        OperatorWindowBoundaryOpenObserver(WindowBoundaryMainObserver<T, B, ?> parent) {
+            this.parent = parent;
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(B t) {
             this.parent.open(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             this.parent.error(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             this.parent.onComplete();
         }
     }
 
+    /* loaded from: classes.dex */
     static final class OperatorWindowBoundaryCloseObserver<T, V> extends DisposableObserver<V> {
         boolean done;
         final WindowBoundaryMainObserver<T, ?, V> parent;
-        final UnicastSubject<T> w;
 
-        OperatorWindowBoundaryCloseObserver(WindowBoundaryMainObserver<T, ?, V> parent2, UnicastSubject<T> w2) {
-            this.parent = parent2;
-            this.w = w2;
+        /* renamed from: w */
+        final UnicastSubject<T> f329w;
+
+        OperatorWindowBoundaryCloseObserver(WindowBoundaryMainObserver<T, ?, V> parent, UnicastSubject<T> w) {
+            this.parent = parent;
+            this.f329w = w;
         }
 
-        public void onNext(V v) {
+        @Override // io.reactivex.Observer
+        public void onNext(V t) {
             dispose();
             onComplete();
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -288,11 +312,13 @@ public final class ObservableWindowBoundarySelector<T, B, V> extends AbstractObs
             this.parent.error(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                this.parent.close(this);
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            this.parent.close(this);
         }
     }
 }

@@ -9,10 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.view.CustomSkinImageView;
 
+/* loaded from: classes7.dex */
 public abstract class AlsId7UiCarInfoSubViewBinding extends ViewDataBinding {
     public final ConstraintLayout carConstraintLayout;
     public final CustomSkinImageView carImageView;
@@ -22,15 +23,15 @@ public abstract class AlsId7UiCarInfoSubViewBinding extends ViewDataBinding {
     public final TextView textView2;
     public final TextView textView3;
 
-    public abstract void setCarViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setCarViewModel(LauncherViewModel CarViewModel);
 
-    protected AlsId7UiCarInfoSubViewBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout carConstraintLayout2, CustomSkinImageView carImageView2, ImageView carInfoImageView2, TextView textView22, TextView textView32) {
+    protected AlsId7UiCarInfoSubViewBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout carConstraintLayout, CustomSkinImageView carImageView, ImageView carInfoImageView, TextView textView2, TextView textView3) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.carConstraintLayout = carConstraintLayout2;
-        this.carImageView = carImageView2;
-        this.carInfoImageView = carInfoImageView2;
-        this.textView2 = textView22;
-        this.textView3 = textView32;
+        this.carConstraintLayout = carConstraintLayout;
+        this.carImageView = carImageView;
+        this.carInfoImageView = carInfoImageView;
+        this.textView2 = textView2;
+        this.textView3 = textView3;
     }
 
     public LauncherViewModel getCarViewModel() {
@@ -43,7 +44,7 @@ public abstract class AlsId7UiCarInfoSubViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7UiCarInfoSubViewBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AlsId7UiCarInfoSubViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_ui_sub_car_view, root, attachToRoot, component);
+        return (AlsId7UiCarInfoSubViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_ui_sub_car_view, root, attachToRoot, component);
     }
 
     public static AlsId7UiCarInfoSubViewBinding inflate(LayoutInflater inflater) {
@@ -52,7 +53,7 @@ public abstract class AlsId7UiCarInfoSubViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7UiCarInfoSubViewBinding inflate(LayoutInflater inflater, Object component) {
-        return (AlsId7UiCarInfoSubViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_ui_sub_car_view, (ViewGroup) null, false, component);
+        return (AlsId7UiCarInfoSubViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_ui_sub_car_view, null, false, component);
     }
 
     public static AlsId7UiCarInfoSubViewBinding bind(View view) {
@@ -61,6 +62,6 @@ public abstract class AlsId7UiCarInfoSubViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7UiCarInfoSubViewBinding bind(View view, Object component) {
-        return (AlsId7UiCarInfoSubViewBinding) bind(component, view, R.layout.als_id7_ui_sub_car_view);
+        return (AlsId7UiCarInfoSubViewBinding) bind(component, view, C0899R.C0902layout.als_id7_ui_sub_car_view);
     }
 }

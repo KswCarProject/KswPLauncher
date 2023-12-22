@@ -8,54 +8,62 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class CompletableObserveOn extends Completable {
     final Scheduler scheduler;
     final CompletableSource source;
 
-    public CompletableObserveOn(CompletableSource source2, Scheduler scheduler2) {
-        this.source = source2;
-        this.scheduler = scheduler2;
+    public CompletableObserveOn(CompletableSource source, Scheduler scheduler) {
+        this.source = source;
+        this.scheduler = scheduler;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         this.source.subscribe(new ObserveOnCompletableObserver(observer, this.scheduler));
     }
 
+    /* loaded from: classes.dex */
     static final class ObserveOnCompletableObserver extends AtomicReference<Disposable> implements CompletableObserver, Disposable, Runnable {
         private static final long serialVersionUID = 8571289934935992137L;
         final CompletableObserver downstream;
         Throwable error;
         final Scheduler scheduler;
 
-        ObserveOnCompletableObserver(CompletableObserver actual, Scheduler scheduler2) {
+        ObserveOnCompletableObserver(CompletableObserver actual, Scheduler scheduler) {
             this.downstream = actual;
-            this.scheduler = scheduler2;
+            this.scheduler = scheduler;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             DisposableHelper.dispose(this);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return DisposableHelper.isDisposed((Disposable) get());
+            return DisposableHelper.isDisposed(get());
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.setOnce(this, d)) {
                 this.downstream.onSubscribe(this);
             }
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onError(Throwable e) {
             this.error = e;
             DisposableHelper.replace(this, this.scheduler.scheduleDirect(this));
         }
 
+        @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
         public void onComplete() {
             DisposableHelper.replace(this, this.scheduler.scheduleDirect(this));
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             Throwable ex = this.error;
             if (ex != null) {

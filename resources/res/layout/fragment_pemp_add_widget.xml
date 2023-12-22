@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/ll_container" style="@style/id8_main_card_container">
+    <ImageView android:background="@drawable/pemp_id8_main_icon_add" style="@style/id8_pemp_main_card_size"/>
+    <ImageView android:id="@+id/iv_mask" style="@style/id8_pemp_main_card_size"/>
+    <LinearLayout style="@style/id8_pemp_main_card_container">
+        <TextView android:text="@string/fragment_add_title" style="@style/id8_pemp_main_card_title"/>
+        <ImageView android:background="@drawable/id8_main_icon_weather_line" style="@style/id8_pemp_main_card_divider"/>
+    </LinearLayout>
+</RelativeLayout>

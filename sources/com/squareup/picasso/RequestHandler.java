@@ -7,35 +7,35 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.io.InputStream;
 
+/* loaded from: classes.dex */
 public abstract class RequestHandler {
     public abstract boolean canHandleRequest(Request request);
 
     public abstract Result load(Request request, int i) throws IOException;
 
+    /* loaded from: classes.dex */
     public static final class Result {
         private final Bitmap bitmap;
         private final int exifOrientation;
         private final Picasso.LoadedFrom loadedFrom;
         private final InputStream stream;
 
-        public Result(Bitmap bitmap2, Picasso.LoadedFrom loadedFrom2) {
-            this((Bitmap) Utils.checkNotNull(bitmap2, "bitmap == null"), (InputStream) null, loadedFrom2, 0);
+        public Result(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
+            this((Bitmap) Utils.checkNotNull(bitmap, "bitmap == null"), null, loadedFrom, 0);
         }
 
-        public Result(InputStream stream2, Picasso.LoadedFrom loadedFrom2) {
-            this((Bitmap) null, (InputStream) Utils.checkNotNull(stream2, "stream == null"), loadedFrom2, 0);
+        public Result(InputStream stream, Picasso.LoadedFrom loadedFrom) {
+            this(null, (InputStream) Utils.checkNotNull(stream, "stream == null"), loadedFrom, 0);
         }
 
-        Result(Bitmap bitmap2, InputStream stream2, Picasso.LoadedFrom loadedFrom2, int exifOrientation2) {
-            boolean z = true;
-            if ((stream2 == null ? false : z) ^ (bitmap2 != null)) {
-                this.bitmap = bitmap2;
-                this.stream = stream2;
-                this.loadedFrom = (Picasso.LoadedFrom) Utils.checkNotNull(loadedFrom2, "loadedFrom == null");
-                this.exifOrientation = exifOrientation2;
-                return;
+        Result(Bitmap bitmap, InputStream stream, Picasso.LoadedFrom loadedFrom, int exifOrientation) {
+            if (!((stream != null) ^ (bitmap != null))) {
+                throw new AssertionError();
             }
-            throw new AssertionError();
+            this.bitmap = bitmap;
+            this.stream = stream;
+            this.loadedFrom = (Picasso.LoadedFrom) Utils.checkNotNull(loadedFrom, "loadedFrom == null");
+            this.exifOrientation = exifOrientation;
         }
 
         public Bitmap getBitmap() {
@@ -50,24 +50,20 @@ public abstract class RequestHandler {
             return this.loadedFrom;
         }
 
-        /* access modifiers changed from: package-private */
-        public int getExifOrientation() {
+        int getExifOrientation() {
             return this.exifOrientation;
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public int getRetryCount() {
+    int getRetryCount() {
         return 0;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean shouldRetry(boolean airplaneMode, NetworkInfo info) {
+    boolean shouldRetry(boolean airplaneMode, NetworkInfo info) {
         return false;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean supportsReplay() {
+    boolean supportsReplay() {
         return false;
     }
 
@@ -94,22 +90,22 @@ public abstract class RequestHandler {
     }
 
     static void calculateInSampleSize(int reqWidth, int reqHeight, int width, int height, BitmapFactory.Options options, Request request) {
-        int i;
+        int min;
         int sampleSize = 1;
         if (height > reqHeight || width > reqWidth) {
             if (reqHeight == 0) {
-                sampleSize = (int) Math.floor((double) (((float) width) / ((float) reqWidth)));
+                sampleSize = (int) Math.floor(width / reqWidth);
             } else if (reqWidth == 0) {
-                sampleSize = (int) Math.floor((double) (((float) height) / ((float) reqHeight)));
+                sampleSize = (int) Math.floor(height / reqHeight);
             } else {
-                int heightRatio = (int) Math.floor((double) (((float) height) / ((float) reqHeight)));
-                int widthRatio = (int) Math.floor((double) (((float) width) / ((float) reqWidth)));
+                int heightRatio = (int) Math.floor(height / reqHeight);
+                int widthRatio = (int) Math.floor(width / reqWidth);
                 if (request.centerInside) {
-                    i = Math.max(heightRatio, widthRatio);
+                    min = Math.max(heightRatio, widthRatio);
                 } else {
-                    i = Math.min(heightRatio, widthRatio);
+                    min = Math.min(heightRatio, widthRatio);
                 }
-                sampleSize = i;
+                sampleSize = min;
             }
         }
         options.inSampleSize = sampleSize;

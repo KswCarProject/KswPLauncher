@@ -7,5 +7,6 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.CLASS)
+/* loaded from: classes.dex */
 public @interface SkipQueryVerification {
 }

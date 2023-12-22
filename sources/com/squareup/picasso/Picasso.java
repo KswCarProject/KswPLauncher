@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
-import android.support.v4.internal.view.SupportMenu;
+import android.support.p001v4.internal.view.SupportMenu;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import com.squareup.picasso.Action;
@@ -21,8 +21,26 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 
+/* loaded from: classes.dex */
 public class Picasso {
-    static final Handler HANDLER = new Handler(Looper.getMainLooper()) {
+    static final String TAG = "Picasso";
+    final Cache cache;
+    private final CleanupThread cleanupThread;
+    final Context context;
+    final Bitmap.Config defaultBitmapConfig;
+    final Dispatcher dispatcher;
+    boolean indicatorsEnabled;
+    private final Listener listener;
+    volatile boolean loggingEnabled;
+    final ReferenceQueue<Object> referenceQueue;
+    private final List<RequestHandler> requestHandlers;
+    private final RequestTransformer requestTransformer;
+    boolean shutdown;
+    final Stats stats;
+    final Map<Object, Action> targetToAction;
+    final Map<ImageView, DeferredRequestCreator> targetToDeferredRequestCreator;
+    static final Handler HANDLER = new Handler(Looper.getMainLooper()) { // from class: com.squareup.picasso.Picasso.1
+        @Override // android.os.Handler
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 3:
@@ -53,36 +71,24 @@ public class Picasso {
             }
         }
     };
-    static final String TAG = "Picasso";
     static volatile Picasso singleton = null;
-    final Cache cache;
-    private final CleanupThread cleanupThread;
-    final Context context;
-    final Bitmap.Config defaultBitmapConfig;
-    final Dispatcher dispatcher;
-    boolean indicatorsEnabled;
-    private final Listener listener;
-    volatile boolean loggingEnabled;
-    final ReferenceQueue<Object> referenceQueue;
-    private final List<RequestHandler> requestHandlers;
-    private final RequestTransformer requestTransformer;
-    boolean shutdown;
-    final Stats stats;
-    final Map<Object, Action> targetToAction;
-    final Map<ImageView, DeferredRequestCreator> targetToDeferredRequestCreator;
 
+    /* loaded from: classes.dex */
     public interface Listener {
         void onImageLoadFailed(Picasso picasso, Uri uri, Exception exc);
     }
 
+    /* loaded from: classes.dex */
     public enum Priority {
         LOW,
         NORMAL,
         HIGH
     }
 
+    /* loaded from: classes.dex */
     public interface RequestTransformer {
-        public static final RequestTransformer IDENTITY = new RequestTransformer() {
+        public static final RequestTransformer IDENTITY = new RequestTransformer() { // from class: com.squareup.picasso.Picasso.RequestTransformer.1
+            @Override // com.squareup.picasso.Picasso.RequestTransformer
             public Request transformRequest(Request request) {
                 return request;
             }
@@ -91,39 +97,36 @@ public class Picasso {
         Request transformRequest(Request request);
     }
 
-    Picasso(Context context2, Dispatcher dispatcher2, Cache cache2, Listener listener2, RequestTransformer requestTransformer2, List<RequestHandler> extraRequestHandlers, Stats stats2, Bitmap.Config defaultBitmapConfig2, boolean indicatorsEnabled2, boolean loggingEnabled2) {
-        Context context3 = context2;
-        Dispatcher dispatcher3 = dispatcher2;
-        List<RequestHandler> list = extraRequestHandlers;
-        Stats stats3 = stats2;
-        this.context = context3;
-        this.dispatcher = dispatcher3;
-        this.cache = cache2;
-        this.listener = listener2;
-        this.requestTransformer = requestTransformer2;
-        this.defaultBitmapConfig = defaultBitmapConfig2;
-        List<RequestHandler> allRequestHandlers = new ArrayList<>(7 + (list != null ? extraRequestHandlers.size() : 0));
-        allRequestHandlers.add(new ResourceRequestHandler(context3));
-        if (list != null) {
-            allRequestHandlers.addAll(list);
+    Picasso(Context context, Dispatcher dispatcher, Cache cache, Listener listener, RequestTransformer requestTransformer, List<RequestHandler> extraRequestHandlers, Stats stats, Bitmap.Config defaultBitmapConfig, boolean indicatorsEnabled, boolean loggingEnabled) {
+        this.context = context;
+        this.dispatcher = dispatcher;
+        this.cache = cache;
+        this.listener = listener;
+        this.requestTransformer = requestTransformer;
+        this.defaultBitmapConfig = defaultBitmapConfig;
+        int extraCount = extraRequestHandlers != null ? extraRequestHandlers.size() : 0;
+        List<RequestHandler> allRequestHandlers = new ArrayList<>(7 + extraCount);
+        allRequestHandlers.add(new ResourceRequestHandler(context));
+        if (extraRequestHandlers != null) {
+            allRequestHandlers.addAll(extraRequestHandlers);
         }
-        allRequestHandlers.add(new ContactsPhotoRequestHandler(context3));
-        allRequestHandlers.add(new MediaStoreRequestHandler(context3));
-        allRequestHandlers.add(new ContentStreamRequestHandler(context3));
-        allRequestHandlers.add(new AssetRequestHandler(context3));
-        allRequestHandlers.add(new FileRequestHandler(context3));
-        allRequestHandlers.add(new NetworkRequestHandler(dispatcher3.downloader, stats3));
+        allRequestHandlers.add(new ContactsPhotoRequestHandler(context));
+        allRequestHandlers.add(new MediaStoreRequestHandler(context));
+        allRequestHandlers.add(new ContentStreamRequestHandler(context));
+        allRequestHandlers.add(new AssetRequestHandler(context));
+        allRequestHandlers.add(new FileRequestHandler(context));
+        allRequestHandlers.add(new NetworkRequestHandler(dispatcher.downloader, stats));
         this.requestHandlers = Collections.unmodifiableList(allRequestHandlers);
-        this.stats = stats3;
+        this.stats = stats;
         this.targetToAction = new WeakHashMap();
         this.targetToDeferredRequestCreator = new WeakHashMap();
-        this.indicatorsEnabled = indicatorsEnabled2;
-        this.loggingEnabled = loggingEnabled2;
-        ReferenceQueue<Object> referenceQueue2 = new ReferenceQueue<>();
-        this.referenceQueue = referenceQueue2;
-        CleanupThread cleanupThread2 = new CleanupThread(referenceQueue2, HANDLER);
-        this.cleanupThread = cleanupThread2;
-        cleanupThread2.start();
+        this.indicatorsEnabled = indicatorsEnabled;
+        this.loggingEnabled = loggingEnabled;
+        ReferenceQueue<Object> referenceQueue = new ReferenceQueue<>();
+        this.referenceQueue = referenceQueue;
+        CleanupThread cleanupThread = new CleanupThread(referenceQueue, HANDLER);
+        this.cleanupThread = cleanupThread;
+        cleanupThread.start();
     }
 
     public void cancelRequest(ImageView view) {
@@ -164,50 +167,47 @@ public class Picasso {
 
     public RequestCreator load(String path) {
         if (path == null) {
-            return new RequestCreator(this, (Uri) null, 0);
+            return new RequestCreator(this, null, 0);
         }
-        if (path.trim().length() != 0) {
-            return load(Uri.parse(path));
+        if (path.trim().length() == 0) {
+            throw new IllegalArgumentException("Path must not be empty.");
         }
-        throw new IllegalArgumentException("Path must not be empty.");
+        return load(Uri.parse(path));
     }
 
     public RequestCreator load(File file) {
         if (file == null) {
-            return new RequestCreator(this, (Uri) null, 0);
+            return new RequestCreator(this, null, 0);
         }
         return load(Uri.fromFile(file));
     }
 
     public RequestCreator load(int resourceId) {
-        if (resourceId != 0) {
-            return new RequestCreator(this, (Uri) null, resourceId);
+        if (resourceId == 0) {
+            throw new IllegalArgumentException("Resource ID must not be zero.");
         }
-        throw new IllegalArgumentException("Resource ID must not be zero.");
+        return new RequestCreator(this, null, resourceId);
     }
 
     public void invalidate(Uri uri) {
-        if (uri != null) {
-            this.cache.clearKeyUri(uri.toString());
-            return;
+        if (uri == null) {
+            throw new IllegalArgumentException("uri == null");
         }
-        throw new IllegalArgumentException("uri == null");
+        this.cache.clearKeyUri(uri.toString());
     }
 
     public void invalidate(String path) {
-        if (path != null) {
-            invalidate(Uri.parse(path));
-            return;
+        if (path == null) {
+            throw new IllegalArgumentException("path == null");
         }
-        throw new IllegalArgumentException("path == null");
+        invalidate(Uri.parse(path));
     }
 
     public void invalidate(File file) {
-        if (file != null) {
-            invalidate(Uri.fromFile(file));
-            return;
+        if (file == null) {
+            throw new IllegalArgumentException("file == null");
         }
-        throw new IllegalArgumentException("file == null");
+        invalidate(Uri.fromFile(file));
     }
 
     @Deprecated
@@ -243,55 +243,51 @@ public class Picasso {
     public void shutdown() {
         if (this == singleton) {
             throw new UnsupportedOperationException("Default singleton instance cannot be shutdown.");
-        } else if (!this.shutdown) {
-            this.cache.clear();
-            this.cleanupThread.shutdown();
-            this.stats.shutdown();
-            this.dispatcher.shutdown();
-            for (DeferredRequestCreator deferredRequestCreator : this.targetToDeferredRequestCreator.values()) {
-                deferredRequestCreator.cancel();
-            }
-            this.targetToDeferredRequestCreator.clear();
-            this.shutdown = true;
         }
+        if (this.shutdown) {
+            return;
+        }
+        this.cache.clear();
+        this.cleanupThread.shutdown();
+        this.stats.shutdown();
+        this.dispatcher.shutdown();
+        for (DeferredRequestCreator deferredRequestCreator : this.targetToDeferredRequestCreator.values()) {
+            deferredRequestCreator.cancel();
+        }
+        this.targetToDeferredRequestCreator.clear();
+        this.shutdown = true;
     }
 
-    /* access modifiers changed from: package-private */
-    public List<RequestHandler> getRequestHandlers() {
+    List<RequestHandler> getRequestHandlers() {
         return this.requestHandlers;
     }
 
-    /* access modifiers changed from: package-private */
-    public Request transformRequest(Request request) {
+    Request transformRequest(Request request) {
         Request transformed = this.requestTransformer.transformRequest(request);
-        if (transformed != null) {
-            return transformed;
+        if (transformed == null) {
+            throw new IllegalStateException("Request transformer " + this.requestTransformer.getClass().getCanonicalName() + " returned null for " + request);
         }
-        throw new IllegalStateException("Request transformer " + this.requestTransformer.getClass().getCanonicalName() + " returned null for " + request);
+        return transformed;
     }
 
-    /* access modifiers changed from: package-private */
-    public void defer(ImageView view, DeferredRequestCreator request) {
+    void defer(ImageView view, DeferredRequestCreator request) {
         this.targetToDeferredRequestCreator.put(view, request);
     }
 
-    /* access modifiers changed from: package-private */
-    public void enqueueAndSubmit(Action action) {
+    void enqueueAndSubmit(Action action) {
         Object target = action.getTarget();
-        if (!(target == null || this.targetToAction.get(target) == action)) {
+        if (target != null && this.targetToAction.get(target) != action) {
             cancelExistingRequest(target);
             this.targetToAction.put(target, action);
         }
         submit(action);
     }
 
-    /* access modifiers changed from: package-private */
-    public void submit(Action action) {
+    void submit(Action action) {
         this.dispatcher.dispatchSubmit(action);
     }
 
-    /* access modifiers changed from: package-private */
-    public Bitmap quickMemoryCacheCheck(String key) {
+    Bitmap quickMemoryCacheCheck(String key) {
         Bitmap cached = this.cache.get(key);
         if (cached != null) {
             this.stats.dispatchCacheHit();
@@ -301,38 +297,36 @@ public class Picasso {
         return cached;
     }
 
-    /* access modifiers changed from: package-private */
-    public void complete(BitmapHunter hunter) {
+    void complete(BitmapHunter hunter) {
         Action single = hunter.getAction();
         List<Action> joined = hunter.getActions();
         boolean shouldDeliver = false;
-        boolean hasMultiple = joined != null && !joined.isEmpty();
-        if (single != null || hasMultiple) {
-            shouldDeliver = true;
+        boolean hasMultiple = (joined == null || joined.isEmpty()) ? false : true;
+        shouldDeliver = (single != null || hasMultiple) ? true : true;
+        if (!shouldDeliver) {
+            return;
         }
-        if (shouldDeliver) {
-            Uri uri = hunter.getData().uri;
-            Exception exception = hunter.getException();
-            Bitmap result = hunter.getResult();
-            LoadedFrom from = hunter.getLoadedFrom();
-            if (single != null) {
-                deliverAction(result, from, single);
+        Uri uri = hunter.getData().uri;
+        Exception exception = hunter.getException();
+        Bitmap result = hunter.getResult();
+        LoadedFrom from = hunter.getLoadedFrom();
+        if (single != null) {
+            deliverAction(result, from, single);
+        }
+        if (hasMultiple) {
+            int n = joined.size();
+            for (int i = 0; i < n; i++) {
+                Action join = joined.get(i);
+                deliverAction(result, from, join);
             }
-            if (hasMultiple) {
-                int n = joined.size();
-                for (int i = 0; i < n; i++) {
-                    deliverAction(result, from, joined.get(i));
-                }
-            }
-            Listener listener2 = this.listener;
-            if (listener2 != null && exception != null) {
-                listener2.onImageLoadFailed(this, uri, exception);
-            }
+        }
+        Listener listener = this.listener;
+        if (listener != null && exception != null) {
+            listener.onImageLoadFailed(this, uri, exception);
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void resumeAction(Action action) {
+    void resumeAction(Action action) {
         Bitmap bitmap = null;
         if (MemoryPolicy.shouldReadFromMemoryCache(action.memoryPolicy)) {
             bitmap = quickMemoryCacheCheck(action.getKey());
@@ -352,56 +346,64 @@ public class Picasso {
     }
 
     private void deliverAction(Bitmap result, LoadedFrom from, Action action) {
-        if (!action.isCancelled()) {
-            if (!action.willReplay()) {
-                this.targetToAction.remove(action.getTarget());
-            }
-            if (result == null) {
-                action.error();
-                if (this.loggingEnabled) {
-                    Utils.log("Main", "errored", action.request.logId());
-                }
-            } else if (from != null) {
-                action.complete(result, from);
-                if (this.loggingEnabled) {
-                    Utils.log("Main", "completed", action.request.logId(), "from " + from);
-                }
-            } else {
+        if (action.isCancelled()) {
+            return;
+        }
+        if (!action.willReplay()) {
+            this.targetToAction.remove(action.getTarget());
+        }
+        if (result != null) {
+            if (from == null) {
                 throw new AssertionError("LoadedFrom cannot be null.");
             }
+            action.complete(result, from);
+            if (this.loggingEnabled) {
+                Utils.log("Main", "completed", action.request.logId(), "from " + from);
+                return;
+            }
+            return;
+        }
+        action.error();
+        if (this.loggingEnabled) {
+            Utils.log("Main", "errored", action.request.logId());
         }
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void cancelExistingRequest(Object target) {
-        DeferredRequestCreator deferredRequestCreator;
         Utils.checkMain();
         Action action = this.targetToAction.remove(target);
         if (action != null) {
             action.cancel();
             this.dispatcher.dispatchCancel(action);
         }
-        if ((target instanceof ImageView) && (deferredRequestCreator = this.targetToDeferredRequestCreator.remove((ImageView) target)) != null) {
-            deferredRequestCreator.cancel();
+        if (target instanceof ImageView) {
+            ImageView targetImageView = (ImageView) target;
+            DeferredRequestCreator deferredRequestCreator = this.targetToDeferredRequestCreator.remove(targetImageView);
+            if (deferredRequestCreator != null) {
+                deferredRequestCreator.cancel();
+            }
         }
     }
 
+    /* loaded from: classes.dex */
     private static class CleanupThread extends Thread {
         private final Handler handler;
         private final ReferenceQueue<Object> referenceQueue;
 
-        CleanupThread(ReferenceQueue<Object> referenceQueue2, Handler handler2) {
-            this.referenceQueue = referenceQueue2;
-            this.handler = handler2;
+        CleanupThread(ReferenceQueue<Object> referenceQueue, Handler handler) {
+            this.referenceQueue = referenceQueue;
+            this.handler = handler;
             setDaemon(true);
             setName("Picasso-refQueue");
         }
 
+        @Override // java.lang.Thread, java.lang.Runnable
         public void run() {
             Process.setThreadPriority(10);
             while (true) {
                 try {
-                    Action.RequestWeakReference<?> remove = (Action.RequestWeakReference) this.referenceQueue.remove(1000);
+                    Action.RequestWeakReference<?> remove = (Action.RequestWeakReference) this.referenceQueue.remove(1000L);
                     Message message = this.handler.obtainMessage();
                     if (remove != null) {
                         message.what = 3;
@@ -413,7 +415,8 @@ public class Picasso {
                 } catch (InterruptedException e) {
                     return;
                 } catch (Exception e2) {
-                    this.handler.post(new Runnable() {
+                    this.handler.post(new Runnable() { // from class: com.squareup.picasso.Picasso.CleanupThread.1
+                        @Override // java.lang.Runnable
                         public void run() {
                             throw new RuntimeException(e2);
                         }
@@ -423,17 +426,16 @@ public class Picasso {
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void shutdown() {
+        void shutdown() {
             interrupt();
         }
     }
 
-    public static Picasso with(Context context2) {
+    public static Picasso with(Context context) {
         if (singleton == null) {
             synchronized (Picasso.class) {
                 if (singleton == null) {
-                    singleton = new Builder(context2).build();
+                    singleton = new Builder(context).build();
                 }
             }
         }
@@ -442,14 +444,14 @@ public class Picasso {
 
     public static void setSingletonInstance(Picasso picasso) {
         synchronized (Picasso.class) {
-            if (singleton == null) {
-                singleton = picasso;
-            } else {
+            if (singleton != null) {
                 throw new IllegalStateException("Singleton instance already exists.");
             }
+            singleton = picasso;
         }
     }
 
+    /* loaded from: classes.dex */
     public static class Builder {
         private Cache cache;
         private final Context context;
@@ -462,89 +464,88 @@ public class Picasso {
         private ExecutorService service;
         private RequestTransformer transformer;
 
-        public Builder(Context context2) {
-            if (context2 != null) {
-                this.context = context2.getApplicationContext();
-                return;
+        public Builder(Context context) {
+            if (context == null) {
+                throw new IllegalArgumentException("Context must not be null.");
             }
-            throw new IllegalArgumentException("Context must not be null.");
+            this.context = context.getApplicationContext();
         }
 
         public Builder defaultBitmapConfig(Bitmap.Config bitmapConfig) {
-            if (bitmapConfig != null) {
-                this.defaultBitmapConfig = bitmapConfig;
-                return this;
+            if (bitmapConfig == null) {
+                throw new IllegalArgumentException("Bitmap config must not be null.");
             }
-            throw new IllegalArgumentException("Bitmap config must not be null.");
+            this.defaultBitmapConfig = bitmapConfig;
+            return this;
         }
 
-        public Builder downloader(Downloader downloader2) {
-            if (downloader2 == null) {
+        public Builder downloader(Downloader downloader) {
+            if (downloader == null) {
                 throw new IllegalArgumentException("Downloader must not be null.");
-            } else if (this.downloader == null) {
-                this.downloader = downloader2;
-                return this;
-            } else {
+            }
+            if (this.downloader != null) {
                 throw new IllegalStateException("Downloader already set.");
             }
+            this.downloader = downloader;
+            return this;
         }
 
         public Builder executor(ExecutorService executorService) {
             if (executorService == null) {
                 throw new IllegalArgumentException("Executor service must not be null.");
-            } else if (this.service == null) {
-                this.service = executorService;
-                return this;
-            } else {
+            }
+            if (this.service != null) {
                 throw new IllegalStateException("Executor service already set.");
             }
+            this.service = executorService;
+            return this;
         }
 
         public Builder memoryCache(Cache memoryCache) {
             if (memoryCache == null) {
                 throw new IllegalArgumentException("Memory cache must not be null.");
-            } else if (this.cache == null) {
-                this.cache = memoryCache;
-                return this;
-            } else {
+            }
+            if (this.cache != null) {
                 throw new IllegalStateException("Memory cache already set.");
             }
+            this.cache = memoryCache;
+            return this;
         }
 
-        public Builder listener(Listener listener2) {
-            if (listener2 == null) {
+        public Builder listener(Listener listener) {
+            if (listener == null) {
                 throw new IllegalArgumentException("Listener must not be null.");
-            } else if (this.listener == null) {
-                this.listener = listener2;
-                return this;
-            } else {
+            }
+            if (this.listener != null) {
                 throw new IllegalStateException("Listener already set.");
             }
+            this.listener = listener;
+            return this;
         }
 
-        public Builder requestTransformer(RequestTransformer transformer2) {
-            if (transformer2 == null) {
+        public Builder requestTransformer(RequestTransformer transformer) {
+            if (transformer == null) {
                 throw new IllegalArgumentException("Transformer must not be null.");
-            } else if (this.transformer == null) {
-                this.transformer = transformer2;
-                return this;
-            } else {
+            }
+            if (this.transformer != null) {
                 throw new IllegalStateException("Transformer already set.");
             }
+            this.transformer = transformer;
+            return this;
         }
 
         public Builder addRequestHandler(RequestHandler requestHandler) {
-            if (requestHandler != null) {
-                if (this.requestHandlers == null) {
-                    this.requestHandlers = new ArrayList();
-                }
-                if (!this.requestHandlers.contains(requestHandler)) {
-                    this.requestHandlers.add(requestHandler);
-                    return this;
-                }
+            if (requestHandler == null) {
+                throw new IllegalArgumentException("RequestHandler must not be null.");
+            }
+            if (this.requestHandlers == null) {
+                this.requestHandlers = new ArrayList();
+            }
+            if (this.requestHandlers.contains(requestHandler)) {
                 throw new IllegalStateException("RequestHandler already registered.");
             }
-            throw new IllegalArgumentException("RequestHandler must not be null.");
+            this.requestHandlers.add(requestHandler);
+            return this;
         }
 
         @Deprecated
@@ -563,12 +564,12 @@ public class Picasso {
         }
 
         public Picasso build() {
-            Context context2 = this.context;
+            Context context = this.context;
             if (this.downloader == null) {
-                this.downloader = Utils.createDefaultDownloader(context2);
+                this.downloader = Utils.createDefaultDownloader(context);
             }
             if (this.cache == null) {
-                this.cache = new LruCache(context2);
+                this.cache = new LruCache(context);
             }
             if (this.service == null) {
                 this.service = new PicassoExecutorService();
@@ -577,11 +578,12 @@ public class Picasso {
                 this.transformer = RequestTransformer.IDENTITY;
             }
             Stats stats = new Stats(this.cache);
-            Context context3 = context2;
-            return new Picasso(context2, new Dispatcher(context2, this.service, Picasso.HANDLER, this.downloader, this.cache, stats), this.cache, this.listener, this.transformer, this.requestHandlers, stats, this.defaultBitmapConfig, this.indicatorsEnabled, this.loggingEnabled);
+            Dispatcher dispatcher = new Dispatcher(context, this.service, Picasso.HANDLER, this.downloader, this.cache, stats);
+            return new Picasso(context, dispatcher, this.cache, this.listener, this.transformer, this.requestHandlers, stats, this.defaultBitmapConfig, this.indicatorsEnabled, this.loggingEnabled);
         }
     }
 
+    /* loaded from: classes.dex */
     public enum LoadedFrom {
         MEMORY(-16711936),
         DISK(-16776961),
@@ -589,8 +591,8 @@ public class Picasso {
         
         final int debugColor;
 
-        private LoadedFrom(int debugColor2) {
-            this.debugColor = debugColor2;
+        LoadedFrom(int debugColor) {
+            this.debugColor = debugColor;
         }
     }
 }

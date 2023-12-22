@@ -6,8 +6,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Documented
 @Target({ElementType.METHOD})
+@Documented
 @Retention(RetentionPolicy.RUNTIME)
+/* loaded from: classes.dex */
 public @interface CheckReturnValue {
 }

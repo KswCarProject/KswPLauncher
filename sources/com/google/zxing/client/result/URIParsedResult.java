@@ -2,15 +2,16 @@ package com.google.zxing.client.result;
 
 import java.util.regex.Pattern;
 
+/* loaded from: classes.dex */
 public final class URIParsedResult extends ParsedResult {
     private static final Pattern USER_IN_HOST = Pattern.compile(":/*([^/@]+)@[^/]+");
     private final String title;
     private final String uri;
 
-    public URIParsedResult(String uri2, String title2) {
+    public URIParsedResult(String uri, String title) {
         super(ParsedResultType.URI);
-        this.uri = massageURI(uri2);
-        this.title = title2;
+        this.uri = massageURI(uri);
+        this.title = title;
     }
 
     public String getURI() {
@@ -25,6 +26,7 @@ public final class URIParsedResult extends ParsedResult {
         return USER_IN_HOST.matcher(this.uri).find();
     }
 
+    @Override // com.google.zxing.client.result.ParsedResult
     public String getDisplayResult() {
         StringBuilder result = new StringBuilder(30);
         maybeAppend(this.title, result);
@@ -32,24 +34,22 @@ public final class URIParsedResult extends ParsedResult {
         return result.toString();
     }
 
-    private static String massageURI(String uri2) {
-        String trim = uri2.trim();
-        String uri3 = trim;
-        int indexOf = trim.indexOf(58);
-        int protocolEnd = indexOf;
-        if (indexOf < 0 || isColonFollowedByPortNumber(uri3, protocolEnd)) {
-            return "http://".concat(String.valueOf(uri3));
+    private static String massageURI(String uri) {
+        String uri2 = uri.trim();
+        int protocolEnd = uri2.indexOf(58);
+        if (protocolEnd >= 0 && !isColonFollowedByPortNumber(uri2, protocolEnd)) {
+            return uri2;
         }
-        return uri3;
+        return "http://".concat(String.valueOf(uri2));
     }
 
-    private static boolean isColonFollowedByPortNumber(String uri2, int protocolEnd) {
+    private static boolean isColonFollowedByPortNumber(String uri, int protocolEnd) {
         int start = protocolEnd + 1;
-        int indexOf = uri2.indexOf(47, start);
+        int indexOf = uri.indexOf(47, start);
         int nextSlash = indexOf;
         if (indexOf < 0) {
-            nextSlash = uri2.length();
+            nextSlash = uri.length();
         }
-        return ResultParser.isSubstringOfDigits(uri2, start, nextSlash - start);
+        return ResultParser.isSubstringOfDigits(uri, start, nextSlash - start);
     }
 }

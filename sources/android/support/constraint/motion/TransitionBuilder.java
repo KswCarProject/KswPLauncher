@@ -3,19 +3,20 @@ package android.support.constraint.motion;
 import android.support.constraint.ConstraintSet;
 import android.support.constraint.motion.MotionScene;
 
+/* loaded from: classes.dex */
 public class TransitionBuilder {
     private static final String TAG = "TransitionBuilder";
 
     public static void validate(MotionLayout layout) {
-        if (layout.mScene != null) {
-            MotionScene scene = layout.mScene;
-            if (!scene.validateLayout(layout)) {
-                throw new RuntimeException("MotionLayout doesn't have the right motion scene.");
-            } else if (scene.mCurrentTransition == null || scene.getDefinedTransitions().isEmpty()) {
-                throw new RuntimeException("Invalid motion layout. Motion Scene doesn't have any transition.");
-            }
-        } else {
+        if (layout.mScene == null) {
             throw new RuntimeException("Invalid motion layout. Layout missing Motion Scene.");
+        }
+        MotionScene scene = layout.mScene;
+        if (!scene.validateLayout(layout)) {
+            throw new RuntimeException("MotionLayout doesn't have the right motion scene.");
+        }
+        if (scene.mCurrentTransition == null || scene.getDefinedTransitions().isEmpty()) {
+            throw new RuntimeException("Invalid motion layout. Motion Scene doesn't have any transition.");
         }
     }
 

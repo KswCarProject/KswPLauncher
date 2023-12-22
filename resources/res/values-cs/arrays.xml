@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="all_months">
+        <item>Jan</item>
+        <item>Únor</item>
+        <item>Březen</item>
+        <item>Duben</item>
+        <item>Květen</item>
+        <item>Červen</item>
+        <item>Červenec</item>
+        <item>Srpen</item>
+        <item>Září</item>
+        <item>Říjen</item>
+        <item>Listopad</item>
+        <item>Prosinec</item>
+    </array>
+    <array name="bc_home_netg6_als_6208_item_text_array">
+        <item>Navigace</item>
+        <item>Video</item>
+        <item>Hudba</item>
+        <item>Telefon</item>
+        <item>NTG Menu</item>
+        <item>Přístrojová deska</item>
+        <item>PhoneLink</item>
+        <item>Prohlížeč souborů</item>
+        <item>DVR</item>
+        <item>Nastavení</item>
+    </array>
+    <array name="bc_item_text_array">
+        <item>Navigace</item>
+        <item>Hudba</item>
+        <item>Telefon</item>
+        <item>NTG Menu</item>
+        <item>Nastavení</item>
+        <item>Video</item>
+        <item>Prohlížeč souborů</item>
+        <item>PhoneLink</item>
+        <item>Přístrojová deska</item>
+        <item>DVR</item>
+    </array>
+    <array name="bc_ntg5_item_text_array">
+        <item>Navigace</item>
+        <item>Hudba</item>
+        <item>Telefon</item>
+        <item>NTG Menu</item>
+        <item>Nastavení</item>
+        <item>Video</item>
+        <item>APPS</item>
+        <item>PhoneLink</item>
+        <item>Přístrojová deska</item>
+        <item>DVR</item>
+    </array>
+    <array name="benz_mbux_2021_home_item_array">
+        <item>Telefon</item>
+        <item>Navigace</item>
+        <item>Nabídka NTG</item>
+        <item>Video</item>
+        <item>Hudba</item>
+        <item>Nastavení</item>
+        <item>PhoneLink</item>
+        <item>Aplikace</item>
+        <item>Přístrojová deska</item>
+    </array>
+    <array name="benz_mbux_2021_item_tip_array">
+        <item>Žádné připojení</item>
+        <item>Navigace v reálném čase</item>
+        <item>Uživatelské rozhraní vozu</item>
+        <item>Přehrávač videa</item>
+        <item>Hudba</item>
+        <item>Nastavení systému</item>
+        <item>Podpora USB nebo WiFi</item>
+        <item>Další aplikace</item>
+        <item>Spotřeba paliva</item>
+    </array>
+    <array name="benz_mbux_home_item_array">
+        <item>Navigace</item>
+        <item>Hudba</item>
+        <item>Telefon</item>
+        <item>NTG Menu</item>
+        <item>Nastavení</item>
+        <item>Video</item>
+        <item>Aplikace</item>
+        <item>PhoneLink</item>
+        <item>Přístrojová deska</item>
+        <item>DVR</item>
+    </array>
+    <array name="ksw_id7_months">
+        <item>Jan</item>
+        <item>Únor</item>
+        <item>Březen</item>
+        <item>Duben</item>
+        <item>Květen</item>
+        <item>Červen</item>
+        <item>Červenec</item>
+        <item>Srpen</item>
+        <item>Září</item>
+        <item>Říjen</item>
+        <item>Listopad</item>
+        <item>Prosinec</item>
+    </array>
+    <array name="set_factory">
+        <item>Konfigurace funkce</item>
+        <item>Konfigurace ve vozidle</item>
+        <item>Displej ve vozidle</item>
+        <item>Volba protokolu CAN</item>
+        <item>Zesílení MIC</item>
+        <item>Konfigurace času zpětného výstupu</item>
+        <item>Konfigurace uživatelského rozhraní</item>
+        <item>Import konfigurace</item>
+        <item>Zaváděcí logo</item>
+    </array>
+    <array name="set_function">
+        <item>Systém</item>
+        <item>Navigace</item>
+        <item>Hlasitost</item>
+        <item>Zvuk</item>
+        <item>Jazyk</item>
+        <item>Čas</item>
+        <item>Systémové informace</item>
+        <item>Android</item>
+        <item>Tovární</item>
+    </array>
+    <array name="set_id6_function">
+        <item>Navigace</item>
+        <item>Systém</item>
+        <item>Hlasitost</item>
+        <item>Zvuk</item>
+        <item>Jazyk</item>
+        <item>Čas</item>
+        <item>Systémové informace</item>
+        <item>Android</item>
+        <item>Tovární</item>
+    </array>
+    <array name="set_land_rover_function">
+        <item>Systém</item>
+        <item>Navigace</item>
+        <item>Hlasitost</item>
+        <item>Jazyk</item>
+        <item>Čas</item>
+        <item>Systémové informace</item>
+        <item>Android</item>
+        <item>Tovární</item>
+    </array>
+</resources>

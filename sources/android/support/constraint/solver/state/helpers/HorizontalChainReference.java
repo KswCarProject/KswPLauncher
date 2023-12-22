@@ -4,6 +4,7 @@ import android.support.constraint.solver.state.ConstraintReference;
 import android.support.constraint.solver.state.State;
 import java.util.Iterator;
 
+/* loaded from: classes.dex */
 public class HorizontalChainReference extends ChainReference {
     private Object mEndToEnd;
     private Object mEndToStart;
@@ -14,16 +15,19 @@ public class HorizontalChainReference extends ChainReference {
         super(state, State.Helper.HORIZONTAL_CHAIN);
     }
 
+    @Override // android.support.constraint.solver.state.HelperReference
     public void apply() {
         ConstraintReference first = null;
         ConstraintReference previous = null;
-        Iterator it = this.mReferences.iterator();
+        Iterator<Object> it = this.mReferences.iterator();
         while (it.hasNext()) {
-            this.mState.constraints(it.next()).clearHorizontal();
+            Object key = it.next();
+            this.mState.constraints(key).clearHorizontal();
         }
-        Iterator it2 = this.mReferences.iterator();
+        Iterator<Object> it2 = this.mReferences.iterator();
         while (it2.hasNext()) {
-            ConstraintReference reference = this.mState.constraints(it2.next());
+            Object key2 = it2.next();
+            ConstraintReference reference = this.mState.constraints(key2);
             if (first == null) {
                 first = reference;
                 Object obj = this.mStartToStart;
@@ -57,10 +61,10 @@ public class HorizontalChainReference extends ChainReference {
                 }
             }
         }
-        if (!(first == null || this.mBias == 0.5f)) {
+        if (first != null && this.mBias != 0.5f) {
             first.horizontalBias(this.mBias);
         }
-        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$state$State$Chain[this.mStyle.ordinal()]) {
+        switch (C01031.$SwitchMap$android$support$constraint$solver$state$State$Chain[this.mStyle.ordinal()]) {
             case 1:
                 first.setHorizontalChainStyle(0);
                 return;
@@ -75,8 +79,9 @@ public class HorizontalChainReference extends ChainReference {
         }
     }
 
-    /* renamed from: android.support.constraint.solver.state.helpers.HorizontalChainReference$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
+    /* renamed from: android.support.constraint.solver.state.helpers.HorizontalChainReference$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C01031 {
         static final /* synthetic */ int[] $SwitchMap$android$support$constraint$solver$state$State$Chain;
 
         static {

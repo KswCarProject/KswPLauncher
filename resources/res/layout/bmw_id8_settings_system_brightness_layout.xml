@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:tag="layout/bmw_id8_settings_system_brightness_layout_0" android:layout_width="match_parent" android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:tag="layout/bmw_id8_settings_system_brightness_layout_0" android:layout_width="match_parent" android:layout_height="match_parent">
     <ImageView android:tag="binding_1" android:layout_width="462dp" android:layout_height="match_parent" android:layout_marginLeft="17dp" android:src="@drawable/id8_settings_system_list"/>
     <RelativeLayout android:id="@+id/bmw_id8_settings_brightness_lay" android:layout_width="462dp" android:layout_height="match_parent" android:layout_marginLeft="17dp">
         <TextView android:textSize="24sp" android:textColor="@color/id8_main_style_color" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="42dp" android:layout_marginTop="63dp" android:text="@string/set_text6" style="@style/bmw_id8_text_shadow"/>

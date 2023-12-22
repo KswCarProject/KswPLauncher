@@ -2,29 +2,27 @@ package com.google.zxing.qrcode.detector;
 
 import com.google.zxing.ResultPoint;
 
+/* loaded from: classes.dex */
 public final class AlignmentPattern extends ResultPoint {
     private final float estimatedModuleSize;
 
-    AlignmentPattern(float posX, float posY, float estimatedModuleSize2) {
+    AlignmentPattern(float posX, float posY, float estimatedModuleSize) {
         super(posX, posY);
-        this.estimatedModuleSize = estimatedModuleSize2;
+        this.estimatedModuleSize = estimatedModuleSize;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean aboutEquals(float moduleSize, float i, float j) {
+    boolean aboutEquals(float moduleSize, float i, float j) {
         if (Math.abs(i - getY()) > moduleSize || Math.abs(j - getX()) > moduleSize) {
             return false;
         }
-        float abs = Math.abs(moduleSize - this.estimatedModuleSize);
-        float moduleSizeDiff = abs;
-        if (abs <= 1.0f || moduleSizeDiff <= this.estimatedModuleSize) {
-            return true;
-        }
-        return false;
+        float moduleSizeDiff = Math.abs(moduleSize - this.estimatedModuleSize);
+        return moduleSizeDiff <= 1.0f || moduleSizeDiff <= this.estimatedModuleSize;
     }
 
-    /* access modifiers changed from: package-private */
-    public AlignmentPattern combineEstimate(float i, float j, float newModuleSize) {
-        return new AlignmentPattern((getX() + j) / 2.0f, (getY() + i) / 2.0f, (this.estimatedModuleSize + newModuleSize) / 2.0f);
+    AlignmentPattern combineEstimate(float i, float j, float newModuleSize) {
+        float combinedX = (getX() + j) / 2.0f;
+        float combinedY = (getY() + i) / 2.0f;
+        float combinedModuleSize = (this.estimatedModuleSize + newModuleSize) / 2.0f;
+        return new AlignmentPattern(combinedX, combinedY, combinedModuleSize);
     }
 }

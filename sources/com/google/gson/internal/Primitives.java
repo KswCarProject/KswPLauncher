@@ -2,6 +2,7 @@ package com.google.gson.internal;
 
 import java.lang.reflect.Type;
 
+/* loaded from: classes.dex */
 public final class Primitives {
     private Primitives() {
     }
@@ -15,64 +16,10 @@ public final class Primitives {
     }
 
     public static <T> Class<T> wrap(Class<T> type) {
-        if (type == Integer.TYPE) {
-            return Integer.class;
-        }
-        if (type == Float.TYPE) {
-            return Float.class;
-        }
-        if (type == Byte.TYPE) {
-            return Byte.class;
-        }
-        if (type == Double.TYPE) {
-            return Double.class;
-        }
-        if (type == Long.TYPE) {
-            return Long.class;
-        }
-        if (type == Character.TYPE) {
-            return Character.class;
-        }
-        if (type == Boolean.TYPE) {
-            return Boolean.class;
-        }
-        if (type == Short.TYPE) {
-            return Short.class;
-        }
-        if (type == Void.TYPE) {
-            return Void.class;
-        }
-        return type;
+        return type == Integer.TYPE ? Integer.class : type == Float.TYPE ? Float.class : type == Byte.TYPE ? Byte.class : type == Double.TYPE ? Double.class : type == Long.TYPE ? Long.class : type == Character.TYPE ? Character.class : type == Boolean.TYPE ? Boolean.class : type == Short.TYPE ? Short.class : type == Void.TYPE ? Void.class : type;
     }
 
     public static <T> Class<T> unwrap(Class<T> type) {
-        if (type == Integer.class) {
-            return Integer.TYPE;
-        }
-        if (type == Float.class) {
-            return Float.TYPE;
-        }
-        if (type == Byte.class) {
-            return Byte.TYPE;
-        }
-        if (type == Double.class) {
-            return Double.TYPE;
-        }
-        if (type == Long.class) {
-            return Long.TYPE;
-        }
-        if (type == Character.class) {
-            return Character.TYPE;
-        }
-        if (type == Boolean.class) {
-            return Boolean.TYPE;
-        }
-        if (type == Short.class) {
-            return Short.TYPE;
-        }
-        if (type == Void.class) {
-            return Void.TYPE;
-        }
-        return type;
+        return type == Integer.class ? Integer.TYPE : type == Float.class ? Float.TYPE : type == Byte.class ? Byte.TYPE : type == Double.class ? Double.TYPE : type == Long.class ? Long.TYPE : type == Character.class ? Character.TYPE : type == Boolean.class ? Boolean.TYPE : type == Short.class ? Short.TYPE : type == Void.class ? Void.TYPE : type;
     }
 }

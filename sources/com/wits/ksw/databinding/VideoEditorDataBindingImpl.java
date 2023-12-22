@@ -5,9 +5,10 @@ import android.databinding.ViewDataBinding;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public class VideoEditorDataBindingImpl extends VideoEditorDataBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -17,7 +18,7 @@ public class VideoEditorDataBindingImpl extends VideoEditorDataBinding {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.layout, 1);
+        sparseIntArray.put(C0899R.C0901id.layout, 1);
     }
 
     public VideoEditorDataBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -25,22 +26,24 @@ public class VideoEditorDataBindingImpl extends VideoEditorDataBinding {
     }
 
     private VideoEditorDataBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[1]);
-        this.mDirtyFlags = -1;
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 0, (RelativeLayout) bindings[1]);
+        this.mDirtyFlags = -1L;
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
+        relativeLayout.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 2;
+            this.mDirtyFlags = 2L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -50,28 +53,30 @@ public class VideoEditorDataBindingImpl extends VideoEditorDataBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (10 != variableId) {
-            return false;
+        if (10 == variableId) {
+            setMediaViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setMediaViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.VideoEditorDataBinding
     public void setMediaViewModel(LauncherViewModel MediaViewModel) {
         this.mMediaViewModel = MediaViewModel;
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         synchronized (this) {
-            long dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            long j = this.mDirtyFlags;
+            this.mDirtyFlags = 0L;
         }
     }
 }

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import com.squareup.picasso.Picasso;
 
+/* loaded from: classes.dex */
 public interface Target {
     void onBitmapFailed(Drawable drawable);
 

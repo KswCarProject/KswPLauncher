@@ -8,12 +8,13 @@ import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.settings.id7.interfaces.IUpdateTwoLayout;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
+/* loaded from: classes7.dex */
 public class ID6TimeLayout extends RelativeLayout implements RadioGroup.OnCheckedChangeListener {
     private Context context;
     private RadioGroup rdg_timeSy;
@@ -29,10 +30,10 @@ public class ID6TimeLayout extends RelativeLayout implements RadioGroup.OnChecke
         this.updateTwoLayout = twoLayout;
     }
 
-    public ID6TimeLayout(Context context2) {
-        super(context2);
-        this.context = context2;
-        this.view = LayoutInflater.from(context2).inflate(R.layout.layout_id6_time, (ViewGroup) null);
+    public ID6TimeLayout(Context context) {
+        super(context);
+        this.context = context;
+        this.view = LayoutInflater.from(context).inflate(C0899R.C0902layout.layout_id6_time, (ViewGroup) null);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(-1, -1);
         initData();
         initView(this.view);
@@ -54,43 +55,44 @@ public class ID6TimeLayout extends RelativeLayout implements RadioGroup.OnChecke
         }
     }
 
-    private void initView(View view2) {
-        this.tv_timeSync = (TextView) view2.findViewById(R.id.tv_timeSync);
-        this.tv_timeZhis = (TextView) view2.findViewById(R.id.tv_timeZhis);
-        this.rdg_timeSy = (RadioGroup) view2.findViewById(R.id.rdg_timeSy);
-        this.rdg_timeZhis = (RadioGroup) view2.findViewById(R.id.rdg_timeZhis);
+    private void initView(View view) {
+        this.tv_timeSync = (TextView) view.findViewById(C0899R.C0901id.tv_timeSync);
+        this.tv_timeZhis = (TextView) view.findViewById(C0899R.C0901id.tv_timeZhis);
+        this.rdg_timeSy = (RadioGroup) view.findViewById(C0899R.C0901id.rdg_timeSy);
+        this.rdg_timeZhis = (RadioGroup) view.findViewById(C0899R.C0901id.rdg_timeZhis);
         switch (this.timeSync) {
             case 0:
-                this.rdg_timeSy.check(R.id.rdb_sync2);
+                this.rdg_timeSy.check(C0899R.C0901id.rdb_sync2);
                 break;
             case 1:
-                this.rdg_timeSy.check(R.id.rdb_sync1);
+                this.rdg_timeSy.check(C0899R.C0901id.rdb_sync1);
                 break;
         }
         switch (this.timeZhis) {
             case 0:
-                this.rdg_timeZhis.check(R.id.rdb_zhis2);
+                this.rdg_timeZhis.check(C0899R.C0901id.rdb_zhis2);
                 break;
             case 1:
-                this.rdg_timeZhis.check(R.id.rdb_zhis1);
+                this.rdg_timeZhis.check(C0899R.C0901id.rdb_zhis1);
                 break;
         }
         this.rdg_timeSy.setOnCheckedChangeListener(this);
         this.rdg_timeZhis.setOnCheckedChangeListener(this);
     }
 
+    @Override // android.widget.RadioGroup.OnCheckedChangeListener
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.rdb_sync1:
+            case C0899R.C0901id.rdb_sync1 /* 2131297495 */:
                 FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 1);
                 return;
-            case R.id.rdb_sync2:
+            case C0899R.C0901id.rdb_sync2 /* 2131297496 */:
                 FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 0);
                 return;
-            case R.id.rdb_zhis1:
+            case C0899R.C0901id.rdb_zhis1 /* 2131297503 */:
                 FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 1);
                 return;
-            case R.id.rdb_zhis2:
+            case C0899R.C0901id.rdb_zhis2 /* 2131297504 */:
                 FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 0);
                 return;
             default:

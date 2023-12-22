@@ -4,13 +4,15 @@ import android.content.Context;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.KswApplication;
-import com.wits.ksw.R;
 import com.wits.ksw.launcher.utils.SettingsSystemUtil;
+import com.wits.ksw.launcher.view.benzmbux2021new.util.BenzUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/* loaded from: classes5.dex */
 public class GSID8LauncherConstants {
     private static final String GS_ID8_CARD_SEQ = "GS_ID8_card_seq";
     private static final String GS_ID8_LEFT_BAR_ICON3 = "GS_ID8_left_bar_icon_3";
@@ -60,24 +62,27 @@ public class GSID8LauncherConstants {
         String[] split = cardSeq.split(";");
         if (split.length == 0) {
             initGsSeq();
-        } else {
-            nameList.addAll(Arrays.asList(split));
+            return;
         }
+        nameList.addAll(Arrays.asList(split));
+        ID8LauncherConstants.IteratorNameList(nameList);
     }
 
     public static void saveSystemCardSeq() {
         List<String> list = nameList;
-        if (list != null && list.size() != 0) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (String name : nameList) {
-                stringBuilder.append(name);
-                stringBuilder.append(";");
-            }
-            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-            String cardSeq = stringBuilder.toString();
-            Log.w(TAG, "cache card seq : " + SettingsSystemUtil.putString(KswApplication.appContext.getContentResolver(), GS_ID8_CARD_SEQ, cardSeq));
-            Log.w(TAG, "cache card seq : " + cardSeq);
+        if (list == null || list.size() == 0) {
+            return;
         }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String name : nameList) {
+            stringBuilder.append(name);
+            stringBuilder.append(";");
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        String cardSeq = stringBuilder.toString();
+        boolean b = SettingsSystemUtil.putString(KswApplication.appContext.getContentResolver(), GS_ID8_CARD_SEQ, cardSeq);
+        Log.w(TAG, "cache card seq : " + b);
+        Log.w(TAG, "cache card seq : " + cardSeq);
     }
 
     private static void initGsSeq() {
@@ -97,15 +102,15 @@ public class GSID8LauncherConstants {
             return false;
         }
         switch (viewId) {
-            case R.id.ll_left_3 /*2131297272*/:
+            case C0899R.C0901id.ll_left_3 /* 2131297301 */:
                 leftIcon3 = name;
                 SettingsSystemUtil.putString(KswApplication.appContext.getContentResolver(), GS_ID8_LEFT_BAR_ICON3, name);
                 return true;
-            case R.id.ll_left_4 /*2131297273*/:
+            case C0899R.C0901id.ll_left_4 /* 2131297302 */:
                 leftIcon4 = name;
                 SettingsSystemUtil.putString(KswApplication.appContext.getContentResolver(), GS_ID8_LEFT_BAR_ICON4, name);
                 return true;
-            case R.id.ll_left_5 /*2131297274*/:
+            case C0899R.C0901id.ll_left_5 /* 2131297303 */:
                 leftIcon5 = name;
                 SettingsSystemUtil.putString(KswApplication.appContext.getContentResolver(), GS_ID8_LEFT_BAR_ICON5, name);
                 return true;
@@ -122,12 +127,12 @@ public class GSID8LauncherConstants {
         String pkgInfo = "3rd:" + pkg + "," + cls;
         if (!nameList.contains(pkgInfo)) {
             int settingPosition = nameList.size() - 1;
-            if (pkg.equals("com.txznet.weather") && !nameList.contains("WEATHER")) {
+            if (pkg.equals(BenzUtils.WEATHER_PKG) && !nameList.contains("WEATHER")) {
                 nameList.add(settingPosition, "WEATHER");
-            } else if (!pkg.equals("com.txznet.weather") || !nameList.contains("WEATHER")) {
-                nameList.add(settingPosition, pkgInfo);
-            } else {
+            } else if (pkg.equals(BenzUtils.WEATHER_PKG) && nameList.contains("WEATHER")) {
                 return;
+            } else {
+                nameList.add(settingPosition, pkgInfo);
             }
         }
         saveSystemCardSeq();

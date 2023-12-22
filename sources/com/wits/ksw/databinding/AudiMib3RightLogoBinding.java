@@ -8,21 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.AudiViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class AudiMib3RightLogoBinding extends ViewDataBinding {
     public final RelativeLayout KSWA4LRightShowLogo;
     public final ImageView KSWYouAudi;
     @Bindable
     protected AudiViewModel mVm;
 
-    public abstract void setVm(AudiViewModel audiViewModel);
+    public abstract void setVm(AudiViewModel vm);
 
-    protected AudiMib3RightLogoBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout KSWA4LRightShowLogo2, ImageView KSWYouAudi2) {
+    protected AudiMib3RightLogoBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout KSWA4LRightShowLogo, ImageView KSWYouAudi) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.KSWA4LRightShowLogo = KSWA4LRightShowLogo2;
-        this.KSWYouAudi = KSWYouAudi2;
+        this.KSWA4LRightShowLogo = KSWA4LRightShowLogo;
+        this.KSWYouAudi = KSWYouAudi;
     }
 
     public AudiViewModel getVm() {
@@ -35,7 +36,7 @@ public abstract class AudiMib3RightLogoBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3RightLogoBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AudiMib3RightLogoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_mib3_right_logo, root, attachToRoot, component);
+        return (AudiMib3RightLogoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_mib3_right_logo, root, attachToRoot, component);
     }
 
     public static AudiMib3RightLogoBinding inflate(LayoutInflater inflater) {
@@ -44,7 +45,7 @@ public abstract class AudiMib3RightLogoBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3RightLogoBinding inflate(LayoutInflater inflater, Object component) {
-        return (AudiMib3RightLogoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_mib3_right_logo, (ViewGroup) null, false, component);
+        return (AudiMib3RightLogoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_mib3_right_logo, null, false, component);
     }
 
     public static AudiMib3RightLogoBinding bind(View view) {
@@ -53,6 +54,6 @@ public abstract class AudiMib3RightLogoBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3RightLogoBinding bind(View view, Object component) {
-        return (AudiMib3RightLogoBinding) bind(component, view, R.layout.audi_mib3_right_logo);
+        return (AudiMib3RightLogoBinding) bind(component, view, C0899R.C0902layout.audi_mib3_right_logo);
     }
 }

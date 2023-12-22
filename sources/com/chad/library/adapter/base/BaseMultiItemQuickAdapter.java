@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.entity.IExpandable;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public abstract class BaseMultiItemQuickAdapter<T extends MultiItemEntity, K extends BaseViewHolder> extends BaseQuickAdapter<T, K> {
     private static final int DEFAULT_VIEW_TYPE = -255;
     public static final int TYPE_NOT_FOUND = -404;
@@ -16,22 +17,21 @@ public abstract class BaseMultiItemQuickAdapter<T extends MultiItemEntity, K ext
         super(data);
     }
 
-    /* access modifiers changed from: protected */
-    public int getDefItemViewType(int position) {
-        T item = (MultiItemEntity) this.mData.get(position);
-        if (item != null) {
-            return item.getItemType();
+    @Override // com.chad.library.adapter.base.BaseQuickAdapter
+    protected int getDefItemViewType(int position) {
+        MultiItemEntity multiItemEntity = (MultiItemEntity) this.mData.get(position);
+        if (multiItemEntity != null) {
+            return multiItemEntity.getItemType();
         }
         return DEFAULT_VIEW_TYPE;
     }
 
-    /* access modifiers changed from: protected */
-    public void setDefaultViewTypeLayout(int layoutResId) {
+    protected void setDefaultViewTypeLayout(int layoutResId) {
         addItemType(DEFAULT_VIEW_TYPE, layoutResId);
     }
 
-    /* access modifiers changed from: protected */
-    public K onCreateDefViewHolder(ViewGroup parent, int viewType) {
+    @Override // com.chad.library.adapter.base.BaseQuickAdapter
+    protected K onCreateDefViewHolder(ViewGroup parent, int viewType) {
         return createBaseViewHolder(parent, getLayoutId(viewType));
     }
 
@@ -39,38 +39,39 @@ public abstract class BaseMultiItemQuickAdapter<T extends MultiItemEntity, K ext
         return this.layouts.get(viewType, -404);
     }
 
-    /* access modifiers changed from: protected */
-    public void addItemType(int type, int layoutResId) {
+    protected void addItemType(int type, int layoutResId) {
         if (this.layouts == null) {
             this.layouts = new SparseIntArray();
         }
         this.layouts.put(type, layoutResId);
     }
 
+    /* JADX WARN: Multi-variable type inference failed */
+    @Override // com.chad.library.adapter.base.BaseQuickAdapter
     public void remove(int position) {
-        if (this.mData != null && position >= 0 && position < this.mData.size()) {
-            T entity = (MultiItemEntity) this.mData.get(position);
-            if (entity instanceof IExpandable) {
-                removeAllChild((IExpandable) entity, position);
-            }
-            removeDataFromParent(entity);
-            super.remove(position);
+        if (this.mData == null || position < 0 || position >= this.mData.size()) {
+            return;
         }
+        MultiItemEntity multiItemEntity = (MultiItemEntity) this.mData.get(position);
+        if (multiItemEntity instanceof IExpandable) {
+            removeAllChild((IExpandable) multiItemEntity, position);
+        }
+        removeDataFromParent(multiItemEntity);
+        super.remove(position);
     }
 
-    /* access modifiers changed from: protected */
-    public void removeAllChild(IExpandable parent, int parentPosition) {
+    protected void removeAllChild(IExpandable parent, int parentPosition) {
         List<MultiItemEntity> chidChilds;
-        if (parent.isExpanded() && (chidChilds = parent.getSubItems()) != null && chidChilds.size() != 0) {
-            int childSize = chidChilds.size();
-            for (int i = 0; i < childSize; i++) {
-                remove(parentPosition + 1);
-            }
+        if (!parent.isExpanded() || (chidChilds = parent.getSubItems()) == null || chidChilds.size() == 0) {
+            return;
+        }
+        int childSize = chidChilds.size();
+        for (int i = 0; i < childSize; i++) {
+            remove(parentPosition + 1);
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void removeDataFromParent(T child) {
+    protected void removeDataFromParent(T child) {
         IExpandable parent;
         int position = getParentPosition(child);
         if (position >= 0 && (parent = (IExpandable) this.mData.get(position)) != child) {
@@ -99,6 +100,7 @@ public abstract class BaseMultiItemQuickAdapter<T extends MultiItemEntity, K ext
         return -1;
     }
 
+    @Override // com.chad.library.adapter.base.BaseQuickAdapter
     public boolean isExpandable(MultiItemEntity item) {
         return item != null && (item instanceof IExpandable);
     }

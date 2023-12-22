@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="benz_ViewPager_mgTop">0dp</dimen>
+    <dimen name="benz_color_title_mgTop">36dp</dimen>
+    <dimen name="benz_modus_Type_margin">85dp</dimen>
+    <dimen name="benz_modus_height">351dp</dimen>
+    <dimen name="benz_modus_radio_mgTop">10dp</dimen>
+    <dimen name="benz_modus_style_mgTop">-7dp</dimen>
+    <dimen name="benz_modus_title_mgright">4dp</dimen>
+    <dimen name="benz_modus_width">795dp</dimen>
+    <dimen name="benz_music_album_h">159dp</dimen>
+    <dimen name="benz_music_album_icon_h">110dp</dimen>
+    <dimen name="benz_music_album_icon_w">108dp</dimen>
+    <dimen name="benz_music_album_w">182dp</dimen>
+    <dimen name="benz_tv_modus_mgbottom">10dp</dimen>
+    <dimen name="tv_modus_title">15sp</dimen>
+    <dimen name="tv_modus_type">14sp</dimen>
+</resources>

@@ -12,18 +12,20 @@ import com.bumptech.glide.load.resource.bitmap.VideoDecoder;
 import com.bumptech.glide.signature.ObjectKey;
 import java.io.InputStream;
 
+/* loaded from: classes.dex */
 public class MediaStoreVideoThumbLoader implements ModelLoader<Uri, InputStream> {
     private final Context context;
 
-    public MediaStoreVideoThumbLoader(Context context2) {
-        this.context = context2.getApplicationContext();
+    public MediaStoreVideoThumbLoader(Context context) {
+        this.context = context.getApplicationContext();
     }
 
+    @Override // com.bumptech.glide.load.model.ModelLoader
     public ModelLoader.LoadData<InputStream> buildLoadData(Uri model, int width, int height, Options options) {
-        if (!MediaStoreUtil.isThumbnailSize(width, height) || !isRequestingDefaultFrame(options)) {
-            return null;
+        if (MediaStoreUtil.isThumbnailSize(width, height) && isRequestingDefaultFrame(options)) {
+            return new ModelLoader.LoadData<>(new ObjectKey(model), ThumbFetcher.buildVideoFetcher(this.context, model));
         }
-        return new ModelLoader.LoadData<>(new ObjectKey(model), ThumbFetcher.buildVideoFetcher(this.context, model));
+        return null;
     }
 
     private boolean isRequestingDefaultFrame(Options options) {
@@ -31,21 +33,25 @@ public class MediaStoreVideoThumbLoader implements ModelLoader<Uri, InputStream>
         return specifiedFrame != null && specifiedFrame.longValue() == -1;
     }
 
+    @Override // com.bumptech.glide.load.model.ModelLoader
     public boolean handles(Uri model) {
         return MediaStoreUtil.isMediaStoreVideoUri(model);
     }
 
+    /* loaded from: classes.dex */
     public static class Factory implements ModelLoaderFactory<Uri, InputStream> {
         private final Context context;
 
-        public Factory(Context context2) {
-            this.context = context2;
+        public Factory(Context context) {
+            this.context = context;
         }
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public ModelLoader<Uri, InputStream> build(MultiModelLoaderFactory multiFactory) {
             return new MediaStoreVideoThumbLoader(this.context);
         }
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public void teardown() {
         }
     }

@@ -12,6 +12,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class UnicastSubject<T> extends Subject<T> {
     final boolean delayError;
     volatile boolean disposed;
@@ -35,79 +36,83 @@ public final class UnicastSubject<T> extends Subject<T> {
     }
 
     @CheckReturnValue
-    public static <T> UnicastSubject<T> create(int capacityHint, Runnable onTerminate2) {
-        return new UnicastSubject<>(capacityHint, onTerminate2, true);
+    public static <T> UnicastSubject<T> create(int capacityHint, Runnable onTerminate) {
+        return new UnicastSubject<>(capacityHint, onTerminate, true);
     }
 
     @CheckReturnValue
-    public static <T> UnicastSubject<T> create(int capacityHint, Runnable onTerminate2, boolean delayError2) {
-        return new UnicastSubject<>(capacityHint, onTerminate2, delayError2);
+    public static <T> UnicastSubject<T> create(int capacityHint, Runnable onTerminate, boolean delayError) {
+        return new UnicastSubject<>(capacityHint, onTerminate, delayError);
     }
 
     @CheckReturnValue
-    public static <T> UnicastSubject<T> create(boolean delayError2) {
-        return new UnicastSubject<>(bufferSize(), delayError2);
+    public static <T> UnicastSubject<T> create(boolean delayError) {
+        return new UnicastSubject<>(bufferSize(), delayError);
     }
 
-    UnicastSubject(int capacityHint, boolean delayError2) {
+    UnicastSubject(int capacityHint, boolean delayError) {
         this.queue = new SpscLinkedArrayQueue<>(ObjectHelper.verifyPositive(capacityHint, "capacityHint"));
         this.onTerminate = new AtomicReference<>();
-        this.delayError = delayError2;
+        this.delayError = delayError;
         this.downstream = new AtomicReference<>();
         this.once = new AtomicBoolean();
         this.wip = new UnicastQueueDisposable();
     }
 
-    UnicastSubject(int capacityHint, Runnable onTerminate2) {
-        this(capacityHint, onTerminate2, true);
+    UnicastSubject(int capacityHint, Runnable onTerminate) {
+        this(capacityHint, onTerminate, true);
     }
 
-    UnicastSubject(int capacityHint, Runnable onTerminate2, boolean delayError2) {
+    UnicastSubject(int capacityHint, Runnable onTerminate, boolean delayError) {
         this.queue = new SpscLinkedArrayQueue<>(ObjectHelper.verifyPositive(capacityHint, "capacityHint"));
-        this.onTerminate = new AtomicReference<>(ObjectHelper.requireNonNull(onTerminate2, "onTerminate"));
-        this.delayError = delayError2;
+        this.onTerminate = new AtomicReference<>(ObjectHelper.requireNonNull(onTerminate, "onTerminate"));
+        this.delayError = delayError;
         this.downstream = new AtomicReference<>();
         this.once = new AtomicBoolean();
         this.wip = new UnicastQueueDisposable();
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Observer<? super T> observer) {
-        if (this.once.get() || !this.once.compareAndSet(false, true)) {
-            EmptyDisposable.error((Throwable) new IllegalStateException("Only a single observer allowed."), (Observer<?>) observer);
-            return;
+    @Override // io.reactivex.Observable
+    protected void subscribeActual(Observer<? super T> observer) {
+        if (!this.once.get() && this.once.compareAndSet(false, true)) {
+            observer.onSubscribe(this.wip);
+            this.downstream.lazySet(observer);
+            if (this.disposed) {
+                this.downstream.lazySet(null);
+                return;
+            } else {
+                drain();
+                return;
+            }
         }
-        observer.onSubscribe(this.wip);
-        this.downstream.lazySet(observer);
-        if (this.disposed) {
-            this.downstream.lazySet((Object) null);
-        } else {
-            drain();
-        }
+        EmptyDisposable.error(new IllegalStateException("Only a single observer allowed."), observer);
     }
 
-    /* access modifiers changed from: package-private */
-    public void doTerminate() {
+    void doTerminate() {
         Runnable r = this.onTerminate.get();
-        if (r != null && this.onTerminate.compareAndSet(r, (Object) null)) {
+        if (r != null && this.onTerminate.compareAndSet(r, null)) {
             r.run();
         }
     }
 
+    @Override // io.reactivex.Observer
     public void onSubscribe(Disposable d) {
         if (this.done || this.disposed) {
             d.dispose();
         }
     }
 
+    @Override // io.reactivex.Observer
     public void onNext(T t) {
         ObjectHelper.requireNonNull(t, "onNext called with null. Null values are generally not allowed in 2.x operators and sources.");
-        if (!this.done && !this.disposed) {
-            this.queue.offer(t);
-            drain();
+        if (this.done || this.disposed) {
+            return;
         }
+        this.queue.offer(t);
+        drain();
     }
 
+    @Override // io.reactivex.Observer
     public void onError(Throwable t) {
         ObjectHelper.requireNonNull(t, "onError called with null. Null values are generally not allowed in 2.x operators and sources.");
         if (this.done || this.disposed) {
@@ -120,77 +125,74 @@ public final class UnicastSubject<T> extends Subject<T> {
         drain();
     }
 
+    @Override // io.reactivex.Observer
     public void onComplete() {
-        if (!this.done && !this.disposed) {
-            this.done = true;
-            doTerminate();
-            drain();
+        if (this.done || this.disposed) {
+            return;
         }
+        this.done = true;
+        doTerminate();
+        drain();
     }
 
-    /* access modifiers changed from: package-private */
-    public void drainNormal(Observer<? super T> a) {
+    void drainNormal(Observer<? super T> a) {
         int missed = 1;
         SimpleQueue<T> q = this.queue;
         boolean failFast = !this.delayError;
         boolean canBeError = true;
         while (!this.disposed) {
             boolean d = this.done;
-            T v = this.queue.poll();
-            boolean empty = v == null;
+            Object obj = (T) this.queue.poll();
+            boolean empty = obj == null;
             if (d) {
                 if (failFast && canBeError) {
-                    if (!failedFast(q, a)) {
-                        canBeError = false;
-                    } else {
+                    if (failedFast(q, a)) {
                         return;
                     }
+                    canBeError = false;
                 }
                 if (empty) {
                     errorOrComplete(a);
                     return;
                 }
             }
-            if (empty) {
+            if (!empty) {
+                a.onNext(obj);
+            } else {
                 missed = this.wip.addAndGet(-missed);
                 if (missed == 0) {
                     return;
                 }
-            } else {
-                a.onNext(v);
             }
         }
-        this.downstream.lazySet((Object) null);
+        this.downstream.lazySet(null);
         q.clear();
     }
 
-    /* access modifiers changed from: package-private */
-    public void drainFused(Observer<? super T> a) {
+    void drainFused(Observer<? super T> a) {
         int missed = 1;
         SpscLinkedArrayQueue<T> q = this.queue;
         boolean failFast = !this.delayError;
         while (!this.disposed) {
             boolean d = this.done;
-            if (!failFast || !d || !failedFast(q, a)) {
-                a.onNext(null);
-                if (d) {
-                    errorOrComplete(a);
-                    return;
-                }
-                missed = this.wip.addAndGet(-missed);
-                if (missed == 0) {
-                    return;
-                }
-            } else {
+            if (failFast && d && failedFast(q, a)) {
+                return;
+            }
+            a.onNext(null);
+            if (d) {
+                errorOrComplete(a);
+                return;
+            }
+            missed = this.wip.addAndGet(-missed);
+            if (missed == 0) {
                 return;
             }
         }
-        this.downstream.lazySet((Object) null);
+        this.downstream.lazySet(null);
     }
 
-    /* access modifiers changed from: package-private */
-    public void errorOrComplete(Observer<? super T> a) {
-        this.downstream.lazySet((Object) null);
+    void errorOrComplete(Observer<? super T> a) {
+        this.downstream.lazySet(null);
         Throwable ex = this.error;
         if (ex != null) {
             a.onError(ex);
@@ -199,43 +201,45 @@ public final class UnicastSubject<T> extends Subject<T> {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean failedFast(SimpleQueue<T> q, Observer<? super T> a) {
+    boolean failedFast(SimpleQueue<T> q, Observer<? super T> a) {
         Throwable ex = this.error;
-        if (ex == null) {
-            return false;
+        if (ex != null) {
+            this.downstream.lazySet(null);
+            q.clear();
+            a.onError(ex);
+            return true;
         }
-        this.downstream.lazySet((Object) null);
-        q.clear();
-        a.onError(ex);
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: package-private */
-    public void drain() {
-        if (this.wip.getAndIncrement() == 0) {
-            Observer<? super T> a = this.downstream.get();
-            int missed = 1;
-            while (a == null) {
-                missed = this.wip.addAndGet(-missed);
-                if (missed != 0) {
-                    a = this.downstream.get();
-                } else {
-                    return;
-                }
-            }
-            if (this.enableOperatorFusion) {
-                drainFused(a);
+    void drain() {
+        if (this.wip.getAndIncrement() != 0) {
+            return;
+        }
+        Observer<? super T> a = this.downstream.get();
+        int missed = 1;
+        while (a == null) {
+            missed = this.wip.addAndGet(-missed);
+            if (missed != 0) {
+                Observer<? super T> a2 = this.downstream.get();
+                a = a2;
             } else {
-                drainNormal(a);
+                return;
             }
+        }
+        if (this.enableOperatorFusion) {
+            drainFused(a);
+        } else {
+            drainNormal(a);
         }
     }
 
+    @Override // io.reactivex.subjects.Subject
     public boolean hasObservers() {
         return this.downstream.get() != null;
     }
 
+    @Override // io.reactivex.subjects.Subject
     public Throwable getThrowable() {
         if (this.done) {
             return this.error;
@@ -243,47 +247,55 @@ public final class UnicastSubject<T> extends Subject<T> {
         return null;
     }
 
+    @Override // io.reactivex.subjects.Subject
     public boolean hasThrowable() {
         return this.done && this.error != null;
     }
 
+    @Override // io.reactivex.subjects.Subject
     public boolean hasComplete() {
         return this.done && this.error == null;
     }
 
+    /* loaded from: classes.dex */
     final class UnicastQueueDisposable extends BasicIntQueueDisposable<T> {
         private static final long serialVersionUID = 7926949470189395511L;
 
         UnicastQueueDisposable() {
         }
 
+        @Override // io.reactivex.internal.fuseable.QueueFuseable
         public int requestFusion(int mode) {
-            if ((mode & 2) == 0) {
-                return 0;
+            if ((mode & 2) != 0) {
+                UnicastSubject.this.enableOperatorFusion = true;
+                return 2;
             }
-            UnicastSubject.this.enableOperatorFusion = true;
-            return 2;
+            return 0;
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public T poll() throws Exception {
             return UnicastSubject.this.queue.poll();
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public boolean isEmpty() {
             return UnicastSubject.this.queue.isEmpty();
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public void clear() {
             UnicastSubject.this.queue.clear();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             if (!UnicastSubject.this.disposed) {
                 UnicastSubject.this.disposed = true;
                 UnicastSubject.this.doTerminate();
-                UnicastSubject.this.downstream.lazySet((Object) null);
+                UnicastSubject.this.downstream.lazySet(null);
                 if (UnicastSubject.this.wip.getAndIncrement() == 0) {
-                    UnicastSubject.this.downstream.lazySet((Object) null);
+                    UnicastSubject.this.downstream.lazySet(null);
                     if (!UnicastSubject.this.enableOperatorFusion) {
                         UnicastSubject.this.queue.clear();
                     }
@@ -291,6 +303,7 @@ public final class UnicastSubject<T> extends Subject<T> {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return UnicastSubject.this.disposed;
         }

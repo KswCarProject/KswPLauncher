@@ -3,9 +3,9 @@ package skin.support.app;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.view.LayoutInflaterFactory;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.VectorEnabledTintResources;
+import android.support.p001v4.view.LayoutInflaterFactory;
+import android.support.p001v4.view.ViewCompat;
+import android.support.p004v7.widget.VectorEnabledTintResources;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewParent;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import skin.support.widget.SkinCompatSupportable;
 
+/* loaded from: classes.dex */
 public class SkinCompatDelegate implements LayoutInflaterFactory {
     private final Context mContext;
     private SkinCompatViewInflater mSkinCompatViewInflater;
@@ -23,6 +24,7 @@ public class SkinCompatDelegate implements LayoutInflaterFactory {
         this.mContext = context;
     }
 
+    @Override // android.support.p001v4.view.LayoutInflaterFactory
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
         View view = null;
         try {
@@ -33,7 +35,7 @@ public class SkinCompatDelegate implements LayoutInflaterFactory {
             return null;
         }
         if (view instanceof SkinCompatSupportable) {
-            this.mSkinHelpers.add(new WeakReference((SkinCompatSupportable) view));
+            this.mSkinHelpers.add(new WeakReference<>((SkinCompatSupportable) view));
         }
         return view;
     }
@@ -43,7 +45,8 @@ public class SkinCompatDelegate implements LayoutInflaterFactory {
         if (this.mSkinCompatViewInflater == null) {
             this.mSkinCompatViewInflater = new SkinCompatViewInflater();
         }
-        return this.mSkinCompatViewInflater.createView(parent, name, context, attrs, isPre21 && shouldInheritContext((ViewParent) parent), isPre21, true, VectorEnabledTintResources.shouldBeUsed());
+        boolean inheritContext = isPre21 && shouldInheritContext((ViewParent) parent);
+        return this.mSkinCompatViewInflater.createView(parent, name, context, attrs, inheritContext, isPre21, true, VectorEnabledTintResources.shouldBeUsed());
     }
 
     private boolean shouldInheritContext(ViewParent parent) {
@@ -72,8 +75,8 @@ public class SkinCompatDelegate implements LayoutInflaterFactory {
         List<WeakReference<SkinCompatSupportable>> list = this.mSkinHelpers;
         if (list != null && !list.isEmpty()) {
             for (WeakReference ref : this.mSkinHelpers) {
-                if (!(ref == null || ref.get() == null)) {
-                    ((SkinCompatSupportable) ref.get()).applySkin();
+                if (ref != null && ref.get() != null) {
+                    ref.get().applySkin();
                 }
             }
         }

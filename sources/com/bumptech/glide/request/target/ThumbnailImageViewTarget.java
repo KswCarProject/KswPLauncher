@@ -4,9 +4,9 @@ import android.graphics.drawable.Drawable;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+/* loaded from: classes.dex */
 public abstract class ThumbnailImageViewTarget<T> extends ImageViewTarget<T> {
-    /* access modifiers changed from: protected */
-    public abstract Drawable getDrawable(T t);
+    protected abstract Drawable getDrawable(T t);
 
     public ThumbnailImageViewTarget(ImageView view) {
         super(view);
@@ -17,8 +17,8 @@ public abstract class ThumbnailImageViewTarget<T> extends ImageViewTarget<T> {
         super(view, waitForLayout);
     }
 
-    /* access modifiers changed from: protected */
-    public void setResource(T resource) {
+    @Override // com.bumptech.glide.request.target.ImageViewTarget
+    protected void setResource(T resource) {
         ViewGroup.LayoutParams layoutParams = ((ImageView) this.view).getLayoutParams();
         Drawable result = getDrawable(resource);
         if (layoutParams != null && layoutParams.width > 0 && layoutParams.height > 0) {

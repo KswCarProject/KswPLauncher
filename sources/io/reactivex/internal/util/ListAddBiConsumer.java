@@ -3,6 +3,7 @@ package io.reactivex.internal.util;
 import io.reactivex.functions.BiFunction;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public enum ListAddBiConsumer implements BiFunction<List, Object, List> {
     INSTANCE;
 
@@ -10,6 +11,7 @@ public enum ListAddBiConsumer implements BiFunction<List, Object, List> {
         return INSTANCE;
     }
 
+    @Override // io.reactivex.functions.BiFunction
     public List apply(List t1, Object t2) throws Exception {
         t1.add(t2);
         return t1;

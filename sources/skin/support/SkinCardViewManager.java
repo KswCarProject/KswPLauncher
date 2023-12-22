@@ -3,6 +3,7 @@ package skin.support;
 import android.content.Context;
 import skin.support.app.SkinCardViewInflater;
 
+/* loaded from: classes.dex */
 public class SkinCardViewManager {
     private static volatile SkinCardViewManager sInstance;
 

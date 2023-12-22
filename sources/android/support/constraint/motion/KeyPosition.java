@@ -3,7 +3,7 @@ package android.support.constraint.motion;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.RectF;
-import android.support.constraint.R;
+import android.support.constraint.C0088R;
 import android.support.constraint.motion.utils.Easing;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import java.util.HashMap;
 
+/* loaded from: classes.dex */
 public class KeyPosition extends KeyPositionBase {
     static final int KEY_TYPE = 2;
     static final String NAME = "KeyPosition";
@@ -21,32 +22,35 @@ public class KeyPosition extends KeyPositionBase {
     public static final int TYPE_CARTESIAN = 0;
     public static final int TYPE_PATH = 1;
     public static final int TYPE_SCREEN = 2;
-    float mAltPercentX = Float.NaN;
-    float mAltPercentY = Float.NaN;
-    private float mCalculatedPositionX = Float.NaN;
-    private float mCalculatedPositionY = Float.NaN;
-    int mDrawPath = 0;
+    String mTransitionEasing = null;
     int mPathMotionArc = UNSET;
-    float mPercentHeight = Float.NaN;
+    int mDrawPath = 0;
     float mPercentWidth = Float.NaN;
+    float mPercentHeight = Float.NaN;
     float mPercentX = Float.NaN;
     float mPercentY = Float.NaN;
+    float mAltPercentX = Float.NaN;
+    float mAltPercentY = Float.NaN;
     int mPositionType = 0;
-    String mTransitionEasing = null;
+    private float mCalculatedPositionX = Float.NaN;
+    private float mCalculatedPositionY = Float.NaN;
 
     public KeyPosition() {
         this.mType = 2;
     }
 
+    @Override // android.support.constraint.motion.Key
     public void load(Context context, AttributeSet attrs) {
-        Loader.read(this, context.obtainStyledAttributes(attrs, R.styleable.KeyPosition));
+        TypedArray a = context.obtainStyledAttributes(attrs, C0088R.styleable.KeyPosition);
+        Loader.read(this, a);
     }
 
-    public void addValues(HashMap<String, SplineSet> hashMap) {
+    @Override // android.support.constraint.motion.Key
+    public void addValues(HashMap<String, SplineSet> splines) {
     }
 
-    /* access modifiers changed from: package-private */
-    public void calcPosition(int layoutWidth, int layoutHeight, float start_x, float start_y, float end_x, float end_y) {
+    @Override // android.support.constraint.motion.KeyPositionBase
+    void calcPosition(int layoutWidth, int layoutHeight, float start_x, float start_y, float end_x, float end_y) {
         switch (this.mPositionType) {
             case 1:
                 calcPathPosition(start_x, start_y, end_x, end_y);
@@ -62,43 +66,42 @@ public class KeyPosition extends KeyPositionBase {
 
     private void calcScreenPosition(int layoutWidth, int layoutHeight) {
         float f = this.mPercentX;
-        this.mCalculatedPositionX = (((float) (layoutWidth - 0)) * f) + ((float) (0 / 2));
-        this.mCalculatedPositionY = (((float) (layoutHeight - 0)) * f) + ((float) (0 / 2));
+        this.mCalculatedPositionX = ((layoutWidth - 0) * f) + (0 / 2);
+        this.mCalculatedPositionY = ((layoutHeight - 0) * f) + (0 / 2);
     }
 
     private void calcPathPosition(float start_x, float start_y, float end_x, float end_y) {
         float pathVectorX = end_x - start_x;
         float pathVectorY = end_y - start_y;
+        float perpendicularX = -pathVectorY;
         float f = this.mPercentX;
         float f2 = this.mPercentY;
-        this.mCalculatedPositionX = (pathVectorX * f) + start_x + ((-pathVectorY) * f2);
+        this.mCalculatedPositionX = (pathVectorX * f) + start_x + (perpendicularX * f2);
         this.mCalculatedPositionY = (f * pathVectorY) + start_y + (f2 * pathVectorX);
     }
 
     private void calcCartesianPosition(float start_x, float start_y, float end_x, float end_y) {
         float pathVectorX = end_x - start_x;
         float pathVectorY = end_y - start_y;
-        float dxdy = 0.0f;
         float dxdx = Float.isNaN(this.mPercentX) ? 0.0f : this.mPercentX;
         float dydx = Float.isNaN(this.mAltPercentY) ? 0.0f : this.mAltPercentY;
         float dydy = Float.isNaN(this.mPercentY) ? 0.0f : this.mPercentY;
-        if (!Float.isNaN(this.mAltPercentX)) {
-            dxdy = this.mAltPercentX;
-        }
-        this.mCalculatedPositionX = (float) ((int) ((pathVectorX * dxdx) + start_x + (pathVectorY * dxdy)));
-        this.mCalculatedPositionY = (float) ((int) ((pathVectorX * dydx) + start_y + (pathVectorY * dydy)));
+        float dxdy = Float.isNaN(this.mAltPercentX) ? 0.0f : this.mAltPercentX;
+        this.mCalculatedPositionX = (int) ((pathVectorX * dxdx) + start_x + (pathVectorY * dxdy));
+        this.mCalculatedPositionY = (int) ((pathVectorX * dydx) + start_y + (pathVectorY * dydy));
     }
 
-    /* access modifiers changed from: package-private */
-    public float getPositionX() {
+    @Override // android.support.constraint.motion.KeyPositionBase
+    float getPositionX() {
         return this.mCalculatedPositionX;
     }
 
-    /* access modifiers changed from: package-private */
-    public float getPositionY() {
+    @Override // android.support.constraint.motion.KeyPositionBase
+    float getPositionY() {
         return this.mCalculatedPositionY;
     }
 
+    @Override // android.support.constraint.motion.KeyPositionBase
     public void positionAttributes(View view, RectF start, RectF end, float x, float y, String[] attribute, float[] value) {
         switch (this.mPositionType) {
             case 1:
@@ -113,14 +116,15 @@ public class KeyPosition extends KeyPositionBase {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void positionPathAttributes(RectF start, RectF end, float x, float y, String[] attribute, float[] value) {
+    void positionPathAttributes(RectF start, RectF end, float x, float y, String[] attribute, float[] value) {
         float startCenterX = start.centerX();
         float startCenterY = start.centerY();
-        float pathVectorX = end.centerX() - startCenterX;
-        float pathVectorY = end.centerY() - startCenterY;
-        float distance = (float) Math.hypot((double) pathVectorX, (double) pathVectorY);
-        if (((double) distance) < 1.0E-4d) {
+        float endCenterX = end.centerX();
+        float endCenterY = end.centerY();
+        float pathVectorX = endCenterX - startCenterX;
+        float pathVectorY = endCenterY - startCenterY;
+        float distance = (float) Math.hypot(pathVectorX, pathVectorY);
+        if (distance < 1.0E-4d) {
             System.out.println("distance ~ 0");
             value[0] = 0.0f;
             value[1] = 0.0f;
@@ -130,68 +134,79 @@ public class KeyPosition extends KeyPositionBase {
         float dy = pathVectorY / distance;
         float perpendicular = (((y - startCenterY) * dx) - ((x - startCenterX) * dy)) / distance;
         float dist = (((x - startCenterX) * dx) + ((y - startCenterY) * dy)) / distance;
-        if (attribute[0] == null) {
-            attribute[0] = PERCENT_X;
-            attribute[1] = PERCENT_Y;
-            value[0] = dist;
-            value[1] = perpendicular;
-        } else if (PERCENT_X.equals(attribute[0])) {
-            value[0] = dist;
-            value[1] = perpendicular;
+        if (attribute[0] != null) {
+            if (PERCENT_X.equals(attribute[0])) {
+                value[0] = dist;
+                value[1] = perpendicular;
+                return;
+            }
+            return;
         }
+        attribute[0] = PERCENT_X;
+        attribute[1] = PERCENT_Y;
+        value[0] = dist;
+        value[1] = perpendicular;
     }
 
-    /* access modifiers changed from: package-private */
-    public void positionScreenAttributes(View view, RectF start, RectF end, float x, float y, String[] attribute, float[] value) {
+    void positionScreenAttributes(View view, RectF start, RectF end, float x, float y, String[] attribute, float[] value) {
         float startCenterX = start.centerX();
         float startCenterY = start.centerY();
-        float centerX = end.centerX() - startCenterX;
-        float centerY = end.centerY() - startCenterY;
+        float endCenterX = end.centerX();
+        float endCenterY = end.centerY();
+        float f = endCenterX - startCenterX;
+        float f2 = endCenterY - startCenterY;
         ViewGroup viewGroup = (ViewGroup) view.getParent();
         int width = viewGroup.getWidth();
         int height = viewGroup.getHeight();
-        if (attribute[0] == null) {
-            attribute[0] = PERCENT_X;
-            value[0] = x / ((float) width);
-            attribute[1] = PERCENT_Y;
-            value[1] = y / ((float) height);
-        } else if (PERCENT_X.equals(attribute[0])) {
-            value[0] = x / ((float) width);
-            value[1] = y / ((float) height);
-        } else {
-            value[1] = x / ((float) width);
-            value[0] = y / ((float) height);
+        if (attribute[0] != null) {
+            if (PERCENT_X.equals(attribute[0])) {
+                value[0] = x / width;
+                value[1] = y / height;
+                return;
+            }
+            value[1] = x / width;
+            value[0] = y / height;
+            return;
         }
+        attribute[0] = PERCENT_X;
+        value[0] = x / width;
+        attribute[1] = PERCENT_Y;
+        value[1] = y / height;
     }
 
-    /* access modifiers changed from: package-private */
-    public void positionCartAttributes(RectF start, RectF end, float x, float y, String[] attribute, float[] value) {
+    void positionCartAttributes(RectF start, RectF end, float x, float y, String[] attribute, float[] value) {
         float startCenterX = start.centerX();
         float startCenterY = start.centerY();
-        float pathVectorX = end.centerX() - startCenterX;
-        float pathVectorY = end.centerY() - startCenterY;
-        if (attribute[0] == null) {
-            attribute[0] = PERCENT_X;
-            value[0] = (x - startCenterX) / pathVectorX;
-            attribute[1] = PERCENT_Y;
-            value[1] = (y - startCenterY) / pathVectorY;
-        } else if (PERCENT_X.equals(attribute[0])) {
-            value[0] = (x - startCenterX) / pathVectorX;
-            value[1] = (y - startCenterY) / pathVectorY;
-        } else {
+        float endCenterX = end.centerX();
+        float endCenterY = end.centerY();
+        float pathVectorX = endCenterX - startCenterX;
+        float pathVectorY = endCenterY - startCenterY;
+        if (attribute[0] != null) {
+            if (PERCENT_X.equals(attribute[0])) {
+                value[0] = (x - startCenterX) / pathVectorX;
+                value[1] = (y - startCenterY) / pathVectorY;
+                return;
+            }
             value[1] = (x - startCenterX) / pathVectorX;
             value[0] = (y - startCenterY) / pathVectorY;
+            return;
         }
+        attribute[0] = PERCENT_X;
+        value[0] = (x - startCenterX) / pathVectorX;
+        attribute[1] = PERCENT_Y;
+        value[1] = (y - startCenterY) / pathVectorY;
     }
 
+    @Override // android.support.constraint.motion.KeyPositionBase
     public boolean intersects(int layoutWidth, int layoutHeight, RectF start, RectF end, float x, float y) {
         calcPosition(layoutWidth, layoutHeight, start.centerX(), start.centerY(), end.centerX(), end.centerY());
-        if (Math.abs(x - this.mCalculatedPositionX) >= 20.0f || Math.abs(y - this.mCalculatedPositionY) >= 20.0f) {
-            return false;
+        if (Math.abs(x - this.mCalculatedPositionX) < 20.0f && Math.abs(y - this.mCalculatedPositionY) < 20.0f) {
+            return true;
         }
-        return true;
+        return false;
     }
 
+    /* loaded from: classes.dex */
     private static class Loader {
         private static final int CURVE_FIT = 4;
         private static final int DRAW_PATH = 5;
@@ -213,53 +228,51 @@ public class KeyPosition extends KeyPositionBase {
         static {
             SparseIntArray sparseIntArray = new SparseIntArray();
             mAttrMap = sparseIntArray;
-            sparseIntArray.append(R.styleable.KeyPosition_motionTarget, 1);
-            mAttrMap.append(R.styleable.KeyPosition_framePosition, 2);
-            mAttrMap.append(R.styleable.KeyPosition_transitionEasing, 3);
-            mAttrMap.append(R.styleable.KeyPosition_curveFit, 4);
-            mAttrMap.append(R.styleable.KeyPosition_drawPath, 5);
-            mAttrMap.append(R.styleable.KeyPosition_percentX, 6);
-            mAttrMap.append(R.styleable.KeyPosition_percentY, 7);
-            mAttrMap.append(R.styleable.KeyPosition_keyPositionType, 9);
-            mAttrMap.append(R.styleable.KeyPosition_sizePercent, 8);
-            mAttrMap.append(R.styleable.KeyPosition_percentWidth, 11);
-            mAttrMap.append(R.styleable.KeyPosition_percentHeight, 12);
-            mAttrMap.append(R.styleable.KeyPosition_pathMotionArc, 10);
+            sparseIntArray.append(C0088R.styleable.KeyPosition_motionTarget, 1);
+            mAttrMap.append(C0088R.styleable.KeyPosition_framePosition, 2);
+            mAttrMap.append(C0088R.styleable.KeyPosition_transitionEasing, 3);
+            mAttrMap.append(C0088R.styleable.KeyPosition_curveFit, 4);
+            mAttrMap.append(C0088R.styleable.KeyPosition_drawPath, 5);
+            mAttrMap.append(C0088R.styleable.KeyPosition_percentX, 6);
+            mAttrMap.append(C0088R.styleable.KeyPosition_percentY, 7);
+            mAttrMap.append(C0088R.styleable.KeyPosition_keyPositionType, 9);
+            mAttrMap.append(C0088R.styleable.KeyPosition_sizePercent, 8);
+            mAttrMap.append(C0088R.styleable.KeyPosition_percentWidth, 11);
+            mAttrMap.append(C0088R.styleable.KeyPosition_percentHeight, 12);
+            mAttrMap.append(C0088R.styleable.KeyPosition_pathMotionArc, 10);
         }
 
-        /* access modifiers changed from: private */
+        /* JADX INFO: Access modifiers changed from: private */
         public static void read(KeyPosition c, TypedArray a) {
             int N = a.getIndexCount();
             for (int i = 0; i < N; i++) {
                 int attr = a.getIndex(i);
                 switch (mAttrMap.get(attr)) {
                     case 1:
-                        if (!MotionLayout.IS_IN_EDIT_MODE) {
-                            if (a.peekValue(attr).type != 3) {
-                                c.mTargetId = a.getResourceId(attr, c.mTargetId);
-                                break;
-                            } else {
+                        if (MotionLayout.IS_IN_EDIT_MODE) {
+                            c.mTargetId = a.getResourceId(attr, c.mTargetId);
+                            if (c.mTargetId == -1) {
                                 c.mTargetString = a.getString(attr);
                                 break;
+                            } else {
+                                break;
                             }
+                        } else if (a.peekValue(attr).type == 3) {
+                            c.mTargetString = a.getString(attr);
+                            break;
                         } else {
                             c.mTargetId = a.getResourceId(attr, c.mTargetId);
-                            if (c.mTargetId != -1) {
-                                break;
-                            } else {
-                                c.mTargetString = a.getString(attr);
-                                break;
-                            }
+                            break;
                         }
                     case 2:
                         c.mFramePosition = a.getInt(attr, c.mFramePosition);
                         break;
                     case 3:
-                        if (a.peekValue(attr).type != 3) {
-                            c.mTransitionEasing = Easing.NAMED_EASING[a.getInteger(attr, 0)];
+                        if (a.peekValue(attr).type == 3) {
+                            c.mTransitionEasing = a.getString(attr);
                             break;
                         } else {
-                            c.mTransitionEasing = a.getString(attr);
+                            c.mTransitionEasing = Easing.NAMED_EASING[a.getInteger(attr, 0)];
                             break;
                         }
                     case 4:
@@ -296,118 +309,97 @@ public class KeyPosition extends KeyPositionBase {
                         break;
                 }
             }
-            if (c.mFramePosition == -1) {
+            int i2 = c.mFramePosition;
+            if (i2 == -1) {
                 Log.e("KeyPosition", "no frame position");
             }
         }
     }
 
-    /* JADX WARNING: Can't fix incorrect switch cases order */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void setValue(java.lang.String r2, java.lang.Object r3) {
-        /*
-            r1 = this;
-            int r0 = r2.hashCode()
-            switch(r0) {
-                case -1812823328: goto L_0x0044;
-                case -1127236479: goto L_0x003a;
-                case -1017587252: goto L_0x0030;
-                case -827014263: goto L_0x0026;
-                case -200259324: goto L_0x001c;
-                case 428090547: goto L_0x0012;
-                case 428090548: goto L_0x0008;
-                default: goto L_0x0007;
-            }
-        L_0x0007:
-            goto L_0x004f
-        L_0x0008:
-            java.lang.String r0 = "percentY"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 6
-            goto L_0x0050
-        L_0x0012:
-            java.lang.String r0 = "percentX"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 5
-            goto L_0x0050
-        L_0x001c:
-            java.lang.String r0 = "sizePercent"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 4
-            goto L_0x0050
-        L_0x0026:
-            java.lang.String r0 = "drawPath"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 1
-            goto L_0x0050
-        L_0x0030:
-            java.lang.String r0 = "percentHeight"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 3
-            goto L_0x0050
-        L_0x003a:
-            java.lang.String r0 = "percentWidth"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 2
-            goto L_0x0050
-        L_0x0044:
-            java.lang.String r0 = "transitionEasing"
-            boolean r0 = r2.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 0
-            goto L_0x0050
-        L_0x004f:
-            r0 = -1
-        L_0x0050:
-            switch(r0) {
-                case 0: goto L_0x0080;
-                case 1: goto L_0x0079;
-                case 2: goto L_0x0072;
-                case 3: goto L_0x006b;
-                case 4: goto L_0x0062;
-                case 5: goto L_0x005b;
-                case 6: goto L_0x0054;
-                default: goto L_0x0053;
-            }
-        L_0x0053:
-            goto L_0x0087
-        L_0x0054:
-            float r0 = r1.toFloat(r3)
-            r1.mPercentY = r0
-            goto L_0x0087
-        L_0x005b:
-            float r0 = r1.toFloat(r3)
-            r1.mPercentX = r0
-            goto L_0x0087
-        L_0x0062:
-            float r0 = r1.toFloat(r3)
-            r1.mPercentWidth = r0
-            r1.mPercentHeight = r0
-            goto L_0x0087
-        L_0x006b:
-            float r0 = r1.toFloat(r3)
-            r1.mPercentHeight = r0
-            goto L_0x0087
-        L_0x0072:
-            float r0 = r1.toFloat(r3)
-            r1.mPercentWidth = r0
-            goto L_0x0087
-        L_0x0079:
-            int r0 = r1.toInt(r3)
-            r1.mDrawPath = r0
-            goto L_0x0087
-        L_0x0080:
-            java.lang.String r0 = r3.toString()
-            r1.mTransitionEasing = r0
-        L_0x0087:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.support.constraint.motion.KeyPosition.setValue(java.lang.String, java.lang.Object):void");
+    /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
+    @Override // android.support.constraint.motion.Key
+    public void setValue(String tag, Object value) {
+        char c;
+        switch (tag.hashCode()) {
+            case -1812823328:
+                if (tag.equals("transitionEasing")) {
+                    c = 0;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1127236479:
+                if (tag.equals("percentWidth")) {
+                    c = 2;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1017587252:
+                if (tag.equals("percentHeight")) {
+                    c = 3;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -827014263:
+                if (tag.equals("drawPath")) {
+                    c = 1;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -200259324:
+                if (tag.equals("sizePercent")) {
+                    c = 4;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 428090547:
+                if (tag.equals(PERCENT_X)) {
+                    c = 5;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 428090548:
+                if (tag.equals(PERCENT_Y)) {
+                    c = 6;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            default:
+                c = '\uffff';
+                break;
+        }
+        switch (c) {
+            case 0:
+                this.mTransitionEasing = value.toString();
+                return;
+            case 1:
+                this.mDrawPath = toInt(value);
+                return;
+            case 2:
+                this.mPercentWidth = toFloat(value);
+                return;
+            case 3:
+                this.mPercentHeight = toFloat(value);
+                return;
+            case 4:
+                float f = toFloat(value);
+                this.mPercentWidth = f;
+                this.mPercentHeight = f;
+                return;
+            case 5:
+                this.mPercentX = toFloat(value);
+                return;
+            case 6:
+                this.mPercentY = toFloat(value);
+                return;
+            default:
+                return;
+        }
     }
 }

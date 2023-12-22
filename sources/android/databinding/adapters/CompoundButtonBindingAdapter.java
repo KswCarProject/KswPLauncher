@@ -3,6 +3,7 @@ package android.databinding.adapters;
 import android.databinding.InverseBindingListener;
 import android.widget.CompoundButton;
 
+/* loaded from: classes.dex */
 public class CompoundButtonBindingAdapter {
     public static void setChecked(CompoundButton view, boolean checked) {
         if (view.isChecked() != checked) {
@@ -14,7 +15,8 @@ public class CompoundButtonBindingAdapter {
         if (attrChange == null) {
             view.setOnCheckedChangeListener(listener);
         } else {
-            view.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            view.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: android.databinding.adapters.CompoundButtonBindingAdapter.1
+                @Override // android.widget.CompoundButton.OnCheckedChangeListener
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     CompoundButton.OnCheckedChangeListener onCheckedChangeListener = listener;
                     if (onCheckedChangeListener != null) {

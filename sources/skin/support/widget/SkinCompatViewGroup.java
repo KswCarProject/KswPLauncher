@@ -4,11 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 
+/* loaded from: classes.dex */
 public abstract class SkinCompatViewGroup extends ViewGroup implements SkinCompatSupportable {
     private SkinCompatBackgroundHelper mBackgroundTintHelper;
 
     public SkinCompatViewGroup(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public SkinCompatViewGroup(Context context, AttributeSet attrs) {
@@ -22,6 +23,7 @@ public abstract class SkinCompatViewGroup extends ViewGroup implements SkinCompa
         skinCompatBackgroundHelper.loadFromAttributes(attrs, defStyleAttr);
     }
 
+    @Override // android.view.View
     public void setBackgroundResource(int resId) {
         super.setBackgroundResource(resId);
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
@@ -30,6 +32,7 @@ public abstract class SkinCompatViewGroup extends ViewGroup implements SkinCompa
         }
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
         if (skinCompatBackgroundHelper != null) {

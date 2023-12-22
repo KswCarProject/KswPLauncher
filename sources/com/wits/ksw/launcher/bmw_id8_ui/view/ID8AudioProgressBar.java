@@ -14,9 +14,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bmw_id8_ui.ID8LauncherConstants;
 
+/* loaded from: classes15.dex */
 public class ID8AudioProgressBar extends View {
     private static final String TAG = "ID8AudioProgressBar";
     private Bitmap bgBitmap;
@@ -31,18 +32,20 @@ public class ID8AudioProgressBar extends View {
     private Bitmap progressBitmap;
     private int width;
 
+    /* loaded from: classes15.dex */
     public interface OnTouchChangeListener {
-        void onStartTrackingTouch(ID8AudioProgressBar iD8AudioProgressBar);
+        void onStartTrackingTouch(ID8AudioProgressBar progressBar);
 
-        void onStopTrackingTouch(ID8AudioProgressBar iD8AudioProgressBar);
+        void onStopTrackingTouch(ID8AudioProgressBar progressBar);
     }
 
+    /* loaded from: classes15.dex */
     public interface OnValueChangeListener {
-        void onValueChange(ID8AudioProgressBar iD8AudioProgressBar, int i);
+        void onValueChange(ID8AudioProgressBar progressBar, int value);
     }
 
     public ID8AudioProgressBar(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public ID8AudioProgressBar(Context context, AttributeSet attrs) {
@@ -51,13 +54,14 @@ public class ID8AudioProgressBar extends View {
 
     public ID8AudioProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.mDrawables = new int[]{R.drawable.id8_settings_audio_volume_l12, R.drawable.id8_settings_audio_volume_l11, R.drawable.id8_settings_audio_volume_l10, R.drawable.id8_settings_audio_volume_l9, R.drawable.id8_settings_audio_volume_l8, R.drawable.id8_settings_audio_volume_l7, R.drawable.id8_settings_audio_volume_l6, R.drawable.id8_settings_audio_volume_l5, R.drawable.id8_settings_audio_volume_l4, R.drawable.id8_settings_audio_volume_l3, R.drawable.id8_settings_audio_volume_l2, R.drawable.id8_settings_audio_volume_l1, R.drawable.id8_settings_audio_volume_0, R.drawable.id8_settings_audio_volume_1, R.drawable.id8_settings_audio_volume_2, R.drawable.id8_settings_audio_volume_3, R.drawable.id8_settings_audio_volume_4, R.drawable.id8_settings_audio_volume_5, R.drawable.id8_settings_audio_volume_6, R.drawable.id8_settings_audio_volume_7, R.drawable.id8_settings_audio_volume_8, R.drawable.id8_settings_audio_volume_9, R.drawable.id8_settings_audio_volume_10, R.drawable.id8_settings_audio_volume_11, R.drawable.id8_settings_audio_volume_12};
-        this.contentObserver = new ContentObserver(new Handler()) {
+        this.mDrawables = new int[]{C0899R.C0900drawable.id8_settings_audio_volume_l12, C0899R.C0900drawable.id8_settings_audio_volume_l11, C0899R.C0900drawable.id8_settings_audio_volume_l10, C0899R.C0900drawable.id8_settings_audio_volume_l9, C0899R.C0900drawable.id8_settings_audio_volume_l8, C0899R.C0900drawable.id8_settings_audio_volume_l7, C0899R.C0900drawable.id8_settings_audio_volume_l6, C0899R.C0900drawable.id8_settings_audio_volume_l5, C0899R.C0900drawable.id8_settings_audio_volume_l4, C0899R.C0900drawable.id8_settings_audio_volume_l3, C0899R.C0900drawable.id8_settings_audio_volume_l2, C0899R.C0900drawable.id8_settings_audio_volume_l1, C0899R.C0900drawable.id8_settings_audio_volume_0, C0899R.C0900drawable.id8_settings_audio_volume_1, C0899R.C0900drawable.id8_settings_audio_volume_2, C0899R.C0900drawable.id8_settings_audio_volume_3, C0899R.C0900drawable.id8_settings_audio_volume_4, C0899R.C0900drawable.id8_settings_audio_volume_5, C0899R.C0900drawable.id8_settings_audio_volume_6, C0899R.C0900drawable.id8_settings_audio_volume_7, C0899R.C0900drawable.id8_settings_audio_volume_8, C0899R.C0900drawable.id8_settings_audio_volume_9, C0899R.C0900drawable.id8_settings_audio_volume_10, C0899R.C0900drawable.id8_settings_audio_volume_11, C0899R.C0900drawable.id8_settings_audio_volume_12};
+        this.contentObserver = new ContentObserver(new Handler()) { // from class: com.wits.ksw.launcher.bmw_id8_ui.view.ID8AudioProgressBar.1
+            @Override // android.database.ContentObserver
             public void onChange(boolean selfChange, Uri uri) {
                 Log.d(ID8AudioProgressBar.TAG, "ID8_SKIN onChange");
             }
         };
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ID8_Audio_ProgressBar);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, C0899R.styleable.ID8_Audio_ProgressBar);
         this.max = typedArray.getInt(0, 24);
         this.mValue = typedArray.getInt(1, 12);
         Log.i(TAG, "ID8AudioProgressBar: max " + this.max + " mValue " + this.mValue);
@@ -91,7 +95,7 @@ public class ID8AudioProgressBar extends View {
     }
 
     private void setProgressByDrag(float x) {
-        int percent = Math.max(Math.min(Math.round((((float) this.max) * x) / ((float) this.width)), this.max), 0);
+        int percent = Math.max(Math.min(Math.round((this.max * x) / this.width), this.max), 0);
         Log.i(TAG, "setProgressByDrag: percent " + percent + " mValue " + this.mValue);
         if (this.mValue != percent) {
             this.mValue = percent;
@@ -102,23 +106,24 @@ public class ID8AudioProgressBar extends View {
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    @Override // android.view.View
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         this.width = this.bgBitmap.getWidth();
-        int height2 = this.bgBitmap.getHeight();
-        this.height = height2;
-        setMeasuredDimension(this.width, height2);
+        int height = this.bgBitmap.getHeight();
+        this.height = height;
+        setMeasuredDimension(this.width, height);
     }
 
-    /* access modifiers changed from: protected */
-    public void onDraw(Canvas canvas) {
+    @Override // android.view.View
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Bitmap decodeResource = BitmapFactory.decodeResource(getResources(), this.mDrawables[this.mValue]);
         this.progressBitmap = decodeResource;
         canvas.drawBitmap(decodeResource, 0.0f, 0.0f, this.bgPatin);
     }
 
+    @Override // android.view.View
     public boolean onTouchEvent(MotionEvent event) {
         OnTouchChangeListener onTouchChangeListener;
         if (event.getAction() == 0 && (onTouchChangeListener = this.mTouchChangeListener) != null) {
@@ -130,10 +135,12 @@ public class ID8AudioProgressBar extends View {
         return true;
     }
 
+    @Override // android.view.View
     public boolean isClickable() {
         return true;
     }
 
+    @Override // android.view.View
     public boolean hasFocusable() {
         return true;
     }

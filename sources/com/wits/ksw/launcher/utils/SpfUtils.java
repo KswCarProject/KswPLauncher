@@ -3,6 +3,7 @@ package com.wits.ksw.launcher.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+/* loaded from: classes11.dex */
 public class SpfUtils {
     private static final String FILE_NAME = "philipsLauncherConfig";
     private static SharedPreferences.Editor editor;

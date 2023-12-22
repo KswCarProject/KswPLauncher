@@ -1,7 +1,7 @@
 package com.wits.ksw.settings.romeo.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import android.support.p004v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -9,41 +9,44 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.settings.id7.bean.FunctionBean;
 import com.wits.ksw.settings.romeo.interfaces.IUpdateListBg;
 import java.util.List;
 
+/* loaded from: classes8.dex */
 public class LanguageAdapter extends RecyclerView.Adapter<ViewHolder> {
     private Context context;
     private List<FunctionBean> data;
-    /* access modifiers changed from: private */
-    public OnFunctionClickListener functionClickListener;
-    /* access modifiers changed from: private */
-    public IUpdateListBg updateListBg;
+    private OnFunctionClickListener functionClickListener;
+    private IUpdateListBg updateListBg;
 
+    /* loaded from: classes8.dex */
     public interface OnFunctionClickListener {
-        void functonClick(int i);
+        void functonClick(int pos);
     }
 
     public void registOnFunctionClickListener(OnFunctionClickListener clickListener) {
         this.functionClickListener = clickListener;
     }
 
-    public LanguageAdapter(Context context2, List<FunctionBean> appInfoList) {
-        this.context = context2;
+    public LanguageAdapter(Context context, List<FunctionBean> appInfoList) {
+        this.context = context;
         this.data = appInfoList;
     }
 
-    public void setIUpdateListBg(IUpdateListBg updateListBg2) {
-        this.updateListBg = updateListBg2;
+    public void setIUpdateListBg(IUpdateListBg updateListBg) {
+        this.updateListBg = updateListBg;
         Log.d("LanguageAdapter", "setIUpdateListBg// updateListBg=" + this.updateListBg);
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.Adapter
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        return new ViewHolder(LayoutInflater.from(this.context).inflate(R.layout.romeo_list_settings_language, viewGroup, false));
+        ViewHolder holder = new ViewHolder(LayoutInflater.from(this.context).inflate(C0899R.C0902layout.romeo_list_settings_language, viewGroup, false));
+        return holder;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.Adapter
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.tv_functionItem.setEnabled(true);
         holder.tv_functionItem.setText(this.data.get(position).getTitle());
@@ -52,7 +55,8 @@ public class LanguageAdapter extends RecyclerView.Adapter<ViewHolder> {
         } else {
             holder.tv_functionItem.setChecked(false);
         }
-        holder.tv_functionItem.setOnClickListener(new View.OnClickListener() {
+        holder.tv_functionItem.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.settings.romeo.adapter.LanguageAdapter.1
+            @Override // android.view.View.OnClickListener
             public void onClick(View v) {
                 Log.d("LanguageAdapter", "onClick");
                 if (LanguageAdapter.this.functionClickListener != null) {
@@ -60,17 +64,19 @@ public class LanguageAdapter extends RecyclerView.Adapter<ViewHolder> {
                 }
             }
         });
-        holder.tv_functionItem.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        holder.tv_functionItem.setOnFocusChangeListener(new View.OnFocusChangeListener() { // from class: com.wits.ksw.settings.romeo.adapter.LanguageAdapter.2
+            @Override // android.view.View.OnFocusChangeListener
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    Log.d("LanguageAdapter", "onFocusChange");
-                    LanguageAdapter.this.updateListBg.updateListBg(holder.itemView.getTop(), 1);
+                if (!hasFocus) {
+                    LanguageAdapter.this.updateListBg.updateListBg(0, 0);
                     return;
                 }
-                LanguageAdapter.this.updateListBg.updateListBg(0, 0);
+                Log.d("LanguageAdapter", "onFocusChange");
+                LanguageAdapter.this.updateListBg.updateListBg(holder.itemView.getTop(), 1);
             }
         });
-        holder.tv_functionItem.setOnTouchListener(new View.OnTouchListener() {
+        holder.tv_functionItem.setOnTouchListener(new View.OnTouchListener() { // from class: com.wits.ksw.settings.romeo.adapter.LanguageAdapter.3
+            @Override // android.view.View.OnTouchListener
             public boolean onTouch(View v, MotionEvent event) {
                 Log.d("LanguageAdapter", "onTouch updateListBg=" + LanguageAdapter.this.updateListBg);
                 if (event.getAction() == 0) {
@@ -84,13 +90,14 @@ public class LanguageAdapter extends RecyclerView.Adapter<ViewHolder> {
             }
         });
         if (this.data.size() - 1 == position) {
-            holder.img_functionItem.setNextFocusDownId(R.id.img_functionItem);
+            holder.img_functionItem.setNextFocusDownId(C0899R.C0901id.img_functionItem);
         }
         if (position == 0) {
-            holder.img_functionItem.setNextFocusUpId(R.id.img_functionItem);
+            holder.img_functionItem.setNextFocusUpId(C0899R.C0901id.img_functionItem);
         }
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.Adapter
     public int getItemCount() {
         List<FunctionBean> list = this.data;
         if (list == null) {
@@ -99,14 +106,15 @@ public class LanguageAdapter extends RecyclerView.Adapter<ViewHolder> {
         return list.size();
     }
 
+    /* loaded from: classes8.dex */
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView img_functionItem;
         RadioButton tv_functionItem;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.tv_functionItem = (RadioButton) itemView.findViewById(R.id.tv_functionItem);
-            this.img_functionItem = (ImageView) itemView.findViewById(R.id.img_functionItem);
+            this.tv_functionItem = (RadioButton) itemView.findViewById(C0899R.C0901id.tv_functionItem);
+            this.img_functionItem = (ImageView) itemView.findViewById(C0899R.C0901id.img_functionItem);
         }
     }
 }

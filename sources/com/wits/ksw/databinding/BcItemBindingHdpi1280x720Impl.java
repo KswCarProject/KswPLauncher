@@ -7,16 +7,18 @@ import android.databinding.adapters.TextViewBindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.bean.BcItem;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.view.CustomBcImageView;
 
+/* loaded from: classes7.dex */
 public class BcItemBindingHdpi1280x720Impl extends BcItemBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback20;
+    private final View.OnClickListener mCallback23;
     private long mDirtyFlags;
     private final CustomBcImageView mboundView1;
     private final TextView mboundView2;
@@ -26,27 +28,29 @@ public class BcItemBindingHdpi1280x720Impl extends BcItemBinding implements OnCl
     }
 
     private BcItemBindingHdpi1280x720Impl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[0]);
-        this.mDirtyFlags = -1;
-        CustomBcImageView customBcImageView = bindings[1];
+        super(bindingComponent, root, 0, (LinearLayout) bindings[0]);
+        this.mDirtyFlags = -1L;
+        CustomBcImageView customBcImageView = (CustomBcImageView) bindings[1];
         this.mboundView1 = customBcImageView;
-        customBcImageView.setTag((Object) null);
-        TextView textView = bindings[2];
+        customBcImageView.setTag(null);
+        TextView textView = (TextView) bindings[2];
         this.mboundView2 = textView;
-        textView.setTag((Object) null);
+        textView.setTag(null);
         this.naviCusLinearLayout.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback20 = new OnClickListener(this, 1);
+        this.mCallback23 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 4;
+            this.mDirtyFlags = 4L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -56,18 +60,20 @@ public class BcItemBindingHdpi1280x720Impl extends BcItemBinding implements OnCl
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
         if (20 == variableId) {
             setListItem((BcItem) variable);
             return true;
-        } else if (21 != variableId) {
-            return false;
-        } else {
+        } else if (21 == variableId) {
             setMBcVieModel((BcVieModel) variable);
             return true;
+        } else {
+            return false;
         }
     }
 
+    @Override // com.wits.ksw.databinding.BcItemBinding
     public void setListItem(BcItem ListItem) {
         this.mListItem = ListItem;
         synchronized (this) {
@@ -77,6 +83,7 @@ public class BcItemBindingHdpi1280x720Impl extends BcItemBinding implements OnCl
         super.requestRebind();
     }
 
+    @Override // com.wits.ksw.databinding.BcItemBinding
     public void setMBcVieModel(BcVieModel MBcVieModel) {
         this.mMBcVieModel = MBcVieModel;
         synchronized (this) {
@@ -86,23 +93,23 @@ public class BcItemBindingHdpi1280x720Impl extends BcItemBinding implements OnCl
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         BcItem listItem = this.mListItem;
         Drawable listItemAppIcon = null;
         BcVieModel bcVieModel = this.mMBcVieModel;
         String listItemAppLable = null;
-        if (!((dirtyFlags & 5) == 0 || listItem == null)) {
+        if ((dirtyFlags & 5) != 0 && listItem != null) {
             listItemAppIcon = listItem.getAppIcon();
             listItemAppLable = listItem.getAppLable();
         }
@@ -111,14 +118,16 @@ public class BcItemBindingHdpi1280x720Impl extends BcItemBinding implements OnCl
             TextViewBindingAdapter.setText(this.mboundView2, listItemAppLable);
         }
         if ((4 & dirtyFlags) != 0) {
-            this.mboundView1.setOnClickListener(this.mCallback20);
+            this.mboundView1.setOnClickListener(this.mCallback23);
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
         BcItem listItem = this.mListItem;
         BcVieModel mBcVieModel = this.mMBcVieModel;
-        if (mBcVieModel != null) {
+        boolean mBcVieModelJavaLangObjectNull = mBcVieModel != null;
+        if (mBcVieModelJavaLangObjectNull) {
             mBcVieModel.onItemClick(callbackArg_0, listItem);
         }
     }

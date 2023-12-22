@@ -1,7 +1,6 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
@@ -9,11 +8,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
+import android.widget.ImageView;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.base.BaseBindingModel;
 import com.wits.ksw.launcher.bean.MediaInfo;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public class ID6CuspFragmentOneImpl extends ID6CuspFragmentOne {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -23,41 +25,42 @@ public class ID6CuspFragmentOneImpl extends ID6CuspFragmentOne {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.id6_cusp_music_iamge_view, 4);
-        sparseIntArray.put(R.id.id6_cusp_music_text_view, 5);
-        sparseIntArray.put(R.id.id6_cusp_nav_image_view, 6);
-        sparseIntArray.put(R.id.id6_cusp_navi_text_view, 7);
-        sparseIntArray.put(R.id.id6_cusp_navi_mess, 8);
-        sparseIntArray.put(R.id.id6_cusp_bt_image_view, 9);
-        sparseIntArray.put(R.id.id6_cusp_bt_text_view, 10);
-        sparseIntArray.put(R.id.id6_bt_mess, 11);
+        sparseIntArray.put(C0899R.C0901id.id6_cusp_music_iamge_view, 4);
+        sparseIntArray.put(C0899R.C0901id.id6_cusp_music_text_view, 5);
+        sparseIntArray.put(C0899R.C0901id.id6_cusp_nav_image_view, 6);
+        sparseIntArray.put(C0899R.C0901id.id6_cusp_navi_text_view, 7);
+        sparseIntArray.put(C0899R.C0901id.id6_cusp_navi_mess, 8);
+        sparseIntArray.put(C0899R.C0901id.id6_cusp_bt_image_view, 9);
+        sparseIntArray.put(C0899R.C0901id.id6_cusp_bt_text_view, 10);
+        sparseIntArray.put(C0899R.C0901id.id6_bt_mess, 11);
     }
 
     public ID6CuspFragmentOneImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 12, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private ID6CuspFragmentOneImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 3, bindings[11], bindings[2], bindings[9], bindings[10], bindings[1], bindings[4], bindings[3], bindings[5], bindings[6], bindings[8], bindings[7]);
-        this.mDirtyFlags = -1;
-        this.id6CusoMusicNameTextView.setTag((Object) null);
-        this.id6CuspMusicArtisTextView.setTag((Object) null);
-        this.id6CuspMusicIcon.setTag((Object) null);
-        ConstraintLayout constraintLayout = bindings[0];
+        super(bindingComponent, root, 3, (TextView) bindings[11], (TextView) bindings[2], (ImageView) bindings[9], (TextView) bindings[10], (TextView) bindings[1], (ImageView) bindings[4], (ImageView) bindings[3], (TextView) bindings[5], (ImageView) bindings[6], (TextView) bindings[8], (TextView) bindings[7]);
+        this.mDirtyFlags = -1L;
+        this.id6CusoMusicNameTextView.setTag(null);
+        this.id6CuspMusicArtisTextView.setTag(null);
+        this.id6CuspMusicIcon.setTag(null);
+        ConstraintLayout constraintLayout = (ConstraintLayout) bindings[0];
         this.mboundView0 = constraintLayout;
-        constraintLayout.setTag((Object) null);
+        constraintLayout.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 16;
+            this.mDirtyFlags = 16L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -67,20 +70,22 @@ public class ID6CuspFragmentOneImpl extends ID6CuspFragmentOne {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (25 != variableId) {
-            return false;
+        if (25 == variableId) {
+            setViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.ID6CuspFragmentOne
     public void setViewModel(LauncherViewModel ViewModel) {
         this.mViewModel = ViewModel;
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeViewModelMediaInfoMusicName((ObservableField) object, fieldId);
@@ -93,42 +98,42 @@ public class ID6CuspFragmentOneImpl extends ID6CuspFragmentOne {
         }
     }
 
-    private boolean onChangeViewModelMediaInfoMusicName(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelMediaInfoMusicName(ObservableField<String> ViewModelMediaInfoMusicName, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeViewModelMediaInfoMusicAtist(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelMediaInfoMusicAtist(ObservableField<String> ViewModelMediaInfoMusicAtist, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeViewModelMediaInfoPic(ObservableField<BitmapDrawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelMediaInfoPic(ObservableField<BitmapDrawable> ViewModelMediaInfoPic, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         String viewModelMediaInfoMusicAtistGet = null;
         ObservableField<String> viewModelMediaInfoMusicName = null;
@@ -142,12 +147,11 @@ public class ID6CuspFragmentOneImpl extends ID6CuspFragmentOne {
         ObservableField<BitmapDrawable> viewModelMediaInfoPic = null;
         if ((dirtyFlags & 23) != 0) {
             MediaInfo viewModelMediaInfo = LauncherViewModel.mediaInfo;
-            boolean viewModelMediaInfoMusicAtistJavaLangObjectNull2 = true;
             if ((dirtyFlags & 17) != 0) {
                 if (viewModelMediaInfo != null) {
                     viewModelMediaInfoMusicName = viewModelMediaInfo.musicName;
                 }
-                updateRegistration(0, (Observable) viewModelMediaInfoMusicName);
+                updateRegistration(0, viewModelMediaInfoMusicName);
                 if (viewModelMediaInfoMusicName != null) {
                     viewModelMediaInfoMusicNameGet = viewModelMediaInfoMusicName.get();
                 }
@@ -160,13 +164,11 @@ public class ID6CuspFragmentOneImpl extends ID6CuspFragmentOne {
                 if (viewModelMediaInfo != null) {
                     viewModelMediaInfoMusicAtist = viewModelMediaInfo.musicAtist;
                 }
-                updateRegistration(1, (Observable) viewModelMediaInfoMusicAtist);
+                updateRegistration(1, viewModelMediaInfoMusicAtist);
                 if (viewModelMediaInfoMusicAtist != null) {
                     viewModelMediaInfoMusicAtistGet = viewModelMediaInfoMusicAtist.get();
                 }
-                if (viewModelMediaInfoMusicAtistGet != null) {
-                    viewModelMediaInfoMusicAtistJavaLangObjectNull2 = false;
-                }
+                boolean viewModelMediaInfoMusicAtistJavaLangObjectNull2 = viewModelMediaInfoMusicAtistGet == null;
                 if ((dirtyFlags & 18) == 0) {
                     viewModelMediaInfoMusicAtistJavaLangObjectNull = viewModelMediaInfoMusicAtistJavaLangObjectNull2;
                 } else if (viewModelMediaInfoMusicAtistJavaLangObjectNull2) {
@@ -181,17 +183,17 @@ public class ID6CuspFragmentOneImpl extends ID6CuspFragmentOne {
                 if (viewModelMediaInfo != null) {
                     viewModelMediaInfoPic = viewModelMediaInfo.pic;
                 }
-                updateRegistration(2, (Observable) viewModelMediaInfoPic);
+                updateRegistration(2, viewModelMediaInfoPic);
                 if (viewModelMediaInfoPic != null) {
                     viewModelMediaInfoPicGet = viewModelMediaInfoPic.get();
                 }
             }
         }
         if ((dirtyFlags & 17) != 0) {
-            viewModelMediaInfoMusicNameJavaLangObjectNullId6CusoMusicNameTextViewAndroidStringKswIdf7UnkonwSoungViewModelMediaInfoMusicName = viewModelMediaInfoMusicNameJavaLangObjectNull ? this.id6CusoMusicNameTextView.getResources().getString(R.string.ksw_idf7_unkonw_soung) : viewModelMediaInfoMusicNameGet;
+            viewModelMediaInfoMusicNameJavaLangObjectNullId6CusoMusicNameTextViewAndroidStringKswIdf7UnkonwSoungViewModelMediaInfoMusicName = viewModelMediaInfoMusicNameJavaLangObjectNull ? this.id6CusoMusicNameTextView.getResources().getString(C0899R.string.ksw_idf7_unkonw_soung) : viewModelMediaInfoMusicNameGet;
         }
         if ((dirtyFlags & 18) != 0) {
-            viewModelMediaInfoMusicAtistJavaLangObjectNullId6CuspMusicArtisTextViewAndroidStringKswIdf7UnknowArtisViewModelMediaInfoMusicAtist = viewModelMediaInfoMusicAtistJavaLangObjectNull ? this.id6CuspMusicArtisTextView.getResources().getString(R.string.ksw_idf7_unknow_artis) : viewModelMediaInfoMusicAtistGet;
+            viewModelMediaInfoMusicAtistJavaLangObjectNullId6CuspMusicArtisTextViewAndroidStringKswIdf7UnknowArtisViewModelMediaInfoMusicAtist = viewModelMediaInfoMusicAtistJavaLangObjectNull ? this.id6CuspMusicArtisTextView.getResources().getString(C0899R.string.ksw_idf7_unknow_artis) : viewModelMediaInfoMusicAtistGet;
         }
         if ((dirtyFlags & 17) != 0) {
             TextViewBindingAdapter.setText(this.id6CusoMusicNameTextView, viewModelMediaInfoMusicNameJavaLangObjectNullId6CusoMusicNameTextViewAndroidStringKswIdf7UnkonwSoungViewModelMediaInfoMusicName);

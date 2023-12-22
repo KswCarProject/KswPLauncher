@@ -13,11 +13,14 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public class TestSubscriber<T> extends BaseTestConsumer<T, TestSubscriber<T>> implements FlowableSubscriber<T>, Subscription, Disposable {
     private volatile boolean cancelled;
     private final Subscriber<? super T> downstream;
     private final AtomicLong missedRequested;
-    private QueueSubscription<T> qs;
+
+    /* renamed from: qs */
+    private QueueSubscription<T> f367qs;
     private final AtomicReference<Subscription> upstream;
 
     public static <T> TestSubscriber<T> create() {
@@ -40,25 +43,25 @@ public class TestSubscriber<T> extends BaseTestConsumer<T, TestSubscriber<T>> im
         this(EmptySubscriber.INSTANCE, initialRequest);
     }
 
-    public TestSubscriber(Subscriber<? super T> downstream2) {
-        this(downstream2, LongCompanionObject.MAX_VALUE);
+    public TestSubscriber(Subscriber<? super T> downstream) {
+        this(downstream, LongCompanionObject.MAX_VALUE);
     }
 
     public TestSubscriber(Subscriber<? super T> actual, long initialRequest) {
-        if (initialRequest >= 0) {
-            this.downstream = actual;
-            this.upstream = new AtomicReference<>();
-            this.missedRequested = new AtomicLong(initialRequest);
-            return;
+        if (initialRequest < 0) {
+            throw new IllegalArgumentException("Negative initial request not allowed");
         }
-        throw new IllegalArgumentException("Negative initial request not allowed");
+        this.downstream = actual;
+        this.upstream = new AtomicReference<>();
+        this.missedRequested = new AtomicLong(initialRequest);
     }
 
+    @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
     public void onSubscribe(Subscription s) {
         this.lastThread = Thread.currentThread();
         if (s == null) {
             this.errors.add(new NullPointerException("onSubscribe received a null Subscription"));
-        } else if (!this.upstream.compareAndSet((Object) null, s)) {
+        } else if (!this.upstream.compareAndSet(null, s)) {
             s.cancel();
             if (this.upstream.get() != SubscriptionHelper.CANCELLED) {
                 this.errors.add(new IllegalStateException("onSubscribe received multiple subscriptions: " + s));
@@ -66,7 +69,7 @@ public class TestSubscriber<T> extends BaseTestConsumer<T, TestSubscriber<T>> im
         } else {
             if (this.initialFusionMode != 0 && (s instanceof QueueSubscription)) {
                 QueueSubscription<T> queueSubscription = (QueueSubscription) s;
-                this.qs = queueSubscription;
+                this.f367qs = queueSubscription;
                 int m = queueSubscription.requestFusion(this.initialFusionMode);
                 this.establishedFusionMode = m;
                 if (m == 1) {
@@ -74,9 +77,8 @@ public class TestSubscriber<T> extends BaseTestConsumer<T, TestSubscriber<T>> im
                     this.lastThread = Thread.currentThread();
                     while (true) {
                         try {
-                            T poll = this.qs.poll();
-                            T t = poll;
-                            if (poll != null) {
+                            T t = this.f367qs.poll();
+                            if (t != null) {
                                 this.values.add(t);
                             } else {
                                 this.completions++;
@@ -90,7 +92,7 @@ public class TestSubscriber<T> extends BaseTestConsumer<T, TestSubscriber<T>> im
                 }
             }
             this.downstream.onSubscribe(s);
-            long mr = this.missedRequested.getAndSet(0);
+            long mr = this.missedRequested.getAndSet(0L);
             if (mr != 0) {
                 s.request(mr);
             }
@@ -98,10 +100,10 @@ public class TestSubscriber<T> extends BaseTestConsumer<T, TestSubscriber<T>> im
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void onStart() {
+    protected void onStart() {
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onNext(T t) {
         if (!this.checkSubscriptionOnce) {
             this.checkSubscriptionOnce = true;
@@ -110,31 +112,31 @@ public class TestSubscriber<T> extends BaseTestConsumer<T, TestSubscriber<T>> im
             }
         }
         this.lastThread = Thread.currentThread();
-        if (this.establishedFusionMode == 2) {
-            while (true) {
-                try {
-                    T poll = this.qs.poll();
-                    T t2 = poll;
-                    if (poll != null) {
-                        this.values.add(t2);
-                    } else {
-                        return;
-                    }
-                } catch (Throwable ex) {
-                    this.errors.add(ex);
-                    this.qs.cancel();
-                    return;
-                }
-            }
-        } else {
+        if (this.establishedFusionMode != 2) {
             this.values.add(t);
             if (t == null) {
                 this.errors.add(new NullPointerException("onNext received a null value"));
             }
             this.downstream.onNext(t);
+            return;
+        }
+        while (true) {
+            try {
+                T t2 = this.f367qs.poll();
+                if (t2 != null) {
+                    this.values.add(t2);
+                } else {
+                    return;
+                }
+            } catch (Throwable ex) {
+                this.errors.add(ex);
+                this.f367qs.cancel();
+                return;
+            }
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onError(Throwable t) {
         if (!this.checkSubscriptionOnce) {
             this.checkSubscriptionOnce = true;
@@ -154,6 +156,7 @@ public class TestSubscriber<T> extends BaseTestConsumer<T, TestSubscriber<T>> im
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onComplete() {
         if (!this.checkSubscriptionOnce) {
             this.checkSubscriptionOnce = true;
@@ -170,10 +173,12 @@ public class TestSubscriber<T> extends BaseTestConsumer<T, TestSubscriber<T>> im
         }
     }
 
+    @Override // org.reactivestreams.Subscription
     public final void request(long n) {
         SubscriptionHelper.deferredRequest(this.upstream, this.missedRequested, n);
     }
 
+    @Override // org.reactivestreams.Subscription
     public final void cancel() {
         if (!this.cancelled) {
             this.cancelled = true;
@@ -185,10 +190,12 @@ public class TestSubscriber<T> extends BaseTestConsumer<T, TestSubscriber<T>> im
         return this.cancelled;
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public final void dispose() {
         cancel();
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public final boolean isDisposed() {
         return this.cancelled;
     }
@@ -197,39 +204,39 @@ public class TestSubscriber<T> extends BaseTestConsumer<T, TestSubscriber<T>> im
         return this.upstream.get() != null;
     }
 
+    @Override // io.reactivex.observers.BaseTestConsumer
     public final TestSubscriber<T> assertSubscribed() {
-        if (this.upstream.get() != null) {
-            return this;
+        if (this.upstream.get() == null) {
+            throw fail("Not subscribed!");
         }
-        throw fail("Not subscribed!");
+        return this;
     }
 
+    @Override // io.reactivex.observers.BaseTestConsumer
     public final TestSubscriber<T> assertNotSubscribed() {
         if (this.upstream.get() != null) {
             throw fail("Subscribed!");
-        } else if (this.errors.isEmpty()) {
-            return this;
-        } else {
+        }
+        if (!this.errors.isEmpty()) {
             throw fail("Not subscribed but errors found");
         }
+        return this;
     }
 
-    /* access modifiers changed from: package-private */
-    public final TestSubscriber<T> setInitialFusionMode(int mode) {
+    final TestSubscriber<T> setInitialFusionMode(int mode) {
         this.initialFusionMode = mode;
         return this;
     }
 
-    /* access modifiers changed from: package-private */
-    public final TestSubscriber<T> assertFusionMode(int mode) {
+    final TestSubscriber<T> assertFusionMode(int mode) {
         int m = this.establishedFusionMode;
-        if (m == mode) {
-            return this;
+        if (m != mode) {
+            if (this.f367qs != null) {
+                throw new AssertionError("Fusion mode different. Expected: " + fusionModeToString(mode) + ", actual: " + fusionModeToString(m));
+            }
+            throw fail("Upstream is not fuseable");
         }
-        if (this.qs != null) {
-            throw new AssertionError("Fusion mode different. Expected: " + fusionModeToString(mode) + ", actual: " + fusionModeToString(m));
-        }
-        throw fail("Upstream is not fuseable");
+        return this;
     }
 
     static String fusionModeToString(int mode) {
@@ -245,20 +252,18 @@ public class TestSubscriber<T> extends BaseTestConsumer<T, TestSubscriber<T>> im
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public final TestSubscriber<T> assertFuseable() {
-        if (this.qs != null) {
-            return this;
+    final TestSubscriber<T> assertFuseable() {
+        if (this.f367qs == null) {
+            throw new AssertionError("Upstream is not fuseable.");
         }
-        throw new AssertionError("Upstream is not fuseable.");
+        return this;
     }
 
-    /* access modifiers changed from: package-private */
-    public final TestSubscriber<T> assertNotFuseable() {
-        if (this.qs == null) {
-            return this;
+    final TestSubscriber<T> assertNotFuseable() {
+        if (this.f367qs != null) {
+            throw new AssertionError("Upstream is fuseable.");
         }
-        throw new AssertionError("Upstream is fuseable.");
+        return this;
     }
 
     public final TestSubscriber<T> assertOf(Consumer<? super TestSubscriber<T>> check) {
@@ -275,18 +280,23 @@ public class TestSubscriber<T> extends BaseTestConsumer<T, TestSubscriber<T>> im
         return this;
     }
 
+    /* loaded from: classes.dex */
     enum EmptySubscriber implements FlowableSubscriber<Object> {
         INSTANCE;
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(Object t) {
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
         }
     }

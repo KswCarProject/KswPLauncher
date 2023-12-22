@@ -2,6 +2,7 @@ package com.google.zxing.client.result;
 
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class ExpandedProductParsedResult extends ParsedResult {
     public static final String KILOGRAM = "KG";
     public static final String POUND = "LB";
@@ -21,42 +22,35 @@ public final class ExpandedProductParsedResult extends ParsedResult {
     private final String weightIncrement;
     private final String weightType;
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    public ExpandedProductParsedResult(String rawText2, String productID2, String sscc2, String lotNumber2, String productionDate2, String packagingDate2, String bestBeforeDate2, String expirationDate2, String weight2, String weightType2, String weightIncrement2, String price2, String priceIncrement2, String priceCurrency2, Map<String, String> uncommonAIs2) {
+    public ExpandedProductParsedResult(String rawText, String productID, String sscc, String lotNumber, String productionDate, String packagingDate, String bestBeforeDate, String expirationDate, String weight, String weightType, String weightIncrement, String price, String priceIncrement, String priceCurrency, Map<String, String> uncommonAIs) {
         super(ParsedResultType.PRODUCT);
-        this.rawText = rawText2;
-        this.productID = productID2;
-        this.sscc = sscc2;
-        this.lotNumber = lotNumber2;
-        this.productionDate = productionDate2;
-        this.packagingDate = packagingDate2;
-        this.bestBeforeDate = bestBeforeDate2;
-        this.expirationDate = expirationDate2;
-        this.weight = weight2;
-        this.weightType = weightType2;
-        this.weightIncrement = weightIncrement2;
-        this.price = price2;
-        this.priceIncrement = priceIncrement2;
-        this.priceCurrency = priceCurrency2;
-        this.uncommonAIs = uncommonAIs2;
+        this.rawText = rawText;
+        this.productID = productID;
+        this.sscc = sscc;
+        this.lotNumber = lotNumber;
+        this.productionDate = productionDate;
+        this.packagingDate = packagingDate;
+        this.bestBeforeDate = bestBeforeDate;
+        this.expirationDate = expirationDate;
+        this.weight = weight;
+        this.weightType = weightType;
+        this.weightIncrement = weightIncrement;
+        this.price = price;
+        this.priceIncrement = priceIncrement;
+        this.priceCurrency = priceCurrency;
+        this.uncommonAIs = uncommonAIs;
     }
 
     public boolean equals(Object o) {
-        if (!(o instanceof ExpandedProductParsedResult)) {
-            return false;
+        if (o instanceof ExpandedProductParsedResult) {
+            ExpandedProductParsedResult other = (ExpandedProductParsedResult) o;
+            return equalsOrNull(this.productID, other.productID) && equalsOrNull(this.sscc, other.sscc) && equalsOrNull(this.lotNumber, other.lotNumber) && equalsOrNull(this.productionDate, other.productionDate) && equalsOrNull(this.bestBeforeDate, other.bestBeforeDate) && equalsOrNull(this.expirationDate, other.expirationDate) && equalsOrNull(this.weight, other.weight) && equalsOrNull(this.weightType, other.weightType) && equalsOrNull(this.weightIncrement, other.weightIncrement) && equalsOrNull(this.price, other.price) && equalsOrNull(this.priceIncrement, other.priceIncrement) && equalsOrNull(this.priceCurrency, other.priceCurrency) && equalsOrNull(this.uncommonAIs, other.uncommonAIs);
         }
-        ExpandedProductParsedResult other = (ExpandedProductParsedResult) o;
-        if (!equalsOrNull(this.productID, other.productID) || !equalsOrNull(this.sscc, other.sscc) || !equalsOrNull(this.lotNumber, other.lotNumber) || !equalsOrNull(this.productionDate, other.productionDate) || !equalsOrNull(this.bestBeforeDate, other.bestBeforeDate) || !equalsOrNull(this.expirationDate, other.expirationDate) || !equalsOrNull(this.weight, other.weight) || !equalsOrNull(this.weightType, other.weightType) || !equalsOrNull(this.weightIncrement, other.weightIncrement) || !equalsOrNull(this.price, other.price) || !equalsOrNull(this.priceIncrement, other.priceIncrement) || !equalsOrNull(this.priceCurrency, other.priceCurrency) || !equalsOrNull(this.uncommonAIs, other.uncommonAIs)) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
     private static boolean equalsOrNull(Object o1, Object o2) {
-        if (o1 == null) {
-            return o2 == null;
-        }
-        return o1.equals(o2);
+        return o1 == null ? o2 == null : o1.equals(o2);
     }
 
     public int hashCode() {
@@ -130,6 +124,7 @@ public final class ExpandedProductParsedResult extends ParsedResult {
         return this.uncommonAIs;
     }
 
+    @Override // com.google.zxing.client.result.ParsedResult
     public String getDisplayResult() {
         return String.valueOf(this.rawText);
     }

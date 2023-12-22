@@ -13,35 +13,39 @@ import io.reactivex.plugins.RxJavaPlugins;
 import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableAllSingle<T> extends Single<Boolean> implements FuseToFlowable<Boolean> {
     final Predicate<? super T> predicate;
     final Flowable<T> source;
 
-    public FlowableAllSingle(Flowable<T> source2, Predicate<? super T> predicate2) {
-        this.source = source2;
-        this.predicate = predicate2;
+    public FlowableAllSingle(Flowable<T> source, Predicate<? super T> predicate) {
+        this.source = source;
+        this.predicate = predicate;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super Boolean> observer) {
-        this.source.subscribe(new AllSubscriber(observer, this.predicate));
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super Boolean> observer) {
+        this.source.subscribe((FlowableSubscriber) new AllSubscriber(observer, this.predicate));
     }
 
+    @Override // io.reactivex.internal.fuseable.FuseToFlowable
     public Flowable<Boolean> fuseToFlowable() {
         return RxJavaPlugins.onAssembly(new FlowableAll(this.source, this.predicate));
     }
 
+    /* loaded from: classes.dex */
     static final class AllSubscriber<T> implements FlowableSubscriber<T>, Disposable {
         boolean done;
         final SingleObserver<? super Boolean> downstream;
         final Predicate<? super T> predicate;
         Subscription upstream;
 
-        AllSubscriber(SingleObserver<? super Boolean> actual, Predicate<? super T> predicate2) {
+        AllSubscriber(SingleObserver<? super Boolean> actual, Predicate<? super T> predicate) {
             this.downstream = actual;
-            this.predicate = predicate2;
+            this.predicate = predicate;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -50,24 +54,28 @@ public final class FlowableAllSingle<T> extends Single<Boolean> implements FuseT
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            if (!this.done) {
-                try {
-                    if (!this.predicate.test(t)) {
-                        this.done = true;
-                        this.upstream.cancel();
-                        this.upstream = SubscriptionHelper.CANCELLED;
-                        this.downstream.onSuccess(false);
-                    }
-                } catch (Throwable e) {
-                    Exceptions.throwIfFatal(e);
+            if (this.done) {
+                return;
+            }
+            try {
+                boolean b = this.predicate.test(t);
+                if (!b) {
+                    this.done = true;
                     this.upstream.cancel();
                     this.upstream = SubscriptionHelper.CANCELLED;
-                    onError(e);
+                    this.downstream.onSuccess(false);
                 }
+            } catch (Throwable e) {
+                Exceptions.throwIfFatal(e);
+                this.upstream.cancel();
+                this.upstream = SubscriptionHelper.CANCELLED;
+                onError(e);
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -78,19 +86,23 @@ public final class FlowableAllSingle<T> extends Single<Boolean> implements FuseT
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                this.upstream = SubscriptionHelper.CANCELLED;
-                this.downstream.onSuccess(true);
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            this.upstream = SubscriptionHelper.CANCELLED;
+            this.downstream.onSuccess(true);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.cancel();
             this.upstream = SubscriptionHelper.CANCELLED;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream == SubscriptionHelper.CANCELLED;
         }

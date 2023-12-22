@@ -8,10 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 import com.wits.ksw.launcher.view.CustomBmwImageView;
 
+/* loaded from: classes7.dex */
 public abstract class AlsId7SubZlinkViewBinding extends ViewDataBinding {
     public final ConstraintLayout dashboardConstraintLayout;
     @Bindable
@@ -20,14 +21,14 @@ public abstract class AlsId7SubZlinkViewBinding extends ViewDataBinding {
     public final TextView textView3;
     public final CustomBmwImageView zlinkImageView;
 
-    public abstract void setZlinkWeatherViewModel(AlsID7ViewModel alsID7ViewModel);
+    public abstract void setZlinkWeatherViewModel(AlsID7ViewModel ZlinkWeatherViewModel);
 
-    protected AlsId7SubZlinkViewBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout dashboardConstraintLayout2, TextView textView22, TextView textView32, CustomBmwImageView zlinkImageView2) {
+    protected AlsId7SubZlinkViewBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout dashboardConstraintLayout, TextView textView2, TextView textView3, CustomBmwImageView zlinkImageView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.dashboardConstraintLayout = dashboardConstraintLayout2;
-        this.textView2 = textView22;
-        this.textView3 = textView32;
-        this.zlinkImageView = zlinkImageView2;
+        this.dashboardConstraintLayout = dashboardConstraintLayout;
+        this.textView2 = textView2;
+        this.textView3 = textView3;
+        this.zlinkImageView = zlinkImageView;
     }
 
     public AlsID7ViewModel getZlinkWeatherViewModel() {
@@ -40,7 +41,7 @@ public abstract class AlsId7SubZlinkViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7SubZlinkViewBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AlsId7SubZlinkViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_sub_zlink_view, root, attachToRoot, component);
+        return (AlsId7SubZlinkViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_sub_zlink_view, root, attachToRoot, component);
     }
 
     public static AlsId7SubZlinkViewBinding inflate(LayoutInflater inflater) {
@@ -49,7 +50,7 @@ public abstract class AlsId7SubZlinkViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7SubZlinkViewBinding inflate(LayoutInflater inflater, Object component) {
-        return (AlsId7SubZlinkViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_sub_zlink_view, (ViewGroup) null, false, component);
+        return (AlsId7SubZlinkViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_sub_zlink_view, null, false, component);
     }
 
     public static AlsId7SubZlinkViewBinding bind(View view) {
@@ -58,6 +59,6 @@ public abstract class AlsId7SubZlinkViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7SubZlinkViewBinding bind(View view, Object component) {
-        return (AlsId7SubZlinkViewBinding) bind(component, view, R.layout.als_id7_sub_zlink_view);
+        return (AlsId7SubZlinkViewBinding) bind(component, view, C0899R.C0902layout.als_id7_sub_zlink_view);
     }
 }

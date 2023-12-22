@@ -7,43 +7,44 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.databinding.AudiMib3TyTwoBinding;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.model.McuImpl;
-import com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView;
 
+/* loaded from: classes6.dex */
 public class AudiMib3TyFragmentTwo extends AudiMib3TyBaseFragment implements View.OnKeyListener {
     public static final String TAG = "AudiMib3TyFragmentTwo - Two";
     public static AudiMib3TyTwoBinding bindingTwo;
-    private View.OnClickListener mItemClickListener = new View.OnClickListener() {
+    private View.OnClickListener mItemClickListener = new View.OnClickListener() { // from class: com.wits.ksw.launcher.view.audimib3ty.AudiMib3TyFragmentTwo.1
+        @Override // android.view.View.OnClickListener
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.app_itemview /*2131296342*/:
+                case C0899R.C0901id.app_itemview /* 2131296344 */:
                     BcVieModel bcVieModel = AudiMib3TyFragmentTwo.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3TyFragmentTwo.bindingTwo.appItemview;
                     AudiMib3TyFragmentTwo.setItemSelected(AudiMib3TyFragmentTwo.bindingTwo.appItemview);
                     AudiMib3TyFragmentTwo.this.viewModel.openApps(v);
                     return;
-                case R.id.car_itemview /*2131296693*/:
+                case C0899R.C0901id.car_itemview /* 2131296719 */:
                     BcVieModel bcVieModel2 = AudiMib3TyFragmentTwo.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3TyFragmentTwo.bindingTwo.carItemview;
                     AudiMib3TyFragmentTwo.setItemSelected(AudiMib3TyFragmentTwo.bindingTwo.carItemview);
                     AudiMib3TyFragmentTwo.this.viewModel.openCar(v);
                     return;
-                case R.id.dashboard_itemview /*2131296776*/:
+                case C0899R.C0901id.dashboard_itemview /* 2131296804 */:
                     BcVieModel bcVieModel3 = AudiMib3TyFragmentTwo.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3TyFragmentTwo.bindingTwo.dashboardItemview;
                     AudiMib3TyFragmentTwo.setItemSelected(AudiMib3TyFragmentTwo.bindingTwo.dashboardItemview);
                     AudiMib3TyFragmentTwo.this.viewModel.openDashboard(v);
                     return;
-                case R.id.dvr_itemview /*2131296820*/:
+                case C0899R.C0901id.dvr_itemview /* 2131296851 */:
                     BcVieModel bcVieModel4 = AudiMib3TyFragmentTwo.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3TyFragmentTwo.bindingTwo.dvrItemview;
                     AudiMib3TyFragmentTwo.setItemSelected(AudiMib3TyFragmentTwo.bindingTwo.dvrItemview);
                     AudiMib3TyFragmentTwo.this.viewModel.openDvr(v);
                     return;
-                case R.id.set_itemview /*2131297701*/:
+                case C0899R.C0901id.set_itemview /* 2131297748 */:
                     BcVieModel bcVieModel5 = AudiMib3TyFragmentTwo.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3TyFragmentTwo.bindingTwo.setItemview;
                     AudiMib3TyFragmentTwo.setItemSelected(AudiMib3TyFragmentTwo.bindingTwo.setItemview);
@@ -55,12 +56,14 @@ public class AudiMib3TyFragmentTwo extends AudiMib3TyBaseFragment implements Vie
         }
     };
 
+    @Override // android.support.p001v4.app.Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        AudiMib3TyTwoBinding audiMib3TyTwoBinding = (AudiMib3TyTwoBinding) DataBindingUtil.inflate(inflater, R.layout.fragment_audi_mib3_ty_two, (ViewGroup) null, false);
+        AudiMib3TyTwoBinding audiMib3TyTwoBinding = (AudiMib3TyTwoBinding) DataBindingUtil.inflate(inflater, C0899R.C0902layout.fragment_audi_mib3_ty_two, null, false);
         bindingTwo = audiMib3TyTwoBinding;
         return audiMib3TyTwoBinding.getRoot();
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         bindingTwo.setViewModel(this.viewModel);
@@ -87,16 +90,11 @@ public class AudiMib3TyFragmentTwo extends AudiMib3TyBaseFragment implements Vie
     }
 
     public static void setItemSelected(View view) {
-        boolean z = true;
         bindingTwo.dvrItemview.setSelected(bindingTwo.dvrItemview == view);
         bindingTwo.dashboardItemview.setSelected(bindingTwo.dashboardItemview == view);
         bindingTwo.carItemview.setSelected(bindingTwo.carItemview == view);
         bindingTwo.appItemview.setSelected(bindingTwo.appItemview == view);
-        BenzMbuxItemView benzMbuxItemView = bindingTwo.setItemview;
-        if (bindingTwo.setItemview != view) {
-            z = false;
-        }
-        benzMbuxItemView.setSelected(z);
+        bindingTwo.setItemview.setSelected(bindingTwo.setItemview == view);
     }
 
     public void setDefaultSelected() {
@@ -107,19 +105,23 @@ public class AudiMib3TyFragmentTwo extends AudiMib3TyBaseFragment implements Vie
         }
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onDestroy() {
         super.onDestroy();
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onResume() {
         super.onResume();
         Log.d("AudiMib3TyFragmentTwo", "onResume() 2222222222 ");
         this.viewModel.refreshLastSel();
         if (bindingTwo != null) {
-            bindingTwo.dashboardContent.setText(String.format(getResources().getString(R.string.oil_size), new Object[]{McuImpl.getInstance().getCarInfo().oilValue.get()}));
+            String mvformat = String.format(getResources().getString(C0899R.string.oil_size), McuImpl.getInstance().getCarInfo().oilValue.get());
+            bindingTwo.dashboardContent.setText(mvformat);
         }
     }
 
+    @Override // android.view.View.OnKeyListener
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (event.getAction() == 0) {
             Log.i(TAG, "onKey: " + keyCode);

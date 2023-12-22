@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.DashboardViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class BmwId8DashboardLayoutNewBinding extends ViewDataBinding {
     public final RelativeLayout bmwId8DashboardLay;
     public final ImageView bmwId8DashboardLeftBg;
@@ -21,16 +22,16 @@ public abstract class BmwId8DashboardLayoutNewBinding extends ViewDataBinding {
     @Bindable
     protected DashboardViewModel mViewModel;
 
-    public abstract void setViewModel(DashboardViewModel dashboardViewModel);
+    public abstract void setViewModel(DashboardViewModel viewModel);
 
-    protected BmwId8DashboardLayoutNewBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout bmwId8DashboardLay2, ImageView bmwId8DashboardLeftBg2, RelativeLayout bmwId8DashboardMidLay2, BmwId8DashboardMusicLayoutBinding bmwId8DashboardMusicLay2, ImageView bmwId8DashboardRightBg2, BmwId8DashboardWeatherLayoutBinding bmwId8DashboardWeatherLay2) {
+    protected BmwId8DashboardLayoutNewBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout bmwId8DashboardLay, ImageView bmwId8DashboardLeftBg, RelativeLayout bmwId8DashboardMidLay, BmwId8DashboardMusicLayoutBinding bmwId8DashboardMusicLay, ImageView bmwId8DashboardRightBg, BmwId8DashboardWeatherLayoutBinding bmwId8DashboardWeatherLay) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.bmwId8DashboardLay = bmwId8DashboardLay2;
-        this.bmwId8DashboardLeftBg = bmwId8DashboardLeftBg2;
-        this.bmwId8DashboardMidLay = bmwId8DashboardMidLay2;
-        this.bmwId8DashboardMusicLay = bmwId8DashboardMusicLay2;
-        this.bmwId8DashboardRightBg = bmwId8DashboardRightBg2;
-        this.bmwId8DashboardWeatherLay = bmwId8DashboardWeatherLay2;
+        this.bmwId8DashboardLay = bmwId8DashboardLay;
+        this.bmwId8DashboardLeftBg = bmwId8DashboardLeftBg;
+        this.bmwId8DashboardMidLay = bmwId8DashboardMidLay;
+        this.bmwId8DashboardMusicLay = bmwId8DashboardMusicLay;
+        this.bmwId8DashboardRightBg = bmwId8DashboardRightBg;
+        this.bmwId8DashboardWeatherLay = bmwId8DashboardWeatherLay;
     }
 
     public DashboardViewModel getViewModel() {
@@ -43,7 +44,7 @@ public abstract class BmwId8DashboardLayoutNewBinding extends ViewDataBinding {
 
     @Deprecated
     public static BmwId8DashboardLayoutNewBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BmwId8DashboardLayoutNewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_dashboard_layout_new, root, attachToRoot, component);
+        return (BmwId8DashboardLayoutNewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_dashboard_layout_new, root, attachToRoot, component);
     }
 
     public static BmwId8DashboardLayoutNewBinding inflate(LayoutInflater inflater) {
@@ -52,7 +53,7 @@ public abstract class BmwId8DashboardLayoutNewBinding extends ViewDataBinding {
 
     @Deprecated
     public static BmwId8DashboardLayoutNewBinding inflate(LayoutInflater inflater, Object component) {
-        return (BmwId8DashboardLayoutNewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_dashboard_layout_new, (ViewGroup) null, false, component);
+        return (BmwId8DashboardLayoutNewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_dashboard_layout_new, null, false, component);
     }
 
     public static BmwId8DashboardLayoutNewBinding bind(View view) {
@@ -61,6 +62,6 @@ public abstract class BmwId8DashboardLayoutNewBinding extends ViewDataBinding {
 
     @Deprecated
     public static BmwId8DashboardLayoutNewBinding bind(View view, Object component) {
-        return (BmwId8DashboardLayoutNewBinding) bind(component, view, R.layout.bmw_id8_dashboard_layout_new);
+        return (BmwId8DashboardLayoutNewBinding) bind(component, view, C0899R.C0902layout.bmw_id8_dashboard_layout_new);
     }
 }

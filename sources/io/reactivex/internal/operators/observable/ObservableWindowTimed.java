@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import kotlin.jvm.internal.LongCompanionObject;
 
+/* loaded from: classes.dex */
 public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstream<T, Observable<T>> {
     final int bufferSize;
     final long maxSize;
@@ -26,79 +27,90 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
     final long timespan;
     final TimeUnit unit;
 
-    public ObservableWindowTimed(ObservableSource<T> source, long timespan2, long timeskip2, TimeUnit unit2, Scheduler scheduler2, long maxSize2, int bufferSize2, boolean restartTimerOnMaxSize2) {
+    public ObservableWindowTimed(ObservableSource<T> source, long timespan, long timeskip, TimeUnit unit, Scheduler scheduler, long maxSize, int bufferSize, boolean restartTimerOnMaxSize) {
         super(source);
-        this.timespan = timespan2;
-        this.timeskip = timeskip2;
-        this.unit = unit2;
-        this.scheduler = scheduler2;
-        this.maxSize = maxSize2;
-        this.bufferSize = bufferSize2;
-        this.restartTimerOnMaxSize = restartTimerOnMaxSize2;
+        this.timespan = timespan;
+        this.timeskip = timeskip;
+        this.unit = unit;
+        this.scheduler = scheduler;
+        this.maxSize = maxSize;
+        this.bufferSize = bufferSize;
+        this.restartTimerOnMaxSize = restartTimerOnMaxSize;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super Observable<T>> t) {
         SerializedObserver<Observable<T>> actual = new SerializedObserver<>(t);
-        if (this.timespan != this.timeskip) {
-            this.source.subscribe(new WindowSkipObserver(actual, this.timespan, this.timeskip, this.unit, this.scheduler.createWorker(), this.bufferSize));
-        } else if (this.maxSize == LongCompanionObject.MAX_VALUE) {
-            this.source.subscribe(new WindowExactUnboundedObserver(actual, this.timespan, this.unit, this.scheduler, this.bufferSize));
-        } else {
-            this.source.subscribe(new WindowExactBoundedObserver(actual, this.timespan, this.unit, this.scheduler, this.bufferSize, this.maxSize, this.restartTimerOnMaxSize));
+        if (this.timespan == this.timeskip) {
+            if (this.maxSize == LongCompanionObject.MAX_VALUE) {
+                this.source.subscribe(new WindowExactUnboundedObserver(actual, this.timespan, this.unit, this.scheduler, this.bufferSize));
+                return;
+            } else {
+                this.source.subscribe(new WindowExactBoundedObserver(actual, this.timespan, this.unit, this.scheduler, this.bufferSize, this.maxSize, this.restartTimerOnMaxSize));
+                return;
+            }
         }
+        this.source.subscribe(new WindowSkipObserver(actual, this.timespan, this.timeskip, this.unit, this.scheduler.createWorker(), this.bufferSize));
     }
 
+    /* loaded from: classes.dex */
     static final class WindowExactUnboundedObserver<T> extends QueueDrainObserver<T, Object, Observable<T>> implements Observer<T>, Disposable, Runnable {
         static final Object NEXT = new Object();
         final int bufferSize;
         final Scheduler scheduler;
         volatile boolean terminated;
-        final SequentialDisposable timer = new SequentialDisposable();
+        final SequentialDisposable timer;
         final long timespan;
         final TimeUnit unit;
         Disposable upstream;
         UnicastSubject<T> window;
 
-        WindowExactUnboundedObserver(Observer<? super Observable<T>> actual, long timespan2, TimeUnit unit2, Scheduler scheduler2, int bufferSize2) {
+        WindowExactUnboundedObserver(Observer<? super Observable<T>> actual, long timespan, TimeUnit unit, Scheduler scheduler, int bufferSize) {
             super(actual, new MpscLinkedQueue());
-            this.timespan = timespan2;
-            this.unit = unit2;
-            this.scheduler = scheduler2;
-            this.bufferSize = bufferSize2;
+            this.timer = new SequentialDisposable();
+            this.timespan = timespan;
+            this.unit = unit;
+            this.scheduler = scheduler;
+            this.bufferSize = bufferSize;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
                 this.window = UnicastSubject.create(this.bufferSize);
-                Observer<? super Observable<T>> a = this.downstream;
-                a.onSubscribe(this);
-                a.onNext(this.window);
+                Observer<? super V> observer = this.downstream;
+                observer.onSubscribe(this);
+                observer.onNext(this.window);
                 if (!this.cancelled) {
-                    Scheduler scheduler2 = this.scheduler;
+                    Scheduler scheduler = this.scheduler;
                     long j = this.timespan;
-                    this.timer.replace(scheduler2.schedulePeriodicallyDirect(this, j, j, this.unit));
+                    Disposable task = scheduler.schedulePeriodicallyDirect(this, j, j, this.unit);
+                    this.timer.replace(task);
                 }
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
-            if (!this.terminated) {
-                if (fastEnter()) {
-                    this.window.onNext(t);
-                    if (leave(-1) == 0) {
-                        return;
-                    }
-                } else {
-                    this.queue.offer(NotificationLite.next(t));
-                    if (!enter()) {
-                        return;
-                    }
-                }
-                drainLoop();
+            if (this.terminated) {
+                return;
             }
+            if (fastEnter()) {
+                this.window.onNext(t);
+                if (leave(-1) == 0) {
+                    return;
+                }
+            } else {
+                this.queue.offer(NotificationLite.next(t));
+                if (!enter()) {
+                    return;
+                }
+            }
+            drainLoop();
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             this.error = t;
             this.done = true;
@@ -108,6 +120,7 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
             this.downstream.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             this.done = true;
             if (enter()) {
@@ -116,14 +129,17 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
             this.downstream.onComplete();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.cancelled = true;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.cancelled;
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             if (this.cancelled) {
                 this.terminated = true;
@@ -134,48 +150,70 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drainLoop() {
+        /* JADX WARN: Code restructure failed: missing block: B:10:0x0023, code lost:
+            r2 = r2;
+            r2.onError(r7);
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:11:0x0027, code lost:
+            r2 = r2;
+            r2.onComplete();
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:12:0x002a, code lost:
+            r9.timer.dispose();
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:13:0x002f, code lost:
+            return;
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:8:0x0019, code lost:
+            r9.window = null;
+            r0.clear();
+            r7 = r9.error;
+         */
+        /* JADX WARN: Code restructure failed: missing block: B:9:0x0021, code lost:
+            if (r7 == null) goto L14;
+         */
+        /* JADX WARN: Multi-variable type inference failed */
+        /*
+            Code decompiled incorrectly, please refer to instructions dump.
+        */
+        void drainLoop() {
             MpscLinkedQueue<Object> q = (MpscLinkedQueue) this.queue;
-            Observer<? super Observable<T>> a = this.downstream;
-            UnicastSubject<T> w = this.window;
+            Observer<? super V> observer = this.downstream;
+            UnicastSubject<T> unicastSubject = this.window;
             int missed = 1;
             while (true) {
                 boolean term = this.terminated;
                 boolean d = this.done;
                 Object o = q.poll();
-                if (!d || !(o == null || o == NEXT)) {
-                    if (o == null) {
+                if (!d || (o != null && o != NEXT)) {
+                    if (o != null) {
+                        if (o == NEXT) {
+                            UnicastSubject<T> w = unicastSubject;
+                            w.onComplete();
+                            if (!term) {
+                                UnicastSubject<T> w2 = UnicastSubject.create(this.bufferSize);
+                                unicastSubject = w2;
+                                this.window = unicastSubject;
+                                observer.onNext(unicastSubject);
+                            } else {
+                                this.upstream.dispose();
+                            }
+                        } else {
+                            UnicastSubject<T> w3 = unicastSubject;
+                            w3.onNext(NotificationLite.getValue(o));
+                        }
+                    } else {
                         missed = leave(-missed);
                         if (missed == 0) {
                             return;
                         }
-                    } else if (o == NEXT) {
-                        w.onComplete();
-                        if (!term) {
-                            w = UnicastSubject.create(this.bufferSize);
-                            this.window = w;
-                            a.onNext(w);
-                        } else {
-                            this.upstream.dispose();
-                        }
-                    } else {
-                        w.onNext(NotificationLite.getValue(o));
                     }
                 }
             }
-            this.window = null;
-            q.clear();
-            Throwable err = this.error;
-            if (err != null) {
-                w.onError(err);
-            } else {
-                w.onComplete();
-            }
-            this.timer.dispose();
         }
     }
 
+    /* loaded from: classes.dex */
     static final class WindowExactBoundedObserver<T> extends QueueDrainObserver<T, Object, Observable<T>> implements Disposable {
         final int bufferSize;
         long count;
@@ -184,89 +222,97 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
         final boolean restartTimerOnMaxSize;
         final Scheduler scheduler;
         volatile boolean terminated;
-        final SequentialDisposable timer = new SequentialDisposable();
+        final SequentialDisposable timer;
         final long timespan;
         final TimeUnit unit;
         Disposable upstream;
         UnicastSubject<T> window;
         final Scheduler.Worker worker;
 
-        WindowExactBoundedObserver(Observer<? super Observable<T>> actual, long timespan2, TimeUnit unit2, Scheduler scheduler2, int bufferSize2, long maxSize2, boolean restartTimerOnMaxSize2) {
+        WindowExactBoundedObserver(Observer<? super Observable<T>> actual, long timespan, TimeUnit unit, Scheduler scheduler, int bufferSize, long maxSize, boolean restartTimerOnMaxSize) {
             super(actual, new MpscLinkedQueue());
-            this.timespan = timespan2;
-            this.unit = unit2;
-            this.scheduler = scheduler2;
-            this.bufferSize = bufferSize2;
-            this.maxSize = maxSize2;
-            this.restartTimerOnMaxSize = restartTimerOnMaxSize2;
-            if (restartTimerOnMaxSize2) {
-                this.worker = scheduler2.createWorker();
+            this.timer = new SequentialDisposable();
+            this.timespan = timespan;
+            this.unit = unit;
+            this.scheduler = scheduler;
+            this.bufferSize = bufferSize;
+            this.maxSize = maxSize;
+            this.restartTimerOnMaxSize = restartTimerOnMaxSize;
+            if (restartTimerOnMaxSize) {
+                this.worker = scheduler.createWorker();
             } else {
                 this.worker = null;
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             Disposable task;
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
-                Observer<? super Observable<T>> a = this.downstream;
-                a.onSubscribe(this);
-                if (!this.cancelled) {
-                    UnicastSubject<T> w = UnicastSubject.create(this.bufferSize);
-                    this.window = w;
-                    a.onNext(w);
-                    ConsumerIndexHolder consumerIndexHolder = new ConsumerIndexHolder(this.producerIndex, this);
-                    if (this.restartTimerOnMaxSize) {
-                        Scheduler.Worker worker2 = this.worker;
-                        long j = this.timespan;
-                        task = worker2.schedulePeriodically(consumerIndexHolder, j, j, this.unit);
-                    } else {
-                        Scheduler scheduler2 = this.scheduler;
-                        long j2 = this.timespan;
-                        task = scheduler2.schedulePeriodicallyDirect(consumerIndexHolder, j2, j2, this.unit);
-                    }
-                    this.timer.replace(task);
+                Observer<? super V> observer = this.downstream;
+                observer.onSubscribe(this);
+                if (this.cancelled) {
+                    return;
                 }
+                UnicastSubject<T> w = UnicastSubject.create(this.bufferSize);
+                this.window = w;
+                observer.onNext(w);
+                ConsumerIndexHolder consumerIndexHolder = new ConsumerIndexHolder(this.producerIndex, this);
+                if (this.restartTimerOnMaxSize) {
+                    Scheduler.Worker worker = this.worker;
+                    long j = this.timespan;
+                    task = worker.schedulePeriodically(consumerIndexHolder, j, j, this.unit);
+                } else {
+                    Scheduler scheduler = this.scheduler;
+                    long j2 = this.timespan;
+                    task = scheduler.schedulePeriodicallyDirect(consumerIndexHolder, j2, j2, this.unit);
+                }
+                this.timer.replace(task);
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
-            if (!this.terminated) {
-                if (fastEnter()) {
-                    UnicastSubject<T> w = this.window;
-                    w.onNext(t);
-                    long c = this.count + 1;
-                    if (c >= this.maxSize) {
-                        this.producerIndex++;
-                        this.count = 0;
-                        w.onComplete();
-                        UnicastSubject<T> w2 = UnicastSubject.create(this.bufferSize);
-                        this.window = w2;
-                        this.downstream.onNext(w2);
-                        if (this.restartTimerOnMaxSize) {
-                            ((Disposable) this.timer.get()).dispose();
-                            Scheduler.Worker worker2 = this.worker;
-                            ConsumerIndexHolder consumerIndexHolder = new ConsumerIndexHolder(this.producerIndex, this);
-                            long j = this.timespan;
-                            DisposableHelper.replace(this.timer, worker2.schedulePeriodically(consumerIndexHolder, j, j, this.unit));
-                        }
-                    } else {
-                        this.count = c;
-                    }
-                    if (leave(-1) == 0) {
-                        return;
+            if (this.terminated) {
+                return;
+            }
+            if (fastEnter()) {
+                UnicastSubject<T> w = this.window;
+                w.onNext(t);
+                long c = this.count + 1;
+                if (c >= this.maxSize) {
+                    this.producerIndex++;
+                    this.count = 0L;
+                    w.onComplete();
+                    UnicastSubject<T> w2 = UnicastSubject.create(this.bufferSize);
+                    this.window = w2;
+                    this.downstream.onNext(w2);
+                    if (this.restartTimerOnMaxSize) {
+                        Disposable tm = this.timer.get();
+                        tm.dispose();
+                        Scheduler.Worker worker = this.worker;
+                        ConsumerIndexHolder consumerIndexHolder = new ConsumerIndexHolder(this.producerIndex, this);
+                        long j = this.timespan;
+                        Disposable task = worker.schedulePeriodically(consumerIndexHolder, j, j, this.unit);
+                        DisposableHelper.replace(this.timer, task);
                     }
                 } else {
-                    this.queue.offer(NotificationLite.next(t));
-                    if (!enter()) {
-                        return;
-                    }
+                    this.count = c;
                 }
-                drainLoop();
+                if (leave(-1) == 0) {
+                    return;
+                }
+            } else {
+                this.queue.offer(NotificationLite.next(t));
+                if (!enter()) {
+                    return;
+                }
             }
+            drainLoop();
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             this.error = t;
             this.done = true;
@@ -276,6 +322,7 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
             this.downstream.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             this.done = true;
             if (enter()) {
@@ -284,16 +331,17 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
             this.downstream.onComplete();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.cancelled = true;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.cancelled;
         }
 
-        /* access modifiers changed from: package-private */
-        public void disposeTimer() {
+        void disposeTimer() {
             DisposableHelper.dispose(this.timer);
             Scheduler.Worker w = this.worker;
             if (w != null) {
@@ -301,13 +349,13 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drainLoop() {
-            Observer<? super Observable<T>> a;
+        /* JADX WARN: Multi-variable type inference failed */
+        void drainLoop() {
             MpscLinkedQueue<Object> q;
+            Observer observer;
             MpscLinkedQueue<Object> q2 = (MpscLinkedQueue) this.queue;
-            Observer<? super Observable<T>> a2 = this.downstream;
-            UnicastSubject<T> w = this.window;
+            Observer observer2 = this.downstream;
+            UnicastSubject<T> unicastSubject = this.window;
             int missed = 1;
             while (!this.terminated) {
                 boolean d = this.done;
@@ -319,9 +367,11 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
                     q2.clear();
                     Throwable err = this.error;
                     if (err != null) {
+                        UnicastSubject<T> w = unicastSubject;
                         w.onError(err);
                     } else {
-                        w.onComplete();
+                        UnicastSubject<T> w2 = unicastSubject;
+                        w2.onComplete();
                     }
                     disposeTimer();
                     return;
@@ -333,45 +383,50 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
                 } else if (isHolder) {
                     ConsumerIndexHolder consumerIndexHolder = (ConsumerIndexHolder) o;
                     if (!this.restartTimerOnMaxSize || this.producerIndex == consumerIndexHolder.index) {
-                        w.onComplete();
-                        this.count = 0;
-                        w = UnicastSubject.create(this.bufferSize);
-                        this.window = w;
-                        a2.onNext(w);
+                        UnicastSubject<T> w3 = unicastSubject;
+                        w3.onComplete();
+                        this.count = 0L;
+                        UnicastSubject<T> w4 = UnicastSubject.create(this.bufferSize);
+                        unicastSubject = w4;
+                        this.window = unicastSubject;
+                        observer2.onNext(unicastSubject);
                     }
                 } else {
-                    w.onNext(NotificationLite.getValue(o));
+                    UnicastSubject<T> w5 = unicastSubject;
+                    w5.onNext(NotificationLite.getValue(o));
                     long c = this.count + 1;
                     if (c >= this.maxSize) {
                         this.producerIndex++;
-                        this.count = 0;
-                        w.onComplete();
-                        w = UnicastSubject.create(this.bufferSize);
-                        this.window = w;
-                        this.downstream.onNext(w);
-                        if (this.restartTimerOnMaxSize) {
-                            Disposable tm = (Disposable) this.timer.get();
-                            tm.dispose();
-                            Scheduler.Worker worker2 = this.worker;
+                        this.count = 0L;
+                        UnicastSubject<T> w6 = unicastSubject;
+                        w6.onComplete();
+                        UnicastSubject<T> w7 = UnicastSubject.create(this.bufferSize);
+                        unicastSubject = w7;
+                        this.window = unicastSubject;
+                        this.downstream.onNext(unicastSubject);
+                        if (!this.restartTimerOnMaxSize) {
                             q = q2;
-                            a = a2;
+                            observer = observer2;
+                        } else {
+                            Disposable tm = this.timer.get();
+                            tm.dispose();
+                            Scheduler.Worker worker = this.worker;
+                            q = q2;
+                            observer = observer2;
                             ConsumerIndexHolder consumerIndexHolder2 = new ConsumerIndexHolder(this.producerIndex, this);
                             long j = this.timespan;
-                            Disposable task = worker2.schedulePeriodically(consumerIndexHolder2, j, j, this.unit);
+                            Disposable task = worker.schedulePeriodically(consumerIndexHolder2, j, j, this.unit);
                             if (!this.timer.compareAndSet(tm, task)) {
                                 task.dispose();
                             }
-                        } else {
-                            q = q2;
-                            a = a2;
                         }
                     } else {
                         q = q2;
-                        a = a2;
+                        observer = observer2;
                         this.count = c;
                     }
                     q2 = q;
-                    a2 = a;
+                    observer2 = observer;
                 }
             }
             this.upstream.dispose();
@@ -379,19 +434,21 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
             disposeTimer();
         }
 
+        /* loaded from: classes.dex */
         static final class ConsumerIndexHolder implements Runnable {
             final long index;
             final WindowExactBoundedObserver<?> parent;
 
-            ConsumerIndexHolder(long index2, WindowExactBoundedObserver<?> parent2) {
-                this.index = index2;
-                this.parent = parent2;
+            ConsumerIndexHolder(long index, WindowExactBoundedObserver<?> parent) {
+                this.index = index;
+                this.parent = parent;
             }
 
+            @Override // java.lang.Runnable
             public void run() {
                 WindowExactBoundedObserver<?> p = this.parent;
-                if (!p.cancelled) {
-                    p.queue.offer(this);
+                if (!((WindowExactBoundedObserver) p).cancelled) {
+                    ((WindowExactBoundedObserver) p).queue.offer(this);
                 } else {
                     p.terminated = true;
                 }
@@ -402,6 +459,7 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
         }
     }
 
+    /* loaded from: classes.dex */
     static final class WindowSkipObserver<T> extends QueueDrainObserver<T, Object, Observable<T>> implements Disposable, Runnable {
         final int bufferSize;
         volatile boolean terminated;
@@ -409,34 +467,38 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
         final long timespan;
         final TimeUnit unit;
         Disposable upstream;
-        final List<UnicastSubject<T>> windows = new LinkedList();
+        final List<UnicastSubject<T>> windows;
         final Scheduler.Worker worker;
 
-        WindowSkipObserver(Observer<? super Observable<T>> actual, long timespan2, long timeskip2, TimeUnit unit2, Scheduler.Worker worker2, int bufferSize2) {
+        WindowSkipObserver(Observer<? super Observable<T>> actual, long timespan, long timeskip, TimeUnit unit, Scheduler.Worker worker, int bufferSize) {
             super(actual, new MpscLinkedQueue());
-            this.timespan = timespan2;
-            this.timeskip = timeskip2;
-            this.unit = unit2;
-            this.worker = worker2;
-            this.bufferSize = bufferSize2;
+            this.timespan = timespan;
+            this.timeskip = timeskip;
+            this.unit = unit;
+            this.worker = worker;
+            this.bufferSize = bufferSize;
+            this.windows = new LinkedList();
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
                 this.downstream.onSubscribe(this);
-                if (!this.cancelled) {
-                    UnicastSubject<T> w = UnicastSubject.create(this.bufferSize);
-                    this.windows.add(w);
-                    this.downstream.onNext(w);
-                    this.worker.schedule(new CompletionTask(w), this.timespan, this.unit);
-                    Scheduler.Worker worker2 = this.worker;
-                    long j = this.timeskip;
-                    worker2.schedulePeriodically(this, j, j, this.unit);
+                if (this.cancelled) {
+                    return;
                 }
+                UnicastSubject<T> w = UnicastSubject.create(this.bufferSize);
+                this.windows.add(w);
+                this.downstream.onNext(w);
+                this.worker.schedule(new CompletionTask(w), this.timespan, this.unit);
+                Scheduler.Worker worker = this.worker;
+                long j = this.timeskip;
+                worker.schedulePeriodically(this, j, j, this.unit);
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             if (fastEnter()) {
                 for (UnicastSubject<T> w : this.windows) {
@@ -454,6 +516,7 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
             drainLoop();
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             this.error = t;
             this.done = true;
@@ -463,6 +526,7 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
             this.downstream.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             this.done = true;
             if (enter()) {
@@ -471,33 +535,33 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
             this.downstream.onComplete();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.cancelled = true;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.cancelled;
         }
 
-        /* access modifiers changed from: package-private */
-        public void complete(UnicastSubject<T> w) {
+        void complete(UnicastSubject<T> w) {
             this.queue.offer(new SubjectWork(w, false));
             if (enter()) {
                 drainLoop();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drainLoop() {
+        void drainLoop() {
             MpscLinkedQueue<Object> q = (MpscLinkedQueue) this.queue;
-            Observer<? super Observable<T>> a = this.downstream;
+            Observer<? super V> observer = this.downstream;
             List<UnicastSubject<T>> ws = this.windows;
             int missed = 1;
             while (!this.terminated) {
                 boolean d = this.done;
-                Object v = q.poll();
-                boolean empty = v == null;
-                boolean sw = v instanceof SubjectWork;
+                T t = (T) q.poll();
+                boolean empty = t == null;
+                boolean sw = t instanceof SubjectWork;
                 if (d && (empty || sw)) {
                     q.clear();
                     Throwable e = this.error;
@@ -513,28 +577,32 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
                     ws.clear();
                     this.worker.dispose();
                     return;
-                } else if (empty) {
+                } else if (!empty) {
+                    if (sw) {
+                        SubjectWork<T> work = (SubjectWork) t;
+                        if (work.open) {
+                            if (!this.cancelled) {
+                                UnicastSubject<T> w3 = UnicastSubject.create(this.bufferSize);
+                                ws.add(w3);
+                                observer.onNext(w3);
+                                this.worker.schedule(new CompletionTask(w3), this.timespan, this.unit);
+                            }
+                        } else {
+                            ws.remove(work.f333w);
+                            work.f333w.onComplete();
+                            if (ws.isEmpty() && this.cancelled) {
+                                this.terminated = true;
+                            }
+                        }
+                    } else {
+                        for (UnicastSubject<T> w4 : ws) {
+                            w4.onNext(t);
+                        }
+                    }
+                } else {
                     missed = leave(-missed);
                     if (missed == 0) {
                         return;
-                    }
-                } else if (sw) {
-                    SubjectWork<T> work = (SubjectWork) v;
-                    if (!work.open) {
-                        ws.remove(work.w);
-                        work.w.onComplete();
-                        if (ws.isEmpty() && this.cancelled) {
-                            this.terminated = true;
-                        }
-                    } else if (!this.cancelled) {
-                        UnicastSubject<T> w3 = UnicastSubject.create(this.bufferSize);
-                        ws.add(w3);
-                        a.onNext(w3);
-                        this.worker.schedule(new CompletionTask(w3), this.timespan, this.unit);
-                    }
-                } else {
-                    for (UnicastSubject<T> w4 : ws) {
-                        w4.onNext(v);
                     }
                 }
             }
@@ -544,8 +612,10 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
             this.worker.dispose();
         }
 
+        @Override // java.lang.Runnable
         public void run() {
-            SubjectWork<T> sw = new SubjectWork<>(UnicastSubject.create(this.bufferSize), true);
+            UnicastSubject<T> w = UnicastSubject.create(this.bufferSize);
+            SubjectWork<T> sw = new SubjectWork<>(w, true);
             if (!this.cancelled) {
                 this.queue.offer(sw);
             }
@@ -554,25 +624,32 @@ public final class ObservableWindowTimed<T> extends AbstractObservableWithUpstre
             }
         }
 
+        /* loaded from: classes.dex */
         static final class SubjectWork<T> {
             final boolean open;
-            final UnicastSubject<T> w;
 
-            SubjectWork(UnicastSubject<T> w2, boolean open2) {
-                this.w = w2;
-                this.open = open2;
+            /* renamed from: w */
+            final UnicastSubject<T> f333w;
+
+            SubjectWork(UnicastSubject<T> w, boolean open) {
+                this.f333w = w;
+                this.open = open;
             }
         }
 
+        /* loaded from: classes.dex */
         final class CompletionTask implements Runnable {
-            private final UnicastSubject<T> w;
 
-            CompletionTask(UnicastSubject<T> w2) {
-                this.w = w2;
+            /* renamed from: w */
+            private final UnicastSubject<T> f332w;
+
+            CompletionTask(UnicastSubject<T> w) {
+                this.f332w = w;
             }
 
+            @Override // java.lang.Runnable
             public void run() {
-                WindowSkipObserver.this.complete(this.w);
+                WindowSkipObserver.this.complete(this.f332w);
             }
         }
     }

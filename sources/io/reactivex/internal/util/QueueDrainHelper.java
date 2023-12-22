@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class QueueDrainHelper {
     static final long COMPLETED_MASK = Long.MIN_VALUE;
     static final long REQUESTED_MASK = Long.MAX_VALUE;
@@ -34,22 +35,24 @@ public final class QueueDrainHelper {
                     return;
                 }
                 return;
-            } else if (empty) {
-                missed = qd.leave(-missed);
-                if (missed == 0) {
-                    return;
-                }
-            } else {
+            } else if (!empty) {
                 long r = qd.requested();
-                if (r == 0) {
+                if (r != 0) {
+                    if (qd.accept(a, v) && r != Long.MAX_VALUE) {
+                        qd.produced(1L);
+                    }
+                } else {
                     q.clear();
                     if (dispose != null) {
                         dispose.dispose();
                     }
                     a.onError(new MissingBackpressureException("Could not emit value due to lack of requests."));
                     return;
-                } else if (qd.accept(a, v) && r != Long.MAX_VALUE) {
-                    qd.produced(1);
+                }
+            } else {
+                missed = qd.leave(-missed);
+                if (missed == 0) {
+                    return;
                 }
             }
         }
@@ -59,32 +62,32 @@ public final class QueueDrainHelper {
         if (qd.cancelled()) {
             q.clear();
             return true;
-        } else if (!d) {
-            return false;
-        } else {
-            if (!delayError) {
-                Throwable err = qd.error();
-                if (err != null) {
-                    q.clear();
-                    s.onError(err);
-                    return true;
-                } else if (!empty) {
-                    return false;
-                } else {
-                    s.onComplete();
+        } else if (d) {
+            if (delayError) {
+                if (empty) {
+                    Throwable err = qd.error();
+                    if (err != null) {
+                        s.onError(err);
+                    } else {
+                        s.onComplete();
+                    }
                     return true;
                 }
-            } else if (!empty) {
                 return false;
-            } else {
-                Throwable err2 = qd.error();
-                if (err2 != null) {
-                    s.onError(err2);
-                } else {
-                    s.onComplete();
-                }
-                return true;
             }
+            Throwable err2 = qd.error();
+            if (err2 != null) {
+                q.clear();
+                s.onError(err2);
+                return true;
+            } else if (empty) {
+                s.onComplete();
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
     }
 
@@ -95,17 +98,16 @@ public final class QueueDrainHelper {
                 boolean d = qd.done();
                 T v = q.poll();
                 boolean empty = v == null;
-                if (!checkTerminated(d, empty, a, delayError, q, dispose, qd)) {
-                    if (empty) {
-                        missed = qd.leave(-missed);
-                        if (missed == 0) {
-                            return;
-                        }
-                    } else {
-                        qd.accept(a, v);
-                    }
-                } else {
+                if (checkTerminated(d, empty, a, delayError, q, dispose, qd)) {
                     return;
+                }
+                if (!empty) {
+                    qd.accept(a, v);
+                } else {
+                    missed = qd.leave(-missed);
+                    if (missed == 0) {
+                        return;
+                    }
                 }
             }
         }
@@ -116,41 +118,41 @@ public final class QueueDrainHelper {
             q.clear();
             disposable.dispose();
             return true;
-        } else if (!d) {
-            return false;
-        } else {
-            if (!delayError) {
-                Throwable err = qd.error();
-                if (err != null) {
-                    q.clear();
+        } else if (d) {
+            if (delayError) {
+                if (empty) {
                     if (disposable != null) {
                         disposable.dispose();
                     }
-                    observer.onError(err);
-                    return true;
-                } else if (!empty) {
-                    return false;
-                } else {
-                    if (disposable != null) {
-                        disposable.dispose();
+                    Throwable err = qd.error();
+                    if (err != null) {
+                        observer.onError(err);
+                    } else {
+                        observer.onComplete();
                     }
-                    observer.onComplete();
                     return true;
                 }
-            } else if (!empty) {
                 return false;
-            } else {
+            }
+            Throwable err2 = qd.error();
+            if (err2 != null) {
+                q.clear();
                 if (disposable != null) {
                     disposable.dispose();
                 }
-                Throwable err2 = qd.error();
-                if (err2 != null) {
-                    observer.onError(err2);
-                } else {
-                    observer.onComplete();
-                }
+                observer.onError(err2);
                 return true;
+            } else if (empty) {
+                if (disposable != null) {
+                    disposable.dispose();
+                }
+                observer.onComplete();
+                return true;
+            } else {
+                return false;
             }
+        } else {
+            return false;
         }
     }
 
@@ -162,20 +164,22 @@ public final class QueueDrainHelper {
     }
 
     public static void request(Subscription s, int prefetch) {
-        s.request(prefetch < 0 ? Long.MAX_VALUE : (long) prefetch);
+        s.request(prefetch < 0 ? Long.MAX_VALUE : prefetch);
     }
 
     public static <T> boolean postCompleteRequest(long n, Subscriber<? super T> actual, Queue<T> queue, AtomicLong state, BooleanSupplier isCancelled) {
         long r;
-        long j = n;
+        long u;
         do {
             r = state.get();
-        } while (!state.compareAndSet(r, (r & Long.MIN_VALUE) | BackpressureHelper.addCap(Long.MAX_VALUE & r, j)));
-        if (r != Long.MIN_VALUE) {
-            return false;
+            long r0 = Long.MAX_VALUE & r;
+            u = (r & Long.MIN_VALUE) | BackpressureHelper.addCap(r0, n);
+        } while (!state.compareAndSet(r, u));
+        if (r == Long.MIN_VALUE) {
+            postCompleteDrain(n | Long.MIN_VALUE, actual, queue, state, isCancelled);
+            return true;
         }
-        postCompleteDrain(j | Long.MIN_VALUE, actual, queue, state, isCancelled);
-        return true;
+        return false;
     }
 
     static boolean isCancelled(BooleanSupplier cancelled) {
@@ -194,12 +198,12 @@ public final class QueueDrainHelper {
                 if (isCancelled(isCancelled)) {
                     return true;
                 }
-                T t = queue.poll();
-                if (t == null) {
+                Object obj = (T) queue.poll();
+                if (obj == null) {
                     actual.onComplete();
                     return true;
                 }
-                actual.onNext(t);
+                actual.onNext(obj);
                 e++;
             } else if (isCancelled(isCancelled)) {
                 return true;
@@ -227,14 +231,14 @@ public final class QueueDrainHelper {
         long u;
         if (queue.isEmpty()) {
             actual.onComplete();
-        } else if (!postCompleteDrain(state.get(), actual, queue, state, isCancelled)) {
+        } else if (postCompleteDrain(state.get(), actual, queue, state, isCancelled)) {
+        } else {
             do {
                 r = state.get();
-                if ((r & Long.MIN_VALUE) == 0) {
-                    u = Long.MIN_VALUE | r;
-                } else {
+                if ((r & Long.MIN_VALUE) != 0) {
                     return;
                 }
+                u = Long.MIN_VALUE | r;
             } while (!state.compareAndSet(r, u));
             if (r != 0) {
                 postCompleteDrain(u, actual, queue, state, isCancelled);

@@ -9,17 +9,18 @@ import io.reactivex.internal.functions.ObjectHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/* loaded from: classes.dex */
 public final class SingleEquals<T> extends Single<Boolean> {
     final SingleSource<? extends T> first;
     final SingleSource<? extends T> second;
 
-    public SingleEquals(SingleSource<? extends T> first2, SingleSource<? extends T> second2) {
-        this.first = first2;
-        this.second = second2;
+    public SingleEquals(SingleSource<? extends T> first, SingleSource<? extends T> second) {
+        this.first = first;
+        this.second = second;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super Boolean> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super Boolean> observer) {
         AtomicInteger count = new AtomicInteger();
         Object[] values = {null, null};
         CompositeDisposable set = new CompositeDisposable();
@@ -28,6 +29,7 @@ public final class SingleEquals<T> extends Single<Boolean> {
         this.second.subscribe(new InnerObserver(1, set, values, observer, count));
     }
 
+    /* loaded from: classes.dex */
     static class InnerObserver<T> implements SingleObserver<T> {
         final AtomicInteger count;
         final SingleObserver<? super Boolean> downstream;
@@ -35,18 +37,20 @@ public final class SingleEquals<T> extends Single<Boolean> {
         final CompositeDisposable set;
         final Object[] values;
 
-        InnerObserver(int index2, CompositeDisposable set2, Object[] values2, SingleObserver<? super Boolean> observer, AtomicInteger count2) {
-            this.index = index2;
-            this.set = set2;
-            this.values = values2;
+        InnerObserver(int index, CompositeDisposable set, Object[] values, SingleObserver<? super Boolean> observer, AtomicInteger count) {
+            this.index = index;
+            this.set = set;
+            this.values = values;
             this.downstream = observer;
-            this.count = count2;
+            this.count = count;
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
             this.set.add(d);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSuccess(T value) {
             this.values[this.index] = value;
             if (this.count.incrementAndGet() == 2) {
@@ -56,6 +60,7 @@ public final class SingleEquals<T> extends Single<Boolean> {
             }
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
             int state;
             do {

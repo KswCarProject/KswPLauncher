@@ -10,6 +10,7 @@ import java.text.FieldPosition;
 import java.util.Locale;
 
 @Deprecated
+/* loaded from: classes.dex */
 public class ChineseDateFormat extends SimpleDateFormat {
     static final long serialVersionUID = -4610300753104099899L;
 
@@ -20,7 +21,7 @@ public class ChineseDateFormat extends SimpleDateFormat {
 
     @Deprecated
     public ChineseDateFormat(String pattern, ULocale locale) {
-        this(pattern, (String) null, locale);
+        this(pattern, null, locale);
     }
 
     @Deprecated
@@ -28,25 +29,26 @@ public class ChineseDateFormat extends SimpleDateFormat {
         super(pattern, new ChineseDateFormatSymbols(locale), new ChineseCalendar(TimeZone.getDefault(), locale), locale, true, override);
     }
 
-    /* access modifiers changed from: protected */
+    @Override // com.ibm.icu.text.SimpleDateFormat
     @Deprecated
-    public void subFormat(StringBuffer buf, char ch, int count, int beginOffset, int fieldNum, DisplayContext capitalizationContext, FieldPosition pos, Calendar cal) {
+    protected void subFormat(StringBuffer buf, char ch, int count, int beginOffset, int fieldNum, DisplayContext capitalizationContext, FieldPosition pos, Calendar cal) {
         super.subFormat(buf, ch, count, beginOffset, fieldNum, capitalizationContext, pos, cal);
     }
 
-    /* access modifiers changed from: protected */
+    @Override // com.ibm.icu.text.SimpleDateFormat
     @Deprecated
-    public int subParse(String text, int start, char ch, int count, boolean obeyCount, boolean allowNegative, boolean[] ambiguousYear, Calendar cal) {
+    protected int subParse(String text, int start, char ch, int count, boolean obeyCount, boolean allowNegative, boolean[] ambiguousYear, Calendar cal) {
         return super.subParse(text, start, ch, count, obeyCount, allowNegative, ambiguousYear, cal);
     }
 
-    /* access modifiers changed from: protected */
+    @Override // com.ibm.icu.text.SimpleDateFormat
     @Deprecated
-    public DateFormat.Field patternCharToDateFormatField(char ch) {
+    protected DateFormat.Field patternCharToDateFormatField(char ch) {
         return super.patternCharToDateFormatField(ch);
     }
 
     @Deprecated
+    /* loaded from: classes.dex */
     public static class Field extends DateFormat.Field {
         @Deprecated
         public static final Field IS_LEAP_MONTH = new Field("is leap month", 22);
@@ -65,18 +67,18 @@ public class ChineseDateFormat extends SimpleDateFormat {
             return DateFormat.Field.ofCalendarField(calendarField);
         }
 
-        /* access modifiers changed from: protected */
+        @Override // com.ibm.icu.text.DateFormat.Field, java.text.AttributedCharacterIterator.Attribute
         @Deprecated
-        public Object readResolve() throws InvalidObjectException {
-            if (getClass() == Field.class) {
-                String name = getName();
-                Field field = IS_LEAP_MONTH;
-                if (name.equals(field.getName())) {
-                    return field;
-                }
-                throw new InvalidObjectException("Unknown attribute name.");
+        protected Object readResolve() throws InvalidObjectException {
+            if (getClass() != Field.class) {
+                throw new InvalidObjectException("A subclass of ChineseDateFormat.Field must implement readResolve.");
             }
-            throw new InvalidObjectException("A subclass of ChineseDateFormat.Field must implement readResolve.");
+            String name = getName();
+            Field field = IS_LEAP_MONTH;
+            if (name.equals(field.getName())) {
+                return field;
+            }
+            throw new InvalidObjectException("Unknown attribute name.");
         }
     }
 }

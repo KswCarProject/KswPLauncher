@@ -244,10 +244,17 @@
     <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Contraseña incorrecta!</string>
     <string name="mcu_file_corrupted">Archivo de actualización dañado!</string>
+    <string name="mic_control">Interruptor de palanca externo integrado MIC</string>
+    <string name="mic_external">Externo</string>
+    <string name="mic_internal">Integrado</string>
     <string name="mic_text">MIC Ganar</string>
     <string name="music_app_sel">Elige una aplicación de música</string>
+    <string name="music_player">Reproductor de música</string>
     <string name="ntg6_dvr_toast">No hay dispositivos!</string>
     <string name="oil_size">óleo: %s</string>
+    <string name="original_radar_reverse">Pantalla de radar original inversa</string>
+    <string name="radar_normal">Normal</string>
+    <string name="radar_reverse">Reverse</string>
     <string name="raw_car_text1">Pantalla completa</string>
     <string name="raw_car_text2">Selección actual:</string>
     <string name="reverse_exit_time_agreement">Salida de acuerdo con el acuerdo original</string>
@@ -324,6 +331,8 @@
     <string name="text_logo_two">P2</string>
     <string name="text_ram">RAM: %s</string>
     <string name="touch_continuous_send">Datos táctiles enviados continuamente</string>
+    <string name="tv_id8_brake">Freno</string>
+    <string name="tv_id8_seat_belt">Cinturón de seguridad</string>
     <string name="txz_oil_text">Configuración de la alarma de cantidad de combustible para el mismo viajero</string>
     <string name="txz_speed_text">Configuración de la alarma de velocidad del acompañante</string>
     <string name="txz_temp_text">Configuración de la alarma de temperatura ambiente del acompañante</string>

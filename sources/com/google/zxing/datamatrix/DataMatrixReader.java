@@ -18,39 +18,42 @@ import com.google.zxing.datamatrix.detector.Detector;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class DataMatrixReader implements Reader {
     private static final ResultPoint[] NO_POINTS = new ResultPoint[0];
     private final Decoder decoder = new Decoder();
 
+    @Override // com.google.zxing.Reader
     public Result decode(BinaryBitmap image) throws NotFoundException, ChecksumException, FormatException {
-        return decode(image, (Map<DecodeHintType, ?>) null);
+        return decode(image, null);
     }
 
+    @Override // com.google.zxing.Reader
     public Result decode(BinaryBitmap image, Map<DecodeHintType, ?> hints) throws NotFoundException, ChecksumException, FormatException {
         DecoderResult decoderResult;
         ResultPoint[] points;
-        if (hints == null || !hints.containsKey(DecodeHintType.PURE_BARCODE)) {
+        if (hints != null && hints.containsKey(DecodeHintType.PURE_BARCODE)) {
+            BitMatrix bits = extractPureBits(image.getBlackMatrix());
+            decoderResult = this.decoder.decode(bits);
+            points = NO_POINTS;
+        } else {
             DetectorResult detectorResult = new Detector(image.getBlackMatrix()).detect();
             decoderResult = this.decoder.decode(detectorResult.getBits());
             points = detectorResult.getPoints();
-        } else {
-            decoderResult = this.decoder.decode(extractPureBits(image.getBlackMatrix()));
-            points = NO_POINTS;
         }
         Result result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), points, BarcodeFormat.DATA_MATRIX);
         List<byte[]> byteSegments = decoderResult.getByteSegments();
-        List<byte[]> byteSegments2 = byteSegments;
         if (byteSegments != null) {
-            result.putMetadata(ResultMetadataType.BYTE_SEGMENTS, byteSegments2);
+            result.putMetadata(ResultMetadataType.BYTE_SEGMENTS, byteSegments);
         }
-        String eCLevel = decoderResult.getECLevel();
-        String ecLevel = eCLevel;
-        if (eCLevel != null) {
+        String ecLevel = decoderResult.getECLevel();
+        if (ecLevel != null) {
             result.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, ecLevel);
         }
         return result;
     }
 
+    @Override // com.google.zxing.Reader
     public void reset() {
     }
 
@@ -91,13 +94,12 @@ public final class DataMatrixReader implements Reader {
         while (x < width && image.get(x, y)) {
             x++;
         }
-        if (x != width) {
-            int i = x - leftTopBlack[0];
-            int moduleSize = i;
-            if (i != 0) {
-                return moduleSize;
-            }
+        if (x == width) {
             throw NotFoundException.getNotFoundInstance();
+        }
+        int moduleSize = x - leftTopBlack[0];
+        if (moduleSize != 0) {
+            return moduleSize;
         }
         throw NotFoundException.getNotFoundInstance();
     }

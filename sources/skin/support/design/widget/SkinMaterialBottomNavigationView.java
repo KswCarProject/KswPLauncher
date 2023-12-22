@@ -7,10 +7,11 @@ import android.support.design.widget.BottomNavigationView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import skin.support.content.res.SkinCompatResources;
-import skin.support.design.R;
+import skin.support.design.C1911R;
 import skin.support.widget.SkinCompatHelper;
 import skin.support.widget.SkinCompatSupportable;
 
+/* loaded from: classes.dex */
 public class SkinMaterialBottomNavigationView extends BottomNavigationView implements SkinCompatSupportable {
     private static final int[] CHECKED_STATE_SET = {16842912};
     private static final int[] DISABLED_STATE_SET = {-16842910};
@@ -19,7 +20,7 @@ public class SkinMaterialBottomNavigationView extends BottomNavigationView imple
     private int mTextColorResId;
 
     public SkinMaterialBottomNavigationView(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public SkinMaterialBottomNavigationView(Context context, AttributeSet attrs) {
@@ -31,14 +32,14 @@ public class SkinMaterialBottomNavigationView extends BottomNavigationView imple
         this.mTextColorResId = 0;
         this.mIconTintResId = 0;
         this.mDefaultTintResId = 0;
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomNavigationView, defStyleAttr, R.style.Widget_Design_BottomNavigationView);
-        if (a.hasValue(R.styleable.BottomNavigationView_itemIconTint)) {
-            this.mIconTintResId = a.getResourceId(R.styleable.BottomNavigationView_itemIconTint, 0);
+        TypedArray a = context.obtainStyledAttributes(attrs, C1911R.styleable.BottomNavigationView, defStyleAttr, C1911R.style.Widget_Design_BottomNavigationView);
+        if (a.hasValue(C1911R.styleable.BottomNavigationView_itemIconTint)) {
+            this.mIconTintResId = a.getResourceId(C1911R.styleable.BottomNavigationView_itemIconTint, 0);
         } else {
             this.mDefaultTintResId = resolveColorPrimary();
         }
-        if (a.hasValue(R.styleable.BottomNavigationView_itemTextColor)) {
-            this.mTextColorResId = a.getResourceId(R.styleable.BottomNavigationView_itemTextColor, 0);
+        if (a.hasValue(C1911R.styleable.BottomNavigationView_itemTextColor)) {
+            this.mTextColorResId = a.getResourceId(C1911R.styleable.BottomNavigationView_itemTextColor, 0);
         } else {
             this.mDefaultTintResId = resolveColorPrimary();
         }
@@ -89,12 +90,13 @@ public class SkinMaterialBottomNavigationView extends BottomNavigationView imple
 
     private int resolveColorPrimary() {
         TypedValue value = new TypedValue();
-        if (!getContext().getTheme().resolveAttribute(R.attr.colorPrimary, value, true)) {
+        if (!getContext().getTheme().resolveAttribute(C1911R.attr.colorPrimary, value, true)) {
             return 0;
         }
         return value.resourceId;
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         applyItemIconTintResource();
         applyItemTextColorResource();

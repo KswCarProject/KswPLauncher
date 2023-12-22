@@ -10,10 +10,11 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi.vm.AudiSystemViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi.p007vm.AudiSystemViewModel;
 import com.wits.ksw.settings.audi.widget.AudiConstraintLayout;
 
+/* loaded from: classes7.dex */
 public abstract class AudiBrightnessBinding extends ViewDataBinding {
     public final CheckBox audiSystemReverCamera;
     public final SeekBar audioSeekbar;
@@ -25,17 +26,17 @@ public abstract class AudiBrightnessBinding extends ViewDataBinding {
     @Bindable
     protected AudiSystemViewModel mVm;
 
-    public abstract void setVm(AudiSystemViewModel audiSystemViewModel);
+    public abstract void setVm(AudiSystemViewModel vm);
 
-    protected AudiBrightnessBinding(Object _bindingComponent, View _root, int _localFieldCount, CheckBox audiSystemReverCamera2, SeekBar audioSeekbar2, TextView audioSeekbarRightText2, TextView audioSeekbarTitle2, LinearLayout hzCallLinearLayout2, LinearLayout hzMediaLinearLayout2, AudiConstraintLayout linearLayout42) {
+    protected AudiBrightnessBinding(Object _bindingComponent, View _root, int _localFieldCount, CheckBox audiSystemReverCamera, SeekBar audioSeekbar, TextView audioSeekbarRightText, TextView audioSeekbarTitle, LinearLayout hzCallLinearLayout, LinearLayout hzMediaLinearLayout, AudiConstraintLayout linearLayout4) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.audiSystemReverCamera = audiSystemReverCamera2;
-        this.audioSeekbar = audioSeekbar2;
-        this.audioSeekbarRightText = audioSeekbarRightText2;
-        this.audioSeekbarTitle = audioSeekbarTitle2;
-        this.hzCallLinearLayout = hzCallLinearLayout2;
-        this.hzMediaLinearLayout = hzMediaLinearLayout2;
-        this.linearLayout4 = linearLayout42;
+        this.audiSystemReverCamera = audiSystemReverCamera;
+        this.audioSeekbar = audioSeekbar;
+        this.audioSeekbarRightText = audioSeekbarRightText;
+        this.audioSeekbarTitle = audioSeekbarTitle;
+        this.hzCallLinearLayout = hzCallLinearLayout;
+        this.hzMediaLinearLayout = hzMediaLinearLayout;
+        this.linearLayout4 = linearLayout4;
     }
 
     public AudiSystemViewModel getVm() {
@@ -48,7 +49,7 @@ public abstract class AudiBrightnessBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiBrightnessBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AudiBrightnessBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_brightness, root, attachToRoot, component);
+        return (AudiBrightnessBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_brightness, root, attachToRoot, component);
     }
 
     public static AudiBrightnessBinding inflate(LayoutInflater inflater) {
@@ -57,7 +58,7 @@ public abstract class AudiBrightnessBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiBrightnessBinding inflate(LayoutInflater inflater, Object component) {
-        return (AudiBrightnessBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_brightness, (ViewGroup) null, false, component);
+        return (AudiBrightnessBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_brightness, null, false, component);
     }
 
     public static AudiBrightnessBinding bind(View view) {
@@ -66,6 +67,6 @@ public abstract class AudiBrightnessBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiBrightnessBinding bind(View view, Object component) {
-        return (AudiBrightnessBinding) bind(component, view, R.layout.audi_brightness);
+        return (AudiBrightnessBinding) bind(component, view, C0899R.C0902layout.audi_brightness);
     }
 }

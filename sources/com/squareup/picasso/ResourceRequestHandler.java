@@ -8,13 +8,15 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestHandler;
 import java.io.IOException;
 
+/* loaded from: classes.dex */
 class ResourceRequestHandler extends RequestHandler {
     private final Context context;
 
-    ResourceRequestHandler(Context context2) {
-        this.context = context2;
+    ResourceRequestHandler(Context context) {
+        this.context = context;
     }
 
+    @Override // com.squareup.picasso.RequestHandler
     public boolean canHandleRequest(Request data) {
         if (data.resourceId != 0) {
             return true;
@@ -22,9 +24,11 @@ class ResourceRequestHandler extends RequestHandler {
         return "android.resource".equals(data.uri.getScheme());
     }
 
+    @Override // com.squareup.picasso.RequestHandler
     public RequestHandler.Result load(Request request, int networkPolicy) throws IOException {
         Resources res = Utils.getResources(this.context, request);
-        return new RequestHandler.Result(decodeResource(res, Utils.getResourceId(res, request), request), Picasso.LoadedFrom.DISK);
+        int id = Utils.getResourceId(res, request);
+        return new RequestHandler.Result(decodeResource(res, id, request), Picasso.LoadedFrom.DISK);
     }
 
     private static Bitmap decodeResource(Resources resources, int id, Request data) {

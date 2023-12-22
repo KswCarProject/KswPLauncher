@@ -19,16 +19,24 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableInternalHelper {
     private FlowableInternalHelper() {
         throw new IllegalStateException("No instances!");
     }
 
+    /* loaded from: classes.dex */
     static final class SimpleGenerator<T, S> implements BiFunction<S, Emitter<T>, S> {
         final Consumer<Emitter<T>> consumer;
 
-        SimpleGenerator(Consumer<Emitter<T>> consumer2) {
-            this.consumer = consumer2;
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.BiFunction
+        public /* bridge */ /* synthetic */ Object apply(Object obj, Object obj2) throws Exception {
+            return apply((SimpleGenerator<T, S>) obj, (Emitter) ((Emitter) obj2));
+        }
+
+        SimpleGenerator(Consumer<Emitter<T>> consumer) {
+            this.consumer = consumer;
         }
 
         public S apply(S t1, Emitter<T> t2) throws Exception {
@@ -41,11 +49,18 @@ public final class FlowableInternalHelper {
         return new SimpleGenerator(consumer);
     }
 
+    /* loaded from: classes.dex */
     static final class SimpleBiGenerator<T, S> implements BiFunction<S, Emitter<T>, S> {
         final BiConsumer<S, Emitter<T>> consumer;
 
-        SimpleBiGenerator(BiConsumer<S, Emitter<T>> consumer2) {
-            this.consumer = consumer2;
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.BiFunction
+        public /* bridge */ /* synthetic */ Object apply(Object obj, Object obj2) throws Exception {
+            return apply((SimpleBiGenerator<T, S>) obj, (Emitter) ((Emitter) obj2));
+        }
+
+        SimpleBiGenerator(BiConsumer<S, Emitter<T>> consumer) {
+            this.consumer = consumer;
         }
 
         public S apply(S t1, Emitter<T> t2) throws Exception {
@@ -58,15 +73,24 @@ public final class FlowableInternalHelper {
         return new SimpleBiGenerator(consumer);
     }
 
+    /* loaded from: classes.dex */
     static final class ItemDelayFunction<T, U> implements Function<T, Publisher<T>> {
         final Function<? super T, ? extends Publisher<U>> itemDelay;
 
-        ItemDelayFunction(Function<? super T, ? extends Publisher<U>> itemDelay2) {
-            this.itemDelay = itemDelay2;
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.Function
+        public /* bridge */ /* synthetic */ Object apply(Object obj) throws Exception {
+            return apply((ItemDelayFunction<T, U>) obj);
         }
 
+        ItemDelayFunction(Function<? super T, ? extends Publisher<U>> itemDelay) {
+            this.itemDelay = itemDelay;
+        }
+
+        @Override // io.reactivex.functions.Function
         public Publisher<T> apply(T v) throws Exception {
-            return new FlowableTakePublisher((Publisher) ObjectHelper.requireNonNull(this.itemDelay.apply(v), "The itemDelay returned a null Publisher"), 1).map(Functions.justFunction(v)).defaultIfEmpty(v);
+            Publisher<U> p = (Publisher) ObjectHelper.requireNonNull(this.itemDelay.apply(v), "The itemDelay returned a null Publisher");
+            return new FlowableTakePublisher(p, 1L).map(Functions.justFunction(v)).defaultIfEmpty(v);
         }
     }
 
@@ -74,37 +98,43 @@ public final class FlowableInternalHelper {
         return new ItemDelayFunction(itemDelay);
     }
 
+    /* loaded from: classes.dex */
     static final class SubscriberOnNext<T> implements Consumer<T> {
         final Subscriber<T> subscriber;
 
-        SubscriberOnNext(Subscriber<T> subscriber2) {
-            this.subscriber = subscriber2;
+        SubscriberOnNext(Subscriber<T> subscriber) {
+            this.subscriber = subscriber;
         }
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(T v) throws Exception {
             this.subscriber.onNext(v);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class SubscriberOnError<T> implements Consumer<Throwable> {
         final Subscriber<T> subscriber;
 
-        SubscriberOnError(Subscriber<T> subscriber2) {
-            this.subscriber = subscriber2;
+        SubscriberOnError(Subscriber<T> subscriber) {
+            this.subscriber = subscriber;
         }
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(Throwable v) throws Exception {
             this.subscriber.onError(v);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class SubscriberOnComplete<T> implements Action {
         final Subscriber<T> subscriber;
 
-        SubscriberOnComplete(Subscriber<T> subscriber2) {
-            this.subscriber = subscriber2;
+        SubscriberOnComplete(Subscriber<T> subscriber) {
+            this.subscriber = subscriber;
         }
 
+        @Override // io.reactivex.functions.Action
         public void run() throws Exception {
             this.subscriber.onComplete();
         }
@@ -122,31 +152,44 @@ public final class FlowableInternalHelper {
         return new SubscriberOnComplete(subscriber);
     }
 
+    /* loaded from: classes.dex */
     static final class FlatMapWithCombinerInner<U, R, T> implements Function<U, R> {
         private final BiFunction<? super T, ? super U, ? extends R> combiner;
-        private final T t;
 
-        FlatMapWithCombinerInner(BiFunction<? super T, ? super U, ? extends R> combiner2, T t2) {
-            this.combiner = combiner2;
-            this.t = t2;
+        /* renamed from: t */
+        private final T f289t;
+
+        FlatMapWithCombinerInner(BiFunction<? super T, ? super U, ? extends R> combiner, T t) {
+            this.combiner = combiner;
+            this.f289t = t;
         }
 
+        @Override // io.reactivex.functions.Function
         public R apply(U w) throws Exception {
-            return this.combiner.apply(this.t, w);
+            return this.combiner.apply((T) this.f289t, w);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class FlatMapWithCombinerOuter<T, R, U> implements Function<T, Publisher<R>> {
         private final BiFunction<? super T, ? super U, ? extends R> combiner;
         private final Function<? super T, ? extends Publisher<? extends U>> mapper;
 
-        FlatMapWithCombinerOuter(BiFunction<? super T, ? super U, ? extends R> combiner2, Function<? super T, ? extends Publisher<? extends U>> mapper2) {
-            this.combiner = combiner2;
-            this.mapper = mapper2;
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.Function
+        public /* bridge */ /* synthetic */ Object apply(Object obj) throws Exception {
+            return apply((FlatMapWithCombinerOuter<T, R, U>) obj);
         }
 
+        FlatMapWithCombinerOuter(BiFunction<? super T, ? super U, ? extends R> combiner, Function<? super T, ? extends Publisher<? extends U>> mapper) {
+            this.combiner = combiner;
+            this.mapper = mapper;
+        }
+
+        @Override // io.reactivex.functions.Function
         public Publisher<R> apply(T t) throws Exception {
-            return new FlowableMapPublisher((Publisher) ObjectHelper.requireNonNull(this.mapper.apply(t), "The mapper returned a null Publisher"), new FlatMapWithCombinerInner(this.combiner, t));
+            Publisher<U> u = (Publisher) ObjectHelper.requireNonNull(this.mapper.apply(t), "The mapper returned a null Publisher");
+            return new FlowableMapPublisher(u, new FlatMapWithCombinerInner(this.combiner, t));
         }
     }
 
@@ -154,13 +197,21 @@ public final class FlowableInternalHelper {
         return new FlatMapWithCombinerOuter(combiner, mapper);
     }
 
+    /* loaded from: classes.dex */
     static final class FlatMapIntoIterable<T, U> implements Function<T, Publisher<U>> {
         private final Function<? super T, ? extends Iterable<? extends U>> mapper;
 
-        FlatMapIntoIterable(Function<? super T, ? extends Iterable<? extends U>> mapper2) {
-            this.mapper = mapper2;
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.functions.Function
+        public /* bridge */ /* synthetic */ Object apply(Object obj) throws Exception {
+            return apply((FlatMapIntoIterable<T, U>) obj);
         }
 
+        FlatMapIntoIterable(Function<? super T, ? extends Iterable<? extends U>> mapper) {
+            this.mapper = mapper;
+        }
+
+        @Override // io.reactivex.functions.Function
         public Publisher<U> apply(T t) throws Exception {
             return new FlowableFromIterable((Iterable) ObjectHelper.requireNonNull(this.mapper.apply(t), "The mapper returned a null Iterable"));
         }
@@ -190,19 +241,27 @@ public final class FlowableInternalHelper {
         return new ReplayFunction(selector, scheduler);
     }
 
+    /* loaded from: classes.dex */
     public enum RequestMax implements Consumer<Subscription> {
         INSTANCE;
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(Subscription t) throws Exception {
             t.request(LongCompanionObject.MAX_VALUE);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ZipIterableFunction<T, R> implements Function<List<Publisher<? extends T>>, Publisher<? extends R>> {
         private final Function<? super Object[], ? extends R> zipper;
 
-        ZipIterableFunction(Function<? super Object[], ? extends R> zipper2) {
-            this.zipper = zipper2;
+        @Override // io.reactivex.functions.Function
+        public /* bridge */ /* synthetic */ Object apply(Object obj) throws Exception {
+            return apply((List) ((List) obj));
+        }
+
+        ZipIterableFunction(Function<? super Object[], ? extends R> zipper) {
+            this.zipper = zipper;
         }
 
         public Publisher<? extends R> apply(List<Publisher<? extends T>> list) {
@@ -214,32 +273,37 @@ public final class FlowableInternalHelper {
         return new ZipIterableFunction(zipper);
     }
 
+    /* loaded from: classes.dex */
     static final class ReplayCallable<T> implements Callable<ConnectableFlowable<T>> {
         private final Flowable<T> parent;
 
-        ReplayCallable(Flowable<T> parent2) {
-            this.parent = parent2;
+        ReplayCallable(Flowable<T> parent) {
+            this.parent = parent;
         }
 
+        @Override // java.util.concurrent.Callable
         public ConnectableFlowable<T> call() {
             return this.parent.replay();
         }
     }
 
+    /* loaded from: classes.dex */
     static final class BufferedReplayCallable<T> implements Callable<ConnectableFlowable<T>> {
         private final int bufferSize;
         private final Flowable<T> parent;
 
-        BufferedReplayCallable(Flowable<T> parent2, int bufferSize2) {
-            this.parent = parent2;
-            this.bufferSize = bufferSize2;
+        BufferedReplayCallable(Flowable<T> parent, int bufferSize) {
+            this.parent = parent;
+            this.bufferSize = bufferSize;
         }
 
+        @Override // java.util.concurrent.Callable
         public ConnectableFlowable<T> call() {
             return this.parent.replay(this.bufferSize);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class BufferedTimedReplay<T> implements Callable<ConnectableFlowable<T>> {
         private final int bufferSize;
         private final Flowable<T> parent;
@@ -247,48 +311,58 @@ public final class FlowableInternalHelper {
         private final long time;
         private final TimeUnit unit;
 
-        BufferedTimedReplay(Flowable<T> parent2, int bufferSize2, long time2, TimeUnit unit2, Scheduler scheduler2) {
-            this.parent = parent2;
-            this.bufferSize = bufferSize2;
-            this.time = time2;
-            this.unit = unit2;
-            this.scheduler = scheduler2;
+        BufferedTimedReplay(Flowable<T> parent, int bufferSize, long time, TimeUnit unit, Scheduler scheduler) {
+            this.parent = parent;
+            this.bufferSize = bufferSize;
+            this.time = time;
+            this.unit = unit;
+            this.scheduler = scheduler;
         }
 
+        @Override // java.util.concurrent.Callable
         public ConnectableFlowable<T> call() {
             return this.parent.replay(this.bufferSize, this.time, this.unit, this.scheduler);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class TimedReplay<T> implements Callable<ConnectableFlowable<T>> {
         private final Flowable<T> parent;
         private final Scheduler scheduler;
         private final long time;
         private final TimeUnit unit;
 
-        TimedReplay(Flowable<T> parent2, long time2, TimeUnit unit2, Scheduler scheduler2) {
-            this.parent = parent2;
-            this.time = time2;
-            this.unit = unit2;
-            this.scheduler = scheduler2;
+        TimedReplay(Flowable<T> parent, long time, TimeUnit unit, Scheduler scheduler) {
+            this.parent = parent;
+            this.time = time;
+            this.unit = unit;
+            this.scheduler = scheduler;
         }
 
+        @Override // java.util.concurrent.Callable
         public ConnectableFlowable<T> call() {
             return this.parent.replay(this.time, this.unit, this.scheduler);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ReplayFunction<T, R> implements Function<Flowable<T>, Publisher<R>> {
         private final Scheduler scheduler;
         private final Function<? super Flowable<T>, ? extends Publisher<R>> selector;
 
-        ReplayFunction(Function<? super Flowable<T>, ? extends Publisher<R>> selector2, Scheduler scheduler2) {
-            this.selector = selector2;
-            this.scheduler = scheduler2;
+        @Override // io.reactivex.functions.Function
+        public /* bridge */ /* synthetic */ Object apply(Object obj) throws Exception {
+            return apply((Flowable) ((Flowable) obj));
+        }
+
+        ReplayFunction(Function<? super Flowable<T>, ? extends Publisher<R>> selector, Scheduler scheduler) {
+            this.selector = selector;
+            this.scheduler = scheduler;
         }
 
         public Publisher<R> apply(Flowable<T> t) throws Exception {
-            return Flowable.fromPublisher((Publisher) ObjectHelper.requireNonNull(this.selector.apply(t), "The selector returned a null Publisher")).observeOn(this.scheduler);
+            Publisher<R> p = (Publisher) ObjectHelper.requireNonNull(this.selector.apply(t), "The selector returned a null Publisher");
+            return Flowable.fromPublisher(p).observeOn(this.scheduler);
         }
     }
 }

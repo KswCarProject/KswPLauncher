@@ -13,44 +13,49 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.RemoteException;
 import android.os.storage.StorageManager;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import com.wits.ksw.BuildConfig;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean;
 import com.wits.ksw.launcher.model.LauncherViewModel;
+import com.wits.ksw.launcher.view.benzmbux2021new.util.BenzUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
+import com.wits.pms.statuscontrol.PowerManagerApp;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
+/* loaded from: classes11.dex */
 public class AppInfoUtils {
-    public static final String[] ALS_ID7_UI_ATYS_DISMISS_DESK = {"com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.screencast.myapplication.MainActivity", "com.android.shell.ui.MainActivity", "com.wits.log.MainActivity"};
-    public static final String[] ATYS_DISMISS = {"com.autonavi.auto.remote.fill.UsbFillActivity", "com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.ksw.media.StartActivity", "com.wits.screencast.myapplication.MainActivity", "com.wits.log.MainActivity"};
-    public static final String[] ATYS_DISMISS_DESK = {"com.autonavi.auto.remote.fill.UsbFillActivity", "com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.screencast.myapplication.MainActivity", "com.android.shell.ui.MainActivity", "com.wits.log.MainActivity"};
-    public static final String[] ATYS_DISMISS_MUSIC = {"com.autonavi.auto.remote.fill.UsbFillActivity", "com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.screencast.myapplication.MainActivity", "com.android.shell.ui.MainActivity", "com.android.vending.AssetBrowserActivity", "com.wits.ksw.MainActivity", "com.navngo.igo.javaclient.MainActivity", "com.estrongs.android.pop.view.FileExplorerActivity", "com.google.android.maps.MapsActivity", "com.autonavi.auto.remote.fill.UsbFillActivity", "com.android.settings.Settings", "com.wits.csp.eq.view.StartActivity", "com.wits.apk.MainActivity", LauncherViewModel.CLS_CHROME, "com.wits.log.MainActivity", "com.wits.othersapp.activity.MainActivity", "com.txznet.weather.MainActivity", "com.android.stk.StkMain", "com.wits.logcat.MainActivity"};
-    public static final String[] ID7_ALS_DISMISS_DESK = {"com.autonavi.auto.remote.fill.UsbFillActivity", "com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.screencast.myapplication.MainActivity", "com.android.shell.ui.MainActivity", "com.suding.speedplay.ui.MainActivity", "com.wits.log.MainActivity"};
-    public static final String[] PKGS_DISMISS = {"com.autonavi.amapauto", "com.wits.ksw.bt", "com.android.deskclock", "com.iflytek.inputmethod.google", BuildConfig.APPLICATION_ID, "com.wits.ksw.media"};
-    public static final String[] PKG_FREEDOM_MAP = {"com.autonavi.amapauto", "com.google.android.apps.maps", "com.kingwaytek.naviking3d", "com.nng.igo.primong.igoworld"};
     private static final String TAG = AppInfoUtils.class.getSimpleName();
+    public static final String[] PKG_FREEDOM_MAP = {"com.autonavi.amapauto", BenzUtils.GOOGLE_MAP, "com.kingwaytek.naviking3d", "com.nng.igo.primong.igoworld", "com.nng.igo.primong.palestine", "com.nng.igoprimo.javaclient", "com.nng.igo.primong.hun10th", "com.nng.igoprimoisr2013march24.javaclient"};
+    public static final String[] PKGS_DISMISS = {"com.autonavi.amapauto", "com.wits.ksw.bt", "com.android.deskclock", "com.iflytek.inputmethod.google", BuildConfig.APPLICATION_ID, "com.wits.ksw.music", "com.wits.ksw.video"};
+    public static final String[] ATYS_DISMISS = {"com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.ksw.music.StartActivity", "com.wits.ksw.video.StartActivity", "com.wits.screencast.myapplication.MainActivity", "com.wits.log.MainActivity"};
+    public static final String[] ALS_ID7_UI_ATYS_DISMISS_DESK = {"com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.screencast.myapplication.MainActivity", "com.android.shell.ui.MainActivity", "com.wits.logcat.MainActivity", "com.wits.log.MainActivity"};
+    public static final String[] ATYS_DISMISS_DESK = {"com.autonavi.auto.remote.fill.UsbFillActivity", "com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.screencast.myapplication.MainActivity", "com.android.shell.ui.MainActivity", "com.wits.logcat.MainActivity", "com.wits.log.MainActivity"};
+    public static final String[] ID7_ALS_DISMISS_DESK = {"com.autonavi.auto.remote.fill.UsbFillActivity", "com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.screencast.myapplication.MainActivity", "com.android.shell.ui.MainActivity", "com.suding.speedplay.ui.MainActivity", "com.wits.logcat.MainActivity", "com.wits.log.MainActivity"};
+    public static final String[] ATYS_DISMISS_MUSIC = {"com.autonavi.auto.remote.fill.UsbFillActivity", "com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.screencast.myapplication.MainActivity", "com.android.shell.ui.MainActivity", "com.android.vending.AssetBrowserActivity", "com.wits.ksw.MainActivity", "com.navngo.igo.javaclient.MainActivity", "com.estrongs.android.pop.view.FileExplorerActivity", "com.google.android.maps.MapsActivity", "com.autonavi.auto.remote.fill.UsbFillActivity", "com.android.settings.Settings", "com.wits.csp.eq.view.StartActivity", "com.wits.apk.MainActivity", LauncherViewModel.CLS_CHROME, "com.wits.log.MainActivity", "com.wits.othersapp.activity.MainActivity", "com.txznet.weather.MainActivity", "com.android.stk.StkMain", "com.wits.logcat.MainActivity"};
 
     public static boolean isContainFreedomMap(String pkg) {
         int i = 0;
         while (true) {
             String[] strArr = PKG_FREEDOM_MAP;
-            if (i >= strArr.length) {
+            if (i < strArr.length) {
+                if (!strArr[i].equals(pkg)) {
+                    i++;
+                } else {
+                    return true;
+                }
+            } else {
                 return false;
             }
-            if (strArr[i].equals(pkg)) {
-                return true;
-            }
-            i++;
         }
     }
 
@@ -58,13 +63,15 @@ public class AppInfoUtils {
         int i = 0;
         while (true) {
             String[] strArr = ATYS_DISMISS;
-            if (i >= strArr.length) {
+            if (i < strArr.length) {
+                if (!strArr[i].equals(cls)) {
+                    i++;
+                } else {
+                    return true;
+                }
+            } else {
                 return false;
             }
-            if (strArr[i].equals(cls)) {
-                return true;
-            }
-            i++;
         }
     }
 
@@ -105,15 +112,32 @@ public class AppInfoUtils {
         List<LexusLsAppSelBean> beans = new ArrayList<>();
         int tmpAppIndex = 0;
         for (ResolveInfo info : infos) {
-            Log.e(TAG, "findSelApps..name " + info.activityInfo.loadLabel(pm) + "  " + info.activityInfo.packageName + " mainAty:" + info.activityInfo.name);
-            if (!isContainApp(info.activityInfo.name)) {
-                LexusLsAppSelBean bean = new LexusLsAppSelBean();
-                bean.setAppIcon(info.activityInfo.loadIcon(pm));
-                bean.setAppName((String) info.activityInfo.loadLabel(pm));
-                bean.setAppPkg(info.activityInfo.packageName);
-                bean.setAppMainAty(info.activityInfo.name);
-                bean.setItemPos(tmpAppIndex);
-                beans.add(bean);
+            Log.e(TAG, "findSelApps..name " + ((Object) info.activityInfo.loadLabel(pm)) + "  " + info.activityInfo.packageName + " mainAty:" + info.activityInfo.name);
+            if (!isContainApp(info.activityInfo.name) && !info.activityInfo.packageName.equals("com.wits.logcat") && !info.activityInfo.packageName.equals("com.android.documentsui")) {
+                if (info.activityInfo.packageName.equals(BenzUtils.EQ_PKG)) {
+                    try {
+                        int isSee = PowerManagerApp.getSettingsInt(KeyConfig.EQ_APP);
+                        if (isSee != 0) {
+                            LexusLsAppSelBean bean = new LexusLsAppSelBean();
+                            bean.setAppIcon(info.activityInfo.loadIcon(pm));
+                            bean.setAppName((String) info.activityInfo.loadLabel(pm));
+                            bean.setAppPkg(BenzUtils.EQ_PKG);
+                            bean.setAppMainAty("com.wits.csp.eq.view.MainActivity");
+                            bean.setItemPos(tmpAppIndex);
+                            beans.add(bean);
+                            tmpAppIndex++;
+                        }
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+                LexusLsAppSelBean bean2 = new LexusLsAppSelBean();
+                bean2.setAppIcon(info.activityInfo.loadIcon(pm));
+                bean2.setAppName((String) info.activityInfo.loadLabel(pm));
+                bean2.setAppPkg(info.activityInfo.packageName);
+                bean2.setAppMainAty(info.activityInfo.name);
+                bean2.setItemPos(tmpAppIndex);
+                beans.add(bean2);
                 tmpAppIndex++;
             }
         }
@@ -121,96 +145,110 @@ public class AppInfoUtils {
     }
 
     public static List<LexusLsAppSelBean> findAllAppsByExclude(String[] cls, int TYPE, Context context) {
-        Iterator<ResolveInfo> it;
-        List<ResolveInfo> infos;
-        int i = TYPE;
-        Log.i(TAG, "TYPE = " + i);
+        String appCls1;
+        String appCls2;
+        Log.i(TAG, "TYPE = " + TYPE);
         PackageManager pm = context.getPackageManager();
-        List<ResolveInfo> infos2 = getAllApps(context);
+        List<ResolveInfo> infos = getAllApps(context);
         List<LexusLsAppSelBean> beans = new ArrayList<>();
-        LexusLsAppSelBean bean_music = new LexusLsAppSelBean();
-        LexusLsAppSelBean bean_video = new LexusLsAppSelBean();
         int tmpAppIndex = 0;
-        Iterator<ResolveInfo> it2 = infos2.iterator();
-        while (it2.hasNext()) {
-            ResolveInfo info = it2.next();
+        for (ResolveInfo info : infos) {
             String str = TAG;
-            Log.e(str, "findAllAppExclude..name " + info.activityInfo.loadLabel(pm) + "  " + info.activityInfo.packageName + " mainAty:" + info.activityInfo.name);
+            Log.e(str, "findAllAppExclude..name " + ((Object) info.activityInfo.loadLabel(pm)) + "  " + info.activityInfo.packageName + " mainAty:" + info.activityInfo.name);
             LexusLsAppSelBean bean = new LexusLsAppSelBean();
-            if (!isContainCls(cls, info.activityInfo.name)) {
-                if ("com.wits.ksw.media.StartActivity".equals(info.activityInfo.name)) {
-                    bean_music.setAppIcon(context.getResources().getDrawable(R.drawable.id7_main_music_n));
-                    bean_music.setAppName(context.getResources().getString(R.string.ksw_id7_music));
+            if (!isContainCls(cls, info.activityInfo.name) && !info.activityInfo.name.contains("com.android.documentsui.LauncherActivity")) {
+                if ("com.wits.ksw.music.StartActivity".equals(info.activityInfo.name)) {
+                    LexusLsAppSelBean bean_music = new LexusLsAppSelBean();
+                    bean_music.setAppIcon(context.getResources().getDrawable(C0899R.C0900drawable.id7_main_music_n));
+                    bean_music.setAppName(context.getResources().getString(C0899R.string.ksw_id7_music));
                     bean_music.setAppPkg(KeyConfig.CLS_LOCAL_MUSIC);
                     bean_music.setAppMainAty(KeyConfig.CLS_LOCAL_MUSIC);
                     bean_music.setItemPos(tmpAppIndex);
-                    infos = infos2;
-                    bean_video.setAppIcon(context.getResources().getDrawable(R.drawable.id7_main_video_n));
-                    bean_video.setAppName(context.getResources().getString(R.string.ksw_id7_hd_video));
-                    bean_video.setAppPkg(KeyConfig.CLS_LOCAL_VIDEO);
-                    bean_video.setAppMainAty(KeyConfig.CLS_LOCAL_VIDEO);
-                    bean_video.setItemPos(tmpAppIndex + 1);
-                    if (i == 1) {
-                        String appCls1 = Settings.System.getString(context.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_CLS);
-                        if (TextUtils.isEmpty(appCls1) || !appCls1.equals(KeyConfig.CLS_LOCAL_MUSIC)) {
-                            it = it2;
-                            if (TextUtils.isEmpty(appCls1) || !KeyConfig.CLS_LOCAL_VIDEO.equals(appCls1)) {
-                                bean_music.setChecked(false);
-                            } else {
-                                bean_video.setChecked(true);
-                            }
-                        } else {
-                            it = it2;
-                            Log.i(str, "findAllAppsByExclude app music cls1 =" + appCls1);
-                            bean_music.setChecked(true);
-                        }
+                    if (TYPE == 1) {
+                        appCls1 = Settings.System.getString(context.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_CLS);
                     } else {
-                        it = it2;
+                        appCls1 = Settings.System.getString(context.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_CLS);
                     }
-                    if (i == 2) {
-                        String appCls2 = Settings.System.getString(context.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_CLS);
-                        if (!TextUtils.isEmpty(appCls2) && appCls2.equals(KeyConfig.CLS_LOCAL_VIDEO)) {
-                            Log.i(str, "findAllAppsByExclude app video cls2 =" + appCls2);
-                            bean_video.setChecked(true);
-                        } else if (TextUtils.isEmpty(appCls2) || !KeyConfig.CLS_LOCAL_MUSIC.equals(appCls2)) {
-                            bean_video.setChecked(false);
-                        } else {
-                            bean_music.setChecked(true);
-                        }
+                    if (!TextUtils.isEmpty(appCls1) && appCls1.equals(KeyConfig.CLS_LOCAL_MUSIC)) {
+                        Log.i(str, "findAllAppsByExclude app music cls1 =" + appCls1);
+                        bean_music.setChecked(true);
+                    } else {
+                        bean_music.setChecked(false);
                     }
                     beans.add(bean_music);
+                    tmpAppIndex++;
+                } else if ("com.wits.ksw.video.StartActivity".equals(info.activityInfo.name)) {
+                    LexusLsAppSelBean bean_video = new LexusLsAppSelBean();
+                    bean_video.setAppIcon(context.getResources().getDrawable(C0899R.C0900drawable.id7_main_video_n));
+                    bean_video.setAppName(context.getResources().getString(C0899R.string.ksw_id7_hd_video));
+                    bean_video.setAppPkg(KeyConfig.CLS_LOCAL_VIDEO);
+                    bean_video.setAppMainAty(KeyConfig.CLS_LOCAL_VIDEO);
+                    bean_video.setItemPos(tmpAppIndex);
+                    if (TYPE == 1) {
+                        appCls2 = Settings.System.getString(context.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_CLS);
+                    } else {
+                        appCls2 = Settings.System.getString(context.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_CLS);
+                    }
+                    if (!TextUtils.isEmpty(appCls2) && appCls2.equals(KeyConfig.CLS_LOCAL_VIDEO)) {
+                        Log.i(str, "findAllAppsByExclude app video cls2 =" + appCls2);
+                        bean_video.setChecked(true);
+                    } else {
+                        bean_video.setChecked(false);
+                    }
                     beans.add(bean_video);
-                    tmpAppIndex = 2;
+                    tmpAppIndex++;
+                } else if ("com.txznet.weather.MainActivity".equals(info.activityInfo.name)) {
+                    int isSee = Settings.System.getInt(context.getContentResolver(), KeyConfig.GLOBAL_WEATHER_APP, 1);
+                    if (isSee != 0) {
+                        LexusLsAppSelBean weather_bean = new LexusLsAppSelBean();
+                        weather_bean.setAppIcon(info.activityInfo.loadIcon(pm));
+                        weather_bean.setAppName((String) info.activityInfo.loadLabel(pm));
+                        weather_bean.setAppPkg(BenzUtils.WEATHER_PKG);
+                        weather_bean.setAppMainAty("com.txznet.weather.MainActivity");
+                        weather_bean.setItemPos(tmpAppIndex);
+                        beans.add(weather_bean);
+                        tmpAppIndex++;
+                    }
+                } else if (BenzUtils.EQ_PKG.equals(info.activityInfo.packageName)) {
+                    int isSee2 = Settings.System.getInt(context.getContentResolver(), KeyConfig.EQ_APP, 1);
+                    if (isSee2 != 0) {
+                        LexusLsAppSelBean EQ_bean = new LexusLsAppSelBean();
+                        EQ_bean.setAppIcon(info.activityInfo.loadIcon(pm));
+                        EQ_bean.setAppName((String) info.activityInfo.loadLabel(pm));
+                        EQ_bean.setAppPkg(BenzUtils.EQ_PKG);
+                        EQ_bean.setAppMainAty("com.wits.csp.eq.view.MainActivity");
+                        EQ_bean.setItemPos(tmpAppIndex);
+                        beans.add(EQ_bean);
+                        tmpAppIndex++;
+                    }
                 } else {
-                    infos = infos2;
-                    it = it2;
                     bean.setAppIcon(info.activityInfo.loadIcon(pm));
                     bean.setAppName((String) info.activityInfo.loadLabel(pm));
                     bean.setAppPkg(info.activityInfo.packageName);
                     bean.setAppMainAty(info.activityInfo.name);
                     bean.setItemPos(tmpAppIndex);
-                    if (i == 1) {
+                    if (TYPE != 1) {
+                        if (TYPE == 2) {
+                            String appCls22 = Settings.System.getString(context.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_CLS);
+                            if (!TextUtils.isEmpty(appCls22) && appCls22.equals(info.activityInfo.name)) {
+                                Log.i(str, "TYPE == 2 findAllAppsByExclude app pkg =" + appCls22);
+                                bean.setChecked(true);
+                            } else {
+                                bean.setChecked(false);
+                            }
+                        }
+                    } else {
                         String appCls12 = Settings.System.getString(context.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_CLS);
-                        if (TextUtils.isEmpty(appCls12) || !appCls12.equals(info.activityInfo.name)) {
-                            bean.setChecked(false);
-                        } else {
+                        if (!TextUtils.isEmpty(appCls12) && appCls12.equals(info.activityInfo.name)) {
                             Log.i(str, "TYPE == 1 findAllAppsByExclude app pkg =" + appCls12);
                             bean.setChecked(true);
-                        }
-                    } else if (i == 2) {
-                        String appCls22 = Settings.System.getString(context.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_CLS);
-                        if (TextUtils.isEmpty(appCls22) || !appCls22.equals(info.activityInfo.name)) {
-                            bean.setChecked(false);
                         } else {
-                            Log.i(str, "TYPE == 2 findAllAppsByExclude app pkg =" + appCls22);
-                            bean.setChecked(true);
+                            bean.setChecked(false);
                         }
                     }
                     beans.add(bean);
                     tmpAppIndex++;
                 }
-                infos2 = infos;
-                it2 = it;
             }
         }
         return beans;
@@ -226,7 +264,8 @@ public class AppInfoUtils {
         if (tmpInfos.size() <= 0) {
             return null;
         }
-        return tmpInfos.get(0);
+        ResolveInfo newAppInfo = tmpInfos.get(0);
+        return newAppInfo;
     }
 
     public static ResolveInfo findAppByPkgAndCls(Context context, String packageName, String clsName) {
@@ -239,7 +278,8 @@ public class AppInfoUtils {
         if (tmpInfos.size() <= 0) {
             return null;
         }
-        return tmpInfos.get(0);
+        ResolveInfo newAppInfo = tmpInfos.get(0);
+        return newAppInfo;
     }
 
     public static ArrayList<String> getAppsPackage(List<ResolveInfo> all) {
@@ -261,13 +301,15 @@ public class AppInfoUtils {
 
     public static List<PackageInfo> getAllPkgs(Context context) {
         List<PackageInfo> apps = new ArrayList<>();
-        List<PackageInfo> packlist = context.getPackageManager().getInstalledPackages(0);
+        PackageManager pManager = context.getPackageManager();
+        List<PackageInfo> packlist = pManager.getInstalledPackages(0);
         for (int i = 0; i < packlist.size(); i++) {
             PackageInfo pak = packlist.get(i);
             apps.add(pak);
             int i2 = pak.applicationInfo.flags;
             ApplicationInfo applicationInfo = pak.applicationInfo;
-            if ((i2 & 1) <= 0) {
+            int appFlag = i2 & 1;
+            if (appFlag <= 0) {
                 apps.add(pak);
             }
         }
@@ -286,7 +328,8 @@ public class AppInfoUtils {
             for (int i = 0; i < length; i++) {
                 Object storageVolumeElement = Array.get(result, i);
                 String path = (String) getPath.invoke(storageVolumeElement, new Object[0]);
-                if (is_removale == ((Boolean) isRemovable.invoke(storageVolumeElement, new Object[0])).booleanValue()) {
+                boolean removable = ((Boolean) isRemovable.invoke(storageVolumeElement, new Object[0])).booleanValue();
+                if (is_removale == removable) {
                     return path;
                 }
             }
@@ -294,13 +337,13 @@ public class AppInfoUtils {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             return null;
-        } catch (InvocationTargetException e2) {
+        } catch (IllegalAccessException e2) {
             e2.printStackTrace();
             return null;
         } catch (NoSuchMethodException e3) {
             e3.printStackTrace();
             return null;
-        } catch (IllegalAccessException e4) {
+        } catch (InvocationTargetException e4) {
             e4.printStackTrace();
             return null;
         }
@@ -308,9 +351,10 @@ public class AppInfoUtils {
 
     public static boolean isAppPakExist(Context context, String packageName) {
         boolean isExist = false;
+        PackageManager pm = context.getPackageManager();
         ApplicationInfo applicationInfo = null;
         try {
-            applicationInfo = context.getPackageManager().getApplicationInfo(packageName, 0);
+            applicationInfo = pm.getApplicationInfo(packageName, 0);
         } catch (PackageManager.NameNotFoundException e) {
             Log.i(TAG, "isAppPakExist: app not installed, packageName" + packageName);
         }
@@ -322,7 +366,8 @@ public class AppInfoUtils {
     }
 
     public static int dip2px(Context context, float dpValue) {
-        return (int) ((dpValue * context.getResources().getDisplayMetrics().density) + 0.5f);
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) ((dpValue * scale) + 0.5f);
     }
 
     public static Drawable zoomDrawable(Drawable drawable, int w, int h) {
@@ -330,19 +375,17 @@ public class AppInfoUtils {
         int height = drawable.getIntrinsicHeight();
         Bitmap oldbmp = drawableToBitmap(drawable);
         Matrix matrix = new Matrix();
-        matrix.postScale(((float) w) / ((float) width), ((float) h) / ((float) height));
-        return new BitmapDrawable((Resources) null, Bitmap.createBitmap(oldbmp, 0, 0, width, height, matrix, true));
+        float scaleWidth = w / width;
+        float scaleHeight = h / height;
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap newbmp = Bitmap.createBitmap(oldbmp, 0, 0, width, height, matrix, true);
+        return new BitmapDrawable((Resources) null, newbmp);
     }
 
     public static Bitmap drawableToBitmap(Drawable drawable) {
-        Bitmap.Config config;
         int w = drawable.getIntrinsicWidth();
         int h = drawable.getIntrinsicHeight();
-        if (drawable.getOpacity() != -1) {
-            config = Bitmap.Config.ARGB_8888;
-        } else {
-            config = Bitmap.Config.RGB_565;
-        }
+        Bitmap.Config config = drawable.getOpacity() != -1 ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;
         Bitmap bitmap = Bitmap.createBitmap(w, h, config);
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, w, h);

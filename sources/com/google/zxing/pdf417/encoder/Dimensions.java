@@ -1,16 +1,17 @@
 package com.google.zxing.pdf417.encoder;
 
+/* loaded from: classes.dex */
 public final class Dimensions {
     private final int maxCols;
     private final int maxRows;
     private final int minCols;
     private final int minRows;
 
-    public Dimensions(int minCols2, int maxCols2, int minRows2, int maxRows2) {
-        this.minCols = minCols2;
-        this.maxCols = maxCols2;
-        this.minRows = minRows2;
-        this.maxRows = maxRows2;
+    public Dimensions(int minCols, int maxCols, int minRows, int maxRows) {
+        this.minCols = minCols;
+        this.maxCols = maxCols;
+        this.minRows = minRows;
+        this.maxRows = maxRows;
     }
 
     public int getMinCols() {

@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
+/* loaded from: classes.dex */
 public @interface JsonAdapter {
     boolean nullSafe() default true;
 

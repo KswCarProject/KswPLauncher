@@ -7,25 +7,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class BmwId8SettingsSystemCameraLayoutBinding extends ViewDataBinding {
     public final RelativeLayout bmwId8SettingsSystemCamera360;
+    public final RelativeLayout bmwId8SettingsSystemCamera360Built;
     public final RelativeLayout bmwId8SettingsSystemCameraAfter;
     public final RelativeLayout bmwId8SettingsSystemCameraLay;
     public final RelativeLayout bmwId8SettingsSystemCameraOem;
     @Bindable
     protected BmwId8SettingsViewModel mViewModel;
 
-    public abstract void setViewModel(BmwId8SettingsViewModel bmwId8SettingsViewModel);
+    public abstract void setViewModel(BmwId8SettingsViewModel viewModel);
 
-    protected BmwId8SettingsSystemCameraLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout bmwId8SettingsSystemCamera3602, RelativeLayout bmwId8SettingsSystemCameraAfter2, RelativeLayout bmwId8SettingsSystemCameraLay2, RelativeLayout bmwId8SettingsSystemCameraOem2) {
+    protected BmwId8SettingsSystemCameraLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout bmwId8SettingsSystemCamera360, RelativeLayout bmwId8SettingsSystemCamera360Built, RelativeLayout bmwId8SettingsSystemCameraAfter, RelativeLayout bmwId8SettingsSystemCameraLay, RelativeLayout bmwId8SettingsSystemCameraOem) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.bmwId8SettingsSystemCamera360 = bmwId8SettingsSystemCamera3602;
-        this.bmwId8SettingsSystemCameraAfter = bmwId8SettingsSystemCameraAfter2;
-        this.bmwId8SettingsSystemCameraLay = bmwId8SettingsSystemCameraLay2;
-        this.bmwId8SettingsSystemCameraOem = bmwId8SettingsSystemCameraOem2;
+        this.bmwId8SettingsSystemCamera360 = bmwId8SettingsSystemCamera360;
+        this.bmwId8SettingsSystemCamera360Built = bmwId8SettingsSystemCamera360Built;
+        this.bmwId8SettingsSystemCameraAfter = bmwId8SettingsSystemCameraAfter;
+        this.bmwId8SettingsSystemCameraLay = bmwId8SettingsSystemCameraLay;
+        this.bmwId8SettingsSystemCameraOem = bmwId8SettingsSystemCameraOem;
     }
 
     public BmwId8SettingsViewModel getViewModel() {
@@ -38,7 +41,7 @@ public abstract class BmwId8SettingsSystemCameraLayoutBinding extends ViewDataBi
 
     @Deprecated
     public static BmwId8SettingsSystemCameraLayoutBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BmwId8SettingsSystemCameraLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_system_camera_layout, root, attachToRoot, component);
+        return (BmwId8SettingsSystemCameraLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_system_camera_layout, root, attachToRoot, component);
     }
 
     public static BmwId8SettingsSystemCameraLayoutBinding inflate(LayoutInflater inflater) {
@@ -47,7 +50,7 @@ public abstract class BmwId8SettingsSystemCameraLayoutBinding extends ViewDataBi
 
     @Deprecated
     public static BmwId8SettingsSystemCameraLayoutBinding inflate(LayoutInflater inflater, Object component) {
-        return (BmwId8SettingsSystemCameraLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_system_camera_layout, (ViewGroup) null, false, component);
+        return (BmwId8SettingsSystemCameraLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_system_camera_layout, null, false, component);
     }
 
     public static BmwId8SettingsSystemCameraLayoutBinding bind(View view) {
@@ -56,6 +59,6 @@ public abstract class BmwId8SettingsSystemCameraLayoutBinding extends ViewDataBi
 
     @Deprecated
     public static BmwId8SettingsSystemCameraLayoutBinding bind(View view, Object component) {
-        return (BmwId8SettingsSystemCameraLayoutBinding) bind(component, view, R.layout.bmw_id8_settings_system_camera_layout);
+        return (BmwId8SettingsSystemCameraLayoutBinding) bind(component, view, C0899R.C0902layout.bmw_id8_settings_system_camera_layout);
     }
 }

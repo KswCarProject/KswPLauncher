@@ -3,6 +3,7 @@ package com.bumptech.glide.request.target;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+/* loaded from: classes.dex */
 public class DrawableThumbnailImageViewTarget extends ThumbnailImageViewTarget<Drawable> {
     public DrawableThumbnailImageViewTarget(ImageView view) {
         super(view);
@@ -13,7 +14,8 @@ public class DrawableThumbnailImageViewTarget extends ThumbnailImageViewTarget<D
         super(view, waitForLayout);
     }
 
-    /* access modifiers changed from: protected */
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // com.bumptech.glide.request.target.ThumbnailImageViewTarget
     public Drawable getDrawable(Drawable resource) {
         return resource;
     }

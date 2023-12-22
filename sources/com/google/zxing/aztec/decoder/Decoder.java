@@ -11,16 +11,17 @@ import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.PluralRules;
 import com.wits.ksw.settings.TxzMessage;
 import java.util.Arrays;
-import java.util.List;
 
+/* loaded from: classes.dex */
 public final class Decoder {
-    private static final String[] DIGIT_TABLE = {"CTRL_PS", " ", TxzMessage.TXZ_DISMISS, TxzMessage.TXZ_SHOW, "2", "3", "4", "5", "6", "7", "8", "9", ",", ".", "CTRL_UL", "CTRL_US"};
-    private static final String[] LOWER_TABLE = {"CTRL_PS", " ", "a", "b", "c", DateFormat.DAY, "e", "f", "g", "h", "i", DateFormat.HOUR, "k", "l", DateFormat.MINUTE, "n", "o", "p", "q", "r", DateFormat.SECOND, "t", "u", DateFormat.ABBR_GENERIC_TZ, "w", "x", DateFormat.YEAR, DateFormat.ABBR_SPECIFIC_TZ, "CTRL_US", "CTRL_ML", "CTRL_DL", "CTRL_BS"};
-    private static final String[] MIXED_TABLE = {"CTRL_PS", " ", "\u0001", "\u0002", "\u0003", "\u0004", "\u0005", "\u0006", "\u0007", "\b", "\t", "\n", "\u000b", "\f", "\r", "\u001b", "\u001c", "\u001d", "\u001e", "\u001f", "@", "\\", "^", "_", "`", "|", "~", "", "CTRL_LL", "CTRL_UL", "CTRL_PL", "CTRL_BS"};
-    private static final String[] PUNCT_TABLE = {"", "\r", "\r\n", ". ", ", ", PluralRules.KEYWORD_RULE_SEPARATOR, "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "[", "]", "{", "}", "CTRL_UL"};
-    private static final String[] UPPER_TABLE = {"CTRL_PS", " ", "A", "B", "C", "D", DateFormat.ABBR_WEEKDAY, "F", "G", DateFormat.HOUR24, "I", "J", "K", "L", DateFormat.NUM_MONTH, "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "CTRL_LL", "CTRL_ML", "CTRL_DL", "CTRL_BS"};
     private AztecDetectorResult ddata;
+    private static final String[] UPPER_TABLE = {"CTRL_PS", " ", "A", "B", "C", "D", DateFormat.ABBR_WEEKDAY, "F", "G", DateFormat.HOUR24, "I", "J", "K", "L", DateFormat.NUM_MONTH, "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "CTRL_LL", "CTRL_ML", "CTRL_DL", "CTRL_BS"};
+    private static final String[] LOWER_TABLE = {"CTRL_PS", " ", "a", "b", "c", DateFormat.DAY, "e", "f", "g", "h", "i", DateFormat.HOUR, "k", "l", DateFormat.MINUTE, "n", "o", "p", "q", "r", DateFormat.SECOND, "t", "u", DateFormat.ABBR_GENERIC_TZ, "w", "x", DateFormat.YEAR, DateFormat.ABBR_SPECIFIC_TZ, "CTRL_US", "CTRL_ML", "CTRL_DL", "CTRL_BS"};
+    private static final String[] MIXED_TABLE = {"CTRL_PS", " ", "\u0001", "\u0002", "\u0003", "\u0004", "\u0005", "\u0006", "\u0007", "\b", "\t", "\n", "\u000b", "\f", "\r", "\u001b", "\u001c", "\u001d", "\u001e", "\u001f", "@", "\\", "^", "_", "`", "|", "~", "\u007f", "CTRL_LL", "CTRL_UL", "CTRL_PL", "CTRL_BS"};
+    private static final String[] PUNCT_TABLE = {"", "\r", "\r\n", ". ", ", ", PluralRules.KEYWORD_RULE_SEPARATOR, "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "[", "]", "{", "}", "CTRL_UL"};
+    private static final String[] DIGIT_TABLE = {"CTRL_PS", " ", TxzMessage.TXZ_DISMISS, TxzMessage.TXZ_SHOW, "2", "3", "4", "5", "6", "7", "8", "9", ",", ".", "CTRL_UL", "CTRL_US"};
 
+    /* loaded from: classes.dex */
     private enum Table {
         UPPER,
         LOWER,
@@ -32,12 +33,14 @@ public final class Decoder {
 
     public DecoderResult decode(AztecDetectorResult detectorResult) throws FormatException {
         this.ddata = detectorResult;
-        boolean[] correctBits = correctBits(extractBits(detectorResult.getBits()));
-        boolean[] correctedBits = correctBits;
-        DecoderResult decoderResult = new DecoderResult(convertBoolArrayToByteArray(correctBits), getEncodedData(correctedBits), (List<byte[]>) null, (String) null);
-        DecoderResult decoderResult2 = decoderResult;
+        BitMatrix matrix = detectorResult.getBits();
+        boolean[] rawbits = extractBits(matrix);
+        boolean[] correctedBits = correctBits(rawbits);
+        byte[] rawBytes = convertBoolArrayToByteArray(correctedBits);
+        String result = getEncodedData(correctedBits);
+        DecoderResult decoderResult = new DecoderResult(rawBytes, result, null, null);
         decoderResult.setNumBits(correctedBits.length);
-        return decoderResult2;
+        return decoderResult;
     }
 
     public static String highLevelDecode(boolean[] correctedBits) {
@@ -88,12 +91,12 @@ public final class Decoder {
                 String character = getCharacter(table2, readCode2);
                 if (character.startsWith("CTRL_")) {
                     table = getTable(character.charAt(5));
-                    if (character.charAt(6) == 'L') {
-                        table2 = table;
-                    } else {
+                    if (character.charAt(6) != 'L') {
                         Table table3 = table2;
                         table2 = table;
                         table = table3;
+                    } else {
+                        table2 = table;
                     }
                 } else {
                     sb.append(character);
@@ -121,8 +124,9 @@ public final class Decoder {
         }
     }
 
-    /* renamed from: com.google.zxing.aztec.decoder.Decoder$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
+    /* renamed from: com.google.zxing.aztec.decoder.Decoder$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C06711 {
         static final /* synthetic */ int[] $SwitchMap$com$google$zxing$aztec$decoder$Decoder$Table;
 
         static {
@@ -152,7 +156,7 @@ public final class Decoder {
     }
 
     private static String getCharacter(Table table, int code) {
-        switch (AnonymousClass1.$SwitchMap$com$google$zxing$aztec$decoder$Decoder$Table[table.ordinal()]) {
+        switch (C06711.$SwitchMap$com$google$zxing$aztec$decoder$Decoder$Table[table.ordinal()]) {
             case 1:
                 return UPPER_TABLE[code];
             case 2:
@@ -170,6 +174,8 @@ public final class Decoder {
 
     private boolean[] correctBits(boolean[] zArr) throws FormatException {
         GenericGF genericGF;
+        boolean z;
+        boolean z2;
         int i = 8;
         if (this.ddata.getNbLayers() <= 2) {
             i = 6;
@@ -185,101 +191,110 @@ public final class Decoder {
         }
         int nbDatablocks = this.ddata.getNbDatablocks();
         int length = zArr.length / i;
-        if (length >= nbDatablocks) {
-            int length2 = zArr.length % i;
-            int[] iArr = new int[length];
-            int i2 = 0;
-            while (i2 < length) {
-                iArr[i2] = readCode(zArr, length2, i);
-                i2++;
-                length2 += i;
-            }
-            try {
-                new ReedSolomonDecoder(genericGF).decode(iArr, length - nbDatablocks);
-                int i3 = (1 << i) - 1;
-                int i4 = 0;
-                for (int i5 = 0; i5 < nbDatablocks; i5++) {
-                    int i6 = iArr[i5];
-                    if (i6 == 0 || i6 == i3) {
-                        throw FormatException.getFormatInstance();
-                    }
-                    if (i6 == 1 || i6 == i3 - 1) {
-                        i4++;
-                    }
-                }
-                boolean[] zArr2 = new boolean[((nbDatablocks * i) - i4)];
-                int i7 = 0;
-                for (int i8 = 0; i8 < nbDatablocks; i8++) {
-                    int i9 = iArr[i8];
-                    if (i9 == 1 || i9 == i3 - 1) {
-                        Arrays.fill(zArr2, i7, (i7 + i) - 1, i9 > 1);
-                        i7 += i - 1;
-                    } else {
-                        int i10 = i - 1;
-                        while (i10 >= 0) {
-                            int i11 = i7 + 1;
-                            zArr2[i7] = ((1 << i10) & i9) != 0;
-                            i10--;
-                            i7 = i11;
-                        }
-                    }
-                }
-                return zArr2;
-            } catch (ReedSolomonException e) {
-                throw FormatException.getFormatInstance(e);
-            }
-        } else {
+        if (length < nbDatablocks) {
             throw FormatException.getFormatInstance();
+        }
+        int length2 = zArr.length % i;
+        int[] iArr = new int[length];
+        int i2 = 0;
+        while (i2 < length) {
+            iArr[i2] = readCode(zArr, length2, i);
+            i2++;
+            length2 += i;
+        }
+        try {
+            new ReedSolomonDecoder(genericGF).decode(iArr, length - nbDatablocks);
+            int i3 = (1 << i) - 1;
+            int i4 = 0;
+            for (int i5 = 0; i5 < nbDatablocks; i5++) {
+                int i6 = iArr[i5];
+                if (i6 == 0 || i6 == i3) {
+                    throw FormatException.getFormatInstance();
+                }
+                if (i6 == 1 || i6 == i3 - 1) {
+                    i4++;
+                }
+            }
+            boolean[] zArr2 = new boolean[(nbDatablocks * i) - i4];
+            int i7 = 0;
+            for (int i8 = 0; i8 < nbDatablocks; i8++) {
+                int i9 = iArr[i8];
+                if (i9 == 1 || i9 == i3 - 1) {
+                    int i10 = (i7 + i) - 1;
+                    if (i9 <= 1) {
+                        z = false;
+                    } else {
+                        z = true;
+                    }
+                    Arrays.fill(zArr2, i7, i10, z);
+                    i7 += i - 1;
+                } else {
+                    int i11 = i - 1;
+                    while (i11 >= 0) {
+                        int i12 = i7 + 1;
+                        if (((1 << i11) & i9) == 0) {
+                            z2 = false;
+                        } else {
+                            z2 = true;
+                        }
+                        zArr2[i7] = z2;
+                        i11--;
+                        i7 = i12;
+                    }
+                }
+            }
+            return zArr2;
+        } catch (ReedSolomonException e) {
+            throw FormatException.getFormatInstance(e);
         }
     }
 
     private boolean[] extractBits(BitMatrix matrix) {
-        BitMatrix bitMatrix = matrix;
         boolean compact = this.ddata.isCompact();
         int layers = this.ddata.getNbLayers();
-        int i = (compact ? 11 : 14) + (layers << 2);
-        int baseMatrixSize = i;
-        int[] alignmentMap = new int[i];
+        int baseMatrixSize = (compact ? 11 : 14) + (layers << 2);
+        int[] alignmentMap = new int[baseMatrixSize];
         boolean[] rawbits = new boolean[totalBitsInLayer(layers, compact)];
-        int i2 = 2;
-        if (compact) {
+        int i = 2;
+        if (!compact) {
+            int matrixSize = baseMatrixSize + 1 + ((((baseMatrixSize / 2) - 1) / 15) * 2);
+            int origCenter = baseMatrixSize / 2;
+            int center = matrixSize / 2;
+            for (int i2 = 0; i2 < origCenter; i2++) {
+                int newOffset = (i2 / 15) + i2;
+                alignmentMap[(origCenter - i2) - 1] = (center - newOffset) - 1;
+                alignmentMap[origCenter + i2] = center + newOffset + 1;
+            }
+        } else {
             for (int i3 = 0; i3 < alignmentMap.length; i3++) {
                 alignmentMap[i3] = i3;
             }
-        } else {
-            int origCenter = baseMatrixSize / 2;
-            int center = ((baseMatrixSize + 1) + ((((baseMatrixSize / 2) - 1) / 15) * 2)) / 2;
-            for (int i4 = 0; i4 < origCenter; i4++) {
-                int newOffset = (i4 / 15) + i4;
-                alignmentMap[(origCenter - i4) - 1] = (center - newOffset) - 1;
-                alignmentMap[origCenter + i4] = center + newOffset + 1;
-            }
         }
-        int i5 = 0;
+        int i4 = 0;
         int rowOffset = 0;
-        while (i5 < layers) {
-            int rowSize = ((layers - i5) << i2) + (compact ? 9 : 12);
-            int low = i5 << 1;
+        while (i4 < layers) {
+            int rowSize = ((layers - i4) << i) + (compact ? 9 : 12);
+            int low = i4 << 1;
             int high = (baseMatrixSize - 1) - low;
             int j = 0;
             while (j < rowSize) {
                 int columnOffset = j << 1;
                 int k = 0;
-                while (k < i2) {
-                    rawbits[rowOffset + columnOffset + k] = bitMatrix.get(alignmentMap[low + k], alignmentMap[low + j]);
-                    rawbits[(rowSize * 2) + rowOffset + columnOffset + k] = bitMatrix.get(alignmentMap[low + j], alignmentMap[high - k]);
-                    rawbits[(rowSize * 4) + rowOffset + columnOffset + k] = bitMatrix.get(alignmentMap[high - k], alignmentMap[high - j]);
-                    rawbits[(rowSize * 6) + rowOffset + columnOffset + k] = bitMatrix.get(alignmentMap[high - j], alignmentMap[low + k]);
+                while (k < i) {
+                    rawbits[rowOffset + columnOffset + k] = matrix.get(alignmentMap[low + k], alignmentMap[low + j]);
+                    rawbits[(rowSize * 2) + rowOffset + columnOffset + k] = matrix.get(alignmentMap[low + j], alignmentMap[high - k]);
+                    rawbits[(rowSize * 4) + rowOffset + columnOffset + k] = matrix.get(alignmentMap[high - k], alignmentMap[high - j]);
+                    rawbits[(rowSize * 6) + rowOffset + columnOffset + k] = matrix.get(alignmentMap[high - j], alignmentMap[low + k]);
                     k++;
-                    i2 = 2;
+                    i = 2;
                     compact = compact;
                 }
                 j++;
-                i2 = 2;
+                i = 2;
             }
             rowOffset += rowSize << 3;
-            i5++;
-            i2 = 2;
+            i4++;
+            i = 2;
         }
         return rawbits;
     }
@@ -296,16 +311,15 @@ public final class Decoder {
     }
 
     private static byte readByte(boolean[] rawbits, int startIndex) {
-        int length = rawbits.length - startIndex;
-        int n = length;
-        if (length >= 8) {
-            return (byte) readCode(rawbits, startIndex, 8);
+        int n = rawbits.length - startIndex;
+        if (n < 8) {
+            return (byte) (readCode(rawbits, startIndex, n) << (8 - n));
         }
-        return (byte) (readCode(rawbits, startIndex, n) << (8 - n));
+        return (byte) readCode(rawbits, startIndex, 8);
     }
 
     static byte[] convertBoolArrayToByteArray(boolean[] boolArr) {
-        byte[] byteArr = new byte[((boolArr.length + 7) / 8)];
+        byte[] byteArr = new byte[(boolArr.length + 7) / 8];
         for (int i = 0; i < byteArr.length; i++) {
             byteArr[i] = readByte(boolArr, i << 3);
         }

@@ -3,33 +3,40 @@ package com.google.gson;
 import java.lang.reflect.Field;
 import java.util.Locale;
 
+/* loaded from: classes.dex */
 public enum FieldNamingPolicy implements FieldNamingStrategy {
-    IDENTITY {
+    IDENTITY { // from class: com.google.gson.FieldNamingPolicy.1
+        @Override // com.google.gson.FieldNamingStrategy
         public String translateName(Field f) {
             return f.getName();
         }
     },
-    UPPER_CAMEL_CASE {
+    UPPER_CAMEL_CASE { // from class: com.google.gson.FieldNamingPolicy.2
+        @Override // com.google.gson.FieldNamingStrategy
         public String translateName(Field f) {
             return upperCaseFirstLetter(f.getName());
         }
     },
-    UPPER_CAMEL_CASE_WITH_SPACES {
+    UPPER_CAMEL_CASE_WITH_SPACES { // from class: com.google.gson.FieldNamingPolicy.3
+        @Override // com.google.gson.FieldNamingStrategy
         public String translateName(Field f) {
             return upperCaseFirstLetter(separateCamelCase(f.getName(), " "));
         }
     },
-    LOWER_CASE_WITH_UNDERSCORES {
+    LOWER_CASE_WITH_UNDERSCORES { // from class: com.google.gson.FieldNamingPolicy.4
+        @Override // com.google.gson.FieldNamingStrategy
         public String translateName(Field f) {
             return separateCamelCase(f.getName(), "_").toLowerCase(Locale.ENGLISH);
         }
     },
-    LOWER_CASE_WITH_DASHES {
+    LOWER_CASE_WITH_DASHES { // from class: com.google.gson.FieldNamingPolicy.5
+        @Override // com.google.gson.FieldNamingStrategy
         public String translateName(Field f) {
             return separateCamelCase(f.getName(), "-").toLowerCase(Locale.ENGLISH);
         }
     },
-    LOWER_CASE_WITH_DOTS {
+    LOWER_CASE_WITH_DOTS { // from class: com.google.gson.FieldNamingPolicy.6
+        @Override // com.google.gson.FieldNamingStrategy
         public String translateName(Field f) {
             return separateCamelCase(f.getName(), ".").toLowerCase(Locale.ENGLISH);
         }

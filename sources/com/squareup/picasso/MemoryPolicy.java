@@ -1,5 +1,6 @@
 package com.squareup.picasso;
 
+/* loaded from: classes.dex */
 public enum MemoryPolicy {
     NO_CACHE(1),
     NO_STORE(2);
@@ -14,7 +15,7 @@ public enum MemoryPolicy {
         return (NO_STORE.index & memoryPolicy) == 0;
     }
 
-    private MemoryPolicy(int index2) {
-        this.index = index2;
+    MemoryPolicy(int index) {
+        this.index = index;
     }
 }

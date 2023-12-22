@@ -6,8 +6,9 @@ import kotlin.jvm.functions.Function1;
 import kotlin.jvm.internal.FunctionReferenceImpl;
 import kotlin.jvm.internal.Intrinsics;
 
-@Metadata(k = 3, mv = {1, 6, 0}, xi = 48)
 /* compiled from: TypesJVM.kt */
+@Metadata(m23k = 3, m22mv = {1, 6, 0}, m20xi = 48)
+/* loaded from: classes.dex */
 /* synthetic */ class ParameterizedTypeImpl$getTypeName$1$1 extends FunctionReferenceImpl implements Function1<Type, String> {
     public static final ParameterizedTypeImpl$getTypeName$1$1 INSTANCE = new ParameterizedTypeImpl$getTypeName$1$1();
 
@@ -15,8 +16,11 @@ import kotlin.jvm.internal.Intrinsics;
         super(1, TypesJVMKt.class, "typeToString", "typeToString(Ljava/lang/reflect/Type;)Ljava/lang/String;", 1);
     }
 
+    @Override // kotlin.jvm.functions.Function1
     public final String invoke(Type p0) {
+        String typeToString;
         Intrinsics.checkNotNullParameter(p0, "p0");
-        return TypesJVMKt.typeToString(p0);
+        typeToString = TypesJVMKt.typeToString(p0);
+        return typeToString;
     }
 }

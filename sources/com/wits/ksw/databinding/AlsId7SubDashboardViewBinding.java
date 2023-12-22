@@ -9,10 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 import com.wits.ksw.launcher.view.CustomBmwImageView;
 
+/* loaded from: classes7.dex */
 public abstract class AlsId7SubDashboardViewBinding extends ViewDataBinding {
     public final TextView brakeTextView;
     public final ConstraintLayout dashboardConstraintLayout;
@@ -25,18 +26,18 @@ public abstract class AlsId7SubDashboardViewBinding extends ViewDataBinding {
     public final TextView speedTextView;
     public final TextView title;
 
-    public abstract void setDashVideoViewModel(AlsID7ViewModel alsID7ViewModel);
+    public abstract void setDashVideoViewModel(AlsID7ViewModel DashVideoViewModel);
 
-    protected AlsId7SubDashboardViewBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView brakeTextView2, ConstraintLayout dashboardConstraintLayout2, CustomBmwImageView dashboardImageView2, TextView oilTextView2, ImageView pointerImageView2, TextView seatBeltTextView2, TextView speedTextView2, TextView title2) {
+    protected AlsId7SubDashboardViewBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView brakeTextView, ConstraintLayout dashboardConstraintLayout, CustomBmwImageView dashboardImageView, TextView oilTextView, ImageView pointerImageView, TextView seatBeltTextView, TextView speedTextView, TextView title) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.brakeTextView = brakeTextView2;
-        this.dashboardConstraintLayout = dashboardConstraintLayout2;
-        this.dashboardImageView = dashboardImageView2;
-        this.oilTextView = oilTextView2;
-        this.pointerImageView = pointerImageView2;
-        this.seatBeltTextView = seatBeltTextView2;
-        this.speedTextView = speedTextView2;
-        this.title = title2;
+        this.brakeTextView = brakeTextView;
+        this.dashboardConstraintLayout = dashboardConstraintLayout;
+        this.dashboardImageView = dashboardImageView;
+        this.oilTextView = oilTextView;
+        this.pointerImageView = pointerImageView;
+        this.seatBeltTextView = seatBeltTextView;
+        this.speedTextView = speedTextView;
+        this.title = title;
     }
 
     public AlsID7ViewModel getDashVideoViewModel() {
@@ -49,7 +50,7 @@ public abstract class AlsId7SubDashboardViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7SubDashboardViewBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AlsId7SubDashboardViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_sub_dashboard_view, root, attachToRoot, component);
+        return (AlsId7SubDashboardViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_sub_dashboard_view, root, attachToRoot, component);
     }
 
     public static AlsId7SubDashboardViewBinding inflate(LayoutInflater inflater) {
@@ -58,7 +59,7 @@ public abstract class AlsId7SubDashboardViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7SubDashboardViewBinding inflate(LayoutInflater inflater, Object component) {
-        return (AlsId7SubDashboardViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_sub_dashboard_view, (ViewGroup) null, false, component);
+        return (AlsId7SubDashboardViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_sub_dashboard_view, null, false, component);
     }
 
     public static AlsId7SubDashboardViewBinding bind(View view) {
@@ -67,6 +68,6 @@ public abstract class AlsId7SubDashboardViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7SubDashboardViewBinding bind(View view, Object component) {
-        return (AlsId7SubDashboardViewBinding) bind(component, view, R.layout.als_id7_sub_dashboard_view);
+        return (AlsId7SubDashboardViewBinding) bind(component, view, C0899R.C0902layout.als_id7_sub_dashboard_view);
     }
 }

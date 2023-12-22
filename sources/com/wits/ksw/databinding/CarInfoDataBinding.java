@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class CarInfoDataBinding extends ViewDataBinding {
     public final ImageView ivMask;
     public final RelativeLayout llContainer;
@@ -19,13 +20,13 @@ public abstract class CarInfoDataBinding extends ViewDataBinding {
     protected LauncherViewModel mCarViewModel;
     public final TextView tvDesc;
 
-    public abstract void setCarViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setCarViewModel(LauncherViewModel CarViewModel);
 
-    protected CarInfoDataBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivMask2, RelativeLayout llContainer2, TextView tvDesc2) {
+    protected CarInfoDataBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivMask, RelativeLayout llContainer, TextView tvDesc) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.ivMask = ivMask2;
-        this.llContainer = llContainer2;
-        this.tvDesc = tvDesc2;
+        this.ivMask = ivMask;
+        this.llContainer = llContainer;
+        this.tvDesc = tvDesc;
     }
 
     public LauncherViewModel getCarViewModel() {
@@ -38,7 +39,7 @@ public abstract class CarInfoDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static CarInfoDataBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (CarInfoDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_car_info, root, attachToRoot, component);
+        return (CarInfoDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_car_info, root, attachToRoot, component);
     }
 
     public static CarInfoDataBinding inflate(LayoutInflater inflater) {
@@ -47,7 +48,7 @@ public abstract class CarInfoDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static CarInfoDataBinding inflate(LayoutInflater inflater, Object component) {
-        return (CarInfoDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_car_info, (ViewGroup) null, false, component);
+        return (CarInfoDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_car_info, null, false, component);
     }
 
     public static CarInfoDataBinding bind(View view) {
@@ -56,6 +57,6 @@ public abstract class CarInfoDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static CarInfoDataBinding bind(View view, Object component) {
-        return (CarInfoDataBinding) bind(component, view, R.layout.fragment_car_info);
+        return (CarInfoDataBinding) bind(component, view, C0899R.C0902layout.fragment_car_info);
     }
 }

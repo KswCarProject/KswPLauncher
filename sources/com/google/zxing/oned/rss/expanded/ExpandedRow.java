@@ -3,34 +3,31 @@ package com.google.zxing.oned.rss.expanded;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 final class ExpandedRow {
     private final List<ExpandedPair> pairs;
     private final int rowNumber;
     private final boolean wasReversed;
 
-    ExpandedRow(List<ExpandedPair> pairs2, int rowNumber2, boolean wasReversed2) {
-        this.pairs = new ArrayList(pairs2);
-        this.rowNumber = rowNumber2;
-        this.wasReversed = wasReversed2;
+    ExpandedRow(List<ExpandedPair> pairs, int rowNumber, boolean wasReversed) {
+        this.pairs = new ArrayList(pairs);
+        this.rowNumber = rowNumber;
+        this.wasReversed = wasReversed;
     }
 
-    /* access modifiers changed from: package-private */
-    public List<ExpandedPair> getPairs() {
+    List<ExpandedPair> getPairs() {
         return this.pairs;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getRowNumber() {
+    int getRowNumber() {
         return this.rowNumber;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isReversed() {
+    boolean isReversed() {
         return this.wasReversed;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isEquivalent(List<ExpandedPair> otherPairs) {
+    boolean isEquivalent(List<ExpandedPair> otherPairs) {
         return this.pairs.equals(otherPairs);
     }
 
@@ -39,14 +36,11 @@ final class ExpandedRow {
     }
 
     public boolean equals(Object o) {
-        if (!(o instanceof ExpandedRow)) {
-            return false;
+        if (o instanceof ExpandedRow) {
+            ExpandedRow that = (ExpandedRow) o;
+            return this.pairs.equals(that.getPairs()) && this.wasReversed == that.wasReversed;
         }
-        ExpandedRow that = (ExpandedRow) o;
-        if (!this.pairs.equals(that.getPairs()) || this.wasReversed != that.wasReversed) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
     public int hashCode() {

@@ -2,6 +2,7 @@ package com.bumptech.glide.util;
 
 import com.bumptech.glide.ListPreloader;
 
+/* loaded from: classes.dex */
 public class FixedPreloadSizeProvider<T> implements ListPreloader.PreloadSizeProvider<T> {
     private final int[] size;
 
@@ -9,7 +10,8 @@ public class FixedPreloadSizeProvider<T> implements ListPreloader.PreloadSizePro
         this.size = new int[]{width, height};
     }
 
-    public int[] getPreloadSize(T t, int adapterPosition, int itemPosition) {
+    @Override // com.bumptech.glide.ListPreloader.PreloadSizeProvider
+    public int[] getPreloadSize(T item, int adapterPosition, int itemPosition) {
         return this.size;
     }
 }

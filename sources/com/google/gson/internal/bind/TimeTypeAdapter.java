@@ -13,9 +13,12 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
+/* loaded from: classes.dex */
 public final class TimeTypeAdapter extends TypeAdapter<Time> {
-    public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() {
+    public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() { // from class: com.google.gson.internal.bind.TimeTypeAdapter.1
+        @Override // com.google.gson.TypeAdapterFactory
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
             if (typeToken.getRawType() == Time.class) {
                 return new TimeTypeAdapter();
@@ -25,19 +28,22 @@ public final class TimeTypeAdapter extends TypeAdapter<Time> {
     };
     private final DateFormat format = new SimpleDateFormat("hh:mm:ss a");
 
+    @Override // com.google.gson.TypeAdapter
     public synchronized Time read(JsonReader in) throws IOException {
         if (in.peek() == JsonToken.NULL) {
             in.nextNull();
             return null;
         }
         try {
-            return new Time(this.format.parse(in.nextString()).getTime());
+            Date date = this.format.parse(in.nextString());
+            return new Time(date.getTime());
         } catch (ParseException e) {
-            throw new JsonSyntaxException((Throwable) e);
+            throw new JsonSyntaxException(e);
         }
     }
 
+    @Override // com.google.gson.TypeAdapter
     public synchronized void write(JsonWriter out, Time value) throws IOException {
-        out.value(value == null ? null : this.format.format(value));
+        out.value(value == null ? null : this.format.format((Date) value));
     }
 }

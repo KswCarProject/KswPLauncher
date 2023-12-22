@@ -6,11 +6,17 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public final class MergerBiFunction<T> implements BiFunction<List<T>, List<T>, List<T>> {
     final Comparator<? super T> comparator;
 
-    public MergerBiFunction(Comparator<? super T> comparator2) {
-        this.comparator = comparator2;
+    @Override // io.reactivex.functions.BiFunction
+    public /* bridge */ /* synthetic */ Object apply(Object obj, Object obj2) throws Exception {
+        return apply((List) ((List) obj), (List) ((List) obj2));
+    }
+
+    public MergerBiFunction(Comparator<? super T> comparator) {
+        this.comparator = comparator;
     }
 
     public List<T> apply(List<T> a, List<T> b) throws Exception {

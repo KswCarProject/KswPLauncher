@@ -6,6 +6,7 @@ import com.ibm.icu.impl.UCharArrayIterator;
 import com.ibm.icu.impl.UCharacterIteratorWrapper;
 import java.text.CharacterIterator;
 
+/* loaded from: classes.dex */
 public abstract class UCharacterIterator implements Cloneable, UForwardCharacterIterator {
     public abstract int current();
 
@@ -15,6 +16,7 @@ public abstract class UCharacterIterator implements Cloneable, UForwardCharacter
 
     public abstract int getText(char[] cArr, int i);
 
+    @Override // com.ibm.icu.text.UForwardCharacterIterator
     public abstract int next();
 
     public abstract int previous();
@@ -65,6 +67,7 @@ public abstract class UCharacterIterator implements Cloneable, UForwardCharacter
         return ch;
     }
 
+    @Override // com.ibm.icu.text.UForwardCharacterIterator
     public int nextCodePoint() {
         int ch1 = next();
         if (UTF16.isLeadSurrogate((char) ch1)) {
@@ -127,10 +130,10 @@ public abstract class UCharacterIterator implements Cloneable, UForwardCharacter
                 delta++;
             }
         }
-        if (delta == 0) {
-            return getIndex();
+        if (delta != 0) {
+            throw new IndexOutOfBoundsException();
         }
-        throw new IndexOutOfBoundsException();
+        return getIndex();
     }
 
     public Object clone() throws CloneNotSupportedException {

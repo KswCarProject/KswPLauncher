@@ -15,35 +15,55 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class MaybeUsing<T, D> extends Maybe<T> {
     final boolean eager;
     final Consumer<? super D> resourceDisposer;
     final Callable<? extends D> resourceSupplier;
     final Function<? super D, ? extends MaybeSource<? extends T>> sourceSupplier;
 
-    public MaybeUsing(Callable<? extends D> resourceSupplier2, Function<? super D, ? extends MaybeSource<? extends T>> sourceSupplier2, Consumer<? super D> resourceDisposer2, boolean eager2) {
-        this.resourceSupplier = resourceSupplier2;
-        this.sourceSupplier = sourceSupplier2;
-        this.resourceDisposer = resourceDisposer2;
-        this.eager = eager2;
+    public MaybeUsing(Callable<? extends D> resourceSupplier, Function<? super D, ? extends MaybeSource<? extends T>> sourceSupplier, Consumer<? super D> resourceDisposer, boolean eager) {
+        this.resourceSupplier = resourceSupplier;
+        this.sourceSupplier = sourceSupplier;
+        this.resourceDisposer = resourceDisposer;
+        this.eager = eager;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super T> observer) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super T> observer) {
         try {
             D resource = this.resourceSupplier.call();
             try {
-                ((MaybeSource) ObjectHelper.requireNonNull(this.sourceSupplier.apply(resource), "The sourceSupplier returned a null MaybeSource")).subscribe(new UsingObserver(observer, resource, this.resourceDisposer, this.eager));
-            } catch (Throwable exc) {
-                Exceptions.throwIfFatal(exc);
-                RxJavaPlugins.onError(exc);
+                MaybeSource<? extends T> source = (MaybeSource) ObjectHelper.requireNonNull(this.sourceSupplier.apply(resource), "The sourceSupplier returned a null MaybeSource");
+                source.subscribe(new UsingObserver<>(observer, resource, this.resourceDisposer, this.eager));
+            } catch (Throwable ex) {
+                Exceptions.throwIfFatal(ex);
+                if (this.eager) {
+                    try {
+                        this.resourceDisposer.accept(resource);
+                    } catch (Throwable exc) {
+                        Exceptions.throwIfFatal(exc);
+                        EmptyDisposable.error(new CompositeException(ex, exc), observer);
+                        return;
+                    }
+                }
+                EmptyDisposable.error(ex, observer);
+                if (!this.eager) {
+                    try {
+                        this.resourceDisposer.accept(resource);
+                    } catch (Throwable exc2) {
+                        Exceptions.throwIfFatal(exc2);
+                        RxJavaPlugins.onError(exc2);
+                    }
+                }
             }
-        } catch (Throwable ex) {
-            Exceptions.throwIfFatal(ex);
-            EmptyDisposable.error(ex, (MaybeObserver<?>) observer);
+        } catch (Throwable ex2) {
+            Exceptions.throwIfFatal(ex2);
+            EmptyDisposable.error(ex2, observer);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class UsingObserver<T, D> extends AtomicReference<Object> implements MaybeObserver<T>, Disposable {
         private static final long serialVersionUID = -674404550052917487L;
         final Consumer<? super D> disposer;
@@ -51,21 +71,21 @@ public final class MaybeUsing<T, D> extends Maybe<T> {
         final boolean eager;
         Disposable upstream;
 
-        UsingObserver(MaybeObserver<? super T> actual, D resource, Consumer<? super D> disposer2, boolean eager2) {
+        UsingObserver(MaybeObserver<? super T> actual, D resource, Consumer<? super D> disposer, boolean eager) {
             super(resource);
             this.downstream = actual;
-            this.disposer = disposer2;
-            this.eager = eager2;
+            this.disposer = disposer;
+            this.eager = eager;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
             this.upstream = DisposableHelper.DISPOSED;
             disposeResourceAfter();
         }
 
-        /* access modifiers changed from: package-private */
-        public void disposeResourceAfter() {
+        void disposeResourceAfter() {
             Object resource = getAndSet(this);
             if (resource != this) {
                 try {
@@ -77,10 +97,12 @@ public final class MaybeUsing<T, D> extends Maybe<T> {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -88,6 +110,7 @@ public final class MaybeUsing<T, D> extends Maybe<T> {
             }
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSuccess(T value) {
             this.upstream = DisposableHelper.DISPOSED;
             if (this.eager) {
@@ -110,6 +133,7 @@ public final class MaybeUsing<T, D> extends Maybe<T> {
             }
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onError(Throwable e) {
             this.upstream = DisposableHelper.DISPOSED;
             if (this.eager) {
@@ -131,6 +155,7 @@ public final class MaybeUsing<T, D> extends Maybe<T> {
             }
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onComplete() {
             this.upstream = DisposableHelper.DISPOSED;
             if (this.eager) {

@@ -1,5 +1,6 @@
 package com.google.zxing.oned;
 
+/* loaded from: classes.dex */
 public final class CodaBarWriter extends OneDimensionalCodeWriter {
     private static final char[] ALT_START_END_CHARS = {'T', 'N', '*', 'E'};
     private static final char[] CHARS_WHICH_ARE_TEN_LENGTH_EACH_AFTER_DECODED = {'/', ':', '+', '.'};
@@ -12,6 +13,7 @@ public final class CodaBarWriter extends OneDimensionalCodeWriter {
         DEFAULT_GUARD = cArr[0];
     }
 
+    @Override // com.google.zxing.oned.OneDimensionalCodeWriter
     public boolean[] encode(String contents) {
         if (contents.length() < 2) {
             StringBuilder sb = new StringBuilder();
@@ -52,7 +54,8 @@ public final class CodaBarWriter extends OneDimensionalCodeWriter {
                 throw new IllegalArgumentException("Cannot encode : '" + contents.charAt(i) + '\'');
             }
         }
-        boolean[] result = new boolean[((contents.length() - 1) + resultLength)];
+        int i2 = contents.length();
+        boolean[] result = new boolean[(i2 - 1) + resultLength];
         int position = 0;
         for (int index = 0; index < contents.length(); index++) {
             char c3 = Character.toUpperCase(contents.charAt(index));
@@ -73,13 +76,13 @@ public final class CodaBarWriter extends OneDimensionalCodeWriter {
                 }
             }
             int code = 0;
-            int i2 = 0;
+            int i3 = 0;
             while (true) {
-                if (i2 < CodaBarReader.ALPHABET.length) {
-                    if (c3 == CodaBarReader.ALPHABET[i2]) {
-                        code = CodaBarReader.CHARACTER_ENCODINGS[i2];
+                if (i3 < CodaBarReader.ALPHABET.length) {
+                    if (c3 != CodaBarReader.ALPHABET[i3]) {
+                        i3++;
                     } else {
-                        i2++;
+                        code = CodaBarReader.CHARACTER_ENCODINGS[i3];
                     }
                 }
             }

@@ -8,29 +8,32 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 
+/* loaded from: classes.dex */
 public final class MaybeDoAfterSuccess<T> extends AbstractMaybeWithUpstream<T, T> {
     final Consumer<? super T> onAfterSuccess;
 
-    public MaybeDoAfterSuccess(MaybeSource<T> source, Consumer<? super T> onAfterSuccess2) {
+    public MaybeDoAfterSuccess(MaybeSource<T> source, Consumer<? super T> onAfterSuccess) {
         super(source);
-        this.onAfterSuccess = onAfterSuccess2;
+        this.onAfterSuccess = onAfterSuccess;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super T> observer) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super T> observer) {
         this.source.subscribe(new DoAfterObserver(observer, this.onAfterSuccess));
     }
 
+    /* loaded from: classes.dex */
     static final class DoAfterObserver<T> implements MaybeObserver<T>, Disposable {
         final MaybeObserver<? super T> downstream;
         final Consumer<? super T> onAfterSuccess;
         Disposable upstream;
 
-        DoAfterObserver(MaybeObserver<? super T> actual, Consumer<? super T> onAfterSuccess2) {
+        DoAfterObserver(MaybeObserver<? super T> actual, Consumer<? super T> onAfterSuccess) {
             this.downstream = actual;
-            this.onAfterSuccess = onAfterSuccess2;
+            this.onAfterSuccess = onAfterSuccess;
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -38,6 +41,7 @@ public final class MaybeDoAfterSuccess<T> extends AbstractMaybeWithUpstream<T, T
             }
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSuccess(T t) {
             this.downstream.onSuccess(t);
             try {
@@ -48,18 +52,22 @@ public final class MaybeDoAfterSuccess<T> extends AbstractMaybeWithUpstream<T, T
             }
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onError(Throwable e) {
             this.downstream.onError(e);
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onComplete() {
             this.downstream.onComplete();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }

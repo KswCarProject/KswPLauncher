@@ -7,9 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.land_rover.model.LandroverViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class LandroverMainBottomLayBinding extends ViewDataBinding {
     public final ImageView landroverMainBottomAirBtn;
     public final ImageView landroverMainBottomBtBtn;
@@ -25,21 +26,21 @@ public abstract class LandroverMainBottomLayBinding extends ViewDataBinding {
     @Bindable
     protected LandroverViewModel mLauncherViewModel;
 
-    public abstract void setLauncherViewModel(LandroverViewModel landroverViewModel);
+    public abstract void setLauncherViewModel(LandroverViewModel LauncherViewModel);
 
-    protected LandroverMainBottomLayBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView landroverMainBottomAirBtn2, ImageView landroverMainBottomBtBtn2, ImageView landroverMainBottomDvrBtn2, ImageView landroverMainBottomGpsBtn2, ImageView landroverMainBottomMenuBtn2, ImageView landroverMainBottomOffBtn2, ImageView landroverMainBottomParkassistBtn2, ImageView landroverMainBottomRadarBtn2, ImageView landroverMainBottomReturnBtn2, ImageView landroverMainBottomSetupBtn2, ImageView landroverMainBottomVideoBtn2) {
+    protected LandroverMainBottomLayBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView landroverMainBottomAirBtn, ImageView landroverMainBottomBtBtn, ImageView landroverMainBottomDvrBtn, ImageView landroverMainBottomGpsBtn, ImageView landroverMainBottomMenuBtn, ImageView landroverMainBottomOffBtn, ImageView landroverMainBottomParkassistBtn, ImageView landroverMainBottomRadarBtn, ImageView landroverMainBottomReturnBtn, ImageView landroverMainBottomSetupBtn, ImageView landroverMainBottomVideoBtn) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.landroverMainBottomAirBtn = landroverMainBottomAirBtn2;
-        this.landroverMainBottomBtBtn = landroverMainBottomBtBtn2;
-        this.landroverMainBottomDvrBtn = landroverMainBottomDvrBtn2;
-        this.landroverMainBottomGpsBtn = landroverMainBottomGpsBtn2;
-        this.landroverMainBottomMenuBtn = landroverMainBottomMenuBtn2;
-        this.landroverMainBottomOffBtn = landroverMainBottomOffBtn2;
-        this.landroverMainBottomParkassistBtn = landroverMainBottomParkassistBtn2;
-        this.landroverMainBottomRadarBtn = landroverMainBottomRadarBtn2;
-        this.landroverMainBottomReturnBtn = landroverMainBottomReturnBtn2;
-        this.landroverMainBottomSetupBtn = landroverMainBottomSetupBtn2;
-        this.landroverMainBottomVideoBtn = landroverMainBottomVideoBtn2;
+        this.landroverMainBottomAirBtn = landroverMainBottomAirBtn;
+        this.landroverMainBottomBtBtn = landroverMainBottomBtBtn;
+        this.landroverMainBottomDvrBtn = landroverMainBottomDvrBtn;
+        this.landroverMainBottomGpsBtn = landroverMainBottomGpsBtn;
+        this.landroverMainBottomMenuBtn = landroverMainBottomMenuBtn;
+        this.landroverMainBottomOffBtn = landroverMainBottomOffBtn;
+        this.landroverMainBottomParkassistBtn = landroverMainBottomParkassistBtn;
+        this.landroverMainBottomRadarBtn = landroverMainBottomRadarBtn;
+        this.landroverMainBottomReturnBtn = landroverMainBottomReturnBtn;
+        this.landroverMainBottomSetupBtn = landroverMainBottomSetupBtn;
+        this.landroverMainBottomVideoBtn = landroverMainBottomVideoBtn;
     }
 
     public LandroverViewModel getLauncherViewModel() {
@@ -52,7 +53,7 @@ public abstract class LandroverMainBottomLayBinding extends ViewDataBinding {
 
     @Deprecated
     public static LandroverMainBottomLayBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (LandroverMainBottomLayBinding) ViewDataBinding.inflateInternal(inflater, R.layout.landrover_main_bottom_lay, root, attachToRoot, component);
+        return (LandroverMainBottomLayBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.landrover_main_bottom_lay, root, attachToRoot, component);
     }
 
     public static LandroverMainBottomLayBinding inflate(LayoutInflater inflater) {
@@ -61,7 +62,7 @@ public abstract class LandroverMainBottomLayBinding extends ViewDataBinding {
 
     @Deprecated
     public static LandroverMainBottomLayBinding inflate(LayoutInflater inflater, Object component) {
-        return (LandroverMainBottomLayBinding) ViewDataBinding.inflateInternal(inflater, R.layout.landrover_main_bottom_lay, (ViewGroup) null, false, component);
+        return (LandroverMainBottomLayBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.landrover_main_bottom_lay, null, false, component);
     }
 
     public static LandroverMainBottomLayBinding bind(View view) {
@@ -70,6 +71,6 @@ public abstract class LandroverMainBottomLayBinding extends ViewDataBinding {
 
     @Deprecated
     public static LandroverMainBottomLayBinding bind(View view, Object component) {
-        return (LandroverMainBottomLayBinding) bind(component, view, R.layout.landrover_main_bottom_lay);
+        return (LandroverMainBottomLayBinding) bind(component, view, C0899R.C0902layout.landrover_main_bottom_lay);
     }
 }

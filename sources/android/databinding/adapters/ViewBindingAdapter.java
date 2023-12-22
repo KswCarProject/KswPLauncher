@@ -3,17 +3,20 @@ package android.databinding.adapters;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View;
-import com.android.databinding.library.baseAdapters.R;
+import com.android.databinding.library.baseAdapters.C0498R;
 
+/* loaded from: classes.dex */
 public class ViewBindingAdapter {
     public static final int FADING_EDGE_HORIZONTAL = 1;
     public static final int FADING_EDGE_NONE = 0;
     public static final int FADING_EDGE_VERTICAL = 2;
 
+    /* loaded from: classes.dex */
     public interface OnViewAttachedToWindow {
         void onViewAttachedToWindow(View view);
     }
 
+    /* loaded from: classes.dex */
     public interface OnViewDetachedFromWindow {
         void onViewDetachedFromWindow(View view);
     }
@@ -24,7 +27,8 @@ public class ViewBindingAdapter {
     }
 
     public static void setPaddingBottom(View view, float paddingFloat) {
-        view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), pixelsToDimensionPixelSize(paddingFloat));
+        int padding = pixelsToDimensionPixelSize(paddingFloat);
+        view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), padding);
     }
 
     public static void setPaddingEnd(View view, float paddingFloat) {
@@ -37,11 +41,13 @@ public class ViewBindingAdapter {
     }
 
     public static void setPaddingLeft(View view, float paddingFloat) {
-        view.setPadding(pixelsToDimensionPixelSize(paddingFloat), view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom());
+        int padding = pixelsToDimensionPixelSize(paddingFloat);
+        view.setPadding(padding, view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom());
     }
 
     public static void setPaddingRight(View view, float paddingFloat) {
-        view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), pixelsToDimensionPixelSize(paddingFloat), view.getPaddingBottom());
+        int padding = pixelsToDimensionPixelSize(paddingFloat);
+        view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), padding, view.getPaddingBottom());
     }
 
     public static void setPaddingStart(View view, float paddingFloat) {
@@ -54,15 +60,13 @@ public class ViewBindingAdapter {
     }
 
     public static void setPaddingTop(View view, float paddingFloat) {
-        view.setPadding(view.getPaddingLeft(), pixelsToDimensionPixelSize(paddingFloat), view.getPaddingRight(), view.getPaddingBottom());
+        int padding = pixelsToDimensionPixelSize(paddingFloat);
+        view.setPadding(view.getPaddingLeft(), padding, view.getPaddingRight(), view.getPaddingBottom());
     }
 
     public static void setRequiresFadingEdge(View view, int value) {
-        boolean horizontal = false;
         boolean vertical = (value & 2) != 0;
-        if ((value & 1) != 0) {
-            horizontal = true;
-        }
+        boolean horizontal = (value & 1) != 0;
         view.setVerticalFadingEdgeEnabled(vertical);
         view.setHorizontalFadingEdgeEnabled(horizontal);
     }
@@ -92,14 +96,16 @@ public class ViewBindingAdapter {
         if (detach == null && attach == null) {
             newListener = null;
         } else {
-            newListener = new View.OnAttachStateChangeListener() {
+            newListener = new View.OnAttachStateChangeListener() { // from class: android.databinding.adapters.ViewBindingAdapter.1
+                @Override // android.view.View.OnAttachStateChangeListener
                 public void onViewAttachedToWindow(View v) {
-                    OnViewAttachedToWindow onViewAttachedToWindow = attach;
+                    OnViewAttachedToWindow onViewAttachedToWindow = OnViewAttachedToWindow.this;
                     if (onViewAttachedToWindow != null) {
                         onViewAttachedToWindow.onViewAttachedToWindow(v);
                     }
                 }
 
+                @Override // android.view.View.OnAttachStateChangeListener
                 public void onViewDetachedFromWindow(View v) {
                     OnViewDetachedFromWindow onViewDetachedFromWindow = detach;
                     if (onViewDetachedFromWindow != null) {
@@ -108,7 +114,7 @@ public class ViewBindingAdapter {
                 }
             };
         }
-        View.OnAttachStateChangeListener oldListener = (View.OnAttachStateChangeListener) ListenerUtil.trackListener(view, newListener, R.id.onAttachStateChangeListener);
+        View.OnAttachStateChangeListener oldListener = (View.OnAttachStateChangeListener) ListenerUtil.trackListener(view, newListener, C0498R.C0500id.onAttachStateChangeListener);
         if (oldListener != null) {
             view.removeOnAttachStateChangeListener(oldListener);
         }

@@ -5,17 +5,18 @@ import io.reactivex.internal.util.Pow2;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
+/* loaded from: classes.dex */
 public final class SpscLinkedArrayQueue<T> implements SimplePlainQueue<T> {
-    private static final Object HAS_NEXT = new Object();
-    static final int MAX_LOOK_AHEAD_STEP = Integer.getInteger("jctools.spsc.max.lookahead.step", 4096).intValue();
     AtomicReferenceArray<Object> consumerBuffer;
-    final AtomicLong consumerIndex = new AtomicLong();
     final int consumerMask;
     AtomicReferenceArray<Object> producerBuffer;
-    final AtomicLong producerIndex = new AtomicLong();
     long producerLookAhead;
     int producerLookAheadStep;
     final int producerMask;
+    static final int MAX_LOOK_AHEAD_STEP = Integer.getInteger("jctools.spsc.max.lookahead.step", 4096).intValue();
+    private static final Object HAS_NEXT = new Object();
+    final AtomicLong producerIndex = new AtomicLong();
+    final AtomicLong consumerIndex = new AtomicLong();
 
     public SpscLinkedArrayQueue(int bufferSize) {
         int p2capacity = Pow2.roundToPowerOfTwo(Math.max(8, bufferSize));
@@ -26,31 +27,32 @@ public final class SpscLinkedArrayQueue<T> implements SimplePlainQueue<T> {
         adjustLookAheadStep(p2capacity);
         this.consumerBuffer = buffer;
         this.consumerMask = mask;
-        this.producerLookAhead = (long) (mask - 1);
-        soProducerIndex(0);
+        this.producerLookAhead = mask - 1;
+        soProducerIndex(0L);
     }
 
+    @Override // io.reactivex.internal.fuseable.SimpleQueue
     public boolean offer(T e) {
-        if (e != null) {
-            AtomicReferenceArray<Object> buffer = this.producerBuffer;
-            long index = lpProducerIndex();
-            int mask = this.producerMask;
-            int offset = calcWrappedOffset(index, mask);
-            if (index < this.producerLookAhead) {
-                return writeToQueue(buffer, e, index, offset);
-            }
-            int lookAheadStep = this.producerLookAheadStep;
-            if (lvElement(buffer, calcWrappedOffset(((long) lookAheadStep) + index, mask)) == null) {
-                this.producerLookAhead = (((long) lookAheadStep) + index) - 1;
-                return writeToQueue(buffer, e, index, offset);
-            } else if (lvElement(buffer, calcWrappedOffset(1 + index, mask)) == null) {
-                return writeToQueue(buffer, e, index, offset);
-            } else {
-                resize(buffer, index, offset, e, (long) mask);
-                return true;
-            }
-        } else {
+        if (e == null) {
             throw new NullPointerException("Null is not a valid element");
+        }
+        AtomicReferenceArray<Object> buffer = this.producerBuffer;
+        long index = lpProducerIndex();
+        int mask = this.producerMask;
+        int offset = calcWrappedOffset(index, mask);
+        if (index < this.producerLookAhead) {
+            return writeToQueue(buffer, e, index, offset);
+        }
+        int lookAheadStep = this.producerLookAheadStep;
+        int lookAheadElementOffset = calcWrappedOffset(lookAheadStep + index, mask);
+        if (lvElement(buffer, lookAheadElementOffset) == null) {
+            this.producerLookAhead = (lookAheadStep + index) - 1;
+            return writeToQueue(buffer, e, index, offset);
+        } else if (lvElement(buffer, calcWrappedOffset(1 + index, mask)) == null) {
+            return writeToQueue(buffer, e, index, offset);
+        } else {
+            resize(buffer, index, offset, e, mask);
+            return true;
         }
     }
 
@@ -61,7 +63,8 @@ public final class SpscLinkedArrayQueue<T> implements SimplePlainQueue<T> {
     }
 
     private void resize(AtomicReferenceArray<Object> oldBuffer, long currIndex, int offset, T e, long mask) {
-        AtomicReferenceArray<Object> newBuffer = new AtomicReferenceArray<>(oldBuffer.length());
+        int capacity = oldBuffer.length();
+        AtomicReferenceArray<Object> newBuffer = new AtomicReferenceArray<>(capacity);
         this.producerBuffer = newBuffer;
         this.producerLookAhead = (currIndex + mask) - 1;
         soElement(newBuffer, offset, e);
@@ -77,34 +80,35 @@ public final class SpscLinkedArrayQueue<T> implements SimplePlainQueue<T> {
     private AtomicReferenceArray<Object> lvNextBufferAndUnlink(AtomicReferenceArray<Object> curr, int nextIndex) {
         int nextOffset = calcDirectOffset(nextIndex);
         AtomicReferenceArray<Object> nextBuffer = (AtomicReferenceArray) lvElement(curr, nextOffset);
-        soElement(curr, nextOffset, (Object) null);
+        soElement(curr, nextOffset, null);
         return nextBuffer;
     }
 
+    @Override // io.reactivex.internal.fuseable.SimplePlainQueue, io.reactivex.internal.fuseable.SimpleQueue
     public T poll() {
         AtomicReferenceArray<Object> buffer = this.consumerBuffer;
         long index = lpConsumerIndex();
         int mask = this.consumerMask;
         int offset = calcWrappedOffset(index, mask);
-        Object e = lvElement(buffer, offset);
-        boolean isNextBuffer = e == HAS_NEXT;
-        if (e != null && !isNextBuffer) {
-            soElement(buffer, offset, (Object) null);
+        T t = (T) lvElement(buffer, offset);
+        boolean isNextBuffer = t == HAS_NEXT;
+        if (t != null && !isNextBuffer) {
+            soElement(buffer, offset, null);
             soConsumerIndex(1 + index);
-            return e;
-        } else if (isNextBuffer) {
-            return newBufferPoll(lvNextBufferAndUnlink(buffer, mask + 1), index, mask);
-        } else {
+            return t;
+        } else if (!isNextBuffer) {
             return null;
+        } else {
+            return newBufferPoll(lvNextBufferAndUnlink(buffer, mask + 1), index, mask);
         }
     }
 
     private T newBufferPoll(AtomicReferenceArray<Object> nextBuffer, long index, int mask) {
         this.consumerBuffer = nextBuffer;
         int offsetInNew = calcWrappedOffset(index, mask);
-        T n = lvElement(nextBuffer, offsetInNew);
+        T n = (T) lvElement(nextBuffer, offsetInNew);
         if (n != null) {
-            soElement(nextBuffer, offsetInNew, (Object) null);
+            soElement(nextBuffer, offsetInNew, null);
             soConsumerIndex(1 + index);
         }
         return n;
@@ -114,18 +118,21 @@ public final class SpscLinkedArrayQueue<T> implements SimplePlainQueue<T> {
         AtomicReferenceArray<Object> buffer = this.consumerBuffer;
         long index = lpConsumerIndex();
         int mask = this.consumerMask;
-        Object e = lvElement(buffer, calcWrappedOffset(index, mask));
-        if (e == HAS_NEXT) {
+        int offset = calcWrappedOffset(index, mask);
+        T t = (T) lvElement(buffer, offset);
+        if (t == HAS_NEXT) {
             return newBufferPeek(lvNextBufferAndUnlink(buffer, mask + 1), index, mask);
         }
-        return e;
+        return t;
     }
 
     private T newBufferPeek(AtomicReferenceArray<Object> nextBuffer, long index, int mask) {
         this.consumerBuffer = nextBuffer;
-        return lvElement(nextBuffer, calcWrappedOffset(index, mask));
+        int offsetInNew = calcWrappedOffset(index, mask);
+        return (T) lvElement(nextBuffer, offsetInNew);
     }
 
+    @Override // io.reactivex.internal.fuseable.SimpleQueue
     public void clear() {
         while (true) {
             if (poll() == null && isEmpty()) {
@@ -146,6 +153,7 @@ public final class SpscLinkedArrayQueue<T> implements SimplePlainQueue<T> {
         return (int) (currentProducerIndex - after);
     }
 
+    @Override // io.reactivex.internal.fuseable.SimpleQueue
     public boolean isEmpty() {
         return lvProducerIndex() == lvConsumerIndex();
     }
@@ -194,6 +202,7 @@ public final class SpscLinkedArrayQueue<T> implements SimplePlainQueue<T> {
         return buffer.get(offset);
     }
 
+    @Override // io.reactivex.internal.fuseable.SimpleQueue
     public boolean offer(T first, T second) {
         AtomicReferenceArray<Object> buffer = this.producerBuffer;
         long p = lvProducerIndex();
@@ -205,7 +214,8 @@ public final class SpscLinkedArrayQueue<T> implements SimplePlainQueue<T> {
             soProducerIndex(2 + p);
             return true;
         }
-        AtomicReferenceArray<Object> newBuffer = new AtomicReferenceArray<>(buffer.length());
+        int capacity = buffer.length();
+        AtomicReferenceArray<Object> newBuffer = new AtomicReferenceArray<>(capacity);
         this.producerBuffer = newBuffer;
         int pi2 = calcWrappedOffset(p, m);
         soElement(newBuffer, pi2 + 1, second);

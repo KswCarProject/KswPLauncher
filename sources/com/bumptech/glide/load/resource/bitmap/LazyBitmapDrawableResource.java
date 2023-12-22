@@ -10,48 +10,55 @@ import com.bumptech.glide.load.engine.Resource;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.util.Preconditions;
 
+/* loaded from: classes.dex */
 public final class LazyBitmapDrawableResource implements Resource<BitmapDrawable>, Initializable {
     private final Resource<Bitmap> bitmapResource;
     private final Resources resources;
 
     @Deprecated
     public static LazyBitmapDrawableResource obtain(Context context, Bitmap bitmap) {
-        return (LazyBitmapDrawableResource) obtain(context.getResources(), (Resource<Bitmap>) BitmapResource.obtain(bitmap, Glide.get(context).getBitmapPool()));
+        return (LazyBitmapDrawableResource) obtain(context.getResources(), BitmapResource.obtain(bitmap, Glide.get(context).getBitmapPool()));
     }
 
     @Deprecated
-    public static LazyBitmapDrawableResource obtain(Resources resources2, BitmapPool bitmapPool, Bitmap bitmap) {
-        return (LazyBitmapDrawableResource) obtain(resources2, (Resource<Bitmap>) BitmapResource.obtain(bitmap, bitmapPool));
+    public static LazyBitmapDrawableResource obtain(Resources resources, BitmapPool bitmapPool, Bitmap bitmap) {
+        return (LazyBitmapDrawableResource) obtain(resources, BitmapResource.obtain(bitmap, bitmapPool));
     }
 
-    public static Resource<BitmapDrawable> obtain(Resources resources2, Resource<Bitmap> bitmapResource2) {
-        if (bitmapResource2 == null) {
+    public static Resource<BitmapDrawable> obtain(Resources resources, Resource<Bitmap> bitmapResource) {
+        if (bitmapResource == null) {
             return null;
         }
-        return new LazyBitmapDrawableResource(resources2, bitmapResource2);
+        return new LazyBitmapDrawableResource(resources, bitmapResource);
     }
 
-    private LazyBitmapDrawableResource(Resources resources2, Resource<Bitmap> bitmapResource2) {
-        this.resources = (Resources) Preconditions.checkNotNull(resources2);
-        this.bitmapResource = (Resource) Preconditions.checkNotNull(bitmapResource2);
+    private LazyBitmapDrawableResource(Resources resources, Resource<Bitmap> bitmapResource) {
+        this.resources = (Resources) Preconditions.checkNotNull(resources);
+        this.bitmapResource = (Resource) Preconditions.checkNotNull(bitmapResource);
     }
 
+    @Override // com.bumptech.glide.load.engine.Resource
     public Class<BitmapDrawable> getResourceClass() {
         return BitmapDrawable.class;
     }
 
+    /* JADX WARN: Can't rename method to resolve collision */
+    @Override // com.bumptech.glide.load.engine.Resource
     public BitmapDrawable get() {
         return new BitmapDrawable(this.resources, this.bitmapResource.get());
     }
 
+    @Override // com.bumptech.glide.load.engine.Resource
     public int getSize() {
         return this.bitmapResource.getSize();
     }
 
+    @Override // com.bumptech.glide.load.engine.Resource
     public void recycle() {
         this.bitmapResource.recycle();
     }
 
+    @Override // com.bumptech.glide.load.engine.Initializable
     public void initialize() {
         Resource<Bitmap> resource = this.bitmapResource;
         if (resource instanceof Initializable) {

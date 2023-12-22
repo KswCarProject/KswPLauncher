@@ -4,6 +4,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.SOURCE)
+/* loaded from: classes.dex */
 public @interface OnConflictStrategy {
     public static final int ABORT = 3;
     public static final int FAIL = 4;

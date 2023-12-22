@@ -3,6 +3,7 @@ package io.reactivex.disposables;
 import io.reactivex.functions.Action;
 import io.reactivex.internal.util.ExceptionHelper;
 
+/* loaded from: classes.dex */
 final class ActionDisposable extends ReferenceDisposable<Action> {
     private static final long serialVersionUID = -8219729196779211169L;
 
@@ -10,7 +11,8 @@ final class ActionDisposable extends ReferenceDisposable<Action> {
         super(value);
     }
 
-    /* access modifiers changed from: protected */
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // io.reactivex.disposables.ReferenceDisposable
     public void onDisposed(Action value) {
         try {
             value.run();

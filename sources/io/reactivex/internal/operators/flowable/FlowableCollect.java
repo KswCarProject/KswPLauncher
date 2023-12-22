@@ -14,38 +14,43 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableCollect<T, U> extends AbstractFlowableWithUpstream<T, U> {
     final BiConsumer<? super U, ? super T> collector;
     final Callable<? extends U> initialSupplier;
 
-    public FlowableCollect(Flowable<T> source, Callable<? extends U> initialSupplier2, BiConsumer<? super U, ? super T> collector2) {
+    public FlowableCollect(Flowable<T> source, Callable<? extends U> initialSupplier, BiConsumer<? super U, ? super T> collector) {
         super(source);
-        this.initialSupplier = initialSupplier2;
-        this.collector = collector2;
+        this.initialSupplier = initialSupplier;
+        this.collector = collector;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super U> s) {
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super U> s) {
         try {
-            this.source.subscribe(new CollectSubscriber(s, ObjectHelper.requireNonNull(this.initialSupplier.call(), "The initial value supplied is null"), this.collector));
+            this.source.subscribe((FlowableSubscriber) new CollectSubscriber(s, ObjectHelper.requireNonNull(this.initialSupplier.call(), "The initial value supplied is null"), this.collector));
         } catch (Throwable e) {
             EmptySubscription.error(e, s);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class CollectSubscriber<T, U> extends DeferredScalarSubscription<U> implements FlowableSubscriber<T> {
         private static final long serialVersionUID = -3589550218733891694L;
         final BiConsumer<? super U, ? super T> collector;
         boolean done;
-        final U u;
+
+        /* renamed from: u */
+        final U f280u;
         Subscription upstream;
 
-        CollectSubscriber(Subscriber<? super U> actual, U u2, BiConsumer<? super U, ? super T> collector2) {
+        CollectSubscriber(Subscriber<? super U> actual, U u, BiConsumer<? super U, ? super T> collector) {
             super(actual);
-            this.collector = collector2;
-            this.u = u2;
+            this.collector = collector;
+            this.f280u = u;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -54,18 +59,21 @@ public final class FlowableCollect<T, U> extends AbstractFlowableWithUpstream<T,
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            if (!this.done) {
-                try {
-                    this.collector.accept(this.u, t);
-                } catch (Throwable e) {
-                    Exceptions.throwIfFatal(e);
-                    this.upstream.cancel();
-                    onError(e);
-                }
+            if (this.done) {
+                return;
+            }
+            try {
+                this.collector.accept((U) this.f280u, t);
+            } catch (Throwable e) {
+                Exceptions.throwIfFatal(e);
+                this.upstream.cancel();
+                onError(e);
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -75,13 +83,16 @@ public final class FlowableCollect<T, U> extends AbstractFlowableWithUpstream<T,
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                complete(this.u);
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            complete(this.f280u);
         }
 
+        @Override // io.reactivex.internal.subscriptions.DeferredScalarSubscription, org.reactivestreams.Subscription
         public void cancel() {
             super.cancel();
             this.upstream.cancel();

@@ -12,14 +12,15 @@ import java.util.EnumSet;
 import java.util.Locale;
 import java.util.Set;
 
+/* loaded from: classes.dex */
 public abstract class TimeZoneNames implements Serializable {
     private static final String DEFAULT_FACTORY_CLASS = "com.ibm.icu.impl.TimeZoneNamesFactoryImpl";
     private static final String FACTORY_NAME_PROP = "com.ibm.icu.text.TimeZoneNames.Factory.impl";
     private static Cache TZNAMES_CACHE = new Cache();
-    /* access modifiers changed from: private */
-    public static final Factory TZNAMES_FACTORY;
+    private static final Factory TZNAMES_FACTORY;
     private static final long serialVersionUID = -9180227029248969153L;
 
+    /* loaded from: classes.dex */
     public enum NameType {
         LONG_GENERIC,
         LONG_STANDARD,
@@ -55,6 +56,7 @@ public abstract class TimeZoneNames implements Serializable {
                 }
                 classname = DEFAULT_FACTORY_CLASS;
             }
+            classname = DEFAULT_FACTORY_CLASS;
         }
         if (factory == null) {
             factory = new DefaultTimeZoneNames.FactoryImpl();
@@ -63,7 +65,8 @@ public abstract class TimeZoneNames implements Serializable {
     }
 
     public static TimeZoneNames getInstance(ULocale locale) {
-        return (TimeZoneNames) TZNAMES_CACHE.getInstance(locale.getBaseName(), locale);
+        String key = locale.getBaseName();
+        return (TimeZoneNames) TZNAMES_CACHE.getInstance(key, locale);
     }
 
     public static TimeZoneNames getInstance(Locale locale) {
@@ -77,7 +80,8 @@ public abstract class TimeZoneNames implements Serializable {
     public final String getDisplayName(String tzID, NameType type, long date) {
         String name = getTimeZoneDisplayName(tzID, type);
         if (name == null) {
-            return getMetaZoneDisplayName(getMetaZoneID(tzID, date), type);
+            String mzID = getMetaZoneID(tzID, date);
+            return getMetaZoneDisplayName(mzID, type);
         }
         return name;
     }
@@ -86,10 +90,11 @@ public abstract class TimeZoneNames implements Serializable {
         return TimeZoneNamesImpl.getDefaultExemplarLocationName(tzID);
     }
 
-    public Collection<MatchInfo> find(CharSequence text, int start, EnumSet<NameType> enumSet) {
+    public Collection<MatchInfo> find(CharSequence text, int start, EnumSet<NameType> types) {
         throw new UnsupportedOperationException("The method is not implemented in TimeZoneNames base class.");
     }
 
+    /* loaded from: classes.dex */
     public static class MatchInfo {
         private int _matchLength;
         private String _mzID;
@@ -99,16 +104,17 @@ public abstract class TimeZoneNames implements Serializable {
         public MatchInfo(NameType nameType, String tzID, String mzID, int matchLength) {
             if (nameType == null) {
                 throw new IllegalArgumentException("nameType is null");
-            } else if (tzID == null && mzID == null) {
+            }
+            if (tzID == null && mzID == null) {
                 throw new IllegalArgumentException("Either tzID or mzID must be available");
-            } else if (matchLength > 0) {
-                this._nameType = nameType;
-                this._tzID = tzID;
-                this._mzID = mzID;
-                this._matchLength = matchLength;
-            } else {
+            }
+            if (matchLength <= 0) {
                 throw new IllegalArgumentException("matchLength must be positive value");
             }
+            this._nameType = nameType;
+            this._tzID = tzID;
+            this._mzID = mzID;
+            this._matchLength = matchLength;
         }
 
         public String tzID() {
@@ -134,19 +140,20 @@ public abstract class TimeZoneNames implements Serializable {
 
     @Deprecated
     public void getDisplayNames(String tzID, NameType[] types, long date, String[] dest, int destOffset) {
-        if (tzID != null && tzID.length() != 0) {
-            String mzID = null;
-            for (int i = 0; i < types.length; i++) {
-                NameType type = types[i];
-                String name = getTimeZoneDisplayName(tzID, type);
-                if (name == null) {
-                    if (mzID == null) {
-                        mzID = getMetaZoneID(tzID, date);
-                    }
-                    name = getMetaZoneDisplayName(mzID, type);
+        if (tzID == null || tzID.length() == 0) {
+            return;
+        }
+        String mzID = null;
+        for (int i = 0; i < types.length; i++) {
+            NameType type = types[i];
+            String name = getTimeZoneDisplayName(tzID, type);
+            if (name == null) {
+                if (mzID == null) {
+                    mzID = getMetaZoneID(tzID, date);
                 }
-                dest[destOffset + i] = name;
+                name = getMetaZoneDisplayName(mzID, type);
             }
+            dest[destOffset + i] = name;
         }
     }
 
@@ -154,6 +161,7 @@ public abstract class TimeZoneNames implements Serializable {
     }
 
     @Deprecated
+    /* loaded from: classes.dex */
     public static abstract class Factory {
         @Deprecated
         public abstract TimeZoneNames getTimeZoneNames(ULocale uLocale);
@@ -163,16 +171,18 @@ public abstract class TimeZoneNames implements Serializable {
         }
     }
 
+    /* loaded from: classes.dex */
     private static class Cache extends SoftCache<String, TimeZoneNames, ULocale> {
         private Cache() {
         }
 
-        /* access modifiers changed from: protected */
+        /* JADX INFO: Access modifiers changed from: protected */
         public TimeZoneNames createInstance(String key, ULocale data) {
             return TimeZoneNames.TZNAMES_FACTORY.getTimeZoneNames(data);
         }
     }
 
+    /* loaded from: classes.dex */
     private static class DefaultTimeZoneNames extends TimeZoneNames {
         public static final DefaultTimeZoneNames INSTANCE = new DefaultTimeZoneNames();
         private static final long serialVersionUID = -995672072494349071L;
@@ -180,35 +190,44 @@ public abstract class TimeZoneNames implements Serializable {
         private DefaultTimeZoneNames() {
         }
 
+        @Override // com.ibm.icu.text.TimeZoneNames
         public Set<String> getAvailableMetaZoneIDs() {
             return Collections.emptySet();
         }
 
+        @Override // com.ibm.icu.text.TimeZoneNames
         public Set<String> getAvailableMetaZoneIDs(String tzID) {
             return Collections.emptySet();
         }
 
+        @Override // com.ibm.icu.text.TimeZoneNames
         public String getMetaZoneID(String tzID, long date) {
             return null;
         }
 
+        @Override // com.ibm.icu.text.TimeZoneNames
         public String getReferenceZoneID(String mzID, String region) {
             return null;
         }
 
+        @Override // com.ibm.icu.text.TimeZoneNames
         public String getMetaZoneDisplayName(String mzID, NameType type) {
             return null;
         }
 
+        @Override // com.ibm.icu.text.TimeZoneNames
         public String getTimeZoneDisplayName(String tzID, NameType type) {
             return null;
         }
 
-        public Collection<MatchInfo> find(CharSequence text, int start, EnumSet<NameType> enumSet) {
+        @Override // com.ibm.icu.text.TimeZoneNames
+        public Collection<MatchInfo> find(CharSequence text, int start, EnumSet<NameType> nameTypes) {
             return Collections.emptyList();
         }
 
+        /* loaded from: classes.dex */
         public static class FactoryImpl extends Factory {
+            @Override // com.ibm.icu.text.TimeZoneNames.Factory
             public TimeZoneNames getTimeZoneNames(ULocale locale) {
                 return DefaultTimeZoneNames.INSTANCE;
             }

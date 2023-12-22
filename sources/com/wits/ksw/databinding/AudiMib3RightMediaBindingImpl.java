@@ -1,62 +1,67 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.bean.MediaInfo;
 import com.wits.ksw.launcher.model.AudiViewModel;
 
+/* loaded from: classes7.dex */
 public class AudiMib3RightMediaBindingImpl extends AudiMib3RightMediaBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback81;
-    private final View.OnClickListener mCallback82;
-    private final View.OnClickListener mCallback83;
-    private final View.OnClickListener mCallback84;
+    private final View.OnClickListener mCallback127;
+    private final View.OnClickListener mCallback128;
+    private final View.OnClickListener mCallback129;
+    private final View.OnClickListener mCallback130;
     private long mDirtyFlags;
 
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.info_bg, 6);
+        sparseIntArray.put(C0899R.C0901id.info_bg, 6);
     }
 
     public AudiMib3RightMediaBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 7, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private AudiMib3RightMediaBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 2, bindings[1], bindings[0], bindings[5], bindings[4], bindings[3], bindings[6], bindings[2]);
-        this.mDirtyFlags = -1;
-        this.IvRightMusicIcon.setTag((Object) null);
-        this.KSWA4LRightShowMedia.setTag((Object) null);
-        this.btnMusicNext.setTag((Object) null);
-        this.btnMusicPlayPause.setTag((Object) null);
-        this.btnMusicPrev.setTag((Object) null);
-        this.tvMusicTitleInfor.setTag((Object) null);
+        super(bindingComponent, root, 2, (ImageView) bindings[1], (RelativeLayout) bindings[0], (Button) bindings[5], (Button) bindings[4], (Button) bindings[3], (ImageView) bindings[6], (TextView) bindings[2]);
+        this.mDirtyFlags = -1L;
+        this.IvRightMusicIcon.setTag(null);
+        this.KSWA4LRightShowMedia.setTag(null);
+        this.btnMusicNext.setTag(null);
+        this.btnMusicPlayPause.setTag(null);
+        this.btnMusicPrev.setTag(null);
+        this.tvMusicTitleInfor.setTag(null);
         setRootTag(root);
-        this.mCallback83 = new OnClickListener(this, 3);
-        this.mCallback84 = new OnClickListener(this, 4);
-        this.mCallback81 = new OnClickListener(this, 1);
-        this.mCallback82 = new OnClickListener(this, 2);
+        this.mCallback128 = new OnClickListener(this, 2);
+        this.mCallback129 = new OnClickListener(this, 3);
+        this.mCallback127 = new OnClickListener(this, 1);
+        this.mCallback130 = new OnClickListener(this, 4);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 8;
+            this.mDirtyFlags = 8L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -66,14 +71,16 @@ public class AudiMib3RightMediaBindingImpl extends AudiMib3RightMediaBinding imp
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((AudiViewModel) variable);
+            return true;
         }
-        setVm((AudiViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AudiMib3RightMediaBinding
     public void setVm(AudiViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -83,8 +90,8 @@ public class AudiMib3RightMediaBindingImpl extends AudiMib3RightMediaBinding imp
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmMediaView((ObservableInt) object, fieldId);
@@ -96,31 +103,31 @@ public class AudiMib3RightMediaBindingImpl extends AudiMib3RightMediaBinding imp
     }
 
     private boolean onChangeVmMediaView(ObservableInt VmMediaView, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmMediaInfoMusicName(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmMediaInfoMusicName(ObservableField<String> VmMediaInfoMusicName, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         String vmMediaInfoMusicNameGet = null;
         AudiViewModel vm = this.mVm;
@@ -132,7 +139,7 @@ public class AudiMib3RightMediaBindingImpl extends AudiMib3RightMediaBinding imp
             if (vmMediaInfo != null) {
                 vmMediaInfoMusicName = vmMediaInfo.musicName;
             }
-            updateRegistration(1, (Observable) vmMediaInfoMusicName);
+            updateRegistration(1, vmMediaInfoMusicName);
             if (vmMediaInfoMusicName != null) {
                 vmMediaInfoMusicNameGet = vmMediaInfoMusicName.get();
             }
@@ -141,16 +148,16 @@ public class AudiMib3RightMediaBindingImpl extends AudiMib3RightMediaBinding imp
             if (vm != null) {
                 vmMediaView = vm.mediaView;
             }
-            updateRegistration(0, (Observable) vmMediaView);
+            updateRegistration(0, vmMediaView);
             if (vmMediaView != null) {
                 vmMediaViewGet = vmMediaView.get();
             }
         }
         if ((8 & dirtyFlags) != 0) {
-            this.IvRightMusicIcon.setOnClickListener(this.mCallback81);
-            this.btnMusicNext.setOnClickListener(this.mCallback84);
-            this.btnMusicPlayPause.setOnClickListener(this.mCallback83);
-            this.btnMusicPrev.setOnClickListener(this.mCallback82);
+            this.IvRightMusicIcon.setOnClickListener(this.mCallback127);
+            this.btnMusicNext.setOnClickListener(this.mCallback130);
+            this.btnMusicPlayPause.setOnClickListener(this.mCallback129);
+            this.btnMusicPrev.setOnClickListener(this.mCallback128);
         }
         if ((dirtyFlags & 13) != 0) {
             this.KSWA4LRightShowMedia.setVisibility(vmMediaViewGet);
@@ -160,14 +167,13 @@ public class AudiMib3RightMediaBindingImpl extends AudiMib3RightMediaBinding imp
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean vmJavaLangObjectNull = true;
+        boolean vmJavaLangObjectNull;
         switch (sourceId) {
             case 1:
                 AudiViewModel vm = this.mVm;
-                if (vm == null) {
-                    vmJavaLangObjectNull = false;
-                }
+                vmJavaLangObjectNull = vm != null;
                 if (vmJavaLangObjectNull) {
                     vm.openMusic(callbackArg_0);
                     return;
@@ -175,9 +181,7 @@ public class AudiMib3RightMediaBindingImpl extends AudiMib3RightMediaBinding imp
                 return;
             case 2:
                 AudiViewModel vm2 = this.mVm;
-                if (vm2 == null) {
-                    vmJavaLangObjectNull = false;
-                }
+                vmJavaLangObjectNull = vm2 != null;
                 if (vmJavaLangObjectNull) {
                     vm2.btnMusicPrev();
                     return;
@@ -185,9 +189,7 @@ public class AudiMib3RightMediaBindingImpl extends AudiMib3RightMediaBinding imp
                 return;
             case 3:
                 AudiViewModel vm3 = this.mVm;
-                if (vm3 == null) {
-                    vmJavaLangObjectNull = false;
-                }
+                vmJavaLangObjectNull = vm3 != null;
                 if (vmJavaLangObjectNull) {
                     vm3.btnMusicPlayPause();
                     return;
@@ -195,9 +197,7 @@ public class AudiMib3RightMediaBindingImpl extends AudiMib3RightMediaBinding imp
                 return;
             case 4:
                 AudiViewModel vm4 = this.mVm;
-                if (vm4 == null) {
-                    vmJavaLangObjectNull = false;
-                }
+                vmJavaLangObjectNull = vm4 != null;
                 if (vmJavaLangObjectNull) {
                     vm4.btnMusicNext();
                     return;

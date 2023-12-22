@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:gravity="center" android:orientation="vertical" android:background="@drawable/lexus_ls_main_add_bk" android:layout_width="match_parent" android:layout_height="match_parent">
-    <android.support.v7.widget.RecyclerView android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="30dp" android:layout_marginTop="30dp" android:layout_marginRight="30dp" android:layout_marginBottom="90dp"/>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="center" android:orientation="vertical" android:background="@drawable/lexus_ls_main_add_bk" android:layout_width="match_parent" android:layout_height="match_parent">
+    <android.support.p004v7.widget.RecyclerView android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="30dp" android:layout_marginTop="30dp" android:layout_marginRight="30dp" android:layout_marginBottom="90dp"/>
     <GridView android:id="@+id/gridView" android:focusable="true" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_margin="20dp" android:columnWidth="90dp" android:numColumns="4" android:overScrollMode="never" android:defaultFocusHighlightEnabled="false"/>
 </RelativeLayout>

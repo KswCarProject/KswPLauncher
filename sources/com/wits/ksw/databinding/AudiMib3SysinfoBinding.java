@@ -3,16 +3,17 @@ package com.wits.ksw.databinding;
 import android.databinding.Bindable;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.v7.widget.AppCompatTextView;
+import android.support.p004v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.settings.audi.widget.AudiConstraintLayout;
-import com.wits.ksw.settings.audi_mib3.vm.AudiMib3SettingViewModel;
+import com.wits.ksw.settings.audi_mib3.p008vm.AudiMib3SettingViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class AudiMib3SysinfoBinding extends ViewDataBinding {
     public final AudiConstraintLayout audiSysInfParentPanel;
     public final TextView audiSysInfoAppVer;
@@ -30,24 +31,23 @@ public abstract class AudiMib3SysinfoBinding extends ViewDataBinding {
     public final View titleDivider;
     public final View vDivider;
 
-    public abstract void setVm(AudiMib3SettingViewModel audiMib3SettingViewModel);
+    public abstract void setVm(AudiMib3SettingViewModel vm);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected AudiMib3SysinfoBinding(Object _bindingComponent, View _root, int _localFieldCount, AudiConstraintLayout audiSysInfParentPanel2, TextView audiSysInfoAppVer2, TextView audiSysInfoMcuVer2, TextView audiSysInfoSysVer2, TextView audioSysInfoFlash2, TextView audioSysInfoMcuUpdata2, TextView audioSysInfoRam2, TextView audioSysInfoRestoreFactory2, TextView audioSysInfoUpDateFactory2, ScrollView svSysinfo2, AppCompatTextView title2, View titleDivider2, View vDivider2) {
+    protected AudiMib3SysinfoBinding(Object _bindingComponent, View _root, int _localFieldCount, AudiConstraintLayout audiSysInfParentPanel, TextView audiSysInfoAppVer, TextView audiSysInfoMcuVer, TextView audiSysInfoSysVer, TextView audioSysInfoFlash, TextView audioSysInfoMcuUpdata, TextView audioSysInfoRam, TextView audioSysInfoRestoreFactory, TextView audioSysInfoUpDateFactory, ScrollView svSysinfo, AppCompatTextView title, View titleDivider, View vDivider) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.audiSysInfParentPanel = audiSysInfParentPanel2;
-        this.audiSysInfoAppVer = audiSysInfoAppVer2;
-        this.audiSysInfoMcuVer = audiSysInfoMcuVer2;
-        this.audiSysInfoSysVer = audiSysInfoSysVer2;
-        this.audioSysInfoFlash = audioSysInfoFlash2;
-        this.audioSysInfoMcuUpdata = audioSysInfoMcuUpdata2;
-        this.audioSysInfoRam = audioSysInfoRam2;
-        this.audioSysInfoRestoreFactory = audioSysInfoRestoreFactory2;
-        this.audioSysInfoUpDateFactory = audioSysInfoUpDateFactory2;
-        this.svSysinfo = svSysinfo2;
-        this.title = title2;
-        this.titleDivider = titleDivider2;
-        this.vDivider = vDivider2;
+        this.audiSysInfParentPanel = audiSysInfParentPanel;
+        this.audiSysInfoAppVer = audiSysInfoAppVer;
+        this.audiSysInfoMcuVer = audiSysInfoMcuVer;
+        this.audiSysInfoSysVer = audiSysInfoSysVer;
+        this.audioSysInfoFlash = audioSysInfoFlash;
+        this.audioSysInfoMcuUpdata = audioSysInfoMcuUpdata;
+        this.audioSysInfoRam = audioSysInfoRam;
+        this.audioSysInfoRestoreFactory = audioSysInfoRestoreFactory;
+        this.audioSysInfoUpDateFactory = audioSysInfoUpDateFactory;
+        this.svSysinfo = svSysinfo;
+        this.title = title;
+        this.titleDivider = titleDivider;
+        this.vDivider = vDivider;
     }
 
     public AudiMib3SettingViewModel getVm() {
@@ -60,7 +60,7 @@ public abstract class AudiMib3SysinfoBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3SysinfoBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AudiMib3SysinfoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_mib3_sysinfo, root, attachToRoot, component);
+        return (AudiMib3SysinfoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_mib3_sysinfo, root, attachToRoot, component);
     }
 
     public static AudiMib3SysinfoBinding inflate(LayoutInflater inflater) {
@@ -69,7 +69,7 @@ public abstract class AudiMib3SysinfoBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3SysinfoBinding inflate(LayoutInflater inflater, Object component) {
-        return (AudiMib3SysinfoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_mib3_sysinfo, (ViewGroup) null, false, component);
+        return (AudiMib3SysinfoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_mib3_sysinfo, null, false, component);
     }
 
     public static AudiMib3SysinfoBinding bind(View view) {
@@ -78,6 +78,6 @@ public abstract class AudiMib3SysinfoBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3SysinfoBinding bind(View view, Object component) {
-        return (AudiMib3SysinfoBinding) bind(component, view, R.layout.audi_mib3_sysinfo);
+        return (AudiMib3SysinfoBinding) bind(component, view, C0899R.C0902layout.audi_mib3_sysinfo);
     }
 }

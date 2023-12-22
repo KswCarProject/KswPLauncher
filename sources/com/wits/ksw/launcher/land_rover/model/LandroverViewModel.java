@@ -14,23 +14,26 @@ import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.pms.statuscontrol.McuStatus;
 import com.wits.pms.statuscontrol.WitsCommand;
 
+/* loaded from: classes12.dex */
 public class LandroverViewModel extends LauncherViewModel {
-    public View.OnFocusChangeListener btViewFocusChangeListener = new View.OnFocusChangeListener() {
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus) {
-                Log.i(LandroverViewModel.TAG, "onFocusChange: settingsViewFocusChangeListener");
-                if (MainActivity.mainActivity != null) {
-                    MainActivity.mainActivity.setCurrentItem(1);
-                }
-            }
-        }
-    };
-    public View.OnFocusChangeListener settingsViewFocusChangeListener = new View.OnFocusChangeListener() {
+    public View.OnFocusChangeListener settingsViewFocusChangeListener = new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.land_rover.model.LandroverViewModel.1
+        @Override // android.view.View.OnFocusChangeListener
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
                 Log.i(LandroverViewModel.TAG, "onFocusChange: settingsViewFocusChangeListener");
                 if (MainActivity.mainActivity != null) {
                     MainActivity.mainActivity.setCurrentItem(0);
+                }
+            }
+        }
+    };
+    public View.OnFocusChangeListener btViewFocusChangeListener = new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.land_rover.model.LandroverViewModel.2
+        @Override // android.view.View.OnFocusChangeListener
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                Log.i(LandroverViewModel.TAG, "onFocusChange: settingsViewFocusChangeListener");
+                if (MainActivity.mainActivity != null) {
+                    MainActivity.mainActivity.setCurrentItem(1);
                 }
             }
         }
@@ -85,11 +88,14 @@ public class LandroverViewModel extends LauncherViewModel {
     }
 
     public static void sendKeyDownUpSync(final int key) {
-        new Handler().post(new Runnable() {
+        new Handler().post(new Runnable() { // from class: com.wits.ksw.launcher.land_rover.model.LandroverViewModel.3
+            @Override // java.lang.Runnable
             public void run() {
-                new Thread(new Runnable() {
+                new Thread(new Runnable() { // from class: com.wits.ksw.launcher.land_rover.model.LandroverViewModel.3.1
+                    @Override // java.lang.Runnable
                     public void run() {
-                        new Instrumentation().sendKeyDownUpSync(key);
+                        Instrumentation instrumentation = new Instrumentation();
+                        instrumentation.sendKeyDownUpSync(key);
                     }
                 }).start();
             }
@@ -107,9 +113,10 @@ public class LandroverViewModel extends LauncherViewModel {
         } else if (KswUtils.getDvrType() == 2) {
             String usbPkg = KswUtils.getUsbDvrPkg();
             Log.i(TAG, "openDvr: usbPkg:" + usbPkg);
-            if (!TextUtils.isEmpty(usbPkg)) {
-                openApp(this.context.getPackageManager().getLaunchIntentForPackage(usbPkg));
+            if (TextUtils.isEmpty(usbPkg)) {
+                return;
             }
+            openApp(this.context.getPackageManager().getLaunchIntentForPackage(usbPkg));
         }
     }
 

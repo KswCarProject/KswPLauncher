@@ -9,6 +9,7 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class ObservableFromPublisher<T> extends Observable<T> {
     final Publisher<? extends T> source;
 
@@ -16,11 +17,12 @@ public final class ObservableFromPublisher<T> extends Observable<T> {
         this.source = publisher;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Observer<? super T> o) {
+    @Override // io.reactivex.Observable
+    protected void subscribeActual(Observer<? super T> o) {
         this.source.subscribe(new PublisherSubscriber(o));
     }
 
+    /* loaded from: classes.dex */
     static final class PublisherSubscriber<T> implements FlowableSubscriber<T>, Disposable {
         final Observer<? super T> downstream;
         Subscription upstream;
@@ -29,18 +31,22 @@ public final class ObservableFromPublisher<T> extends Observable<T> {
             this.downstream = o;
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.downstream.onComplete();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             this.downstream.onNext(t);
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -49,11 +55,13 @@ public final class ObservableFromPublisher<T> extends Observable<T> {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.cancel();
             this.upstream = SubscriptionHelper.CANCELLED;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream == SubscriptionHelper.CANCELLED;
         }

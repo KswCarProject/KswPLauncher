@@ -12,44 +12,50 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class MaybeTakeUntilPublisher<T, U> extends AbstractMaybeWithUpstream<T, T> {
     final Publisher<U> other;
 
-    public MaybeTakeUntilPublisher(MaybeSource<T> source, Publisher<U> other2) {
+    public MaybeTakeUntilPublisher(MaybeSource<T> source, Publisher<U> other) {
         super(source);
-        this.other = other2;
+        this.other = other;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super T> observer) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super T> observer) {
         TakeUntilMainMaybeObserver<T, U> parent = new TakeUntilMainMaybeObserver<>(observer);
         observer.onSubscribe(parent);
         this.other.subscribe(parent.other);
         this.source.subscribe(parent);
     }
 
+    /* loaded from: classes.dex */
     static final class TakeUntilMainMaybeObserver<T, U> extends AtomicReference<Disposable> implements MaybeObserver<T>, Disposable {
         private static final long serialVersionUID = -2187421758664251153L;
         final MaybeObserver<? super T> downstream;
         final TakeUntilOtherMaybeObserver<U> other = new TakeUntilOtherMaybeObserver<>(this);
 
-        TakeUntilMainMaybeObserver(MaybeObserver<? super T> downstream2) {
-            this.downstream = downstream2;
+        TakeUntilMainMaybeObserver(MaybeObserver<? super T> downstream) {
+            this.downstream = downstream;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             DisposableHelper.dispose(this);
             SubscriptionHelper.cancel(this.other);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return DisposableHelper.isDisposed((Disposable) get());
+            return DisposableHelper.isDisposed(get());
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSubscribe(Disposable d) {
             DisposableHelper.setOnce(this, d);
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSuccess(T value) {
             SubscriptionHelper.cancel(this.other);
             if (getAndSet(DisposableHelper.DISPOSED) != DisposableHelper.DISPOSED) {
@@ -57,6 +63,7 @@ public final class MaybeTakeUntilPublisher<T, U> extends AbstractMaybeWithUpstre
             }
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onError(Throwable e) {
             SubscriptionHelper.cancel(this.other);
             if (getAndSet(DisposableHelper.DISPOSED) != DisposableHelper.DISPOSED) {
@@ -66,6 +73,7 @@ public final class MaybeTakeUntilPublisher<T, U> extends AbstractMaybeWithUpstre
             }
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onComplete() {
             SubscriptionHelper.cancel(this.other);
             if (getAndSet(DisposableHelper.DISPOSED) != DisposableHelper.DISPOSED) {
@@ -73,8 +81,7 @@ public final class MaybeTakeUntilPublisher<T, U> extends AbstractMaybeWithUpstre
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void otherError(Throwable e) {
+        void otherError(Throwable e) {
             if (DisposableHelper.dispose(this)) {
                 this.downstream.onError(e);
             } else {
@@ -82,34 +89,38 @@ public final class MaybeTakeUntilPublisher<T, U> extends AbstractMaybeWithUpstre
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void otherComplete() {
+        void otherComplete() {
             if (DisposableHelper.dispose(this)) {
                 this.downstream.onComplete();
             }
         }
 
+        /* loaded from: classes.dex */
         static final class TakeUntilOtherMaybeObserver<U> extends AtomicReference<Subscription> implements FlowableSubscriber<U> {
             private static final long serialVersionUID = -1266041316834525931L;
             final TakeUntilMainMaybeObserver<?, U> parent;
 
-            TakeUntilOtherMaybeObserver(TakeUntilMainMaybeObserver<?, U> parent2) {
-                this.parent = parent2;
+            TakeUntilOtherMaybeObserver(TakeUntilMainMaybeObserver<?, U> parent) {
+                this.parent = parent;
             }
 
+            @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
             public void onSubscribe(Subscription s) {
                 SubscriptionHelper.setOnce(this, s, LongCompanionObject.MAX_VALUE);
             }
 
+            @Override // org.reactivestreams.Subscriber
             public void onNext(Object value) {
                 SubscriptionHelper.cancel(this);
                 this.parent.otherComplete();
             }
 
+            @Override // org.reactivestreams.Subscriber
             public void onError(Throwable e) {
                 this.parent.otherError(e);
             }
 
+            @Override // org.reactivestreams.Subscriber
             public void onComplete() {
                 this.parent.otherComplete();
             }

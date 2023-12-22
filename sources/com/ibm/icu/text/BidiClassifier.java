@@ -1,14 +1,15 @@
 package com.ibm.icu.text;
 
+/* loaded from: classes.dex */
 public class BidiClassifier {
     protected Object context;
 
-    public BidiClassifier(Object context2) {
-        this.context = context2;
+    public BidiClassifier(Object context) {
+        this.context = context;
     }
 
-    public void setContext(Object context2) {
-        this.context = context2;
+    public void setContext(Object context) {
+        this.context = context;
     }
 
     public Object getContext() {

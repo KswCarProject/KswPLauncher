@@ -12,30 +12,35 @@ import io.reactivex.observers.LambdaConsumerIntrospection;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class MaybeCallbackObserver<T> extends AtomicReference<Disposable> implements MaybeObserver<T>, Disposable, LambdaConsumerIntrospection {
     private static final long serialVersionUID = -6076952298809384986L;
     final Action onComplete;
     final Consumer<? super Throwable> onError;
     final Consumer<? super T> onSuccess;
 
-    public MaybeCallbackObserver(Consumer<? super T> onSuccess2, Consumer<? super Throwable> onError2, Action onComplete2) {
-        this.onSuccess = onSuccess2;
-        this.onError = onError2;
-        this.onComplete = onComplete2;
+    public MaybeCallbackObserver(Consumer<? super T> onSuccess, Consumer<? super Throwable> onError, Action onComplete) {
+        this.onSuccess = onSuccess;
+        this.onError = onError;
+        this.onComplete = onComplete;
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public void dispose() {
         DisposableHelper.dispose(this);
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public boolean isDisposed() {
-        return DisposableHelper.isDisposed((Disposable) get());
+        return DisposableHelper.isDisposed(get());
     }
 
+    @Override // io.reactivex.MaybeObserver
     public void onSubscribe(Disposable d) {
         DisposableHelper.setOnce(this, d);
     }
 
+    @Override // io.reactivex.MaybeObserver
     public void onSuccess(T value) {
         lazySet(DisposableHelper.DISPOSED);
         try {
@@ -46,6 +51,7 @@ public final class MaybeCallbackObserver<T> extends AtomicReference<Disposable> 
         }
     }
 
+    @Override // io.reactivex.MaybeObserver
     public void onError(Throwable e) {
         lazySet(DisposableHelper.DISPOSED);
         try {
@@ -56,6 +62,7 @@ public final class MaybeCallbackObserver<T> extends AtomicReference<Disposable> 
         }
     }
 
+    @Override // io.reactivex.MaybeObserver
     public void onComplete() {
         lazySet(DisposableHelper.DISPOSED);
         try {
@@ -66,6 +73,7 @@ public final class MaybeCallbackObserver<T> extends AtomicReference<Disposable> 
         }
     }
 
+    @Override // io.reactivex.observers.LambdaConsumerIntrospection
     public boolean hasCustomOnError() {
         return this.onError != Functions.ON_ERROR_MISSING;
     }

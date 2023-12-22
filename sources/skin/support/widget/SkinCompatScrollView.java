@@ -4,11 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ScrollView;
 
+/* loaded from: classes.dex */
 public class SkinCompatScrollView extends ScrollView implements SkinCompatSupportable {
     private SkinCompatBackgroundHelper mBackgroundTintHelper;
 
     public SkinCompatScrollView(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public SkinCompatScrollView(Context context, AttributeSet attrs) {
@@ -22,6 +23,7 @@ public class SkinCompatScrollView extends ScrollView implements SkinCompatSuppor
         skinCompatBackgroundHelper.loadFromAttributes(attrs, defStyleAttr);
     }
 
+    @Override // android.view.View
     public void setBackgroundResource(int resId) {
         super.setBackgroundResource(resId);
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
@@ -30,6 +32,7 @@ public class SkinCompatScrollView extends ScrollView implements SkinCompatSuppor
         }
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
         if (skinCompatBackgroundHelper != null) {

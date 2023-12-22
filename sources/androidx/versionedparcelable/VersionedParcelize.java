@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.SOURCE)
+/* loaded from: classes.dex */
 public @interface VersionedParcelize {
     boolean allowSerialization() default false;
 

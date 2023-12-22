@@ -10,10 +10,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView;
 
+/* loaded from: classes7.dex */
 public abstract class Benz2021FragmentOne extends ViewDataBinding {
     public final BenzMbuxItemView btItemview;
     public final RelativeLayout btRl;
@@ -40,33 +41,32 @@ public abstract class Benz2021FragmentOne extends ViewDataBinding {
     public final View space1;
     public final View space2;
 
-    public abstract void setViewModel(BcVieModel bcVieModel);
+    public abstract void setViewModel(BcVieModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected Benz2021FragmentOne(Object _bindingComponent, View _root, int _localFieldCount, BenzMbuxItemView btItemview2, RelativeLayout btRl2, TextView btTip2, TextView btTv2, BenzMbuxItemView carItemview2, RelativeLayout carRl2, TextView carTip2, TextView carTv2, LinearLayout fragmentOneLl2, ImageView ivBt12, ImageView ivBt22, ImageView ivCar12, ImageView ivCar22, ImageView ivNavi12, ImageView ivNavi22, BenzMbuxItemView naviItemview2, RelativeLayout naviRl2, TextView naviTip2, TextView naviTv2, View space3, View space12, View space22) {
+    protected Benz2021FragmentOne(Object _bindingComponent, View _root, int _localFieldCount, BenzMbuxItemView btItemview, RelativeLayout btRl, TextView btTip, TextView btTv, BenzMbuxItemView carItemview, RelativeLayout carRl, TextView carTip, TextView carTv, LinearLayout fragmentOneLl, ImageView ivBt1, ImageView ivBt2, ImageView ivCar1, ImageView ivCar2, ImageView ivNavi1, ImageView ivNavi2, BenzMbuxItemView naviItemview, RelativeLayout naviRl, TextView naviTip, TextView naviTv, View space, View space1, View space2) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.btItemview = btItemview2;
-        this.btRl = btRl2;
-        this.btTip = btTip2;
-        this.btTv = btTv2;
-        this.carItemview = carItemview2;
-        this.carRl = carRl2;
-        this.carTip = carTip2;
-        this.carTv = carTv2;
-        this.fragmentOneLl = fragmentOneLl2;
-        this.ivBt1 = ivBt12;
-        this.ivBt2 = ivBt22;
-        this.ivCar1 = ivCar12;
-        this.ivCar2 = ivCar22;
-        this.ivNavi1 = ivNavi12;
-        this.ivNavi2 = ivNavi22;
-        this.naviItemview = naviItemview2;
-        this.naviRl = naviRl2;
-        this.naviTip = naviTip2;
-        this.naviTv = naviTv2;
-        this.space = space3;
-        this.space1 = space12;
-        this.space2 = space22;
+        this.btItemview = btItemview;
+        this.btRl = btRl;
+        this.btTip = btTip;
+        this.btTv = btTv;
+        this.carItemview = carItemview;
+        this.carRl = carRl;
+        this.carTip = carTip;
+        this.carTv = carTv;
+        this.fragmentOneLl = fragmentOneLl;
+        this.ivBt1 = ivBt1;
+        this.ivBt2 = ivBt2;
+        this.ivCar1 = ivCar1;
+        this.ivCar2 = ivCar2;
+        this.ivNavi1 = ivNavi1;
+        this.ivNavi2 = ivNavi2;
+        this.naviItemview = naviItemview;
+        this.naviRl = naviRl;
+        this.naviTip = naviTip;
+        this.naviTv = naviTv;
+        this.space = space;
+        this.space1 = space1;
+        this.space2 = space2;
     }
 
     public BcVieModel getViewModel() {
@@ -79,7 +79,7 @@ public abstract class Benz2021FragmentOne extends ViewDataBinding {
 
     @Deprecated
     public static Benz2021FragmentOne inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (Benz2021FragmentOne) ViewDataBinding.inflateInternal(inflater, R.layout.benz_mbux_2021_fragment_one, root, attachToRoot, component);
+        return (Benz2021FragmentOne) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.benz_mbux_2021_fragment_one, root, attachToRoot, component);
     }
 
     public static Benz2021FragmentOne inflate(LayoutInflater inflater) {
@@ -88,7 +88,7 @@ public abstract class Benz2021FragmentOne extends ViewDataBinding {
 
     @Deprecated
     public static Benz2021FragmentOne inflate(LayoutInflater inflater, Object component) {
-        return (Benz2021FragmentOne) ViewDataBinding.inflateInternal(inflater, R.layout.benz_mbux_2021_fragment_one, (ViewGroup) null, false, component);
+        return (Benz2021FragmentOne) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.benz_mbux_2021_fragment_one, null, false, component);
     }
 
     public static Benz2021FragmentOne bind(View view) {
@@ -97,6 +97,6 @@ public abstract class Benz2021FragmentOne extends ViewDataBinding {
 
     @Deprecated
     public static Benz2021FragmentOne bind(View view, Object component) {
-        return (Benz2021FragmentOne) bind(component, view, R.layout.benz_mbux_2021_fragment_one);
+        return (Benz2021FragmentOne) bind(component, view, C0899R.C0902layout.benz_mbux_2021_fragment_one);
     }
 }

@@ -1,6 +1,6 @@
 package com.bumptech.glide.load.engine.cache;
 
-import android.support.v4.util.Pools;
+import android.support.p001v4.util.Pools;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.util.LruCache;
 import com.bumptech.glide.util.Preconditions;
@@ -10,8 +10,12 @@ import com.bumptech.glide.util.pool.StateVerifier;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/* loaded from: classes.dex */
 public class SafeKeyGenerator {
-    private final Pools.Pool<PoolableDigestContainer> digestPool = FactoryPools.threadSafe(10, new FactoryPools.Factory<PoolableDigestContainer>() {
+    private final LruCache<Key, String> loadIdToSafeHash = new LruCache<>(1000);
+    private final Pools.Pool<PoolableDigestContainer> digestPool = FactoryPools.threadSafe(10, new FactoryPools.Factory<PoolableDigestContainer>() { // from class: com.bumptech.glide.load.engine.cache.SafeKeyGenerator.1
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // com.bumptech.glide.util.pool.FactoryPools.Factory
         public PoolableDigestContainer create() {
             try {
                 return new PoolableDigestContainer(MessageDigest.getInstance("SHA-256"));
@@ -20,7 +24,6 @@ public class SafeKeyGenerator {
             }
         }
     });
-    private final LruCache<Key, String> loadIdToSafeHash = new LruCache<>(1000);
 
     public String getSafeKey(Key key) {
         String safeKey;
@@ -46,14 +49,16 @@ public class SafeKeyGenerator {
         }
     }
 
+    /* loaded from: classes.dex */
     private static final class PoolableDigestContainer implements FactoryPools.Poolable {
         final MessageDigest messageDigest;
         private final StateVerifier stateVerifier = StateVerifier.newInstance();
 
-        PoolableDigestContainer(MessageDigest messageDigest2) {
-            this.messageDigest = messageDigest2;
+        PoolableDigestContainer(MessageDigest messageDigest) {
+            this.messageDigest = messageDigest;
         }
 
+        @Override // com.bumptech.glide.util.pool.FactoryPools.Poolable
         public StateVerifier getVerifier() {
             return this.stateVerifier;
         }

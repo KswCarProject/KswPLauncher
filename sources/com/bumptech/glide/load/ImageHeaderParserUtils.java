@@ -8,13 +8,13 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public final class ImageHeaderParserUtils {
     private static final int MARK_POSITION = 5242880;
 
     private ImageHeaderParserUtils() {
     }
 
-    /* JADX INFO: finally extract failed */
     public static ImageHeaderParser.ImageType getType(List<ImageHeaderParser> parsers, InputStream is, ArrayPool byteArrayPool) throws IOException {
         if (is == null) {
             return ImageHeaderParser.ImageType.UNKNOWN;
@@ -23,20 +23,17 @@ public final class ImageHeaderParserUtils {
             is = new RecyclableBufferedInputStream(is, byteArrayPool);
         }
         is.mark(MARK_POSITION);
-        int i = 0;
         int size = parsers.size();
-        while (i < size) {
+        for (int i = 0; i < size; i++) {
+            ImageHeaderParser parser = parsers.get(i);
             try {
-                ImageHeaderParser.ImageType type = parsers.get(i).getType(is);
+                ImageHeaderParser.ImageType type = parser.getType(is);
                 if (type != ImageHeaderParser.ImageType.UNKNOWN) {
-                    is.reset();
                     return type;
                 }
                 is.reset();
-                i++;
-            } catch (Throwable th) {
+            } finally {
                 is.reset();
-                throw th;
             }
         }
         return ImageHeaderParser.ImageType.UNKNOWN;
@@ -48,7 +45,8 @@ public final class ImageHeaderParserUtils {
         }
         int size = parsers.size();
         for (int i = 0; i < size; i++) {
-            ImageHeaderParser.ImageType type = parsers.get(i).getType(buffer);
+            ImageHeaderParser parser = parsers.get(i);
+            ImageHeaderParser.ImageType type = parser.getType(buffer);
             if (type != ImageHeaderParser.ImageType.UNKNOWN) {
                 return type;
             }
@@ -56,7 +54,6 @@ public final class ImageHeaderParserUtils {
         return ImageHeaderParser.ImageType.UNKNOWN;
     }
 
-    /* JADX INFO: finally extract failed */
     public static int getOrientation(List<ImageHeaderParser> parsers, InputStream is, ArrayPool byteArrayPool) throws IOException {
         if (is == null) {
             return -1;
@@ -65,20 +62,17 @@ public final class ImageHeaderParserUtils {
             is = new RecyclableBufferedInputStream(is, byteArrayPool);
         }
         is.mark(MARK_POSITION);
-        int i = 0;
         int size = parsers.size();
-        while (i < size) {
+        for (int i = 0; i < size; i++) {
+            ImageHeaderParser parser = parsers.get(i);
             try {
-                int orientation = parsers.get(i).getOrientation(is, byteArrayPool);
+                int orientation = parser.getOrientation(is, byteArrayPool);
                 if (orientation != -1) {
-                    is.reset();
                     return orientation;
                 }
                 is.reset();
-                i++;
-            } catch (Throwable th) {
+            } finally {
                 is.reset();
-                throw th;
             }
         }
         return -1;

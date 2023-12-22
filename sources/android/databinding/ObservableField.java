@@ -2,6 +2,7 @@ package android.databinding;
 
 import java.io.Serializable;
 
+/* loaded from: classes.dex */
 public class ObservableField<T> extends BaseObservableField implements Serializable {
     static final long serialVersionUID = 1;
     private T mValue;

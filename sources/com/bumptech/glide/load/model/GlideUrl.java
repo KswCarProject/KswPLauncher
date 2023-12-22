@@ -9,6 +9,7 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public class GlideUrl implements Key {
     private static final String ALLOWED_URI_CHARS = "@#&=*+-_.,:!?()/~'%;$";
     private volatile byte[] cacheKeyBytes;
@@ -19,24 +20,24 @@ public class GlideUrl implements Key {
     private final String stringUrl;
     private final URL url;
 
-    public GlideUrl(URL url2) {
-        this(url2, Headers.DEFAULT);
+    public GlideUrl(URL url) {
+        this(url, Headers.DEFAULT);
     }
 
-    public GlideUrl(String url2) {
-        this(url2, Headers.DEFAULT);
+    public GlideUrl(String url) {
+        this(url, Headers.DEFAULT);
     }
 
-    public GlideUrl(URL url2, Headers headers2) {
-        this.url = (URL) Preconditions.checkNotNull(url2);
+    public GlideUrl(URL url, Headers headers) {
+        this.url = (URL) Preconditions.checkNotNull(url);
         this.stringUrl = null;
-        this.headers = (Headers) Preconditions.checkNotNull(headers2);
+        this.headers = (Headers) Preconditions.checkNotNull(headers);
     }
 
-    public GlideUrl(String url2, Headers headers2) {
+    public GlideUrl(String url, Headers headers) {
         this.url = null;
-        this.stringUrl = Preconditions.checkNotEmpty(url2);
-        this.headers = (Headers) Preconditions.checkNotNull(headers2);
+        this.stringUrl = Preconditions.checkNotEmpty(url);
+        this.headers = (Headers) Preconditions.checkNotNull(headers);
     }
 
     public URL toURL() throws MalformedURLException {
@@ -78,6 +79,7 @@ public class GlideUrl implements Key {
         return getCacheKey();
     }
 
+    @Override // com.bumptech.glide.load.Key
     public void updateDiskCacheKey(MessageDigest messageDigest) {
         messageDigest.update(getCacheKeyBytes());
     }
@@ -89,22 +91,21 @@ public class GlideUrl implements Key {
         return this.cacheKeyBytes;
     }
 
+    @Override // com.bumptech.glide.load.Key
     public boolean equals(Object o) {
-        if (!(o instanceof GlideUrl)) {
-            return false;
+        if (o instanceof GlideUrl) {
+            GlideUrl other = (GlideUrl) o;
+            return getCacheKey().equals(other.getCacheKey()) && this.headers.equals(other.headers);
         }
-        GlideUrl other = (GlideUrl) o;
-        if (!getCacheKey().equals(other.getCacheKey()) || !this.headers.equals(other.headers)) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
+    @Override // com.bumptech.glide.load.Key
     public int hashCode() {
         if (this.hashCode == 0) {
-            int hashCode2 = getCacheKey().hashCode();
-            this.hashCode = hashCode2;
-            this.hashCode = (hashCode2 * 31) + this.headers.hashCode();
+            int hashCode = getCacheKey().hashCode();
+            this.hashCode = hashCode;
+            this.hashCode = (hashCode * 31) + this.headers.hashCode();
         }
         return this.hashCode;
     }

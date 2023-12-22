@@ -7,9 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.land_rover.model.LandroverViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class LandroverOneFragment extends ViewDataBinding {
     public final ImageView landroverMainIconCar;
     public final ImageView landroverMainIconDvr;
@@ -20,16 +21,16 @@ public abstract class LandroverOneFragment extends ViewDataBinding {
     @Bindable
     protected LandroverViewModel mViewModel;
 
-    public abstract void setViewModel(LandroverViewModel landroverViewModel);
+    public abstract void setViewModel(LandroverViewModel ViewModel);
 
-    protected LandroverOneFragment(Object _bindingComponent, View _root, int _localFieldCount, ImageView landroverMainIconCar2, ImageView landroverMainIconDvr2, ImageView landroverMainIconGps2, ImageView landroverMainIconMusic2, ImageView landroverMainIconSettings2, ImageView landroverMainIconVideo2) {
+    protected LandroverOneFragment(Object _bindingComponent, View _root, int _localFieldCount, ImageView landroverMainIconCar, ImageView landroverMainIconDvr, ImageView landroverMainIconGps, ImageView landroverMainIconMusic, ImageView landroverMainIconSettings, ImageView landroverMainIconVideo) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.landroverMainIconCar = landroverMainIconCar2;
-        this.landroverMainIconDvr = landroverMainIconDvr2;
-        this.landroverMainIconGps = landroverMainIconGps2;
-        this.landroverMainIconMusic = landroverMainIconMusic2;
-        this.landroverMainIconSettings = landroverMainIconSettings2;
-        this.landroverMainIconVideo = landroverMainIconVideo2;
+        this.landroverMainIconCar = landroverMainIconCar;
+        this.landroverMainIconDvr = landroverMainIconDvr;
+        this.landroverMainIconGps = landroverMainIconGps;
+        this.landroverMainIconMusic = landroverMainIconMusic;
+        this.landroverMainIconSettings = landroverMainIconSettings;
+        this.landroverMainIconVideo = landroverMainIconVideo;
     }
 
     public LandroverViewModel getViewModel() {
@@ -42,7 +43,7 @@ public abstract class LandroverOneFragment extends ViewDataBinding {
 
     @Deprecated
     public static LandroverOneFragment inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (LandroverOneFragment) ViewDataBinding.inflateInternal(inflater, R.layout.landrover_main_fragment_one, root, attachToRoot, component);
+        return (LandroverOneFragment) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.landrover_main_fragment_one, root, attachToRoot, component);
     }
 
     public static LandroverOneFragment inflate(LayoutInflater inflater) {
@@ -51,7 +52,7 @@ public abstract class LandroverOneFragment extends ViewDataBinding {
 
     @Deprecated
     public static LandroverOneFragment inflate(LayoutInflater inflater, Object component) {
-        return (LandroverOneFragment) ViewDataBinding.inflateInternal(inflater, R.layout.landrover_main_fragment_one, (ViewGroup) null, false, component);
+        return (LandroverOneFragment) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.landrover_main_fragment_one, null, false, component);
     }
 
     public static LandroverOneFragment bind(View view) {
@@ -60,6 +61,6 @@ public abstract class LandroverOneFragment extends ViewDataBinding {
 
     @Deprecated
     public static LandroverOneFragment bind(View view, Object component) {
-        return (LandroverOneFragment) bind(component, view, R.layout.landrover_main_fragment_one);
+        return (LandroverOneFragment) bind(component, view, C0899R.C0902layout.landrover_main_fragment_one);
     }
 }

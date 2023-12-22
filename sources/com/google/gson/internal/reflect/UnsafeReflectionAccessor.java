@@ -3,17 +3,21 @@ package com.google.gson.internal.reflect;
 import com.google.gson.JsonIOException;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
+/* loaded from: classes.dex */
 final class UnsafeReflectionAccessor extends ReflectionAccessor {
     private static Class unsafeClass;
-    private final Field overrideField = getOverrideField();
     private final Object theUnsafe = getUnsafeInstance();
+    private final Field overrideField = getOverrideField();
 
     UnsafeReflectionAccessor() {
     }
 
+    @Override // com.google.gson.internal.reflect.ReflectionAccessor
     public void makeAccessible(AccessibleObject ao) {
-        if (!makeAccessibleWithUnsafe(ao)) {
+        boolean success = makeAccessibleWithUnsafe(ao);
+        if (!success) {
             try {
                 ao.setAccessible(true);
             } catch (SecurityException e) {
@@ -22,12 +26,13 @@ final class UnsafeReflectionAccessor extends ReflectionAccessor {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean makeAccessibleWithUnsafe(AccessibleObject ao) {
-        if (!(this.theUnsafe == null || this.overrideField == null)) {
+    boolean makeAccessibleWithUnsafe(AccessibleObject ao) {
+        if (this.theUnsafe != null && this.overrideField != null) {
             try {
-                long overrideOffset = ((Long) unsafeClass.getMethod("objectFieldOffset", new Class[]{Field.class}).invoke(this.theUnsafe, new Object[]{this.overrideField})).longValue();
-                unsafeClass.getMethod("putBoolean", new Class[]{Object.class, Long.TYPE, Boolean.TYPE}).invoke(this.theUnsafe, new Object[]{ao, Long.valueOf(overrideOffset), true});
+                Method method = unsafeClass.getMethod("objectFieldOffset", Field.class);
+                long overrideOffset = ((Long) method.invoke(this.theUnsafe, this.overrideField)).longValue();
+                Method putBooleanMethod = unsafeClass.getMethod("putBoolean", Object.class, Long.TYPE, Boolean.TYPE);
+                putBooleanMethod.invoke(this.theUnsafe, ao, Long.valueOf(overrideOffset), true);
                 return true;
             } catch (Exception e) {
             }
@@ -41,7 +46,7 @@ final class UnsafeReflectionAccessor extends ReflectionAccessor {
             unsafeClass = cls;
             Field unsafeField = cls.getDeclaredField("theUnsafe");
             unsafeField.setAccessible(true);
-            return unsafeField.get((Object) null);
+            return unsafeField.get(null);
         } catch (Exception e) {
             return null;
         }

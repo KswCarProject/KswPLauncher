@@ -11,24 +11,27 @@ import io.reactivex.plugins.RxJavaPlugins;
 import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableElementAtMaybe<T> extends Maybe<T> implements FuseToFlowable<T> {
     final long index;
     final Flowable<T> source;
 
-    public FlowableElementAtMaybe(Flowable<T> source2, long index2) {
-        this.source = source2;
-        this.index = index2;
+    public FlowableElementAtMaybe(Flowable<T> source, long index) {
+        this.source = source;
+        this.index = index;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super T> observer) {
-        this.source.subscribe(new ElementAtSubscriber(observer, this.index));
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super T> observer) {
+        this.source.subscribe((FlowableSubscriber) new ElementAtSubscriber(observer, this.index));
     }
 
+    @Override // io.reactivex.internal.fuseable.FuseToFlowable
     public Flowable<T> fuseToFlowable() {
         return RxJavaPlugins.onAssembly(new FlowableElementAt(this.source, this.index, null, false));
     }
 
+    /* loaded from: classes.dex */
     static final class ElementAtSubscriber<T> implements FlowableSubscriber<T>, Disposable {
         long count;
         boolean done;
@@ -36,11 +39,12 @@ public final class FlowableElementAtMaybe<T> extends Maybe<T> implements FuseToF
         final long index;
         Subscription upstream;
 
-        ElementAtSubscriber(MaybeObserver<? super T> actual, long index2) {
+        ElementAtSubscriber(MaybeObserver<? super T> actual, long index) {
             this.downstream = actual;
-            this.index = index2;
+            this.index = index;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -49,20 +53,23 @@ public final class FlowableElementAtMaybe<T> extends Maybe<T> implements FuseToF
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            if (!this.done) {
-                long c = this.count;
-                if (c == this.index) {
-                    this.done = true;
-                    this.upstream.cancel();
-                    this.upstream = SubscriptionHelper.CANCELLED;
-                    this.downstream.onSuccess(t);
-                    return;
-                }
-                this.count = 1 + c;
+            if (this.done) {
+                return;
             }
+            long c = this.count;
+            if (c == this.index) {
+                this.done = true;
+                this.upstream.cancel();
+                this.upstream = SubscriptionHelper.CANCELLED;
+                this.downstream.onSuccess(t);
+                return;
+            }
+            this.count = 1 + c;
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -73,6 +80,7 @@ public final class FlowableElementAtMaybe<T> extends Maybe<T> implements FuseToF
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.upstream = SubscriptionHelper.CANCELLED;
             if (!this.done) {
@@ -81,11 +89,13 @@ public final class FlowableElementAtMaybe<T> extends Maybe<T> implements FuseToF
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.cancel();
             this.upstream = SubscriptionHelper.CANCELLED;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream == SubscriptionHelper.CANCELLED;
         }

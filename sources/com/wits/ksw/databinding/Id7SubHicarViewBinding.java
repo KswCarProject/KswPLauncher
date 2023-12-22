@@ -8,10 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.view.CustomBmwImageView;
 
+/* loaded from: classes7.dex */
 public abstract class Id7SubHicarViewBinding extends ViewDataBinding {
     public final TextView dayTextView;
     @Bindable
@@ -21,15 +22,15 @@ public abstract class Id7SubHicarViewBinding extends ViewDataBinding {
     public final CustomBmwImageView phoneImageView;
     public final TextView textView2;
 
-    public abstract void setNaviViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setNaviViewModel(LauncherViewModel NaviViewModel);
 
-    protected Id7SubHicarViewBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView dayTextView2, TextView monthTextView2, ConstraintLayout phoneConstraintLayout2, CustomBmwImageView phoneImageView2, TextView textView22) {
+    protected Id7SubHicarViewBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView dayTextView, TextView monthTextView, ConstraintLayout phoneConstraintLayout, CustomBmwImageView phoneImageView, TextView textView2) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.dayTextView = dayTextView2;
-        this.monthTextView = monthTextView2;
-        this.phoneConstraintLayout = phoneConstraintLayout2;
-        this.phoneImageView = phoneImageView2;
-        this.textView2 = textView22;
+        this.dayTextView = dayTextView;
+        this.monthTextView = monthTextView;
+        this.phoneConstraintLayout = phoneConstraintLayout;
+        this.phoneImageView = phoneImageView;
+        this.textView2 = textView2;
     }
 
     public LauncherViewModel getNaviViewModel() {
@@ -42,7 +43,7 @@ public abstract class Id7SubHicarViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static Id7SubHicarViewBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (Id7SubHicarViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.id7_sub_hicar_view, root, attachToRoot, component);
+        return (Id7SubHicarViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id7_sub_hicar_view, root, attachToRoot, component);
     }
 
     public static Id7SubHicarViewBinding inflate(LayoutInflater inflater) {
@@ -51,7 +52,7 @@ public abstract class Id7SubHicarViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static Id7SubHicarViewBinding inflate(LayoutInflater inflater, Object component) {
-        return (Id7SubHicarViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.id7_sub_hicar_view, (ViewGroup) null, false, component);
+        return (Id7SubHicarViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id7_sub_hicar_view, null, false, component);
     }
 
     public static Id7SubHicarViewBinding bind(View view) {
@@ -60,6 +61,6 @@ public abstract class Id7SubHicarViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static Id7SubHicarViewBinding bind(View view, Object component) {
-        return (Id7SubHicarViewBinding) bind(component, view, R.layout.id7_sub_hicar_view);
+        return (Id7SubHicarViewBinding) bind(component, view, C0899R.C0902layout.id7_sub_hicar_view);
     }
 }

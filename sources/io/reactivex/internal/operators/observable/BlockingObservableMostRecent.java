@@ -7,36 +7,42 @@ import io.reactivex.observers.DefaultObserver;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/* loaded from: classes.dex */
 public final class BlockingObservableMostRecent<T> implements Iterable<T> {
     final T initialValue;
     final ObservableSource<T> source;
 
-    public BlockingObservableMostRecent(ObservableSource<T> source2, T initialValue2) {
-        this.source = source2;
-        this.initialValue = initialValue2;
+    public BlockingObservableMostRecent(ObservableSource<T> source, T initialValue) {
+        this.source = source;
+        this.initialValue = initialValue;
     }
 
+    @Override // java.lang.Iterable
     public Iterator<T> iterator() {
         MostRecentObserver<T> mostRecentObserver = new MostRecentObserver<>(this.initialValue);
         this.source.subscribe(mostRecentObserver);
         return mostRecentObserver.getIterable();
     }
 
+    /* loaded from: classes.dex */
     static final class MostRecentObserver<T> extends DefaultObserver<T> {
         volatile Object value;
 
-        MostRecentObserver(T value2) {
-            this.value = NotificationLite.next(value2);
+        MostRecentObserver(T value) {
+            this.value = NotificationLite.next(value);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             this.value = NotificationLite.complete();
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable e) {
             this.value = NotificationLite.error(e);
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T args) {
             this.value = NotificationLite.next(args);
         }
@@ -45,38 +51,39 @@ public final class BlockingObservableMostRecent<T> implements Iterable<T> {
             return new Iterator();
         }
 
+        /* loaded from: classes.dex */
         final class Iterator implements java.util.Iterator<T> {
             private Object buf;
 
             Iterator() {
             }
 
+            @Override // java.util.Iterator
             public boolean hasNext() {
                 Object obj = MostRecentObserver.this.value;
                 this.buf = obj;
                 return !NotificationLite.isComplete(obj);
             }
 
+            @Override // java.util.Iterator
             public T next() {
-                Object obj = null;
                 try {
                     if (this.buf == null) {
-                        obj = MostRecentObserver.this.value;
+                        this.buf = MostRecentObserver.this.value;
                     }
                     if (NotificationLite.isComplete(this.buf)) {
                         throw new NoSuchElementException();
-                    } else if (!NotificationLite.isError(this.buf)) {
-                        T value = NotificationLite.getValue(this.buf);
-                        this.buf = obj;
-                        return value;
-                    } else {
+                    }
+                    if (NotificationLite.isError(this.buf)) {
                         throw ExceptionHelper.wrapOrThrow(NotificationLite.getError(this.buf));
                     }
+                    return (T) NotificationLite.getValue(this.buf);
                 } finally {
-                    this.buf = obj;
+                    this.buf = null;
                 }
             }
 
+            @Override // java.util.Iterator
             public void remove() {
                 throw new UnsupportedOperationException("Read only iterator");
             }

@@ -4,13 +4,16 @@ import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public class CarInfoDataGsBindingImpl extends CarInfoDataGsBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback304;
+    private final View.OnClickListener mCallback438;
     private long mDirtyFlags;
 
     public CarInfoDataGsBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -18,22 +21,24 @@ public class CarInfoDataGsBindingImpl extends CarInfoDataGsBinding implements On
     }
 
     private CarInfoDataGsBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[1], bindings[0]);
-        this.mDirtyFlags = -1;
-        this.ivMask.setTag((Object) null);
-        this.llContainerGs.setTag((Object) null);
+        super(bindingComponent, root, 0, (ImageView) bindings[1], (RelativeLayout) bindings[0]);
+        this.mDirtyFlags = -1L;
+        this.ivMask.setTag(null);
+        this.llContainerGs.setTag(null);
         setRootTag(root);
-        this.mCallback304 = new OnClickListener(this, 1);
+        this.mCallback438 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 2;
+            this.mDirtyFlags = 2L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -43,14 +48,16 @@ public class CarInfoDataGsBindingImpl extends CarInfoDataGsBinding implements On
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (3 != variableId) {
-            return false;
+        if (3 == variableId) {
+            setCarViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setCarViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.CarInfoDataGsBinding
     public void setCarViewModel(LauncherViewModel CarViewModel) {
         this.mCarViewModel = CarViewModel;
         synchronized (this) {
@@ -60,34 +67,36 @@ public class CarInfoDataGsBindingImpl extends CarInfoDataGsBinding implements On
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         View.OnFocusChangeListener carViewModelCarViewFocusChangeListener = null;
         LauncherViewModel carViewModel = this.mCarViewModel;
-        if (!((dirtyFlags & 3) == 0 || carViewModel == null)) {
+        if ((dirtyFlags & 3) != 0 && carViewModel != null) {
             carViewModelCarViewFocusChangeListener = carViewModel.carViewFocusChangeListener;
         }
         if ((2 & dirtyFlags) != 0) {
-            this.ivMask.setOnClickListener(this.mCallback304);
+            this.ivMask.setOnClickListener(this.mCallback438);
         }
         if ((3 & dirtyFlags) != 0) {
             this.ivMask.setOnFocusChangeListener(carViewModelCarViewFocusChangeListener);
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
         LauncherViewModel carViewModel = this.mCarViewModel;
-        if (carViewModel != null) {
+        boolean carViewModelJavaLangObjectNull = carViewModel != null;
+        if (carViewModelJavaLangObjectNull) {
             carViewModel.openCar(callbackArg_0);
         }
     }

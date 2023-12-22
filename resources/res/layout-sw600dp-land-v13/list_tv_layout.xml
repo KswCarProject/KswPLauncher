@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/relat_listTv" android:background="@drawable/ksw_id7_seting_rp_bg" android:focusable="true" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="58dp">
-    <com.wits.ksw.settings.utlis_view.RtlTextView android:textSize="25sp" android:textColor="@color/color1" android:ellipsize="end" android:gravity="center_vertical" android:id="@+id/tv_mgs" android:padding="10dp" android:focusable="false" android:layout_width="match_parent" android:layout_height="wrap_content" android:lines="1" android:layout_centerVertical="true"/>
-</RelativeLayout>

@@ -11,10 +11,11 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.DashboardViewModel;
 import com.wits.ksw.launcher.view.ID7SpeedImageView;
 
+/* loaded from: classes7.dex */
 public abstract class ALSDasoardBind extends ViewDataBinding {
     public final ImageView alsCloseView;
     public final ConstraintLayout alsMenu;
@@ -42,34 +43,33 @@ public abstract class ALSDasoardBind extends ViewDataBinding {
     public final ImageView zspeedPointerImageView;
     public final TextView zspeedPointerTextView;
 
-    public abstract void setViewModel(DashboardViewModel dashboardViewModel);
+    public abstract void setViewModel(DashboardViewModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected ALSDasoardBind(Object _bindingComponent, View _root, int _localFieldCount, ImageView alsCloseView2, ConstraintLayout alsMenu2, RadioButton alsRadioButton12, RadioButton alsRadioButton22, RadioButton alsRadioButton32, RadioGroup alsRadioGroup2, ImageView brakeTextView2, ImageView carImageView2, ImageView dorrBackImageView2, ImageView dorrLeftFlImageView2, ImageView dorrLeftFrImageView2, ImageView dorrLeftRlImageView2, ImageView imageView192, ConstraintLayout linearLayout22, TextView oilTextView2, ImageView seatBeltTextView2, ImageView speedPointerImageView2, TextView speedPointerTextView2, ID7SpeedImageView speedometerImageView2, ID7SpeedImageView tachometerImageView2, TextView tempTextView2, ImageView zspeedPointerImageView2, TextView zspeedPointerTextView2) {
+    protected ALSDasoardBind(Object _bindingComponent, View _root, int _localFieldCount, ImageView alsCloseView, ConstraintLayout alsMenu, RadioButton alsRadioButton1, RadioButton alsRadioButton2, RadioButton alsRadioButton3, RadioGroup alsRadioGroup, ImageView brakeTextView, ImageView carImageView, ImageView dorrBackImageView, ImageView dorrLeftFlImageView, ImageView dorrLeftFrImageView, ImageView dorrLeftRlImageView, ImageView imageView19, ConstraintLayout linearLayout2, TextView oilTextView, ImageView seatBeltTextView, ImageView speedPointerImageView, TextView speedPointerTextView, ID7SpeedImageView speedometerImageView, ID7SpeedImageView tachometerImageView, TextView tempTextView, ImageView zspeedPointerImageView, TextView zspeedPointerTextView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.alsCloseView = alsCloseView2;
-        this.alsMenu = alsMenu2;
-        this.alsRadioButton1 = alsRadioButton12;
-        this.alsRadioButton2 = alsRadioButton22;
-        this.alsRadioButton3 = alsRadioButton32;
-        this.alsRadioGroup = alsRadioGroup2;
-        this.brakeTextView = brakeTextView2;
-        this.carImageView = carImageView2;
-        this.dorrBackImageView = dorrBackImageView2;
-        this.dorrLeftFlImageView = dorrLeftFlImageView2;
-        this.dorrLeftFrImageView = dorrLeftFrImageView2;
-        this.dorrLeftRlImageView = dorrLeftRlImageView2;
-        this.imageView19 = imageView192;
-        this.linearLayout2 = linearLayout22;
-        this.oilTextView = oilTextView2;
-        this.seatBeltTextView = seatBeltTextView2;
-        this.speedPointerImageView = speedPointerImageView2;
-        this.speedPointerTextView = speedPointerTextView2;
-        this.speedometerImageView = speedometerImageView2;
-        this.tachometerImageView = tachometerImageView2;
-        this.tempTextView = tempTextView2;
-        this.zspeedPointerImageView = zspeedPointerImageView2;
-        this.zspeedPointerTextView = zspeedPointerTextView2;
+        this.alsCloseView = alsCloseView;
+        this.alsMenu = alsMenu;
+        this.alsRadioButton1 = alsRadioButton1;
+        this.alsRadioButton2 = alsRadioButton2;
+        this.alsRadioButton3 = alsRadioButton3;
+        this.alsRadioGroup = alsRadioGroup;
+        this.brakeTextView = brakeTextView;
+        this.carImageView = carImageView;
+        this.dorrBackImageView = dorrBackImageView;
+        this.dorrLeftFlImageView = dorrLeftFlImageView;
+        this.dorrLeftFrImageView = dorrLeftFrImageView;
+        this.dorrLeftRlImageView = dorrLeftRlImageView;
+        this.imageView19 = imageView19;
+        this.linearLayout2 = linearLayout2;
+        this.oilTextView = oilTextView;
+        this.seatBeltTextView = seatBeltTextView;
+        this.speedPointerImageView = speedPointerImageView;
+        this.speedPointerTextView = speedPointerTextView;
+        this.speedometerImageView = speedometerImageView;
+        this.tachometerImageView = tachometerImageView;
+        this.tempTextView = tempTextView;
+        this.zspeedPointerImageView = zspeedPointerImageView;
+        this.zspeedPointerTextView = zspeedPointerTextView;
     }
 
     public DashboardViewModel getViewModel() {
@@ -82,7 +82,7 @@ public abstract class ALSDasoardBind extends ViewDataBinding {
 
     @Deprecated
     public static ALSDasoardBind inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ALSDasoardBind) ViewDataBinding.inflateInternal(inflater, R.layout.activity_dash_board_als, root, attachToRoot, component);
+        return (ALSDasoardBind) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_dash_board_als, root, attachToRoot, component);
     }
 
     public static ALSDasoardBind inflate(LayoutInflater inflater) {
@@ -91,7 +91,7 @@ public abstract class ALSDasoardBind extends ViewDataBinding {
 
     @Deprecated
     public static ALSDasoardBind inflate(LayoutInflater inflater, Object component) {
-        return (ALSDasoardBind) ViewDataBinding.inflateInternal(inflater, R.layout.activity_dash_board_als, (ViewGroup) null, false, component);
+        return (ALSDasoardBind) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_dash_board_als, null, false, component);
     }
 
     public static ALSDasoardBind bind(View view) {
@@ -100,6 +100,6 @@ public abstract class ALSDasoardBind extends ViewDataBinding {
 
     @Deprecated
     public static ALSDasoardBind bind(View view, Object component) {
-        return (ALSDasoardBind) bind(component, view, R.layout.activity_dash_board_als);
+        return (ALSDasoardBind) bind(component, view, C0899R.C0902layout.activity_dash_board_als);
     }
 }

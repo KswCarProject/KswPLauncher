@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/id8_edit_main_card_container_left_padding">
+    <LinearLayout android:id="@+id/layout" android:background="@drawable/pemp_id8_main_edit_icon_navi" style="@style/id8_pemp_main_big_card_container_edit">
+        <TextView android:text="@string/fragment_navigate_title" style="@style/id8_pemp_main_card_title_edit"/>
+        <ImageView android:background="@drawable/id8_main_edit_icon_navi_line" style="@style/id8_pemp_main_card_divider"/>
+        <TextView android:id="@+id/tv_desc" android:text="@string/ksw_id8_real_time_navi" style="@style/id8_pemp_main_card_desc_edit"/>
+    </LinearLayout>
+</RelativeLayout>

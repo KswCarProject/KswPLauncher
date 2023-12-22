@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class WeatherDataBinding extends ViewDataBinding {
     public final TextView btA;
     public final TextView btB;
@@ -27,21 +28,21 @@ public abstract class WeatherDataBinding extends ViewDataBinding {
     public final TextView tvTitle;
     public final TextView unitWeather;
 
-    public abstract void setWeatherViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setWeatherViewModel(LauncherViewModel WeatherViewModel);
 
-    protected WeatherDataBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView btA2, TextView btB2, TextView btC2, ImageView ivDivider2, ImageView ivIcon2, ImageView ivMask2, RelativeLayout llContainer2, TextView temperatureTv2, TextView tvCity2, TextView tvTitle2, TextView unitWeather2) {
+    protected WeatherDataBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView btA, TextView btB, TextView btC, ImageView ivDivider, ImageView ivIcon, ImageView ivMask, RelativeLayout llContainer, TextView temperatureTv, TextView tvCity, TextView tvTitle, TextView unitWeather) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.btA = btA2;
-        this.btB = btB2;
-        this.btC = btC2;
-        this.ivDivider = ivDivider2;
-        this.ivIcon = ivIcon2;
-        this.ivMask = ivMask2;
-        this.llContainer = llContainer2;
-        this.temperatureTv = temperatureTv2;
-        this.tvCity = tvCity2;
-        this.tvTitle = tvTitle2;
-        this.unitWeather = unitWeather2;
+        this.btA = btA;
+        this.btB = btB;
+        this.btC = btC;
+        this.ivDivider = ivDivider;
+        this.ivIcon = ivIcon;
+        this.ivMask = ivMask;
+        this.llContainer = llContainer;
+        this.temperatureTv = temperatureTv;
+        this.tvCity = tvCity;
+        this.tvTitle = tvTitle;
+        this.unitWeather = unitWeather;
     }
 
     public LauncherViewModel getWeatherViewModel() {
@@ -54,7 +55,7 @@ public abstract class WeatherDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static WeatherDataBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (WeatherDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_weather, root, attachToRoot, component);
+        return (WeatherDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_weather, root, attachToRoot, component);
     }
 
     public static WeatherDataBinding inflate(LayoutInflater inflater) {
@@ -63,7 +64,7 @@ public abstract class WeatherDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static WeatherDataBinding inflate(LayoutInflater inflater, Object component) {
-        return (WeatherDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_weather, (ViewGroup) null, false, component);
+        return (WeatherDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_weather, null, false, component);
     }
 
     public static WeatherDataBinding bind(View view) {
@@ -72,6 +73,6 @@ public abstract class WeatherDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static WeatherDataBinding bind(View view, Object component) {
-        return (WeatherDataBinding) bind(component, view, R.layout.fragment_weather);
+        return (WeatherDataBinding) bind(component, view, C0899R.C0902layout.fragment_weather);
     }
 }

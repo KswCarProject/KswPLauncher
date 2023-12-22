@@ -1,7 +1,7 @@
 package com.wits.ksw.settings.id6.oneLayout;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
+import android.support.p001v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,17 +10,22 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
+/* loaded from: classes7.dex */
 public class ID6VoiceModel extends RelativeLayout implements SeekBar.OnSeekBarChangeListener, View.OnClickListener {
-    private int barMax = 24;
+    private int barMax;
     private Context context;
-    private int di = 12;
-    private int eqModel = 0;
-    private int ga = 12;
+
+    /* renamed from: di */
+    private int f220di;
+    private int eqModel;
+
+    /* renamed from: ga */
+    private int f221ga;
     private SeekBar seekbar_mdi;
     private SeekBar seekbar_mgo;
     private SeekBar seekbar_mzh;
@@ -33,12 +38,19 @@ public class ID6VoiceModel extends RelativeLayout implements SeekBar.OnSeekBarCh
     private TextView tv_mdiSize;
     private TextView tv_mgoSize;
     private TextView tv_mzhSize;
-    private int zo = 12;
 
-    public ID6VoiceModel(Context context2) {
-        super(context2);
-        this.context = context2;
-        View view = LayoutInflater.from(context2).inflate(R.layout.layout_id6_voice_model, (ViewGroup) null);
+    /* renamed from: zo */
+    private int f222zo;
+
+    public ID6VoiceModel(Context context) {
+        super(context);
+        this.eqModel = 0;
+        this.barMax = 24;
+        this.f220di = 12;
+        this.f222zo = 12;
+        this.f221ga = 12;
+        this.context = context;
+        View view = LayoutInflater.from(context).inflate(C0899R.C0902layout.layout_id6_voice_model, (ViewGroup) null);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(-1, -1);
         initData();
         initView(view);
@@ -48,86 +60,86 @@ public class ID6VoiceModel extends RelativeLayout implements SeekBar.OnSeekBarCh
 
     private void initData() {
         try {
-            this.di = PowerManagerApp.getSettingsInt(KeyConfig.EQ_BASS);
-            this.zo = PowerManagerApp.getSettingsInt(KeyConfig.EQ_MIDDLE);
-            this.ga = PowerManagerApp.getSettingsInt(KeyConfig.EQ_TREBLE);
+            this.f220di = PowerManagerApp.getSettingsInt(KeyConfig.EQ_BASS);
+            this.f222zo = PowerManagerApp.getSettingsInt(KeyConfig.EQ_MIDDLE);
+            this.f221ga = PowerManagerApp.getSettingsInt(KeyConfig.EQ_TREBLE);
             this.eqModel = PowerManagerApp.getSettingsInt(KeyConfig.EQ_MODE);
-            Log.d("BenchiEQ", "di:" + this.di + "\tzo:" + this.zo + "\tga:" + this.ga + "\tmodel:" + this.eqModel);
+            Log.d("BenchiEQ", "di:" + this.f220di + "\tzo:" + this.f222zo + "\tga:" + this.f221ga + "\tmodel:" + this.eqModel);
         } catch (Exception e) {
             e.getStackTrace();
         }
     }
 
     private void initView(View view) {
-        this.tv_mdiSize = (TextView) view.findViewById(R.id.tv_mdiSize);
-        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekbar_mdi);
+        this.tv_mdiSize = (TextView) view.findViewById(C0899R.C0901id.tv_mdiSize);
+        SeekBar seekBar = (SeekBar) view.findViewById(C0899R.C0901id.seekbar_mdi);
         this.seekbar_mdi = seekBar;
         seekBar.setMax(this.barMax);
-        this.tv_mzhSize = (TextView) view.findViewById(R.id.tv_mzhSize);
-        SeekBar seekBar2 = (SeekBar) view.findViewById(R.id.seekbar_mzh);
+        this.tv_mzhSize = (TextView) view.findViewById(C0899R.C0901id.tv_mzhSize);
+        SeekBar seekBar2 = (SeekBar) view.findViewById(C0899R.C0901id.seekbar_mzh);
         this.seekbar_mzh = seekBar2;
         seekBar2.setMax(this.barMax);
-        this.tv_mgoSize = (TextView) view.findViewById(R.id.tv_mgoSize);
-        SeekBar seekBar3 = (SeekBar) view.findViewById(R.id.seekbar_mgo);
+        this.tv_mgoSize = (TextView) view.findViewById(C0899R.C0901id.tv_mgoSize);
+        SeekBar seekBar3 = (SeekBar) view.findViewById(C0899R.C0901id.seekbar_mgo);
         this.seekbar_mgo = seekBar3;
         seekBar3.setMax(this.barMax);
         this.seekbar_mdi.setOnSeekBarChangeListener(this);
         this.seekbar_mzh.setOnSeekBarChangeListener(this);
         this.seekbar_mgo.setOnSeekBarChangeListener(this);
-        this.tv_eqyongh = (TextView) view.findViewById(R.id.tv_eqyongh);
-        this.tv_eqliux = (TextView) view.findViewById(R.id.tv_eqliux);
-        this.tv_eqgud = (TextView) view.findViewById(R.id.tv_eqgud);
-        this.tv_eqyaog = (TextView) view.findViewById(R.id.tv_eqyaog);
-        this.tv_eqjues = (TextView) view.findViewById(R.id.tv_eqjues);
-        this.tv_eqwuq = (TextView) view.findViewById(R.id.tv_eqwuq);
+        this.tv_eqyongh = (TextView) view.findViewById(C0899R.C0901id.tv_eqyongh);
+        this.tv_eqliux = (TextView) view.findViewById(C0899R.C0901id.tv_eqliux);
+        this.tv_eqgud = (TextView) view.findViewById(C0899R.C0901id.tv_eqgud);
+        this.tv_eqyaog = (TextView) view.findViewById(C0899R.C0901id.tv_eqyaog);
+        this.tv_eqjues = (TextView) view.findViewById(C0899R.C0901id.tv_eqjues);
+        this.tv_eqwuq = (TextView) view.findViewById(C0899R.C0901id.tv_eqwuq);
         switch (this.eqModel) {
             case 0:
-                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, R.color.text_red));
-                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
+                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, C0899R.color.text_red));
+                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
                 break;
             case 1:
-                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, R.color.text_red));
-                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
+                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, C0899R.color.text_red));
+                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
                 break;
             case 2:
-                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, R.color.text_red));
-                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
+                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, C0899R.color.text_red));
+                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
                 break;
             case 3:
-                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, R.color.text_red));
-                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
+                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, C0899R.color.text_red));
+                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
                 break;
             case 4:
-                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, R.color.text_red));
-                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
+                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, C0899R.color.text_red));
+                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
                 break;
             case 5:
-                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, R.color.text_red));
+                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, C0899R.color.text_red));
                 break;
         }
         initBarView(this.eqModel);
@@ -142,9 +154,9 @@ public class ID6VoiceModel extends RelativeLayout implements SeekBar.OnSeekBarCh
     private void initBarView(int index) {
         switch (index) {
             case 0:
-                this.seekbar_mdi.setProgress(this.di);
-                this.seekbar_mzh.setProgress(this.zo);
-                this.seekbar_mgo.setProgress(this.ga);
+                this.seekbar_mdi.setProgress(this.f220di);
+                this.seekbar_mzh.setProgress(this.f222zo);
+                this.seekbar_mgo.setProgress(this.f221ga);
                 break;
             case 1:
                 this.seekbar_mdi.setProgress(16);
@@ -172,9 +184,12 @@ public class ID6VoiceModel extends RelativeLayout implements SeekBar.OnSeekBarCh
                 this.seekbar_mgo.setProgress(19);
                 break;
         }
-        this.tv_mdiSize.setText((this.seekbar_mdi.getProgress() - 12) + "");
-        this.tv_mzhSize.setText((this.seekbar_mzh.getProgress() - 12) + "");
-        this.tv_mgoSize.setText((this.seekbar_mgo.getProgress() - 12) + "");
+        int sdi = this.seekbar_mdi.getProgress() - 12;
+        this.tv_mdiSize.setText(sdi + "");
+        int zh = this.seekbar_mzh.getProgress() - 12;
+        this.tv_mzhSize.setText(zh + "");
+        int go = this.seekbar_mgo.getProgress() - 12;
+        this.tv_mgoSize.setText(go + "");
     }
 
     private void setUpdateTwoLayout(int index) {
@@ -191,9 +206,9 @@ public class ID6VoiceModel extends RelativeLayout implements SeekBar.OnSeekBarCh
         }
         switch (index) {
             case 0:
-                this.seekbar_mdi.setProgress(this.di);
-                this.seekbar_mzh.setProgress(this.zo);
-                this.seekbar_mgo.setProgress(this.ga);
+                this.seekbar_mdi.setProgress(this.f220di);
+                this.seekbar_mzh.setProgress(this.f222zo);
+                this.seekbar_mgo.setProgress(this.f221ga);
                 return;
             case 1:
                 this.seekbar_mdi.setProgress(16);
@@ -225,32 +240,36 @@ public class ID6VoiceModel extends RelativeLayout implements SeekBar.OnSeekBarCh
         }
     }
 
+    @Override // android.widget.SeekBar.OnSeekBarChangeListener
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         switch (seekBar.getId()) {
-            case R.id.seekbar_mdi:
-                this.tv_mdiSize.setText((progress - 12) + "");
+            case C0899R.C0901id.seekbar_mdi /* 2131297743 */:
+                int go = progress - 12;
+                this.tv_mdiSize.setText(go + "");
                 if (this.eqModel == 0) {
-                    this.di = progress;
+                    this.f220di = progress;
                     FileUtils.savaIntData(KeyConfig.EQ_BASS, progress);
-                    Log.d("BenchiEQ", "save di:" + this.di);
+                    Log.d("BenchiEQ", "save di:" + this.f220di);
                     return;
                 }
                 return;
-            case R.id.seekbar_mgo:
-                this.tv_mgoSize.setText((progress - 12) + "");
+            case C0899R.C0901id.seekbar_mgo /* 2131297744 */:
+                int zh = progress - 12;
+                this.tv_mgoSize.setText(zh + "");
                 if (this.eqModel == 0) {
-                    this.ga = progress;
+                    this.f221ga = progress;
                     FileUtils.savaIntData(KeyConfig.EQ_TREBLE, progress);
-                    Log.d("BenchiEQ", "save go:" + this.ga);
+                    Log.d("BenchiEQ", "save go:" + this.f221ga);
                     return;
                 }
                 return;
-            case R.id.seekbar_mzh:
-                this.tv_mzhSize.setText((progress - 12) + "");
+            case C0899R.C0901id.seekbar_mzh /* 2131297745 */:
+                int zh2 = progress - 12;
+                this.tv_mzhSize.setText(zh2 + "");
                 if (this.eqModel == 0) {
-                    this.zo = progress;
+                    this.f222zo = progress;
                     FileUtils.savaIntData(KeyConfig.EQ_MIDDLE, progress);
-                    Log.d("BenchiEQ", "save zo:" + this.zo);
+                    Log.d("BenchiEQ", "save zo:" + this.f222zo);
                     return;
                 }
                 return;
@@ -259,67 +278,70 @@ public class ID6VoiceModel extends RelativeLayout implements SeekBar.OnSeekBarCh
         }
     }
 
+    @Override // android.widget.SeekBar.OnSeekBarChangeListener
     public void onStartTrackingTouch(SeekBar seekBar) {
     }
 
+    @Override // android.widget.SeekBar.OnSeekBarChangeListener
     public void onStopTrackingTouch(SeekBar seekBar) {
     }
 
+    @Override // android.view.View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_eqgud:
+            case C0899R.C0901id.tv_eqgud /* 2131297903 */:
                 setUpdateTwoLayout(2);
-                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, R.color.text_red));
-                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
+                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, C0899R.color.text_red));
+                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
                 return;
-            case R.id.tv_eqjues:
+            case C0899R.C0901id.tv_eqjues /* 2131297904 */:
                 setUpdateTwoLayout(4);
-                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, R.color.text_red));
-                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
+                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, C0899R.color.text_red));
+                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
                 return;
-            case R.id.tv_eqliux:
+            case C0899R.C0901id.tv_eqliux /* 2131297905 */:
                 setUpdateTwoLayout(1);
-                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, R.color.text_red));
-                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
+                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, C0899R.color.text_red));
+                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
                 return;
-            case R.id.tv_eqwuq:
+            case C0899R.C0901id.tv_eqwuq /* 2131297906 */:
                 setUpdateTwoLayout(5);
-                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, R.color.text_red));
+                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, C0899R.color.text_red));
                 return;
-            case R.id.tv_eqyaog:
+            case C0899R.C0901id.tv_eqyaog /* 2131297907 */:
                 setUpdateTwoLayout(3);
-                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, R.color.text_red));
-                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
+                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, C0899R.color.text_red));
+                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
                 return;
-            case R.id.tv_eqyongh:
+            case C0899R.C0901id.tv_eqyongh /* 2131297908 */:
                 setUpdateTwoLayout(0);
-                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, R.color.text_red));
-                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
-                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
+                this.tv_eqyongh.setTextColor(ContextCompat.getColor(this.context, C0899R.color.text_red));
+                this.tv_eqliux.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqgud.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqyaog.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqjues.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
+                this.tv_eqwuq.setTextColor(ContextCompat.getColor(this.context, C0899R.color.color1));
                 return;
             default:
                 return;

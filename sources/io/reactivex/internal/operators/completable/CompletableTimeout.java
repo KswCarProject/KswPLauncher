@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/* loaded from: classes.dex */
 public final class CompletableTimeout extends Completable {
     final CompletableSource other;
     final Scheduler scheduler;
@@ -19,37 +20,42 @@ public final class CompletableTimeout extends Completable {
     final long timeout;
     final TimeUnit unit;
 
-    public CompletableTimeout(CompletableSource source2, long timeout2, TimeUnit unit2, Scheduler scheduler2, CompletableSource other2) {
-        this.source = source2;
-        this.timeout = timeout2;
-        this.unit = unit2;
-        this.scheduler = scheduler2;
-        this.other = other2;
+    public CompletableTimeout(CompletableSource source, long timeout, TimeUnit unit, Scheduler scheduler, CompletableSource other) {
+        this.source = source;
+        this.timeout = timeout;
+        this.unit = unit;
+        this.scheduler = scheduler;
+        this.other = other;
     }
 
+    @Override // io.reactivex.Completable
     public void subscribeActual(CompletableObserver observer) {
         CompositeDisposable set = new CompositeDisposable();
         observer.onSubscribe(set);
         AtomicBoolean once = new AtomicBoolean();
-        set.add(this.scheduler.scheduleDirect(new DisposeTask(once, set, observer), this.timeout, this.unit));
+        Disposable timer = this.scheduler.scheduleDirect(new DisposeTask(once, set, observer), this.timeout, this.unit);
+        set.add(timer);
         this.source.subscribe(new TimeOutObserver(set, once, observer));
     }
 
+    /* loaded from: classes.dex */
     static final class TimeOutObserver implements CompletableObserver {
         private final CompletableObserver downstream;
         private final AtomicBoolean once;
         private final CompositeDisposable set;
 
-        TimeOutObserver(CompositeDisposable set2, AtomicBoolean once2, CompletableObserver observer) {
-            this.set = set2;
-            this.once = once2;
+        TimeOutObserver(CompositeDisposable set, AtomicBoolean once, CompletableObserver observer) {
+            this.set = set;
+            this.once = once;
             this.downstream = observer;
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onSubscribe(Disposable d) {
             this.set.add(d);
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onError(Throwable e) {
             if (this.once.compareAndSet(false, true)) {
                 this.set.dispose();
@@ -59,6 +65,7 @@ public final class CompletableTimeout extends Completable {
             RxJavaPlugins.onError(e);
         }
 
+        @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
         public void onComplete() {
             if (this.once.compareAndSet(false, true)) {
                 this.set.dispose();
@@ -67,17 +74,19 @@ public final class CompletableTimeout extends Completable {
         }
     }
 
+    /* loaded from: classes.dex */
     final class DisposeTask implements Runnable {
         final CompletableObserver downstream;
         private final AtomicBoolean once;
         final CompositeDisposable set;
 
-        DisposeTask(AtomicBoolean once2, CompositeDisposable set2, CompletableObserver observer) {
-            this.once = once2;
-            this.set = set2;
+        DisposeTask(AtomicBoolean once, CompositeDisposable set, CompletableObserver observer) {
+            this.once = once;
+            this.set = set;
             this.downstream = observer;
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             if (this.once.compareAndSet(false, true)) {
                 this.set.clear();
@@ -89,19 +98,23 @@ public final class CompletableTimeout extends Completable {
             }
         }
 
+        /* loaded from: classes.dex */
         final class DisposeObserver implements CompletableObserver {
             DisposeObserver() {
             }
 
+            @Override // io.reactivex.CompletableObserver
             public void onSubscribe(Disposable d) {
                 DisposeTask.this.set.add(d);
             }
 
+            @Override // io.reactivex.CompletableObserver
             public void onError(Throwable e) {
                 DisposeTask.this.set.dispose();
                 DisposeTask.this.downstream.onError(e);
             }
 
+            @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
             public void onComplete() {
                 DisposeTask.this.set.dispose();
                 DisposeTask.this.downstream.onComplete();

@@ -2,6 +2,7 @@ package android.arch.lifecycle;
 
 import android.app.Application;
 
+/* loaded from: classes.dex */
 public class AndroidViewModel extends ViewModel {
     private Application mApplication;
 
@@ -10,6 +11,6 @@ public class AndroidViewModel extends ViewModel {
     }
 
     public <T extends Application> T getApplication() {
-        return this.mApplication;
+        return (T) this.mApplication;
     }
 }

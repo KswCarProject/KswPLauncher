@@ -1,7 +1,8 @@
 package com.ibm.icu.text;
 
-import android.support.v4.view.MotionEventCompat;
+import android.support.p001v4.view.MotionEventCompat;
 
+/* loaded from: classes.dex */
 interface SCSU {
     public static final int ARMENIANINDEX = 252;
     public static final int COMPRESSIONOFFSET = 128;

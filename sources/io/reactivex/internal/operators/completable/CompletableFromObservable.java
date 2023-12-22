@@ -6,38 +6,46 @@ import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
+/* loaded from: classes.dex */
 public final class CompletableFromObservable<T> extends Completable {
     final ObservableSource<T> observable;
 
-    public CompletableFromObservable(ObservableSource<T> observable2) {
-        this.observable = observable2;
+    public CompletableFromObservable(ObservableSource<T> observable) {
+        this.observable = observable;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         this.observable.subscribe(new CompletableFromObservableObserver(observer));
     }
 
+    /* loaded from: classes.dex */
     static final class CompletableFromObservableObserver<T> implements Observer<T> {
-        final CompletableObserver co;
 
-        CompletableFromObservableObserver(CompletableObserver co2) {
-            this.co = co2;
+        /* renamed from: co */
+        final CompletableObserver f276co;
+
+        CompletableFromObservableObserver(CompletableObserver co) {
+            this.f276co = co;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
-            this.co.onSubscribe(d);
+            this.f276co.onSubscribe(d);
         }
 
-        public void onNext(T t) {
+        @Override // io.reactivex.Observer
+        public void onNext(T value) {
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable e) {
-            this.co.onError(e);
+            this.f276co.onError(e);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
-            this.co.onComplete();
+            this.f276co.onComplete();
         }
     }
 }

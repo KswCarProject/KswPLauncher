@@ -3,14 +3,15 @@ package com.ibm.icu.text;
 import java.text.ParsePosition;
 import kotlin.text.Typography;
 
-/* compiled from: NFSubstitution */
+/* compiled from: NFSubstitution.java */
+/* loaded from: classes.dex */
 class NumeratorSubstitution extends NFSubstitution {
     private final double denominator;
     private final boolean withZeros;
 
-    NumeratorSubstitution(int pos, double denominator2, NFRuleSet ruleSet, String description) {
+    NumeratorSubstitution(int pos, double denominator, NFRuleSet ruleSet, String description) {
         super(pos, ruleSet, fixdesc(description));
-        this.denominator = denominator2;
+        this.denominator = denominator;
         this.withZeros = description.endsWith("<<");
     }
 
@@ -18,61 +19,63 @@ class NumeratorSubstitution extends NFSubstitution {
         return description.endsWith("<<") ? description.substring(0, description.length() - 1) : description;
     }
 
+    @Override // com.ibm.icu.text.NFSubstitution
     public boolean equals(Object that) {
-        if (!super.equals(that)) {
-            return false;
-        }
-        NumeratorSubstitution that2 = (NumeratorSubstitution) that;
-        if (this.denominator == that2.denominator && this.withZeros == that2.withZeros) {
-            return true;
+        if (super.equals(that)) {
+            NumeratorSubstitution that2 = (NumeratorSubstitution) that;
+            return this.denominator == that2.denominator && this.withZeros == that2.withZeros;
         }
         return false;
     }
 
+    @Override // com.ibm.icu.text.NFSubstitution
     public void doSubstitution(double number, StringBuilder toInsertInto, int position, int recursionCount) {
         int len;
-        StringBuilder sb = toInsertInto;
         double numberToFormat = transformNumber(number);
-        if (!this.withZeros || this.ruleSet == null) {
-            len = position;
-        } else {
+        if (this.withZeros && this.ruleSet != null) {
             long nf = (long) numberToFormat;
             int len2 = toInsertInto.length();
             while (true) {
-                long j = 10 * nf;
-                long nf2 = j;
-                if (((double) j) >= this.denominator) {
+                long nf2 = 10 * nf;
+                if (nf2 >= this.denominator) {
                     break;
                 }
-                sb.insert(position + this.pos, ' ');
-                this.ruleSet.format(0, toInsertInto, position + this.pos, recursionCount);
+                toInsertInto.insert(position + this.pos, ' ');
+                this.ruleSet.format(0L, toInsertInto, position + this.pos, recursionCount);
                 nf = nf2;
             }
             len = position + (toInsertInto.length() - len2);
+        } else {
+            len = position;
         }
         if (numberToFormat == Math.floor(numberToFormat) && this.ruleSet != null) {
             this.ruleSet.format((long) numberToFormat, toInsertInto, len + this.pos, recursionCount);
         } else if (this.ruleSet != null) {
             this.ruleSet.format(numberToFormat, toInsertInto, len + this.pos, recursionCount);
         } else {
-            sb.insert(this.pos + len, this.numberFormat.format(numberToFormat));
+            toInsertInto.insert(this.pos + len, this.numberFormat.format(numberToFormat));
         }
     }
 
+    @Override // com.ibm.icu.text.NFSubstitution
     public long transformNumber(long number) {
-        return Math.round(((double) number) * this.denominator);
+        return Math.round(number * this.denominator);
     }
 
+    @Override // com.ibm.icu.text.NFSubstitution
     public double transformNumber(double number) {
-        return (double) Math.round(this.denominator * number);
+        return Math.round(this.denominator * number);
     }
 
+    @Override // com.ibm.icu.text.NFSubstitution
     public Number doParse(String text, ParsePosition parsePosition, double baseValue, double upperBound, boolean lenientParse, int nonNumericalExecutedRuleMask) {
         int zeroCount;
         String text2;
-        ParsePosition parsePosition2 = parsePosition;
         int zeroCount2 = 0;
-        if (this.withZeros) {
+        if (!this.withZeros) {
+            zeroCount = 0;
+            text2 = text;
+        } else {
             String workText = text;
             ParsePosition workPos = new ParsePosition(1);
             while (workText.length() > 0 && workPos.getIndex() != 0) {
@@ -82,47 +85,46 @@ class NumeratorSubstitution extends NFSubstitution {
                     break;
                 }
                 zeroCount2++;
-                parsePosition2.setIndex(parsePosition.getIndex() + workPos.getIndex());
+                parsePosition.setIndex(parsePosition.getIndex() + workPos.getIndex());
                 workText = workText.substring(workPos.getIndex());
                 while (workText.length() > 0 && workText.charAt(0) == ' ') {
                     workText = workText.substring(1);
-                    parsePosition2.setIndex(parsePosition.getIndex() + 1);
+                    parsePosition.setIndex(parsePosition.getIndex() + 1);
                 }
             }
             String text3 = text.substring(parsePosition.getIndex());
-            parsePosition2.setIndex(0);
+            parsePosition.setIndex(0);
             zeroCount = zeroCount2;
             text2 = text3;
-        } else {
-            zeroCount = 0;
-            text2 = text;
         }
-        Number result = super.doParse(text2, parsePosition, this.withZeros != 0 ? 1.0d : baseValue, upperBound, false, nonNumericalExecutedRuleMask);
-        if (!this.withZeros) {
-            return result;
+        Number result = super.doParse(text2, parsePosition, this.withZeros ? 1.0d : baseValue, upperBound, false, nonNumericalExecutedRuleMask);
+        if (this.withZeros) {
+            long n = result.longValue();
+            long d = 1;
+            while (d <= n) {
+                d *= 10;
+            }
+            while (zeroCount > 0) {
+                d *= 10;
+                zeroCount--;
+            }
+            return new Double(n / d);
         }
-        long n = result.longValue();
-        long d = 1;
-        while (d <= n) {
-            d *= 10;
-        }
-        while (zeroCount > 0) {
-            d *= 10;
-            zeroCount--;
-        }
-        return new Double(((double) n) / ((double) d));
+        return result;
     }
 
+    @Override // com.ibm.icu.text.NFSubstitution
     public double composeRuleValue(double newRuleValue, double oldRuleValue) {
         return newRuleValue / oldRuleValue;
     }
 
+    @Override // com.ibm.icu.text.NFSubstitution
     public double calcUpperBound(double oldUpperBound) {
         return this.denominator;
     }
 
-    /* access modifiers changed from: package-private */
-    public char tokenChar() {
+    @Override // com.ibm.icu.text.NFSubstitution
+    char tokenChar() {
         return Typography.less;
     }
 }

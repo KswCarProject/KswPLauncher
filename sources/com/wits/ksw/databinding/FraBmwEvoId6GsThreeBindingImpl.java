@@ -1,7 +1,6 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
@@ -10,10 +9,11 @@ import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.LinearLayout;
-import com.wits.ksw.R;
-import com.wits.ksw.launcher.bean.CarInfo;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.view.bmwevoid6gs.BmwId6gsViewMode;
 
+/* loaded from: classes7.dex */
 public class FraBmwEvoId6GsThreeBindingImpl extends FraBmwEvoId6GsThreeBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -26,9 +26,9 @@ public class FraBmwEvoId6GsThreeBindingImpl extends FraBmwEvoId6GsThreeBinding {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.bmw_evo_id6_gs_hmoe_plink_hint_textview, 7);
-        sparseIntArray.put(R.id.bmw_evo_id6_gs_hmoe_apps_hint_textview, 8);
-        sparseIntArray.put(R.id.bmw_evo_id6_gs_hmoe_set_hint_textview, 9);
+        sparseIntArray.put(C0899R.C0901id.bmw_evo_id6_gs_hmoe_plink_hint_textview, 7);
+        sparseIntArray.put(C0899R.C0901id.bmw_evo_id6_gs_hmoe_apps_hint_textview, 8);
+        sparseIntArray.put(C0899R.C0901id.bmw_evo_id6_gs_hmoe_set_hint_textview, 9);
     }
 
     public FraBmwEvoId6GsThreeBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -36,34 +36,36 @@ public class FraBmwEvoId6GsThreeBindingImpl extends FraBmwEvoId6GsThreeBinding {
     }
 
     private FraBmwEvoId6GsThreeBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 3, bindings[8], bindings[1], bindings[2], bindings[7], bindings[9], bindings[3]);
-        this.mDirtyFlags = -1;
-        this.bmwEvoId6GsHmoeDashBtn.setTag((Object) null);
-        this.bmwEvoId6GsHmoeOliHintTextview.setTag((Object) null);
-        this.bmwEvoId6GsHmoeSpeedTextview.setTag((Object) null);
-        LinearLayout linearLayout = bindings[0];
+        super(bindingComponent, root, 3, (TextView) bindings[8], (ConstraintLayout) bindings[1], (TextView) bindings[2], (TextView) bindings[7], (TextView) bindings[9], (TextView) bindings[3]);
+        this.mDirtyFlags = -1L;
+        this.bmwEvoId6GsHmoeDashBtn.setTag(null);
+        this.bmwEvoId6GsHmoeOliHintTextview.setTag(null);
+        this.bmwEvoId6GsHmoeSpeedTextview.setTag(null);
+        LinearLayout linearLayout = (LinearLayout) bindings[0];
         this.mboundView0 = linearLayout;
-        linearLayout.setTag((Object) null);
-        ConstraintLayout constraintLayout = bindings[4];
+        linearLayout.setTag(null);
+        ConstraintLayout constraintLayout = (ConstraintLayout) bindings[4];
         this.mboundView4 = constraintLayout;
-        constraintLayout.setTag((Object) null);
-        ConstraintLayout constraintLayout2 = bindings[5];
+        constraintLayout.setTag(null);
+        ConstraintLayout constraintLayout2 = (ConstraintLayout) bindings[5];
         this.mboundView5 = constraintLayout2;
-        constraintLayout2.setTag((Object) null);
-        ConstraintLayout constraintLayout3 = bindings[6];
+        constraintLayout2.setTag(null);
+        ConstraintLayout constraintLayout3 = (ConstraintLayout) bindings[6];
         this.mboundView6 = constraintLayout3;
-        constraintLayout3.setTag((Object) null);
+        constraintLayout3.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 16;
+            this.mDirtyFlags = 16L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -73,14 +75,16 @@ public class FraBmwEvoId6GsThreeBindingImpl extends FraBmwEvoId6GsThreeBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((BmwId6gsViewMode) variable);
+            return true;
         }
-        setVm((BmwId6gsViewMode) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.FraBmwEvoId6GsThreeBinding
     public void setVm(BmwId6gsViewMode Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -90,8 +94,8 @@ public class FraBmwEvoId6GsThreeBindingImpl extends FraBmwEvoId6GsThreeBinding {
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmIndex((ObservableInt) object, fieldId);
@@ -105,43 +109,43 @@ public class FraBmwEvoId6GsThreeBindingImpl extends FraBmwEvoId6GsThreeBinding {
     }
 
     private boolean onChangeVmIndex(ObservableInt VmIndex, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmCarInfoOilValue(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmCarInfoOilValue(ObservableField<String> VmCarInfoOilValue, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmCarInfoSpeed(ObservableInt VmCarInfoSpeed, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         boolean vmIndexInt9;
         int vmIndexGet;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         boolean vmIndexInt8 = false;
         String vmCarInfoOilValueGet = null;
@@ -153,31 +157,32 @@ public class FraBmwEvoId6GsThreeBindingImpl extends FraBmwEvoId6GsThreeBinding {
         boolean vmIndexInt10 = false;
         ObservableInt vmCarInfoSpeed = null;
         int vmCarInfoSpeedGet = 0;
-        if ((dirtyFlags & 25) != 0) {
+        if ((dirtyFlags & 25) == 0) {
+            vmIndexInt9 = false;
+        } else {
             if (vm != null) {
                 vmIndex = vm.index;
             }
-            updateRegistration(0, (Observable) vmIndex);
-            if (vmIndex != null) {
-                vmIndexGet = vmIndex.get();
-            } else {
+            updateRegistration(0, vmIndex);
+            if (vmIndex == null) {
                 vmIndexGet = 0;
+            } else {
+                int vmIndexGet2 = vmIndex.get();
+                vmIndexGet = vmIndexGet2;
             }
             vmIndexInt8 = vmIndexGet == 8;
             vmIndexInt11 = vmIndexGet == 11;
             vmIndexInt10 = vmIndexGet == 10;
-            int i = vmIndexGet;
-            vmIndexInt9 = vmIndexGet == 9;
-        } else {
-            vmIndexInt9 = false;
+            boolean vmIndexInt92 = vmIndexGet == 9;
+            vmIndexInt9 = vmIndexInt92;
         }
         if ((dirtyFlags & 22) != 0) {
-            CarInfo vmCarInfo = BmwId6gsViewMode.carInfo;
+            com.wits.ksw.launcher.bean.CarInfo vmCarInfo = BmwId6gsViewMode.carInfo;
             if ((dirtyFlags & 18) != 0) {
                 if (vmCarInfo != null) {
                     vmCarInfoOilValue = vmCarInfo.oilValue;
                 }
-                updateRegistration(1, (Observable) vmCarInfoOilValue);
+                updateRegistration(1, vmCarInfoOilValue);
                 if (vmCarInfoOilValue != null) {
                     vmCarInfoOilValueGet = vmCarInfoOilValue.get();
                 }
@@ -186,7 +191,7 @@ public class FraBmwEvoId6GsThreeBindingImpl extends FraBmwEvoId6GsThreeBinding {
                 if (vmCarInfo != null) {
                     vmCarInfoSpeed = vmCarInfo.speed;
                 }
-                updateRegistration(2, (Observable) vmCarInfoSpeed);
+                updateRegistration(2, vmCarInfoSpeed);
                 if (vmCarInfoSpeed != null) {
                     vmCarInfoSpeedGet = vmCarInfoSpeed.get();
                 }

@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public class FinderPatternFinder {
     private static final int CENTER_QUORUM = 2;
     protected static final int MAX_MODULES = 97;
@@ -22,29 +23,26 @@ public class FinderPatternFinder {
     private final List<FinderPattern> possibleCenters;
     private final ResultPointCallback resultPointCallback;
 
-    public FinderPatternFinder(BitMatrix image2) {
-        this(image2, (ResultPointCallback) null);
+    public FinderPatternFinder(BitMatrix image) {
+        this(image, null);
     }
 
-    public FinderPatternFinder(BitMatrix image2, ResultPointCallback resultPointCallback2) {
-        this.image = image2;
+    public FinderPatternFinder(BitMatrix image, ResultPointCallback resultPointCallback) {
+        this.image = image;
         this.possibleCenters = new ArrayList();
         this.crossCheckStateCount = new int[5];
-        this.resultPointCallback = resultPointCallback2;
+        this.resultPointCallback = resultPointCallback;
     }
 
-    /* access modifiers changed from: protected */
-    public final BitMatrix getImage() {
+    protected final BitMatrix getImage() {
         return this.image;
     }
 
-    /* access modifiers changed from: protected */
-    public final List<FinderPattern> getPossibleCenters() {
+    protected final List<FinderPattern> getPossibleCenters() {
         return this.possibleCenters;
     }
 
-    /* access modifiers changed from: package-private */
-    public final FinderPatternInfo find(Map<DecodeHintType, ?> map) throws NotFoundException {
+    final FinderPatternInfo find(Map<DecodeHintType, ?> map) throws NotFoundException {
         boolean z = map != null && map.containsKey(DecodeHintType.TRY_HARDER);
         int height = this.image.getHeight();
         int width = this.image.getWidth();
@@ -65,30 +63,36 @@ public class FinderPatternFinder {
                         i4++;
                     }
                     iArr[i4] = iArr[i4] + 1;
-                } else if ((i4 & 1) != 0) {
-                    iArr[i4] = iArr[i4] + 1;
-                } else if (i4 != 4) {
-                    i4++;
-                    iArr[i4] = iArr[i4] + 1;
-                } else if (!foundPatternCross(iArr)) {
-                    shiftCounts2(iArr);
-                    i4 = 3;
-                } else if (handlePossibleCenter(iArr, i2, i3)) {
-                    if (this.hasSkipped) {
-                        z2 = haveMultiplyConfirmedCenters();
-                    } else {
-                        int findRowSkip = findRowSkip();
-                        if (findRowSkip > iArr[2]) {
-                            i2 += (findRowSkip - iArr[2]) - 2;
-                            i3 = width - 1;
+                } else if ((i4 & 1) == 0) {
+                    if (i4 == 4) {
+                        if (foundPatternCross(iArr)) {
+                            if (handlePossibleCenter(iArr, i2, i3)) {
+                                if (this.hasSkipped) {
+                                    z2 = haveMultiplyConfirmedCenters();
+                                } else {
+                                    int findRowSkip = findRowSkip();
+                                    if (findRowSkip > iArr[2]) {
+                                        i2 += (findRowSkip - iArr[2]) - 2;
+                                        i3 = width - 1;
+                                    }
+                                }
+                                clearCounts(iArr);
+                                i4 = 0;
+                                i = 2;
+                            } else {
+                                shiftCounts2(iArr);
+                                i4 = 3;
+                            }
+                        } else {
+                            shiftCounts2(iArr);
+                            i4 = 3;
                         }
+                    } else {
+                        i4++;
+                        iArr[i4] = iArr[i4] + 1;
                     }
-                    clearCounts(iArr);
-                    i4 = 0;
-                    i = 2;
                 } else {
-                    shiftCounts2(iArr);
-                    i4 = 3;
+                    iArr[i4] = iArr[i4] + 1;
                 }
                 i3++;
             }
@@ -106,15 +110,14 @@ public class FinderPatternFinder {
     }
 
     private static float centerFromEnd(int[] stateCount, int end) {
-        return ((float) ((end - stateCount[4]) - stateCount[3])) - (((float) stateCount[2]) / 2.0f);
+        return ((end - stateCount[4]) - stateCount[3]) - (stateCount[2] / 2.0f);
     }
 
     protected static boolean foundPatternCross(int[] stateCount) {
         int totalModuleSize = 0;
         for (int i = 0; i < 5; i++) {
-            int i2 = stateCount[i];
-            int count = i2;
-            if (i2 == 0) {
+            int count = stateCount[i];
+            if (count == 0) {
                 return false;
             }
             totalModuleSize += count;
@@ -122,21 +125,16 @@ public class FinderPatternFinder {
         if (totalModuleSize < 7) {
             return false;
         }
-        float f = ((float) totalModuleSize) / 7.0f;
-        float moduleSize = f;
-        float maxVariance = f / 2.0f;
-        if (Math.abs(moduleSize - ((float) stateCount[0])) >= maxVariance || Math.abs(moduleSize - ((float) stateCount[1])) >= maxVariance || Math.abs((moduleSize * 3.0f) - ((float) stateCount[2])) >= 3.0f * maxVariance || Math.abs(moduleSize - ((float) stateCount[3])) >= maxVariance || Math.abs(moduleSize - ((float) stateCount[4])) >= maxVariance) {
-            return false;
-        }
-        return true;
+        float moduleSize = totalModuleSize / 7.0f;
+        float maxVariance = moduleSize / 2.0f;
+        return Math.abs(moduleSize - ((float) stateCount[0])) < maxVariance && Math.abs(moduleSize - ((float) stateCount[1])) < maxVariance && Math.abs((moduleSize * 3.0f) - ((float) stateCount[2])) < 3.0f * maxVariance && Math.abs(moduleSize - ((float) stateCount[3])) < maxVariance && Math.abs(moduleSize - ((float) stateCount[4])) < maxVariance;
     }
 
     protected static boolean foundPatternDiagonal(int[] stateCount) {
         int totalModuleSize = 0;
         for (int i = 0; i < 5; i++) {
-            int i2 = stateCount[i];
-            int count = i2;
-            if (i2 == 0) {
+            int count = stateCount[i];
+            if (count == 0) {
                 return false;
             }
             totalModuleSize += count;
@@ -144,13 +142,9 @@ public class FinderPatternFinder {
         if (totalModuleSize < 7) {
             return false;
         }
-        float f = ((float) totalModuleSize) / 7.0f;
-        float moduleSize = f;
-        float maxVariance = f / 1.333f;
-        if (Math.abs(moduleSize - ((float) stateCount[0])) >= maxVariance || Math.abs(moduleSize - ((float) stateCount[1])) >= maxVariance || Math.abs((moduleSize * 3.0f) - ((float) stateCount[2])) >= 3.0f * maxVariance || Math.abs(moduleSize - ((float) stateCount[3])) >= maxVariance || Math.abs(moduleSize - ((float) stateCount[4])) >= maxVariance) {
-            return false;
-        }
-        return true;
+        float moduleSize = totalModuleSize / 7.0f;
+        float maxVariance = moduleSize / 1.333f;
+        return Math.abs(moduleSize - ((float) stateCount[0])) < maxVariance && Math.abs(moduleSize - ((float) stateCount[1])) < maxVariance && Math.abs((moduleSize * 3.0f) - ((float) stateCount[2])) < 3.0f * maxVariance && Math.abs(moduleSize - ((float) stateCount[3])) < maxVariance && Math.abs(moduleSize - ((float) stateCount[4])) < maxVariance;
     }
 
     private int[] getCrossCheckStateCount() {
@@ -158,15 +152,13 @@ public class FinderPatternFinder {
         return this.crossCheckStateCount;
     }
 
-    /* access modifiers changed from: protected */
-    public final void clearCounts(int[] counts) {
+    protected final void clearCounts(int[] counts) {
         for (int x = 0; x < counts.length; x++) {
             counts[x] = 0;
         }
     }
 
-    /* access modifiers changed from: protected */
-    public final void shiftCounts2(int[] stateCount) {
+    protected final void shiftCounts2(int[] stateCount) {
         stateCount[0] = stateCount[2];
         stateCount[1] = stateCount[3];
         stateCount[2] = stateCount[4];
@@ -222,136 +214,271 @@ public class FinderPatternFinder {
         return foundPatternDiagonal(stateCount);
     }
 
+    /* JADX WARN: Code restructure failed: missing block: B:19:0x003c, code lost:
+        if (r2[1] <= r14) goto L22;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:22:0x0041, code lost:
+        if (r3 < 0) goto L78;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:24:0x0047, code lost:
+        if (r0.get(r13, r3) == false) goto L77;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:26:0x004b, code lost:
+        if (r2[0] > r14) goto L29;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:27:0x004d, code lost:
+        r2[0] = r2[0] + 1;
+        r3 = r3 - 1;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:29:0x0057, code lost:
+        if (r2[0] <= r14) goto L33;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:30:0x0059, code lost:
+        return Float.NaN;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:31:0x005a, code lost:
+        r3 = r12 + 1;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:32:0x005c, code lost:
+        if (r3 >= r0) goto L76;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:34:0x0062, code lost:
+        if (r0.get(r13, r3) == false) goto L38;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:35:0x0064, code lost:
+        r2[2] = r2[2] + 1;
+        r3 = r3 + 1;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:36:0x006c, code lost:
+        if (r3 != r0) goto L41;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:37:0x006e, code lost:
+        return Float.NaN;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:39:0x0070, code lost:
+        if (r3 >= r0) goto L75;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:41:0x0076, code lost:
+        if (r0.get(r13, r3) != false) goto L74;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:43:0x007a, code lost:
+        if (r2[3] >= r14) goto L48;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:44:0x007c, code lost:
+        r2[3] = r2[3] + 1;
+        r3 = r3 + 1;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:45:0x0084, code lost:
+        if (r3 == r0) goto L73;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:47:0x0088, code lost:
+        if (r2[3] < r14) goto L52;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:50:0x008c, code lost:
+        if (r3 >= r0) goto L72;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:52:0x0092, code lost:
+        if (r0.get(r13, r3) == false) goto L71;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:54:0x0096, code lost:
+        if (r2[4] >= r14) goto L59;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:55:0x0098, code lost:
+        r2[4] = r2[4] + 1;
+        r3 = r3 + 1;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:57:0x00a2, code lost:
+        if (r2[4] < r14) goto L63;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:58:0x00a4, code lost:
+        return Float.NaN;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:59:0x00a5, code lost:
+        r7 = (((r2[0] + r2[1]) + r2[2]) + r2[3]) + r2[4];
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:60:0x00bd, code lost:
+        if ((java.lang.Math.abs(r7 - r15) * 5) < (r15 * 2)) goto L66;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:61:0x00bf, code lost:
+        return Float.NaN;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:63:0x00c4, code lost:
+        if (foundPatternCross(r2) == false) goto L70;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:65:0x00ca, code lost:
+        return centerFromEnd(r2, r3);
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:66:0x00cb, code lost:
+        return Float.NaN;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:67:0x00cc, code lost:
+        return Float.NaN;
+     */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
     private float crossCheckVertical(int startI, int centerJ, int maxCount, int originalStateCountTotal) {
-        BitMatrix bitMatrix = this.image;
-        BitMatrix image2 = bitMatrix;
-        int maxI = bitMatrix.getHeight();
+        BitMatrix image = this.image;
+        int maxI = image.getHeight();
         int[] stateCount = getCrossCheckStateCount();
         int i = startI;
-        while (i >= 0 && image2.get(centerJ, i)) {
+        while (i >= 0 && image.get(centerJ, i)) {
             stateCount[2] = stateCount[2] + 1;
             i--;
         }
         if (i < 0) {
             return Float.NaN;
         }
-        while (i >= 0 && !image2.get(centerJ, i) && stateCount[1] <= maxCount) {
+        while (i >= 0 && !image.get(centerJ, i) && stateCount[1] <= maxCount) {
             stateCount[1] = stateCount[1] + 1;
             i--;
-        }
-        if (i < 0 || stateCount[1] > maxCount) {
-            return Float.NaN;
-        }
-        while (i >= 0 && image2.get(centerJ, i) && stateCount[0] <= maxCount) {
-            stateCount[0] = stateCount[0] + 1;
-            i--;
-        }
-        if (stateCount[0] > maxCount) {
-            return Float.NaN;
-        }
-        int i2 = startI + 1;
-        while (i2 < maxI && image2.get(centerJ, i2)) {
-            stateCount[2] = stateCount[2] + 1;
-            i2++;
-        }
-        if (i2 == maxI) {
-            return Float.NaN;
-        }
-        while (i2 < maxI && !image2.get(centerJ, i2) && stateCount[3] < maxCount) {
-            stateCount[3] = stateCount[3] + 1;
-            i2++;
-        }
-        if (i2 == maxI || stateCount[3] >= maxCount) {
-            return Float.NaN;
-        }
-        while (i2 < maxI && image2.get(centerJ, i2) && stateCount[4] < maxCount) {
-            stateCount[4] = stateCount[4] + 1;
-            i2++;
-        }
-        if (stateCount[4] < maxCount && Math.abs(((((stateCount[0] + stateCount[1]) + stateCount[2]) + stateCount[3]) + stateCount[4]) - originalStateCountTotal) * 5 < originalStateCountTotal * 2 && foundPatternCross(stateCount)) {
-            return centerFromEnd(stateCount, i2);
         }
         return Float.NaN;
     }
 
+    /* JADX WARN: Code restructure failed: missing block: B:19:0x003c, code lost:
+        if (r2[1] <= r14) goto L22;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:22:0x0041, code lost:
+        if (r3 < 0) goto L78;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:24:0x0047, code lost:
+        if (r0.get(r3, r13) == false) goto L77;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:26:0x004b, code lost:
+        if (r2[0] > r14) goto L29;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:27:0x004d, code lost:
+        r2[0] = r2[0] + 1;
+        r3 = r3 - 1;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:29:0x0057, code lost:
+        if (r2[0] <= r14) goto L33;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:30:0x0059, code lost:
+        return Float.NaN;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:31:0x005a, code lost:
+        r3 = r12 + 1;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:32:0x005c, code lost:
+        if (r3 >= r0) goto L76;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:34:0x0062, code lost:
+        if (r0.get(r3, r13) == false) goto L38;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:35:0x0064, code lost:
+        r2[2] = r2[2] + 1;
+        r3 = r3 + 1;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:36:0x006c, code lost:
+        if (r3 != r0) goto L41;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:37:0x006e, code lost:
+        return Float.NaN;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:39:0x0070, code lost:
+        if (r3 >= r0) goto L75;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:41:0x0076, code lost:
+        if (r0.get(r3, r13) != false) goto L74;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:43:0x007a, code lost:
+        if (r2[3] >= r14) goto L48;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:44:0x007c, code lost:
+        r2[3] = r2[3] + 1;
+        r3 = r3 + 1;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:45:0x0084, code lost:
+        if (r3 == r0) goto L73;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:47:0x0088, code lost:
+        if (r2[3] < r14) goto L52;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:50:0x008c, code lost:
+        if (r3 >= r0) goto L72;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:52:0x0092, code lost:
+        if (r0.get(r3, r13) == false) goto L71;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:54:0x0096, code lost:
+        if (r2[4] >= r14) goto L59;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:55:0x0098, code lost:
+        r2[4] = r2[4] + 1;
+        r3 = r3 + 1;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:57:0x00a2, code lost:
+        if (r2[4] < r14) goto L63;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:58:0x00a4, code lost:
+        return Float.NaN;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:59:0x00a5, code lost:
+        r7 = (((r2[0] + r2[1]) + r2[2]) + r2[3]) + r2[4];
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:60:0x00bb, code lost:
+        if ((java.lang.Math.abs(r7 - r15) * 5) < r15) goto L66;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:61:0x00bd, code lost:
+        return Float.NaN;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:63:0x00c2, code lost:
+        if (foundPatternCross(r2) == false) goto L70;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:65:0x00c8, code lost:
+        return centerFromEnd(r2, r3);
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:66:0x00c9, code lost:
+        return Float.NaN;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:67:0x00ca, code lost:
+        return Float.NaN;
+     */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
     private float crossCheckHorizontal(int startJ, int centerI, int maxCount, int originalStateCountTotal) {
-        BitMatrix bitMatrix = this.image;
-        BitMatrix image2 = bitMatrix;
-        int maxJ = bitMatrix.getWidth();
+        BitMatrix image = this.image;
+        int maxJ = image.getWidth();
         int[] stateCount = getCrossCheckStateCount();
         int j = startJ;
-        while (j >= 0 && image2.get(j, centerI)) {
+        while (j >= 0 && image.get(j, centerI)) {
             stateCount[2] = stateCount[2] + 1;
             j--;
         }
         if (j < 0) {
             return Float.NaN;
         }
-        while (j >= 0 && !image2.get(j, centerI) && stateCount[1] <= maxCount) {
+        while (j >= 0 && !image.get(j, centerI) && stateCount[1] <= maxCount) {
             stateCount[1] = stateCount[1] + 1;
             j--;
-        }
-        if (j < 0 || stateCount[1] > maxCount) {
-            return Float.NaN;
-        }
-        while (j >= 0 && image2.get(j, centerI) && stateCount[0] <= maxCount) {
-            stateCount[0] = stateCount[0] + 1;
-            j--;
-        }
-        if (stateCount[0] > maxCount) {
-            return Float.NaN;
-        }
-        int j2 = startJ + 1;
-        while (j2 < maxJ && image2.get(j2, centerI)) {
-            stateCount[2] = stateCount[2] + 1;
-            j2++;
-        }
-        if (j2 == maxJ) {
-            return Float.NaN;
-        }
-        while (j2 < maxJ && !image2.get(j2, centerI) && stateCount[3] < maxCount) {
-            stateCount[3] = stateCount[3] + 1;
-            j2++;
-        }
-        if (j2 == maxJ || stateCount[3] >= maxCount) {
-            return Float.NaN;
-        }
-        while (j2 < maxJ && image2.get(j2, centerI) && stateCount[4] < maxCount) {
-            stateCount[4] = stateCount[4] + 1;
-            j2++;
-        }
-        if (stateCount[4] < maxCount && Math.abs(((((stateCount[0] + stateCount[1]) + stateCount[2]) + stateCount[3]) + stateCount[4]) - originalStateCountTotal) * 5 < originalStateCountTotal && foundPatternCross(stateCount)) {
-            return centerFromEnd(stateCount, j2);
         }
         return Float.NaN;
     }
 
-    /* access modifiers changed from: protected */
     @Deprecated
-    public final boolean handlePossibleCenter(int[] stateCount, int i, int j, boolean pureBarcode) {
+    protected final boolean handlePossibleCenter(int[] stateCount, int i, int j, boolean pureBarcode) {
         return handlePossibleCenter(stateCount, i, j);
     }
 
-    /* access modifiers changed from: protected */
-    public final boolean handlePossibleCenter(int[] stateCount, int i, int j) {
+    protected final boolean handlePossibleCenter(int[] stateCount, int i, int j) {
         int stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2] + stateCount[3] + stateCount[4];
         float centerJ = centerFromEnd(stateCount, j);
-        float crossCheckVertical = crossCheckVertical(i, (int) centerJ, stateCount[2], stateCountTotal);
-        float centerI = crossCheckVertical;
-        if (!Float.isNaN(crossCheckVertical)) {
-            float crossCheckHorizontal = crossCheckHorizontal((int) centerJ, (int) centerI, stateCount[2], stateCountTotal);
-            float centerJ2 = crossCheckHorizontal;
-            if (!Float.isNaN(crossCheckHorizontal) && crossCheckDiagonal((int) centerI, (int) centerJ2)) {
-                float estimatedModuleSize = ((float) stateCountTotal) / 7.0f;
+        float centerI = crossCheckVertical(i, (int) centerJ, stateCount[2], stateCountTotal);
+        if (!Float.isNaN(centerI)) {
+            float centerJ2 = crossCheckHorizontal((int) centerJ, (int) centerI, stateCount[2], stateCountTotal);
+            if (!Float.isNaN(centerJ2) && crossCheckDiagonal((int) centerI, (int) centerJ2)) {
+                float estimatedModuleSize = stateCountTotal / 7.0f;
                 boolean found = false;
                 int index = 0;
                 while (true) {
                     if (index >= this.possibleCenters.size()) {
                         break;
                     }
-                    FinderPattern finderPattern = this.possibleCenters.get(index);
-                    FinderPattern center = finderPattern;
-                    if (finderPattern.aboutEquals(estimatedModuleSize, centerI, centerJ2)) {
+                    FinderPattern center = this.possibleCenters.get(index);
+                    if (center.aboutEquals(estimatedModuleSize, centerI, centerJ2)) {
                         this.possibleCenters.set(index, center.combineEstimate(centerI, centerJ2, estimatedModuleSize));
                         found = true;
                         break;
@@ -361,9 +488,9 @@ public class FinderPatternFinder {
                 if (!found) {
                     FinderPattern point = new FinderPattern(centerJ2, centerI, estimatedModuleSize);
                     this.possibleCenters.add(point);
-                    ResultPointCallback resultPointCallback2 = this.resultPointCallback;
-                    if (resultPointCallback2 != null) {
-                        resultPointCallback2.foundPossibleResultPoint(point);
+                    ResultPointCallback resultPointCallback = this.resultPointCallback;
+                    if (resultPointCallback != null) {
+                        resultPointCallback.foundPossibleResultPoint(point);
                     }
                 }
                 return true;
@@ -377,9 +504,8 @@ public class FinderPatternFinder {
             return 0;
         }
         ResultPoint firstConfirmedCenter = null;
-        for (FinderPattern next : this.possibleCenters) {
-            FinderPattern center = next;
-            if (next.getCount() >= 2) {
+        for (FinderPattern center : this.possibleCenters) {
+            if (center.getCount() >= 2) {
                 if (firstConfirmedCenter == null) {
                     firstConfirmedCenter = center;
                 } else {
@@ -395,9 +521,8 @@ public class FinderPatternFinder {
         int confirmedCount = 0;
         float totalModuleSize = 0.0f;
         int max = this.possibleCenters.size();
-        for (FinderPattern next : this.possibleCenters) {
-            FinderPattern pattern = next;
-            if (next.getCount() >= 2) {
+        for (FinderPattern pattern : this.possibleCenters) {
+            if (pattern.getCount() >= 2) {
                 confirmedCount++;
                 totalModuleSize += pattern.getEstimatedModuleSize();
             }
@@ -405,32 +530,29 @@ public class FinderPatternFinder {
         if (confirmedCount < 3) {
             return false;
         }
-        float average = totalModuleSize / ((float) max);
+        float average = totalModuleSize / max;
         float totalDeviation = 0.0f;
         for (FinderPattern pattern2 : this.possibleCenters) {
             totalDeviation += Math.abs(pattern2.getEstimatedModuleSize() - average);
         }
-        if (totalDeviation <= 0.05f * totalModuleSize) {
-            return true;
-        }
-        return false;
+        return totalDeviation <= 0.05f * totalModuleSize;
     }
 
     private FinderPattern[] selectBestPatterns() throws NotFoundException {
-        int size = this.possibleCenters.size();
-        int startSize = size;
-        if (size >= 3) {
+        int startSize = this.possibleCenters.size();
+        if (startSize >= 3) {
             if (startSize > 3) {
                 float totalModuleSize = 0.0f;
                 float square = 0.0f;
-                for (FinderPattern estimatedModuleSize : this.possibleCenters) {
-                    float size2 = estimatedModuleSize.getEstimatedModuleSize();
-                    totalModuleSize += size2;
-                    square += size2 * size2;
+                for (FinderPattern finderPattern : this.possibleCenters) {
+                    float size = finderPattern.getEstimatedModuleSize();
+                    totalModuleSize += size;
+                    square += size * size;
                 }
-                float average = totalModuleSize / ((float) startSize);
+                float average = totalModuleSize / startSize;
+                float stdDev = (float) Math.sqrt((square / startSize) - (average * average));
                 Collections.sort(this.possibleCenters, new FurthestFromAverageComparator(average));
-                float limit = Math.max(0.2f * average, (float) Math.sqrt((double) ((square / ((float) startSize)) - (average * average))));
+                float limit = Math.max(0.2f * average, stdDev);
                 int i = 0;
                 while (i < this.possibleCenters.size() && this.possibleCenters.size() > 3) {
                     if (Math.abs(this.possibleCenters.get(i).getEstimatedModuleSize() - average) > limit) {
@@ -445,7 +567,7 @@ public class FinderPatternFinder {
                 for (FinderPattern possibleCenter : this.possibleCenters) {
                     totalModuleSize2 += possibleCenter.getEstimatedModuleSize();
                 }
-                Collections.sort(this.possibleCenters, new CenterComparator(totalModuleSize2 / ((float) this.possibleCenters.size())));
+                Collections.sort(this.possibleCenters, new CenterComparator(totalModuleSize2 / this.possibleCenters.size()));
                 List<FinderPattern> list = this.possibleCenters;
                 list.subList(3, list.size()).clear();
             }
@@ -454,6 +576,7 @@ public class FinderPatternFinder {
         throw NotFoundException.getNotFoundInstance();
     }
 
+    /* loaded from: classes.dex */
     private static final class FurthestFromAverageComparator implements Serializable, Comparator<FinderPattern> {
         private final float average;
 
@@ -461,11 +584,13 @@ public class FinderPatternFinder {
             this.average = f;
         }
 
+        @Override // java.util.Comparator
         public int compare(FinderPattern center1, FinderPattern center2) {
             return Float.compare(Math.abs(center2.getEstimatedModuleSize() - this.average), Math.abs(center1.getEstimatedModuleSize() - this.average));
         }
     }
 
+    /* loaded from: classes.dex */
     private static final class CenterComparator implements Serializable, Comparator<FinderPattern> {
         private final float average;
 
@@ -473,13 +598,13 @@ public class FinderPatternFinder {
             this.average = f;
         }
 
+        @Override // java.util.Comparator
         public int compare(FinderPattern center1, FinderPattern center2) {
-            int compare = Integer.compare(center2.getCount(), center1.getCount());
-            int countCompare = compare;
-            if (compare == 0) {
-                return Float.compare(Math.abs(center1.getEstimatedModuleSize() - this.average), Math.abs(center2.getEstimatedModuleSize() - this.average));
+            int countCompare = Integer.compare(center2.getCount(), center1.getCount());
+            if (countCompare != 0) {
+                return countCompare;
             }
-            return countCompare;
+            return Float.compare(Math.abs(center1.getEstimatedModuleSize() - this.average), Math.abs(center2.getEstimatedModuleSize() - this.average));
         }
     }
 }

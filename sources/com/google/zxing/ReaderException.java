@@ -1,8 +1,14 @@
 package com.google.zxing;
 
+/* loaded from: classes.dex */
 public abstract class ReaderException extends Exception {
-    protected static final StackTraceElement[] NO_TRACE = new StackTraceElement[0];
-    protected static final boolean isStackTrace = (System.getProperty("surefire.test.class.path") != null);
+    protected static final StackTraceElement[] NO_TRACE;
+    protected static final boolean isStackTrace;
+
+    static {
+        isStackTrace = System.getProperty("surefire.test.class.path") != null;
+        NO_TRACE = new StackTraceElement[0];
+    }
 
     ReaderException() {
     }
@@ -11,6 +17,7 @@ public abstract class ReaderException extends Exception {
         super(cause);
     }
 
+    @Override // java.lang.Throwable
     public final synchronized Throwable fillInStackTrace() {
         return null;
     }

@@ -21,6 +21,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallback, Animatable, Animatable2Compat {
     private static final int GRAVITY = 119;
     public static final int LOOP_FOREVER = -1;
@@ -46,15 +47,15 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         this(new GifState(new GifFrameLoader(Glide.get(context), gifDecoder, targetFrameWidth, targetFrameHeight, frameTransformation, firstFrame)));
     }
 
-    GifDrawable(GifState state2) {
+    GifDrawable(GifState state) {
         this.isVisible = true;
         this.maxLoopCount = -1;
-        this.state = (GifState) Preconditions.checkNotNull(state2);
+        this.state = (GifState) Preconditions.checkNotNull(state);
     }
 
-    GifDrawable(GifFrameLoader frameLoader, Paint paint2) {
+    GifDrawable(GifFrameLoader frameLoader, Paint paint) {
         this(new GifState(frameLoader));
-        this.paint = paint2;
+        this.paint = paint;
     }
 
     public int getSize() {
@@ -95,6 +96,7 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         start();
     }
 
+    @Override // android.graphics.drawable.Animatable
     public void start() {
         this.isStarted = true;
         resetLoopCount();
@@ -103,6 +105,7 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         }
     }
 
+    @Override // android.graphics.drawable.Animatable
     public void stop() {
         this.isStarted = false;
         stopRunning();
@@ -124,6 +127,7 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         this.state.frameLoader.unsubscribe(this);
     }
 
+    @Override // android.graphics.drawable.Drawable
     public boolean setVisible(boolean visible, boolean restart) {
         Preconditions.checkArgument(!this.isRecycled, "Cannot change the visibility of a recycled resource. Ensure that you unset the Drawable from your View before changing the View's visibility.");
         this.isVisible = visible;
@@ -135,43 +139,50 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         return super.setVisible(visible, restart);
     }
 
+    @Override // android.graphics.drawable.Drawable
     public int getIntrinsicWidth() {
         return this.state.frameLoader.getWidth();
     }
 
+    @Override // android.graphics.drawable.Drawable
     public int getIntrinsicHeight() {
         return this.state.frameLoader.getHeight();
     }
 
+    @Override // android.graphics.drawable.Animatable
     public boolean isRunning() {
         return this.isRunning;
     }
 
-    /* access modifiers changed from: package-private */
-    public void setIsRunning(boolean isRunning2) {
-        this.isRunning = isRunning2;
+    void setIsRunning(boolean isRunning) {
+        this.isRunning = isRunning;
     }
 
-    /* access modifiers changed from: protected */
-    public void onBoundsChange(Rect bounds) {
+    @Override // android.graphics.drawable.Drawable
+    protected void onBoundsChange(Rect bounds) {
         super.onBoundsChange(bounds);
         this.applyGravity = true;
     }
 
+    @Override // android.graphics.drawable.Drawable
     public void draw(Canvas canvas) {
-        if (!this.isRecycled) {
-            if (this.applyGravity) {
-                Gravity.apply(119, getIntrinsicWidth(), getIntrinsicHeight(), getBounds(), getDestRect());
-                this.applyGravity = false;
-            }
-            canvas.drawBitmap(this.state.frameLoader.getCurrentFrame(), (Rect) null, getDestRect(), getPaint());
+        if (this.isRecycled) {
+            return;
         }
+        if (this.applyGravity) {
+            Gravity.apply(119, getIntrinsicWidth(), getIntrinsicHeight(), getBounds(), getDestRect());
+            this.applyGravity = false;
+        }
+        Bitmap currentFrame = this.state.frameLoader.getCurrentFrame();
+        canvas.drawBitmap(currentFrame, (Rect) null, getDestRect(), getPaint());
     }
 
+    @Override // android.graphics.drawable.Drawable
     public void setAlpha(int i) {
         getPaint().setAlpha(i);
     }
 
+    @Override // android.graphics.drawable.Drawable
     public void setColorFilter(ColorFilter colorFilter) {
         getPaint().setColorFilter(colorFilter);
     }
@@ -190,6 +201,7 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         return this.paint;
     }
 
+    @Override // android.graphics.drawable.Drawable
     public int getOpacity() {
         return -2;
     }
@@ -202,6 +214,7 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         return callback;
     }
 
+    @Override // com.bumptech.glide.load.resource.gif.GifFrameLoader.FrameCallback
     public void onFrameReady() {
         if (findCallback() == null) {
             stop();
@@ -229,6 +242,7 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         }
     }
 
+    @Override // android.graphics.drawable.Drawable
     public Drawable.ConstantState getConstantState() {
         return this.state;
     }
@@ -238,35 +252,34 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         this.state.frameLoader.clear();
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isRecycled() {
+    boolean isRecycled() {
         return this.isRecycled;
     }
 
-    public void setLoopCount(int loopCount2) {
-        int i = -1;
-        if (loopCount2 <= 0 && loopCount2 != -1 && loopCount2 != 0) {
+    public void setLoopCount(int loopCount) {
+        if (loopCount <= 0 && loopCount != -1 && loopCount != 0) {
             throw new IllegalArgumentException("Loop count must be greater than 0, or equal to GlideDrawable.LOOP_FOREVER, or equal to GlideDrawable.LOOP_INTRINSIC");
-        } else if (loopCount2 == 0) {
+        }
+        if (loopCount == 0) {
             int intrinsicCount = this.state.frameLoader.getLoopCount();
-            if (intrinsicCount != 0) {
-                i = intrinsicCount;
-            }
-            this.maxLoopCount = i;
-        } else {
-            this.maxLoopCount = loopCount2;
+            this.maxLoopCount = intrinsicCount != 0 ? intrinsicCount : -1;
+            return;
         }
+        this.maxLoopCount = loopCount;
     }
 
+    @Override // android.support.graphics.drawable.Animatable2Compat
     public void registerAnimationCallback(Animatable2Compat.AnimationCallback animationCallback) {
-        if (animationCallback != null) {
-            if (this.animationCallbacks == null) {
-                this.animationCallbacks = new ArrayList();
-            }
-            this.animationCallbacks.add(animationCallback);
+        if (animationCallback == null) {
+            return;
         }
+        if (this.animationCallbacks == null) {
+            this.animationCallbacks = new ArrayList();
+        }
+        this.animationCallbacks.add(animationCallback);
     }
 
+    @Override // android.support.graphics.drawable.Animatable2Compat
     public boolean unregisterAnimationCallback(Animatable2Compat.AnimationCallback animationCallback) {
         List<Animatable2Compat.AnimationCallback> list = this.animationCallbacks;
         if (list == null || animationCallback == null) {
@@ -275,6 +288,7 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         return list.remove(animationCallback);
     }
 
+    @Override // android.support.graphics.drawable.Animatable2Compat
     public void clearAnimationCallbacks() {
         List<Animatable2Compat.AnimationCallback> list = this.animationCallbacks;
         if (list != null) {
@@ -282,21 +296,25 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         }
     }
 
+    /* loaded from: classes.dex */
     static final class GifState extends Drawable.ConstantState {
         final GifFrameLoader frameLoader;
 
-        GifState(GifFrameLoader frameLoader2) {
-            this.frameLoader = frameLoader2;
+        GifState(GifFrameLoader frameLoader) {
+            this.frameLoader = frameLoader;
         }
 
+        @Override // android.graphics.drawable.Drawable.ConstantState
         public Drawable newDrawable(Resources res) {
             return newDrawable();
         }
 
+        @Override // android.graphics.drawable.Drawable.ConstantState
         public Drawable newDrawable() {
             return new GifDrawable(this);
         }
 
+        @Override // android.graphics.drawable.Drawable.ConstantState
         public int getChangingConfigurations() {
             return 0;
         }

@@ -10,21 +10,24 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 
+/* loaded from: classes.dex */
 final class TypeAdapterRuntimeTypeWrapper<T> extends TypeAdapter<T> {
     private final Gson context;
     private final TypeAdapter<T> delegate;
     private final Type type;
 
-    TypeAdapterRuntimeTypeWrapper(Gson context2, TypeAdapter<T> delegate2, Type type2) {
-        this.context = context2;
-        this.delegate = delegate2;
-        this.type = type2;
+    TypeAdapterRuntimeTypeWrapper(Gson context, TypeAdapter<T> delegate, Type type) {
+        this.context = context;
+        this.delegate = delegate;
+        this.type = type;
     }
 
+    @Override // com.google.gson.TypeAdapter
     public T read(JsonReader in) throws IOException {
         return this.delegate.read(in);
     }
 
+    @Override // com.google.gson.TypeAdapter
     public void write(JsonWriter out, T value) throws IOException {
         TypeAdapter chosen = this.delegate;
         Type runtimeType = getRuntimeTypeIfMoreSpecific(this.type, value);
@@ -41,13 +44,13 @@ final class TypeAdapterRuntimeTypeWrapper<T> extends TypeAdapter<T> {
         chosen.write(out, value);
     }
 
-    private Type getRuntimeTypeIfMoreSpecific(Type type2, Object value) {
-        if (value == null) {
-            return type2;
+    private Type getRuntimeTypeIfMoreSpecific(Type type, Object value) {
+        if (value != null) {
+            if (type == Object.class || (type instanceof TypeVariable) || (type instanceof Class)) {
+                return value.getClass();
+            }
+            return type;
         }
-        if (type2 == Object.class || (type2 instanceof TypeVariable) || (type2 instanceof Class)) {
-            return value.getClass();
-        }
-        return type2;
+        return type;
     }
 }

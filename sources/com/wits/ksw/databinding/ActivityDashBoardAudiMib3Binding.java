@@ -10,10 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextClock;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.DashboardViewModel;
 import com.wits.ksw.launcher.view.ID7SpeedImageView;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityDashBoardAudiMib3Binding extends ViewDataBinding {
     public final ImageView brakeTextView;
     public final ImageView carImageView;
@@ -35,28 +36,27 @@ public abstract class ActivityDashBoardAudiMib3Binding extends ViewDataBinding {
     public final ImageView zspeedPointerImageView;
     public final TextView zspeedPointerTextView;
 
-    public abstract void setViewModel(DashboardViewModel dashboardViewModel);
+    public abstract void setViewModel(DashboardViewModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected ActivityDashBoardAudiMib3Binding(Object _bindingComponent, View _root, int _localFieldCount, ImageView brakeTextView2, ImageView carImageView2, TextClock clockTime2, ImageView dorrBackImageView2, ImageView dorrLeftFlImageView2, ImageView dorrLeftFrImageView2, ImageView dorrLeftRlImageView2, ImageView imageView192, ConstraintLayout linearLayout22, ImageView seatBeltTextView2, ID7SpeedImageView speedPointerImageView2, TextView speedPointerTextView2, ID7SpeedImageView speedometerImageView2, ImageView tachometerImageView2, TextView temperatureTextView2, ImageView zspeedPointerImageView2, TextView zspeedPointerTextView2) {
+    protected ActivityDashBoardAudiMib3Binding(Object _bindingComponent, View _root, int _localFieldCount, ImageView brakeTextView, ImageView carImageView, TextClock clockTime, ImageView dorrBackImageView, ImageView dorrLeftFlImageView, ImageView dorrLeftFrImageView, ImageView dorrLeftRlImageView, ImageView imageView19, ConstraintLayout linearLayout2, ImageView seatBeltTextView, ID7SpeedImageView speedPointerImageView, TextView speedPointerTextView, ID7SpeedImageView speedometerImageView, ImageView tachometerImageView, TextView temperatureTextView, ImageView zspeedPointerImageView, TextView zspeedPointerTextView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.brakeTextView = brakeTextView2;
-        this.carImageView = carImageView2;
-        this.clockTime = clockTime2;
-        this.dorrBackImageView = dorrBackImageView2;
-        this.dorrLeftFlImageView = dorrLeftFlImageView2;
-        this.dorrLeftFrImageView = dorrLeftFrImageView2;
-        this.dorrLeftRlImageView = dorrLeftRlImageView2;
-        this.imageView19 = imageView192;
-        this.linearLayout2 = linearLayout22;
-        this.seatBeltTextView = seatBeltTextView2;
-        this.speedPointerImageView = speedPointerImageView2;
-        this.speedPointerTextView = speedPointerTextView2;
-        this.speedometerImageView = speedometerImageView2;
-        this.tachometerImageView = tachometerImageView2;
-        this.temperatureTextView = temperatureTextView2;
-        this.zspeedPointerImageView = zspeedPointerImageView2;
-        this.zspeedPointerTextView = zspeedPointerTextView2;
+        this.brakeTextView = brakeTextView;
+        this.carImageView = carImageView;
+        this.clockTime = clockTime;
+        this.dorrBackImageView = dorrBackImageView;
+        this.dorrLeftFlImageView = dorrLeftFlImageView;
+        this.dorrLeftFrImageView = dorrLeftFrImageView;
+        this.dorrLeftRlImageView = dorrLeftRlImageView;
+        this.imageView19 = imageView19;
+        this.linearLayout2 = linearLayout2;
+        this.seatBeltTextView = seatBeltTextView;
+        this.speedPointerImageView = speedPointerImageView;
+        this.speedPointerTextView = speedPointerTextView;
+        this.speedometerImageView = speedometerImageView;
+        this.tachometerImageView = tachometerImageView;
+        this.temperatureTextView = temperatureTextView;
+        this.zspeedPointerImageView = zspeedPointerImageView;
+        this.zspeedPointerTextView = zspeedPointerTextView;
     }
 
     public DashboardViewModel getViewModel() {
@@ -69,7 +69,7 @@ public abstract class ActivityDashBoardAudiMib3Binding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityDashBoardAudiMib3Binding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityDashBoardAudiMib3Binding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_dash_board_audi_mib3, root, attachToRoot, component);
+        return (ActivityDashBoardAudiMib3Binding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_dash_board_audi_mib3, root, attachToRoot, component);
     }
 
     public static ActivityDashBoardAudiMib3Binding inflate(LayoutInflater inflater) {
@@ -78,7 +78,7 @@ public abstract class ActivityDashBoardAudiMib3Binding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityDashBoardAudiMib3Binding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityDashBoardAudiMib3Binding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_dash_board_audi_mib3, (ViewGroup) null, false, component);
+        return (ActivityDashBoardAudiMib3Binding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_dash_board_audi_mib3, null, false, component);
     }
 
     public static ActivityDashBoardAudiMib3Binding bind(View view) {
@@ -87,6 +87,6 @@ public abstract class ActivityDashBoardAudiMib3Binding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityDashBoardAudiMib3Binding bind(View view, Object component) {
-        return (ActivityDashBoardAudiMib3Binding) bind(component, view, R.layout.activity_dash_board_audi_mib3);
+        return (ActivityDashBoardAudiMib3Binding) bind(component, view, C0899R.C0902layout.activity_dash_board_audi_mib3);
     }
 }

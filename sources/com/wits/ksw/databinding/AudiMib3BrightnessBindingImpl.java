@@ -1,7 +1,6 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
@@ -9,15 +8,20 @@ import android.databinding.ViewDataBinding;
 import android.databinding.adapters.CompoundButtonBindingAdapter;
 import android.databinding.adapters.SeekBarBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
+import android.support.p004v7.widget.AppCompatTextView;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi_mib3.vm.AudiMib3SystemViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi.widget.AudiConstraintLayout;
+import com.wits.ksw.settings.audi_mib3.p008vm.AudiMib3SystemViewModel;
 
+/* loaded from: classes7.dex */
 public class AudiMib3BrightnessBindingImpl extends AudiMib3BrightnessBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -29,46 +33,47 @@ public class AudiMib3BrightnessBindingImpl extends AudiMib3BrightnessBinding {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.title, 6);
-        sparseIntArray.put(R.id.title_divider, 7);
-        sparseIntArray.put(R.id.linearLayout4, 8);
-        sparseIntArray.put(R.id.hzMediaLinearLayout, 9);
-        sparseIntArray.put(R.id.audio_seekbar_title, 10);
-        sparseIntArray.put(R.id.hzCallLinearLayout, 11);
-        sparseIntArray.put(R.id.v_divider, 12);
+        sparseIntArray.put(C0899R.C0901id.title, 6);
+        sparseIntArray.put(C0899R.C0901id.title_divider, 7);
+        sparseIntArray.put(C0899R.C0901id.linearLayout4, 8);
+        sparseIntArray.put(C0899R.C0901id.hzMediaLinearLayout, 9);
+        sparseIntArray.put(C0899R.C0901id.audio_seekbar_title, 10);
+        sparseIntArray.put(C0899R.C0901id.hzCallLinearLayout, 11);
+        sparseIntArray.put(C0899R.C0901id.v_divider, 12);
     }
 
     public AudiMib3BrightnessBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 13, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private AudiMib3BrightnessBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 3, bindings[5], bindings[1], bindings[2], bindings[10], bindings[11], bindings[9], bindings[8], bindings[6], bindings[7], bindings[12]);
-        this.mDirtyFlags = -1;
-        this.audiSystemReverCamera.setTag((Object) null);
-        this.audioSeekbar.setTag((Object) null);
-        this.audioSeekbarRightText.setTag((Object) null);
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 3, (CheckBox) bindings[5], (SeekBar) bindings[1], (TextView) bindings[2], (TextView) bindings[10], (LinearLayout) bindings[11], (LinearLayout) bindings[9], (AudiConstraintLayout) bindings[8], (AppCompatTextView) bindings[6], (View) bindings[7], (View) bindings[12]);
+        this.mDirtyFlags = -1L;
+        this.audiSystemReverCamera.setTag(null);
+        this.audioSeekbar.setTag(null);
+        this.audioSeekbarRightText.setTag(null);
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
-        SeekBar seekBar = bindings[3];
+        relativeLayout.setTag(null);
+        SeekBar seekBar = (SeekBar) bindings[3];
         this.mboundView3 = seekBar;
-        seekBar.setTag((Object) null);
-        TextView textView = bindings[4];
+        seekBar.setTag(null);
+        TextView textView = (TextView) bindings[4];
         this.mboundView4 = textView;
-        textView.setTag((Object) null);
+        textView.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 16;
+            this.mDirtyFlags = 16L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -78,14 +83,16 @@ public class AudiMib3BrightnessBindingImpl extends AudiMib3BrightnessBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((AudiMib3SystemViewModel) variable);
+            return true;
         }
-        setVm((AudiMib3SystemViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AudiMib3BrightnessBinding
     public void setVm(AudiMib3SystemViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -95,8 +102,8 @@ public class AudiMib3BrightnessBindingImpl extends AudiMib3BrightnessBinding {
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmDayBrightnessStr((ObservableField) object, fieldId);
@@ -109,42 +116,42 @@ public class AudiMib3BrightnessBindingImpl extends AudiMib3BrightnessBinding {
         }
     }
 
-    private boolean onChangeVmDayBrightnessStr(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmDayBrightnessStr(ObservableField<String> VmDayBrightnessStr, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmDayBrightness(ObservableInt VmDayBrightness, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmAutoBrightness(ObservableBoolean VmAutoBrightness, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         ObservableField<String> vmDayBrightnessStr = null;
         String vmDayBrightnessStrGet = null;
@@ -160,7 +167,7 @@ public class AudiMib3BrightnessBindingImpl extends AudiMib3BrightnessBinding {
                 if (vm != null) {
                     vmDayBrightnessStr = vm.dayBrightnessStr;
                 }
-                updateRegistration(0, (Observable) vmDayBrightnessStr);
+                updateRegistration(0, vmDayBrightnessStr);
                 if (vmDayBrightnessStr != null) {
                     vmDayBrightnessStrGet = vmDayBrightnessStr.get();
                 }
@@ -169,7 +176,7 @@ public class AudiMib3BrightnessBindingImpl extends AudiMib3BrightnessBinding {
                 if (vm != null) {
                     vmDayBrightness = vm.dayBrightness;
                 }
-                updateRegistration(1, (Observable) vmDayBrightness);
+                updateRegistration(1, vmDayBrightness);
                 if (vmDayBrightness != null) {
                     vmDayBrightnessGet = vmDayBrightness.get();
                 }
@@ -178,12 +185,12 @@ public class AudiMib3BrightnessBindingImpl extends AudiMib3BrightnessBinding {
                 if (vm != null) {
                     vmAutoBrightness = vm.autoBrightness;
                 }
-                updateRegistration(2, (Observable) vmAutoBrightness);
+                updateRegistration(2, vmAutoBrightness);
                 if (vmAutoBrightness != null) {
                     vmAutoBrightnessGet = vmAutoBrightness.get();
                 }
             }
-            if (!((dirtyFlags & 24) == 0 || vm == null)) {
+            if ((dirtyFlags & 24) != 0 && vm != null) {
                 vmDayBrightnessChangeListener = vm.dayBrightnessChangeListener;
                 vmOnAudoBrightnessChangeListener = vm.onAudoBrightnessChangeListener;
             }

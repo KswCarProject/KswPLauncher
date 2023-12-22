@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:descendantFocusability="afterDescendants" android:layout_width="wrap_content" android:layout_height="wrap_content">
+    <ImageView android:id="@+id/layout_ntg6_languag_bg" android:background="@mipmap/ntg55_right_big_bk" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true"/>
+    <TextView android:textSize="30sp" android:textColor="#001222" android:gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10dp" android:text="@string/item5" android:layout_toLeftOf="@+id/img_TwoBack" android:layout_alignLeft="@+id/layout_ntg6_languag_bg"/>
+    <ImageView android:id="@+id/img_TwoBack" android:background="@drawable/ntg6_two_back" android:padding="20dp" android:focusable="true" android:nextFocusUp="@+id/img_TwoBack" android:nextFocusDown="@+id/language_recycle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:layout_alignParentRight="true"/>
+    <android.support.p004v7.widget.RecyclerView android:id="@+id/language_recycle" android:focusable="true" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="61dp" android:layout_marginBottom="70dp" android:layout_alignLeft="@+id/layout_ntg6_languag_bg" android:layout_alignParentRight="true"/>
+</RelativeLayout>

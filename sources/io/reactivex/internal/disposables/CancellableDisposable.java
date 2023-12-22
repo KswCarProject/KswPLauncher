@@ -6,6 +6,7 @@ import io.reactivex.functions.Cancellable;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class CancellableDisposable extends AtomicReference<Cancellable> implements Disposable {
     private static final long serialVersionUID = 5718521705281392066L;
 
@@ -13,13 +14,15 @@ public final class CancellableDisposable extends AtomicReference<Cancellable> im
         super(cancellable);
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public boolean isDisposed() {
         return get() == null;
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public void dispose() {
         Cancellable c;
-        if (get() != null && (c = (Cancellable) getAndSet((Object) null)) != null) {
+        if (get() != null && (c = getAndSet(null)) != null) {
             try {
                 c.cancel();
             } catch (Exception ex) {

@@ -13,53 +13,49 @@ import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
+/* loaded from: classes5.dex */
 public class AlsID7UiCarConfig extends FrameLayout implements RadioGroup.OnCheckedChangeListener {
-    /* access modifiers changed from: private */
-    public static final String TAG = ("KswApplication." + AlsID7UiCarConfig.class.getSimpleName());
-    /* access modifiers changed from: private */
-    public RadioGroup audiHomeLeftRadioGroup;
-    /* access modifiers changed from: private */
-    public RadioGroup audiHomeRightRadioGroup;
+    private static final String TAG = "KswApplication." + AlsID7UiCarConfig.class.getSimpleName();
+    private RadioGroup audiHomeLeftRadioGroup;
+    private RadioGroup audiHomeRightRadioGroup;
     private int audiLeftLogoIndex;
     private int audiRightWidgetIndex;
     private TextView audi_home_left_widget_textview;
     private TextView audi_home_right_widget_textview;
-    private int auxsw = 0;
-    private int benzpane = 0;
-    private int canS = 0;
-    private int carManufacturer = 0;
-    private int cardoor = 0;
-    private int carseep = 0;
+    private int auxsw;
+    private int benzpane;
+    private int canS;
+    private int carManufacturer;
+    private int cardoor;
+    private int carseep;
     private CheckBox cbox_ac_control;
     private CheckBox cbox_air_con;
     private CheckBox cbox_bencAux;
     private CheckBox cbox_bencPank;
-    /* access modifiers changed from: private */
-    public RadioGroup cbox_bencPank_rgd;
+    private RadioGroup cbox_bencPank_rgd;
     private View cbox_bencPank_root;
     private CheckBox cbox_canBus;
     private CheckBox cbox_dcld;
     private CheckBox cbox_oem_fm;
     private TextView ccciDTextView;
-    private int cccid = 0;
-    private int doornumb = 0;
-    private int gears = 0;
-    private int isOldBmwx = 0;
+    private int cccid;
+    private int doornumb;
+    private int gears;
+    private int isOldBmwx;
     private FrameLayout.LayoutParams layoutParams;
     private Context m_con;
-    private int mapkey = 0;
-    private int modekey = 0;
-    private int nbauxsw = 0;
+    private int mapkey;
+    private int modekey;
+    private int nbauxsw;
     private RadioGroup rdg_Nbtauxsw;
     private RadioGroup rdg_auxsw;
-    /* access modifiers changed from: private */
-    public RadioGroup rdg_can;
+    private RadioGroup rdg_can;
     private RadioGroup rdg_cardoor;
     private RadioGroup rdg_ccciD;
     private RadioGroup rdg_factory_carseep;
@@ -69,14 +65,29 @@ public class AlsID7UiCarConfig extends FrameLayout implements RadioGroup.OnCheck
     private RadioGroup rdg_factory_yuyinkey;
     private RadioGroup rdg_numdoor;
     private RadioGroup rdg_track;
-    private int track = 0;
+    private int track;
     private View view;
-    private int yuyinkey = 0;
+    private int yuyinkey;
 
     public AlsID7UiCarConfig(Context context) {
         super(context);
+        this.isOldBmwx = 0;
+        this.auxsw = 0;
+        this.nbauxsw = 0;
+        this.cccid = 0;
+        this.cardoor = 0;
+        this.carseep = 0;
+        this.gears = 0;
+        this.doornumb = 0;
+        this.yuyinkey = 0;
+        this.mapkey = 0;
+        this.modekey = 0;
+        this.benzpane = 0;
+        this.canS = 0;
+        this.track = 0;
+        this.carManufacturer = 0;
         this.m_con = context;
-        this.view = LayoutInflater.from(context).inflate(R.layout.als_id7_ui_factory_car_config, (ViewGroup) null);
+        this.view = LayoutInflater.from(context).inflate(C0899R.C0902layout.als_id7_ui_factory_car_config, (ViewGroup) null);
         this.layoutParams = new FrameLayout.LayoutParams(-1, -1);
         initData();
         initView();
@@ -114,17 +125,16 @@ public class AlsID7UiCarConfig extends FrameLayout implements RadioGroup.OnCheck
 
     private void initView() {
         int airCon;
-        this.cbox_dcld = (CheckBox) this.view.findViewById(R.id.cbox_dcld);
-        this.cbox_canBus = (CheckBox) this.view.findViewById(R.id.cbox_canBus);
-        this.cbox_bencAux = (CheckBox) this.view.findViewById(R.id.cbox_bencAux);
-        this.cbox_air_con = (CheckBox) this.view.findViewById(R.id.cbox_air_con);
-        this.cbox_ac_control = (CheckBox) this.view.findViewById(R.id.cbox_ac_control);
-        this.cbox_oem_fm = (CheckBox) this.view.findViewById(R.id.cbox_oem_fm);
-        int i = 0;
+        this.cbox_dcld = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_dcld);
+        this.cbox_canBus = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_canBus);
+        this.cbox_bencAux = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_bencAux);
+        this.cbox_air_con = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_air_con);
+        this.cbox_ac_control = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_ac_control);
+        this.cbox_oem_fm = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_oem_fm);
         this.cbox_canBus.setChecked(false);
-        boolean z = true;
         this.cbox_dcld.setChecked(this.isOldBmwx == 0);
-        this.cbox_dcld.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        this.cbox_dcld.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.settings.als_id7_ui_set.factory.AlsID7UiCarConfig.1
+            @Override // android.widget.CompoundButton.OnCheckedChangeListener
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     FileUtils.savaIntData(KeyConfig.BAO_MA_DISPLAY, 0);
@@ -138,13 +148,14 @@ public class AlsID7UiCarConfig extends FrameLayout implements RadioGroup.OnCheck
             this.cbox_bencAux.setChecked(PowerManagerApp.getSettingsInt("benz_aux_switch") == 1);
         } catch (RemoteException e) {
         }
-        this.cbox_bencAux.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        this.cbox_bencAux.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.settings.als_id7_ui_set.factory.AlsID7UiCarConfig.2
+            @Override // android.widget.CompoundButton.OnCheckedChangeListener
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FileUtils.savaIntData("benz_aux_switch", isChecked);
+                FileUtils.savaIntData("benz_aux_switch", isChecked ? 1 : 0);
             }
         });
-        int i2 = this.carManufacturer;
-        if (i2 == 1 || i2 == 3) {
+        int i = this.carManufacturer;
+        if (i == 1 || i == 3) {
             airCon = Settings.System.getInt(this.m_con.getContentResolver(), "air_conditioner", 0);
         } else {
             airCon = Settings.System.getInt(this.m_con.getContentResolver(), "air_conditioner", 1);
@@ -152,27 +163,31 @@ public class AlsID7UiCarConfig extends FrameLayout implements RadioGroup.OnCheck
         int acControl = Settings.System.getInt(this.m_con.getContentResolver(), KeyConfig.AC_CONTROL, 0);
         int oemFM = Settings.System.getInt(this.m_con.getContentResolver(), KeyConfig.OEM_FM, 0);
         this.cbox_air_con.setChecked(airCon == 1);
-        this.cbox_air_con.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        this.cbox_air_con.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.settings.als_id7_ui_set.factory.AlsID7UiCarConfig.3
+            @Override // android.widget.CompoundButton.OnCheckedChangeListener
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FileUtils.savaIntData("air_conditioner", isChecked);
+                FileUtils.savaIntData("air_conditioner", isChecked ? 1 : 0);
             }
         });
         this.cbox_ac_control.setChecked(acControl == 1);
-        this.cbox_ac_control.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        this.cbox_ac_control.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.settings.als_id7_ui_set.factory.AlsID7UiCarConfig.4
+            @Override // android.widget.CompoundButton.OnCheckedChangeListener
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FileUtils.savaIntData(KeyConfig.AC_CONTROL, isChecked);
+                FileUtils.savaIntData(KeyConfig.AC_CONTROL, isChecked ? 1 : 0);
             }
         });
         this.cbox_oem_fm.setChecked(oemFM == 1);
-        this.cbox_oem_fm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        this.cbox_oem_fm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.settings.als_id7_ui_set.factory.AlsID7UiCarConfig.5
+            @Override // android.widget.CompoundButton.OnCheckedChangeListener
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FileUtils.savaIntData(KeyConfig.OEM_FM, isChecked);
+                FileUtils.savaIntData(KeyConfig.OEM_FM, isChecked ? 1 : 0);
             }
         });
-        CheckBox checkBox = (CheckBox) this.view.findViewById(R.id.cbox_bencPank);
+        CheckBox checkBox = (CheckBox) this.view.findViewById(C0899R.C0901id.cbox_bencPank);
         this.cbox_bencPank = checkBox;
         checkBox.setChecked(this.benzpane != 0);
-        this.cbox_bencPank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        this.cbox_bencPank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.settings.als_id7_ui_set.factory.AlsID7UiCarConfig.6
+            @Override // android.widget.CompoundButton.OnCheckedChangeListener
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     FileUtils.savaIntData(KeyConfig.BENZPANE, 1);
@@ -181,22 +196,23 @@ public class AlsID7UiCarConfig extends FrameLayout implements RadioGroup.OnCheck
                 }
             }
         });
-        this.cbox_bencPank_root = this.view.findViewById(R.id.cbox_bencPank_root);
-        RadioGroup radioGroup = (RadioGroup) this.view.findViewById(R.id.cbox_bencPank_rgd);
+        this.cbox_bencPank_root = this.view.findViewById(C0899R.C0901id.cbox_bencPank_root);
+        RadioGroup radioGroup = (RadioGroup) this.view.findViewById(C0899R.C0901id.cbox_bencPank_rgd);
         this.cbox_bencPank_rgd = radioGroup;
         int count = radioGroup.getChildCount();
-        int i3 = 0;
-        while (i3 < count) {
-            ((RadioButton) this.cbox_bencPank_rgd.getChildAt(i3)).setChecked(this.benzpane == i3);
-            i3++;
+        int i2 = 0;
+        while (i2 < count) {
+            ((RadioButton) this.cbox_bencPank_rgd.getChildAt(i2)).setChecked(this.benzpane == i2);
+            i2++;
         }
-        this.cbox_bencPank_rgd.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        this.cbox_bencPank_rgd.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() { // from class: com.wits.ksw.settings.als_id7_ui_set.factory.AlsID7UiCarConfig.7
+            @Override // android.widget.RadioGroup.OnCheckedChangeListener
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                int count = AlsID7UiCarConfig.this.cbox_bencPank_rgd.getChildCount();
-                for (int i = 0; i < count; i++) {
-                    if (checkedId == AlsID7UiCarConfig.this.cbox_bencPank_rgd.getChildAt(i).getId()) {
-                        FileUtils.savaIntData(KeyConfig.BENZPANE, i);
-                        Log.i(AlsID7UiCarConfig.TAG, "save BenzPanelEnable : " + i);
+                int count2 = AlsID7UiCarConfig.this.cbox_bencPank_rgd.getChildCount();
+                for (int i3 = 0; i3 < count2; i3++) {
+                    if (checkedId == AlsID7UiCarConfig.this.cbox_bencPank_rgd.getChildAt(i3).getId()) {
+                        FileUtils.savaIntData(KeyConfig.BENZPANE, i3);
+                        Log.i(AlsID7UiCarConfig.TAG, "save BenzPanelEnable : " + i3);
                     }
                 }
             }
@@ -205,168 +221,169 @@ public class AlsID7UiCarConfig extends FrameLayout implements RadioGroup.OnCheck
             this.cbox_canBus.setChecked(PowerManagerApp.getSettingsInt("can_bus_switch") == 1);
         } catch (RemoteException e2) {
         }
-        this.cbox_canBus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        this.cbox_canBus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.settings.als_id7_ui_set.factory.AlsID7UiCarConfig.8
+            @Override // android.widget.CompoundButton.OnCheckedChangeListener
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
                     PowerManagerApp.setSettingsInt("can_bus_switch", isChecked ? 1 : 0);
                     if (isChecked) {
                         AlsID7UiCarConfig.this.rdg_can.setEnabled(false);
-                        AlsID7UiCarConfig.this.rdg_can.findViewById(R.id.rdg_can1).setEnabled(false);
-                        AlsID7UiCarConfig.this.rdg_can.findViewById(R.id.rdg_can2).setEnabled(false);
-                        return;
+                        AlsID7UiCarConfig.this.rdg_can.findViewById(C0899R.C0901id.rdg_can1).setEnabled(false);
+                        AlsID7UiCarConfig.this.rdg_can.findViewById(C0899R.C0901id.rdg_can2).setEnabled(false);
+                    } else {
+                        AlsID7UiCarConfig.this.rdg_can.setEnabled(true);
+                        AlsID7UiCarConfig.this.rdg_can.findViewById(C0899R.C0901id.rdg_can1).setEnabled(true);
+                        AlsID7UiCarConfig.this.rdg_can.findViewById(C0899R.C0901id.rdg_can2).setEnabled(true);
                     }
-                    AlsID7UiCarConfig.this.rdg_can.setEnabled(true);
-                    AlsID7UiCarConfig.this.rdg_can.findViewById(R.id.rdg_can1).setEnabled(true);
-                    AlsID7UiCarConfig.this.rdg_can.findViewById(R.id.rdg_can2).setEnabled(true);
-                } catch (RemoteException e) {
+                } catch (RemoteException e3) {
                 }
             }
         });
-        RadioGroup radioGroup2 = (RadioGroup) this.view.findViewById(R.id.rdg_auxsw);
+        RadioGroup radioGroup2 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_auxsw);
         this.rdg_auxsw = radioGroup2;
         switch (this.auxsw) {
             case 0:
-                radioGroup2.check(R.id.rdb_auxsw1);
+                radioGroup2.check(C0899R.C0901id.rdb_auxsw1);
                 break;
             case 1:
-                radioGroup2.check(R.id.rdb_auxsw2);
+                radioGroup2.check(C0899R.C0901id.rdb_auxsw2);
                 break;
         }
-        RadioGroup radioGroup3 = (RadioGroup) this.view.findViewById(R.id.rdg_Nbtauxsw);
+        RadioGroup radioGroup3 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_Nbtauxsw);
         this.rdg_Nbtauxsw = radioGroup3;
         switch (this.nbauxsw) {
             case 1:
-                radioGroup3.check(R.id.rdb_Nbtauxsw1);
+                radioGroup3.check(C0899R.C0901id.rdb_Nbtauxsw1);
                 break;
             case 2:
-                radioGroup3.check(R.id.rdb_Nbtauxsw2);
+                radioGroup3.check(C0899R.C0901id.rdb_Nbtauxsw2);
                 break;
             case 3:
-                radioGroup3.check(R.id.rdb_Nbtauxsw3);
+                radioGroup3.check(C0899R.C0901id.rdb_Nbtauxsw3);
                 break;
         }
-        RadioGroup radioGroup4 = (RadioGroup) this.view.findViewById(R.id.rdg_ccciD);
+        RadioGroup radioGroup4 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_ccciD);
         this.rdg_ccciD = radioGroup4;
         switch (this.cccid) {
             case 0:
-                radioGroup4.check(R.id.rdb_ccciD1);
+                radioGroup4.check(C0899R.C0901id.rdb_ccciD1);
                 break;
             case 1:
-                radioGroup4.check(R.id.rdb_ccciD2);
+                radioGroup4.check(C0899R.C0901id.rdb_ccciD2);
                 break;
         }
-        RadioGroup radioGroup5 = (RadioGroup) this.view.findViewById(R.id.rdg_cardoor);
+        RadioGroup radioGroup5 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_cardoor);
         this.rdg_cardoor = radioGroup5;
         switch (this.cardoor) {
             case 0:
             case 2:
-                radioGroup5.check(R.id.rdg_cardoor1);
+                radioGroup5.check(C0899R.C0901id.rdg_cardoor1);
                 break;
             case 1:
-                radioGroup5.check(R.id.rdg_cardoor2);
+                radioGroup5.check(C0899R.C0901id.rdg_cardoor2);
                 break;
         }
-        RadioGroup radioGroup6 = (RadioGroup) this.view.findViewById(R.id.rdg_factory_carseep);
+        RadioGroup radioGroup6 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_factory_carseep);
         this.rdg_factory_carseep = radioGroup6;
         switch (this.carseep) {
             case 0:
-                radioGroup6.check(R.id.rdg_factory_carseep1);
+                radioGroup6.check(C0899R.C0901id.rdg_factory_carseep1);
                 break;
             case 1:
-                radioGroup6.check(R.id.rdg_factory_carseep2);
+                radioGroup6.check(C0899R.C0901id.rdg_factory_carseep2);
                 break;
             case 2:
-                radioGroup6.check(R.id.rdg_factory_carseep3);
+                radioGroup6.check(C0899R.C0901id.rdg_factory_carseep3);
                 break;
             case 3:
-                radioGroup6.check(R.id.rdg_factory_carseep4);
+                radioGroup6.check(C0899R.C0901id.rdg_factory_carseep4);
                 break;
         }
-        RadioGroup radioGroup7 = (RadioGroup) this.view.findViewById(R.id.rdg_factory_gear);
+        RadioGroup radioGroup7 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_factory_gear);
         this.rdg_factory_gears = radioGroup7;
         switch (this.gears) {
             case 0:
-                radioGroup7.check(R.id.rdg_factory_gear1);
+                radioGroup7.check(C0899R.C0901id.rdg_factory_gear1);
                 break;
             case 1:
-                radioGroup7.check(R.id.rdg_factory_gear2);
+                radioGroup7.check(C0899R.C0901id.rdg_factory_gear2);
                 break;
             case 2:
-                radioGroup7.check(R.id.rdg_factory_gear3);
+                radioGroup7.check(C0899R.C0901id.rdg_factory_gear3);
                 break;
         }
-        RadioGroup radioGroup8 = (RadioGroup) this.view.findViewById(R.id.rdg_numdoor);
+        RadioGroup radioGroup8 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_numdoor);
         this.rdg_numdoor = radioGroup8;
         switch (this.doornumb) {
             case 0:
-                radioGroup8.check(R.id.rdg_numdoor1);
+                radioGroup8.check(C0899R.C0901id.rdg_numdoor1);
                 break;
             case 1:
-                radioGroup8.check(R.id.rdg_numdoor2);
+                radioGroup8.check(C0899R.C0901id.rdg_numdoor2);
                 break;
             case 2:
-                radioGroup8.check(R.id.rdg_cardoor3);
+                radioGroup8.check(C0899R.C0901id.rdg_cardoor3);
                 break;
         }
-        this.rdg_factory_mapkey = (RadioGroup) this.view.findViewById(R.id.rdg_factory_mapkey);
+        this.rdg_factory_mapkey = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_factory_mapkey);
         Log.d("CarConfig", "mapkey====get====>" + this.mapkey);
         switch (this.mapkey) {
             case 0:
-                this.rdg_factory_mapkey.check(R.id.rdg_factory_mapkey1);
+                this.rdg_factory_mapkey.check(C0899R.C0901id.rdg_factory_mapkey1);
                 break;
             case 1:
-                this.rdg_factory_mapkey.check(R.id.rdg_factory_mapkey2);
+                this.rdg_factory_mapkey.check(C0899R.C0901id.rdg_factory_mapkey2);
                 break;
         }
-        RadioGroup radioGroup9 = (RadioGroup) this.view.findViewById(R.id.rdg_factory_modekey);
+        RadioGroup radioGroup9 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_factory_modekey);
         this.rdg_factory_modekey = radioGroup9;
         switch (this.modekey) {
             case 0:
-                radioGroup9.check(R.id.rdg_factory_modekey1);
+                radioGroup9.check(C0899R.C0901id.rdg_factory_modekey1);
                 break;
             case 1:
-                radioGroup9.check(R.id.rdg_factory_modekey2);
+                radioGroup9.check(C0899R.C0901id.rdg_factory_modekey2);
                 break;
         }
-        RadioGroup radioGroup10 = (RadioGroup) this.view.findViewById(R.id.rdg_factory_yuyinkey);
+        RadioGroup radioGroup10 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_factory_yuyinkey);
         this.rdg_factory_yuyinkey = radioGroup10;
         switch (this.yuyinkey) {
             case 0:
-                radioGroup10.check(R.id.rdg_factory_yuyinkey1);
+                radioGroup10.check(C0899R.C0901id.rdg_factory_yuyinkey1);
                 break;
             case 1:
-                radioGroup10.check(R.id.rdg_factory_yuyinkey2);
+                radioGroup10.check(C0899R.C0901id.rdg_factory_yuyinkey2);
                 break;
             case 2:
-                radioGroup10.check(R.id.rdg_factory_yuyinkey3);
+                radioGroup10.check(C0899R.C0901id.rdg_factory_yuyinkey3);
                 break;
             case 3:
-                radioGroup10.check(R.id.rdg_factory_yuyinkey4);
+                radioGroup10.check(C0899R.C0901id.rdg_factory_yuyinkey4);
                 break;
         }
-        RadioGroup radioGroup11 = (RadioGroup) this.view.findViewById(R.id.rdg_can);
+        RadioGroup radioGroup11 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_can);
         this.rdg_can = radioGroup11;
         switch (this.canS) {
             case 1:
-                radioGroup11.check(R.id.rdg_can1);
+                radioGroup11.check(C0899R.C0901id.rdg_can1);
                 break;
             case 2:
-                radioGroup11.check(R.id.rdg_can2);
+                radioGroup11.check(C0899R.C0901id.rdg_can2);
                 break;
         }
         if (this.cbox_canBus.isChecked()) {
             this.rdg_can.setEnabled(false);
-            this.rdg_can.findViewById(R.id.rdg_can1).setEnabled(false);
-            this.rdg_can.findViewById(R.id.rdg_can2).setEnabled(false);
+            this.rdg_can.findViewById(C0899R.C0901id.rdg_can1).setEnabled(false);
+            this.rdg_can.findViewById(C0899R.C0901id.rdg_can2).setEnabled(false);
         }
-        RadioGroup radioGroup12 = (RadioGroup) this.view.findViewById(R.id.rdg_track);
+        RadioGroup radioGroup12 = (RadioGroup) this.view.findViewById(C0899R.C0901id.rdg_track);
         this.rdg_track = radioGroup12;
         switch (this.track) {
             case 0:
-                radioGroup12.check(R.id.rdg_track1);
+                radioGroup12.check(C0899R.C0901id.rdg_track1);
                 break;
             case 1:
-                radioGroup12.check(R.id.rdg_track2);
+                radioGroup12.check(C0899R.C0901id.rdg_track2);
                 break;
         }
         this.rdg_can.setOnCheckedChangeListener(this);
@@ -381,164 +398,160 @@ public class AlsID7UiCarConfig extends FrameLayout implements RadioGroup.OnCheck
         this.rdg_factory_yuyinkey.setOnCheckedChangeListener(this);
         this.rdg_factory_mapkey.setOnCheckedChangeListener(this);
         this.rdg_factory_modekey.setOnCheckedChangeListener(this);
-        this.ccciDTextView = (TextView) this.view.findViewById(R.id.ccciDTextView);
-        int i4 = this.carManufacturer;
-        boolean enableAux = i4 == 2;
-        boolean enableAirCondition = i4 == 4;
+        this.ccciDTextView = (TextView) this.view.findViewById(C0899R.C0901id.ccciDTextView);
+        int i3 = this.carManufacturer;
+        boolean enableAux = i3 == 2;
+        boolean enableAirCondition = i3 == 4;
         this.cbox_bencAux.setVisibility(enableAux ? 0 : 8);
         this.cbox_bencPank.setVisibility(enableAux ? 0 : 8);
         this.cbox_bencPank_root.setVisibility(enableAux ? 0 : 8);
-        this.cbox_air_con.setVisibility((!enableAux && !enableAirCondition) ? 8 : 0);
+        this.cbox_air_con.setVisibility((enableAux || enableAirCondition) ? 0 : 8);
         this.cbox_ac_control.setVisibility(enableAirCondition ? 0 : 8);
         this.cbox_oem_fm.setVisibility(enableAirCondition ? 0 : 8);
-        this.audi_home_left_widget_textview = (TextView) this.view.findViewById(R.id.audi_home_left_widget_textview);
-        this.audi_home_right_widget_textview = (TextView) this.view.findViewById(R.id.audi_home_right_widget_textview);
-        this.audiHomeLeftRadioGroup = (RadioGroup) this.view.findViewById(R.id.audiHomeLeftRadioGroup);
-        this.audiHomeRightRadioGroup = (RadioGroup) this.view.findViewById(R.id.audiHomeRightRadioGroup);
+        this.audi_home_left_widget_textview = (TextView) this.view.findViewById(C0899R.C0901id.audi_home_left_widget_textview);
+        this.audi_home_right_widget_textview = (TextView) this.view.findViewById(C0899R.C0901id.audi_home_right_widget_textview);
+        this.audiHomeLeftRadioGroup = (RadioGroup) this.view.findViewById(C0899R.C0901id.audiHomeLeftRadioGroup);
+        this.audiHomeRightRadioGroup = (RadioGroup) this.view.findViewById(C0899R.C0901id.audiHomeRightRadioGroup);
         String str = TAG;
         Log.i(str, "audiLeftLogoIndex: " + this.audiLeftLogoIndex);
         Log.i(str, "audiRightWidgetIndex: " + this.audiRightWidgetIndex);
+        int i4 = 0;
+        while (i4 < this.audiHomeLeftRadioGroup.getChildCount()) {
+            ((RadioButton) this.audiHomeLeftRadioGroup.getChildAt(i4)).setChecked(this.audiLeftLogoIndex == i4);
+            i4++;
+        }
         int i5 = 0;
-        while (i5 < this.audiHomeLeftRadioGroup.getChildCount()) {
-            ((RadioButton) this.audiHomeLeftRadioGroup.getChildAt(i5)).setChecked(this.audiLeftLogoIndex == i5);
+        while (i5 < this.audiHomeRightRadioGroup.getChildCount()) {
+            ((RadioButton) this.audiHomeRightRadioGroup.getChildAt(i5)).setChecked(this.audiRightWidgetIndex == i5);
             i5++;
         }
-        int i6 = 0;
-        while (i6 < this.audiHomeRightRadioGroup.getChildCount()) {
-            ((RadioButton) this.audiHomeRightRadioGroup.getChildAt(i6)).setChecked(this.audiRightWidgetIndex == i6);
-            i6++;
-        }
-        this.audiHomeLeftRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        this.audiHomeLeftRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() { // from class: com.wits.ksw.settings.als_id7_ui_set.factory.AlsID7UiCarConfig.9
+            @Override // android.widget.RadioGroup.OnCheckedChangeListener
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                int count = AlsID7UiCarConfig.this.audiHomeLeftRadioGroup.getChildCount();
-                for (int i = 0; i < count; i++) {
-                    if (checkedId == AlsID7UiCarConfig.this.audiHomeLeftRadioGroup.getChildAt(i).getId()) {
-                        FileUtils.savaIntData(KeyConfig.AUDI_UI_LEFT_ID, i);
-                        Log.i(AlsID7UiCarConfig.TAG, "save Audi_Logo_Left : " + i);
+                int count2 = AlsID7UiCarConfig.this.audiHomeLeftRadioGroup.getChildCount();
+                for (int i6 = 0; i6 < count2; i6++) {
+                    if (checkedId == AlsID7UiCarConfig.this.audiHomeLeftRadioGroup.getChildAt(i6).getId()) {
+                        FileUtils.savaIntData(KeyConfig.AUDI_UI_LEFT_ID, i6);
+                        Log.i(AlsID7UiCarConfig.TAG, "save Audi_Logo_Left : " + i6);
                     }
                 }
             }
         });
-        this.audiHomeRightRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        this.audiHomeRightRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() { // from class: com.wits.ksw.settings.als_id7_ui_set.factory.AlsID7UiCarConfig.10
+            @Override // android.widget.RadioGroup.OnCheckedChangeListener
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                int count = AlsID7UiCarConfig.this.audiHomeRightRadioGroup.getChildCount();
-                for (int i = 0; i < count; i++) {
-                    if (checkedId == AlsID7UiCarConfig.this.audiHomeRightRadioGroup.getChildAt(i).getId()) {
-                        FileUtils.savaIntData(KeyConfig.AUDI_UI_RIGHT_ID, i);
-                        Log.i(AlsID7UiCarConfig.TAG, "save Audi_Logo_Right : " + i);
+                int count2 = AlsID7UiCarConfig.this.audiHomeRightRadioGroup.getChildCount();
+                for (int i6 = 0; i6 < count2; i6++) {
+                    if (checkedId == AlsID7UiCarConfig.this.audiHomeRightRadioGroup.getChildAt(i6).getId()) {
+                        FileUtils.savaIntData(KeyConfig.AUDI_UI_RIGHT_ID, i6);
+                        Log.i(AlsID7UiCarConfig.TAG, "save Audi_Logo_Right : " + i6);
                     }
                 }
             }
         });
-        if (this.carManufacturer != 3) {
-            z = false;
-        }
-        boolean isAudi = z;
+        boolean isAudi = this.carManufacturer == 3;
         this.audi_home_left_widget_textview.setVisibility(isAudi ? 0 : 8);
         this.audi_home_right_widget_textview.setVisibility(isAudi ? 0 : 8);
         this.audiHomeLeftRadioGroup.setVisibility(isAudi ? 0 : 8);
-        RadioGroup radioGroup13 = this.audiHomeRightRadioGroup;
-        if (!isAudi) {
-            i = 8;
-        }
-        radioGroup13.setVisibility(i);
+        this.audiHomeRightRadioGroup.setVisibility(isAudi ? 0 : 8);
     }
 
+    @Override // android.widget.RadioGroup.OnCheckedChangeListener
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.rdb_Nbtauxsw1 /*2131297440*/:
+            case C0899R.C0901id.rdb_Nbtauxsw1 /* 2131297473 */:
                 FileUtils.savaIntData(KeyConfig.NBT_AUX_SW, 1);
                 return;
-            case R.id.rdb_Nbtauxsw2 /*2131297441*/:
+            case C0899R.C0901id.rdb_Nbtauxsw2 /* 2131297474 */:
                 FileUtils.savaIntData(KeyConfig.NBT_AUX_SW, 2);
                 return;
-            case R.id.rdb_Nbtauxsw3 /*2131297442*/:
+            case C0899R.C0901id.rdb_Nbtauxsw3 /* 2131297475 */:
                 FileUtils.savaIntData(KeyConfig.NBT_AUX_SW, 3);
                 return;
-            case R.id.rdb_auxsw1 /*2131297443*/:
+            case C0899R.C0901id.rdb_auxsw1 /* 2131297476 */:
                 FileUtils.savaIntData(KeyConfig.CAR_AUX_SW, 0);
                 return;
-            case R.id.rdb_auxsw2 /*2131297444*/:
+            case C0899R.C0901id.rdb_auxsw2 /* 2131297477 */:
                 FileUtils.savaIntData(KeyConfig.CAR_AUX_SW, 1);
                 return;
-            case R.id.rdb_ccciD1 /*2131297445*/:
+            case C0899R.C0901id.rdb_ccciD1 /* 2131297478 */:
                 FileUtils.savaIntData(KeyConfig.CCC_ID, 0);
                 return;
-            case R.id.rdb_ccciD2 /*2131297446*/:
+            case C0899R.C0901id.rdb_ccciD2 /* 2131297479 */:
                 FileUtils.savaIntData(KeyConfig.CCC_ID, 1);
                 return;
-            case R.id.rdg_can1 /*2131297492*/:
+            case C0899R.C0901id.rdg_can1 /* 2131297527 */:
                 FileUtils.savaIntData(KeyConfig.CAN_BUS_TYPE, 1);
                 return;
-            case R.id.rdg_can2 /*2131297493*/:
+            case C0899R.C0901id.rdg_can2 /* 2131297528 */:
                 FileUtils.savaIntData(KeyConfig.CAN_BUS_TYPE, 2);
                 return;
-            case R.id.rdg_cardoor1 /*2131297495*/:
+            case C0899R.C0901id.rdg_cardoor1 /* 2131297530 */:
                 FileUtils.savaIntData(KeyConfig.CAR_DOOR_SELECT, 0);
                 return;
-            case R.id.rdg_cardoor2 /*2131297496*/:
+            case C0899R.C0901id.rdg_cardoor2 /* 2131297531 */:
                 FileUtils.savaIntData(KeyConfig.CAR_DOOR_SELECT, 1);
                 return;
-            case R.id.rdg_cardoor3 /*2131297497*/:
+            case C0899R.C0901id.rdg_cardoor3 /* 2131297532 */:
                 FileUtils.savaIntData(KeyConfig.CAR_DOOR_NUM, 2);
                 return;
-            case R.id.rdg_factory_carseep1 /*2131297503*/:
+            case C0899R.C0901id.rdg_factory_carseep1 /* 2131297538 */:
                 FileUtils.savaIntData(KeyConfig.DASH_MAX_SPEED, 0);
                 return;
-            case R.id.rdg_factory_carseep2 /*2131297504*/:
+            case C0899R.C0901id.rdg_factory_carseep2 /* 2131297539 */:
                 FileUtils.savaIntData(KeyConfig.DASH_MAX_SPEED, 1);
                 return;
-            case R.id.rdg_factory_carseep3 /*2131297505*/:
+            case C0899R.C0901id.rdg_factory_carseep3 /* 2131297540 */:
                 FileUtils.savaIntData(KeyConfig.DASH_MAX_SPEED, 2);
                 return;
-            case R.id.rdg_factory_carseep4 /*2131297506*/:
+            case C0899R.C0901id.rdg_factory_carseep4 /* 2131297541 */:
                 FileUtils.savaIntData(KeyConfig.DASH_MAX_SPEED, 3);
                 return;
-            case R.id.rdg_factory_gear1 /*2131297511*/:
+            case C0899R.C0901id.rdg_factory_gear1 /* 2131297546 */:
                 FileUtils.savaIntData(KeyConfig.HAND_SET_AUTOMATIC, 0);
                 return;
-            case R.id.rdg_factory_gear2 /*2131297512*/:
+            case C0899R.C0901id.rdg_factory_gear2 /* 2131297547 */:
                 FileUtils.savaIntData(KeyConfig.HAND_SET_AUTOMATIC, 1);
                 return;
-            case R.id.rdg_factory_gear3 /*2131297513*/:
+            case C0899R.C0901id.rdg_factory_gear3 /* 2131297548 */:
                 FileUtils.savaIntData(KeyConfig.HAND_SET_AUTOMATIC, 2);
                 return;
-            case R.id.rdg_factory_mapkey1 /*2131297515*/:
+            case C0899R.C0901id.rdg_factory_mapkey1 /* 2131297550 */:
                 FileUtils.savaIntData(KeyConfig.MAP_KEY, 0);
                 Log.d("CarConfig", "mapkey====sava==0000===>");
                 return;
-            case R.id.rdg_factory_mapkey2 /*2131297516*/:
+            case C0899R.C0901id.rdg_factory_mapkey2 /* 2131297551 */:
                 FileUtils.savaIntData(KeyConfig.MAP_KEY, 1);
                 Log.d("CarConfig", "mapkey====sava===1111===>");
                 return;
-            case R.id.rdg_factory_modekey1 /*2131297518*/:
+            case C0899R.C0901id.rdg_factory_modekey1 /* 2131297553 */:
                 FileUtils.savaIntData(KeyConfig.MODE_KEY, 0);
                 return;
-            case R.id.rdg_factory_modekey2 /*2131297519*/:
+            case C0899R.C0901id.rdg_factory_modekey2 /* 2131297554 */:
                 FileUtils.savaIntData(KeyConfig.MODE_KEY, 1);
                 return;
-            case R.id.rdg_factory_yuyinkey1 /*2131297528*/:
+            case C0899R.C0901id.rdg_factory_yuyinkey1 /* 2131297563 */:
                 FileUtils.savaIntData(KeyConfig.VOICE_KEY, 0);
                 return;
-            case R.id.rdg_factory_yuyinkey2 /*2131297529*/:
+            case C0899R.C0901id.rdg_factory_yuyinkey2 /* 2131297564 */:
                 FileUtils.savaIntData(KeyConfig.VOICE_KEY, 1);
                 return;
-            case R.id.rdg_factory_yuyinkey3 /*2131297530*/:
+            case C0899R.C0901id.rdg_factory_yuyinkey3 /* 2131297565 */:
                 FileUtils.savaIntData(KeyConfig.VOICE_KEY, 2);
                 return;
-            case R.id.rdg_factory_yuyinkey4 /*2131297531*/:
+            case C0899R.C0901id.rdg_factory_yuyinkey4 /* 2131297566 */:
                 FileUtils.savaIntData(KeyConfig.VOICE_KEY, 3);
                 return;
-            case R.id.rdg_numdoor1 /*2131297548*/:
+            case C0899R.C0901id.rdg_numdoor1 /* 2131297587 */:
                 FileUtils.savaIntData(KeyConfig.CAR_DOOR_NUM, 0);
                 return;
-            case R.id.rdg_numdoor2 /*2131297549*/:
+            case C0899R.C0901id.rdg_numdoor2 /* 2131297588 */:
                 FileUtils.savaIntData(KeyConfig.CAR_DOOR_NUM, 1);
                 return;
-            case R.id.rdg_track1 /*2131297560*/:
+            case C0899R.C0901id.rdg_track1 /* 2131297605 */:
                 FileUtils.savaIntData(KeyConfig.DRIVE_TRACK, 0);
                 return;
-            case R.id.rdg_track2 /*2131297561*/:
+            case C0899R.C0901id.rdg_track2 /* 2131297606 */:
                 FileUtils.savaIntData(KeyConfig.DRIVE_TRACK, 1);
                 return;
             default:

@@ -8,38 +8,43 @@ import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.internal.disposables.DisposableHelper;
 
+/* loaded from: classes.dex */
 public final class MaybeDoOnEvent<T> extends AbstractMaybeWithUpstream<T, T> {
     final BiConsumer<? super T, ? super Throwable> onEvent;
 
-    public MaybeDoOnEvent(MaybeSource<T> source, BiConsumer<? super T, ? super Throwable> onEvent2) {
+    public MaybeDoOnEvent(MaybeSource<T> source, BiConsumer<? super T, ? super Throwable> onEvent) {
         super(source);
-        this.onEvent = onEvent2;
+        this.onEvent = onEvent;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super T> observer) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super T> observer) {
         this.source.subscribe(new DoOnEventMaybeObserver(observer, this.onEvent));
     }
 
+    /* loaded from: classes.dex */
     static final class DoOnEventMaybeObserver<T> implements MaybeObserver<T>, Disposable {
         final MaybeObserver<? super T> downstream;
         final BiConsumer<? super T, ? super Throwable> onEvent;
         Disposable upstream;
 
-        DoOnEventMaybeObserver(MaybeObserver<? super T> actual, BiConsumer<? super T, ? super Throwable> onEvent2) {
+        DoOnEventMaybeObserver(MaybeObserver<? super T> actual, BiConsumer<? super T, ? super Throwable> onEvent) {
             this.downstream = actual;
-            this.onEvent = onEvent2;
+            this.onEvent = onEvent;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
             this.upstream = DisposableHelper.DISPOSED;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -47,6 +52,7 @@ public final class MaybeDoOnEvent<T> extends AbstractMaybeWithUpstream<T, T> {
             }
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSuccess(T value) {
             this.upstream = DisposableHelper.DISPOSED;
             try {
@@ -58,6 +64,7 @@ public final class MaybeDoOnEvent<T> extends AbstractMaybeWithUpstream<T, T> {
             }
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onError(Throwable e) {
             this.upstream = DisposableHelper.DISPOSED;
             try {
@@ -69,6 +76,7 @@ public final class MaybeDoOnEvent<T> extends AbstractMaybeWithUpstream<T, T> {
             this.downstream.onError(e);
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onComplete() {
             this.upstream = DisposableHelper.DISPOSED;
             try {

@@ -6,19 +6,23 @@ import io.reactivex.internal.subscriptions.SubscriptionHelper;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableSkip<T> extends AbstractFlowableWithUpstream<T, T> {
-    final long n;
 
-    public FlowableSkip(Flowable<T> source, long n2) {
+    /* renamed from: n */
+    final long f301n;
+
+    public FlowableSkip(Flowable<T> source, long n) {
         super(source);
-        this.n = n2;
+        this.f301n = n;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
-        this.source.subscribe(new SkipSubscriber(s, this.n));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
+        this.source.subscribe((FlowableSubscriber) new SkipSubscriber(s, this.f301n));
     }
 
+    /* loaded from: classes.dex */
     static final class SkipSubscriber<T> implements FlowableSubscriber<T>, Subscription {
         final Subscriber<? super T> downstream;
         long remaining;
@@ -29,6 +33,7 @@ public final class FlowableSkip<T> extends AbstractFlowableWithUpstream<T, T> {
             this.remaining = n;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 long n = this.remaining;
@@ -38,6 +43,7 @@ public final class FlowableSkip<T> extends AbstractFlowableWithUpstream<T, T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             long j = this.remaining;
             if (j != 0) {
@@ -47,18 +53,22 @@ public final class FlowableSkip<T> extends AbstractFlowableWithUpstream<T, T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.downstream.onComplete();
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             this.upstream.request(n);
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             this.upstream.cancel();
         }

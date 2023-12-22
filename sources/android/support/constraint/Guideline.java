@@ -6,6 +6,7 @@ import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.View;
 
+/* loaded from: classes.dex */
 public class Guideline extends View {
     public Guideline(Context context) {
         super(context);
@@ -27,14 +28,16 @@ public class Guideline extends View {
         super.setVisibility(8);
     }
 
+    @Override // android.view.View
     public void setVisibility(int visibility) {
     }
 
+    @Override // android.view.View
     public void draw(Canvas canvas) {
     }
 
-    /* access modifiers changed from: protected */
-    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    @Override // android.view.View
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension(0, 0);
     }
 

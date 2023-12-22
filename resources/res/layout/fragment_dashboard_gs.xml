@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/ll_container_gs" android:tag="layout/fragment_dashboard_gs_0" style="@style/id8_gs_main_card_container">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/ll_container_gs" android:tag="layout/fragment_dashboard_gs_0" style="@style/id8_gs_main_card_container">
     <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/gs_id8_main_icon_dashboard"/>
-    <com.wits.ksw.launcher.view.LinearGradientProgressNew android:tag="binding_1" android:visibility="gone" android:layout_width="156dp" android:layout_height="278dp" android:layout_marginLeft="67dp" android:layout_marginTop="157dp" app:gradient_max_scale="330" app:gradient_orientate="0" app:gradient_res="@drawable/id8_dashboard_progress_bg" app:offset="true" app:tilt_width="58dp"/>
+    <com.wits.ksw.launcher.view.LinearGradientProgressNew android:tag="binding_1" android:visibility="gone" android:layout_width="156dp" android:layout_height="278dp" android:layout_marginLeft="67dp" android:layout_marginTop="157dp" app:gradient_max_scale="330" app:gradient_orientate="left" app:gradient_res="@drawable/id8_dashboard_progress_bg" app:offset="true" app:tilt_width="58dp"/>
     <ImageView android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="67dp" android:layout_marginTop="126dp" android:src="@drawable/id8_main_icon_dashboard_progress_mask"/>
     <ImageView android:id="@+id/iv_mask" android:tag="binding_2" style="@style/id8_gs_main_big_card_size"/>
     <RelativeLayout style="@style/id8_gs_main_big_card_size">

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Queue;
 
+/* loaded from: classes.dex */
 public class ExceptionCatchingInputStream extends InputStream {
     private static final Queue<ExceptionCatchingInputStream> QUEUE = Util.createQueue(0);
     private IOException exception;
@@ -36,61 +37,73 @@ public class ExceptionCatchingInputStream extends InputStream {
     ExceptionCatchingInputStream() {
     }
 
-    /* access modifiers changed from: package-private */
-    public void setInputStream(InputStream toWrap) {
+    void setInputStream(InputStream toWrap) {
         this.wrapped = toWrap;
     }
 
+    @Override // java.io.InputStream
     public int available() throws IOException {
         return this.wrapped.available();
     }
 
+    @Override // java.io.InputStream, java.io.Closeable, java.lang.AutoCloseable
     public void close() throws IOException {
         this.wrapped.close();
     }
 
+    @Override // java.io.InputStream
     public void mark(int readLimit) {
         this.wrapped.mark(readLimit);
     }
 
+    @Override // java.io.InputStream
     public boolean markSupported() {
         return this.wrapped.markSupported();
     }
 
+    @Override // java.io.InputStream
     public int read(byte[] buffer) {
         try {
-            return this.wrapped.read(buffer);
+            int read = this.wrapped.read(buffer);
+            return read;
         } catch (IOException e) {
             this.exception = e;
             return -1;
         }
     }
 
+    @Override // java.io.InputStream
     public int read(byte[] buffer, int byteOffset, int byteCount) {
         try {
-            return this.wrapped.read(buffer, byteOffset, byteCount);
+            int read = this.wrapped.read(buffer, byteOffset, byteCount);
+            return read;
         } catch (IOException e) {
             this.exception = e;
             return -1;
         }
     }
 
+    @Override // java.io.InputStream
     public synchronized void reset() throws IOException {
         this.wrapped.reset();
     }
 
+    @Override // java.io.InputStream
     public long skip(long byteCount) {
         try {
-            return this.wrapped.skip(byteCount);
+            long skipped = this.wrapped.skip(byteCount);
+            return skipped;
         } catch (IOException e) {
             this.exception = e;
-            return 0;
+            return 0L;
         }
     }
 
+    @Override // java.io.InputStream
     public int read() {
         try {
-            return this.wrapped.read();
+            int result = this.wrapped.read();
+            return result;
         } catch (IOException e) {
             this.exception = e;
             return -1;

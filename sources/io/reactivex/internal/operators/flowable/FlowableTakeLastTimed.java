@@ -13,6 +13,7 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableTakeLastTimed<T> extends AbstractFlowableWithUpstream<T, T> {
     final int bufferSize;
     final long count;
@@ -21,21 +22,22 @@ public final class FlowableTakeLastTimed<T> extends AbstractFlowableWithUpstream
     final long time;
     final TimeUnit unit;
 
-    public FlowableTakeLastTimed(Flowable<T> source, long count2, long time2, TimeUnit unit2, Scheduler scheduler2, int bufferSize2, boolean delayError2) {
+    public FlowableTakeLastTimed(Flowable<T> source, long count, long time, TimeUnit unit, Scheduler scheduler, int bufferSize, boolean delayError) {
         super(source);
-        this.count = count2;
-        this.time = time2;
-        this.unit = unit2;
-        this.scheduler = scheduler2;
-        this.bufferSize = bufferSize2;
-        this.delayError = delayError2;
+        this.count = count;
+        this.time = time;
+        this.unit = unit;
+        this.scheduler = scheduler;
+        this.bufferSize = bufferSize;
+        this.delayError = delayError;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
-        this.source.subscribe(new TakeLastTimedSubscriber(s, this.count, this.time, this.unit, this.scheduler, this.bufferSize, this.delayError));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
+        this.source.subscribe((FlowableSubscriber) new TakeLastTimedSubscriber(s, this.count, this.time, this.unit, this.scheduler, this.bufferSize, this.delayError));
     }
 
+    /* loaded from: classes.dex */
     static final class TakeLastTimedSubscriber<T> extends AtomicInteger implements FlowableSubscriber<T>, Subscription {
         private static final long serialVersionUID = -5677354903406201275L;
         volatile boolean cancelled;
@@ -51,16 +53,17 @@ public final class FlowableTakeLastTimed<T> extends AbstractFlowableWithUpstream
         final TimeUnit unit;
         Subscription upstream;
 
-        TakeLastTimedSubscriber(Subscriber<? super T> actual, long count2, long time2, TimeUnit unit2, Scheduler scheduler2, int bufferSize, boolean delayError2) {
+        TakeLastTimedSubscriber(Subscriber<? super T> actual, long count, long time, TimeUnit unit, Scheduler scheduler, int bufferSize, boolean delayError) {
             this.downstream = actual;
-            this.count = count2;
-            this.time = time2;
-            this.unit = unit2;
-            this.scheduler = scheduler2;
+            this.count = count;
+            this.time = time;
+            this.unit = unit;
+            this.scheduler = scheduler;
             this.queue = new SpscLinkedArrayQueue<>(bufferSize);
-            this.delayError = delayError2;
+            this.delayError = delayError;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -69,6 +72,7 @@ public final class FlowableTakeLastTimed<T> extends AbstractFlowableWithUpstream
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             SpscLinkedArrayQueue<Object> q = this.queue;
             long now = this.scheduler.now(this.unit);
@@ -76,6 +80,7 @@ public final class FlowableTakeLastTimed<T> extends AbstractFlowableWithUpstream
             trim(now, q);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.delayError) {
                 trim(this.scheduler.now(this.unit), this.queue);
@@ -85,19 +90,20 @@ public final class FlowableTakeLastTimed<T> extends AbstractFlowableWithUpstream
             drain();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             trim(this.scheduler.now(this.unit), this.queue);
             this.done = true;
             drain();
         }
 
-        /* access modifiers changed from: package-private */
-        public void trim(long now, SpscLinkedArrayQueue<Object> q) {
-            long time2 = this.time;
+        void trim(long now, SpscLinkedArrayQueue<Object> q) {
+            long time = this.time;
             long c = this.count;
             boolean unbounded = c == LongCompanionObject.MAX_VALUE;
             while (!q.isEmpty()) {
-                if (((Long) q.peek()).longValue() < now - time2 || (!unbounded && ((long) (q.size() >> 1)) > c)) {
+                long ts = ((Long) q.peek()).longValue();
+                if (ts < now - time || (!unbounded && (q.size() >> 1) > c)) {
                     q.poll();
                     q.poll();
                 } else {
@@ -106,6 +112,7 @@ public final class FlowableTakeLastTimed<T> extends AbstractFlowableWithUpstream
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             if (SubscriptionHelper.validate(n)) {
                 BackpressureHelper.add(this.requested, n);
@@ -113,6 +120,7 @@ public final class FlowableTakeLastTimed<T> extends AbstractFlowableWithUpstream
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             if (!this.cancelled) {
                 this.cancelled = true;
@@ -123,67 +131,68 @@ public final class FlowableTakeLastTimed<T> extends AbstractFlowableWithUpstream
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
-            if (getAndIncrement() == 0) {
-                int missed = 1;
-                Subscriber<? super T> a = this.downstream;
-                SpscLinkedArrayQueue<Object> q = this.queue;
-                boolean delayError2 = this.delayError;
-                do {
-                    if (this.done) {
-                        if (!checkTerminated(q.isEmpty(), a, delayError2)) {
-                            long r = this.requested.get();
-                            long e = 0;
-                            while (true) {
-                                if (!checkTerminated(q.peek() == null, a, delayError2)) {
-                                    if (r != e) {
-                                        q.poll();
-                                        a.onNext(q.poll());
-                                        e++;
-                                    } else if (e != 0) {
-                                        BackpressureHelper.produced(this.requested, e);
-                                    }
-                                } else {
-                                    return;
-                                }
-                            }
-                        } else {
+        void drain() {
+            if (getAndIncrement() != 0) {
+                return;
+            }
+            int missed = 1;
+            Subscriber<? super T> a = this.downstream;
+            SpscLinkedArrayQueue<Object> q = this.queue;
+            boolean delayError = this.delayError;
+            do {
+                if (this.done) {
+                    boolean empty = q.isEmpty();
+                    if (checkTerminated(empty, a, delayError)) {
+                        return;
+                    }
+                    long r = this.requested.get();
+                    long e = 0;
+                    while (true) {
+                        Object ts = q.peek();
+                        boolean empty2 = ts == null;
+                        if (checkTerminated(empty2, a, delayError)) {
                             return;
                         }
+                        if (r != e) {
+                            q.poll();
+                            a.onNext(q.poll());
+                            e++;
+                        } else if (e != 0) {
+                            BackpressureHelper.produced(this.requested, e);
+                        }
                     }
-                    missed = addAndGet(-missed);
-                } while (missed != 0);
-            }
+                }
+                missed = addAndGet(-missed);
+            } while (missed != 0);
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean checkTerminated(boolean empty, Subscriber<? super T> a, boolean delayError2) {
+        boolean checkTerminated(boolean empty, Subscriber<? super T> a, boolean delayError) {
             if (this.cancelled) {
                 this.queue.clear();
                 return true;
-            } else if (!delayError2) {
-                Throwable e = this.error;
-                if (e != null) {
-                    this.queue.clear();
-                    a.onError(e);
-                    return true;
-                } else if (!empty) {
-                    return false;
-                } else {
-                    a.onComplete();
+            } else if (delayError) {
+                if (empty) {
+                    Throwable e = this.error;
+                    if (e != null) {
+                        a.onError(e);
+                    } else {
+                        a.onComplete();
+                    }
                     return true;
                 }
-            } else if (!empty) {
                 return false;
             } else {
                 Throwable e2 = this.error;
                 if (e2 != null) {
+                    this.queue.clear();
                     a.onError(e2);
-                } else {
+                    return true;
+                } else if (empty) {
                     a.onComplete();
+                    return true;
+                } else {
+                    return false;
                 }
-                return true;
             }
         }
     }

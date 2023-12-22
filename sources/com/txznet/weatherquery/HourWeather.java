@@ -1,10 +1,12 @@
 package com.txznet.weatherquery;
 
+import com.ibm.icu.text.PluralRules;
 import kotlin.Metadata;
 import kotlin.jvm.internal.Intrinsics;
 
-@Metadata(d1 = {"\u0000\"\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u0014\n\u0002\u0010\u000b\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0002\b\b\u0018\u00002\u00020\u0001B%\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\u0006\u0010\u0004\u001a\u00020\u0003\u0012\u0006\u0010\u0005\u001a\u00020\u0003\u0012\u0006\u0010\u0006\u001a\u00020\u0003¢\u0006\u0002\u0010\u0007J\t\u0010\u0012\u001a\u00020\u0003HÆ\u0003J\t\u0010\u0013\u001a\u00020\u0003HÆ\u0003J\t\u0010\u0014\u001a\u00020\u0003HÆ\u0003J\t\u0010\u0015\u001a\u00020\u0003HÆ\u0003J1\u0010\u0016\u001a\u00020\u00002\b\b\u0002\u0010\u0002\u001a\u00020\u00032\b\b\u0002\u0010\u0004\u001a\u00020\u00032\b\b\u0002\u0010\u0005\u001a\u00020\u00032\b\b\u0002\u0010\u0006\u001a\u00020\u0003HÆ\u0001J\u0013\u0010\u0017\u001a\u00020\u00182\b\u0010\u0019\u001a\u0004\u0018\u00010\u0001HÖ\u0003J\t\u0010\u001a\u001a\u00020\u001bHÖ\u0001J\t\u0010\u001c\u001a\u00020\u0003HÖ\u0001R\u001a\u0010\u0005\u001a\u00020\u0003X\u000e¢\u0006\u000e\n\u0000\u001a\u0004\b\b\u0010\t\"\u0004\b\n\u0010\u000bR\u001a\u0010\u0006\u001a\u00020\u0003X\u000e¢\u0006\u000e\n\u0000\u001a\u0004\b\f\u0010\t\"\u0004\b\r\u0010\u000bR\u001a\u0010\u0004\u001a\u00020\u0003X\u000e¢\u0006\u000e\n\u0000\u001a\u0004\b\u000e\u0010\t\"\u0004\b\u000f\u0010\u000bR\u001a\u0010\u0002\u001a\u00020\u0003X\u000e¢\u0006\u000e\n\u0000\u001a\u0004\b\u0010\u0010\t\"\u0004\b\u0011\u0010\u000b¨\u0006\u001d"}, d2 = {"Lcom/txznet/weatherquery/HourWeather;", "", "time", "", "temperature", "phrase", "phraseID", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", "getPhrase", "()Ljava/lang/String;", "setPhrase", "(Ljava/lang/String;)V", "getPhraseID", "setPhraseID", "getTemperature", "setTemperature", "getTime", "setTime", "component1", "component2", "component3", "component4", "copy", "equals", "", "other", "hashCode", "", "toString", "WeatherQuery_release"}, k = 1, mv = {1, 6, 0}, xi = 48)
 /* compiled from: HourWeather.kt */
+@Metadata(m25d1 = {"\u0000\"\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u0014\n\u0002\u0010\u000b\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0002\b\u0086\b\u0018\u00002\u00020\u0001B%\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\u0006\u0010\u0004\u001a\u00020\u0003\u0012\u0006\u0010\u0005\u001a\u00020\u0003\u0012\u0006\u0010\u0006\u001a\u00020\u0003\u00a2\u0006\u0002\u0010\u0007J\t\u0010\u0012\u001a\u00020\u0003H\u00c6\u0003J\t\u0010\u0013\u001a\u00020\u0003H\u00c6\u0003J\t\u0010\u0014\u001a\u00020\u0003H\u00c6\u0003J\t\u0010\u0015\u001a\u00020\u0003H\u00c6\u0003J1\u0010\u0016\u001a\u00020\u00002\b\b\u0002\u0010\u0002\u001a\u00020\u00032\b\b\u0002\u0010\u0004\u001a\u00020\u00032\b\b\u0002\u0010\u0005\u001a\u00020\u00032\b\b\u0002\u0010\u0006\u001a\u00020\u0003H\u00c6\u0001J\u0013\u0010\u0017\u001a\u00020\u00182\b\u0010\u0019\u001a\u0004\u0018\u00010\u0001H\u00d6\u0003J\t\u0010\u001a\u001a\u00020\u001bH\u00d6\u0001J\t\u0010\u001c\u001a\u00020\u0003H\u00d6\u0001R\u001a\u0010\u0005\u001a\u00020\u0003X\u0086\u000e\u00a2\u0006\u000e\n\u0000\u001a\u0004\b\b\u0010\t\"\u0004\b\n\u0010\u000bR\u001a\u0010\u0006\u001a\u00020\u0003X\u0086\u000e\u00a2\u0006\u000e\n\u0000\u001a\u0004\b\f\u0010\t\"\u0004\b\r\u0010\u000bR\u001a\u0010\u0004\u001a\u00020\u0003X\u0086\u000e\u00a2\u0006\u000e\n\u0000\u001a\u0004\b\u000e\u0010\t\"\u0004\b\u000f\u0010\u000bR\u001a\u0010\u0002\u001a\u00020\u0003X\u0086\u000e\u00a2\u0006\u000e\n\u0000\u001a\u0004\b\u0010\u0010\t\"\u0004\b\u0011\u0010\u000b\u00a8\u0006\u001d"}, m24d2 = {"Lcom/txznet/weatherquery/HourWeather;", "", "time", "", "temperature", "phrase", "phraseID", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", "getPhrase", "()Ljava/lang/String;", "setPhrase", "(Ljava/lang/String;)V", "getPhraseID", "setPhraseID", "getTemperature", "setTemperature", "getTime", "setTime", "component1", "component2", "component3", "component4", "copy", "equals", "", PluralRules.KEYWORD_OTHER, "hashCode", "", "toString", "WeatherQuery_release"}, m23k = 1, m22mv = {1, 6, 0}, m20xi = 48)
+/* loaded from: classes.dex */
 public final class HourWeather {
     private String phrase;
     private String phraseID;
@@ -43,23 +45,23 @@ public final class HourWeather {
         return this.phraseID;
     }
 
-    public final HourWeather copy(String str, String str2, String str3, String str4) {
-        Intrinsics.checkNotNullParameter(str, "time");
-        Intrinsics.checkNotNullParameter(str2, "temperature");
-        Intrinsics.checkNotNullParameter(str3, "phrase");
-        Intrinsics.checkNotNullParameter(str4, "phraseID");
-        return new HourWeather(str, str2, str3, str4);
+    public final HourWeather copy(String time, String temperature, String phrase, String phraseID) {
+        Intrinsics.checkNotNullParameter(time, "time");
+        Intrinsics.checkNotNullParameter(temperature, "temperature");
+        Intrinsics.checkNotNullParameter(phrase, "phrase");
+        Intrinsics.checkNotNullParameter(phraseID, "phraseID");
+        return new HourWeather(time, temperature, phrase, phraseID);
     }
 
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof HourWeather)) {
-            return false;
+        if (obj instanceof HourWeather) {
+            HourWeather hourWeather = (HourWeather) obj;
+            return Intrinsics.areEqual(this.time, hourWeather.time) && Intrinsics.areEqual(this.temperature, hourWeather.temperature) && Intrinsics.areEqual(this.phrase, hourWeather.phrase) && Intrinsics.areEqual(this.phraseID, hourWeather.phraseID);
         }
-        HourWeather hourWeather = (HourWeather) obj;
-        return Intrinsics.areEqual((Object) this.time, (Object) hourWeather.time) && Intrinsics.areEqual((Object) this.temperature, (Object) hourWeather.temperature) && Intrinsics.areEqual((Object) this.phrase, (Object) hourWeather.phrase) && Intrinsics.areEqual((Object) this.phraseID, (Object) hourWeather.phraseID);
+        return false;
     }
 
     public int hashCode() {
@@ -70,15 +72,15 @@ public final class HourWeather {
         return "HourWeather(time=" + this.time + ", temperature=" + this.temperature + ", phrase=" + this.phrase + ", phraseID=" + this.phraseID + ')';
     }
 
-    public HourWeather(String time2, String temperature2, String phrase2, String phraseID2) {
-        Intrinsics.checkNotNullParameter(time2, "time");
-        Intrinsics.checkNotNullParameter(temperature2, "temperature");
-        Intrinsics.checkNotNullParameter(phrase2, "phrase");
-        Intrinsics.checkNotNullParameter(phraseID2, "phraseID");
-        this.time = time2;
-        this.temperature = temperature2;
-        this.phrase = phrase2;
-        this.phraseID = phraseID2;
+    public HourWeather(String time, String temperature, String phrase, String phraseID) {
+        Intrinsics.checkNotNullParameter(time, "time");
+        Intrinsics.checkNotNullParameter(temperature, "temperature");
+        Intrinsics.checkNotNullParameter(phrase, "phrase");
+        Intrinsics.checkNotNullParameter(phraseID, "phraseID");
+        this.time = time;
+        this.temperature = temperature;
+        this.phrase = phrase;
+        this.phraseID = phraseID;
     }
 
     public final String getTime() {

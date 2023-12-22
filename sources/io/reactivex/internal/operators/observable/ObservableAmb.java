@@ -11,61 +11,61 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ObservableAmb<T> extends Observable<T> {
     final ObservableSource<? extends T>[] sources;
     final Iterable<? extends ObservableSource<? extends T>> sourcesIterable;
 
-    public ObservableAmb(ObservableSource<? extends T>[] sources2, Iterable<? extends ObservableSource<? extends T>> sourcesIterable2) {
-        this.sources = sources2;
-        this.sourcesIterable = sourcesIterable2;
+    public ObservableAmb(ObservableSource<? extends T>[] sources, Iterable<? extends ObservableSource<? extends T>> sourcesIterable) {
+        this.sources = sources;
+        this.sourcesIterable = sourcesIterable;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super T> observer) {
-        ObservableSource<? extends T>[] sources2 = this.sources;
+        ObservableSource<? extends T>[] sources = this.sources;
         int count = 0;
-        if (sources2 == null) {
-            sources2 = new ObservableSource[8];
+        if (sources == null) {
+            sources = new ObservableSource[8];
             try {
                 for (ObservableSource<? extends T> p : this.sourcesIterable) {
                     if (p == null) {
-                        EmptyDisposable.error((Throwable) new NullPointerException("One of the sources is null"), (Observer<?>) observer);
+                        EmptyDisposable.error(new NullPointerException("One of the sources is null"), observer);
                         return;
                     }
-                    if (count == sources2.length) {
-                        ObservableSource<? extends T>[] b = new ObservableSource[((count >> 2) + count)];
-                        System.arraycopy(sources2, 0, b, 0, count);
-                        sources2 = b;
+                    if (count == sources.length) {
+                        ObservableSource<? extends T>[] b = new ObservableSource[(count >> 2) + count];
+                        System.arraycopy(sources, 0, b, 0, count);
+                        sources = b;
                     }
                     int count2 = count + 1;
                     try {
-                        sources2[count] = p;
+                        sources[count] = p;
                         count = count2;
                     } catch (Throwable th) {
                         e = th;
-                        int i = count2;
                         Exceptions.throwIfFatal(e);
-                        EmptyDisposable.error(e, (Observer<?>) observer);
+                        EmptyDisposable.error(e, observer);
                         return;
                     }
                 }
             } catch (Throwable th2) {
                 e = th2;
-                Exceptions.throwIfFatal(e);
-                EmptyDisposable.error(e, (Observer<?>) observer);
-                return;
             }
         } else {
-            count = sources2.length;
+            count = sources.length;
         }
         if (count == 0) {
-            EmptyDisposable.complete((Observer<?>) observer);
+            EmptyDisposable.complete(observer);
         } else if (count == 1) {
-            sources2[0].subscribe(observer);
+            sources[0].subscribe(observer);
         } else {
-            new AmbCoordinator<>(observer, count).subscribe(sources2);
+            AmbCoordinator<T> ac = new AmbCoordinator<>(observer, count);
+            ac.subscribe(sources);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class AmbCoordinator<T> implements Disposable {
         final Observer<? super T> downstream;
         final AmbInnerObserver<T>[] observers;
@@ -91,10 +91,11 @@ public final class ObservableAmb<T> extends Observable<T> {
 
         public boolean win(int index) {
             int w = this.winner.get();
-            if (w == 0) {
-                if (!this.winner.compareAndSet(0, index)) {
-                    return false;
-                }
+            if (w != 0) {
+                return w == index;
+            } else if (!this.winner.compareAndSet(0, index)) {
+                return false;
+            } else {
                 AmbInnerObserver<T>[] a = this.observers;
                 int n = a.length;
                 for (int i = 0; i < n; i++) {
@@ -103,14 +104,12 @@ public final class ObservableAmb<T> extends Observable<T> {
                     }
                 }
                 return true;
-            } else if (w == index) {
-                return true;
-            } else {
-                return false;
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
+            AmbInnerObserver<T>[] ambInnerObserverArr;
             if (this.winner.get() != -1) {
                 this.winner.lazySet(-1);
                 for (AmbInnerObserver<T> a : this.observers) {
@@ -119,11 +118,13 @@ public final class ObservableAmb<T> extends Observable<T> {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.winner.get() == -1;
         }
     }
 
+    /* loaded from: classes.dex */
     static final class AmbInnerObserver<T> extends AtomicReference<Disposable> implements Observer<T> {
         private static final long serialVersionUID = -1185974347409665484L;
         final Observer<? super T> downstream;
@@ -131,16 +132,18 @@ public final class ObservableAmb<T> extends Observable<T> {
         final AmbCoordinator<T> parent;
         boolean won;
 
-        AmbInnerObserver(AmbCoordinator<T> parent2, int index2, Observer<? super T> downstream2) {
-            this.parent = parent2;
-            this.index = index2;
-            this.downstream = downstream2;
+        AmbInnerObserver(AmbCoordinator<T> parent, int index, Observer<? super T> downstream) {
+            this.parent = parent;
+            this.index = index;
+            this.downstream = downstream;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             DisposableHelper.setOnce(this, d);
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             if (this.won) {
                 this.downstream.onNext(t);
@@ -148,10 +151,11 @@ public final class ObservableAmb<T> extends Observable<T> {
                 this.won = true;
                 this.downstream.onNext(t);
             } else {
-                ((Disposable) get()).dispose();
+                get().dispose();
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             if (this.won) {
                 this.downstream.onError(t);
@@ -163,6 +167,7 @@ public final class ObservableAmb<T> extends Observable<T> {
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             if (this.won) {
                 this.downstream.onComplete();

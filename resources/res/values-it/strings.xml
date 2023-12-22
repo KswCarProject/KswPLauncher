@@ -244,10 +244,17 @@
     <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Password errata!</string>
     <string name="mcu_file_corrupted">Aggiornamento file danneggiato!</string>
+    <string name="mic_control">Interruttore a levetta incorporato esterno MIC</string>
+    <string name="mic_external">Esterno</string>
+    <string name="mic_internal">Incorporato</string>
     <string name="mic_text">MIC Guadagno</string>
     <string name="music_app_sel">App musicale</string>
+    <string name="music_player">Lettore musicale</string>
     <string name="ntg6_dvr_toast">Nessun dispositivo!</string>
     <string name="oil_size">Olio: %s</string>
+    <string name="original_radar_reverse">Visualizzazione radar originale invertita</string>
+    <string name="radar_normal">Normale</string>
+    <string name="radar_reverse">Inversione</string>
     <string name="raw_car_text1">Display a schermo intero</string>
     <string name="raw_car_text2">Selezione corrente:</string>
     <string name="reverse_exit_time_agreement">Uscita secondo il contratto originale del veicolo</string>
@@ -324,6 +331,8 @@
     <string name="text_logo_two">P2</string>
     <string name="text_ram">RAM: %s</string>
     <string name="touch_continuous_send">Tocca i dati inviati continuamente</string>
+    <string name="tv_id8_brake">Freno</string>
+    <string name="tv_id8_seat_belt">Cintura di sicurezza</string>
     <string name="txz_oil_text">Impostazione dell\'allarme del volume di carburante</string>
     <string name="txz_speed_text">Impostazione dell\'allarme di velocità del compagno viaggiatore</string>
     <string name="txz_temp_text">Impostazione dell\'allarme della temperatura ambiente del compagno</string>

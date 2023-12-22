@@ -4,12 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import java.io.Serializable;
 
+/* loaded from: classes.dex */
 public class ObservableInt extends BaseObservableField implements Parcelable, Serializable {
-    public static final Parcelable.Creator<ObservableInt> CREATOR = new Parcelable.Creator<ObservableInt>() {
+    public static final Parcelable.Creator<ObservableInt> CREATOR = new Parcelable.Creator<ObservableInt>() { // from class: android.databinding.ObservableInt.1
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // android.os.Parcelable.Creator
         public ObservableInt createFromParcel(Parcel source) {
             return new ObservableInt(source.readInt());
         }
 
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // android.os.Parcelable.Creator
         public ObservableInt[] newArray(int size) {
             return new ObservableInt[size];
         }
@@ -39,10 +44,12 @@ public class ObservableInt extends BaseObservableField implements Parcelable, Se
         }
     }
 
+    @Override // android.os.Parcelable
     public int describeContents() {
         return 0;
     }
 
+    @Override // android.os.Parcelable
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.mValue);
     }

@@ -1,5 +1,6 @@
 package com.txznet.weatherquery;
 
+/* loaded from: classes.dex */
 public final class BuildConfig {
     public static final String APPLICATION_ID = "com.txznet.weatherquery";
     public static final String BUILD_TYPE = "release";

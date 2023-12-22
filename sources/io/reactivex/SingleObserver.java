@@ -2,6 +2,7 @@ package io.reactivex;
 
 import io.reactivex.disposables.Disposable;
 
+/* loaded from: classes.dex */
 public interface SingleObserver<T> {
     void onError(Throwable th);
 

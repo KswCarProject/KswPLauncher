@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/* loaded from: classes.dex */
 class RBBIRuleBuilder {
     static final /* synthetic */ boolean $assertionsDisabled = false;
     static final int U_BRK_ASSIGN_ERROR = 66054;
@@ -38,7 +39,6 @@ class RBBIRuleBuilder {
     static final int fSafeRevTree = 3;
     boolean fChainRules;
     String fDebugEnv;
-    int fDefaultTree = 0;
     RBBITableBuilder fForwardTable;
     boolean fLBCMNoChain;
     boolean fLookAheadHardBreak;
@@ -46,10 +46,11 @@ class RBBIRuleBuilder {
     String fRules;
     RBBIRuleScanner fScanner;
     RBBISetBuilder fSetBuilder;
-    Map<Set<Integer>, Integer> fStatusSets = new HashMap();
     StringBuilder fStrippedRules;
-    RBBINode[] fTreeRoots = new RBBINode[4];
     List<RBBINode> fUSetNodes;
+    RBBINode[] fTreeRoots = new RBBINode[4];
+    int fDefaultTree = 0;
+    Map<Set<Integer>, Integer> fStatusSets = new HashMap();
 
     RBBIRuleBuilder(String rules) {
         this.fDebugEnv = ICUDebug.enabled("rbbi") ? ICUDebug.value("rbbi") : null;
@@ -62,81 +63,62 @@ class RBBIRuleBuilder {
     }
 
     static final int align8(int i) {
-        return (i + 7) & -8;
+        return (i + 7) & (-8);
     }
 
-    /* access modifiers changed from: package-private */
-    public void flattenData(OutputStream os) throws IOException {
-        OutputStream outputStream = os;
-        DataOutputStream dos = new DataOutputStream(outputStream);
+    void flattenData(OutputStream os) throws IOException {
+        DataOutputStream dos = new DataOutputStream(os);
         String strippedRules = RBBIRuleScanner.stripRules(this.fStrippedRules.toString());
         int forwardTableSize = align8(this.fForwardTable.getTableSize());
         int reverseTableSize = align8(this.fForwardTable.getSafeTableSize());
         int trieSize = align8(this.fSetBuilder.getTrieSize());
         int statusTableSize = align8(this.fRuleStatusVals.size() * 4);
+        int rulesSize = align8(strippedRules.length() * 2);
+        int totalSize = 80 + forwardTableSize + reverseTableSize + statusTableSize + trieSize + rulesSize;
         int outputPos = 0;
         ICUBinary.writeHeader(1114794784, 83886080, 0, dos);
-        int[] header = new int[20];
-        header[0] = 45472;
-        boolean z = true;
-        header[1] = 83886080;
-        header[2] = 80 + forwardTableSize + reverseTableSize + statusTableSize + trieSize + align8(strippedRules.length() * 2);
-        header[3] = this.fSetBuilder.getNumCharCategories();
-        header[4] = 80;
-        header[5] = forwardTableSize;
-        header[6] = header[4] + forwardTableSize;
-        header[7] = reverseTableSize;
-        header[8] = header[6] + header[7];
-        header[9] = this.fSetBuilder.getTrieSize();
-        header[12] = header[8] + header[9];
-        header[13] = statusTableSize;
-        header[10] = header[12] + statusTableSize;
-        header[11] = strippedRules.length() * 2;
-        for (int writeInt : header) {
-            dos.writeInt(writeInt);
+        int[] header = {45472, 83886080, totalSize, this.fSetBuilder.getNumCharCategories(), 80, forwardTableSize, header[4] + forwardTableSize, reverseTableSize, header[6] + header[7], this.fSetBuilder.getTrieSize(), header[12] + statusTableSize, strippedRules.length() * 2, header[8] + header[9], statusTableSize};
+        for (int i : header) {
+            dos.writeInt(i);
             outputPos += 4;
         }
         RBBIDataWrapper.RBBIStateTable table = this.fForwardTable.exportTable();
-        if (outputPos == header[4]) {
-            int outputPos2 = outputPos + table.put(dos);
-            RBBIDataWrapper.RBBIStateTable table2 = this.fForwardTable.exportSafeTable();
-            Assert.assrt(outputPos2 == header[6]);
-            int outputPos3 = outputPos2 + table2.put(dos);
-            Assert.assrt(outputPos3 == header[8]);
-            this.fSetBuilder.serializeTrie(outputStream);
-            int outputPos4 = outputPos3 + header[9];
-            while (outputPos4 % 8 != 0) {
-                dos.write(0);
-                outputPos4++;
-            }
-            Assert.assrt(outputPos4 == header[12]);
-            for (Integer val : this.fRuleStatusVals) {
-                dos.writeInt(val.intValue());
-                outputPos4 += 4;
-            }
-            while (outputPos4 % 8 != 0) {
-                dos.write(0);
-                outputPos4++;
-            }
-            if (outputPos4 != header[10]) {
-                z = false;
-            }
-            Assert.assrt(z);
-            dos.writeChars(strippedRules);
-            for (int outputPos5 = outputPos4 + (strippedRules.length() * 2); outputPos5 % 8 != 0; outputPos5++) {
-                dos.write(0);
-            }
-            return;
+        if (outputPos != header[4]) {
+            throw new AssertionError();
         }
-        throw new AssertionError();
+        int outputPos2 = outputPos + table.put(dos);
+        RBBIDataWrapper.RBBIStateTable table2 = this.fForwardTable.exportSafeTable();
+        Assert.assrt(outputPos2 == header[6]);
+        int outputPos3 = outputPos2 + table2.put(dos);
+        Assert.assrt(outputPos3 == header[8]);
+        this.fSetBuilder.serializeTrie(os);
+        int outputPos4 = outputPos3 + header[9];
+        while (outputPos4 % 8 != 0) {
+            dos.write(0);
+            outputPos4++;
+        }
+        Assert.assrt(outputPos4 == header[12]);
+        for (Integer val : this.fRuleStatusVals) {
+            dos.writeInt(val.intValue());
+            outputPos4 += 4;
+        }
+        while (outputPos4 % 8 != 0) {
+            dos.write(0);
+            outputPos4++;
+        }
+        Assert.assrt(outputPos4 == header[10]);
+        dos.writeChars(strippedRules);
+        for (int outputPos5 = outputPos4 + (strippedRules.length() * 2); outputPos5 % 8 != 0; outputPos5++) {
+            dos.write(0);
+        }
     }
 
     static void compileRules(String rules, OutputStream os) throws IOException {
-        new RBBIRuleBuilder(rules).build(os);
+        RBBIRuleBuilder builder = new RBBIRuleBuilder(rules);
+        builder.build(os);
     }
 
-    /* access modifiers changed from: package-private */
-    public void build(OutputStream os) throws IOException {
+    void build(OutputStream os) throws IOException {
         this.fScanner.parse();
         this.fSetBuilder.buildRanges();
         RBBITableBuilder rBBITableBuilder = new RBBITableBuilder(this, 0);
@@ -154,21 +136,25 @@ class RBBIRuleBuilder {
         flattenData(os);
     }
 
+    /* loaded from: classes.dex */
     static class IntPair {
-        int first = 0;
-        int second = 0;
+        int first;
+        int second;
 
         IntPair() {
+            this.first = 0;
+            this.second = 0;
         }
 
         IntPair(int f, int s) {
+            this.first = 0;
+            this.second = 0;
             this.first = f;
             this.second = s;
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void optimizeTables() {
+    void optimizeTables() {
         boolean didSomething;
         do {
             didSomething = false;

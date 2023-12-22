@@ -3,6 +3,7 @@ package com.google.zxing.datamatrix.decoder;
 import com.google.zxing.FormatException;
 import com.wits.pms.statuscontrol.WitsCommand;
 
+/* loaded from: classes.dex */
 public final class Version {
     private static final Version[] VERSIONS = buildVersions();
     private final int dataRegionSizeColumns;
@@ -13,16 +14,17 @@ public final class Version {
     private final int totalCodewords;
     private final int versionNumber;
 
-    private Version(int versionNumber2, int symbolSizeRows2, int symbolSizeColumns2, int dataRegionSizeRows2, int dataRegionSizeColumns2, ECBlocks ecBlocks2) {
-        this.versionNumber = versionNumber2;
-        this.symbolSizeRows = symbolSizeRows2;
-        this.symbolSizeColumns = symbolSizeColumns2;
-        this.dataRegionSizeRows = dataRegionSizeRows2;
-        this.dataRegionSizeColumns = dataRegionSizeColumns2;
-        this.ecBlocks = ecBlocks2;
+    private Version(int versionNumber, int symbolSizeRows, int symbolSizeColumns, int dataRegionSizeRows, int dataRegionSizeColumns, ECBlocks ecBlocks) {
+        ECB[] eCBlocks;
+        this.versionNumber = versionNumber;
+        this.symbolSizeRows = symbolSizeRows;
+        this.symbolSizeColumns = symbolSizeColumns;
+        this.dataRegionSizeRows = dataRegionSizeRows;
+        this.dataRegionSizeColumns = dataRegionSizeColumns;
+        this.ecBlocks = ecBlocks;
         int total = 0;
-        int ecCodewords = ecBlocks2.getECCodewords();
-        for (ECB ecBlock : ecBlocks2.getECBlocks()) {
+        int ecCodewords = ecBlocks.getECCodewords();
+        for (ECB ecBlock : ecBlocks.getECBlocks()) {
             total += ecBlock.getCount() * (ecBlock.getDataCodewords() + ecCodewords);
         }
         this.totalCodewords = total;
@@ -52,65 +54,62 @@ public final class Version {
         return this.totalCodewords;
     }
 
-    /* access modifiers changed from: package-private */
-    public ECBlocks getECBlocks() {
+    ECBlocks getECBlocks() {
         return this.ecBlocks;
     }
 
     public static Version getVersionForDimensions(int numRows, int numColumns) throws FormatException {
-        if ((numRows & 1) == 0 && (numColumns & 1) == 0) {
-            for (Version version : VERSIONS) {
-                Version version2 = version;
-                if (version.symbolSizeRows == numRows && version2.symbolSizeColumns == numColumns) {
-                    return version2;
-                }
-            }
+        Version[] versionArr;
+        if ((numRows & 1) != 0 || (numColumns & 1) != 0) {
             throw FormatException.getFormatInstance();
+        }
+        for (Version version : VERSIONS) {
+            if (version.symbolSizeRows == numRows && version.symbolSizeColumns == numColumns) {
+                return version;
+            }
         }
         throw FormatException.getFormatInstance();
     }
 
+    /* loaded from: classes.dex */
     static final class ECBlocks {
         private final ECB[] ecBlocks;
         private final int ecCodewords;
 
-        private ECBlocks(int ecCodewords2, ECB ecBlocks2) {
-            this.ecCodewords = ecCodewords2;
-            this.ecBlocks = new ECB[]{ecBlocks2};
+        private ECBlocks(int ecCodewords, ECB ecBlocks) {
+            this.ecCodewords = ecCodewords;
+            this.ecBlocks = new ECB[]{ecBlocks};
         }
 
-        private ECBlocks(int ecCodewords2, ECB ecBlocks1, ECB ecBlocks2) {
-            this.ecCodewords = ecCodewords2;
+        private ECBlocks(int ecCodewords, ECB ecBlocks1, ECB ecBlocks2) {
+            this.ecCodewords = ecCodewords;
             this.ecBlocks = new ECB[]{ecBlocks1, ecBlocks2};
         }
 
-        /* access modifiers changed from: package-private */
-        public int getECCodewords() {
+        int getECCodewords() {
             return this.ecCodewords;
         }
 
-        /* access modifiers changed from: package-private */
-        public ECB[] getECBlocks() {
+        ECB[] getECBlocks() {
             return this.ecBlocks;
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ECB {
         private final int count;
         private final int dataCodewords;
 
-        private ECB(int count2, int dataCodewords2) {
-            this.count = count2;
-            this.dataCodewords = dataCodewords2;
+        private ECB(int count, int dataCodewords) {
+            this.count = count;
+            this.dataCodewords = dataCodewords;
         }
 
-        /* access modifiers changed from: package-private */
-        public int getCount() {
+        int getCount() {
             return this.count;
         }
 
-        /* access modifiers changed from: package-private */
-        public int getDataCodewords() {
+        int getDataCodewords() {
             return this.dataCodewords;
         }
     }

@@ -4,11 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RadioGroup;
 
+/* loaded from: classes.dex */
 public class SkinCompatRadioGroup extends RadioGroup implements SkinCompatSupportable {
     private SkinCompatBackgroundHelper mBackgroundTintHelper;
 
     public SkinCompatRadioGroup(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public SkinCompatRadioGroup(Context context, AttributeSet attrs) {
@@ -18,6 +19,7 @@ public class SkinCompatRadioGroup extends RadioGroup implements SkinCompatSuppor
         skinCompatBackgroundHelper.loadFromAttributes(attrs, 0);
     }
 
+    @Override // android.view.View
     public void setBackgroundResource(int resId) {
         super.setBackgroundResource(resId);
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
@@ -26,6 +28,7 @@ public class SkinCompatRadioGroup extends RadioGroup implements SkinCompatSuppor
         }
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
         if (skinCompatBackgroundHelper != null) {

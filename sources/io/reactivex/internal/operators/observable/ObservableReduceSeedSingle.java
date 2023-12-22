@@ -11,34 +11,37 @@ import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.internal.functions.ObjectHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 
+/* loaded from: classes.dex */
 public final class ObservableReduceSeedSingle<T, R> extends Single<R> {
     final BiFunction<R, ? super T, R> reducer;
     final R seed;
     final ObservableSource<T> source;
 
-    public ObservableReduceSeedSingle(ObservableSource<T> source2, R seed2, BiFunction<R, ? super T, R> reducer2) {
-        this.source = source2;
-        this.seed = seed2;
-        this.reducer = reducer2;
+    public ObservableReduceSeedSingle(ObservableSource<T> source, R seed, BiFunction<R, ? super T, R> reducer) {
+        this.source = source;
+        this.seed = seed;
+        this.reducer = reducer;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super R> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super R> observer) {
         this.source.subscribe(new ReduceSeedObserver(observer, this.reducer, this.seed));
     }
 
+    /* loaded from: classes.dex */
     static final class ReduceSeedObserver<T, R> implements Observer<T>, Disposable {
         final SingleObserver<? super R> downstream;
         final BiFunction<R, ? super T, R> reducer;
         Disposable upstream;
         R value;
 
-        ReduceSeedObserver(SingleObserver<? super R> actual, BiFunction<R, ? super T, R> reducer2, R value2) {
+        ReduceSeedObserver(SingleObserver<? super R> actual, BiFunction<R, ? super T, R> reducer, R value) {
             this.downstream = actual;
-            this.value = value2;
-            this.reducer = reducer2;
+            this.value = value;
+            this.reducer = reducer;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -46,11 +49,12 @@ public final class ObservableReduceSeedSingle<T, R> extends Single<R> {
             }
         }
 
-        public void onNext(T value2) {
+        @Override // io.reactivex.Observer
+        public void onNext(T value) {
             R v = this.value;
             if (v != null) {
                 try {
-                    this.value = ObjectHelper.requireNonNull(this.reducer.apply(v, value2), "The reducer returned a null value");
+                    this.value = (R) ObjectHelper.requireNonNull(this.reducer.apply(v, value), "The reducer returned a null value");
                 } catch (Throwable ex) {
                     Exceptions.throwIfFatal(ex);
                     this.upstream.dispose();
@@ -59,8 +63,10 @@ public final class ObservableReduceSeedSingle<T, R> extends Single<R> {
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable e) {
-            if (this.value != null) {
+            R v = this.value;
+            if (v != null) {
                 this.value = null;
                 this.downstream.onError(e);
                 return;
@@ -68,6 +74,7 @@ public final class ObservableReduceSeedSingle<T, R> extends Single<R> {
             RxJavaPlugins.onError(e);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             R v = this.value;
             if (v != null) {
@@ -76,10 +83,12 @@ public final class ObservableReduceSeedSingle<T, R> extends Single<R> {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }

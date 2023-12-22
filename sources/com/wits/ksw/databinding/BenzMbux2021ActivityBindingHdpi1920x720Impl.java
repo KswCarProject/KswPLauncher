@@ -1,19 +1,23 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.v7.content.res.AppCompatResources;
+import android.support.p004v7.content.res.AppCompatResources;
+import android.support.p004v7.widget.RecyclerView;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.model.ControlBean;
 
+/* loaded from: classes7.dex */
 public class BenzMbux2021ActivityBindingHdpi1920x720Impl extends BenzMbux2021ActivityBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -23,10 +27,10 @@ public class BenzMbux2021ActivityBindingHdpi1920x720Impl extends BenzMbux2021Act
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.indicator_benz_mbux_2021, 3);
-        sparseIntArray.put(R.id.layout_coat_benz_mbux_2021, 4);
-        sparseIntArray.put(R.id.iv_coat_2021, 5);
-        sparseIntArray.put(R.id.tv_coat_2021_tip, 6);
+        sparseIntArray.put(C0899R.C0901id.indicator_benz_mbux_2021, 3);
+        sparseIntArray.put(C0899R.C0901id.layout_coat_benz_mbux_2021, 4);
+        sparseIntArray.put(C0899R.C0901id.iv_coat_2021, 5);
+        sparseIntArray.put(C0899R.C0901id.tv_coat_2021_tip, 6);
     }
 
     public BenzMbux2021ActivityBindingHdpi1920x720Impl(DataBindingComponent bindingComponent, View root) {
@@ -34,22 +38,24 @@ public class BenzMbux2021ActivityBindingHdpi1920x720Impl extends BenzMbux2021Act
     }
 
     private BenzMbux2021ActivityBindingHdpi1920x720Impl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 3, bindings[1], bindings[2], bindings[3], bindings[5], bindings[4], bindings[0], bindings[6]);
-        this.mDirtyFlags = -1;
-        this.benzMbux2021RecyclerView.setTag((Object) null);
-        this.controlBtn.setTag((Object) null);
-        this.layoutMain2021.setTag((Object) null);
+        super(bindingComponent, root, 3, (RecyclerView) bindings[1], (ImageView) bindings[2], (LinearLayout) bindings[3], (ImageView) bindings[5], (LinearLayout) bindings[4], (LinearLayout) bindings[0], (TextView) bindings[6]);
+        this.mDirtyFlags = -1L;
+        this.benzMbux2021RecyclerView.setTag(null);
+        this.controlBtn.setTag(null);
+        this.layoutMain2021.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 16;
+            this.mDirtyFlags = 16L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -59,14 +65,16 @@ public class BenzMbux2021ActivityBindingHdpi1920x720Impl extends BenzMbux2021Act
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (24 != variableId) {
-            return false;
+        if (24 == variableId) {
+            setVieModel((BcVieModel) variable);
+            return true;
         }
-        setVieModel((BcVieModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.BenzMbux2021ActivityBinding
     public void setVieModel(BcVieModel VieModel) {
         this.mVieModel = VieModel;
         synchronized (this) {
@@ -76,8 +84,8 @@ public class BenzMbux2021ActivityBindingHdpi1920x720Impl extends BenzMbux2021Act
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVieModelControlBeanControlPanelClose((ObservableBoolean) object, fieldId);
@@ -91,41 +99,41 @@ public class BenzMbux2021ActivityBindingHdpi1920x720Impl extends BenzMbux2021Act
     }
 
     private boolean onChangeVieModelControlBeanControlPanelClose(ObservableBoolean VieModelControlBeanControlPanelClose, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVieModelBcPagePosition(ObservableInt VieModelBcPagePosition, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVieModelControlBeanBenzControlPanelState(ObservableBoolean VieModelControlBeanBenzControlPanelState, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         ObservableBoolean vieModelControlBeanControlPanelClose = null;
         View.OnClickListener vieModelOnControlClickAndroidViewViewOnClickListener = null;
@@ -139,7 +147,7 @@ public class BenzMbux2021ActivityBindingHdpi1920x720Impl extends BenzMbux2021Act
         int vieModelBcPagePositionGet = 0;
         boolean vieModelControlBeanBenzControlPanelStateGet = false;
         if ((dirtyFlags & 31) != 0) {
-            if (!((dirtyFlags & 24) == 0 || vieModel == null)) {
+            if ((dirtyFlags & 24) != 0 && vieModel != null) {
                 OnClickListenerImpl onClickListenerImpl = this.mVieModelOnControlClickAndroidViewViewOnClickListener;
                 if (onClickListenerImpl == null) {
                     onClickListenerImpl = new OnClickListenerImpl();
@@ -151,7 +159,7 @@ public class BenzMbux2021ActivityBindingHdpi1920x720Impl extends BenzMbux2021Act
                 if (vieModel != null) {
                     vieModelBcPagePosition = vieModel.bcPagePosition;
                 }
-                updateRegistration(1, (Observable) vieModelBcPagePosition);
+                updateRegistration(1, vieModelBcPagePosition);
                 if (vieModelBcPagePosition != null) {
                     vieModelBcPagePositionGet = vieModelBcPagePosition.get();
                 }
@@ -164,8 +172,7 @@ public class BenzMbux2021ActivityBindingHdpi1920x720Impl extends BenzMbux2021Act
                     if (vieModelControlBean != null) {
                         vieModelControlBeanControlPanelClose = vieModelControlBean.controlPanelClose;
                     }
-                    int i = 0;
-                    updateRegistration(0, (Observable) vieModelControlBeanControlPanelClose);
+                    updateRegistration(0, vieModelControlBeanControlPanelClose);
                     if (vieModelControlBeanControlPanelClose != null) {
                         vieModelControlBeanControlPanelCloseGet = vieModelControlBeanControlPanelClose.get();
                     }
@@ -176,16 +183,13 @@ public class BenzMbux2021ActivityBindingHdpi1920x720Impl extends BenzMbux2021Act
                             dirtyFlags |= 32;
                         }
                     }
-                    if (vieModelControlBeanControlPanelCloseGet) {
-                        i = 8;
-                    }
-                    vieModelControlBeanControlPanelCloseViewGONEViewVISIBLE = i;
+                    vieModelControlBeanControlPanelCloseViewGONEViewVISIBLE = vieModelControlBeanControlPanelCloseGet ? 8 : 0;
                 }
                 if ((dirtyFlags & 28) != 0) {
                     if (vieModelControlBean != null) {
                         vieModelControlBeanBenzControlPanelState = vieModelControlBean.benzControlPanelState;
                     }
-                    updateRegistration(2, (Observable) vieModelControlBeanBenzControlPanelState);
+                    updateRegistration(2, vieModelControlBeanBenzControlPanelState);
                     if (vieModelControlBeanBenzControlPanelState != null) {
                         vieModelControlBeanBenzControlPanelStateGet = vieModelControlBeanBenzControlPanelState.get();
                     }
@@ -196,7 +200,7 @@ public class BenzMbux2021ActivityBindingHdpi1920x720Impl extends BenzMbux2021Act
                             dirtyFlags |= 128;
                         }
                     }
-                    vieModelControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = AppCompatResources.getDrawable(this.controlBtn.getContext(), vieModelControlBeanBenzControlPanelStateGet ? R.drawable.ntg55_ctrlpanel_down_selector : R.drawable.ntg55_ctrlpanel_up_selector);
+                    vieModelControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = AppCompatResources.getDrawable(this.controlBtn.getContext(), vieModelControlBeanBenzControlPanelStateGet ? C0899R.C0900drawable.ntg55_ctrlpanel_down_selector : C0899R.C0900drawable.ntg55_ctrlpanel_up_selector);
                 }
             }
         }
@@ -214,17 +218,19 @@ public class BenzMbux2021ActivityBindingHdpi1920x720Impl extends BenzMbux2021Act
         }
     }
 
+    /* loaded from: classes7.dex */
     public static class OnClickListenerImpl implements View.OnClickListener {
         private BcVieModel value;
 
-        public OnClickListenerImpl setValue(BcVieModel value2) {
-            this.value = value2;
-            if (value2 == null) {
+        public OnClickListenerImpl setValue(BcVieModel value) {
+            this.value = value;
+            if (value == null) {
                 return null;
             }
             return this;
         }
 
+        @Override // android.view.View.OnClickListener
         public void onClick(View arg0) {
             this.value.onControlClick(arg0);
         }

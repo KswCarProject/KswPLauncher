@@ -6,39 +6,39 @@ import android.view.View;
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
 
+/* loaded from: classes.dex */
 public class ListenerUtil {
     private static final SparseArray<WeakHashMap<View, WeakReference<?>>> sListeners = new SparseArray<>();
 
     public static <T> T trackListener(View view, T listener, int listenerResourceId) {
-        WeakReference<T> oldValue;
+        WeakReference<?> put;
         if (Build.VERSION.SDK_INT >= 14) {
-            T oldValue2 = view.getTag(listenerResourceId);
+            T oldValue = (T) view.getTag(listenerResourceId);
             view.setTag(listenerResourceId, listener);
-            return oldValue2;
+            return oldValue;
         }
-        T oldValue3 = sListeners;
-        synchronized (oldValue3) {
-            WeakHashMap<View, WeakReference<?>> listeners = oldValue3.get(listenerResourceId);
+        SparseArray<WeakHashMap<View, WeakReference<?>>> sparseArray = sListeners;
+        synchronized (sparseArray) {
+            WeakHashMap<View, WeakReference<?>> listeners = sparseArray.get(listenerResourceId);
             if (listeners == null) {
                 listeners = new WeakHashMap<>();
-                oldValue3.put(listenerResourceId, listeners);
+                sparseArray.put(listenerResourceId, listeners);
             }
             if (listener == null) {
-                oldValue = listeners.remove(view);
+                put = listeners.remove(view);
             } else {
-                oldValue = listeners.put(view, new WeakReference(listener));
+                put = listeners.put(view, new WeakReference<>(listener));
             }
-            if (oldValue == null) {
+            if (put == null) {
                 return null;
             }
-            T t = oldValue.get();
-            return t;
+            return (T) put.get();
         }
     }
 
     public static <T> T getListener(View view, int listenerResourceId) {
         if (Build.VERSION.SDK_INT >= 14) {
-            return view.getTag(listenerResourceId);
+            return (T) view.getTag(listenerResourceId);
         }
         SparseArray<WeakHashMap<View, WeakReference<?>>> sparseArray = sListeners;
         synchronized (sparseArray) {
@@ -46,12 +46,11 @@ public class ListenerUtil {
             if (listeners == null) {
                 return null;
             }
-            WeakReference<T> oldValue = listeners.get(view);
-            if (oldValue == null) {
+            WeakReference<?> weakReference = listeners.get(view);
+            if (weakReference == null) {
                 return null;
             }
-            T t = oldValue.get();
-            return t;
+            return (T) weakReference.get();
         }
     }
 }

@@ -3,20 +3,23 @@ package com.wits.ksw.launcher.view;
 import android.os.Handler;
 import android.os.Message;
 
+/* loaded from: classes16.dex */
 public abstract class LoopRotarySwitchViewHandler extends Handler {
     public static final int msgid = 1000;
+    public long loopTime;
     private boolean loop = false;
-    public long loopTime = 3000;
     private Message msg = createMsg();
 
     public abstract void doScroll();
 
     public LoopRotarySwitchViewHandler(int time) {
-        this.loopTime = (long) time;
+        this.loopTime = 3000L;
+        this.loopTime = time;
     }
 
-    public void handleMessage(Message msg2) {
-        msg2.what = 1000;
+    @Override // android.os.Handler
+    public void handleMessage(Message msg) {
+        msg.what = 1000;
         switch (1000) {
             case 1000:
                 if (this.loop) {
@@ -26,12 +29,12 @@ public abstract class LoopRotarySwitchViewHandler extends Handler {
                 }
                 break;
         }
-        super.handleMessage(msg2);
+        super.handleMessage(msg);
     }
 
-    public void setLoop(boolean loop2) {
-        this.loop = loop2;
-        if (loop2) {
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+        if (loop) {
             sendMsg();
             return;
         }
@@ -52,13 +55,13 @@ public abstract class LoopRotarySwitchViewHandler extends Handler {
     }
 
     public Message createMsg() {
-        Message msg2 = new Message();
-        msg2.what = 1000;
-        return msg2;
+        Message msg = new Message();
+        msg.what = 1000;
+        return msg;
     }
 
-    public void setLoopTime(long loopTime2) {
-        this.loopTime = loopTime2;
+    public void setLoopTime(long loopTime) {
+        this.loopTime = loopTime;
     }
 
     public long getLoopTime() {

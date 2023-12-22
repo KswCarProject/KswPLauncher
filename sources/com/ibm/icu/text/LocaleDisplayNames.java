@@ -12,10 +12,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+/* loaded from: classes.dex */
 public abstract class LocaleDisplayNames {
     private static final Method FACTORY_DIALECTHANDLING;
     private static final Method FACTORY_DISPLAYCONTEXT;
 
+    /* loaded from: classes.dex */
     public enum DialectHandling {
         STANDARD_NAMES,
         DIALECT_NAMES
@@ -62,8 +64,9 @@ public abstract class LocaleDisplayNames {
         Method method = FACTORY_DIALECTHANDLING;
         if (method != null) {
             try {
-                result = (LocaleDisplayNames) method.invoke((Object) null, new Object[]{locale, dialectHandling});
-            } catch (IllegalAccessException | InvocationTargetException e) {
+                result = (LocaleDisplayNames) method.invoke(null, locale, dialectHandling);
+            } catch (IllegalAccessException e) {
+            } catch (InvocationTargetException e2) {
             }
         }
         if (result == null) {
@@ -77,8 +80,9 @@ public abstract class LocaleDisplayNames {
         Method method = FACTORY_DISPLAYCONTEXT;
         if (method != null) {
             try {
-                result = (LocaleDisplayNames) method.invoke((Object) null, new Object[]{locale, contexts});
-            } catch (IllegalAccessException | InvocationTargetException e) {
+                result = (LocaleDisplayNames) method.invoke(null, locale, contexts);
+            } catch (IllegalAccessException e) {
+            } catch (InvocationTargetException e2) {
             }
         }
         if (result == null) {
@@ -100,17 +104,18 @@ public abstract class LocaleDisplayNames {
         return getUiListCompareWholeItems(localeSet, UiListItem.getComparator(collator, inSelf));
     }
 
+    /* loaded from: classes.dex */
     public static class UiListItem {
         public final ULocale minimized;
         public final ULocale modified;
         public final String nameInDisplayLocale;
         public final String nameInSelf;
 
-        public UiListItem(ULocale minimized2, ULocale modified2, String nameInDisplayLocale2, String nameInSelf2) {
-            this.minimized = minimized2;
-            this.modified = modified2;
-            this.nameInDisplayLocale = nameInDisplayLocale2;
-            this.nameInSelf = nameInSelf2;
+        public UiListItem(ULocale minimized, ULocale modified, String nameInDisplayLocale, String nameInSelf) {
+            this.minimized = minimized;
+            this.modified = modified;
+            this.nameInDisplayLocale = nameInDisplayLocale;
+            this.nameInSelf = nameInSelf;
         }
 
         public boolean equals(Object obj) {
@@ -121,10 +126,10 @@ public abstract class LocaleDisplayNames {
                 return false;
             }
             UiListItem other = (UiListItem) obj;
-            if (!this.nameInDisplayLocale.equals(other.nameInDisplayLocale) || !this.nameInSelf.equals(other.nameInSelf) || !this.minimized.equals(other.minimized) || !this.modified.equals(other.modified)) {
-                return false;
+            if (this.nameInDisplayLocale.equals(other.nameInDisplayLocale) && this.nameInSelf.equals(other.nameInSelf) && this.minimized.equals(other.minimized) && this.modified.equals(other.modified)) {
+                return true;
             }
-            return true;
+            return false;
         }
 
         public int hashCode() {
@@ -139,22 +144,19 @@ public abstract class LocaleDisplayNames {
             return new UiListItemComparator(comparator, inSelf);
         }
 
+        /* loaded from: classes.dex */
         private static class UiListItemComparator implements Comparator<UiListItem> {
             private final Comparator<Object> collator;
             private final boolean useSelf;
 
-            UiListItemComparator(Comparator<Object> collator2, boolean useSelf2) {
-                this.collator = collator2;
-                this.useSelf = useSelf2;
+            UiListItemComparator(Comparator<Object> collator, boolean useSelf) {
+                this.collator = collator;
+                this.useSelf = useSelf;
             }
 
+            @Override // java.util.Comparator
             public int compare(UiListItem o1, UiListItem o2) {
-                int result;
-                if (this.useSelf) {
-                    result = this.collator.compare(o1.nameInSelf, o2.nameInSelf);
-                } else {
-                    result = this.collator.compare(o1.nameInDisplayLocale, o2.nameInDisplayLocale);
-                }
+                int result = this.useSelf ? this.collator.compare(o1.nameInSelf, o2.nameInSelf) : this.collator.compare(o1.nameInDisplayLocale, o2.nameInDisplayLocale);
                 return result != 0 ? result : o1.modified.compareTo(o2.modified);
             }
         }
@@ -165,16 +167,17 @@ public abstract class LocaleDisplayNames {
     }
 
     static {
+        String implClassName = ICUConfig.get("com.ibm.icu.text.LocaleDisplayNames.impl", "com.ibm.icu.impl.LocaleDisplayNamesImpl");
         Method factoryDialectHandling = null;
         Method factoryDisplayContext = null;
         try {
-            Class<?> implClass = Class.forName(ICUConfig.get("com.ibm.icu.text.LocaleDisplayNames.impl", "com.ibm.icu.impl.LocaleDisplayNamesImpl"));
+            Class<?> implClass = Class.forName(implClassName);
             try {
-                factoryDialectHandling = implClass.getMethod("getInstance", new Class[]{ULocale.class, DialectHandling.class});
+                factoryDialectHandling = implClass.getMethod("getInstance", ULocale.class, DialectHandling.class);
             } catch (NoSuchMethodException e) {
             }
             try {
-                factoryDisplayContext = implClass.getMethod("getInstance", new Class[]{ULocale.class, DisplayContext[].class});
+                factoryDisplayContext = implClass.getMethod("getInstance", ULocale.class, DisplayContext[].class);
             } catch (NoSuchMethodException e2) {
             }
         } catch (ClassNotFoundException e3) {
@@ -183,37 +186,45 @@ public abstract class LocaleDisplayNames {
         FACTORY_DISPLAYCONTEXT = factoryDisplayContext;
     }
 
+    /* loaded from: classes.dex */
     private static class LastResortLocaleDisplayNames extends LocaleDisplayNames {
         private DisplayContext[] contexts;
         private ULocale locale;
 
-        private LastResortLocaleDisplayNames(ULocale locale2, DialectHandling dialectHandling) {
-            this.locale = locale2;
-            this.contexts = new DisplayContext[]{dialectHandling == DialectHandling.DIALECT_NAMES ? DisplayContext.DIALECT_NAMES : DisplayContext.STANDARD_NAMES};
+        private LastResortLocaleDisplayNames(ULocale locale, DialectHandling dialectHandling) {
+            this.locale = locale;
+            DisplayContext context = dialectHandling == DialectHandling.DIALECT_NAMES ? DisplayContext.DIALECT_NAMES : DisplayContext.STANDARD_NAMES;
+            this.contexts = new DisplayContext[]{context};
         }
 
-        private LastResortLocaleDisplayNames(ULocale locale2, DisplayContext... contexts2) {
-            this.locale = locale2;
-            DisplayContext[] displayContextArr = new DisplayContext[contexts2.length];
+        private LastResortLocaleDisplayNames(ULocale locale, DisplayContext... contexts) {
+            this.locale = locale;
+            DisplayContext[] displayContextArr = new DisplayContext[contexts.length];
             this.contexts = displayContextArr;
-            System.arraycopy(contexts2, 0, displayContextArr, 0, contexts2.length);
+            System.arraycopy(contexts, 0, displayContextArr, 0, contexts.length);
         }
 
+        @Override // com.ibm.icu.text.LocaleDisplayNames
         public ULocale getLocale() {
             return this.locale;
         }
 
+        @Override // com.ibm.icu.text.LocaleDisplayNames
         public DialectHandling getDialectHandling() {
+            DisplayContext[] displayContextArr;
             DialectHandling result = DialectHandling.STANDARD_NAMES;
             for (DisplayContext context : this.contexts) {
                 if (context.type() == DisplayContext.Type.DIALECT_HANDLING && context.value() == DisplayContext.DIALECT_NAMES.ordinal()) {
-                    return DialectHandling.DIALECT_NAMES;
+                    DialectHandling result2 = DialectHandling.DIALECT_NAMES;
+                    return result2;
                 }
             }
             return result;
         }
 
+        @Override // com.ibm.icu.text.LocaleDisplayNames
         public DisplayContext getContext(DisplayContext.Type type) {
+            DisplayContext[] displayContextArr;
             DisplayContext result = DisplayContext.STANDARD_NAMES;
             for (DisplayContext context : this.contexts) {
                 if (context.type() == type) {
@@ -223,47 +234,58 @@ public abstract class LocaleDisplayNames {
             return result;
         }
 
-        public String localeDisplayName(ULocale locale2) {
-            return locale2.getName();
+        @Override // com.ibm.icu.text.LocaleDisplayNames
+        public String localeDisplayName(ULocale locale) {
+            return locale.getName();
         }
 
-        public String localeDisplayName(Locale locale2) {
-            return ULocale.forLocale(locale2).getName();
+        @Override // com.ibm.icu.text.LocaleDisplayNames
+        public String localeDisplayName(Locale locale) {
+            return ULocale.forLocale(locale).getName();
         }
 
+        @Override // com.ibm.icu.text.LocaleDisplayNames
         public String localeDisplayName(String localeId) {
             return new ULocale(localeId).getName();
         }
 
+        @Override // com.ibm.icu.text.LocaleDisplayNames
         public String languageDisplayName(String lang) {
             return lang;
         }
 
+        @Override // com.ibm.icu.text.LocaleDisplayNames
         public String scriptDisplayName(String script) {
             return script;
         }
 
+        @Override // com.ibm.icu.text.LocaleDisplayNames
         public String scriptDisplayName(int scriptCode) {
             return UScript.getShortName(scriptCode);
         }
 
+        @Override // com.ibm.icu.text.LocaleDisplayNames
         public String regionDisplayName(String region) {
             return region;
         }
 
+        @Override // com.ibm.icu.text.LocaleDisplayNames
         public String variantDisplayName(String variant) {
             return variant;
         }
 
+        @Override // com.ibm.icu.text.LocaleDisplayNames
         public String keyDisplayName(String key) {
             return key;
         }
 
+        @Override // com.ibm.icu.text.LocaleDisplayNames
         public String keyValueDisplayName(String key, String value) {
             return value;
         }
 
-        public List<UiListItem> getUiListCompareWholeItems(Set<ULocale> set, Comparator<UiListItem> comparator) {
+        @Override // com.ibm.icu.text.LocaleDisplayNames
+        public List<UiListItem> getUiListCompareWholeItems(Set<ULocale> localeSet, Comparator<UiListItem> comparator) {
             return Collections.emptyList();
         }
     }

@@ -12,17 +12,21 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/* loaded from: classes.dex */
 public final class BlockingObservableNext<T> implements Iterable<T> {
     final ObservableSource<T> source;
 
-    public BlockingObservableNext(ObservableSource<T> source2) {
-        this.source = source2;
+    public BlockingObservableNext(ObservableSource<T> source) {
+        this.source = source;
     }
 
+    @Override // java.lang.Iterable
     public Iterator<T> iterator() {
-        return new NextIterator(this.source, new NextObserver<>());
+        NextObserver<T> nextObserver = new NextObserver<>();
+        return new NextIterator(this.source, nextObserver);
     }
 
+    /* loaded from: classes.dex */
     static final class NextIterator<T> implements Iterator<T> {
         private Throwable error;
         private boolean hasNext = true;
@@ -32,23 +36,21 @@ public final class BlockingObservableNext<T> implements Iterable<T> {
         private final NextObserver<T> observer;
         private boolean started;
 
-        NextIterator(ObservableSource<T> items2, NextObserver<T> observer2) {
-            this.items = items2;
-            this.observer = observer2;
+        NextIterator(ObservableSource<T> items, NextObserver<T> observer) {
+            this.items = items;
+            this.observer = observer;
         }
 
+        @Override // java.util.Iterator
         public boolean hasNext() {
             Throwable th = this.error;
             if (th != null) {
                 throw ExceptionHelper.wrapOrThrow(th);
-            } else if (!this.hasNext) {
-                return false;
-            } else {
-                if (!this.isNextConsumed || moveToNext()) {
-                    return true;
-                }
-                return false;
             }
+            if (this.hasNext) {
+                return !this.isNextConsumed || moveToNext();
+            }
+            return false;
         }
 
         private boolean moveToNext() {
@@ -68,9 +70,9 @@ public final class BlockingObservableNext<T> implements Iterable<T> {
                 if (nextNotification.isOnComplete()) {
                     return false;
                 }
-                Throwable error2 = nextNotification.getError();
-                this.error = error2;
-                throw ExceptionHelper.wrapOrThrow(error2);
+                Throwable error = nextNotification.getError();
+                this.error = error;
+                throw ExceptionHelper.wrapOrThrow(error);
             } catch (InterruptedException e) {
                 this.observer.dispose();
                 this.error = e;
@@ -78,23 +80,26 @@ public final class BlockingObservableNext<T> implements Iterable<T> {
             }
         }
 
+        @Override // java.util.Iterator
         public T next() {
             Throwable th = this.error;
             if (th != null) {
                 throw ExceptionHelper.wrapOrThrow(th);
-            } else if (hasNext()) {
+            }
+            if (hasNext()) {
                 this.isNextConsumed = true;
                 return this.next;
-            } else {
-                throw new NoSuchElementException("No more elements");
             }
+            throw new NoSuchElementException("No more elements");
         }
 
+        @Override // java.util.Iterator
         public void remove() {
             throw new UnsupportedOperationException("Read only iterator");
         }
     }
 
+    /* loaded from: classes.dex */
     static final class NextObserver<T> extends DisposableObserver<Notification<T>> {
         private final BlockingQueue<Notification<T>> buf = new ArrayBlockingQueue(1);
         final AtomicInteger waiting = new AtomicInteger();
@@ -102,9 +107,16 @@ public final class BlockingObservableNext<T> implements Iterable<T> {
         NextObserver() {
         }
 
+        @Override // io.reactivex.Observer
+        public /* bridge */ /* synthetic */ void onNext(Object obj) {
+            onNext((Notification) ((Notification) obj));
+        }
+
+        @Override // io.reactivex.Observer
         public void onComplete() {
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable e) {
             RxJavaPlugins.onError(e);
         }
@@ -113,7 +125,7 @@ public final class BlockingObservableNext<T> implements Iterable<T> {
             if (this.waiting.getAndSet(0) == 1 || !args.isOnNext()) {
                 Notification<T> toOffer = args;
                 while (!this.buf.offer(toOffer)) {
-                    Notification<T> concurrentItem = (Notification) this.buf.poll();
+                    Notification<T> concurrentItem = this.buf.poll();
                     if (concurrentItem != null && !concurrentItem.isOnNext()) {
                         toOffer = concurrentItem;
                     }
@@ -127,8 +139,7 @@ public final class BlockingObservableNext<T> implements Iterable<T> {
             return this.buf.take();
         }
 
-        /* access modifiers changed from: package-private */
-        public void setWaiting() {
+        void setWaiting() {
             this.waiting.set(1);
         }
     }

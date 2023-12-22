@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class ID6CuspFragmentTow extends ViewDataBinding {
     public final ImageView id6CuspBrowserImageView;
     public final TextView id6CuspBrowserMess;
@@ -23,18 +24,18 @@ public abstract class ID6CuspFragmentTow extends ViewDataBinding {
     @Bindable
     protected LauncherViewModel mViewModel;
 
-    public abstract void setViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setViewModel(LauncherViewModel viewModel);
 
-    protected ID6CuspFragmentTow(Object _bindingComponent, View _root, int _localFieldCount, ImageView id6CuspBrowserImageView2, TextView id6CuspBrowserMess2, TextView id6CuspBrowserTextView2, ImageView id6CuspCarImageView2, TextView id6CuspCarMess2, TextView id6CuspCarTextView2, ImageView id6CuspVideoIamgeView2, TextView id6CuspVideoMess2) {
+    protected ID6CuspFragmentTow(Object _bindingComponent, View _root, int _localFieldCount, ImageView id6CuspBrowserImageView, TextView id6CuspBrowserMess, TextView id6CuspBrowserTextView, ImageView id6CuspCarImageView, TextView id6CuspCarMess, TextView id6CuspCarTextView, ImageView id6CuspVideoIamgeView, TextView id6CuspVideoMess) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.id6CuspBrowserImageView = id6CuspBrowserImageView2;
-        this.id6CuspBrowserMess = id6CuspBrowserMess2;
-        this.id6CuspBrowserTextView = id6CuspBrowserTextView2;
-        this.id6CuspCarImageView = id6CuspCarImageView2;
-        this.id6CuspCarMess = id6CuspCarMess2;
-        this.id6CuspCarTextView = id6CuspCarTextView2;
-        this.id6CuspVideoIamgeView = id6CuspVideoIamgeView2;
-        this.id6CuspVideoMess = id6CuspVideoMess2;
+        this.id6CuspBrowserImageView = id6CuspBrowserImageView;
+        this.id6CuspBrowserMess = id6CuspBrowserMess;
+        this.id6CuspBrowserTextView = id6CuspBrowserTextView;
+        this.id6CuspCarImageView = id6CuspCarImageView;
+        this.id6CuspCarMess = id6CuspCarMess;
+        this.id6CuspCarTextView = id6CuspCarTextView;
+        this.id6CuspVideoIamgeView = id6CuspVideoIamgeView;
+        this.id6CuspVideoMess = id6CuspVideoMess;
     }
 
     public LauncherViewModel getViewModel() {
@@ -47,7 +48,7 @@ public abstract class ID6CuspFragmentTow extends ViewDataBinding {
 
     @Deprecated
     public static ID6CuspFragmentTow inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ID6CuspFragmentTow) ViewDataBinding.inflateInternal(inflater, R.layout.id6_cusp_fragment_tow, root, attachToRoot, component);
+        return (ID6CuspFragmentTow) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id6_cusp_fragment_tow, root, attachToRoot, component);
     }
 
     public static ID6CuspFragmentTow inflate(LayoutInflater inflater) {
@@ -56,7 +57,7 @@ public abstract class ID6CuspFragmentTow extends ViewDataBinding {
 
     @Deprecated
     public static ID6CuspFragmentTow inflate(LayoutInflater inflater, Object component) {
-        return (ID6CuspFragmentTow) ViewDataBinding.inflateInternal(inflater, R.layout.id6_cusp_fragment_tow, (ViewGroup) null, false, component);
+        return (ID6CuspFragmentTow) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id6_cusp_fragment_tow, null, false, component);
     }
 
     public static ID6CuspFragmentTow bind(View view) {
@@ -65,6 +66,6 @@ public abstract class ID6CuspFragmentTow extends ViewDataBinding {
 
     @Deprecated
     public static ID6CuspFragmentTow bind(View view, Object component) {
-        return (ID6CuspFragmentTow) bind(component, view, R.layout.id6_cusp_fragment_tow);
+        return (ID6CuspFragmentTow) bind(component, view, C0899R.C0902layout.id6_cusp_fragment_tow);
     }
 }

@@ -11,34 +11,37 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableTakeLast<T> extends AbstractFlowableWithUpstream<T, T> {
     final int count;
 
-    public FlowableTakeLast(Flowable<T> source, int count2) {
+    public FlowableTakeLast(Flowable<T> source, int count) {
         super(source);
-        this.count = count2;
+        this.count = count;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
-        this.source.subscribe(new TakeLastSubscriber(s, this.count));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
+        this.source.subscribe((FlowableSubscriber) new TakeLastSubscriber(s, this.count));
     }
 
+    /* loaded from: classes.dex */
     static final class TakeLastSubscriber<T> extends ArrayDeque<T> implements FlowableSubscriber<T>, Subscription {
         private static final long serialVersionUID = 7240042530241604978L;
         volatile boolean cancelled;
         final int count;
         volatile boolean done;
         final Subscriber<? super T> downstream;
-        final AtomicLong requested = new AtomicLong();
         Subscription upstream;
+        final AtomicLong requested = new AtomicLong();
         final AtomicInteger wip = new AtomicInteger();
 
-        TakeLastSubscriber(Subscriber<? super T> actual, int count2) {
+        TakeLastSubscriber(Subscriber<? super T> actual, int count) {
             this.downstream = actual;
-            this.count = count2;
+            this.count = count;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -47,6 +50,7 @@ public final class FlowableTakeLast<T> extends AbstractFlowableWithUpstream<T, T
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             if (this.count == size()) {
                 poll();
@@ -54,15 +58,18 @@ public final class FlowableTakeLast<T> extends AbstractFlowableWithUpstream<T, T
             offer(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.done = true;
             drain();
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             if (SubscriptionHelper.validate(n)) {
                 BackpressureHelper.add(this.requested, n);
@@ -70,13 +77,13 @@ public final class FlowableTakeLast<T> extends AbstractFlowableWithUpstream<T, T
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             this.cancelled = true;
             this.upstream.cancel();
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
+        void drain() {
             if (this.wip.getAndIncrement() == 0) {
                 Subscriber<? super T> a = this.downstream;
                 long r = this.requested.get();
@@ -84,20 +91,19 @@ public final class FlowableTakeLast<T> extends AbstractFlowableWithUpstream<T, T
                     if (this.done) {
                         long e = 0;
                         while (e != r) {
-                            if (!this.cancelled) {
-                                T v = poll();
-                                if (v == null) {
-                                    a.onComplete();
-                                    return;
-                                } else {
-                                    a.onNext(v);
-                                    e++;
-                                }
-                            } else {
+                            if (this.cancelled) {
                                 return;
                             }
+                            Object obj = (T) poll();
+                            if (obj == null) {
+                                a.onComplete();
+                                return;
+                            } else {
+                                a.onNext(obj);
+                                e++;
+                            }
                         }
-                        if (!(e == 0 || r == LongCompanionObject.MAX_VALUE)) {
+                        if (e != 0 && r != LongCompanionObject.MAX_VALUE) {
                             r = this.requested.addAndGet(-e);
                         }
                     }

@@ -7,9 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.DashboardViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityDashBoardLexusBinding extends ViewDataBinding {
     public final ImageView brakeTextView;
     public final ImageView lexusIvLeft;
@@ -18,14 +19,14 @@ public abstract class ActivityDashBoardLexusBinding extends ViewDataBinding {
     protected DashboardViewModel mViewModel;
     public final ImageView seatBeltTextView;
 
-    public abstract void setViewModel(DashboardViewModel dashboardViewModel);
+    public abstract void setViewModel(DashboardViewModel viewModel);
 
-    protected ActivityDashBoardLexusBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView brakeTextView2, ImageView lexusIvLeft2, ImageView lexusIvRight2, ImageView seatBeltTextView2) {
+    protected ActivityDashBoardLexusBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView brakeTextView, ImageView lexusIvLeft, ImageView lexusIvRight, ImageView seatBeltTextView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.brakeTextView = brakeTextView2;
-        this.lexusIvLeft = lexusIvLeft2;
-        this.lexusIvRight = lexusIvRight2;
-        this.seatBeltTextView = seatBeltTextView2;
+        this.brakeTextView = brakeTextView;
+        this.lexusIvLeft = lexusIvLeft;
+        this.lexusIvRight = lexusIvRight;
+        this.seatBeltTextView = seatBeltTextView;
     }
 
     public DashboardViewModel getViewModel() {
@@ -38,7 +39,7 @@ public abstract class ActivityDashBoardLexusBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityDashBoardLexusBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityDashBoardLexusBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_dash_board_lexus, root, attachToRoot, component);
+        return (ActivityDashBoardLexusBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_dash_board_lexus, root, attachToRoot, component);
     }
 
     public static ActivityDashBoardLexusBinding inflate(LayoutInflater inflater) {
@@ -47,7 +48,7 @@ public abstract class ActivityDashBoardLexusBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityDashBoardLexusBinding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityDashBoardLexusBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_dash_board_lexus, (ViewGroup) null, false, component);
+        return (ActivityDashBoardLexusBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_dash_board_lexus, null, false, component);
     }
 
     public static ActivityDashBoardLexusBinding bind(View view) {
@@ -56,6 +57,6 @@ public abstract class ActivityDashBoardLexusBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityDashBoardLexusBinding bind(View view, Object component) {
-        return (ActivityDashBoardLexusBinding) bind(component, view, R.layout.activity_dash_board_lexus);
+        return (ActivityDashBoardLexusBinding) bind(component, view, C0899R.C0902layout.activity_dash_board_lexus);
     }
 }

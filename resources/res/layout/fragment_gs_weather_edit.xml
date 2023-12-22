@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:tag="layout/fragment_gs_weather_edit_0" style="@style/id8_gs_edit_main_card_container_left_padding">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:tag="layout/fragment_gs_weather_edit_0" style="@style/id8_gs_edit_main_card_container_left_padding">
     <ImageView android:tag="binding_1" style="@style/id8_gs_main_big_card_size"/>
     <RelativeLayout style="@style/id8_gs_main_big_card_size">
         <TextView android:id="@+id/tv_title" android:text="@string/ksw_id8_weather" style="@style/id8_gs_main_card_title"/>

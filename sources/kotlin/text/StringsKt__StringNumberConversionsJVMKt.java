@@ -3,13 +3,16 @@ package kotlin.text;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import kotlin.Deprecated;
+import kotlin.DeprecatedSinceKotlin;
 import kotlin.Metadata;
 import kotlin.jvm.functions.Function1;
 import kotlin.jvm.internal.Intrinsics;
 
-@Metadata(d1 = {"\u0000Z\n\u0002\b\u0003\n\u0002\u0010\u000e\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0010\u000b\n\u0002\b\u0002\n\u0002\u0010\u0005\n\u0000\n\u0002\u0010\u0006\n\u0002\b\u0003\n\u0002\u0010\u0007\n\u0002\b\u0004\n\u0002\u0010\t\n\u0000\n\u0002\u0010\n\n\u0002\b\u0002\u001a4\u0010\u0000\u001a\u0004\u0018\u0001H\u0001\"\u0004\b\u0000\u0010\u00012\u0006\u0010\u0002\u001a\u00020\u00032\u0012\u0010\u0004\u001a\u000e\u0012\u0004\u0012\u00020\u0003\u0012\u0004\u0012\u0002H\u00010\u0005H\b¢\u0006\u0004\b\u0006\u0010\u0007\u001a\r\u0010\b\u001a\u00020\t*\u00020\u0003H\b\u001a\u0015\u0010\b\u001a\u00020\t*\u00020\u00032\u0006\u0010\n\u001a\u00020\u000bH\b\u001a\u000e\u0010\f\u001a\u0004\u0018\u00010\t*\u00020\u0003H\u0007\u001a\u0016\u0010\f\u001a\u0004\u0018\u00010\t*\u00020\u00032\u0006\u0010\n\u001a\u00020\u000bH\u0007\u001a\r\u0010\r\u001a\u00020\u000e*\u00020\u0003H\b\u001a\u0015\u0010\r\u001a\u00020\u000e*\u00020\u00032\u0006\u0010\u000f\u001a\u00020\u0010H\b\u001a\u000e\u0010\u0011\u001a\u0004\u0018\u00010\u000e*\u00020\u0003H\u0007\u001a\u0016\u0010\u0011\u001a\u0004\u0018\u00010\u000e*\u00020\u00032\u0006\u0010\u000f\u001a\u00020\u0010H\u0007\u001a\r\u0010\u0012\u001a\u00020\u0013*\u00020\u0003H\b\u001a\u0014\u0010\u0012\u001a\u00020\u0013*\u0004\u0018\u00010\u0003H\b¢\u0006\u0002\b\u0014\u001a\r\u0010\u0015\u001a\u00020\u0016*\u00020\u0003H\b\u001a\u0015\u0010\u0015\u001a\u00020\u0016*\u00020\u00032\u0006\u0010\u000f\u001a\u00020\u0010H\b\u001a\r\u0010\u0017\u001a\u00020\u0018*\u00020\u0003H\b\u001a\u0013\u0010\u0019\u001a\u0004\u0018\u00010\u0018*\u00020\u0003H\u0007¢\u0006\u0002\u0010\u001a\u001a\r\u0010\u001b\u001a\u00020\u001c*\u00020\u0003H\b\u001a\u0013\u0010\u001d\u001a\u0004\u0018\u00010\u001c*\u00020\u0003H\u0007¢\u0006\u0002\u0010\u001e\u001a\r\u0010\u001f\u001a\u00020\u0010*\u00020\u0003H\b\u001a\u0015\u0010\u001f\u001a\u00020\u0010*\u00020\u00032\u0006\u0010\u000f\u001a\u00020\u0010H\b\u001a\r\u0010 \u001a\u00020!*\u00020\u0003H\b\u001a\u0015\u0010 \u001a\u00020!*\u00020\u00032\u0006\u0010\u000f\u001a\u00020\u0010H\b\u001a\r\u0010\"\u001a\u00020#*\u00020\u0003H\b\u001a\u0015\u0010\"\u001a\u00020#*\u00020\u00032\u0006\u0010\u000f\u001a\u00020\u0010H\b\u001a\u0015\u0010$\u001a\u00020\u0003*\u00020\u00162\u0006\u0010\u000f\u001a\u00020\u0010H\b\u001a\u0015\u0010$\u001a\u00020\u0003*\u00020\u00102\u0006\u0010\u000f\u001a\u00020\u0010H\b\u001a\u0015\u0010$\u001a\u00020\u0003*\u00020!2\u0006\u0010\u000f\u001a\u00020\u0010H\b\u001a\u0015\u0010$\u001a\u00020\u0003*\u00020#2\u0006\u0010\u000f\u001a\u00020\u0010H\b¨\u0006%"}, d2 = {"screenFloatValue", "T", "str", "", "parse", "Lkotlin/Function1;", "screenFloatValue$StringsKt__StringNumberConversionsJVMKt", "(Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;", "toBigDecimal", "Ljava/math/BigDecimal;", "mathContext", "Ljava/math/MathContext;", "toBigDecimalOrNull", "toBigInteger", "Ljava/math/BigInteger;", "radix", "", "toBigIntegerOrNull", "toBoolean", "", "toBooleanNullable", "toByte", "", "toDouble", "", "toDoubleOrNull", "(Ljava/lang/String;)Ljava/lang/Double;", "toFloat", "", "toFloatOrNull", "(Ljava/lang/String;)Ljava/lang/Float;", "toInt", "toLong", "", "toShort", "", "toString", "kotlin-stdlib"}, k = 5, mv = {1, 6, 0}, xi = 49, xs = "kotlin/text/StringsKt")
 /* compiled from: StringNumberConversionsJVM.kt */
-class StringsKt__StringNumberConversionsJVMKt extends StringsKt__StringBuilderKt {
+@Metadata(m25d1 = {"\u0000Z\n\u0002\b\u0003\n\u0002\u0010\u000e\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0010\u000b\n\u0002\b\u0002\n\u0002\u0010\u0005\n\u0000\n\u0002\u0010\u0006\n\u0002\b\u0003\n\u0002\u0010\u0007\n\u0002\b\u0004\n\u0002\u0010\t\n\u0000\n\u0002\u0010\n\n\u0002\b\u0002\u001a4\u0010\u0000\u001a\u0004\u0018\u0001H\u0001\"\u0004\b\u0000\u0010\u00012\u0006\u0010\u0002\u001a\u00020\u00032\u0012\u0010\u0004\u001a\u000e\u0012\u0004\u0012\u00020\u0003\u0012\u0004\u0012\u0002H\u00010\u0005H\u0082\b\u00a2\u0006\u0004\b\u0006\u0010\u0007\u001a\r\u0010\b\u001a\u00020\t*\u00020\u0003H\u0087\b\u001a\u0015\u0010\b\u001a\u00020\t*\u00020\u00032\u0006\u0010\n\u001a\u00020\u000bH\u0087\b\u001a\u000e\u0010\f\u001a\u0004\u0018\u00010\t*\u00020\u0003H\u0007\u001a\u0016\u0010\f\u001a\u0004\u0018\u00010\t*\u00020\u00032\u0006\u0010\n\u001a\u00020\u000bH\u0007\u001a\r\u0010\r\u001a\u00020\u000e*\u00020\u0003H\u0087\b\u001a\u0015\u0010\r\u001a\u00020\u000e*\u00020\u00032\u0006\u0010\u000f\u001a\u00020\u0010H\u0087\b\u001a\u000e\u0010\u0011\u001a\u0004\u0018\u00010\u000e*\u00020\u0003H\u0007\u001a\u0016\u0010\u0011\u001a\u0004\u0018\u00010\u000e*\u00020\u00032\u0006\u0010\u000f\u001a\u00020\u0010H\u0007\u001a\r\u0010\u0012\u001a\u00020\u0013*\u00020\u0003H\u0087\b\u001a\u0014\u0010\u0012\u001a\u00020\u0013*\u0004\u0018\u00010\u0003H\u0087\b\u00a2\u0006\u0002\b\u0014\u001a\r\u0010\u0015\u001a\u00020\u0016*\u00020\u0003H\u0087\b\u001a\u0015\u0010\u0015\u001a\u00020\u0016*\u00020\u00032\u0006\u0010\u000f\u001a\u00020\u0010H\u0087\b\u001a\r\u0010\u0017\u001a\u00020\u0018*\u00020\u0003H\u0087\b\u001a\u0013\u0010\u0019\u001a\u0004\u0018\u00010\u0018*\u00020\u0003H\u0007\u00a2\u0006\u0002\u0010\u001a\u001a\r\u0010\u001b\u001a\u00020\u001c*\u00020\u0003H\u0087\b\u001a\u0013\u0010\u001d\u001a\u0004\u0018\u00010\u001c*\u00020\u0003H\u0007\u00a2\u0006\u0002\u0010\u001e\u001a\r\u0010\u001f\u001a\u00020\u0010*\u00020\u0003H\u0087\b\u001a\u0015\u0010\u001f\u001a\u00020\u0010*\u00020\u00032\u0006\u0010\u000f\u001a\u00020\u0010H\u0087\b\u001a\r\u0010 \u001a\u00020!*\u00020\u0003H\u0087\b\u001a\u0015\u0010 \u001a\u00020!*\u00020\u00032\u0006\u0010\u000f\u001a\u00020\u0010H\u0087\b\u001a\r\u0010\"\u001a\u00020#*\u00020\u0003H\u0087\b\u001a\u0015\u0010\"\u001a\u00020#*\u00020\u00032\u0006\u0010\u000f\u001a\u00020\u0010H\u0087\b\u001a\u0015\u0010$\u001a\u00020\u0003*\u00020\u00162\u0006\u0010\u000f\u001a\u00020\u0010H\u0087\b\u001a\u0015\u0010$\u001a\u00020\u0003*\u00020\u00102\u0006\u0010\u000f\u001a\u00020\u0010H\u0087\b\u001a\u0015\u0010$\u001a\u00020\u0003*\u00020!2\u0006\u0010\u000f\u001a\u00020\u0010H\u0087\b\u001a\u0015\u0010$\u001a\u00020\u0003*\u00020#2\u0006\u0010\u000f\u001a\u00020\u0010H\u0087\b\u00a8\u0006%"}, m24d2 = {"screenFloatValue", "T", "str", "", "parse", "Lkotlin/Function1;", "screenFloatValue$StringsKt__StringNumberConversionsJVMKt", "(Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;", "toBigDecimal", "Ljava/math/BigDecimal;", "mathContext", "Ljava/math/MathContext;", "toBigDecimalOrNull", "toBigInteger", "Ljava/math/BigInteger;", "radix", "", "toBigIntegerOrNull", "toBoolean", "", "toBooleanNullable", "toByte", "", "toDouble", "", "toDoubleOrNull", "(Ljava/lang/String;)Ljava/lang/Double;", "toFloat", "", "toFloatOrNull", "(Ljava/lang/String;)Ljava/lang/Float;", "toInt", "toLong", "", "toShort", "", "toString", "kotlin-stdlib"}, m23k = 5, m22mv = {1, 6, 0}, m20xi = 49, m19xs = "kotlin/text/StringsKt")
+/* loaded from: classes.dex */
+class StringsKt__StringNumberConversionsJVMKt extends StringBuilder {
     private static final String toString(byte $this$toString, int radix) {
         String num = Integer.toString($this$toString, CharsKt.checkRadix(CharsKt.checkRadix(radix)));
         Intrinsics.checkNotNullExpressionValue(num, "toString(this, checkRadix(radix))");
@@ -32,6 +35,13 @@ class StringsKt__StringNumberConversionsJVMKt extends StringsKt__StringBuilderKt
         String l = Long.toString($this$toString, CharsKt.checkRadix(radix));
         Intrinsics.checkNotNullExpressionValue(l, "toString(this, checkRadix(radix))");
         return l;
+    }
+
+    @Deprecated(message = "Use Kotlin compiler 1.4 to avoid deprecation warning.")
+    @DeprecatedSinceKotlin(hiddenSince = "1.4")
+    private static final /* synthetic */ boolean toBoolean(String $this$toBoolean) {
+        Intrinsics.checkNotNullParameter($this$toBoolean, "<this>");
+        return Boolean.parseBoolean($this$toBoolean);
     }
 
     private static final boolean toBooleanNullable(String $this$toBoolean) {
@@ -91,7 +101,7 @@ class StringsKt__StringNumberConversionsJVMKt extends StringsKt__StringBuilderKt
     public static final Float toFloatOrNull(String $this$toFloatOrNull) {
         Intrinsics.checkNotNullParameter($this$toFloatOrNull, "<this>");
         try {
-            if (ScreenFloatValueRegEx.value.matches($this$toFloatOrNull)) {
+            if (StringNumberConversionsJVM.value.matches($this$toFloatOrNull)) {
                 return Float.valueOf(Float.parseFloat($this$toFloatOrNull));
             }
             return null;
@@ -103,7 +113,7 @@ class StringsKt__StringNumberConversionsJVMKt extends StringsKt__StringBuilderKt
     public static final Double toDoubleOrNull(String $this$toDoubleOrNull) {
         Intrinsics.checkNotNullParameter($this$toDoubleOrNull, "<this>");
         try {
-            if (ScreenFloatValueRegEx.value.matches($this$toDoubleOrNull)) {
+            if (StringNumberConversionsJVM.value.matches($this$toDoubleOrNull)) {
                 return Double.valueOf(Double.parseDouble($this$toDoubleOrNull));
             }
             return null;
@@ -131,7 +141,6 @@ class StringsKt__StringNumberConversionsJVMKt extends StringsKt__StringBuilderKt
         Intrinsics.checkNotNullParameter($this$toBigIntegerOrNull, "<this>");
         CharsKt.checkRadix(radix);
         int length = $this$toBigIntegerOrNull.length();
-        int start = 0;
         switch (length) {
             case 0:
                 return null;
@@ -141,9 +150,7 @@ class StringsKt__StringNumberConversionsJVMKt extends StringsKt__StringBuilderKt
                 }
                 break;
             default:
-                if ($this$toBigIntegerOrNull.charAt(0) == '-') {
-                    start = 1;
-                }
+                int start = $this$toBigIntegerOrNull.charAt(0) == '-' ? 1 : 0;
                 for (int index = start; index < length; index++) {
                     if (CharsKt.digitOf($this$toBigIntegerOrNull.charAt(index), radix) < 0) {
                         return null;
@@ -168,7 +175,7 @@ class StringsKt__StringNumberConversionsJVMKt extends StringsKt__StringBuilderKt
     public static final BigDecimal toBigDecimalOrNull(String $this$toBigDecimalOrNull) {
         Intrinsics.checkNotNullParameter($this$toBigDecimalOrNull, "<this>");
         try {
-            if (ScreenFloatValueRegEx.value.matches($this$toBigDecimalOrNull)) {
+            if (StringNumberConversionsJVM.value.matches($this$toBigDecimalOrNull)) {
                 return new BigDecimal($this$toBigDecimalOrNull);
             }
             return null;
@@ -181,7 +188,7 @@ class StringsKt__StringNumberConversionsJVMKt extends StringsKt__StringBuilderKt
         Intrinsics.checkNotNullParameter($this$toBigDecimalOrNull, "<this>");
         Intrinsics.checkNotNullParameter(mathContext, "mathContext");
         try {
-            if (ScreenFloatValueRegEx.value.matches($this$toBigDecimalOrNull)) {
+            if (StringNumberConversionsJVM.value.matches($this$toBigDecimalOrNull)) {
                 return new BigDecimal($this$toBigDecimalOrNull, mathContext);
             }
             return null;
@@ -190,12 +197,12 @@ class StringsKt__StringNumberConversionsJVMKt extends StringsKt__StringBuilderKt
         }
     }
 
-    private static final <T> T screenFloatValue$StringsKt__StringNumberConversionsJVMKt(String str, Function1<? super String, ? extends T> parse) {
+    private static final <T> T screenFloatValue$StringsKt__StringNumberConversionsJVMKt(String str, Function1<? super String, ? extends T> function1) {
         try {
-            if (ScreenFloatValueRegEx.value.matches(str)) {
-                return parse.invoke(str);
+            if (!StringNumberConversionsJVM.value.matches(str)) {
+                return null;
             }
-            return null;
+            return function1.invoke(str);
         } catch (NumberFormatException e) {
             return null;
         }

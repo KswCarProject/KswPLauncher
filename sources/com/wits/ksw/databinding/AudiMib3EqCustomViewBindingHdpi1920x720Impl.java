@@ -1,18 +1,23 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.SeekBarBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
+import android.support.p004v7.widget.AppCompatTextView;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi_mib3.vm.AudiMib3EQViewModel;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi.widget.AudiConstraintLayout;
+import com.wits.ksw.settings.audi.widget.EqSeekBar;
+import com.wits.ksw.settings.audi_mib3.p008vm.AudiMib3EQViewModel;
 
+/* loaded from: classes7.dex */
 public class AudiMib3EqCustomViewBindingHdpi1920x720Impl extends AudiMib3EqCustomViewBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -22,19 +27,19 @@ public class AudiMib3EqCustomViewBindingHdpi1920x720Impl extends AudiMib3EqCusto
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.title, 7);
-        sparseIntArray.put(R.id.title_divider, 8);
-        sparseIntArray.put(R.id.linearLayout4, 9);
-        sparseIntArray.put(R.id.hzMediaLinearLayout, 10);
-        sparseIntArray.put(R.id.eq_text7_tv, 11);
-        sparseIntArray.put(R.id.eq_text7_iv, 12);
-        sparseIntArray.put(R.id.linearLayout5, 13);
-        sparseIntArray.put(R.id.eq_text8_tv, 14);
-        sparseIntArray.put(R.id.eq_text8_iv, 15);
-        sparseIntArray.put(R.id.linearLayout6, 16);
-        sparseIntArray.put(R.id.eq_text9_tv, 17);
-        sparseIntArray.put(R.id.eq_text9_iv, 18);
-        sparseIntArray.put(R.id.v_divider, 19);
+        sparseIntArray.put(C0899R.C0901id.title, 7);
+        sparseIntArray.put(C0899R.C0901id.title_divider, 8);
+        sparseIntArray.put(C0899R.C0901id.linearLayout4, 9);
+        sparseIntArray.put(C0899R.C0901id.hzMediaLinearLayout, 10);
+        sparseIntArray.put(C0899R.C0901id.eq_text7_tv, 11);
+        sparseIntArray.put(C0899R.C0901id.eq_text7_iv, 12);
+        sparseIntArray.put(C0899R.C0901id.linearLayout5, 13);
+        sparseIntArray.put(C0899R.C0901id.eq_text8_tv, 14);
+        sparseIntArray.put(C0899R.C0901id.eq_text8_iv, 15);
+        sparseIntArray.put(C0899R.C0901id.linearLayout6, 16);
+        sparseIntArray.put(C0899R.C0901id.eq_text9_tv, 17);
+        sparseIntArray.put(C0899R.C0901id.eq_text9_iv, 18);
+        sparseIntArray.put(C0899R.C0901id.v_divider, 19);
     }
 
     public AudiMib3EqCustomViewBindingHdpi1920x720Impl(DataBindingComponent bindingComponent, View root) {
@@ -42,28 +47,30 @@ public class AudiMib3EqCustomViewBindingHdpi1920x720Impl extends AudiMib3EqCusto
     }
 
     private AudiMib3EqCustomViewBindingHdpi1920x720Impl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 7, bindings[1], bindings[2], bindings[12], bindings[11], bindings[15], bindings[14], bindings[18], bindings[17], bindings[10], bindings[9], bindings[13], bindings[16], bindings[3], bindings[4], bindings[7], bindings[8], bindings[5], bindings[6], bindings[19]);
-        this.mDirtyFlags = -1;
-        this.bassSeekBar.setTag((Object) null);
-        this.bassTv.setTag((Object) null);
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 7, (EqSeekBar) bindings[1], (TextView) bindings[2], (ImageView) bindings[12], (TextView) bindings[11], (ImageView) bindings[15], (TextView) bindings[14], (ImageView) bindings[18], (TextView) bindings[17], (View) bindings[10], (AudiConstraintLayout) bindings[9], (View) bindings[13], (View) bindings[16], (EqSeekBar) bindings[3], (TextView) bindings[4], (AppCompatTextView) bindings[7], (View) bindings[8], (EqSeekBar) bindings[5], (TextView) bindings[6], (View) bindings[19]);
+        this.mDirtyFlags = -1L;
+        this.bassSeekBar.setTag(null);
+        this.bassTv.setTag(null);
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
-        this.mezzoSeekBar.setTag((Object) null);
-        this.mezzoTv.setTag((Object) null);
-        this.trebleSeekBar.setTag((Object) null);
-        this.trebleTv.setTag((Object) null);
+        relativeLayout.setTag(null);
+        this.mezzoSeekBar.setTag(null);
+        this.mezzoTv.setTag(null);
+        this.trebleSeekBar.setTag(null);
+        this.trebleTv.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 256;
+            this.mDirtyFlags = 256L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -73,14 +80,16 @@ public class AudiMib3EqCustomViewBindingHdpi1920x720Impl extends AudiMib3EqCusto
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((AudiMib3EQViewModel) variable);
+            return true;
         }
-        setVm((AudiMib3EQViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AudiMib3EqCustomViewBinding
     public void setVm(AudiMib3EQViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -90,8 +99,8 @@ public class AudiMib3EqCustomViewBindingHdpi1920x720Impl extends AudiMib3EqCusto
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmMezzoStr((ObservableField) object, fieldId);
@@ -112,87 +121,87 @@ public class AudiMib3EqCustomViewBindingHdpi1920x720Impl extends AudiMib3EqCusto
         }
     }
 
-    private boolean onChangeVmMezzoStr(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmMezzoStr(ObservableField<String> VmMezzoStr, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmBassStr(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmBassStr(ObservableField<String> VmBassStr, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmTrebleStr(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmTrebleStr(ObservableField<String> VmTrebleStr, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmBassProgress(ObservableInt VmBassProgress, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmMezzoProgress(ObservableInt VmMezzoProgress, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 16;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 16;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmTrebleProgress(ObservableInt VmTrebleProgress, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 32;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 32;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmEqModel(ObservableInt VmEqModel, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 64;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 64;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
-        String vmTrebleStrGet;
         String vmMezzoStrGet;
+        String vmTrebleStrGet;
         boolean vmEqModelInt0;
         ObservableInt vmEqModel;
         ObservableInt vmTrebleProgress;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         ObservableField<String> vmMezzoStr = null;
         ObservableField<String> vmBassStr = null;
@@ -212,7 +221,7 @@ public class AudiMib3EqCustomViewBindingHdpi1920x720Impl extends AudiMib3EqCusto
                 if (vm != null) {
                     vmMezzoStr = vm.mezzoStr;
                 }
-                updateRegistration(0, (Observable) vmMezzoStr);
+                updateRegistration(0, vmMezzoStr);
                 if (vmMezzoStr != null) {
                     vmMezzoStrGet2 = vmMezzoStr.get();
                 }
@@ -221,7 +230,7 @@ public class AudiMib3EqCustomViewBindingHdpi1920x720Impl extends AudiMib3EqCusto
                 if (vm != null) {
                     vmBassStr = vm.bassStr;
                 }
-                updateRegistration(1, (Observable) vmBassStr);
+                updateRegistration(1, vmBassStr);
                 if (vmBassStr != null) {
                     vmBassStrGet = vmBassStr.get();
                 }
@@ -230,7 +239,7 @@ public class AudiMib3EqCustomViewBindingHdpi1920x720Impl extends AudiMib3EqCusto
                 if (vm != null) {
                     vmTrebleStr = vm.trebleStr;
                 }
-                updateRegistration(2, (Observable) vmTrebleStr);
+                updateRegistration(2, vmTrebleStr);
                 if (vmTrebleStr != null) {
                     vmTrebleStrGet2 = vmTrebleStr.get();
                 }
@@ -239,7 +248,7 @@ public class AudiMib3EqCustomViewBindingHdpi1920x720Impl extends AudiMib3EqCusto
                 if (vm != null) {
                     vmBassProgress = vm.bassProgress;
                 }
-                updateRegistration(3, (Observable) vmBassProgress);
+                updateRegistration(3, vmBassProgress);
                 if (vmBassProgress != null) {
                     vmBassProgressGet = vmBassProgress.get();
                 }
@@ -248,45 +257,40 @@ public class AudiMib3EqCustomViewBindingHdpi1920x720Impl extends AudiMib3EqCusto
                 if (vm != null) {
                     vmMezzoProgress = vm.mezzoProgress;
                 }
-                updateRegistration(4, (Observable) vmMezzoProgress);
+                updateRegistration(4, vmMezzoProgress);
                 if (vmMezzoProgress != null) {
                     vmMezzoProgressGet = vmMezzoProgress.get();
                 }
             }
             if ((dirtyFlags & 416) != 0) {
-                if (vm != null) {
-                    vmTrebleProgress = vm.trebleProgress;
-                } else {
+                if (vm == null) {
                     vmTrebleProgress = null;
+                } else {
+                    vmTrebleProgress = vm.trebleProgress;
                 }
-                updateRegistration(5, (Observable) vmTrebleProgress);
+                updateRegistration(5, vmTrebleProgress);
                 if (vmTrebleProgress != null) {
                     vmTrebleProgressGet = vmTrebleProgress.get();
-                    ObservableInt observableInt = vmTrebleProgress;
-                } else {
-                    ObservableInt observableInt2 = vmTrebleProgress;
                 }
             }
-            if ((dirtyFlags & 448) != 0) {
-                if (vm != null) {
-                    vmEqModel = vm.eqModel;
-                } else {
+            if ((dirtyFlags & 448) == 0) {
+                vmMezzoStrGet = vmMezzoStrGet2;
+                vmTrebleStrGet = vmTrebleStrGet2;
+                vmEqModelInt0 = false;
+            } else {
+                if (vm == null) {
                     vmEqModel = null;
+                } else {
+                    vmEqModel = vm.eqModel;
                 }
-                updateRegistration(6, (Observable) vmEqModel);
+                updateRegistration(6, vmEqModel);
                 if (vmEqModel != null) {
                     vmEqModelGet = vmEqModel.get();
                 }
-                ObservableInt observableInt3 = vmEqModel;
+                boolean vmEqModelInt02 = vmEqModelGet == 0;
                 vmMezzoStrGet = vmMezzoStrGet2;
                 vmTrebleStrGet = vmTrebleStrGet2;
-                ObservableField<String> observableField = vmMezzoStr;
-                vmEqModelInt0 = vmEqModelGet == 0;
-            } else {
-                vmMezzoStrGet = vmMezzoStrGet2;
-                vmTrebleStrGet = vmTrebleStrGet2;
-                ObservableField<String> observableField2 = vmMezzoStr;
-                vmEqModelInt0 = false;
+                vmEqModelInt0 = vmEqModelInt02;
             }
         } else {
             vmMezzoStrGet = null;
@@ -294,7 +298,6 @@ public class AudiMib3EqCustomViewBindingHdpi1920x720Impl extends AudiMib3EqCusto
             vmEqModelInt0 = false;
         }
         if ((dirtyFlags & 392) != 0) {
-            ObservableField<String> observableField3 = vmBassStr;
             SeekBarBindingAdapter.setProgress(this.bassSeekBar, vmBassProgressGet);
         }
         if ((dirtyFlags & 448) != 0) {

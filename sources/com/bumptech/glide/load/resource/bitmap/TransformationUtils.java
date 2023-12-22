@@ -22,18 +22,19 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/* loaded from: classes.dex */
 public final class TransformationUtils {
     private static final Lock BITMAP_DRAWABLE_LOCK;
     private static final Paint CIRCLE_CROP_BITMAP_PAINT;
     private static final int CIRCLE_CROP_PAINT_FLAGS = 7;
-    private static final Paint CIRCLE_CROP_SHAPE_PAINT = new Paint(7);
-    private static final Paint DEFAULT_PAINT = new Paint(6);
     private static final Set<String> MODELS_REQUIRING_BITMAP_LOCK;
     public static final int PAINT_FLAGS = 6;
     private static final String TAG = "TransformationUtils";
+    private static final Paint DEFAULT_PAINT = new Paint(6);
+    private static final Paint CIRCLE_CROP_SHAPE_PAINT = new Paint(7);
 
     static {
-        HashSet hashSet = new HashSet(Arrays.asList(new String[]{"XT1085", "XT1092", "XT1093", "XT1094", "XT1095", "XT1096", "XT1097", "XT1098", "XT1031", "XT1028", "XT937C", "XT1032", "XT1008", "XT1033", "XT1035", "XT1034", "XT939G", "XT1039", "XT1040", "XT1042", "XT1045", "XT1063", "XT1064", "XT1068", "XT1069", "XT1072", "XT1077", "XT1078", "XT1079"}));
+        HashSet hashSet = new HashSet(Arrays.asList("XT1085", "XT1092", "XT1093", "XT1094", "XT1095", "XT1096", "XT1097", "XT1098", "XT1031", "XT1028", "XT937C", "XT1032", "XT1008", "XT1033", "XT1035", "XT1034", "XT939G", "XT1039", "XT1040", "XT1042", "XT1045", "XT1063", "XT1064", "XT1068", "XT1069", "XT1072", "XT1077", "XT1078", "XT1079"));
         MODELS_REQUIRING_BITMAP_LOCK = hashSet;
         BITMAP_DRAWABLE_LOCK = hashSet.contains(Build.MODEL) ? new ReentrantLock() : new NoLock();
         Paint paint = new Paint(7);
@@ -49,24 +50,24 @@ public final class TransformationUtils {
     }
 
     public static Bitmap centerCrop(BitmapPool pool, Bitmap inBitmap, int width, int height) {
-        float dy;
-        float dx;
         float scale;
+        float dx;
+        float dy;
         if (inBitmap.getWidth() == width && inBitmap.getHeight() == height) {
             return inBitmap;
         }
         Matrix m = new Matrix();
         if (inBitmap.getWidth() * height > inBitmap.getHeight() * width) {
-            scale = ((float) height) / ((float) inBitmap.getHeight());
-            dx = (((float) width) - (((float) inBitmap.getWidth()) * scale)) * 0.5f;
+            scale = height / inBitmap.getHeight();
+            dx = (width - (inBitmap.getWidth() * scale)) * 0.5f;
             dy = 0.0f;
         } else {
-            scale = ((float) width) / ((float) inBitmap.getWidth());
+            scale = width / inBitmap.getWidth();
             dx = 0.0f;
-            dy = (((float) height) - (((float) inBitmap.getHeight()) * scale)) * 0.5f;
+            dy = (height - (inBitmap.getHeight() * scale)) * 0.5f;
         }
         m.setScale(scale, scale);
-        m.postTranslate((float) ((int) (dx + 0.5f)), (float) ((int) (0.5f + dy)));
+        m.postTranslate((int) (dx + 0.5f), (int) (0.5f + dy));
         Bitmap result = pool.get(width, height, getNonNullConfig(inBitmap));
         setAlpha(inBitmap, result);
         applyMatrix(inBitmap, result, m);
@@ -80,16 +81,21 @@ public final class TransformationUtils {
             }
             return inBitmap;
         }
-        float minPercentage = Math.min(((float) width) / ((float) inBitmap.getWidth()), ((float) height) / ((float) inBitmap.getHeight()));
-        int targetWidth = Math.round(((float) inBitmap.getWidth()) * minPercentage);
-        int targetHeight = Math.round(((float) inBitmap.getHeight()) * minPercentage);
+        float widthPercentage = width / inBitmap.getWidth();
+        float heightPercentage = height / inBitmap.getHeight();
+        float minPercentage = Math.min(widthPercentage, heightPercentage);
+        int targetWidth = Math.round(inBitmap.getWidth() * minPercentage);
+        int targetHeight = Math.round(inBitmap.getHeight() * minPercentage);
         if (inBitmap.getWidth() == targetWidth && inBitmap.getHeight() == targetHeight) {
             if (Log.isLoggable(TAG, 2)) {
                 Log.v(TAG, "adjusted target size matches input, returning input");
             }
             return inBitmap;
         }
-        Bitmap toReuse = pool.get((int) (((float) inBitmap.getWidth()) * minPercentage), (int) (((float) inBitmap.getHeight()) * minPercentage), getNonNullConfig(inBitmap));
+        int targetWidth2 = (int) (inBitmap.getWidth() * minPercentage);
+        int targetHeight2 = (int) (inBitmap.getHeight() * minPercentage);
+        Bitmap.Config config = getNonNullConfig(inBitmap);
+        Bitmap toReuse = pool.get(targetWidth2, targetHeight2, config);
         setAlpha(inBitmap, toReuse);
         if (Log.isLoggable(TAG, 2)) {
             Log.v(TAG, "request: " + width + "x" + height);
@@ -104,16 +110,16 @@ public final class TransformationUtils {
     }
 
     public static Bitmap centerInside(BitmapPool pool, Bitmap inBitmap, int width, int height) {
-        if (inBitmap.getWidth() > width || inBitmap.getHeight() > height) {
+        if (inBitmap.getWidth() <= width && inBitmap.getHeight() <= height) {
             if (Log.isLoggable(TAG, 2)) {
-                Log.v(TAG, "requested target size too big for input, fit centering instead");
+                Log.v(TAG, "requested target size larger or equal to input, returning input");
             }
-            return fitCenter(pool, inBitmap, width, height);
+            return inBitmap;
         }
         if (Log.isLoggable(TAG, 2)) {
-            Log.v(TAG, "requested target size larger or equal to input, returning input");
+            Log.v(TAG, "requested target size too big for input, fit centering instead");
         }
-        return inBitmap;
+        return fitCenter(pool, inBitmap, width, height);
     }
 
     public static void setAlpha(Bitmap inBitmap, Bitmap outBitmap) {
@@ -121,20 +127,20 @@ public final class TransformationUtils {
     }
 
     public static Bitmap rotateImage(Bitmap imageToOrient, int degreesToRotate) {
-        Bitmap result = imageToOrient;
         if (degreesToRotate == 0) {
-            return result;
+            return imageToOrient;
         }
         try {
             Matrix matrix = new Matrix();
-            matrix.setRotate((float) degreesToRotate);
-            return Bitmap.createBitmap(imageToOrient, 0, 0, imageToOrient.getWidth(), imageToOrient.getHeight(), matrix, true);
+            matrix.setRotate(degreesToRotate);
+            Bitmap result = Bitmap.createBitmap(imageToOrient, 0, 0, imageToOrient.getWidth(), imageToOrient.getHeight(), matrix, true);
+            return result;
         } catch (Exception e) {
             if (!Log.isLoggable(TAG, 6)) {
-                return result;
+                return imageToOrient;
             }
             Log.e(TAG, "Exception when trying to orient image", e);
-            return result;
+            return imageToOrient;
         }
     }
 
@@ -160,9 +166,12 @@ public final class TransformationUtils {
         }
         Matrix matrix = new Matrix();
         initializeMatrixForRotation(exifOrientation, matrix);
-        RectF newRect = new RectF(0.0f, 0.0f, (float) inBitmap.getWidth(), (float) inBitmap.getHeight());
+        RectF newRect = new RectF(0.0f, 0.0f, inBitmap.getWidth(), inBitmap.getHeight());
         matrix.mapRect(newRect);
-        Bitmap result = pool.get(Math.round(newRect.width()), Math.round(newRect.height()), getNonNullConfig(inBitmap));
+        int newWidth = Math.round(newRect.width());
+        int newHeight = Math.round(newRect.height());
+        Bitmap.Config config = getNonNullConfig(inBitmap);
+        Bitmap result = pool.get(newWidth, newHeight, config);
         matrix.postTranslate(-newRect.left, -newRect.top);
         result.setHasAlpha(inBitmap.hasAlpha());
         applyMatrix(inBitmap, result, matrix);
@@ -185,58 +194,46 @@ public final class TransformationUtils {
     }
 
     public static Bitmap circleCrop(BitmapPool pool, Bitmap inBitmap, int destWidth, int destHeight) {
-        BitmapPool bitmapPool = pool;
         int destMinEdge = Math.min(destWidth, destHeight);
-        float radius = ((float) destMinEdge) / 2.0f;
+        float radius = destMinEdge / 2.0f;
         int srcWidth = inBitmap.getWidth();
         int srcHeight = inBitmap.getHeight();
-        float maxScale = Math.max(((float) destMinEdge) / ((float) srcWidth), ((float) destMinEdge) / ((float) srcHeight));
-        float scaledWidth = maxScale * ((float) srcWidth);
-        float scaledHeight = maxScale * ((float) srcHeight);
-        float left = (((float) destMinEdge) - scaledWidth) / 2.0f;
-        float top = (((float) destMinEdge) - scaledHeight) / 2.0f;
+        float scaleX = destMinEdge / srcWidth;
+        float scaleY = destMinEdge / srcHeight;
+        float maxScale = Math.max(scaleX, scaleY);
+        float scaledWidth = maxScale * srcWidth;
+        float scaledHeight = maxScale * srcHeight;
+        float left = (destMinEdge - scaledWidth) / 2.0f;
+        float top = (destMinEdge - scaledHeight) / 2.0f;
         RectF destRect = new RectF(left, top, left + scaledWidth, top + scaledHeight);
         Bitmap toTransform = getAlphaSafeBitmap(pool, inBitmap);
-        float f = top;
-        Bitmap result = bitmapPool.get(destMinEdge, destMinEdge, getAlphaSafeConfig(inBitmap));
+        Bitmap.Config outConfig = getAlphaSafeConfig(inBitmap);
+        Bitmap result = pool.get(destMinEdge, destMinEdge, outConfig);
         result.setHasAlpha(true);
         Lock lock = BITMAP_DRAWABLE_LOCK;
         lock.lock();
-        int i = destMinEdge;
         try {
             Canvas canvas = new Canvas(result);
-            int i2 = srcWidth;
             try {
                 canvas.drawCircle(radius, radius, radius, CIRCLE_CROP_SHAPE_PAINT);
-                float f2 = radius;
             } catch (Throwable th) {
                 th = th;
-                Bitmap bitmap = inBitmap;
-                float f3 = radius;
-                BITMAP_DRAWABLE_LOCK.unlock();
-                throw th;
             }
             try {
                 canvas.drawBitmap(toTransform, (Rect) null, destRect, CIRCLE_CROP_BITMAP_PAINT);
                 clear(canvas);
                 lock.unlock();
                 if (!toTransform.equals(inBitmap)) {
-                    bitmapPool.put(toTransform);
+                    pool.put(toTransform);
                 }
                 return result;
             } catch (Throwable th2) {
                 th = th2;
-                Bitmap bitmap2 = inBitmap;
                 BITMAP_DRAWABLE_LOCK.unlock();
                 throw th;
             }
         } catch (Throwable th3) {
             th = th3;
-            Bitmap bitmap3 = inBitmap;
-            float f4 = radius;
-            int i3 = srcWidth;
-            BITMAP_DRAWABLE_LOCK.unlock();
-            throw th;
         }
     }
 
@@ -251,10 +248,10 @@ public final class TransformationUtils {
     }
 
     private static Bitmap.Config getAlphaSafeConfig(Bitmap inBitmap) {
-        if (Build.VERSION.SDK_INT < 26 || !Bitmap.Config.RGBA_F16.equals(inBitmap.getConfig())) {
-            return Bitmap.Config.ARGB_8888;
+        if (Build.VERSION.SDK_INT >= 26 && Bitmap.Config.RGBA_F16.equals(inBitmap.getConfig())) {
+            return Bitmap.Config.RGBA_F16;
         }
-        return Bitmap.Config.RGBA_F16;
+        return Bitmap.Config.ARGB_8888;
     }
 
     @Deprecated
@@ -272,13 +269,13 @@ public final class TransformationUtils {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setShader(shader);
-        RectF rect = new RectF(0.0f, 0.0f, (float) result.getWidth(), (float) result.getHeight());
+        RectF rect = new RectF(0.0f, 0.0f, result.getWidth(), result.getHeight());
         Lock lock = BITMAP_DRAWABLE_LOCK;
         lock.lock();
         try {
             Canvas canvas = new Canvas(result);
             canvas.drawColor(0, PorterDuff.Mode.CLEAR);
-            canvas.drawRoundRect(rect, (float) roundingRadius, (float) roundingRadius, paint);
+            canvas.drawRoundRect(rect, roundingRadius, roundingRadius, paint);
             clear(canvas);
             lock.unlock();
             if (!toTransform.equals(inBitmap)) {
@@ -292,7 +289,7 @@ public final class TransformationUtils {
     }
 
     private static void clear(Canvas canvas) {
-        canvas.setBitmap((Bitmap) null);
+        canvas.setBitmap(null);
     }
 
     private static Bitmap.Config getNonNullConfig(Bitmap bitmap) {
@@ -344,27 +341,34 @@ public final class TransformationUtils {
         }
     }
 
+    /* loaded from: classes.dex */
     private static final class NoLock implements Lock {
         NoLock() {
         }
 
+        @Override // java.util.concurrent.locks.Lock
         public void lock() {
         }
 
+        @Override // java.util.concurrent.locks.Lock
         public void lockInterruptibly() throws InterruptedException {
         }
 
+        @Override // java.util.concurrent.locks.Lock
         public boolean tryLock() {
             return true;
         }
 
+        @Override // java.util.concurrent.locks.Lock
         public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
             return true;
         }
 
+        @Override // java.util.concurrent.locks.Lock
         public void unlock() {
         }
 
+        @Override // java.util.concurrent.locks.Lock
         public Condition newCondition() {
             throw new UnsupportedOperationException("Should not be called");
         }

@@ -4,33 +4,31 @@ import android.graphics.Bitmap;
 import com.bumptech.glide.util.Util;
 import java.util.NavigableMap;
 
+/* loaded from: classes.dex */
 final class SizeStrategy implements LruPoolStrategy {
     private static final int MAX_SIZE_MULTIPLE = 8;
-    private final GroupedLinkedMap<Key, Bitmap> groupedMap = new GroupedLinkedMap<>();
     private final KeyPool keyPool = new KeyPool();
+    private final GroupedLinkedMap<Key, Bitmap> groupedMap = new GroupedLinkedMap<>();
     private final NavigableMap<Integer, Integer> sortedSizes = new PrettyPrintTreeMap();
 
     SizeStrategy() {
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public void put(Bitmap bitmap) {
-        Key key = this.keyPool.get(Util.getBitmapByteSize(bitmap));
+        int size = Util.getBitmapByteSize(bitmap);
+        Key key = this.keyPool.get(size);
         this.groupedMap.put(key, bitmap);
         Integer current = (Integer) this.sortedSizes.get(Integer.valueOf(key.size));
-        NavigableMap<Integer, Integer> navigableMap = this.sortedSizes;
-        Integer valueOf = Integer.valueOf(key.size);
-        int i = 1;
-        if (current != null) {
-            i = 1 + current.intValue();
-        }
-        navigableMap.put(valueOf, Integer.valueOf(i));
+        this.sortedSizes.put(Integer.valueOf(key.size), Integer.valueOf(current != null ? 1 + current.intValue() : 1));
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public Bitmap get(int width, int height, Bitmap.Config config) {
         int size = Util.getBitmapByteSize(width, height, config);
         Key key = this.keyPool.get(size);
         Integer possibleSize = this.sortedSizes.ceilingKey(Integer.valueOf(size));
-        if (!(possibleSize == null || possibleSize.intValue() == size || possibleSize.intValue() > size * 8)) {
+        if (possibleSize != null && possibleSize.intValue() != size && possibleSize.intValue() <= size * 8) {
             this.keyPool.offer(key);
             key = this.keyPool.get(possibleSize.intValue());
         }
@@ -42,10 +40,12 @@ final class SizeStrategy implements LruPoolStrategy {
         return result;
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public Bitmap removeLast() {
         Bitmap removed = this.groupedMap.removeLast();
         if (removed != null) {
-            decrementBitmapOfSize(Integer.valueOf(Util.getBitmapByteSize(removed)));
+            int removedSize = Util.getBitmapByteSize(removed);
+            decrementBitmapOfSize(Integer.valueOf(removedSize));
         }
         return removed;
     }
@@ -59,14 +59,18 @@ final class SizeStrategy implements LruPoolStrategy {
         }
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public String logBitmap(Bitmap bitmap) {
         return getBitmapString(bitmap);
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public String logBitmap(int width, int height, Bitmap.Config config) {
-        return getBitmapString(Util.getBitmapByteSize(width, height, config));
+        int size = Util.getBitmapByteSize(width, height, config);
+        return getBitmapString(size);
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public int getSize(Bitmap bitmap) {
         return Util.getBitmapByteSize(bitmap);
     }
@@ -76,13 +80,15 @@ final class SizeStrategy implements LruPoolStrategy {
     }
 
     private static String getBitmapString(Bitmap bitmap) {
-        return getBitmapString(Util.getBitmapByteSize(bitmap));
+        int size = Util.getBitmapByteSize(bitmap);
+        return getBitmapString(size);
     }
 
     static String getBitmapString(int size) {
         return "[" + size + "]";
     }
 
+    /* loaded from: classes.dex */
     static class KeyPool extends BaseKeyPool<Key> {
         KeyPool() {
         }
@@ -93,29 +99,32 @@ final class SizeStrategy implements LruPoolStrategy {
             return result;
         }
 
-        /* access modifiers changed from: protected */
+        /* JADX INFO: Access modifiers changed from: protected */
+        @Override // com.bumptech.glide.load.engine.bitmap_recycle.BaseKeyPool
         public Key create() {
             return new Key(this);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class Key implements Poolable {
         private final KeyPool pool;
         int size;
 
-        Key(KeyPool pool2) {
-            this.pool = pool2;
+        Key(KeyPool pool) {
+            this.pool = pool;
         }
 
-        public void init(int size2) {
-            this.size = size2;
+        public void init(int size) {
+            this.size = size;
         }
 
         public boolean equals(Object o) {
-            if (!(o instanceof Key) || this.size != ((Key) o).size) {
-                return false;
+            if (o instanceof Key) {
+                Key other = (Key) o;
+                return this.size == other.size;
             }
-            return true;
+            return false;
         }
 
         public int hashCode() {
@@ -126,6 +135,7 @@ final class SizeStrategy implements LruPoolStrategy {
             return SizeStrategy.getBitmapString(this.size);
         }
 
+        @Override // com.bumptech.glide.load.engine.bitmap_recycle.Poolable
         public void offer() {
             this.pool.offer(this);
         }

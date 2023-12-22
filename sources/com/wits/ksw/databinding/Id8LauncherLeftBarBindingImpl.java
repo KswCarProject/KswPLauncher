@@ -4,30 +4,34 @@ import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public class Id8LauncherLeftBarBindingImpl extends Id8LauncherLeftBarBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback194;
+    private final View.OnClickListener mCallback290;
     private long mDirtyFlags;
 
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.iv_left_1, 2);
-        sparseIntArray.put(R.id.tv_left_1, 3);
-        sparseIntArray.put(R.id.ll_left_2, 4);
-        sparseIntArray.put(R.id.iv_left_2, 5);
-        sparseIntArray.put(R.id.tv_left_2, 6);
-        sparseIntArray.put(R.id.ll_left_3, 7);
-        sparseIntArray.put(R.id.iv_left_3, 8);
-        sparseIntArray.put(R.id.tv_left_3, 9);
-        sparseIntArray.put(R.id.ll_left_4, 10);
-        sparseIntArray.put(R.id.iv_left_4, 11);
-        sparseIntArray.put(R.id.tv_left_4, 12);
+        sparseIntArray.put(C0899R.C0901id.iv_left_1, 2);
+        sparseIntArray.put(C0899R.C0901id.tv_left_1, 3);
+        sparseIntArray.put(C0899R.C0901id.ll_left_2, 4);
+        sparseIntArray.put(C0899R.C0901id.iv_left_2, 5);
+        sparseIntArray.put(C0899R.C0901id.tv_left_2, 6);
+        sparseIntArray.put(C0899R.C0901id.ll_left_3, 7);
+        sparseIntArray.put(C0899R.C0901id.iv_left_3, 8);
+        sparseIntArray.put(C0899R.C0901id.tv_left_3, 9);
+        sparseIntArray.put(C0899R.C0901id.ll_left_4, 10);
+        sparseIntArray.put(C0899R.C0901id.iv_left_4, 11);
+        sparseIntArray.put(C0899R.C0901id.tv_left_4, 12);
     }
 
     public Id8LauncherLeftBarBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -35,22 +39,24 @@ public class Id8LauncherLeftBarBindingImpl extends Id8LauncherLeftBarBinding imp
     }
 
     private Id8LauncherLeftBarBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[2], bindings[5], bindings[8], bindings[11], bindings[1], bindings[4], bindings[7], bindings[10], bindings[0], bindings[3], bindings[6], bindings[9], bindings[12]);
-        this.mDirtyFlags = -1;
-        this.llLeft1.setTag((Object) null);
-        this.llLeftBarContainer.setTag((Object) null);
+        super(bindingComponent, root, 0, (ImageView) bindings[2], (ImageView) bindings[5], (ImageView) bindings[8], (ImageView) bindings[11], (LinearLayout) bindings[1], (LinearLayout) bindings[4], (LinearLayout) bindings[7], (LinearLayout) bindings[10], (LinearLayout) bindings[0], (TextView) bindings[3], (TextView) bindings[6], (TextView) bindings[9], (TextView) bindings[12]);
+        this.mDirtyFlags = -1L;
+        this.llLeft1.setTag(null);
+        this.llLeftBarContainer.setTag(null);
         setRootTag(root);
-        this.mCallback194 = new OnClickListener(this, 1);
+        this.mCallback290 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 2;
+            this.mDirtyFlags = 2L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -60,14 +66,16 @@ public class Id8LauncherLeftBarBindingImpl extends Id8LauncherLeftBarBinding imp
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (8 != variableId) {
-            return false;
+        if (8 == variableId) {
+            setLeftViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setLeftViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.Id8LauncherLeftBarBinding
     public void setLeftViewModel(LauncherViewModel LeftViewModel) {
         this.mLeftViewModel = LeftViewModel;
         synchronized (this) {
@@ -77,27 +85,29 @@ public class Id8LauncherLeftBarBindingImpl extends Id8LauncherLeftBarBinding imp
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         LauncherViewModel launcherViewModel = this.mLeftViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.llLeft1.setOnClickListener(this.mCallback194);
+            this.llLeft1.setOnClickListener(this.mCallback290);
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
         LauncherViewModel leftViewModel = this.mLeftViewModel;
-        if (leftViewModel != null) {
+        boolean leftViewModelJavaLangObjectNull = leftViewModel != null;
+        if (leftViewModelJavaLangObjectNull) {
             leftViewModel.openApps(callbackArg_0);
         }
     }

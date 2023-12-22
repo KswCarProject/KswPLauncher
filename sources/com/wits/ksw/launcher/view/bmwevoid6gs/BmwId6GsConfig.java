@@ -3,6 +3,7 @@ package com.wits.ksw.launcher.view.bmwevoid6gs;
 import android.content.Context;
 import android.provider.Settings;
 
+/* loaded from: classes5.dex */
 public class BmwId6GsConfig {
     public static final String INDEX = "bmwid6_index";
 

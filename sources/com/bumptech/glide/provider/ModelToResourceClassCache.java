@@ -1,17 +1,18 @@
 package com.bumptech.glide.provider;
 
-import android.support.v4.util.ArrayMap;
+import android.support.p001v4.util.ArrayMap;
 import com.bumptech.glide.util.MultiClassKey;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public class ModelToResourceClassCache {
-    private final ArrayMap<MultiClassKey, List<Class<?>>> registeredResourceClassCache = new ArrayMap<>();
     private final AtomicReference<MultiClassKey> resourceClassKeyRef = new AtomicReference<>();
+    private final ArrayMap<MultiClassKey, List<Class<?>>> registeredResourceClassCache = new ArrayMap<>();
 
     public List<Class<?>> get(Class<?> modelClass, Class<?> resourceClass, Class<?> transcodeClass) {
         List<Class<?>> result;
-        MultiClassKey key = this.resourceClassKeyRef.getAndSet((Object) null);
+        MultiClassKey key = this.resourceClassKeyRef.getAndSet(null);
         if (key == null) {
             key = new MultiClassKey(modelClass, resourceClass, transcodeClass);
         } else {

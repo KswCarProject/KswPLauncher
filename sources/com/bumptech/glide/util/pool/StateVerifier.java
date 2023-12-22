@@ -1,10 +1,10 @@
 package com.bumptech.glide.util.pool;
 
+/* loaded from: classes.dex */
 public abstract class StateVerifier {
     private static final boolean DEBUG = false;
 
-    /* access modifiers changed from: package-private */
-    public abstract void setRecycled(boolean z);
+    abstract void setRecycled(boolean z);
 
     public abstract void throwIfRecycled();
 
@@ -15,6 +15,7 @@ public abstract class StateVerifier {
     private StateVerifier() {
     }
 
+    /* loaded from: classes.dex */
     private static class DefaultStateVerifier extends StateVerifier {
         private volatile boolean isReleased;
 
@@ -22,17 +23,20 @@ public abstract class StateVerifier {
             super();
         }
 
+        @Override // com.bumptech.glide.util.pool.StateVerifier
         public void throwIfRecycled() {
             if (this.isReleased) {
                 throw new IllegalStateException("Already released");
             }
         }
 
+        @Override // com.bumptech.glide.util.pool.StateVerifier
         public void setRecycled(boolean isRecycled) {
             this.isReleased = isRecycled;
         }
     }
 
+    /* loaded from: classes.dex */
     private static class DebugStateVerifier extends StateVerifier {
         private volatile RuntimeException recycledAtStackTraceException;
 
@@ -40,14 +44,15 @@ public abstract class StateVerifier {
             super();
         }
 
+        @Override // com.bumptech.glide.util.pool.StateVerifier
         public void throwIfRecycled() {
             if (this.recycledAtStackTraceException != null) {
                 throw new IllegalStateException("Already released", this.recycledAtStackTraceException);
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void setRecycled(boolean isRecycled) {
+        @Override // com.bumptech.glide.util.pool.StateVerifier
+        void setRecycled(boolean isRecycled) {
             if (isRecycled) {
                 this.recycledAtStackTraceException = new RuntimeException("Released");
             } else {

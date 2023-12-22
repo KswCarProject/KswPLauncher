@@ -3,8 +3,10 @@ package com.bumptech.glide.load;
 import com.bumptech.glide.util.Preconditions;
 import java.security.MessageDigest;
 
+/* loaded from: classes.dex */
 public final class Option<T> {
-    private static final CacheKeyUpdater<Object> EMPTY_UPDATER = new CacheKeyUpdater<Object>() {
+    private static final CacheKeyUpdater<Object> EMPTY_UPDATER = new CacheKeyUpdater<Object>() { // from class: com.bumptech.glide.load.Option.1
+        @Override // com.bumptech.glide.load.Option.CacheKeyUpdater
         public void update(byte[] keyBytes, Object value, MessageDigest messageDigest) {
         }
     };
@@ -13,30 +15,31 @@ public final class Option<T> {
     private final String key;
     private volatile byte[] keyBytes;
 
+    /* loaded from: classes.dex */
     public interface CacheKeyUpdater<T> {
         void update(byte[] bArr, T t, MessageDigest messageDigest);
     }
 
-    public static <T> Option<T> memory(String key2) {
-        return new Option<>(key2, (Object) null, emptyUpdater());
+    public static <T> Option<T> memory(String key) {
+        return new Option<>(key, null, emptyUpdater());
     }
 
-    public static <T> Option<T> memory(String key2, T defaultValue2) {
-        return new Option<>(key2, defaultValue2, emptyUpdater());
+    public static <T> Option<T> memory(String key, T defaultValue) {
+        return new Option<>(key, defaultValue, emptyUpdater());
     }
 
-    public static <T> Option<T> disk(String key2, CacheKeyUpdater<T> cacheKeyUpdater2) {
-        return new Option<>(key2, (Object) null, cacheKeyUpdater2);
+    public static <T> Option<T> disk(String key, CacheKeyUpdater<T> cacheKeyUpdater) {
+        return new Option<>(key, null, cacheKeyUpdater);
     }
 
-    public static <T> Option<T> disk(String key2, T defaultValue2, CacheKeyUpdater<T> cacheKeyUpdater2) {
-        return new Option<>(key2, defaultValue2, cacheKeyUpdater2);
+    public static <T> Option<T> disk(String key, T defaultValue, CacheKeyUpdater<T> cacheKeyUpdater) {
+        return new Option<>(key, defaultValue, cacheKeyUpdater);
     }
 
-    private Option(String key2, T defaultValue2, CacheKeyUpdater<T> cacheKeyUpdater2) {
-        this.key = Preconditions.checkNotEmpty(key2);
-        this.defaultValue = defaultValue2;
-        this.cacheKeyUpdater = (CacheKeyUpdater) Preconditions.checkNotNull(cacheKeyUpdater2);
+    private Option(String key, T defaultValue, CacheKeyUpdater<T> cacheKeyUpdater) {
+        this.key = Preconditions.checkNotEmpty(key);
+        this.defaultValue = defaultValue;
+        this.cacheKeyUpdater = (CacheKeyUpdater) Preconditions.checkNotNull(cacheKeyUpdater);
     }
 
     public T getDefaultValue() {
@@ -56,7 +59,8 @@ public final class Option<T> {
 
     public boolean equals(Object o) {
         if (o instanceof Option) {
-            return this.key.equals(((Option) o).key);
+            Option<?> other = (Option) o;
+            return this.key.equals(other.key);
         }
         return false;
     }
@@ -66,10 +70,10 @@ public final class Option<T> {
     }
 
     private static <T> CacheKeyUpdater<T> emptyUpdater() {
-        return EMPTY_UPDATER;
+        return (CacheKeyUpdater<T>) EMPTY_UPDATER;
     }
 
     public String toString() {
-        return "Option{key='" + this.key + '\'' + '}';
+        return "Option{key='" + this.key + "'}";
     }
 }

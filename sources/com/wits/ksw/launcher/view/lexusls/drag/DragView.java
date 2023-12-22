@@ -9,10 +9,11 @@ import android.os.IBinder;
 import android.view.View;
 import android.view.WindowManager;
 
+/* loaded from: classes13.dex */
 public class DragView extends View {
     private static final int DRAG_SCALE = 60;
-    private boolean isNeedDragBg = true;
-    private float mAnimationScale = 0.9f;
+    private boolean isNeedDragBg;
+    private float mAnimationScale;
     private Bitmap mBitmap;
     private WindowManager.LayoutParams mLayoutParams;
     private int mRegistrationX;
@@ -20,47 +21,49 @@ public class DragView extends View {
     private float mScale;
     private WindowManager mWindowManager;
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     public DragView(Context context, Bitmap bitmap, int registrationX, int registrationY, int left, int top, int width, int height) {
         super(context);
-        Context context2 = context;
+        this.mAnimationScale = 0.9f;
+        this.isNeedDragBg = true;
         this.mWindowManager = (WindowManager) context.getSystemService("window");
         Matrix scale = new Matrix();
-        float scaleFactor = (float) width;
-        float f = (60.0f + scaleFactor) / scaleFactor;
-        this.mScale = f;
-        float scaleFactor2 = f;
+        float scaleFactor = width;
+        float scaleFactor2 = (60.0f + scaleFactor) / scaleFactor;
+        this.mScale = scaleFactor2;
         scale.setScale(scaleFactor2, scaleFactor2);
         this.mBitmap = Bitmap.createBitmap(bitmap, left, top, width, height, scale, true);
         this.mRegistrationX = registrationX + 30;
         this.mRegistrationY = registrationY + 30;
     }
 
-    /* access modifiers changed from: protected */
-    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    @Override // android.view.View
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension(this.mBitmap.getWidth(), this.mBitmap.getHeight());
     }
 
-    /* access modifiers changed from: protected */
-    public void onDraw(Canvas canvas) {
+    @Override // android.view.View
+    protected void onDraw(Canvas canvas) {
         if (this.isNeedDragBg) {
             Paint p = new Paint();
             p.setStyle(Paint.Style.FILL);
             p.setColor(0);
-            canvas.drawRect(0.0f, 0.0f, (float) getWidth(), (float) getHeight(), p);
+            canvas.drawRect(0.0f, 0.0f, getWidth(), getHeight(), p);
         }
         float scale = this.mAnimationScale;
         if (scale < 0.999f) {
-            float height = (float) this.mBitmap.getHeight();
-            float width = (float) this.mBitmap.getWidth();
-            canvas.translate((width - (width * scale)) / 2.0f, (height - (height * scale)) / 2.0f);
+            float height = this.mBitmap.getHeight();
+            float width = this.mBitmap.getWidth();
+            float offset1 = (width - (width * scale)) / 2.0f;
+            float offset2 = (height - (height * scale)) / 2.0f;
+            canvas.translate(offset1, offset2);
             canvas.scale(scale, scale);
         }
-        canvas.drawBitmap(this.mBitmap, 0.0f, 0.0f, new Paint());
+        Paint p2 = new Paint();
+        canvas.drawBitmap(this.mBitmap, 0.0f, 0.0f, p2);
     }
 
-    /* access modifiers changed from: protected */
-    public void onDetachedFromWindow() {
+    @Override // android.view.View
+    protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         this.mBitmap.recycle();
     }
@@ -83,16 +86,14 @@ public class DragView extends View {
         this.mWindowManager.addView(this, lp);
     }
 
-    /* access modifiers changed from: package-private */
-    public void move(int touchX, int touchY) {
+    void move(int touchX, int touchY) {
         WindowManager.LayoutParams lp = this.mLayoutParams;
         lp.x = touchX - this.mRegistrationX;
         lp.y = touchY - this.mRegistrationY;
         this.mWindowManager.updateViewLayout(this, lp);
     }
 
-    /* access modifiers changed from: package-private */
-    public void remove() {
+    void remove() {
         this.mWindowManager.removeView(this);
     }
 }

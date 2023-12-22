@@ -23,16 +23,17 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 import kotlin.time.DurationKt;
 
+/* loaded from: classes.dex */
 public class PluralRules implements Serializable {
-    static final UnicodeSet ALLOWED_ID = new UnicodeSet("[a-z]").freeze();
-    static final Pattern AND_SEPARATED = Pattern.compile("\\s*and\\s*");
-    static final Pattern AT_SEPARATED = Pattern.compile("\\s*\\Q\\E@\\s*");
+    static final UnicodeSet ALLOWED_ID = new UnicodeSet("[a-z]").m87freeze();
+    static final Pattern AND_SEPARATED;
+    static final Pattern AT_SEPARATED;
     @Deprecated
     public static final String CATEGORY_SEPARATOR = ";  ";
-    static final Pattern COMMA_SEPARATED = Pattern.compile("\\s*,\\s*");
+    static final Pattern COMMA_SEPARATED;
     public static final PluralRules DEFAULT;
     private static final Rule DEFAULT_RULE;
-    static final Pattern DOTDOT_SEPARATED = Pattern.compile("\\s*\\Q..\\E\\s*");
+    static final Pattern DOTDOT_SEPARATED;
     public static final String KEYWORD_FEW = "few";
     public static final String KEYWORD_MANY = "many";
     public static final String KEYWORD_ONE = "one";
@@ -43,13 +44,14 @@ public class PluralRules implements Serializable {
     public static final String KEYWORD_ZERO = "zero";
     private static final Constraint NO_CONSTRAINT;
     public static final double NO_UNIQUE_VALUE = -0.00123456777d;
-    static final Pattern OR_SEPARATED = Pattern.compile("\\s*or\\s*");
-    static final Pattern SEMI_SEPARATED = Pattern.compile("\\s*;\\s*");
-    static final Pattern TILDE_SEPARATED = Pattern.compile("\\s*~\\s*");
+    static final Pattern OR_SEPARATED;
+    static final Pattern SEMI_SEPARATED;
+    static final Pattern TILDE_SEPARATED;
     private static final long serialVersionUID = 1;
     private final transient Set<String> keywords;
     private final RuleList rules;
 
+    /* loaded from: classes.dex */
     private interface Constraint extends Serializable {
         boolean isFulfilled(IFixedDecimal iFixedDecimal);
 
@@ -57,6 +59,7 @@ public class PluralRules implements Serializable {
     }
 
     @Deprecated
+    /* loaded from: classes.dex */
     public interface IFixedDecimal {
         @Deprecated
         double getPluralOperand(Operand operand);
@@ -68,6 +71,7 @@ public class PluralRules implements Serializable {
         boolean isNaN();
     }
 
+    /* loaded from: classes.dex */
     public enum KeywordStatus {
         INVALID,
         SUPPRESSED,
@@ -77,6 +81,7 @@ public class PluralRules implements Serializable {
     }
 
     @Deprecated
+    /* loaded from: classes.dex */
     public enum Operand {
         n,
         i,
@@ -87,25 +92,29 @@ public class PluralRules implements Serializable {
         j
     }
 
+    /* loaded from: classes.dex */
     public enum PluralType {
         CARDINAL,
         ORDINAL
     }
 
     @Deprecated
+    /* loaded from: classes.dex */
     public enum SampleType {
         INTEGER,
         DECIMAL
     }
 
     static {
-        AnonymousClass1 r0 = new Constraint() {
+        Constraint constraint = new Constraint() { // from class: com.ibm.icu.text.PluralRules.1
             private static final long serialVersionUID = 9163464945387899416L;
 
+            @Override // com.ibm.icu.text.PluralRules.Constraint
             public boolean isFulfilled(IFixedDecimal n) {
                 return true;
             }
 
+            @Override // com.ibm.icu.text.PluralRules.Constraint
             public boolean isLimited(SampleType sampleType) {
                 return false;
             }
@@ -114,13 +123,21 @@ public class PluralRules implements Serializable {
                 return "";
             }
         };
-        NO_CONSTRAINT = r0;
-        Rule rule = new Rule(KEYWORD_OTHER, r0, (FixedDecimalSamples) null, (FixedDecimalSamples) null);
+        NO_CONSTRAINT = constraint;
+        Rule rule = new Rule(KEYWORD_OTHER, constraint, null, null);
         DEFAULT_RULE = rule;
         DEFAULT = new PluralRules(new RuleList().addRule(rule));
+        AT_SEPARATED = Pattern.compile("\\s*\\Q\\E@\\s*");
+        OR_SEPARATED = Pattern.compile("\\s*or\\s*");
+        AND_SEPARATED = Pattern.compile("\\s*and\\s*");
+        COMMA_SEPARATED = Pattern.compile("\\s*,\\s*");
+        DOTDOT_SEPARATED = Pattern.compile("\\s*\\Q..\\E\\s*");
+        TILDE_SEPARATED = Pattern.compile("\\s*~\\s*");
+        SEMI_SEPARATED = Pattern.compile("\\s*;\\s*");
     }
 
     @Deprecated
+    /* loaded from: classes.dex */
     public static abstract class Factory {
         @Deprecated
         public abstract PluralRules forLocale(ULocale uLocale, PluralType pluralType);
@@ -163,12 +180,12 @@ public class PluralRules implements Serializable {
     }
 
     @Deprecated
+    /* loaded from: classes.dex */
     public static class FixedDecimal extends Number implements Comparable<FixedDecimal>, IFixedDecimal {
         static final long MAX = 1000000000000000000L;
         private static final long MAX_INTEGER_PART = 1000000000;
         private static final long serialVersionUID = -4756200506571685661L;
-        /* access modifiers changed from: private */
-        public final int baseFactor;
+        private final int baseFactor;
         final long decimalDigits;
         final long decimalDigitsWithoutTrailingZeros;
         final boolean hasIntegerValue;
@@ -225,18 +242,17 @@ public class PluralRules implements Serializable {
 
         @Deprecated
         public FixedDecimal(double n, int v, long f) {
-            boolean z = true;
-            boolean z2 = n < 0.0d;
-            this.isNegative = z2;
-            double d = z2 ? -n : n;
+            boolean z = n < 0.0d;
+            this.isNegative = z;
+            double d = z ? -n : n;
             this.source = d;
             this.visibleDecimalDigitCount = v;
             this.decimalDigits = f;
             long j = n > 1.0E18d ? MAX : (long) n;
             this.integerValue = j;
-            this.hasIntegerValue = d != ((double) j) ? false : z;
+            this.hasIntegerValue = d == ((double) j);
             if (f == 0) {
-                this.decimalDigitsWithoutTrailingZeros = 0;
+                this.decimalDigitsWithoutTrailingZeros = 0L;
                 this.visibleDecimalDigitCountWithoutTrailingZeros = 0;
             } else {
                 long fdwtz = f;
@@ -248,12 +264,12 @@ public class PluralRules implements Serializable {
                 this.decimalDigitsWithoutTrailingZeros = fdwtz;
                 this.visibleDecimalDigitCountWithoutTrailingZeros = trimmedCount;
             }
-            this.baseFactor = (int) Math.pow(10.0d, (double) v);
+            this.baseFactor = (int) Math.pow(10.0d, v);
         }
 
         @Deprecated
         public FixedDecimal(double n, int v) {
-            this(n, v, (long) getFractionalDigits(n, v));
+            this(n, v, getFractionalDigits(n, v));
         }
 
         private static int getFractionalDigits(double n, int v) {
@@ -263,8 +279,9 @@ public class PluralRules implements Serializable {
             if (n < 0.0d) {
                 n = -n;
             }
-            int baseFactor2 = (int) Math.pow(10.0d, (double) v);
-            return (int) (Math.round(((double) baseFactor2) * n) % ((long) baseFactor2));
+            int baseFactor = (int) Math.pow(10.0d, v);
+            long scaled = Math.round(baseFactor * n);
+            return (int) (scaled % baseFactor);
         }
 
         @Deprecated
@@ -274,7 +291,7 @@ public class PluralRules implements Serializable {
 
         @Deprecated
         public FixedDecimal(long n) {
-            this((double) n, 0);
+            this(n, 0);
         }
 
         @Deprecated
@@ -292,27 +309,28 @@ public class PluralRules implements Serializable {
                 long temp = ((long) (1000000.0d * n)) % 1000000;
                 int mask = 10;
                 for (int digits = 6; digits > 0; digits--) {
-                    if (temp % ((long) mask) != 0) {
+                    if (temp % mask == 0) {
+                        mask *= 10;
+                    } else {
                         return digits;
                     }
-                    mask *= 10;
                 }
                 return 0;
             }
-            String buf = String.format(Locale.ENGLISH, "%1.15e", new Object[]{Double.valueOf(n)});
+            String buf = String.format(Locale.ENGLISH, "%1.15e", Double.valueOf(n));
             int ePos = buf.lastIndexOf(101);
             int expNumPos = ePos + 1;
             if (buf.charAt(expNumPos) == '+') {
                 expNumPos++;
             }
-            int numFractionDigits = (ePos - 2) - Integer.parseInt(buf.substring(expNumPos));
+            String exponentStr = buf.substring(expNumPos);
+            int exponent = Integer.parseInt(exponentStr);
+            int numFractionDigits = (ePos - 2) - exponent;
             if (numFractionDigits < 0) {
                 return 0;
             }
-            int i = ePos - 1;
-            while (numFractionDigits > 0 && buf.charAt(i) == '0') {
+            for (int i = ePos - 1; numFractionDigits > 0 && buf.charAt(i) == '0'; i--) {
                 numFractionDigits--;
-                i--;
             }
             return numFractionDigits;
         }
@@ -331,21 +349,22 @@ public class PluralRules implements Serializable {
             return value2.length() - decimalPos;
         }
 
+        @Override // com.ibm.icu.text.PluralRules.IFixedDecimal
         @Deprecated
         public double getPluralOperand(Operand operand) {
-            switch (AnonymousClass2.$SwitchMap$com$ibm$icu$text$PluralRules$Operand[operand.ordinal()]) {
+            switch (C07462.$SwitchMap$com$ibm$icu$text$PluralRules$Operand[operand.ordinal()]) {
                 case 1:
                     return this.source;
                 case 2:
-                    return (double) this.integerValue;
+                    return this.integerValue;
                 case 3:
-                    return (double) this.decimalDigits;
+                    return this.decimalDigits;
                 case 4:
-                    return (double) this.decimalDigitsWithoutTrailingZeros;
+                    return this.decimalDigitsWithoutTrailingZeros;
                 case 5:
-                    return (double) this.visibleDecimalDigitCount;
+                    return this.visibleDecimalDigitCount;
                 case 6:
-                    return (double) this.visibleDecimalDigitCountWithoutTrailingZeros;
+                    return this.visibleDecimalDigitCountWithoutTrailingZeros;
                 default:
                     return this.source;
             }
@@ -356,40 +375,29 @@ public class PluralRules implements Serializable {
             return Operand.valueOf(t);
         }
 
+        @Override // java.lang.Comparable
         @Deprecated
         public int compareTo(FixedDecimal other) {
             long j = this.integerValue;
             long j2 = other.integerValue;
-            if (j == j2) {
-                double d = this.source;
-                double d2 = other.source;
-                if (d == d2) {
-                    int i = this.visibleDecimalDigitCount;
-                    int i2 = other.visibleDecimalDigitCount;
-                    if (i == i2) {
-                        long diff = this.decimalDigits - other.decimalDigits;
-                        if (diff == 0) {
-                            return 0;
-                        }
-                        if (diff < 0) {
-                            return -1;
-                        }
-                        return 1;
-                    } else if (i < i2) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-                } else if (d < d2) {
-                    return -1;
-                } else {
-                    return 1;
-                }
-            } else if (j < j2) {
-                return -1;
-            } else {
-                return 1;
+            if (j != j2) {
+                return j < j2 ? -1 : 1;
             }
+            double d = this.source;
+            double d2 = other.source;
+            if (d != d2) {
+                return d < d2 ? -1 : 1;
+            }
+            int i = this.visibleDecimalDigitCount;
+            int i2 = other.visibleDecimalDigitCount;
+            if (i != i2) {
+                return i < i2 ? -1 : 1;
+            }
+            long diff = this.decimalDigits - other.decimalDigits;
+            if (diff != 0) {
+                return diff < 0 ? -1 : 1;
+            }
+            return 0;
         }
 
         @Deprecated
@@ -404,20 +412,20 @@ public class PluralRules implements Serializable {
                 return false;
             }
             FixedDecimal other = (FixedDecimal) arg0;
-            if (this.source == other.source && this.visibleDecimalDigitCount == other.visibleDecimalDigitCount && this.decimalDigits == other.decimalDigits) {
-                return true;
+            if (this.source != other.source || this.visibleDecimalDigitCount != other.visibleDecimalDigitCount || this.decimalDigits != other.decimalDigits) {
+                return false;
             }
-            return false;
+            return true;
         }
 
         @Deprecated
         public int hashCode() {
-            return (int) (this.decimalDigits + ((long) ((this.visibleDecimalDigitCount + ((int) (this.source * 37.0d))) * 37)));
+            return (int) (this.decimalDigits + ((this.visibleDecimalDigitCount + ((int) (this.source * 37.0d))) * 37));
         }
 
         @Deprecated
         public String toString() {
-            return String.format("%." + this.visibleDecimalDigitCount + "f", new Object[]{Double.valueOf(this.source)});
+            return String.format("%." + this.visibleDecimalDigitCount + "f", Double.valueOf(this.source));
         }
 
         @Deprecated
@@ -425,21 +433,25 @@ public class PluralRules implements Serializable {
             return this.hasIntegerValue;
         }
 
+        @Override // java.lang.Number
         @Deprecated
         public int intValue() {
             return (int) this.integerValue;
         }
 
+        @Override // java.lang.Number
         @Deprecated
         public long longValue() {
             return this.integerValue;
         }
 
+        @Override // java.lang.Number
         @Deprecated
         public float floatValue() {
             return (float) this.source;
         }
 
+        @Override // java.lang.Number
         @Deprecated
         public double doubleValue() {
             return this.isNegative ? -this.source : this.source;
@@ -447,7 +459,7 @@ public class PluralRules implements Serializable {
 
         @Deprecated
         public long getShiftedValue() {
-            return (this.integerValue * ((long) this.baseFactor)) + this.decimalDigits;
+            return (this.integerValue * this.baseFactor) + this.decimalDigits;
         }
 
         private void writeObject(ObjectOutputStream out) throws IOException {
@@ -458,11 +470,13 @@ public class PluralRules implements Serializable {
             throw new NotSerializableException();
         }
 
+        @Override // com.ibm.icu.text.PluralRules.IFixedDecimal
         @Deprecated
         public boolean isNaN() {
             return Double.isNaN(this.source);
         }
 
+        @Override // com.ibm.icu.text.PluralRules.IFixedDecimal
         @Deprecated
         public boolean isInfinite() {
             return Double.isInfinite(this.source);
@@ -470,6 +484,7 @@ public class PluralRules implements Serializable {
     }
 
     @Deprecated
+    /* loaded from: classes.dex */
     public static class FixedDecimalRange {
         @Deprecated
         public final FixedDecimal end;
@@ -477,13 +492,12 @@ public class PluralRules implements Serializable {
         public final FixedDecimal start;
 
         @Deprecated
-        public FixedDecimalRange(FixedDecimal start2, FixedDecimal end2) {
-            if (start2.visibleDecimalDigitCount == end2.visibleDecimalDigitCount) {
-                this.start = start2;
-                this.end = end2;
-                return;
+        public FixedDecimalRange(FixedDecimal start, FixedDecimal end) {
+            if (start.visibleDecimalDigitCount != end.visibleDecimalDigitCount) {
+                throw new IllegalArgumentException("Ranges must have the same number of visible decimals: " + start + "~" + end);
             }
-            throw new IllegalArgumentException("Ranges must have the same number of visible decimals: " + start2 + "~" + end2);
+            this.start = start;
+            this.end = end;
         }
 
         @Deprecated
@@ -493,6 +507,7 @@ public class PluralRules implements Serializable {
     }
 
     @Deprecated
+    /* loaded from: classes.dex */
     public static class FixedDecimalSamples {
         @Deprecated
         public final boolean bounded;
@@ -501,14 +516,15 @@ public class PluralRules implements Serializable {
         @Deprecated
         public final Set<FixedDecimalRange> samples;
 
-        private FixedDecimalSamples(SampleType sampleType2, Set<FixedDecimalRange> samples2, boolean bounded2) {
-            this.sampleType = sampleType2;
-            this.samples = samples2;
-            this.bounded = bounded2;
+        private FixedDecimalSamples(SampleType sampleType, Set<FixedDecimalRange> samples, boolean bounded) {
+            this.sampleType = sampleType;
+            this.samples = samples;
+            this.bounded = bounded;
         }
 
         static FixedDecimalSamples parse(String source) {
             SampleType sampleType2;
+            String[] split;
             boolean bounded2 = true;
             boolean haveBound = false;
             Set<FixedDecimalRange> samples2 = new LinkedHashSet<>();
@@ -520,41 +536,36 @@ public class PluralRules implements Serializable {
                 throw new IllegalArgumentException("Samples must start with 'integer' or 'decimal'");
             }
             for (String range : PluralRules.COMMA_SEPARATED.split(source.substring(7).trim())) {
-                if (range.equals("…") || range.equals("...")) {
+                if (range.equals("\u2026") || range.equals("...")) {
                     bounded2 = false;
                     haveBound = true;
-                } else if (!haveBound) {
+                } else if (haveBound) {
+                    throw new IllegalArgumentException("Can only have \u2026 at the end of samples: " + range);
+                } else {
                     String[] rangeParts = PluralRules.TILDE_SEPARATED.split(range);
                     switch (rangeParts.length) {
                         case 1:
                             FixedDecimal sample = new FixedDecimal(rangeParts[0]);
                             checkDecimal(sampleType2, sample);
                             samples2.add(new FixedDecimalRange(sample, sample));
-                            break;
+                            continue;
                         case 2:
                             FixedDecimal start = new FixedDecimal(rangeParts[0]);
                             FixedDecimal end = new FixedDecimal(rangeParts[1]);
                             checkDecimal(sampleType2, start);
                             checkDecimal(sampleType2, end);
                             samples2.add(new FixedDecimalRange(start, end));
-                            break;
+                            continue;
                         default:
                             throw new IllegalArgumentException("Ill-formed number range: " + range);
                     }
-                } else {
-                    throw new IllegalArgumentException("Can only have … at the end of samples: " + range);
                 }
             }
             return new FixedDecimalSamples(sampleType2, Collections.unmodifiableSet(samples2), bounded2);
         }
 
         private static void checkDecimal(SampleType sampleType2, FixedDecimal sample) {
-            boolean z = true;
-            boolean z2 = sampleType2 == SampleType.INTEGER;
-            if (sample.getVisibleDecimalDigitCount() != 0) {
-                z = false;
-            }
-            if (z2 != z) {
+            if ((sampleType2 == SampleType.INTEGER) != (sample.getVisibleDecimalDigitCount() == 0)) {
                 throw new IllegalArgumentException("Ill-formed number range: " + sample);
             }
         }
@@ -565,7 +576,7 @@ public class PluralRules implements Serializable {
                 long startDouble = item.start.getShiftedValue();
                 long endDouble = item.end.getShiftedValue();
                 for (long d = startDouble; d <= endDouble; d++) {
-                    result.add(Double.valueOf(((double) d) / ((double) item.start.baseFactor)));
+                    result.add(Double.valueOf(d / item.start.baseFactor));
                 }
             }
             return result;
@@ -584,7 +595,7 @@ public class PluralRules implements Serializable {
                 b.append(' ').append(item);
             }
             if (!this.bounded) {
-                b.append(", …");
+                b.append(", \u2026");
             }
             return b.toString();
         }
@@ -603,9 +614,10 @@ public class PluralRules implements Serializable {
         }
     }
 
+    /* loaded from: classes.dex */
     static class SimpleTokenizer {
-        static final UnicodeSet BREAK_AND_IGNORE = new UnicodeSet(9, 10, 12, 13, 32, 32).freeze();
-        static final UnicodeSet BREAK_AND_KEEP = new UnicodeSet(33, 33, 37, 37, 44, 44, 46, 46, 61, 61).freeze();
+        static final UnicodeSet BREAK_AND_IGNORE = new UnicodeSet(9, 10, 12, 13, 32, 32).m87freeze();
+        static final UnicodeSet BREAK_AND_KEEP = new UnicodeSet(33, 33, 37, 37, 44, 44, 46, 46, 61, 61).m87freeze();
 
         SimpleTokenizer() {
         }
@@ -615,12 +627,12 @@ public class PluralRules implements Serializable {
             List<String> result = new ArrayList<>();
             for (int i = 0; i < source.length(); i++) {
                 char ch = source.charAt(i);
-                if (BREAK_AND_IGNORE.contains((int) ch)) {
+                if (BREAK_AND_IGNORE.contains(ch)) {
                     if (last >= 0) {
                         result.add(source.substring(last, i));
                         last = -1;
                     }
-                } else if (BREAK_AND_KEEP.contains((int) ch)) {
+                } else if (BREAK_AND_KEEP.contains(ch)) {
                     if (last >= 0) {
                         result.add(source.substring(last, i));
                     }
@@ -637,400 +649,268 @@ public class PluralRules implements Serializable {
         }
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:134:0x0255 A[SYNTHETIC] */
-    /* JADX WARNING: Removed duplicated region for block: B:50:0x00f9  */
-    /* JADX WARNING: Removed duplicated region for block: B:61:0x012b  */
-    /* JADX WARNING: Removed duplicated region for block: B:80:0x018b  */
-    /* JADX WARNING: Removed duplicated region for block: B:83:0x0198  */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private static com.ibm.icu.text.PluralRules.Constraint parseConstraint(java.lang.String r39) throws java.text.ParseException {
-        /*
-            r0 = 0
-            java.util.regex.Pattern r1 = OR_SEPARATED
-            r2 = r39
-            java.lang.String[] r1 = r1.split(r2)
-            r3 = 0
-            r4 = r3
-            r3 = r0
-        L_0x000c:
-            int r0 = r1.length
-            if (r4 >= r0) goto L_0x02d1
-            r0 = 0
-            java.util.regex.Pattern r5 = AND_SEPARATED
-            r6 = r1[r4]
-            java.lang.String[] r5 = r5.split(r6)
-            r6 = 0
-            r7 = r6
-            r6 = r0
-        L_0x001b:
-            int r0 = r5.length
-            if (r7 >= r0) goto L_0x02b2
-            com.ibm.icu.text.PluralRules$Constraint r8 = NO_CONSTRAINT
-            r0 = r5[r7]
-            java.lang.String r9 = r0.trim()
-            java.lang.String[] r10 = com.ibm.icu.text.PluralRules.SimpleTokenizer.split(r9)
-            r11 = 0
-            r12 = 1
-            r13 = 1
-            r14 = 4890909195324358656(0x43e0000000000000, double:9.223372036854776E18)
-            r16 = -4332462841530417152(0xc3e0000000000000, double:-9.223372036854776E18)
-            r18 = 0
-            r0 = 0
-            r19 = r1
-            int r1 = r0 + 1
-            r2 = r10[r0]
-            r20 = 0
-            com.ibm.icu.text.PluralRules$Operand r24 = com.ibm.icu.text.PluralRules.FixedDecimal.getOperand(r2)     // Catch:{ Exception -> 0x029d }
-            int r0 = r10.length
-            if (r1 >= r0) goto L_0x0274
-            int r0 = r1 + 1
-            r1 = r10[r1]
-            java.lang.String r2 = "mod"
-            boolean r2 = r2.equals(r1)
-            if (r2 != 0) goto L_0x0058
-            java.lang.String r2 = "%"
-            boolean r2 = r2.equals(r1)
-            if (r2 == 0) goto L_0x0066
-        L_0x0058:
-            int r2 = r0 + 1
-            r0 = r10[r0]
-            int r11 = java.lang.Integer.parseInt(r0)
-            int r0 = r2 + 1
-            java.lang.String r1 = nextToken(r10, r2, r9)
-        L_0x0066:
-            java.lang.String r2 = "not"
-            boolean r21 = r2.equals(r1)
-            r31 = r5
-            java.lang.String r5 = "="
-            if (r21 == 0) goto L_0x008c
-            r21 = r12 ^ 1
-            r12 = r21
-            int r21 = r0 + 1
-            java.lang.String r1 = nextToken(r10, r0, r9)
-            boolean r0 = r5.equals(r1)
-            if (r0 != 0) goto L_0x0087
-            r32 = r8
-            r0 = r21
-            goto L_0x00ac
-        L_0x0087:
-            java.text.ParseException r0 = unexpected(r1, r9)
-            throw r0
-        L_0x008c:
-            r32 = r8
-            java.lang.String r8 = "!"
-            boolean r8 = r8.equals(r1)
-            if (r8 == 0) goto L_0x00ac
-            r8 = r12 ^ 1
-            r12 = r8
-            int r8 = r0 + 1
-            java.lang.String r1 = nextToken(r10, r0, r9)
-            boolean r0 = r5.equals(r1)
-            if (r0 == 0) goto L_0x00a7
-            r0 = r8
-            goto L_0x00ac
-        L_0x00a7:
-            java.text.ParseException r0 = unexpected(r1, r9)
-            throw r0
-        L_0x00ac:
-            java.lang.String r8 = "is"
-            boolean r21 = r8.equals(r1)
-            if (r21 != 0) goto L_0x00db
-            r21 = r13
-            java.lang.String r13 = "in"
-            boolean r13 = r13.equals(r1)
-            if (r13 != 0) goto L_0x00dd
-            boolean r5 = r5.equals(r1)
-            if (r5 == 0) goto L_0x00c5
-            goto L_0x00dd
-        L_0x00c5:
-            java.lang.String r5 = "within"
-            boolean r5 = r5.equals(r1)
-            if (r5 == 0) goto L_0x00d6
-            r13 = 0
-            int r5 = r0 + 1
-            java.lang.String r0 = nextToken(r10, r0, r9)
-            goto L_0x00f3
-        L_0x00d6:
-            java.text.ParseException r2 = unexpected(r1, r9)
-            throw r2
-        L_0x00db:
-            r21 = r13
-        L_0x00dd:
-            boolean r20 = r8.equals(r1)
-            if (r20 == 0) goto L_0x00eb
-            if (r12 == 0) goto L_0x00e6
-            goto L_0x00eb
-        L_0x00e6:
-            java.text.ParseException r2 = unexpected(r1, r9)
-            throw r2
-        L_0x00eb:
-            int r5 = r0 + 1
-            java.lang.String r0 = nextToken(r10, r0, r9)
-            r13 = r21
-        L_0x00f3:
-            boolean r1 = r2.equals(r0)
-            if (r1 == 0) goto L_0x0110
-            if (r20 != 0) goto L_0x0103
-            if (r12 == 0) goto L_0x00fe
-            goto L_0x0103
-        L_0x00fe:
-            java.text.ParseException r1 = unexpected(r0, r9)
-            throw r1
-        L_0x0103:
-            if (r12 != 0) goto L_0x0107
-            r1 = 1
-            goto L_0x0108
-        L_0x0107:
-            r1 = 0
-        L_0x0108:
-            int r2 = r5 + 1
-            java.lang.String r0 = nextToken(r10, r5, r9)
-            r12 = r1
-            r5 = r2
-        L_0x0110:
-            java.util.ArrayList r1 = new java.util.ArrayList
-            r1.<init>()
-            r8 = r3
-            r2 = r16
-        L_0x0118:
-            r33 = r7
-            r34 = r8
-            long r7 = java.lang.Long.parseLong(r0)
-            r16 = r7
-            r21 = r0
-            int r0 = r10.length
-            r35 = r4
-            java.lang.String r4 = ","
-            if (r5 >= r0) goto L_0x018b
-            int r0 = r5 + 1
-            java.lang.String r5 = nextToken(r10, r5, r9)
-            r36 = r6
-            java.lang.String r6 = "."
-            boolean r21 = r5.equals(r6)
-            if (r21 == 0) goto L_0x0175
-            r37 = r13
-            int r13 = r0 + 1
-            java.lang.String r0 = nextToken(r10, r0, r9)
-            boolean r5 = r0.equals(r6)
-            if (r5 == 0) goto L_0x0170
-            int r5 = r13 + 1
-            java.lang.String r0 = nextToken(r10, r13, r9)
-            long r16 = java.lang.Long.parseLong(r0)
-            int r6 = r10.length
-            if (r5 >= r6) goto L_0x016c
-            int r6 = r5 + 1
-            java.lang.String r0 = nextToken(r10, r5, r9)
-            boolean r5 = r0.equals(r4)
-            if (r5 == 0) goto L_0x0167
-            r5 = r6
-            r6 = r12
-            r12 = r16
-            goto L_0x0194
-        L_0x0167:
-            java.text.ParseException r4 = unexpected(r0, r9)
-            throw r4
-        L_0x016c:
-            r6 = r12
-            r12 = r16
-            goto L_0x0194
-        L_0x0170:
-            java.text.ParseException r4 = unexpected(r0, r9)
-            throw r4
-        L_0x0175:
-            r37 = r13
-            boolean r6 = r5.equals(r4)
-            if (r6 == 0) goto L_0x0186
-            r6 = r12
-            r12 = r16
-            r38 = r5
-            r5 = r0
-            r0 = r38
-            goto L_0x0194
-        L_0x0186:
-            java.text.ParseException r4 = unexpected(r5, r9)
-            throw r4
-        L_0x018b:
-            r36 = r6
-            r37 = r13
-            r6 = r12
-            r12 = r16
-            r0 = r21
-        L_0x0194:
-            int r16 = (r7 > r12 ? 1 : (r7 == r12 ? 0 : -1))
-            if (r16 > 0) goto L_0x0255
-            if (r11 == 0) goto L_0x01c0
-            r16 = r4
-            r17 = r5
-            long r4 = (long) r11
-            int r4 = (r12 > r4 ? 1 : (r12 == r4 ? 0 : -1))
-            if (r4 >= 0) goto L_0x01a4
-            goto L_0x01c4
-        L_0x01a4:
-            java.lang.StringBuilder r4 = new java.lang.StringBuilder
-            r4.<init>()
-            java.lang.StringBuilder r4 = r4.append(r12)
-            java.lang.String r5 = ">mod="
-            java.lang.StringBuilder r4 = r4.append(r5)
-            java.lang.StringBuilder r4 = r4.append(r11)
-            java.lang.String r4 = r4.toString()
-            java.text.ParseException r4 = unexpected(r4, r9)
-            throw r4
-        L_0x01c0:
-            r16 = r4
-            r17 = r5
-        L_0x01c4:
-            java.lang.Long r4 = java.lang.Long.valueOf(r7)
-            r1.add(r4)
-            java.lang.Long r4 = java.lang.Long.valueOf(r12)
-            r1.add(r4)
-            double r4 = (double) r7
-            double r14 = java.lang.Math.min(r14, r4)
-            double r4 = (double) r12
-            double r2 = java.lang.Math.max(r2, r4)
-            int r4 = r10.length
-            r5 = r17
-            if (r5 < r4) goto L_0x0241
-            r4 = r16
-            boolean r4 = r0.equals(r4)
-            if (r4 != 0) goto L_0x023c
-            int r4 = r1.size()
-            r7 = 2
-            if (r4 != r7) goto L_0x01f5
-            r4 = 0
-            r18 = r4
-            goto L_0x0210
-        L_0x01f5:
-            int r4 = r1.size()
-            long[] r4 = new long[r4]
-            r7 = 0
-        L_0x01fc:
-            int r8 = r4.length
-            if (r7 >= r8) goto L_0x020e
-            java.lang.Object r8 = r1.get(r7)
-            java.lang.Long r8 = (java.lang.Long) r8
-            long r12 = r8.longValue()
-            r4[r7] = r12
-            int r7 = r7 + 1
-            goto L_0x01fc
-        L_0x020e:
-            r18 = r4
-        L_0x0210:
-            int r4 = (r14 > r2 ? 1 : (r14 == r2 ? 0 : -1))
-            if (r4 == 0) goto L_0x0220
-            if (r20 == 0) goto L_0x0220
-            if (r6 == 0) goto L_0x0219
-            goto L_0x0220
-        L_0x0219:
-            java.lang.String r4 = "is not <range>"
-            java.text.ParseException r4 = unexpected(r4, r9)
-            throw r4
-        L_0x0220:
-            com.ibm.icu.text.PluralRules$RangeConstraint r4 = new com.ibm.icu.text.PluralRules$RangeConstraint
-            r21 = r4
-            r22 = r11
-            r23 = r6
-            r25 = r37
-            r26 = r14
-            r28 = r2
-            r30 = r18
-            r21.<init>(r22, r23, r24, r25, r26, r28, r30)
-            r8 = r4
-            r16 = r2
-            r1 = r5
-            r12 = r6
-            r13 = r37
-            r2 = r0
-            goto L_0x0282
-        L_0x023c:
-            java.text.ParseException r4 = unexpected(r0, r9)
-            throw r4
-        L_0x0241:
-            int r4 = r5 + 1
-            java.lang.String r0 = nextToken(r10, r5, r9)
-            r5 = r4
-            r12 = r6
-            r7 = r33
-            r8 = r34
-            r4 = r35
-            r6 = r36
-            r13 = r37
-            goto L_0x0118
-        L_0x0255:
-            java.lang.StringBuilder r4 = new java.lang.StringBuilder
-            r4.<init>()
-            java.lang.StringBuilder r4 = r4.append(r7)
-            r16 = r0
-            java.lang.String r0 = "~"
-            java.lang.StringBuilder r0 = r4.append(r0)
-            java.lang.StringBuilder r0 = r0.append(r12)
-            java.lang.String r0 = r0.toString()
-            java.text.ParseException r0 = unexpected(r0, r9)
-            throw r0
-        L_0x0274:
-            r34 = r3
-            r35 = r4
-            r31 = r5
-            r36 = r6
-            r33 = r7
-            r32 = r8
-            r21 = r13
-        L_0x0282:
-            if (r36 != 0) goto L_0x0287
-            r0 = r8
-            r6 = r0
-            goto L_0x028f
-        L_0x0287:
-            com.ibm.icu.text.PluralRules$AndConstraint r0 = new com.ibm.icu.text.PluralRules$AndConstraint
-            r3 = r36
-            r0.<init>(r3, r8)
-            r6 = r0
-        L_0x028f:
-            int r7 = r33 + 1
-            r2 = r39
-            r1 = r19
-            r5 = r31
-            r3 = r34
-            r4 = r35
-            goto L_0x001b
-        L_0x029d:
-            r0 = move-exception
-            r34 = r3
-            r35 = r4
-            r31 = r5
-            r3 = r6
-            r33 = r7
-            r32 = r8
-            r21 = r13
-            r4 = r0
-            r0 = r4
-            java.text.ParseException r4 = unexpected(r2, r9)
-            throw r4
-        L_0x02b2:
-            r19 = r1
-            r34 = r3
-            r35 = r4
-            r31 = r5
-            r3 = r6
-            r33 = r7
-            if (r34 != 0) goto L_0x02c1
-            r0 = r3
-            goto L_0x02c9
-        L_0x02c1:
-            com.ibm.icu.text.PluralRules$OrConstraint r0 = new com.ibm.icu.text.PluralRules$OrConstraint
-            r1 = r34
-            r0.<init>(r1, r3)
-            r3 = r0
-        L_0x02c9:
-            int r4 = r35 + 1
-            r2 = r39
-            r1 = r19
-            goto L_0x000c
-        L_0x02d1:
-            r19 = r1
-            r1 = r3
-            return r1
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.PluralRules.parseConstraint(java.lang.String):com.ibm.icu.text.PluralRules$Constraint");
+    /* JADX WARN: Removed duplicated region for block: B:142:0x0255 A[SYNTHETIC] */
+    /* JADX WARN: Removed duplicated region for block: B:53:0x00f9  */
+    /* JADX WARN: Removed duplicated region for block: B:65:0x012b  */
+    /* JADX WARN: Removed duplicated region for block: B:84:0x018b  */
+    /* JADX WARN: Removed duplicated region for block: B:87:0x0198  */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    private static Constraint parseConstraint(String description) throws ParseException {
+        Constraint result;
+        int i;
+        String[] and_together;
+        Constraint andConstraint;
+        int j;
+        Constraint andConstraint2;
+        boolean integersOnly;
+        int x;
+        String t;
+        boolean integersOnly2;
+        Constraint result2;
+        long low;
+        boolean integersOnly3;
+        boolean inRange;
+        long high;
+        String t2;
+        Object obj;
+        int x2;
+        int x3;
+        long[] vals;
+        String[] or_together = OR_SEPARATED.split(description);
+        int x4 = 0;
+        Constraint result3 = null;
+        while (x4 < or_together.length) {
+            String[] and_together2 = AND_SEPARATED.split(or_together[x4]);
+            int j2 = 0;
+            Constraint andConstraint3 = null;
+            while (j2 < and_together2.length) {
+                Constraint newConstraint = NO_CONSTRAINT;
+                String condition = and_together2[j2].trim();
+                String[] tokens = SimpleTokenizer.split(condition);
+                int mod = 0;
+                boolean inRange2 = true;
+                double lowBound = 9.223372036854776E18d;
+                String[] or_together2 = or_together;
+                int x5 = 0 + 1;
+                String t3 = tokens[0];
+                boolean hackForCompatibility = false;
+                try {
+                    Operand operand = FixedDecimal.getOperand(t3);
+                    if (x5 >= tokens.length) {
+                        result = result3;
+                        i = x4;
+                        and_together = and_together2;
+                        andConstraint = andConstraint3;
+                        j = j2;
+                    } else {
+                        int x6 = x5 + 1;
+                        String t4 = tokens[x5];
+                        if ("mod".equals(t4) || "%".equals(t4)) {
+                            int x7 = x6 + 1;
+                            mod = Integer.parseInt(tokens[x6]);
+                            x6 = x7 + 1;
+                            t4 = nextToken(tokens, x7, condition);
+                        }
+                        and_together = and_together2;
+                        if ("not".equals(t4)) {
+                            inRange2 = !true;
+                            int x8 = x6 + 1;
+                            t4 = nextToken(tokens, x6, condition);
+                            if ("=".equals(t4)) {
+                                throw unexpected(t4, condition);
+                            }
+                            x6 = x8;
+                        } else if ("!".equals(t4)) {
+                            inRange2 = !true;
+                            int x9 = x6 + 1;
+                            t4 = nextToken(tokens, x6, condition);
+                            if (!"=".equals(t4)) {
+                                throw unexpected(t4, condition);
+                            }
+                            x6 = x9;
+                        }
+                        if (!"is".equals(t4)) {
+                            integersOnly = true;
+                            if (!"in".equals(t4) && !"=".equals(t4)) {
+                                if ("within".equals(t4)) {
+                                    integersOnly2 = false;
+                                    x = x6 + 1;
+                                    t = nextToken(tokens, x6, condition);
+                                    if ("not".equals(t)) {
+                                        if (!hackForCompatibility && !inRange2) {
+                                            throw unexpected(t, condition);
+                                        }
+                                        boolean inRange3 = !inRange2;
+                                        t = nextToken(tokens, x, condition);
+                                        inRange2 = inRange3;
+                                        x++;
+                                    }
+                                    List<Long> valueList = new ArrayList<>();
+                                    result2 = result3;
+                                    double highBound = -9.223372036854776E18d;
+                                    while (true) {
+                                        j = j2;
+                                        result = result2;
+                                        low = Long.parseLong(t);
+                                        String t5 = t;
+                                        i = x4;
+                                        if (x < tokens.length) {
+                                            andConstraint = andConstraint3;
+                                            integersOnly3 = integersOnly2;
+                                            inRange = inRange2;
+                                            high = low;
+                                            t2 = t5;
+                                        } else {
+                                            int x10 = x + 1;
+                                            String t6 = nextToken(tokens, x, condition);
+                                            andConstraint = andConstraint3;
+                                            if (t6.equals(".")) {
+                                                integersOnly3 = integersOnly2;
+                                                int x11 = x10 + 1;
+                                                String t7 = nextToken(tokens, x10, condition);
+                                                if (!t7.equals(".")) {
+                                                    throw unexpected(t7, condition);
+                                                }
+                                                x = x11 + 1;
+                                                t2 = nextToken(tokens, x11, condition);
+                                                long high2 = Long.parseLong(t2);
+                                                if (x >= tokens.length) {
+                                                    inRange = inRange2;
+                                                    high = high2;
+                                                } else {
+                                                    int x12 = x + 1;
+                                                    t2 = nextToken(tokens, x, condition);
+                                                    if (!t2.equals(",")) {
+                                                        throw unexpected(t2, condition);
+                                                    }
+                                                    x = x12;
+                                                    inRange = inRange2;
+                                                    high = high2;
+                                                }
+                                            } else {
+                                                integersOnly3 = integersOnly2;
+                                                if (t6.equals(",")) {
+                                                    inRange = inRange2;
+                                                    high = low;
+                                                    x = x10;
+                                                    t2 = t6;
+                                                } else {
+                                                    throw unexpected(t6, condition);
+                                                }
+                                            }
+                                        }
+                                        if (low <= high) {
+                                            throw unexpected(low + "~" + high, condition);
+                                        }
+                                        if (mod != 0) {
+                                            obj = ",";
+                                            x2 = x;
+                                            if (high >= mod) {
+                                                throw unexpected(high + ">mod=" + mod, condition);
+                                            }
+                                        } else {
+                                            obj = ",";
+                                            x2 = x;
+                                        }
+                                        valueList.add(Long.valueOf(low));
+                                        valueList.add(Long.valueOf(high));
+                                        lowBound = Math.min(lowBound, low);
+                                        highBound = Math.max(highBound, high);
+                                        x3 = x2;
+                                        if (x3 < tokens.length) {
+                                            t = nextToken(tokens, x3, condition);
+                                            x = x3 + 1;
+                                            inRange2 = inRange;
+                                            j2 = j;
+                                            result2 = result;
+                                            x4 = i;
+                                            andConstraint3 = andConstraint;
+                                            integersOnly2 = integersOnly3;
+                                        } else if (t2.equals(obj)) {
+                                            throw unexpected(t2, condition);
+                                        } else {
+                                            if (valueList.size() == 2) {
+                                                vals = null;
+                                            } else {
+                                                long[] vals2 = new long[valueList.size()];
+                                                for (int k = 0; k < vals2.length; k++) {
+                                                    vals2[k] = valueList.get(k).longValue();
+                                                }
+                                                vals = vals2;
+                                            }
+                                            if (lowBound != highBound && hackForCompatibility && !inRange) {
+                                                throw unexpected("is not <range>", condition);
+                                            }
+                                            newConstraint = new RangeConstraint(mod, inRange, operand, integersOnly3, lowBound, highBound, vals);
+                                        }
+                                    }
+                                } else {
+                                    throw unexpected(t4, condition);
+                                }
+                            }
+                        } else {
+                            integersOnly = true;
+                        }
+                        hackForCompatibility = "is".equals(t4);
+                        if (hackForCompatibility && !inRange2) {
+                            throw unexpected(t4, condition);
+                        }
+                        x = x6 + 1;
+                        t = nextToken(tokens, x6, condition);
+                        integersOnly2 = integersOnly;
+                        if ("not".equals(t)) {
+                        }
+                        List<Long> valueList2 = new ArrayList<>();
+                        result2 = result3;
+                        double highBound2 = -9.223372036854776E18d;
+                        while (true) {
+                            j = j2;
+                            result = result2;
+                            low = Long.parseLong(t);
+                            String t52 = t;
+                            i = x4;
+                            if (x < tokens.length) {
+                            }
+                            if (low <= high) {
+                            }
+                            t = nextToken(tokens, x3, condition);
+                            x = x3 + 1;
+                            inRange2 = inRange;
+                            j2 = j;
+                            result2 = result;
+                            x4 = i;
+                            andConstraint3 = andConstraint;
+                            integersOnly2 = integersOnly3;
+                        }
+                    }
+                    if (andConstraint == null) {
+                        andConstraint2 = newConstraint;
+                    } else {
+                        andConstraint2 = new AndConstraint(andConstraint, newConstraint);
+                    }
+                    andConstraint3 = andConstraint2;
+                    j2 = j + 1;
+                    or_together = or_together2;
+                    and_together2 = and_together;
+                    result3 = result;
+                    x4 = i;
+                } catch (Exception e) {
+                    throw unexpected(t3, condition);
+                }
+            }
+            String[] or_together3 = or_together;
+            Constraint result4 = result3;
+            int i2 = x4;
+            result3 = andConstraint3;
+            if (result4 != null) {
+                result3 = new OrConstraint(result4, result3);
+            }
+            x4 = i2 + 1;
+            or_together = or_together3;
+        }
+        return result3;
     }
 
     private static ParseException unexpected(String token, String context) {
@@ -1044,7 +924,7 @@ public class PluralRules implements Serializable {
         throw new ParseException("missing token at end of '" + context + "'", -1);
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public static Rule parseRule(String description) throws ParseException {
         Constraint constraint;
         if (description.length() == 0) {
@@ -1052,54 +932,51 @@ public class PluralRules implements Serializable {
         }
         String description2 = description.toLowerCase(Locale.ENGLISH);
         int x = description2.indexOf(58);
-        if (x != -1) {
-            String keyword = description2.substring(0, x).trim();
-            if (isValidKeyword(keyword)) {
-                String description3 = description2.substring(x + 1).trim();
-                String[] constraintOrSamples = AT_SEPARATED.split(description3);
-                FixedDecimalSamples integerSamples = null;
-                FixedDecimalSamples decimalSamples = null;
-                boolean z = true;
-                switch (constraintOrSamples.length) {
-                    case 1:
-                        break;
-                    case 2:
-                        integerSamples = FixedDecimalSamples.parse(constraintOrSamples[1]);
-                        if (integerSamples.sampleType == SampleType.DECIMAL) {
-                            decimalSamples = integerSamples;
-                            integerSamples = null;
-                            break;
-                        }
-                        break;
-                    case 3:
-                        integerSamples = FixedDecimalSamples.parse(constraintOrSamples[1]);
-                        decimalSamples = FixedDecimalSamples.parse(constraintOrSamples[2]);
-                        if (!(integerSamples.sampleType == SampleType.INTEGER && decimalSamples.sampleType == SampleType.DECIMAL)) {
-                            throw new IllegalArgumentException("Must have @integer then @decimal in " + description3);
-                        }
-                    default:
-                        throw new IllegalArgumentException("Too many samples in " + description3);
-                }
-                if (0 == 0) {
-                    boolean isOther = keyword.equals(KEYWORD_OTHER);
-                    if (constraintOrSamples[0].length() != 0) {
-                        z = false;
-                    }
-                    if (isOther == z) {
-                        if (isOther) {
-                            constraint = NO_CONSTRAINT;
-                        } else {
-                            constraint = parseConstraint(constraintOrSamples[0]);
-                        }
-                        return new Rule(keyword, constraint, integerSamples, decimalSamples);
-                    }
-                    throw new IllegalArgumentException("The keyword 'other' must have no constraints, just samples.");
-                }
-                throw new IllegalArgumentException("Ill-formed samples—'@' characters.");
-            }
+        if (x == -1) {
+            throw new ParseException("missing ':' in rule description '" + description2 + "'", 0);
+        }
+        String keyword = description2.substring(0, x).trim();
+        if (!isValidKeyword(keyword)) {
             throw new ParseException("keyword '" + keyword + " is not valid", 0);
         }
-        throw new ParseException("missing ':' in rule description '" + description2 + "'", 0);
+        String description3 = description2.substring(x + 1).trim();
+        String[] constraintOrSamples = AT_SEPARATED.split(description3);
+        FixedDecimalSamples integerSamples = null;
+        FixedDecimalSamples decimalSamples = null;
+        switch (constraintOrSamples.length) {
+            case 1:
+                break;
+            case 2:
+                integerSamples = FixedDecimalSamples.parse(constraintOrSamples[1]);
+                if (integerSamples.sampleType == SampleType.DECIMAL) {
+                    decimalSamples = integerSamples;
+                    integerSamples = null;
+                    break;
+                }
+                break;
+            case 3:
+                integerSamples = FixedDecimalSamples.parse(constraintOrSamples[1]);
+                decimalSamples = FixedDecimalSamples.parse(constraintOrSamples[2]);
+                if (integerSamples.sampleType != SampleType.INTEGER || decimalSamples.sampleType != SampleType.DECIMAL) {
+                    throw new IllegalArgumentException("Must have @integer then @decimal in " + description3);
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Too many samples in " + description3);
+        }
+        if (0 != 0) {
+            throw new IllegalArgumentException("Ill-formed samples\u2014'@' characters.");
+        }
+        boolean isOther = keyword.equals(KEYWORD_OTHER);
+        if (isOther != (constraintOrSamples[0].length() == 0)) {
+            throw new IllegalArgumentException("The keyword 'other' must have no constraints, just samples.");
+        }
+        if (isOther) {
+            constraint = NO_CONSTRAINT;
+        } else {
+            constraint = parseConstraint(constraintOrSamples[0]);
+        }
+        return new Rule(keyword, constraint, integerSamples, decimalSamples);
     }
 
     private static RuleList parseRuleChain(String description) throws ParseException {
@@ -1107,15 +984,16 @@ public class PluralRules implements Serializable {
         if (description.endsWith(";")) {
             description = description.substring(0, description.length() - 1);
         }
-        String[] rules2 = SEMI_SEPARATED.split(description);
-        for (String trim : rules2) {
-            Rule rule = parseRule(trim.trim());
-            boolean unused = result.hasExplicitBoundingInfo = result.hasExplicitBoundingInfo | ((rule.integerSamples == null && rule.decimalSamples == null) ? false : true);
+        String[] rules = SEMI_SEPARATED.split(description);
+        for (String str : rules) {
+            Rule rule = parseRule(str.trim());
+            result.hasExplicitBoundingInfo |= (rule.integerSamples == null && rule.decimalSamples == null) ? false : true;
             result.addRule(rule);
         }
         return result.finish();
     }
 
+    /* loaded from: classes.dex */
     private static class RangeConstraint implements Constraint, Serializable {
         private static final long serialVersionUID = 1;
         private final boolean inRange;
@@ -1126,167 +1004,106 @@ public class PluralRules implements Serializable {
         private final long[] range_list;
         private final double upperBound;
 
-        RangeConstraint(int mod2, boolean inRange2, Operand operand2, boolean integersOnly2, double lowBound, double highBound, long[] vals) {
-            this.mod = mod2;
-            this.inRange = inRange2;
-            this.integersOnly = integersOnly2;
+        RangeConstraint(int mod, boolean inRange, Operand operand, boolean integersOnly, double lowBound, double highBound, long[] vals) {
+            this.mod = mod;
+            this.inRange = inRange;
+            this.integersOnly = integersOnly;
             this.lowerBound = lowBound;
             this.upperBound = highBound;
             this.range_list = vals;
-            this.operand = operand2;
+            this.operand = operand;
         }
 
+        @Override // com.ibm.icu.text.PluralRules.Constraint
         public boolean isFulfilled(IFixedDecimal number) {
             double n = number.getPluralOperand(this.operand);
-            if ((this.integersOnly && n - ((double) ((long) n)) != 0.0d) || (this.operand == Operand.j && number.getPluralOperand(Operand.v) != 0.0d)) {
+            if ((this.integersOnly && n - ((long) n) != 0.0d) || (this.operand == Operand.j && number.getPluralOperand(Operand.v) != 0.0d)) {
                 return !this.inRange;
             }
             int i = this.mod;
             if (i != 0) {
-                n %= (double) i;
+                n %= i;
             }
             boolean test = n >= this.lowerBound && n <= this.upperBound;
             if (test && this.range_list != null) {
-                boolean test2 = false;
+                test = false;
                 int i2 = 0;
                 while (!test) {
                     long[] jArr = this.range_list;
                     if (i2 >= jArr.length) {
                         break;
                     }
-                    test2 = n >= ((double) jArr[i2]) && n <= ((double) jArr[i2 + 1]);
+                    test = n >= ((double) jArr[i2]) && n <= ((double) jArr[i2 + 1]);
                     i2 += 2;
                 }
             }
-            if (this.inRange == test) {
-                return true;
-            }
-            return false;
+            return this.inRange == test;
         }
 
+        @Override // com.ibm.icu.text.PluralRules.Constraint
         public boolean isLimited(SampleType sampleType) {
             double d = this.lowerBound;
-            boolean hasDecimals = (this.operand == Operand.v || this.operand == Operand.w || this.operand == Operand.f || this.operand == Operand.t) && this.inRange != ((d > this.upperBound ? 1 : (d == this.upperBound ? 0 : -1)) == 0 && (d > 0.0d ? 1 : (d == 0.0d ? 0 : -1)) == 0);
-            switch (AnonymousClass2.$SwitchMap$com$ibm$icu$text$PluralRules$SampleType[sampleType.ordinal()]) {
+            boolean valueIsZero = d == this.upperBound && d == 0.0d;
+            boolean hasDecimals = (this.operand == Operand.v || this.operand == Operand.w || this.operand == Operand.f || this.operand == Operand.t) && this.inRange != valueIsZero;
+            switch (C07462.$SwitchMap$com$ibm$icu$text$PluralRules$SampleType[sampleType.ordinal()]) {
                 case 1:
                     if (hasDecimals) {
                         return true;
                     }
-                    if ((this.operand == Operand.n || this.operand == Operand.i || this.operand == Operand.j) && this.mod == 0 && this.inRange) {
-                        return true;
-                    }
-                    return false;
+                    return (this.operand == Operand.n || this.operand == Operand.i || this.operand == Operand.j) && this.mod == 0 && this.inRange;
                 case 2:
-                    if ((!hasDecimals || this.operand == Operand.n || this.operand == Operand.j) && ((this.integersOnly || this.lowerBound == this.upperBound) && this.mod == 0 && this.inRange)) {
-                        return true;
-                    }
-                    return false;
+                    return (!hasDecimals || this.operand == Operand.n || this.operand == Operand.j) && (this.integersOnly || this.lowerBound == this.upperBound) && this.mod == 0 && this.inRange;
                 default:
                     return false;
             }
         }
 
-        /* JADX WARNING: Code restructure failed: missing block: B:10:0x002f, code lost:
-            if (r11.inRange != false) goto L_0x0046;
+        /* JADX WARN: Code restructure failed: missing block: B:12:0x002f, code lost:
+            if (r11.inRange != false) goto L12;
          */
-        /* JADX WARNING: Code restructure failed: missing block: B:15:0x003a, code lost:
-            if (r11.inRange != false) goto L_0x0046;
+        /* JADX WARN: Code restructure failed: missing block: B:14:0x0032, code lost:
+            r1 = " != ";
          */
-        /* JADX WARNING: Removed duplicated region for block: B:22:0x004d  */
-        /* JADX WARNING: Removed duplicated region for block: B:30:0x0069  */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public java.lang.String toString() {
-            /*
-                r11 = this;
-                java.lang.StringBuilder r0 = new java.lang.StringBuilder
-                r0.<init>()
-                com.ibm.icu.text.PluralRules$Operand r1 = r11.operand
-                r0.append(r1)
-                int r1 = r11.mod
-                if (r1 == 0) goto L_0x0019
-                java.lang.String r1 = " % "
-                java.lang.StringBuilder r1 = r0.append(r1)
-                int r2 = r11.mod
-                r1.append(r2)
-            L_0x0019:
-                double r1 = r11.lowerBound
-                double r3 = r11.upperBound
-                int r1 = (r1 > r3 ? 1 : (r1 == r3 ? 0 : -1))
-                r7 = 0
-                r8 = 1
-                if (r1 == 0) goto L_0x0025
-                r1 = r8
-                goto L_0x0026
-            L_0x0025:
-                r1 = r7
-            L_0x0026:
-                r9 = r1
-                java.lang.String r1 = " = "
-                java.lang.String r2 = " != "
-                if (r9 != 0) goto L_0x0034
-                boolean r3 = r11.inRange
-                if (r3 == 0) goto L_0x0032
-            L_0x0031:
-                goto L_0x0046
-            L_0x0032:
-                r1 = r2
-                goto L_0x0046
-            L_0x0034:
-                boolean r3 = r11.integersOnly
-                if (r3 == 0) goto L_0x003d
-                boolean r3 = r11.inRange
-                if (r3 == 0) goto L_0x0032
-                goto L_0x0031
-            L_0x003d:
-                boolean r1 = r11.inRange
-                if (r1 == 0) goto L_0x0044
-                java.lang.String r1 = " within "
-                goto L_0x0046
-            L_0x0044:
-                java.lang.String r1 = " not within "
-            L_0x0046:
-                r0.append(r1)
-                long[] r1 = r11.range_list
-                if (r1 == 0) goto L_0x0069
-                r1 = 0
-                r10 = r1
-            L_0x004f:
-                long[] r1 = r11.range_list
-                int r2 = r1.length
-                if (r10 >= r2) goto L_0x0068
-                r2 = r1[r10]
-                double r2 = (double) r2
-                int r4 = r10 + 1
-                r4 = r1[r4]
-                double r4 = (double) r4
-                if (r10 == 0) goto L_0x0060
-                r6 = r8
-                goto L_0x0061
-            L_0x0060:
-                r6 = r7
-            L_0x0061:
-                r1 = r0
-                com.ibm.icu.text.PluralRules.addRange(r1, r2, r4, r6)
-                int r10 = r10 + 2
-                goto L_0x004f
-            L_0x0068:
-                goto L_0x0072
-            L_0x0069:
-                double r2 = r11.lowerBound
-                double r4 = r11.upperBound
-                r6 = 0
-                r1 = r0
-                com.ibm.icu.text.PluralRules.addRange(r1, r2, r4, r6)
-            L_0x0072:
-                java.lang.String r1 = r0.toString()
-                return r1
-            */
-            throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.PluralRules.RangeConstraint.toString():java.lang.String");
+        /* JADX WARN: Code restructure failed: missing block: B:18:0x003a, code lost:
+            if (r11.inRange != false) goto L12;
+         */
+        /*
+            Code decompiled incorrectly, please refer to instructions dump.
+        */
+        public String toString() {
+            long[] jArr;
+            StringBuilder result = new StringBuilder();
+            result.append(this.operand);
+            if (this.mod != 0) {
+                result.append(" % ").append(this.mod);
+            }
+            boolean isList = this.lowerBound != this.upperBound;
+            String str = " = ";
+            if (isList) {
+                if (!this.integersOnly) {
+                    str = this.inRange ? " within " : " not within ";
+                }
+            }
+            result.append(str);
+            if (this.range_list == null) {
+                PluralRules.addRange(result, this.lowerBound, this.upperBound, false);
+            } else {
+                int i = 0;
+                while (true) {
+                    if (i >= this.range_list.length) {
+                        break;
+                    }
+                    PluralRules.addRange(result, jArr[i], jArr[i + 1], i != 0);
+                    i += 2;
+                }
+            }
+            return result.toString();
         }
     }
 
-    /* renamed from: com.ibm.icu.text.PluralRules$2  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass2 {
+    /* renamed from: com.ibm.icu.text.PluralRules$2 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C07462 {
         static final /* synthetic */ int[] $SwitchMap$com$ibm$icu$text$PluralRules$Operand;
         static final /* synthetic */ int[] $SwitchMap$com$ibm$icu$text$PluralRules$SampleType;
 
@@ -1330,7 +1147,7 @@ public class PluralRules implements Serializable {
         }
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public static void addRange(StringBuilder result, double lb, double ub, boolean addSeparator) {
         if (addSeparator) {
             result.append(",");
@@ -1347,17 +1164,23 @@ public class PluralRules implements Serializable {
         return lb == ((double) lbi) ? String.valueOf(lbi) : String.valueOf(lb);
     }
 
+    /* loaded from: classes.dex */
     private static abstract class BinaryConstraint implements Constraint, Serializable {
         private static final long serialVersionUID = 1;
-        protected final Constraint a;
-        protected final Constraint b;
 
-        protected BinaryConstraint(Constraint a2, Constraint b2) {
-            this.a = a2;
-            this.b = b2;
+        /* renamed from: a */
+        protected final Constraint f152a;
+
+        /* renamed from: b */
+        protected final Constraint f153b;
+
+        protected BinaryConstraint(Constraint a, Constraint b) {
+            this.f152a = a;
+            this.f153b = b;
         }
     }
 
+    /* loaded from: classes.dex */
     private static class AndConstraint extends BinaryConstraint {
         private static final long serialVersionUID = 7766999779862263523L;
 
@@ -1365,19 +1188,22 @@ public class PluralRules implements Serializable {
             super(a, b);
         }
 
+        @Override // com.ibm.icu.text.PluralRules.Constraint
         public boolean isFulfilled(IFixedDecimal n) {
-            return this.a.isFulfilled(n) && this.b.isFulfilled(n);
+            return this.f152a.isFulfilled(n) && this.f153b.isFulfilled(n);
         }
 
+        @Override // com.ibm.icu.text.PluralRules.Constraint
         public boolean isLimited(SampleType sampleType) {
-            return this.a.isLimited(sampleType) || this.b.isLimited(sampleType);
+            return this.f152a.isLimited(sampleType) || this.f153b.isLimited(sampleType);
         }
 
         public String toString() {
-            return this.a.toString() + " and " + this.b.toString();
+            return this.f152a.toString() + " and " + this.f153b.toString();
         }
     }
 
+    /* loaded from: classes.dex */
     private static class OrConstraint extends BinaryConstraint {
         private static final long serialVersionUID = 1405488568664762222L;
 
@@ -1385,40 +1211,42 @@ public class PluralRules implements Serializable {
             super(a, b);
         }
 
+        @Override // com.ibm.icu.text.PluralRules.Constraint
         public boolean isFulfilled(IFixedDecimal n) {
-            return this.a.isFulfilled(n) || this.b.isFulfilled(n);
+            return this.f152a.isFulfilled(n) || this.f153b.isFulfilled(n);
         }
 
+        @Override // com.ibm.icu.text.PluralRules.Constraint
         public boolean isLimited(SampleType sampleType) {
-            return this.a.isLimited(sampleType) && this.b.isLimited(sampleType);
+            return this.f152a.isLimited(sampleType) && this.f153b.isLimited(sampleType);
         }
 
         public String toString() {
-            return this.a.toString() + " or " + this.b.toString();
+            return this.f152a.toString() + " or " + this.f153b.toString();
         }
     }
 
+    /* loaded from: classes.dex */
     private static class Rule implements Serializable {
         private static final long serialVersionUID = 1;
         private final Constraint constraint;
-        /* access modifiers changed from: private */
-        public final FixedDecimalSamples decimalSamples;
-        /* access modifiers changed from: private */
-        public final FixedDecimalSamples integerSamples;
+        private final FixedDecimalSamples decimalSamples;
+        private final FixedDecimalSamples integerSamples;
         private final String keyword;
 
-        public Rule(String keyword2, Constraint constraint2, FixedDecimalSamples integerSamples2, FixedDecimalSamples decimalSamples2) {
-            this.keyword = keyword2;
-            this.constraint = constraint2;
-            this.integerSamples = integerSamples2;
-            this.decimalSamples = decimalSamples2;
+        public Rule(String keyword, Constraint constraint, FixedDecimalSamples integerSamples, FixedDecimalSamples decimalSamples) {
+            this.keyword = keyword;
+            this.constraint = constraint;
+            this.integerSamples = integerSamples;
+            this.decimalSamples = decimalSamples;
         }
 
         public Rule and(Constraint c) {
             return new Rule(this.keyword, new AndConstraint(this.constraint, c), this.integerSamples, this.decimalSamples);
         }
 
-        public Rule or(Constraint c) {
+        /* renamed from: or */
+        public Rule m46or(Constraint c) {
             return new Rule(this.keyword, new OrConstraint(this.constraint, c), this.integerSamples, this.decimalSamples);
         }
 
@@ -1435,19 +1263,7 @@ public class PluralRules implements Serializable {
         }
 
         public String toString() {
-            String str;
-            StringBuilder append = new StringBuilder().append(this.keyword).append(PluralRules.KEYWORD_RULE_SEPARATOR).append(this.constraint.toString());
-            String str2 = "";
-            if (this.integerSamples == null) {
-                str = str2;
-            } else {
-                str = " " + this.integerSamples.toString();
-            }
-            StringBuilder append2 = append.append(str);
-            if (this.decimalSamples != null) {
-                str2 = " " + this.decimalSamples.toString();
-            }
-            return append2.append(str2).toString();
+            return this.keyword + PluralRules.KEYWORD_RULE_SEPARATOR + this.constraint.toString() + (this.integerSamples == null ? "" : " " + this.integerSamples.toString()) + (this.decimalSamples != null ? " " + this.decimalSamples.toString() : "");
         }
 
         public int hashCode() {
@@ -1459,10 +1275,10 @@ public class PluralRules implements Serializable {
         }
     }
 
+    /* loaded from: classes.dex */
     private static class RuleList implements Serializable {
         private static final long serialVersionUID = 1;
-        /* access modifiers changed from: private */
-        public boolean hasExplicitBoundingInfo;
+        private boolean hasExplicitBoundingInfo;
         private final List<Rule> rules;
 
         private RuleList() {
@@ -1511,7 +1327,8 @@ public class PluralRules implements Serializable {
             if (n.isInfinite() || n.isNaN()) {
                 return PluralRules.KEYWORD_OTHER;
             }
-            return selectRule(n).getKeyword();
+            Rule r = selectRule(n);
+            return r.getKeyword();
         }
 
         public Set<String> getKeywords() {
@@ -1523,14 +1340,14 @@ public class PluralRules implements Serializable {
         }
 
         public boolean isLimited(String keyword, SampleType sampleType) {
-            if (!this.hasExplicitBoundingInfo) {
-                return computeLimited(keyword, sampleType);
+            if (this.hasExplicitBoundingInfo) {
+                FixedDecimalSamples mySamples = getDecimalSamples(keyword, sampleType);
+                if (mySamples == null) {
+                    return true;
+                }
+                return mySamples.bounded;
             }
-            FixedDecimalSamples mySamples = getDecimalSamples(keyword, sampleType);
-            if (mySamples == null) {
-                return true;
-            }
-            return mySamples.bounded;
+            return computeLimited(keyword, sampleType);
         }
 
         public boolean computeLimited(String keyword, SampleType sampleType) {
@@ -1587,11 +1404,11 @@ public class PluralRules implements Serializable {
 
     private boolean addConditional(Set<IFixedDecimal> toAddTo, Set<IFixedDecimal> others, double trial) {
         IFixedDecimal toAdd = new FixedDecimal(trial);
-        if (toAddTo.contains(toAdd) || others.contains(toAdd)) {
-            return false;
+        if (!toAddTo.contains(toAdd) && !others.contains(toAdd)) {
+            others.add(toAdd);
+            return true;
         }
-        others.add(toAdd);
-        return true;
+        return false;
     }
 
     public static PluralRules forLocale(ULocale locale) {
@@ -1614,9 +1431,9 @@ public class PluralRules implements Serializable {
         return ALLOWED_ID.containsAll(token);
     }
 
-    private PluralRules(RuleList rules2) {
-        this.rules = rules2;
-        this.keywords = Collections.unmodifiableSet(rules2.getKeywords());
+    private PluralRules(RuleList rules) {
+        this.rules = rules;
+        this.keywords = Collections.unmodifiableSet(rules.getKeywords());
     }
 
     public int hashCode() {
@@ -1648,10 +1465,10 @@ public class PluralRules implements Serializable {
 
     public double getUniqueKeywordValue(String keyword) {
         Collection<Double> values = getAllKeywordValues(keyword);
-        if (values == null || values.size() != 1) {
-            return -0.00123456777d;
+        if (values != null && values.size() == 1) {
+            return values.iterator().next().doubleValue();
         }
-        return values.iterator().next().doubleValue();
+        return -0.00123456777d;
     }
 
     public Collection<Double> getAllKeywordValues(String keyword) {
@@ -1673,48 +1490,42 @@ public class PluralRules implements Serializable {
 
     @Deprecated
     public Collection<Double> getSamples(String keyword, SampleType sampleType) {
-        if (!this.keywords.contains(keyword)) {
-            return null;
-        }
-        Set<Double> result = new TreeSet<>();
-        if (this.rules.hasExplicitBoundingInfo) {
-            FixedDecimalSamples samples = this.rules.getDecimalSamples(keyword, sampleType);
-            if (samples == null) {
-                return Collections.unmodifiableSet(result);
+        if (this.keywords.contains(keyword)) {
+            Set<Double> result = new TreeSet<>();
+            if (this.rules.hasExplicitBoundingInfo) {
+                FixedDecimalSamples samples = this.rules.getDecimalSamples(keyword, sampleType);
+                return samples == null ? Collections.unmodifiableSet(result) : Collections.unmodifiableSet(samples.addSamples(result));
             }
-            return Collections.unmodifiableSet(samples.addSamples(result));
+            int maxCount = isLimited(keyword, sampleType) ? Integer.MAX_VALUE : 20;
+            switch (C07462.$SwitchMap$com$ibm$icu$text$PluralRules$SampleType[sampleType.ordinal()]) {
+                case 1:
+                    for (int i = 0; i < 200 && addSample(keyword, Integer.valueOf(i), maxCount, result); i++) {
+                    }
+                    addSample(keyword, Integer.valueOf((int) DurationKt.NANOS_IN_MILLIS), maxCount, result);
+                    break;
+                case 2:
+                    for (int i2 = 0; i2 < 2000 && addSample(keyword, new FixedDecimal(i2 / 10.0d, 1), maxCount, result); i2++) {
+                    }
+                    addSample(keyword, new FixedDecimal(1000000.0d, 1), maxCount, result);
+                    break;
+            }
+            if (result.size() == 0) {
+                return null;
+            }
+            return Collections.unmodifiableSet(result);
         }
-        int maxCount = isLimited(keyword, sampleType) ? Integer.MAX_VALUE : 20;
-        switch (AnonymousClass2.$SwitchMap$com$ibm$icu$text$PluralRules$SampleType[sampleType.ordinal()]) {
-            case 1:
-                int i = 0;
-                while (i < 200 && addSample(keyword, Integer.valueOf(i), maxCount, result)) {
-                    i++;
-                }
-                addSample(keyword, Integer.valueOf(DurationKt.NANOS_IN_MILLIS), maxCount, result);
-                break;
-            case 2:
-                int i2 = 0;
-                while (i2 < 2000 && addSample(keyword, new FixedDecimal(((double) i2) / 10.0d, 1), maxCount, result)) {
-                    i2++;
-                }
-                addSample(keyword, new FixedDecimal(1000000.0d, 1), maxCount, result);
-                break;
-        }
-        if (result.size() == 0) {
-            return null;
-        }
-        return Collections.unmodifiableSet(result);
+        return null;
     }
 
     @Deprecated
     public boolean addSample(String keyword, Number sample, int maxCount, Set<Double> result) {
-        if (!(sample instanceof FixedDecimal ? select((IFixedDecimal) (FixedDecimal) sample) : select(sample.doubleValue())).equals(keyword)) {
+        String selectedKeyword = sample instanceof FixedDecimal ? select((FixedDecimal) sample) : select(sample.doubleValue());
+        if (selectedKeyword.equals(keyword)) {
+            result.add(Double.valueOf(sample.doubleValue()));
+            if (maxCount - 1 < 0) {
+                return false;
+            }
             return true;
-        }
-        result.add(Double.valueOf(sample.doubleValue()));
-        if (maxCount - 1 < 0) {
-            return false;
         }
         return true;
     }
@@ -1764,26 +1575,26 @@ public class PluralRules implements Serializable {
         if (explicits == null) {
             explicits = Collections.emptySet();
         }
-        if (originalSize <= explicits.size()) {
-            HashSet<Double> subtractedSet = new HashSet<>(values);
-            for (Double explicit : explicits) {
-                subtractedSet.remove(Double.valueOf(explicit.doubleValue() - ((double) offset)));
+        if (originalSize > explicits.size()) {
+            if (originalSize == 1) {
+                if (uniqueValue != null) {
+                    uniqueValue.value = values.iterator().next();
+                }
+                return KeywordStatus.UNIQUE;
             }
-            if (subtractedSet.size() == 0) {
-                return KeywordStatus.SUPPRESSED;
-            }
-            if (uniqueValue != null && subtractedSet.size() == 1) {
-                uniqueValue.value = subtractedSet.iterator().next();
-            }
-            return originalSize == 1 ? KeywordStatus.UNIQUE : KeywordStatus.BOUNDED;
-        } else if (originalSize != 1) {
             return KeywordStatus.BOUNDED;
-        } else {
-            if (uniqueValue != null) {
-                uniqueValue.value = values.iterator().next();
-            }
-            return KeywordStatus.UNIQUE;
         }
+        HashSet<Double> subtractedSet = new HashSet<>(values);
+        for (Double explicit : explicits) {
+            subtractedSet.remove(Double.valueOf(explicit.doubleValue() - offset));
+        }
+        if (subtractedSet.size() == 0) {
+            return KeywordStatus.SUPPRESSED;
+        }
+        if (uniqueValue != null && subtractedSet.size() == 1) {
+            uniqueValue.value = subtractedSet.iterator().next();
+        }
+        return originalSize == 1 ? KeywordStatus.UNIQUE : KeywordStatus.BOUNDED;
     }
 
     @Deprecated

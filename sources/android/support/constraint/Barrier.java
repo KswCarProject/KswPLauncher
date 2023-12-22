@@ -11,6 +11,7 @@ import android.support.constraint.solver.widgets.HelperWidget;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 
+/* loaded from: classes.dex */
 public class Barrier extends ConstraintHelper {
     public static final int BOTTOM = 3;
     public static final int END = 6;
@@ -70,29 +71,32 @@ public class Barrier extends ConstraintHelper {
             }
         }
         if (widget instanceof android.support.constraint.solver.widgets.Barrier) {
-            ((android.support.constraint.solver.widgets.Barrier) widget).setBarrierType(this.mResolvedType);
+            android.support.constraint.solver.widgets.Barrier barrier = (android.support.constraint.solver.widgets.Barrier) widget;
+            barrier.setBarrierType(this.mResolvedType);
         }
     }
 
+    @Override // android.support.constraint.ConstraintHelper
     public void resolveRtl(ConstraintWidget widget, boolean isRtl) {
         updateType(widget, this.mIndicatedType, isRtl);
     }
 
-    /* access modifiers changed from: protected */
-    public void init(AttributeSet attrs) {
+    @Override // android.support.constraint.ConstraintHelper
+    protected void init(AttributeSet attrs) {
         super.init(attrs);
         this.mBarrier = new android.support.constraint.solver.widgets.Barrier();
         if (attrs != null) {
-            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ConstraintLayout_Layout);
+            TypedArray a = getContext().obtainStyledAttributes(attrs, C0088R.styleable.ConstraintLayout_Layout);
             int N = a.getIndexCount();
             for (int i = 0; i < N; i++) {
                 int attr = a.getIndex(i);
-                if (attr == R.styleable.ConstraintLayout_Layout_barrierDirection) {
+                if (attr == C0088R.styleable.ConstraintLayout_Layout_barrierDirection) {
                     setType(a.getInt(attr, 0));
-                } else if (attr == R.styleable.ConstraintLayout_Layout_barrierAllowsGoneWidgets) {
+                } else if (attr == C0088R.styleable.ConstraintLayout_Layout_barrierAllowsGoneWidgets) {
                     this.mBarrier.setAllowsGoneWidget(a.getBoolean(attr, true));
-                } else if (attr == R.styleable.ConstraintLayout_Layout_barrierMargin) {
-                    this.mBarrier.setMargin(a.getDimensionPixelSize(attr, 0));
+                } else if (attr == C0088R.styleable.ConstraintLayout_Layout_barrierMargin) {
+                    int margin = a.getDimensionPixelSize(attr, 0);
+                    this.mBarrier.setMargin(margin);
                 }
             }
         }
@@ -109,8 +113,9 @@ public class Barrier extends ConstraintHelper {
     }
 
     public void setDpMargin(int margin) {
-        android.support.constraint.solver.widgets.Barrier barrier = this.mBarrier;
-        barrier.setMargin((int) ((((float) margin) * getResources().getDisplayMetrics().density) + 0.5f));
+        float density = getResources().getDisplayMetrics().density;
+        int px = (int) ((margin * density) + 0.5f);
+        this.mBarrier.setMargin(px);
     }
 
     public int getMargin() {
@@ -121,11 +126,14 @@ public class Barrier extends ConstraintHelper {
         this.mBarrier.setMargin(margin);
     }
 
+    @Override // android.support.constraint.ConstraintHelper
     public void loadParameters(ConstraintSet.Constraint constraint, HelperWidget child, ConstraintLayout.LayoutParams layoutParams, SparseArray<ConstraintWidget> mapIdToWidget) {
         super.loadParameters(constraint, child, layoutParams, mapIdToWidget);
         if (child instanceof android.support.constraint.solver.widgets.Barrier) {
             android.support.constraint.solver.widgets.Barrier barrier = (android.support.constraint.solver.widgets.Barrier) child;
-            updateType(barrier, constraint.layout.mBarrierDirection, ((ConstraintWidgetContainer) child.getParent()).isRtl());
+            ConstraintWidgetContainer container = (ConstraintWidgetContainer) child.getParent();
+            boolean isRtl = container.isRtl();
+            updateType(barrier, constraint.layout.mBarrierDirection, isRtl);
             barrier.setAllowsGoneWidget(constraint.layout.mBarrierAllowsGoneWidgets);
             barrier.setMargin(constraint.layout.mBarrierMargin);
         }

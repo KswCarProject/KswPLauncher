@@ -11,39 +11,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.wits.ksw.BuildConfig;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.databinding.AudiMib3OneDataCls;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.model.MediaImpl;
 import com.wits.ksw.launcher.utils.KeyUtils;
-import com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView;
 import com.wits.pms.IContentObserver;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
+/* loaded from: classes9.dex */
 public class AudiMib3FragmentOne extends AudiMib3BaseFragment implements View.OnKeyListener {
     public static final String TAG = "AudiMib3FragmentOne - One";
     public static AudiMib3OneDataCls bindingOne;
-    /* access modifiers changed from: private */
-    public AnimationDrawable animDrawApps;
-    /* access modifiers changed from: private */
-    public AnimationDrawable animDrawBt;
-    /* access modifiers changed from: private */
-    public AnimationDrawable animDrawCar;
-    /* access modifiers changed from: private */
-    public AnimationDrawable animDrawMusic;
-    /* access modifiers changed from: private */
-    public AnimationDrawable animDrawNavi;
-    /* access modifiers changed from: private */
-    public AnimationDrawable animDrawPhonelink;
-    /* access modifiers changed from: private */
-    public AnimationDrawable animDrawSet;
-    /* access modifiers changed from: private */
-    public AnimationDrawable animDrawVideo;
-    private View.OnFocusChangeListener mFocusChangeListener = new View.OnFocusChangeListener() {
+    private AnimationDrawable animDrawApps;
+    private AnimationDrawable animDrawBt;
+    private AnimationDrawable animDrawCar;
+    private AnimationDrawable animDrawMusic;
+    private AnimationDrawable animDrawNavi;
+    private AnimationDrawable animDrawPhonelink;
+    private AnimationDrawable animDrawSet;
+    private AnimationDrawable animDrawVideo;
+    private View.OnFocusChangeListener mFocusChangeListener = new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.view.audimib3.AudiMib3FragmentOne.2
+        @Override // android.view.View.OnFocusChangeListener
         public void onFocusChange(View v, boolean hasFocus) {
             AudiMib3FragmentOne.this.viewModel.clearLastSel();
             switch (v.getId()) {
-                case R.id.app_itemview /*2131296342*/:
+                case C0899R.C0901id.app_itemview /* 2131296344 */:
                     if (hasFocus) {
                         if (!AudiMib3FragmentOne.this.animDrawApps.isRunning()) {
                             AudiMib3FragmentOne.this.animDrawApps.start();
@@ -56,7 +49,7 @@ public class AudiMib3FragmentOne extends AudiMib3BaseFragment implements View.On
                     } else {
                         return;
                     }
-                case R.id.bt_itemview /*2131296659*/:
+                case C0899R.C0901id.bt_itemview /* 2131296685 */:
                     if (hasFocus) {
                         if (!AudiMib3FragmentOne.this.animDrawBt.isRunning()) {
                             AudiMib3FragmentOne.this.animDrawBt.start();
@@ -69,7 +62,7 @@ public class AudiMib3FragmentOne extends AudiMib3BaseFragment implements View.On
                     } else {
                         return;
                     }
-                case R.id.car_itemview /*2131296693*/:
+                case C0899R.C0901id.car_itemview /* 2131296719 */:
                     if (hasFocus) {
                         if (!AudiMib3FragmentOne.this.animDrawCar.isRunning()) {
                             AudiMib3FragmentOne.this.animDrawCar.start();
@@ -82,7 +75,7 @@ public class AudiMib3FragmentOne extends AudiMib3BaseFragment implements View.On
                     } else {
                         return;
                     }
-                case R.id.music_itemview /*2131297337*/:
+                case C0899R.C0901id.music_itemview /* 2131297366 */:
                     if (hasFocus) {
                         if (!AudiMib3FragmentOne.this.animDrawMusic.isRunning()) {
                             AudiMib3FragmentOne.this.animDrawMusic.start();
@@ -95,7 +88,7 @@ public class AudiMib3FragmentOne extends AudiMib3BaseFragment implements View.On
                     } else {
                         return;
                     }
-                case R.id.navi_itemview /*2131297361*/:
+                case C0899R.C0901id.navi_itemview /* 2131297390 */:
                     if (hasFocus) {
                         if (!AudiMib3FragmentOne.this.animDrawNavi.isRunning()) {
                             AudiMib3FragmentOne.this.animDrawNavi.start();
@@ -108,7 +101,7 @@ public class AudiMib3FragmentOne extends AudiMib3BaseFragment implements View.On
                     } else {
                         return;
                     }
-                case R.id.phonelink_itemview /*2131297405*/:
+                case C0899R.C0901id.phonelink_itemview /* 2131297437 */:
                     if (hasFocus) {
                         if (!AudiMib3FragmentOne.this.animDrawPhonelink.isRunning()) {
                             AudiMib3FragmentOne.this.animDrawPhonelink.start();
@@ -121,7 +114,7 @@ public class AudiMib3FragmentOne extends AudiMib3BaseFragment implements View.On
                     } else {
                         return;
                     }
-                case R.id.set_itemview /*2131297701*/:
+                case C0899R.C0901id.set_itemview /* 2131297748 */:
                     if (hasFocus) {
                         if (!AudiMib3FragmentOne.this.animDrawSet.isRunning()) {
                             AudiMib3FragmentOne.this.animDrawSet.start();
@@ -134,7 +127,7 @@ public class AudiMib3FragmentOne extends AudiMib3BaseFragment implements View.On
                     } else {
                         return;
                     }
-                case R.id.video_itemview /*2131297999*/:
+                case C0899R.C0901id.video_itemview /* 2131298051 */:
                     if (hasFocus) {
                         if (!AudiMib3FragmentOne.this.animDrawVideo.isRunning()) {
                             AudiMib3FragmentOne.this.animDrawVideo.start();
@@ -152,52 +145,53 @@ public class AudiMib3FragmentOne extends AudiMib3BaseFragment implements View.On
             }
         }
     };
-    private View.OnClickListener mItemClickListener = new View.OnClickListener() {
+    private View.OnClickListener mItemClickListener = new View.OnClickListener() { // from class: com.wits.ksw.launcher.view.audimib3.AudiMib3FragmentOne.3
+        @Override // android.view.View.OnClickListener
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.app_itemview /*2131296342*/:
+                case C0899R.C0901id.app_itemview /* 2131296344 */:
                     BcVieModel bcVieModel = AudiMib3FragmentOne.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3FragmentOne.bindingOne.appItemview;
                     AudiMib3FragmentOne.setItemSelected(AudiMib3FragmentOne.bindingOne.appItemview);
                     AudiMib3FragmentOne.this.viewModel.openApps(v);
                     return;
-                case R.id.bt_itemview /*2131296659*/:
+                case C0899R.C0901id.bt_itemview /* 2131296685 */:
                     BcVieModel bcVieModel2 = AudiMib3FragmentOne.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3FragmentOne.bindingOne.btItemview;
                     AudiMib3FragmentOne.setItemSelected(AudiMib3FragmentOne.bindingOne.btItemview);
                     AudiMib3FragmentOne.this.viewModel.openBtApp(v);
                     return;
-                case R.id.car_itemview /*2131296693*/:
+                case C0899R.C0901id.car_itemview /* 2131296719 */:
                     BcVieModel bcVieModel3 = AudiMib3FragmentOne.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3FragmentOne.bindingOne.carItemview;
                     AudiMib3FragmentOne.setItemSelected(AudiMib3FragmentOne.bindingOne.carItemview);
                     AudiMib3FragmentOne.this.viewModel.openCar(v);
                     return;
-                case R.id.music_itemview /*2131297337*/:
+                case C0899R.C0901id.music_itemview /* 2131297366 */:
                     AudiMib3FragmentOne.setItemSelected(AudiMib3FragmentOne.bindingOne.musicItemview);
                     BcVieModel bcVieModel4 = AudiMib3FragmentOne.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3FragmentOne.bindingOne.musicItemview;
                     AudiMib3FragmentOne.this.viewModel.openMusicMulti(v);
                     return;
-                case R.id.navi_itemview /*2131297361*/:
+                case C0899R.C0901id.navi_itemview /* 2131297390 */:
                     BcVieModel bcVieModel5 = AudiMib3FragmentOne.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3FragmentOne.bindingOne.naviItemview;
                     AudiMib3FragmentOne.setItemSelected(AudiMib3FragmentOne.bindingOne.naviItemview);
                     AudiMib3FragmentOne.this.viewModel.openNaviApp(v);
                     return;
-                case R.id.phonelink_itemview /*2131297405*/:
+                case C0899R.C0901id.phonelink_itemview /* 2131297437 */:
                     BcVieModel bcVieModel6 = AudiMib3FragmentOne.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3FragmentOne.bindingOne.phonelinkItemview;
                     AudiMib3FragmentOne.setItemSelected(AudiMib3FragmentOne.bindingOne.phonelinkItemview);
                     AudiMib3FragmentOne.this.viewModel.openPhoneLink2021(v);
                     return;
-                case R.id.set_itemview /*2131297701*/:
+                case C0899R.C0901id.set_itemview /* 2131297748 */:
                     BcVieModel bcVieModel7 = AudiMib3FragmentOne.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3FragmentOne.bindingOne.setItemview;
                     AudiMib3FragmentOne.setItemSelected(AudiMib3FragmentOne.bindingOne.setItemview);
                     AudiMib3FragmentOne.this.viewModel.openSettings(v);
                     return;
-                case R.id.video_itemview /*2131297999*/:
+                case C0899R.C0901id.video_itemview /* 2131298051 */:
                     AudiMib3FragmentOne.setItemSelected(AudiMib3FragmentOne.bindingOne.videoItemview);
                     BcVieModel bcVieModel8 = AudiMib3FragmentOne.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3FragmentOne.bindingOne.videoItemview;
@@ -208,7 +202,8 @@ public class AudiMib3FragmentOne extends AudiMib3BaseFragment implements View.On
             }
         }
     };
-    private IContentObserver.Stub topAppContentObserver = new IContentObserver.Stub() {
+    private IContentObserver.Stub topAppContentObserver = new IContentObserver.Stub() { // from class: com.wits.ksw.launcher.view.audimib3.AudiMib3FragmentOne.4
+        @Override // com.wits.pms.IContentObserver
         public void onChange() throws RemoteException {
             try {
                 String topApp = PowerManagerApp.getStatusString("topApp");
@@ -222,28 +217,33 @@ public class AudiMib3FragmentOne extends AudiMib3BaseFragment implements View.On
         }
     };
 
+    @Override // com.wits.ksw.launcher.view.audimib3.AudiMib3BaseFragment, android.support.p001v4.app.Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        AudiMib3OneDataCls audiMib3OneDataCls = (AudiMib3OneDataCls) DataBindingUtil.inflate(inflater, R.layout.audi_mib3_fragment_one, (ViewGroup) null, false);
+        AudiMib3OneDataCls audiMib3OneDataCls = (AudiMib3OneDataCls) DataBindingUtil.inflate(inflater, C0899R.C0902layout.audi_mib3_fragment_one, null, false);
         bindingOne = audiMib3OneDataCls;
         return audiMib3OneDataCls.getRoot();
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onResume() {
         super.onResume();
         Log.d("AudiMib3FragmentOne", "onResume()  1111111111111");
         this.viewModel.refreshLastSel();
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         bindingOne.setViewModel(this.viewModel);
         PowerManagerApp.registerIContentObserver("topApp", this.topAppContentObserver);
         Log.e("liuhao", "isSmooth = " + isSmooth);
-        bindingOne.setItemview.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        bindingOne.setItemview.setOnFocusChangeListener(new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.view.audimib3.AudiMib3FragmentOne.1
+            @Override // android.view.View.OnFocusChangeListener
             public void onFocusChange(View v, boolean hasFocus) {
                 Log.e("liuhao bindingOne.setItemview", "isSmooth 0000000000 hasFocus = " + hasFocus);
                 if (hasFocus && AudiMib3FragmentOne.this.mainActivity.viewpagerAudiMib3 != null && AudiMib3FragmentOne.this.mainActivity.viewpagerAudiMib3.getCurrentItem() != 0) {
@@ -302,7 +302,6 @@ public class AudiMib3FragmentOne extends AudiMib3BaseFragment implements View.On
     }
 
     public static void setItemSelected(View view) {
-        boolean z = true;
         bindingOne.videoItemview.setSelected(bindingOne.videoItemview == view);
         bindingOne.musicItemview.setSelected(bindingOne.musicItemview == view);
         bindingOne.btItemview.setSelected(bindingOne.btItemview == view);
@@ -310,11 +309,7 @@ public class AudiMib3FragmentOne extends AudiMib3BaseFragment implements View.On
         bindingOne.phonelinkItemview.setSelected(bindingOne.phonelinkItemview == view);
         bindingOne.carItemview.setSelected(bindingOne.carItemview == view);
         bindingOne.appItemview.setSelected(bindingOne.appItemview == view);
-        BenzMbuxItemView benzMbuxItemView = bindingOne.setItemview;
-        if (bindingOne.setItemview != view) {
-            z = false;
-        }
-        benzMbuxItemView.setSelected(z);
+        bindingOne.setItemview.setSelected(bindingOne.setItemview == view);
     }
 
     public void setDefaultSelected() {
@@ -325,32 +320,34 @@ public class AudiMib3FragmentOne extends AudiMib3BaseFragment implements View.On
         }
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onDestroy() {
         super.onDestroy();
     }
 
+    @Override // android.view.View.OnKeyListener
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (event.getAction() != 0) {
-            return false;
-        }
-        Log.i("AudiMib3FragmentOne - One", "Audimib3 onKey: " + keyCode);
-        if (keyCode == 22) {
-            if (v == bindingOne.setItemview && this.mainActivity.viewpagerAudiMib3.getCurrentItem() != 1) {
+        if (event.getAction() == 0) {
+            Log.i("AudiMib3FragmentOne - One", "Audimib3 onKey: " + keyCode);
+            if (keyCode == 22) {
+                if (v == bindingOne.setItemview && this.mainActivity.viewpagerAudiMib3.getCurrentItem() != 1) {
+                    this.mainActivity.viewpagerAudiMib3.setCurrentItem(1);
+                    return true;
+                } else if (v == bindingOne.naviItemview) {
+                    Log.e("liuhao", "isAudi_mib3 22222222222");
+                    KeyUtils.pressKey(20);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else if (keyCode == 20 && v == bindingOne.setItemview && this.mainActivity.viewpagerAudiMib3.getCurrentItem() != 1) {
                 this.mainActivity.viewpagerAudiMib3.setCurrentItem(1);
                 return true;
-            } else if (v != bindingOne.naviItemview) {
-                return false;
             } else {
-                Log.e("liuhao", "isAudi_mib3 22222222222");
-                KeyUtils.pressKey(20);
-                return true;
+                return false;
             }
-        } else if (keyCode != 20 || v != bindingOne.setItemview || this.mainActivity.viewpagerAudiMib3.getCurrentItem() == 1) {
-            return false;
-        } else {
-            this.mainActivity.viewpagerAudiMib3.setCurrentItem(1);
-            return true;
         }
+        return false;
     }
 
     public void refreshLastSel(View view) {

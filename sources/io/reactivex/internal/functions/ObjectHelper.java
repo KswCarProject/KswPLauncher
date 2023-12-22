@@ -2,6 +2,7 @@ package io.reactivex.internal.functions;
 
 import io.reactivex.functions.BiPredicate;
 
+/* loaded from: classes.dex */
 public final class ObjectHelper {
     static final BiPredicate<Object, Object> EQUALS = new BiObjectPredicate();
 
@@ -10,10 +11,10 @@ public final class ObjectHelper {
     }
 
     public static <T> T requireNonNull(T object, String message) {
-        if (object != null) {
-            return object;
+        if (object == null) {
+            throw new NullPointerException(message);
         }
-        throw new NullPointerException(message);
+        return object;
     }
 
     public static boolean equals(Object o1, Object o2) {
@@ -42,27 +43,29 @@ public final class ObjectHelper {
     }
 
     public static <T> BiPredicate<T, T> equalsPredicate() {
-        return EQUALS;
+        return (BiPredicate<T, T>) EQUALS;
     }
 
     public static int verifyPositive(int value, String paramName) {
-        if (value > 0) {
-            return value;
+        if (value <= 0) {
+            throw new IllegalArgumentException(paramName + " > 0 required but it was " + value);
         }
-        throw new IllegalArgumentException(paramName + " > 0 required but it was " + value);
+        return value;
     }
 
     public static long verifyPositive(long value, String paramName) {
-        if (value > 0) {
-            return value;
+        if (value <= 0) {
+            throw new IllegalArgumentException(paramName + " > 0 required but it was " + value);
         }
-        throw new IllegalArgumentException(paramName + " > 0 required but it was " + value);
+        return value;
     }
 
+    /* loaded from: classes.dex */
     static final class BiObjectPredicate implements BiPredicate<Object, Object> {
         BiObjectPredicate() {
         }
 
+        @Override // io.reactivex.functions.BiPredicate
         public boolean test(Object o1, Object o2) {
             return ObjectHelper.equals(o1, o2);
         }

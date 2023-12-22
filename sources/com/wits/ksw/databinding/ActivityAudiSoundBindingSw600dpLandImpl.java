@@ -1,19 +1,21 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.SeekBarBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
+import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi.vm.VolumeViewModel;
-import com.wits.ksw.settings.audi_mib3.vm.AudiMib3VolumeViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi.p007vm.VolumeViewModel;
+import com.wits.ksw.settings.audi_mib3.p008vm.AudiMib3VolumeViewModel;
 
+/* loaded from: classes7.dex */
 public class ActivityAudiSoundBindingSw600dpLandImpl extends ActivityAudiSoundBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -28,55 +30,56 @@ public class ActivityAudiSoundBindingSw600dpLandImpl extends ActivityAudiSoundBi
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.hzTextView, 9);
-        sparseIntArray.put(R.id.hzMediaLinearLayout, 10);
-        sparseIntArray.put(R.id.audio_seekbar_title, 11);
-        sparseIntArray.put(R.id.hzCallLinearLayout, 12);
-        sparseIntArray.put(R.id.carVolumeTextView, 13);
-        sparseIntArray.put(R.id.carCallLinearLayout, 14);
-        sparseIntArray.put(R.id.carNaviLinearLayout, 15);
+        sparseIntArray.put(C0899R.C0901id.hzTextView, 9);
+        sparseIntArray.put(C0899R.C0901id.hzMediaLinearLayout, 10);
+        sparseIntArray.put(C0899R.C0901id.audio_seekbar_title, 11);
+        sparseIntArray.put(C0899R.C0901id.hzCallLinearLayout, 12);
+        sparseIntArray.put(C0899R.C0901id.carVolumeTextView, 13);
+        sparseIntArray.put(C0899R.C0901id.carCallLinearLayout, 14);
+        sparseIntArray.put(C0899R.C0901id.carNaviLinearLayout, 15);
     }
 
     public ActivityAudiSoundBindingSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 16, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private ActivityAudiSoundBindingSw600dpLandImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 4, bindings[1], bindings[2], bindings[11], bindings[14], bindings[15], bindings[13], bindings[12], bindings[10], bindings[9], bindings[0]);
-        this.mDirtyFlags = -1;
-        this.audioSeekbar.setTag((Object) null);
-        this.audioSeekbarRightText.setTag((Object) null);
-        this.linearLayout4.setTag((Object) null);
-        SeekBar seekBar = bindings[3];
+        super(bindingComponent, root, 4, (SeekBar) bindings[1], (TextView) bindings[2], (TextView) bindings[11], (LinearLayout) bindings[14], (LinearLayout) bindings[15], (TextView) bindings[13], (LinearLayout) bindings[12], (LinearLayout) bindings[10], (TextView) bindings[9], (ConstraintLayout) bindings[0]);
+        this.mDirtyFlags = -1L;
+        this.audioSeekbar.setTag(null);
+        this.audioSeekbarRightText.setTag(null);
+        this.linearLayout4.setTag(null);
+        SeekBar seekBar = (SeekBar) bindings[3];
         this.mboundView3 = seekBar;
-        seekBar.setTag((Object) null);
-        TextView textView = bindings[4];
+        seekBar.setTag(null);
+        TextView textView = (TextView) bindings[4];
         this.mboundView4 = textView;
-        textView.setTag((Object) null);
-        SeekBar seekBar2 = bindings[5];
+        textView.setTag(null);
+        SeekBar seekBar2 = (SeekBar) bindings[5];
         this.mboundView5 = seekBar2;
-        seekBar2.setTag((Object) null);
-        TextView textView2 = bindings[6];
+        seekBar2.setTag(null);
+        TextView textView2 = (TextView) bindings[6];
         this.mboundView6 = textView2;
-        textView2.setTag((Object) null);
-        SeekBar seekBar3 = bindings[7];
+        textView2.setTag(null);
+        SeekBar seekBar3 = (SeekBar) bindings[7];
         this.mboundView7 = seekBar3;
-        seekBar3.setTag((Object) null);
-        TextView textView3 = bindings[8];
+        seekBar3.setTag(null);
+        TextView textView3 = (TextView) bindings[8];
         this.mboundView8 = textView3;
-        textView3.setTag((Object) null);
+        textView3.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 32;
+            this.mDirtyFlags = 32L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -86,14 +89,16 @@ public class ActivityAudiSoundBindingSw600dpLandImpl extends ActivityAudiSoundBi
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((VolumeViewModel) variable);
+            return true;
         }
-        setVm((VolumeViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.ActivityAudiSoundBinding
     public void setVm(VolumeViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -103,8 +108,8 @@ public class ActivityAudiSoundBindingSw600dpLandImpl extends ActivityAudiSoundBi
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmCarCallVolume((ObservableInt) object, fieldId);
@@ -120,55 +125,55 @@ public class ActivityAudiSoundBindingSw600dpLandImpl extends ActivityAudiSoundBi
     }
 
     private boolean onChangeVmCarCallVolume(ObservableInt VmCarCallVolume, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmHzcallVolume(ObservableInt VmHzcallVolume, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmHzMediaVolume(ObservableInt VmHzMediaVolume, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmCarNaviVolume(ObservableInt VmCarNaviVolume, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
-        int vmHzcallVolumeGet;
         ObservableInt vmCarNaviVolume;
+        int vmHzcallVolumeGet;
         int vmHzMediaVolumeGet;
         int vmHzcallVolumeGet2;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         int vmHzMediaVolumeGet2 = 0;
         ObservableInt vmCarCallVolume = null;
@@ -187,65 +192,65 @@ public class ActivityAudiSoundBindingSw600dpLandImpl extends ActivityAudiSoundBi
                 if (vm != null) {
                     vmCarCallVolume = vm.carCallVolume;
                 }
-                updateRegistration(0, (Observable) vmCarCallVolume);
+                updateRegistration(0, vmCarCallVolume);
                 if (vmCarCallVolume != null) {
                     vmCarCallVolumeGet = vmCarCallVolume.get();
                 }
                 javaLangStringVmCarCallVolume = "" + vmCarCallVolumeGet;
             }
-            if ((dirtyFlags & 50) != 0) {
+            if ((dirtyFlags & 50) == 0) {
+                vmHzMediaVolumeGet = 0;
+            } else {
                 if (vm != null) {
                     vmHzcallVolume = vm.hzcallVolume;
                 }
-                updateRegistration(1, (Observable) vmHzcallVolume);
-                if (vmHzcallVolume != null) {
-                    vmHzcallVolumeGet2 = vmHzcallVolume.get();
-                } else {
+                updateRegistration(1, vmHzcallVolume);
+                if (vmHzcallVolume == null) {
                     vmHzcallVolumeGet2 = 0;
+                } else {
+                    int vmHzcallVolumeGet4 = vmHzcallVolume.get();
+                    vmHzcallVolumeGet2 = vmHzcallVolumeGet4;
                 }
                 vmHzMediaVolumeGet = 0;
                 javaLangStringVmHzcallVolume = "" + vmHzcallVolumeGet2;
                 vmHzcallVolumeGet3 = vmHzcallVolumeGet2;
-            } else {
-                vmHzMediaVolumeGet = 0;
             }
-            if ((dirtyFlags & 52) != 0) {
+            if ((dirtyFlags & 52) == 0) {
+                vmHzMediaVolumeGet2 = vmHzMediaVolumeGet;
+            } else {
                 if (vm != null) {
                     vmHzMediaVolume = vm.hzMediaVolume;
                 }
-                updateRegistration(2, (Observable) vmHzMediaVolume);
-                if (vmHzMediaVolume != null) {
-                    vmHzMediaVolumeGet2 = vmHzMediaVolume.get();
-                } else {
+                updateRegistration(2, vmHzMediaVolume);
+                if (vmHzMediaVolume == null) {
                     vmHzMediaVolumeGet2 = vmHzMediaVolumeGet;
+                } else {
+                    vmHzMediaVolumeGet2 = vmHzMediaVolume.get();
                 }
                 javaLangStringVmHzMediaVolume = "" + vmHzMediaVolumeGet2;
-            } else {
-                vmHzMediaVolumeGet2 = vmHzMediaVolumeGet;
             }
-            if ((dirtyFlags & 56) != 0) {
-                if (vm != null) {
-                    vmCarNaviVolume = vm.carNaviVolume;
-                } else {
+            if ((dirtyFlags & 56) == 0) {
+                vmCarNaviVolume = null;
+                vmHzcallVolumeGet = vmHzcallVolumeGet3;
+            } else {
+                if (vm == null) {
                     vmCarNaviVolume = null;
+                } else {
+                    vmCarNaviVolume = vm.carNaviVolume;
                 }
-                updateRegistration(3, (Observable) vmCarNaviVolume);
+                updateRegistration(3, vmCarNaviVolume);
                 if (vmCarNaviVolume != null) {
                     vmCarNaviVolumeGet = vmCarNaviVolume.get();
                 }
                 javaLangStringVmCarNaviVolume = "" + vmCarNaviVolumeGet;
                 vmHzcallVolumeGet = vmHzcallVolumeGet3;
                 vmHzMediaVolumeGet2 = vmHzMediaVolumeGet2;
-            } else {
-                vmCarNaviVolume = null;
-                vmHzcallVolumeGet = vmHzcallVolumeGet3;
             }
         } else {
             vmCarNaviVolume = null;
             vmHzcallVolumeGet = 0;
         }
         if ((dirtyFlags & 52) != 0) {
-            VolumeViewModel volumeViewModel = vm;
             SeekBarBindingAdapter.setProgress(this.audioSeekbar, vmHzMediaVolumeGet2);
             AudiMib3VolumeViewModel.setOnSeekBarChangeListener(this.audioSeekbar, vmHzMediaVolume);
             TextViewBindingAdapter.setText(this.audioSeekbarRightText, javaLangStringVmHzMediaVolume);

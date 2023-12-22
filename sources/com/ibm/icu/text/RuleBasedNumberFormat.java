@@ -24,16 +24,12 @@ import java.util.MissingResourceException;
 import java.util.Set;
 import kotlin.jvm.internal.LongCompanionObject;
 
+/* loaded from: classes.dex */
 public class RuleBasedNumberFormat extends NumberFormat {
-    private static final boolean DEBUG = ICUDebug.enabled("rbnf");
     public static final int DURATION = 3;
-    private static final BigDecimal MAX_VALUE = BigDecimal.valueOf(LongCompanionObject.MAX_VALUE);
-    private static final BigDecimal MIN_VALUE = BigDecimal.valueOf(Long.MIN_VALUE);
     public static final int NUMBERING_SYSTEM = 4;
     public static final int ORDINAL = 2;
     public static final int SPELLOUT = 1;
-    private static final String[] locnames = {"SpelloutLocalizations", "OrdinalLocalizations", "DurationLocalizations", "NumberingSystemLocalizations"};
-    private static final String[] rulenames = {"SpelloutRules", "OrdinalRules", "DurationRules", "NumberingSystemRules"};
     static final long serialVersionUID = -7664252765575395068L;
     private transient BreakIterator capitalizationBrkIter;
     private boolean capitalizationForListOrMenu;
@@ -56,6 +52,11 @@ public class RuleBasedNumberFormat extends NumberFormat {
     private transient NFRuleSet[] ruleSets;
     private transient Map<String, NFRuleSet> ruleSetsMap;
     private transient RbnfLenientScannerProvider scannerProvider;
+    private static final boolean DEBUG = ICUDebug.enabled("rbnf");
+    private static final String[] rulenames = {"SpelloutRules", "OrdinalRules", "DurationRules", "NumberingSystemRules"};
+    private static final String[] locnames = {"SpelloutLocalizations", "OrdinalLocalizations", "DurationLocalizations", "NumberingSystemLocalizations"};
+    private static final BigDecimal MAX_VALUE = BigDecimal.valueOf((long) LongCompanionObject.MAX_VALUE);
+    private static final BigDecimal MIN_VALUE = BigDecimal.valueOf(Long.MIN_VALUE);
 
     public RuleBasedNumberFormat(String description) {
         this.ruleSets = null;
@@ -74,7 +75,7 @@ public class RuleBasedNumberFormat extends NumberFormat {
         this.capitalizationForStandAlone = false;
         this.capitalizationBrkIter = null;
         this.locale = ULocale.getDefault(ULocale.Category.FORMAT);
-        init(description, (String[][]) null);
+        init(description, null);
     }
 
     public RuleBasedNumberFormat(String description, String[][] localizations) {
@@ -97,11 +98,11 @@ public class RuleBasedNumberFormat extends NumberFormat {
         init(description, localizations);
     }
 
-    public RuleBasedNumberFormat(String description, Locale locale2) {
-        this(description, ULocale.forLocale(locale2));
+    public RuleBasedNumberFormat(String description, Locale locale) {
+        this(description, ULocale.forLocale(locale));
     }
 
-    public RuleBasedNumberFormat(String description, ULocale locale2) {
+    public RuleBasedNumberFormat(String description, ULocale locale) {
         this.ruleSets = null;
         this.ruleSetsMap = null;
         this.defaultRuleSet = null;
@@ -117,11 +118,11 @@ public class RuleBasedNumberFormat extends NumberFormat {
         this.capitalizationForListOrMenu = false;
         this.capitalizationForStandAlone = false;
         this.capitalizationBrkIter = null;
-        this.locale = locale2;
-        init(description, (String[][]) null);
+        this.locale = locale;
+        init(description, null);
     }
 
-    public RuleBasedNumberFormat(String description, String[][] localizations, ULocale locale2) {
+    public RuleBasedNumberFormat(String description, String[][] localizations, ULocale locale) {
         this.ruleSets = null;
         this.ruleSetsMap = null;
         this.defaultRuleSet = null;
@@ -137,15 +138,15 @@ public class RuleBasedNumberFormat extends NumberFormat {
         this.capitalizationForListOrMenu = false;
         this.capitalizationForStandAlone = false;
         this.capitalizationBrkIter = null;
-        this.locale = locale2;
+        this.locale = locale;
         init(description, localizations);
     }
 
-    public RuleBasedNumberFormat(Locale locale2, int format) {
-        this(ULocale.forLocale(locale2), format);
+    public RuleBasedNumberFormat(Locale locale, int format) {
+        this(ULocale.forLocale(locale), format);
     }
 
-    public RuleBasedNumberFormat(ULocale locale2, int format) {
+    public RuleBasedNumberFormat(ULocale locale, int format) {
         this.ruleSets = null;
         this.ruleSetsMap = null;
         this.defaultRuleSet = null;
@@ -161,24 +162,25 @@ public class RuleBasedNumberFormat extends NumberFormat {
         this.capitalizationForListOrMenu = false;
         this.capitalizationForStandAlone = false;
         this.capitalizationBrkIter = null;
-        this.locale = locale2;
-        ICUResourceBundle bundle = UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b/rbnf", locale2);
+        this.locale = locale;
+        ICUResourceBundle bundle = UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b/rbnf", locale);
         ULocale uloc = bundle.getULocale();
         setLocale(uloc, uloc);
         StringBuilder description = new StringBuilder();
         String[][] localizations = null;
         try {
-            UResourceBundleIterator it = bundle.getWithFallback("RBNFRules/" + rulenames[format - 1]).getIterator();
+            ICUResourceBundle rules = bundle.getWithFallback("RBNFRules/" + rulenames[format - 1]);
+            UResourceBundleIterator it = rules.getIterator();
             while (it.hasNext()) {
                 description.append(it.nextString());
             }
         } catch (MissingResourceException e) {
         }
-        UResourceBundle locNamesBundle = bundle.findTopLevel(locnames[format - 1]);
-        if (locNamesBundle != null) {
-            localizations = new String[locNamesBundle.getSize()][];
+        ICUResourceBundle findTopLevel = bundle.findTopLevel(locnames[format - 1]);
+        if (findTopLevel != null) {
+            localizations = new String[findTopLevel.getSize()];
             for (int i = 0; i < localizations.length; i++) {
-                localizations[i] = locNamesBundle.get(i).getStringArray();
+                localizations[i] = findTopLevel.get(i).getStringArray();
             }
         }
         init(description.toString(), localizations);
@@ -188,10 +190,12 @@ public class RuleBasedNumberFormat extends NumberFormat {
         this(ULocale.getDefault(ULocale.Category.FORMAT), format);
     }
 
+    @Override // com.ibm.icu.text.NumberFormat, java.text.Format
     public Object clone() {
         return super.clone();
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public boolean equals(Object that) {
         if (!(that instanceof RuleBasedNumberFormat)) {
             return false;
@@ -203,21 +207,24 @@ public class RuleBasedNumberFormat extends NumberFormat {
         int i = 0;
         while (true) {
             NFRuleSet[] nFRuleSetArr = this.ruleSets;
-            if (i >= nFRuleSetArr.length) {
+            if (i < nFRuleSetArr.length) {
+                if (!nFRuleSetArr[i].equals(that2.ruleSets[i])) {
+                    return false;
+                }
+                i++;
+            } else {
                 return true;
             }
-            if (!nFRuleSetArr[i].equals(that2.ruleSets[i])) {
-                return false;
-            }
-            i++;
         }
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public int hashCode() {
         return super.hashCode();
     }
 
     public String toString() {
+        NFRuleSet[] nFRuleSetArr;
         StringBuilder result = new StringBuilder();
         for (NFRuleSet ruleSet : this.ruleSets) {
             result.append(ruleSet.toString());
@@ -232,18 +239,18 @@ public class RuleBasedNumberFormat extends NumberFormat {
     }
 
     private void readObject(ObjectInputStream in) throws IOException {
-        Exception e;
+        ULocale loc;
         String description = in.readUTF();
         try {
-            e = (ULocale) in.readObject();
-        } catch (Exception e2) {
-            e = ULocale.getDefault(ULocale.Category.FORMAT);
+            loc = (ULocale) in.readObject();
+        } catch (Exception e) {
+            loc = ULocale.getDefault(ULocale.Category.FORMAT);
         }
         try {
             this.roundingMode = in.readInt();
-        } catch (Exception e3) {
+        } catch (Exception e2) {
         }
-        RuleBasedNumberFormat temp = new RuleBasedNumberFormat(description, (ULocale) e);
+        RuleBasedNumberFormat temp = new RuleBasedNumberFormat(description, loc);
         this.ruleSets = temp.ruleSets;
         this.ruleSetsMap = temp.ruleSetsMap;
         this.defaultRuleSet = temp.defaultRuleSet;
@@ -261,32 +268,32 @@ public class RuleBasedNumberFormat extends NumberFormat {
 
     public ULocale[] getRuleSetDisplayNameLocales() {
         Map<String, String[]> map = this.ruleSetDisplayNames;
-        if (map == null) {
-            return null;
+        if (map != null) {
+            Set<String> s = map.keySet();
+            String[] locales = (String[]) s.toArray(new String[s.size()]);
+            Arrays.sort(locales, String.CASE_INSENSITIVE_ORDER);
+            ULocale[] result = new ULocale[locales.length];
+            for (int i = 0; i < locales.length; i++) {
+                result[i] = new ULocale(locales[i]);
+            }
+            return result;
         }
-        Set<String> s = map.keySet();
-        String[] locales = (String[]) s.toArray(new String[s.size()]);
-        Arrays.sort(locales, String.CASE_INSENSITIVE_ORDER);
-        ULocale[] result = new ULocale[locales.length];
-        for (int i = 0; i < locales.length; i++) {
-            result[i] = new ULocale(locales[i]);
-        }
-        return result;
+        return null;
     }
 
     private String[] getNameListForLocale(ULocale loc) {
-        if (loc == null || this.ruleSetDisplayNames == null) {
-            return null;
-        }
-        String[] localeNames = {loc.getBaseName(), ULocale.getDefault(ULocale.Category.DISPLAY).getBaseName()};
-        int length = localeNames.length;
-        for (int i = 0; i < length; i++) {
-            for (String lname = localeNames[i]; lname.length() > 0; lname = ULocale.getFallback(lname)) {
-                String[] names = this.ruleSetDisplayNames.get(lname);
-                if (names != null) {
-                    return names;
+        if (loc != null && this.ruleSetDisplayNames != null) {
+            String[] localeNames = {loc.getBaseName(), ULocale.getDefault(ULocale.Category.DISPLAY).getBaseName()};
+            int length = localeNames.length;
+            for (int i = 0; i < length; i++) {
+                for (String lname = localeNames[i]; lname.length() > 0; lname = ULocale.getFallback(lname)) {
+                    String[] names = this.ruleSetDisplayNames.get(lname);
+                    if (names != null) {
+                        return names;
+                    }
                 }
             }
+            return null;
         }
         return null;
     }
@@ -326,19 +333,20 @@ public class RuleBasedNumberFormat extends NumberFormat {
     }
 
     public String format(double number, String ruleSet) throws IllegalArgumentException {
-        if (!ruleSet.startsWith("%%")) {
-            return adjustForContext(format(number, findRuleSet(ruleSet)));
+        if (ruleSet.startsWith("%%")) {
+            throw new IllegalArgumentException("Can't use internal rule set");
         }
-        throw new IllegalArgumentException("Can't use internal rule set");
+        return adjustForContext(format(number, findRuleSet(ruleSet)));
     }
 
     public String format(long number, String ruleSet) throws IllegalArgumentException {
-        if (!ruleSet.startsWith("%%")) {
-            return adjustForContext(format(number, findRuleSet(ruleSet)));
+        if (ruleSet.startsWith("%%")) {
+            throw new IllegalArgumentException("Can't use internal rule set");
         }
-        throw new IllegalArgumentException("Can't use internal rule set");
+        return adjustForContext(format(number, findRuleSet(ruleSet)));
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public StringBuffer format(double number, StringBuffer toAppendTo, FieldPosition ignore) {
         if (toAppendTo.length() == 0) {
             toAppendTo.append(adjustForContext(format(number, this.defaultRuleSet)));
@@ -348,6 +356,7 @@ public class RuleBasedNumberFormat extends NumberFormat {
         return toAppendTo;
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public StringBuffer format(long number, StringBuffer toAppendTo, FieldPosition ignore) {
         if (toAppendTo.length() == 0) {
             toAppendTo.append(adjustForContext(format(number, this.defaultRuleSet)));
@@ -357,14 +366,17 @@ public class RuleBasedNumberFormat extends NumberFormat {
         return toAppendTo;
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public StringBuffer format(BigInteger number, StringBuffer toAppendTo, FieldPosition pos) {
         return format(new BigDecimal(number), toAppendTo, pos);
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public StringBuffer format(java.math.BigDecimal number, StringBuffer toAppendTo, FieldPosition pos) {
         return format(new BigDecimal(number), toAppendTo, pos);
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public StringBuffer format(BigDecimal number, StringBuffer toAppendTo, FieldPosition pos) {
         if (MIN_VALUE.compareTo(number) > 0 || MAX_VALUE.compareTo(number) < 0) {
             return getDecimalFormat().format(number, toAppendTo, pos);
@@ -375,6 +387,7 @@ public class RuleBasedNumberFormat extends NumberFormat {
         return format(number.doubleValue(), toAppendTo, pos);
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public Number parse(String text, ParsePosition parsePosition) {
         String workingText = text.substring(parsePosition.getIndex());
         ParsePosition workingPos = new ParsePosition(0);
@@ -406,116 +419,76 @@ public class RuleBasedNumberFormat extends NumberFormat {
         return this.lenientParse;
     }
 
-    public void setLenientScannerProvider(RbnfLenientScannerProvider scannerProvider2) {
-        this.scannerProvider = scannerProvider2;
+    public void setLenientScannerProvider(RbnfLenientScannerProvider scannerProvider) {
+        this.scannerProvider = scannerProvider;
     }
 
     public RbnfLenientScannerProvider getLenientScannerProvider() {
         if (this.scannerProvider == null && this.lenientParse && !this.lookedForScanner) {
             try {
                 this.lookedForScanner = true;
-                setLenientScannerProvider((RbnfLenientScannerProvider) Class.forName("com.ibm.icu.impl.text.RbnfScannerProviderImpl").newInstance());
+                Class<?> cls = Class.forName("com.ibm.icu.impl.text.RbnfScannerProviderImpl");
+                RbnfLenientScannerProvider provider = (RbnfLenientScannerProvider) cls.newInstance();
+                setLenientScannerProvider(provider);
             } catch (Exception e) {
             }
         }
         return this.scannerProvider;
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:29:0x0044 A[SYNTHETIC] */
-    /* JADX WARNING: Removed duplicated region for block: B:7:0x001b  */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void setDefaultRuleSet(java.lang.String r4) {
-        /*
-            r3 = this;
-            if (r4 != 0) goto L_0x005c
-            java.lang.String[] r0 = r3.publicRuleSetNames
-            int r1 = r0.length
-            if (r1 <= 0) goto L_0x0011
-            r1 = 0
-            r0 = r0[r1]
-            com.ibm.icu.text.NFRuleSet r0 = r3.findRuleSet(r0)
-            r3.defaultRuleSet = r0
-            goto L_0x006a
-        L_0x0011:
-            r0 = 0
-            r3.defaultRuleSet = r0
-            com.ibm.icu.text.NFRuleSet[] r0 = r3.ruleSets
-            int r0 = r0.length
-        L_0x0017:
-            int r0 = r0 + -1
-            if (r0 < 0) goto L_0x0044
-            com.ibm.icu.text.NFRuleSet[] r1 = r3.ruleSets
-            r1 = r1[r0]
-            java.lang.String r1 = r1.getName()
-            java.lang.String r2 = "%spellout-numbering"
-            boolean r2 = r1.equals(r2)
-            if (r2 != 0) goto L_0x003d
-            java.lang.String r2 = "%digits-ordinal"
-            boolean r2 = r1.equals(r2)
-            if (r2 != 0) goto L_0x003d
-            java.lang.String r2 = "%duration"
-            boolean r2 = r1.equals(r2)
-            if (r2 == 0) goto L_0x003c
-            goto L_0x003d
-        L_0x003c:
-            goto L_0x0017
-        L_0x003d:
-            com.ibm.icu.text.NFRuleSet[] r2 = r3.ruleSets
-            r2 = r2[r0]
-            r3.defaultRuleSet = r2
-            return
-        L_0x0044:
-            com.ibm.icu.text.NFRuleSet[] r1 = r3.ruleSets
-            int r0 = r1.length
-        L_0x0047:
-            int r0 = r0 + -1
-            if (r0 < 0) goto L_0x005b
-            com.ibm.icu.text.NFRuleSet[] r1 = r3.ruleSets
-            r1 = r1[r0]
-            boolean r1 = r1.isPublic()
-            if (r1 == 0) goto L_0x0047
-            com.ibm.icu.text.NFRuleSet[] r1 = r3.ruleSets
-            r1 = r1[r0]
-            r3.defaultRuleSet = r1
-        L_0x005b:
-            goto L_0x006a
-        L_0x005c:
-            java.lang.String r0 = "%%"
-            boolean r0 = r4.startsWith(r0)
-            if (r0 != 0) goto L_0x006b
-            com.ibm.icu.text.NFRuleSet r0 = r3.findRuleSet(r4)
-            r3.defaultRuleSet = r0
-        L_0x006a:
-            return
-        L_0x006b:
-            java.lang.IllegalArgumentException r0 = new java.lang.IllegalArgumentException
-            java.lang.StringBuilder r1 = new java.lang.StringBuilder
-            r1.<init>()
-            java.lang.String r2 = "cannot use private rule set: "
-            java.lang.StringBuilder r1 = r1.append(r2)
-            java.lang.StringBuilder r1 = r1.append(r4)
-            java.lang.String r1 = r1.toString()
-            r0.<init>(r1)
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.RuleBasedNumberFormat.setDefaultRuleSet(java.lang.String):void");
+    public void setDefaultRuleSet(String ruleSetName) {
+        String currentName;
+        if (ruleSetName == null) {
+            String[] strArr = this.publicRuleSetNames;
+            if (strArr.length > 0) {
+                this.defaultRuleSet = findRuleSet(strArr[0]);
+                return;
+            }
+            this.defaultRuleSet = null;
+            int n = this.ruleSets.length;
+            do {
+                n--;
+                if (n >= 0) {
+                    currentName = this.ruleSets[n].getName();
+                    if (currentName.equals("%spellout-numbering") || currentName.equals("%digits-ordinal")) {
+                        break;
+                    }
+                } else {
+                    int n2 = this.ruleSets.length;
+                    do {
+                        n2--;
+                        if (n2 < 0) {
+                            return;
+                        }
+                    } while (!this.ruleSets[n2].isPublic());
+                    this.defaultRuleSet = this.ruleSets[n2];
+                    return;
+                }
+            } while (!currentName.equals("%duration"));
+            this.defaultRuleSet = this.ruleSets[n];
+        } else if (ruleSetName.startsWith("%%")) {
+            throw new IllegalArgumentException("cannot use private rule set: " + ruleSetName);
+        } else {
+            this.defaultRuleSet = findRuleSet(ruleSetName);
+        }
     }
 
     public String getDefaultRuleSetName() {
         NFRuleSet nFRuleSet = this.defaultRuleSet;
-        if (nFRuleSet == null || !nFRuleSet.isPublic()) {
-            return "";
+        if (nFRuleSet != null && nFRuleSet.isPublic()) {
+            return this.defaultRuleSet.getName();
         }
-        return this.defaultRuleSet.getName();
+        return "";
     }
 
     public void setDecimalFormatSymbols(DecimalFormatSymbols newSymbols) {
+        NFRuleSet[] nFRuleSetArr;
         if (newSymbols != null) {
-            DecimalFormatSymbols decimalFormatSymbols2 = (DecimalFormatSymbols) newSymbols.clone();
-            this.decimalFormatSymbols = decimalFormatSymbols2;
-            DecimalFormat decimalFormat2 = this.decimalFormat;
-            if (decimalFormat2 != null) {
-                decimalFormat2.setDecimalFormatSymbols(decimalFormatSymbols2);
+            DecimalFormatSymbols decimalFormatSymbols = (DecimalFormatSymbols) newSymbols.clone();
+            this.decimalFormatSymbols = decimalFormatSymbols;
+            DecimalFormat decimalFormat = this.decimalFormat;
+            if (decimalFormat != null) {
+                decimalFormat.setDecimalFormatSymbols(decimalFormatSymbols);
             }
             if (this.defaultInfinityRule != null) {
                 this.defaultInfinityRule = null;
@@ -531,76 +504,72 @@ public class RuleBasedNumberFormat extends NumberFormat {
         }
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public void setContext(DisplayContext context) {
         super.setContext(context);
         if (!this.capitalizationInfoIsSet && (context == DisplayContext.CAPITALIZATION_FOR_UI_LIST_OR_MENU || context == DisplayContext.CAPITALIZATION_FOR_STANDALONE)) {
             initCapitalizationContextInfo(this.locale);
             this.capitalizationInfoIsSet = true;
         }
-        if (this.capitalizationBrkIter != null) {
-            return;
-        }
-        if (context == DisplayContext.CAPITALIZATION_FOR_BEGINNING_OF_SENTENCE || ((context == DisplayContext.CAPITALIZATION_FOR_UI_LIST_OR_MENU && this.capitalizationForListOrMenu) || (context == DisplayContext.CAPITALIZATION_FOR_STANDALONE && this.capitalizationForStandAlone))) {
-            this.capitalizationBrkIter = BreakIterator.getSentenceInstance(this.locale);
+        if (this.capitalizationBrkIter == null) {
+            if (context == DisplayContext.CAPITALIZATION_FOR_BEGINNING_OF_SENTENCE || ((context == DisplayContext.CAPITALIZATION_FOR_UI_LIST_OR_MENU && this.capitalizationForListOrMenu) || (context == DisplayContext.CAPITALIZATION_FOR_STANDALONE && this.capitalizationForStandAlone))) {
+                this.capitalizationBrkIter = BreakIterator.getSentenceInstance(this.locale);
+            }
         }
     }
 
+    @Override // com.ibm.icu.text.NumberFormat
     public int getRoundingMode() {
         return this.roundingMode;
     }
 
-    public void setRoundingMode(int roundingMode2) {
-        if (roundingMode2 < 0 || roundingMode2 > 7) {
-            throw new IllegalArgumentException("Invalid rounding mode: " + roundingMode2);
+    @Override // com.ibm.icu.text.NumberFormat
+    public void setRoundingMode(int roundingMode) {
+        if (roundingMode < 0 || roundingMode > 7) {
+            throw new IllegalArgumentException("Invalid rounding mode: " + roundingMode);
         }
-        this.roundingMode = roundingMode2;
+        this.roundingMode = roundingMode;
     }
 
-    /* access modifiers changed from: package-private */
-    public NFRuleSet getDefaultRuleSet() {
+    NFRuleSet getDefaultRuleSet() {
         return this.defaultRuleSet;
     }
 
-    /* access modifiers changed from: package-private */
-    public RbnfLenientScanner getLenientScanner() {
+    RbnfLenientScanner getLenientScanner() {
         RbnfLenientScannerProvider provider;
-        if (!this.lenientParse || (provider = getLenientScannerProvider()) == null) {
-            return null;
+        if (this.lenientParse && (provider = getLenientScannerProvider()) != null) {
+            return provider.get(this.locale, this.lenientParseRules);
         }
-        return provider.get(this.locale, this.lenientParseRules);
+        return null;
     }
 
-    /* access modifiers changed from: package-private */
-    public DecimalFormatSymbols getDecimalFormatSymbols() {
+    DecimalFormatSymbols getDecimalFormatSymbols() {
         if (this.decimalFormatSymbols == null) {
             this.decimalFormatSymbols = new DecimalFormatSymbols(this.locale);
         }
         return this.decimalFormatSymbols;
     }
 
-    /* access modifiers changed from: package-private */
-    public DecimalFormat getDecimalFormat() {
+    DecimalFormat getDecimalFormat() {
         if (this.decimalFormat == null) {
-            this.decimalFormat = new DecimalFormat(getPattern(this.locale, 0), getDecimalFormatSymbols());
+            String pattern = getPattern(this.locale, 0);
+            this.decimalFormat = new DecimalFormat(pattern, getDecimalFormatSymbols());
         }
         return this.decimalFormat;
     }
 
-    /* access modifiers changed from: package-private */
-    public PluralFormat createPluralFormat(PluralRules.PluralType pluralType, String pattern) {
+    PluralFormat createPluralFormat(PluralRules.PluralType pluralType, String pattern) {
         return new PluralFormat(this.locale, pluralType, pattern, getDecimalFormat());
     }
 
-    /* access modifiers changed from: package-private */
-    public NFRule getDefaultInfinityRule() {
+    NFRule getDefaultInfinityRule() {
         if (this.defaultInfinityRule == null) {
             this.defaultInfinityRule = new NFRule(this, "Inf: " + getDecimalFormatSymbols().getInfinity());
         }
         return this.defaultInfinityRule;
     }
 
-    /* access modifiers changed from: package-private */
-    public NFRule getDefaultNaNRule() {
+    NFRule getDefaultNaNRule() {
         if (this.defaultNaNRule == null) {
             this.defaultNaNRule = new NFRule(this, "NaN: " + getDecimalFormatSymbols().getNaN());
         }
@@ -631,6 +600,7 @@ public class RuleBasedNumberFormat extends NumberFormat {
     private void init(String description, String[][] localizations) {
         NFRuleSet[] nFRuleSetArr;
         NFRuleSet[] nFRuleSetArr2;
+        NFRuleSet[] nFRuleSetArr3;
         initLocalizations(localizations);
         StringBuilder descBuf = stripWhitespace(description);
         this.lenientParseRules = extractSpecial(descBuf, "%%lenient-parse:");
@@ -638,9 +608,8 @@ public class RuleBasedNumberFormat extends NumberFormat {
         int numRuleSets = 1;
         int p = 0;
         while (true) {
-            int indexOf = descBuf.indexOf(";%", p);
-            int p2 = indexOf;
-            if (indexOf == -1) {
+            int p2 = descBuf.indexOf(";%", p);
+            if (p2 == -1) {
                 break;
             }
             numRuleSets++;
@@ -679,19 +648,20 @@ public class RuleBasedNumberFormat extends NumberFormat {
         if (this.defaultRuleSet == null) {
             int i = nFRuleSetArr.length - 1;
             while (true) {
-                if (i < 0) {
-                    break;
-                } else if (!this.ruleSets[i].getName().startsWith("%%")) {
-                    this.defaultRuleSet = this.ruleSets[i];
-                    break;
+                if (i >= 0) {
+                    if (!this.ruleSets[i].getName().startsWith("%%")) {
+                        this.defaultRuleSet = this.ruleSets[i];
+                        break;
+                    } else {
+                        i--;
+                    }
                 } else {
-                    i--;
+                    break;
                 }
             }
         }
         if (this.defaultRuleSet == null) {
-            NFRuleSet[] nFRuleSetArr3 = this.ruleSets;
-            this.defaultRuleSet = nFRuleSetArr3[nFRuleSetArr3.length - 1];
+            this.defaultRuleSet = this.ruleSets[nFRuleSetArr3.length - 1];
         }
         int i2 = 0;
         while (true) {
@@ -716,36 +686,33 @@ public class RuleBasedNumberFormat extends NumberFormat {
                 String[] strArr = this.publicRuleSetNames;
                 if (i4 < strArr.length) {
                     String name = strArr[i4];
-                    int j = 0;
-                    while (j < publicRuleSetTemp.length) {
-                        if (name.equals(publicRuleSetTemp[j])) {
-                            i4++;
-                        } else {
-                            j++;
+                    for (String str : publicRuleSetTemp) {
+                        if (name.equals(str)) {
+                            break;
                         }
                     }
                     throw new IllegalArgumentException("did not find public rule set: " + name);
                 }
                 this.defaultRuleSet = findRuleSet(strArr[0]);
                 return;
+                i4++;
             }
+        } else {
+            this.publicRuleSetNames = publicRuleSetTemp;
         }
-        this.publicRuleSetNames = publicRuleSetTemp;
     }
 
     private void initLocalizations(String[][] localizations) {
         if (localizations != null) {
             this.publicRuleSetNames = (String[]) localizations[0].clone();
             Map<String, String[]> m = new HashMap<>();
-            int i = 1;
-            while (i < localizations.length) {
+            for (int i = 1; i < localizations.length; i++) {
                 String[] data = localizations[i];
                 String loc = data[0];
-                String[] names = new String[(data.length - 1)];
+                String[] names = new String[data.length - 1];
                 if (names.length == this.publicRuleSetNames.length) {
                     System.arraycopy(data, 1, names, 0, names.length);
                     m.put(loc, names);
-                    i++;
                 } else {
                     throw new IllegalArgumentException("public name length: " + this.publicRuleSetNames.length + " != localized names[" + i + "] length: " + names.length);
                 }
@@ -757,15 +724,13 @@ public class RuleBasedNumberFormat extends NumberFormat {
     }
 
     private void initCapitalizationContextInfo(ULocale theLocale) {
+        ICUResourceBundle rb = UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b", theLocale);
         try {
-            int[] intVector = UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b", theLocale).getWithFallback("contextTransforms/number-spellout").getIntVector();
+            ICUResourceBundle rdb = rb.getWithFallback("contextTransforms/number-spellout");
+            int[] intVector = rdb.getIntVector();
             if (intVector.length >= 2) {
-                boolean z = false;
                 this.capitalizationForListOrMenu = intVector[0] != 0;
-                if (intVector[1] != 0) {
-                    z = true;
-                }
-                this.capitalizationForStandAlone = z;
+                this.capitalizationForStandAlone = intVector[1] != 0;
             }
         } catch (MissingResourceException e) {
         }
@@ -782,20 +747,19 @@ public class RuleBasedNumberFormat extends NumberFormat {
             while (start < descriptionLength && PatternProps.isWhiteSpace(description.charAt(start))) {
                 start++;
             }
-            if (start >= descriptionLength || description.charAt(start) != ';') {
+            if (start < descriptionLength && description.charAt(start) == ';') {
+                start++;
+            } else {
                 int p = description.indexOf(59, start);
-                if (p != -1) {
-                    if (p >= descriptionLength) {
-                        break;
-                    }
-                    result.append(description.substring(start, p + 1));
-                    start = p + 1;
-                } else {
+                if (p == -1) {
                     result.append(description.substring(start));
                     break;
+                } else if (p >= descriptionLength) {
+                    break;
+                } else {
+                    result.append(description.substring(start, p + 1));
+                    start = p + 1;
                 }
-            } else {
-                start++;
             }
         }
         return result;
@@ -832,7 +796,8 @@ public class RuleBasedNumberFormat extends NumberFormat {
                 }
                 String ppClassName = this.postProcessRules.substring(0, ix).trim();
                 try {
-                    RBNFPostProcessor rBNFPostProcessor = (RBNFPostProcessor) Class.forName(ppClassName).newInstance();
+                    Class<?> cls = Class.forName(ppClassName);
+                    RBNFPostProcessor rBNFPostProcessor = (RBNFPostProcessor) cls.newInstance();
                     this.postProcessor = rBNFPostProcessor;
                     rBNFPostProcessor.init(this, this.postProcessRules);
                 } catch (Exception e) {
@@ -850,21 +815,20 @@ public class RuleBasedNumberFormat extends NumberFormat {
 
     private String adjustForContext(String result) {
         DisplayContext capitalization = getContext(DisplayContext.Type.CAPITALIZATION);
-        if (capitalization == DisplayContext.CAPITALIZATION_NONE || result == null || result.length() <= 0 || !UCharacter.isLowerCase(result.codePointAt(0)) || (capitalization != DisplayContext.CAPITALIZATION_FOR_BEGINNING_OF_SENTENCE && ((capitalization != DisplayContext.CAPITALIZATION_FOR_UI_LIST_OR_MENU || !this.capitalizationForListOrMenu) && (capitalization != DisplayContext.CAPITALIZATION_FOR_STANDALONE || !this.capitalizationForStandAlone)))) {
-            return result;
+        if (capitalization != DisplayContext.CAPITALIZATION_NONE && result != null && result.length() > 0 && UCharacter.isLowerCase(result.codePointAt(0)) && (capitalization == DisplayContext.CAPITALIZATION_FOR_BEGINNING_OF_SENTENCE || ((capitalization == DisplayContext.CAPITALIZATION_FOR_UI_LIST_OR_MENU && this.capitalizationForListOrMenu) || (capitalization == DisplayContext.CAPITALIZATION_FOR_STANDALONE && this.capitalizationForStandAlone)))) {
+            if (this.capitalizationBrkIter == null) {
+                this.capitalizationBrkIter = BreakIterator.getSentenceInstance(this.locale);
+            }
+            return UCharacter.toTitleCase(this.locale, result, this.capitalizationBrkIter, 768);
         }
-        if (this.capitalizationBrkIter == null) {
-            this.capitalizationBrkIter = BreakIterator.getSentenceInstance(this.locale);
-        }
-        return UCharacter.toTitleCase(this.locale, result, this.capitalizationBrkIter, 768);
+        return result;
     }
 
-    /* access modifiers changed from: package-private */
-    public NFRuleSet findRuleSet(String name) throws IllegalArgumentException {
+    NFRuleSet findRuleSet(String name) throws IllegalArgumentException {
         NFRuleSet result = this.ruleSetsMap.get(name);
-        if (result != null) {
-            return result;
+        if (result == null) {
+            throw new IllegalArgumentException("No rule set named " + name);
         }
-        throw new IllegalArgumentException("No rule set named " + name);
+        return result;
     }
 }

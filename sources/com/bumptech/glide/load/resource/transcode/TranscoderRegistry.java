@@ -3,11 +3,12 @@ package com.bumptech.glide.load.resource.transcode;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public class TranscoderRegistry {
     private final List<Entry<?, ?>> transcoders = new ArrayList();
 
     public synchronized <Z, R> void register(Class<Z> decodedClass, Class<R> transcodedClass, ResourceTranscoder<Z, R> transcoder) {
-        this.transcoders.add(new Entry(decodedClass, transcodedClass, transcoder));
+        this.transcoders.add(new Entry<>(decodedClass, transcodedClass, transcoder));
     }
 
     public synchronized <Z, R> ResourceTranscoder<Z, R> get(Class<Z> resourceClass, Class<R> transcodedClass) {
@@ -16,7 +17,7 @@ public class TranscoderRegistry {
         }
         for (Entry<?, ?> entry : this.transcoders) {
             if (entry.handles(resourceClass, transcodedClass)) {
-                return entry.transcoder;
+                return (ResourceTranscoder<Z, R>) entry.transcoder;
             }
         }
         throw new IllegalArgumentException("No transcoder registered to transcode from " + resourceClass + " to " + transcodedClass);
@@ -36,19 +37,20 @@ public class TranscoderRegistry {
         return transcodeClasses;
     }
 
+    /* loaded from: classes.dex */
     private static final class Entry<Z, R> {
         private final Class<Z> fromClass;
         private final Class<R> toClass;
         final ResourceTranscoder<Z, R> transcoder;
 
-        Entry(Class<Z> fromClass2, Class<R> toClass2, ResourceTranscoder<Z, R> transcoder2) {
-            this.fromClass = fromClass2;
-            this.toClass = toClass2;
-            this.transcoder = transcoder2;
+        Entry(Class<Z> fromClass, Class<R> toClass, ResourceTranscoder<Z, R> transcoder) {
+            this.fromClass = fromClass;
+            this.toClass = toClass;
+            this.transcoder = transcoder;
         }
 
-        public boolean handles(Class<?> fromClass2, Class<?> toClass2) {
-            return this.fromClass.isAssignableFrom(fromClass2) && toClass2.isAssignableFrom(this.toClass);
+        public boolean handles(Class<?> fromClass, Class<?> toClass) {
+            return this.fromClass.isAssignableFrom(fromClass) && toClass.isAssignableFrom(this.toClass);
         }
     }
 }

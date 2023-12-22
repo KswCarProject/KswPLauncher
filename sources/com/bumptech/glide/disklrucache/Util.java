@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 
+/* loaded from: classes.dex */
 final class Util {
     static final Charset US_ASCII = Charset.forName("US-ASCII");
     static final Charset UTF_8 = Charset.forName(Key.STRING_CHARSET_NAME);
@@ -20,12 +21,12 @@ final class Util {
             StringWriter writer = new StringWriter();
             char[] buffer = new char[1024];
             while (true) {
-                int read = reader.read(buffer);
-                int count = read;
-                if (read == -1) {
+                int count = reader.read(buffer);
+                if (count != -1) {
+                    writer.write(buffer, 0, count);
+                } else {
                     return writer.toString();
                 }
-                writer.write(buffer, 0, count);
             }
         } finally {
             reader.close();
@@ -34,23 +35,17 @@ final class Util {
 
     static void deleteContents(File dir) throws IOException {
         File[] files = dir.listFiles();
-        if (files != null) {
-            int length = files.length;
-            int i = 0;
-            while (i < length) {
-                File file = files[i];
-                if (file.isDirectory()) {
-                    deleteContents(file);
-                }
-                if (file.delete()) {
-                    i++;
-                } else {
-                    throw new IOException("failed to delete file: " + file);
-                }
-            }
-            return;
+        if (files == null) {
+            throw new IOException("not a readable directory: " + dir);
         }
-        throw new IOException("not a readable directory: " + dir);
+        for (File file : files) {
+            if (file.isDirectory()) {
+                deleteContents(file);
+            }
+            if (!file.delete()) {
+                throw new IOException("failed to delete file: " + file);
+            }
+        }
     }
 
     static void closeQuietly(Closeable closeable) {

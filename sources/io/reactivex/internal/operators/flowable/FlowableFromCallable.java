@@ -8,21 +8,24 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.Callable;
 import org.reactivestreams.Subscriber;
 
+/* loaded from: classes.dex */
 public final class FlowableFromCallable<T> extends Flowable<T> implements Callable<T> {
     final Callable<? extends T> callable;
 
-    public FlowableFromCallable(Callable<? extends T> callable2) {
-        this.callable = callable2;
+    public FlowableFromCallable(Callable<? extends T> callable) {
+        this.callable = callable;
     }
 
+    /* JADX WARN: Multi-variable type inference failed */
+    @Override // io.reactivex.Flowable
     public void subscribeActual(Subscriber<? super T> s) {
-        DeferredScalarSubscription<T> deferred = new DeferredScalarSubscription<>(s);
-        s.onSubscribe(deferred);
+        DeferredScalarSubscription deferredScalarSubscription = new DeferredScalarSubscription(s);
+        s.onSubscribe(deferredScalarSubscription);
         try {
-            deferred.complete(ObjectHelper.requireNonNull(this.callable.call(), "The callable returned a null value"));
+            deferredScalarSubscription.complete(ObjectHelper.requireNonNull(this.callable.call(), "The callable returned a null value"));
         } catch (Throwable ex) {
             Exceptions.throwIfFatal(ex);
-            if (deferred.isCancelled()) {
+            if (deferredScalarSubscription.isCancelled()) {
                 RxJavaPlugins.onError(ex);
             } else {
                 s.onError(ex);
@@ -30,7 +33,8 @@ public final class FlowableFromCallable<T> extends Flowable<T> implements Callab
         }
     }
 
+    @Override // java.util.concurrent.Callable
     public T call() throws Exception {
-        return ObjectHelper.requireNonNull(this.callable.call(), "The callable returned a null value");
+        return (T) ObjectHelper.requireNonNull(this.callable.call(), "The callable returned a null value");
     }
 }

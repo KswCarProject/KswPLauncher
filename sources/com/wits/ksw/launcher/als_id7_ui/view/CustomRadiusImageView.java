@@ -9,9 +9,10 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.AppCompatImageView;
+import android.support.p004v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
+/* loaded from: classes12.dex */
 public class CustomRadiusImageView extends AppCompatImageView {
     private float height;
     private Matrix matrix;
@@ -20,7 +21,7 @@ public class CustomRadiusImageView extends AppCompatImageView {
     private float width;
 
     public CustomRadiusImageView(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public CustomRadiusImageView(Context context, AttributeSet attrs) {
@@ -29,23 +30,23 @@ public class CustomRadiusImageView extends AppCompatImageView {
 
     public CustomRadiusImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        Paint paint2 = new Paint();
-        this.paint = paint2;
-        paint2.setAntiAlias(true);
+        Paint paint = new Paint();
+        this.paint = paint;
+        paint.setAntiAlias(true);
         this.matrix = new Matrix();
     }
 
-    /* access modifiers changed from: protected */
-    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    @Override // android.widget.ImageView, android.view.View
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        this.width = (float) getMeasuredWidth();
-        float measuredHeight = (float) getMeasuredHeight();
+        this.width = getMeasuredWidth();
+        float measuredHeight = getMeasuredHeight();
         this.height = measuredHeight;
         this.radius = Math.min(this.width, measuredHeight) / 2.0f;
     }
 
-    /* access modifiers changed from: protected */
-    public void onDraw(Canvas canvas) {
+    @Override // android.widget.ImageView, android.view.View
+    protected void onDraw(Canvas canvas) {
         Drawable drawable = getDrawable();
         if (drawable == null) {
             super.onDraw(canvas);
@@ -60,7 +61,7 @@ public class CustomRadiusImageView extends AppCompatImageView {
     private BitmapShader initBitmapShader(BitmapDrawable drawable) {
         Bitmap bitmap = drawable.getBitmap();
         BitmapShader bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        float scale = Math.max(this.width / ((float) bitmap.getWidth()), this.height / ((float) bitmap.getHeight()));
+        float scale = Math.max(this.width / bitmap.getWidth(), this.height / bitmap.getHeight());
         this.matrix.setScale(scale, scale);
         bitmapShader.setLocalMatrix(this.matrix);
         return bitmapShader;

@@ -15,11 +15,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+/* loaded from: classes.dex */
 final class BitmapPreFillRunner implements Runnable {
     static final int BACKOFF_RATIO = 4;
-    private static final Clock DEFAULT_CLOCK = new Clock();
     static final long INITIAL_BACKOFF_MS = 40;
-    static final long MAX_BACKOFF_MS = TimeUnit.SECONDS.toMillis(1);
     static final long MAX_DURATION_MS = 32;
     static final String TAG = "PreFillRunner";
     private final BitmapPool bitmapPool;
@@ -30,27 +29,28 @@ final class BitmapPreFillRunner implements Runnable {
     private final MemoryCache memoryCache;
     private final Set<PreFillType> seenTypes;
     private final PreFillQueue toPrefill;
+    private static final Clock DEFAULT_CLOCK = new Clock();
+    static final long MAX_BACKOFF_MS = TimeUnit.SECONDS.toMillis(1);
 
-    public BitmapPreFillRunner(BitmapPool bitmapPool2, MemoryCache memoryCache2, PreFillQueue allocationOrder) {
-        this(bitmapPool2, memoryCache2, allocationOrder, DEFAULT_CLOCK, new Handler(Looper.getMainLooper()));
+    public BitmapPreFillRunner(BitmapPool bitmapPool, MemoryCache memoryCache, PreFillQueue allocationOrder) {
+        this(bitmapPool, memoryCache, allocationOrder, DEFAULT_CLOCK, new Handler(Looper.getMainLooper()));
     }
 
-    BitmapPreFillRunner(BitmapPool bitmapPool2, MemoryCache memoryCache2, PreFillQueue allocationOrder, Clock clock2, Handler handler2) {
+    BitmapPreFillRunner(BitmapPool bitmapPool, MemoryCache memoryCache, PreFillQueue allocationOrder, Clock clock, Handler handler) {
         this.seenTypes = new HashSet();
         this.currentDelay = INITIAL_BACKOFF_MS;
-        this.bitmapPool = bitmapPool2;
-        this.memoryCache = memoryCache2;
+        this.bitmapPool = bitmapPool;
+        this.memoryCache = memoryCache;
         this.toPrefill = allocationOrder;
-        this.clock = clock2;
-        this.handler = handler2;
+        this.clock = clock;
+        this.handler = handler;
     }
 
     public void cancel() {
         this.isCancelled = true;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean allocate() {
+    boolean allocate() {
         Bitmap bitmap;
         long start = this.clock.now();
         while (!this.toPrefill.isEmpty() && !isGcDetected(start)) {
@@ -62,8 +62,9 @@ final class BitmapPreFillRunner implements Runnable {
                 bitmap = Bitmap.createBitmap(toAllocate.getWidth(), toAllocate.getHeight(), toAllocate.getConfig());
             }
             int bitmapSize = Util.getBitmapByteSize(bitmap);
-            if (getFreeMemoryCacheBytes() >= ((long) bitmapSize)) {
-                this.memoryCache.put(new UniqueKey(), BitmapResource.obtain(bitmap, this.bitmapPool));
+            if (getFreeMemoryCacheBytes() >= bitmapSize) {
+                Key uniqueKey = new UniqueKey();
+                this.memoryCache.put(uniqueKey, BitmapResource.obtain(bitmap, this.bitmapPool));
             } else {
                 this.bitmapPool.put(bitmap);
             }
@@ -71,7 +72,7 @@ final class BitmapPreFillRunner implements Runnable {
                 Log.d(TAG, "allocated [" + toAllocate.getWidth() + "x" + toAllocate.getHeight() + "] " + toAllocate.getConfig() + " size: " + bitmapSize);
             }
         }
-        return !this.isCancelled && !this.toPrefill.isEmpty();
+        return (this.isCancelled || this.toPrefill.isEmpty()) ? false : true;
     }
 
     private boolean isGcDetected(long startTimeMs) {
@@ -82,6 +83,7 @@ final class BitmapPreFillRunner implements Runnable {
         return this.memoryCache.getMaxSize() - this.memoryCache.getCurrentSize();
     }
 
+    @Override // java.lang.Runnable
     public void run() {
         if (allocate()) {
             this.handler.postDelayed(this, getNextDelay());
@@ -94,21 +96,23 @@ final class BitmapPreFillRunner implements Runnable {
         return result;
     }
 
+    /* loaded from: classes.dex */
     private static final class UniqueKey implements Key {
         UniqueKey() {
         }
 
+        @Override // com.bumptech.glide.load.Key
         public void updateDiskCacheKey(MessageDigest messageDigest) {
             throw new UnsupportedOperationException();
         }
     }
 
+    /* loaded from: classes.dex */
     static class Clock {
         Clock() {
         }
 
-        /* access modifiers changed from: package-private */
-        public long now() {
+        long now() {
             return SystemClock.currentThreadTimeMillis();
         }
     }

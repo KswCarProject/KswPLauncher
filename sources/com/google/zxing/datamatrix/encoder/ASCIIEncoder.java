@@ -1,13 +1,16 @@
 package com.google.zxing.datamatrix.encoder;
 
+/* loaded from: classes.dex */
 final class ASCIIEncoder implements Encoder {
     ASCIIEncoder() {
     }
 
+    @Override // com.google.zxing.datamatrix.encoder.Encoder
     public int getEncodingMode() {
         return 0;
     }
 
+    @Override // com.google.zxing.datamatrix.encoder.Encoder
     public void encode(EncoderContext context) {
         if (HighLevelEncoder.determineConsecutiveDigitCount(context.getMessage(), context.pos) >= 2) {
             context.writeCodeword(encodeASCIIDigits(context.getMessage().charAt(context.pos), context.getMessage().charAt(context.pos + 1)));
@@ -15,36 +18,35 @@ final class ASCIIEncoder implements Encoder {
             return;
         }
         char c = context.getCurrentChar();
-        int lookAheadTest = HighLevelEncoder.lookAheadTest(context.getMessage(), context.pos, getEncodingMode());
-        int newMode = lookAheadTest;
-        if (lookAheadTest != getEncodingMode()) {
+        int newMode = HighLevelEncoder.lookAheadTest(context.getMessage(), context.pos, getEncodingMode());
+        if (newMode != getEncodingMode()) {
             switch (newMode) {
                 case 1:
-                    context.writeCodeword(230);
+                    context.writeCodeword('\u00e6');
                     context.signalEncoderChange(1);
                     return;
                 case 2:
-                    context.writeCodeword(239);
+                    context.writeCodeword('\u00ef');
                     context.signalEncoderChange(2);
                     return;
                 case 3:
-                    context.writeCodeword(238);
+                    context.writeCodeword('\u00ee');
                     context.signalEncoderChange(3);
                     return;
                 case 4:
-                    context.writeCodeword(240);
+                    context.writeCodeword('\u00f0');
                     context.signalEncoderChange(4);
                     return;
                 case 5:
-                    context.writeCodeword(231);
+                    context.writeCodeword('\u00e7');
                     context.signalEncoderChange(5);
                     return;
                 default:
                     throw new IllegalStateException("Illegal mode: ".concat(String.valueOf(newMode)));
             }
         } else if (HighLevelEncoder.isExtendedASCII(c)) {
-            context.writeCodeword(235);
-            context.writeCodeword((char) ((c - 128) + 1));
+            context.writeCodeword('\u00eb');
+            context.writeCodeword((char) ((c - '\u0080') + 1));
             context.pos++;
         } else {
             context.writeCodeword((char) (c + 1));

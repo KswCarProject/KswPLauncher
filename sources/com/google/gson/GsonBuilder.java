@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class GsonBuilder {
     private boolean complexMapKeySerialization;
     private String datePattern;
@@ -180,9 +181,9 @@ public final class GsonBuilder {
         return this;
     }
 
-    public GsonBuilder setDateFormat(int dateStyle2, int timeStyle2) {
-        this.dateStyle = dateStyle2;
-        this.timeStyle = timeStyle2;
+    public GsonBuilder setDateFormat(int dateStyle, int timeStyle) {
+        this.dateStyle = dateStyle;
+        this.timeStyle = timeStyle;
         this.datePattern = null;
         return this;
     }
@@ -193,7 +194,8 @@ public final class GsonBuilder {
             this.instanceCreators.put(type, (InstanceCreator) typeAdapter);
         }
         if ((typeAdapter instanceof JsonSerializer) || (typeAdapter instanceof JsonDeserializer)) {
-            this.factories.add(TreeTypeAdapter.newFactoryWithMatchRawType(TypeToken.get(type), typeAdapter));
+            TypeToken<?> typeToken = TypeToken.get(type);
+            this.factories.add(TreeTypeAdapter.newFactoryWithMatchRawType(typeToken, typeAdapter));
         }
         if (typeAdapter instanceof TypeAdapter) {
             this.factories.add(TypeAdapters.newFactory(TypeToken.get(type), (TypeAdapter) typeAdapter));
@@ -223,35 +225,33 @@ public final class GsonBuilder {
     }
 
     public Gson create() {
-        ArrayList arrayList = new ArrayList(this.factories.size() + this.hierarchyFactories.size() + 3);
-        ArrayList arrayList2 = arrayList;
-        arrayList.addAll(this.factories);
-        Collections.reverse(arrayList);
-        List<TypeAdapterFactory> hierarchyFactories2 = new ArrayList<>(this.hierarchyFactories);
-        Collections.reverse(hierarchyFactories2);
-        arrayList.addAll(hierarchyFactories2);
-        addTypeAdaptersForDate(this.datePattern, this.dateStyle, this.timeStyle, arrayList);
-        ArrayList arrayList3 = arrayList;
-        return new Gson(this.excluder, this.fieldNamingPolicy, this.instanceCreators, this.serializeNulls, this.complexMapKeySerialization, this.generateNonExecutableJson, this.escapeHtmlChars, this.prettyPrinting, this.lenient, this.serializeSpecialFloatingPointValues, this.longSerializationPolicy, this.datePattern, this.dateStyle, this.timeStyle, this.factories, this.hierarchyFactories, arrayList2);
+        List<TypeAdapterFactory> factories = new ArrayList<>(this.factories.size() + this.hierarchyFactories.size() + 3);
+        factories.addAll(this.factories);
+        Collections.reverse(factories);
+        List<TypeAdapterFactory> hierarchyFactories = new ArrayList<>(this.hierarchyFactories);
+        Collections.reverse(hierarchyFactories);
+        factories.addAll(hierarchyFactories);
+        addTypeAdaptersForDate(this.datePattern, this.dateStyle, this.timeStyle, factories);
+        return new Gson(this.excluder, this.fieldNamingPolicy, this.instanceCreators, this.serializeNulls, this.complexMapKeySerialization, this.generateNonExecutableJson, this.escapeHtmlChars, this.prettyPrinting, this.lenient, this.serializeSpecialFloatingPointValues, this.longSerializationPolicy, this.datePattern, this.dateStyle, this.timeStyle, this.factories, this.hierarchyFactories, factories);
     }
 
-    private void addTypeAdaptersForDate(String datePattern2, int dateStyle2, int timeStyle2, List<TypeAdapterFactory> factories2) {
-        TypeAdapter<Date> javaSqlDateTypeAdapter;
-        TypeAdapter<Timestamp> timestampTypeAdapter;
+    private void addTypeAdaptersForDate(String datePattern, int dateStyle, int timeStyle, List<TypeAdapterFactory> factories) {
         DefaultDateTypeAdapter dateTypeAdapter;
-        if (datePattern2 != null && !"".equals(datePattern2.trim())) {
-            dateTypeAdapter = new DefaultDateTypeAdapter((Class<? extends java.util.Date>) java.util.Date.class, datePattern2);
-            timestampTypeAdapter = new DefaultDateTypeAdapter((Class<? extends java.util.Date>) Timestamp.class, datePattern2);
-            javaSqlDateTypeAdapter = new DefaultDateTypeAdapter((Class<? extends java.util.Date>) Date.class, datePattern2);
-        } else if (dateStyle2 != 2 && timeStyle2 != 2) {
-            dateTypeAdapter = new DefaultDateTypeAdapter(java.util.Date.class, dateStyle2, timeStyle2);
-            timestampTypeAdapter = new DefaultDateTypeAdapter(Timestamp.class, dateStyle2, timeStyle2);
-            javaSqlDateTypeAdapter = new DefaultDateTypeAdapter(Date.class, dateStyle2, timeStyle2);
+        TypeAdapter<Timestamp> timestampTypeAdapter;
+        TypeAdapter<Date> javaSqlDateTypeAdapter;
+        if (datePattern != null && !"".equals(datePattern.trim())) {
+            dateTypeAdapter = new DefaultDateTypeAdapter(java.util.Date.class, datePattern);
+            timestampTypeAdapter = new DefaultDateTypeAdapter(Timestamp.class, datePattern);
+            javaSqlDateTypeAdapter = new DefaultDateTypeAdapter(Date.class, datePattern);
+        } else if (dateStyle != 2 && timeStyle != 2) {
+            dateTypeAdapter = new DefaultDateTypeAdapter(java.util.Date.class, dateStyle, timeStyle);
+            timestampTypeAdapter = new DefaultDateTypeAdapter(Timestamp.class, dateStyle, timeStyle);
+            javaSqlDateTypeAdapter = new DefaultDateTypeAdapter(Date.class, dateStyle, timeStyle);
         } else {
             return;
         }
-        factories2.add(TypeAdapters.newFactory(java.util.Date.class, dateTypeAdapter));
-        factories2.add(TypeAdapters.newFactory(Timestamp.class, timestampTypeAdapter));
-        factories2.add(TypeAdapters.newFactory(Date.class, javaSqlDateTypeAdapter));
+        factories.add(TypeAdapters.newFactory(java.util.Date.class, dateTypeAdapter));
+        factories.add(TypeAdapters.newFactory(Timestamp.class, timestampTypeAdapter));
+        factories.add(TypeAdapters.newFactory(Date.class, javaSqlDateTypeAdapter));
     }
 }

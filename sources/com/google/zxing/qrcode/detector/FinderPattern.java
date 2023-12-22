@@ -2,46 +2,43 @@ package com.google.zxing.qrcode.detector;
 
 import com.google.zxing.ResultPoint;
 
+/* loaded from: classes.dex */
 public final class FinderPattern extends ResultPoint {
     private final int count;
     private final float estimatedModuleSize;
 
-    FinderPattern(float posX, float posY, float estimatedModuleSize2) {
-        this(posX, posY, estimatedModuleSize2, 1);
+    FinderPattern(float posX, float posY, float estimatedModuleSize) {
+        this(posX, posY, estimatedModuleSize, 1);
     }
 
-    private FinderPattern(float posX, float posY, float estimatedModuleSize2, int count2) {
+    private FinderPattern(float posX, float posY, float estimatedModuleSize, int count) {
         super(posX, posY);
-        this.estimatedModuleSize = estimatedModuleSize2;
-        this.count = count2;
+        this.estimatedModuleSize = estimatedModuleSize;
+        this.count = count;
     }
 
     public float getEstimatedModuleSize() {
         return this.estimatedModuleSize;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getCount() {
+    int getCount() {
         return this.count;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean aboutEquals(float moduleSize, float i, float j) {
+    boolean aboutEquals(float moduleSize, float i, float j) {
         if (Math.abs(i - getY()) > moduleSize || Math.abs(j - getX()) > moduleSize) {
             return false;
         }
-        float abs = Math.abs(moduleSize - this.estimatedModuleSize);
-        float moduleSizeDiff = abs;
-        if (abs <= 1.0f || moduleSizeDiff <= this.estimatedModuleSize) {
-            return true;
-        }
-        return false;
+        float moduleSizeDiff = Math.abs(moduleSize - this.estimatedModuleSize);
+        return moduleSizeDiff <= 1.0f || moduleSizeDiff <= this.estimatedModuleSize;
     }
 
-    /* access modifiers changed from: package-private */
-    public FinderPattern combineEstimate(float i, float j, float newModuleSize) {
+    FinderPattern combineEstimate(float i, float j, float newModuleSize) {
         int i2 = this.count;
         int combinedCount = i2 + 1;
-        return new FinderPattern(((((float) i2) * getX()) + j) / ((float) combinedCount), ((((float) this.count) * getY()) + i) / ((float) combinedCount), ((((float) this.count) * this.estimatedModuleSize) + newModuleSize) / ((float) combinedCount), combinedCount);
+        float combinedX = ((i2 * getX()) + j) / combinedCount;
+        float combinedY = ((this.count * getY()) + i) / combinedCount;
+        float combinedModuleSize = ((this.count * this.estimatedModuleSize) + newModuleSize) / combinedCount;
+        return new FinderPattern(combinedX, combinedY, combinedModuleSize, combinedCount);
     }
 }

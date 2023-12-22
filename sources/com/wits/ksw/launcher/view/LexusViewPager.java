@@ -1,11 +1,12 @@
 package com.wits.ksw.launcher.view;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
+import android.support.p001v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
+/* loaded from: classes16.dex */
 public class LexusViewPager extends ViewPager {
     private static final int LEFT_TO_RIGHT = 1;
     private static final int RIGHT_TO_LEFT = 2;
@@ -17,7 +18,7 @@ public class LexusViewPager extends ViewPager {
     private float lastX;
 
     public LexusViewPager(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public LexusViewPager(Context context, AttributeSet attrs) {
@@ -26,6 +27,7 @@ public class LexusViewPager extends ViewPager {
         this.isUp = true;
     }
 
+    @Override // android.view.ViewGroup, android.view.View
     public boolean dispatchTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case 0:
@@ -37,11 +39,11 @@ public class LexusViewPager extends ViewPager {
                 this.isUp = true;
                 break;
             case 2:
-                if (event.getX() - this.lastX >= 0.0f) {
-                    direction = 1;
+                if (event.getX() - this.lastX < 0.0f) {
+                    direction = 2;
                     break;
                 } else {
-                    direction = 2;
+                    direction = 1;
                     break;
                 }
         }
@@ -58,6 +60,7 @@ public class LexusViewPager extends ViewPager {
         }
     }
 
+    @Override // android.support.p001v4.view.ViewPager, android.view.ViewGroup
     public boolean onInterceptTouchEvent(MotionEvent event) {
         Log.d(TAG, "onInterceptTouchEvent action=" + event.getAction());
         if (this.canScroll) {
@@ -66,17 +69,19 @@ public class LexusViewPager extends ViewPager {
         return false;
     }
 
+    @Override // android.support.p001v4.view.ViewPager, android.view.View
     public boolean onTouchEvent(MotionEvent event) {
         Log.d(TAG, "onTouchEvent action=" + event.getAction() + " direction=" + direction + " getCurrentItem=" + getCurrentItem());
-        if (!this.canScroll) {
-            return false;
+        if (this.canScroll) {
+            if (event.getAction() == 1 && direction == 2 && getCurrentItem() == 1) {
+                boolean b = super.onTouchEvent(event);
+                setCurrentItem(1);
+                invalidate();
+                return b;
+            }
+            boolean b2 = super.onTouchEvent(event);
+            return b2;
         }
-        if (event.getAction() != 1 || direction != 2 || getCurrentItem() != 1) {
-            return super.onTouchEvent(event);
-        }
-        boolean b = super.onTouchEvent(event);
-        setCurrentItem(1);
-        invalidate();
-        return b;
+        return false;
     }
 }

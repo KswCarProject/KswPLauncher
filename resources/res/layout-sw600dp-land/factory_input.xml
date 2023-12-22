@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+    <com.wits.ksw.settings.utlis_view.RtlTextView android:textSize="25sp" android:textColor="@color/color1" android:padding="10dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/factory_input1"/>
+    <com.wits.ksw.settings.utlis_view.RtlTextView android:textSize="16sp" android:textColor="@color/color1" android:id="@+id/tv_facVer" android:padding="10dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <com.wits.ksw.settings.utlis_view.RtlLinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginTop="10dp" android:layout_marginRight="10dp">
+        <TextView android:textSize="30sp" android:textColor="@color/color1" android:gravity="center" android:id="@+id/tv_Facinput" android:background="@drawable/btn_shape" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/factory_input3"/>
+    </com.wits.ksw.settings.utlis_view.RtlLinearLayout>
+    <com.wits.ksw.settings.utlis_view.RtlLinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginTop="100dp" android:layout_marginRight="10dp">
+        <Button android:textSize="30sp" android:textColor="@color/color1" android:layout_gravity="bottom" android:id="@+id/tv_restart" android:background="@drawable/btn_shape" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/factory_restart" android:textAllCaps="false"/>
+    </com.wits.ksw.settings.utlis_view.RtlLinearLayout>
+</LinearLayout>

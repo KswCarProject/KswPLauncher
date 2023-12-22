@@ -1,21 +1,20 @@
 package com.chad.library.adapter.base.diff;
 
-import android.support.v7.util.DiffUtil;
+import android.support.p004v7.util.DiffUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public abstract class BaseQuickDiffCallback<T> extends DiffUtil.Callback {
     private List<T> newList;
     private List<T> oldList;
 
-    /* access modifiers changed from: protected */
-    public abstract boolean areContentsTheSame(T t, T t2);
+    protected abstract boolean areContentsTheSame(T t, T t2);
 
-    /* access modifiers changed from: protected */
-    public abstract boolean areItemsTheSame(T t, T t2);
+    protected abstract boolean areItemsTheSame(T t, T t2);
 
-    public BaseQuickDiffCallback(List<T> newList2) {
-        this.newList = newList2 == null ? new ArrayList<>() : newList2;
+    public BaseQuickDiffCallback(List<T> newList) {
+        this.newList = newList == null ? new ArrayList<>() : newList;
     }
 
     public List<T> getNewList() {
@@ -26,32 +25,36 @@ public abstract class BaseQuickDiffCallback<T> extends DiffUtil.Callback {
         return this.oldList;
     }
 
-    public void setOldList(List<T> oldList2) {
-        this.oldList = oldList2 == null ? new ArrayList<>() : oldList2;
+    public void setOldList(List<T> oldList) {
+        this.oldList = oldList == null ? new ArrayList<>() : oldList;
     }
 
+    @Override // android.support.p004v7.util.DiffUtil.Callback
     public int getOldListSize() {
         return this.oldList.size();
     }
 
+    @Override // android.support.p004v7.util.DiffUtil.Callback
     public int getNewListSize() {
         return this.newList.size();
     }
 
+    @Override // android.support.p004v7.util.DiffUtil.Callback
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
         return areItemsTheSame(this.oldList.get(oldItemPosition), this.newList.get(newItemPosition));
     }
 
+    @Override // android.support.p004v7.util.DiffUtil.Callback
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
         return areContentsTheSame(this.oldList.get(oldItemPosition), this.newList.get(newItemPosition));
     }
 
+    @Override // android.support.p004v7.util.DiffUtil.Callback
     public Object getChangePayload(int oldItemPosition, int newItemPosition) {
         return getChangePayload(this.oldList.get(oldItemPosition), this.newList.get(newItemPosition));
     }
 
-    /* access modifiers changed from: protected */
-    public Object getChangePayload(T t, T t2) {
+    protected Object getChangePayload(T oldItem, T newItem) {
         return null;
     }
 }

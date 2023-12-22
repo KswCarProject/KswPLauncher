@@ -6,12 +6,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class SMSMMSResultParser extends ResultParser {
+    @Override // com.google.zxing.client.result.ResultParser
     public SMSParsedResult parse(Result result) {
         String smsURIWithoutQuery;
-        String massagedText = getMassagedText(result);
-        String rawText = massagedText;
-        if (!massagedText.startsWith("sms:") && !rawText.startsWith("SMS:") && !rawText.startsWith("mms:") && !rawText.startsWith("MMS:")) {
+        String rawText = getMassagedText(result);
+        if (!rawText.startsWith("sms:") && !rawText.startsWith("SMS:") && !rawText.startsWith("mms:") && !rawText.startsWith("MMS:")) {
             return null;
         }
         Map<String, String> nameValuePairs = parseNameValuePairs(rawText);
@@ -23,9 +24,8 @@ public final class SMSMMSResultParser extends ResultParser {
             body = nameValuePairs.get("body");
             querySyntax = true;
         }
-        int indexOf = rawText.indexOf(63, 4);
-        int queryStart = indexOf;
-        if (indexOf < 0 || !querySyntax) {
+        int queryStart = rawText.indexOf(63, 4);
+        if (queryStart < 0 || !querySyntax) {
             smsURIWithoutQuery = rawText.substring(4);
         } else {
             smsURIWithoutQuery = rawText.substring(4, queryStart);
@@ -34,10 +34,10 @@ public final class SMSMMSResultParser extends ResultParser {
         List<String> numbers = new ArrayList<>(1);
         List<String> vias = new ArrayList<>(1);
         while (true) {
-            int indexOf2 = smsURIWithoutQuery.indexOf(44, lastComma + 1);
-            int comma = indexOf2;
-            if (indexOf2 > lastComma) {
-                addNumberVia(numbers, vias, smsURIWithoutQuery.substring(lastComma + 1, comma));
+            int comma = smsURIWithoutQuery.indexOf(44, lastComma + 1);
+            if (comma > lastComma) {
+                String numberPart = smsURIWithoutQuery.substring(lastComma + 1, comma);
+                addNumberVia(numbers, vias, numberPart);
                 lastComma = comma;
             } else {
                 addNumberVia(numbers, vias, smsURIWithoutQuery.substring(lastComma + 1));
@@ -48,17 +48,15 @@ public final class SMSMMSResultParser extends ResultParser {
 
     private static void addNumberVia(Collection<String> numbers, Collection<String> vias, String numberPart) {
         String via;
-        int indexOf = numberPart.indexOf(59);
-        int numberEnd = indexOf;
-        if (indexOf < 0) {
+        int numberEnd = numberPart.indexOf(59);
+        if (numberEnd < 0) {
             numbers.add(numberPart);
-            vias.add((Object) null);
+            vias.add(null);
             return;
         }
         numbers.add(numberPart.substring(0, numberEnd));
-        String substring = numberPart.substring(numberEnd + 1);
-        String maybeVia = substring;
-        if (substring.startsWith("via=")) {
+        String maybeVia = numberPart.substring(numberEnd + 1);
+        if (maybeVia.startsWith("via=")) {
             via = maybeVia.substring(4);
         } else {
             via = null;

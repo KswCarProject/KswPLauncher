@@ -4,11 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
 
+/* loaded from: classes.dex */
 public class SkinCompatProgressBar extends ProgressBar implements SkinCompatSupportable {
     private SkinCompatProgressBarHelper mSkinCompatProgressBarHelper;
 
     public SkinCompatProgressBar(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public SkinCompatProgressBar(Context context, AttributeSet attrs) {
@@ -22,6 +23,7 @@ public class SkinCompatProgressBar extends ProgressBar implements SkinCompatSupp
         skinCompatProgressBarHelper.loadFromAttributes(attrs, defStyleAttr);
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         SkinCompatProgressBarHelper skinCompatProgressBarHelper = this.mSkinCompatProgressBarHelper;
         if (skinCompatProgressBarHelper != null) {

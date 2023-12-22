@@ -9,10 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.view.MarqueeTextView;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class BmwId8SettingsInfoLayoutBinding extends ViewDataBinding {
     public final MarqueeTextView bmwId8InfoAppVersionContent;
     public final RelativeLayout bmwId8InfoMcuUpgrade;
@@ -28,21 +29,21 @@ public abstract class BmwId8SettingsInfoLayoutBinding extends ViewDataBinding {
     @Bindable
     protected BmwId8SettingsViewModel mViewModel;
 
-    public abstract void setViewModel(BmwId8SettingsViewModel bmwId8SettingsViewModel);
+    public abstract void setViewModel(BmwId8SettingsViewModel viewModel);
 
-    protected BmwId8SettingsInfoLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, MarqueeTextView bmwId8InfoAppVersionContent2, RelativeLayout bmwId8InfoMcuUpgrade2, MarqueeTextView bmwId8InfoMcuVersionContent2, MarqueeTextView bmwId8InfoRamContent2, MarqueeTextView bmwId8InfoStorageContent2, MarqueeTextView bmwId8InfoSysVersionContent2, RelativeLayout bmwId8InfoSystemRecovery2, RelativeLayout bmwId8InfoSystemUpdate2, RelativeLayout bmwId8InfoSystemVersion2, ImageView bmwId8SettingsInfoBack2, ScrollView bmwId8SettingsInfoLay2) {
+    protected BmwId8SettingsInfoLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, MarqueeTextView bmwId8InfoAppVersionContent, RelativeLayout bmwId8InfoMcuUpgrade, MarqueeTextView bmwId8InfoMcuVersionContent, MarqueeTextView bmwId8InfoRamContent, MarqueeTextView bmwId8InfoStorageContent, MarqueeTextView bmwId8InfoSysVersionContent, RelativeLayout bmwId8InfoSystemRecovery, RelativeLayout bmwId8InfoSystemUpdate, RelativeLayout bmwId8InfoSystemVersion, ImageView bmwId8SettingsInfoBack, ScrollView bmwId8SettingsInfoLay) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.bmwId8InfoAppVersionContent = bmwId8InfoAppVersionContent2;
-        this.bmwId8InfoMcuUpgrade = bmwId8InfoMcuUpgrade2;
-        this.bmwId8InfoMcuVersionContent = bmwId8InfoMcuVersionContent2;
-        this.bmwId8InfoRamContent = bmwId8InfoRamContent2;
-        this.bmwId8InfoStorageContent = bmwId8InfoStorageContent2;
-        this.bmwId8InfoSysVersionContent = bmwId8InfoSysVersionContent2;
-        this.bmwId8InfoSystemRecovery = bmwId8InfoSystemRecovery2;
-        this.bmwId8InfoSystemUpdate = bmwId8InfoSystemUpdate2;
-        this.bmwId8InfoSystemVersion = bmwId8InfoSystemVersion2;
-        this.bmwId8SettingsInfoBack = bmwId8SettingsInfoBack2;
-        this.bmwId8SettingsInfoLay = bmwId8SettingsInfoLay2;
+        this.bmwId8InfoAppVersionContent = bmwId8InfoAppVersionContent;
+        this.bmwId8InfoMcuUpgrade = bmwId8InfoMcuUpgrade;
+        this.bmwId8InfoMcuVersionContent = bmwId8InfoMcuVersionContent;
+        this.bmwId8InfoRamContent = bmwId8InfoRamContent;
+        this.bmwId8InfoStorageContent = bmwId8InfoStorageContent;
+        this.bmwId8InfoSysVersionContent = bmwId8InfoSysVersionContent;
+        this.bmwId8InfoSystemRecovery = bmwId8InfoSystemRecovery;
+        this.bmwId8InfoSystemUpdate = bmwId8InfoSystemUpdate;
+        this.bmwId8InfoSystemVersion = bmwId8InfoSystemVersion;
+        this.bmwId8SettingsInfoBack = bmwId8SettingsInfoBack;
+        this.bmwId8SettingsInfoLay = bmwId8SettingsInfoLay;
     }
 
     public BmwId8SettingsViewModel getViewModel() {
@@ -55,7 +56,7 @@ public abstract class BmwId8SettingsInfoLayoutBinding extends ViewDataBinding {
 
     @Deprecated
     public static BmwId8SettingsInfoLayoutBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BmwId8SettingsInfoLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_info_layout, root, attachToRoot, component);
+        return (BmwId8SettingsInfoLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_info_layout, root, attachToRoot, component);
     }
 
     public static BmwId8SettingsInfoLayoutBinding inflate(LayoutInflater inflater) {
@@ -64,7 +65,7 @@ public abstract class BmwId8SettingsInfoLayoutBinding extends ViewDataBinding {
 
     @Deprecated
     public static BmwId8SettingsInfoLayoutBinding inflate(LayoutInflater inflater, Object component) {
-        return (BmwId8SettingsInfoLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_info_layout, (ViewGroup) null, false, component);
+        return (BmwId8SettingsInfoLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_info_layout, null, false, component);
     }
 
     public static BmwId8SettingsInfoLayoutBinding bind(View view) {
@@ -73,6 +74,6 @@ public abstract class BmwId8SettingsInfoLayoutBinding extends ViewDataBinding {
 
     @Deprecated
     public static BmwId8SettingsInfoLayoutBinding bind(View view, Object component) {
-        return (BmwId8SettingsInfoLayoutBinding) bind(component, view, R.layout.bmw_id8_settings_info_layout);
+        return (BmwId8SettingsInfoLayoutBinding) bind(component, view, C0899R.C0902layout.bmw_id8_settings_info_layout);
     }
 }

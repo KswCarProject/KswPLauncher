@@ -8,11 +8,12 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class PublishSubject<T> extends Subject<T> {
-    static final PublishDisposable[] EMPTY = new PublishDisposable[0];
-    static final PublishDisposable[] TERMINATED = new PublishDisposable[0];
     Throwable error;
     final AtomicReference<PublishDisposable<T>[]> subscribers = new AtomicReference<>(EMPTY);
+    static final PublishDisposable[] TERMINATED = new PublishDisposable[0];
+    static final PublishDisposable[] EMPTY = new PublishDisposable[0];
 
     @CheckReturnValue
     public static <T> PublishSubject<T> create() {
@@ -22,91 +23,96 @@ public final class PublishSubject<T> extends Subject<T> {
     PublishSubject() {
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Observer<? super T> t) {
+    @Override // io.reactivex.Observable
+    protected void subscribeActual(Observer<? super T> t) {
         PublishDisposable<T> ps = new PublishDisposable<>(t, this);
         t.onSubscribe(ps);
-        if (!add(ps)) {
-            Throwable ex = this.error;
-            if (ex != null) {
-                t.onError(ex);
-            } else {
-                t.onComplete();
+        if (add(ps)) {
+            if (ps.isDisposed()) {
+                remove(ps);
+                return;
             }
-        } else if (ps.isDisposed()) {
-            remove(ps);
+            return;
+        }
+        Throwable ex = this.error;
+        if (ex != null) {
+            t.onError(ex);
+        } else {
+            t.onComplete();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean add(PublishDisposable<T> ps) {
+    boolean add(PublishDisposable<T> ps) {
         PublishDisposable<T>[] a;
         PublishDisposable<T>[] b;
         do {
-            a = (PublishDisposable[]) this.subscribers.get();
+            a = this.subscribers.get();
             if (a == TERMINATED) {
                 return false;
             }
             int n = a.length;
-            b = new PublishDisposable[(n + 1)];
+            b = new PublishDisposable[n + 1];
             System.arraycopy(a, 0, b, 0, n);
             b[n] = ps;
         } while (!this.subscribers.compareAndSet(a, b));
         return true;
     }
 
-    /* access modifiers changed from: package-private */
-    public void remove(PublishDisposable<T> ps) {
+    /* JADX WARN: Multi-variable type inference failed */
+    void remove(PublishDisposable<T> ps) {
         PublishDisposable<T>[] a;
         PublishDisposable<T>[] b;
         do {
-            a = (PublishDisposable[]) this.subscribers.get();
-            if (a != TERMINATED && a != EMPTY) {
-                int n = a.length;
-                int j = -1;
-                int i = 0;
-                while (true) {
-                    if (i >= n) {
-                        break;
-                    } else if (a[i] == ps) {
-                        j = i;
-                        break;
-                    } else {
-                        i++;
-                    }
-                }
-                if (j >= 0) {
-                    if (n == 1) {
-                        b = EMPTY;
-                    } else {
-                        PublishDisposable<T>[] b2 = new PublishDisposable[(n - 1)];
-                        System.arraycopy(a, 0, b2, 0, j);
-                        System.arraycopy(a, j + 1, b2, j, (n - j) - 1);
-                        b = b2;
-                    }
-                } else {
-                    return;
-                }
-            } else {
+            a = this.subscribers.get();
+            if (a == TERMINATED || a == EMPTY) {
                 return;
+            }
+            int n = a.length;
+            int j = -1;
+            int i = 0;
+            while (true) {
+                if (i >= n) {
+                    break;
+                } else if (a[i] != ps) {
+                    i++;
+                } else {
+                    j = i;
+                    break;
+                }
+            }
+            if (j < 0) {
+                return;
+            }
+            if (n == 1) {
+                b = EMPTY;
+            } else {
+                PublishDisposable<T>[] b2 = new PublishDisposable[n - 1];
+                System.arraycopy(a, 0, b2, 0, j);
+                System.arraycopy(a, j + 1, b2, j, (n - j) - 1);
+                b = b2;
             }
         } while (!this.subscribers.compareAndSet(a, b));
     }
 
+    @Override // io.reactivex.Observer
     public void onSubscribe(Disposable d) {
         if (this.subscribers.get() == TERMINATED) {
             d.dispose();
         }
     }
 
+    @Override // io.reactivex.Observer
     public void onNext(T t) {
+        PublishDisposable<T>[] publishDisposableArr;
         ObjectHelper.requireNonNull(t, "onNext called with null. Null values are generally not allowed in 2.x operators and sources.");
-        for (PublishDisposable<T> pd : (PublishDisposable[]) this.subscribers.get()) {
+        for (PublishDisposable<T> pd : this.subscribers.get()) {
             pd.onNext(t);
         }
     }
 
+    @Override // io.reactivex.Observer
     public void onError(Throwable t) {
+        PublishDisposable<T>[] andSet;
         ObjectHelper.requireNonNull(t, "onError called with null. Null values are generally not allowed in 2.x operators and sources.");
         PublishDisposable<T>[] publishDisposableArr = this.subscribers.get();
         PublishDisposable<T>[] publishDisposableArr2 = TERMINATED;
@@ -115,25 +121,30 @@ public final class PublishSubject<T> extends Subject<T> {
             return;
         }
         this.error = t;
-        for (PublishDisposable<T> pd : (PublishDisposable[]) this.subscribers.getAndSet(publishDisposableArr2)) {
+        for (PublishDisposable<T> pd : this.subscribers.getAndSet(publishDisposableArr2)) {
             pd.onError(t);
         }
     }
 
+    @Override // io.reactivex.Observer
     public void onComplete() {
+        PublishDisposable<T>[] andSet;
         PublishDisposable<T>[] publishDisposableArr = this.subscribers.get();
         PublishDisposable<T>[] publishDisposableArr2 = TERMINATED;
-        if (publishDisposableArr != publishDisposableArr2) {
-            for (PublishDisposable<T> pd : (PublishDisposable[]) this.subscribers.getAndSet(publishDisposableArr2)) {
-                pd.onComplete();
-            }
+        if (publishDisposableArr == publishDisposableArr2) {
+            return;
+        }
+        for (PublishDisposable<T> pd : this.subscribers.getAndSet(publishDisposableArr2)) {
+            pd.onComplete();
         }
     }
 
+    @Override // io.reactivex.subjects.Subject
     public boolean hasObservers() {
-        return ((PublishDisposable[]) this.subscribers.get()).length != 0;
+        return this.subscribers.get().length != 0;
     }
 
+    @Override // io.reactivex.subjects.Subject
     public Throwable getThrowable() {
         if (this.subscribers.get() == TERMINATED) {
             return this.error;
@@ -141,22 +152,25 @@ public final class PublishSubject<T> extends Subject<T> {
         return null;
     }
 
+    @Override // io.reactivex.subjects.Subject
     public boolean hasThrowable() {
         return this.subscribers.get() == TERMINATED && this.error != null;
     }
 
+    @Override // io.reactivex.subjects.Subject
     public boolean hasComplete() {
         return this.subscribers.get() == TERMINATED && this.error == null;
     }
 
+    /* loaded from: classes.dex */
     static final class PublishDisposable<T> extends AtomicBoolean implements Disposable {
         private static final long serialVersionUID = 3562861878281475070L;
         final Observer<? super T> downstream;
         final PublishSubject<T> parent;
 
-        PublishDisposable(Observer<? super T> actual, PublishSubject<T> parent2) {
+        PublishDisposable(Observer<? super T> actual, PublishSubject<T> parent) {
             this.downstream = actual;
-            this.parent = parent2;
+            this.parent = parent;
         }
 
         public void onNext(T t) {
@@ -179,12 +193,14 @@ public final class PublishSubject<T> extends Subject<T> {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             if (compareAndSet(false, true)) {
                 this.parent.remove(this);
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return get();
         }

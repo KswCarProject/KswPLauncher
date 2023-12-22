@@ -4,16 +4,18 @@ import android.arch.core.internal.SafeIterableMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public class MediatorLiveData<T> extends MutableLiveData<T> {
     private SafeIterableMap<LiveData<?>, Source<?>> mSources = new SafeIterableMap<>();
 
     public <S> void addSource(LiveData<S> source, Observer<S> onChanged) {
-        Source<S> e = new Source<>(source, onChanged);
-        Source<?> existing = this.mSources.putIfAbsent(source, e);
+        Source<?> source2 = new Source<>(source, onChanged);
+        Source<?> existing = this.mSources.putIfAbsent(source, source2);
         if (existing != null && existing.mObserver != onChanged) {
             throw new IllegalArgumentException("This source was already added with the different observer");
-        } else if (existing == null && hasActiveObservers()) {
-            e.plug();
+        }
+        if (existing == null && hasActiveObservers()) {
+            source2.plug();
         }
     }
 
@@ -24,22 +26,25 @@ public class MediatorLiveData<T> extends MutableLiveData<T> {
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void onActive() {
+    @Override // android.arch.lifecycle.LiveData
+    protected void onActive() {
         Iterator<Map.Entry<LiveData<?>, Source<?>>> it = this.mSources.iterator();
         while (it.hasNext()) {
-            it.next().getValue().plug();
+            Map.Entry<LiveData<?>, Source<?>> source = it.next();
+            source.getValue().plug();
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void onInactive() {
+    @Override // android.arch.lifecycle.LiveData
+    protected void onInactive() {
         Iterator<Map.Entry<LiveData<?>, Source<?>>> it = this.mSources.iterator();
         while (it.hasNext()) {
-            it.next().getValue().unplug();
+            Map.Entry<LiveData<?>, Source<?>> source = it.next();
+            source.getValue().unplug();
         }
     }
 
+    /* loaded from: classes.dex */
     private static class Source<V> implements Observer<V> {
         final LiveData<V> mLiveData;
         final Observer<V> mObserver;
@@ -50,16 +55,15 @@ public class MediatorLiveData<T> extends MutableLiveData<T> {
             this.mObserver = observer;
         }
 
-        /* access modifiers changed from: package-private */
-        public void plug() {
+        void plug() {
             this.mLiveData.observeForever(this);
         }
 
-        /* access modifiers changed from: package-private */
-        public void unplug() {
+        void unplug() {
             this.mLiveData.removeObserver(this);
         }
 
+        @Override // android.arch.lifecycle.Observer
         public void onChanged(V v) {
             if (this.mVersion != this.mLiveData.getVersion()) {
                 this.mVersion = this.mLiveData.getVersion();

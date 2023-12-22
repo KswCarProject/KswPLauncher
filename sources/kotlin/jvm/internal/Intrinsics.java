@@ -4,6 +4,7 @@ import java.util.Arrays;
 import kotlin.KotlinNullPointerException;
 import kotlin.UninitializedPropertyAccessException;
 
+/* loaded from: classes.dex */
 public class Intrinsics {
     private Intrinsics() {
     }
@@ -129,9 +130,11 @@ public class Intrinsics {
     }
 
     private static String createParameterIsNullExceptionMessage(String paramName) {
-        StackTraceElement caller = Thread.currentThread().getStackTrace()[4];
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        StackTraceElement caller = stackTraceElements[4];
         String className = caller.getClassName();
-        return "Parameter specified as non-null is null: method " + className + "." + caller.getMethodName() + ", parameter " + paramName;
+        String methodName = caller.getMethodName();
+        return "Parameter specified as non-null is null: method " + className + "." + methodName + ", parameter " + paramName;
     }
 
     public static int compare(long thisVal, long anotherVal) {
@@ -149,10 +152,7 @@ public class Intrinsics {
     }
 
     public static boolean areEqual(Object first, Object second) {
-        if (first == null) {
-            return second == null;
-        }
-        return first.equals(second);
+        return first == null ? second == null : first.equals(second);
     }
 
     public static boolean areEqual(Double first, Double second) {
@@ -236,7 +236,7 @@ public class Intrinsics {
     }
 
     private static <T extends Throwable> T sanitizeStackTrace(T throwable) {
-        return sanitizeStackTrace(throwable, Intrinsics.class.getName());
+        return (T) sanitizeStackTrace(throwable, Intrinsics.class.getName());
     }
 
     static <T extends Throwable> T sanitizeStackTrace(T throwable, String classNameToDrop) {
@@ -248,10 +248,13 @@ public class Intrinsics {
                 lastIntrinsic = i;
             }
         }
-        throwable.setStackTrace((StackTraceElement[]) Arrays.copyOfRange(stackTrace, lastIntrinsic + 1, size));
+        int i2 = lastIntrinsic + 1;
+        StackTraceElement[] newStackTrace = (StackTraceElement[]) Arrays.copyOfRange(stackTrace, i2, size);
+        throwable.setStackTrace(newStackTrace);
         return throwable;
     }
 
+    /* loaded from: classes.dex */
     public static class Kotlin {
         private Kotlin() {
         }

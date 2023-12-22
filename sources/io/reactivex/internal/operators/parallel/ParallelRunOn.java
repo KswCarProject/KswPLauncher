@@ -16,62 +16,69 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class ParallelRunOn<T> extends ParallelFlowable<T> {
     final int prefetch;
     final Scheduler scheduler;
     final ParallelFlowable<? extends T> source;
 
-    public ParallelRunOn(ParallelFlowable<? extends T> parent, Scheduler scheduler2, int prefetch2) {
+    public ParallelRunOn(ParallelFlowable<? extends T> parent, Scheduler scheduler, int prefetch) {
         this.source = parent;
-        this.scheduler = scheduler2;
-        this.prefetch = prefetch2;
+        this.scheduler = scheduler;
+        this.prefetch = prefetch;
     }
 
+    @Override // io.reactivex.parallel.ParallelFlowable
     public void subscribe(Subscriber<? super T>[] subscribers) {
-        if (validate(subscribers)) {
-            int n = subscribers.length;
-            Subscriber<T>[] parents = new Subscriber[n];
-            Scheduler scheduler2 = this.scheduler;
-            if (scheduler2 instanceof SchedulerMultiWorkerSupport) {
-                ((SchedulerMultiWorkerSupport) scheduler2).createWorkers(n, new MultiWorkerCallback(subscribers, parents));
-            } else {
-                for (int i = 0; i < n; i++) {
-                    createSubscriber(i, subscribers, parents, this.scheduler.createWorker());
-                }
-            }
-            this.source.subscribe(parents);
+        if (!validate(subscribers)) {
+            return;
         }
-    }
-
-    /* access modifiers changed from: package-private */
-    public void createSubscriber(int i, Subscriber<? super T>[] subscribers, Subscriber<T>[] parents, Scheduler.Worker worker) {
-        ConditionalSubscriber conditionalSubscriber = subscribers[i];
-        SpscArrayQueue<T> q = new SpscArrayQueue<>(this.prefetch);
-        if (conditionalSubscriber instanceof ConditionalSubscriber) {
-            parents[i] = new RunOnConditionalSubscriber(conditionalSubscriber, this.prefetch, q, worker);
+        int n = subscribers.length;
+        Subscriber<T>[] parents = new Subscriber[n];
+        Scheduler scheduler = this.scheduler;
+        if (scheduler instanceof SchedulerMultiWorkerSupport) {
+            SchedulerMultiWorkerSupport multiworker = (SchedulerMultiWorkerSupport) scheduler;
+            multiworker.createWorkers(n, new MultiWorkerCallback(subscribers, parents));
         } else {
-            parents[i] = new RunOnSubscriber(conditionalSubscriber, this.prefetch, q, worker);
+            for (int i = 0; i < n; i++) {
+                createSubscriber(i, subscribers, parents, this.scheduler.createWorker());
+            }
+        }
+        this.source.subscribe(parents);
+    }
+
+    void createSubscriber(int i, Subscriber<? super T>[] subscribers, Subscriber<T>[] parents, Scheduler.Worker worker) {
+        Subscriber<? super T> a = subscribers[i];
+        SpscArrayQueue<T> q = new SpscArrayQueue<>(this.prefetch);
+        if (a instanceof ConditionalSubscriber) {
+            parents[i] = new RunOnConditionalSubscriber((ConditionalSubscriber) a, this.prefetch, q, worker);
+        } else {
+            parents[i] = new RunOnSubscriber(a, this.prefetch, q, worker);
         }
     }
 
+    /* loaded from: classes.dex */
     final class MultiWorkerCallback implements SchedulerMultiWorkerSupport.WorkerCallback {
         final Subscriber<T>[] parents;
         final Subscriber<? super T>[] subscribers;
 
-        MultiWorkerCallback(Subscriber<? super T>[] subscribers2, Subscriber<T>[] parents2) {
-            this.subscribers = subscribers2;
-            this.parents = parents2;
+        MultiWorkerCallback(Subscriber<? super T>[] subscribers, Subscriber<T>[] parents) {
+            this.subscribers = subscribers;
+            this.parents = parents;
         }
 
+        @Override // io.reactivex.internal.schedulers.SchedulerMultiWorkerSupport.WorkerCallback
         public void onWorker(int i, Scheduler.Worker w) {
             ParallelRunOn.this.createSubscriber(i, this.subscribers, this.parents, w);
         }
     }
 
+    @Override // io.reactivex.parallel.ParallelFlowable
     public int parallelism() {
         return this.source.parallelism();
     }
 
+    /* loaded from: classes.dex */
     static abstract class BaseRunOnSubscriber<T> extends AtomicInteger implements FlowableSubscriber<T>, Subscription, Runnable {
         private static final long serialVersionUID = 9222303586456402150L;
         volatile boolean cancelled;
@@ -85,24 +92,27 @@ public final class ParallelRunOn<T> extends ParallelFlowable<T> {
         Subscription upstream;
         final Scheduler.Worker worker;
 
-        BaseRunOnSubscriber(int prefetch2, SpscArrayQueue<T> queue2, Scheduler.Worker worker2) {
-            this.prefetch = prefetch2;
-            this.queue = queue2;
-            this.limit = prefetch2 - (prefetch2 >> 2);
-            this.worker = worker2;
+        BaseRunOnSubscriber(int prefetch, SpscArrayQueue<T> queue, Scheduler.Worker worker) {
+            this.prefetch = prefetch;
+            this.queue = queue;
+            this.limit = prefetch - (prefetch >> 2);
+            this.worker = worker;
         }
 
+        @Override // org.reactivestreams.Subscriber
         public final void onNext(T t) {
-            if (!this.done) {
-                if (!this.queue.offer(t)) {
-                    this.upstream.cancel();
-                    onError(new MissingBackpressureException("Queue is full?!"));
-                    return;
-                }
-                schedule();
+            if (this.done) {
+                return;
             }
+            if (!this.queue.offer(t)) {
+                this.upstream.cancel();
+                onError(new MissingBackpressureException("Queue is full?!"));
+                return;
+            }
+            schedule();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public final void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -113,13 +123,16 @@ public final class ParallelRunOn<T> extends ParallelFlowable<T> {
             schedule();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public final void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                schedule();
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            schedule();
         }
 
+        @Override // org.reactivestreams.Subscription
         public final void request(long n) {
             if (SubscriptionHelper.validate(n)) {
                 BackpressureHelper.add(this.requested, n);
@@ -127,6 +140,7 @@ public final class ParallelRunOn<T> extends ParallelFlowable<T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public final void cancel() {
             if (!this.cancelled) {
                 this.cancelled = true;
@@ -138,14 +152,14 @@ public final class ParallelRunOn<T> extends ParallelFlowable<T> {
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public final void schedule() {
+        final void schedule() {
             if (getAndIncrement() == 0) {
                 this.worker.schedule(this);
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class RunOnSubscriber<T> extends BaseRunOnSubscriber<T> {
         private static final long serialVersionUID = 1075119423897941642L;
         final Subscriber<? super T> downstream;
@@ -155,14 +169,16 @@ public final class ParallelRunOn<T> extends ParallelFlowable<T> {
             this.downstream = actual;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
                 this.downstream.onSubscribe(this);
-                s.request((long) this.prefetch);
+                s.request(this.prefetch);
             }
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             long e;
             Throwable ex;
@@ -180,34 +196,33 @@ public final class ParallelRunOn<T> extends ParallelFlowable<T> {
                         return;
                     }
                     boolean d = this.done;
-                    if (!d || (ex = this.error) == null) {
-                        T v = q.poll();
-                        boolean empty = v == null;
-                        if (d && empty) {
-                            a.onComplete();
-                            this.worker.dispose();
-                            return;
-                        } else if (empty) {
-                            break;
-                        } else {
-                            a.onNext(v);
-                            long e3 = e2 + 1;
-                            c++;
-                            int p = c;
-                            if (p == lim) {
-                                c = 0;
-                                e = e3;
-                                this.upstream.request((long) p);
-                            } else {
-                                e = e3;
-                            }
-                            e2 = e;
-                        }
-                    } else {
+                    if (d && (ex = this.error) != null) {
                         q.clear();
                         a.onError(ex);
                         this.worker.dispose();
                         return;
+                    }
+                    T v = q.poll();
+                    boolean empty = v == null;
+                    if (d && empty) {
+                        a.onComplete();
+                        this.worker.dispose();
+                        return;
+                    } else if (empty) {
+                        break;
+                    } else {
+                        a.onNext(v);
+                        long e3 = e2 + 1;
+                        c++;
+                        if (c != lim) {
+                            e = e3;
+                        } else {
+                            c = 0;
+                            e = e3;
+                            long e4 = c;
+                            this.upstream.request(e4);
+                        }
+                        e2 = e;
                     }
                 }
                 if (e2 == r) {
@@ -228,7 +243,7 @@ public final class ParallelRunOn<T> extends ParallelFlowable<T> {
                         }
                     }
                 }
-                if (!(e2 == 0 || r == LongCompanionObject.MAX_VALUE)) {
+                if (e2 != 0 && r != LongCompanionObject.MAX_VALUE) {
                     this.requested.addAndGet(-e2);
                 }
                 int w = get();
@@ -245,6 +260,7 @@ public final class ParallelRunOn<T> extends ParallelFlowable<T> {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class RunOnConditionalSubscriber<T> extends BaseRunOnSubscriber<T> {
         private static final long serialVersionUID = 1075119423897941642L;
         final ConditionalSubscriber<? super T> downstream;
@@ -254,14 +270,16 @@ public final class ParallelRunOn<T> extends ParallelFlowable<T> {
             this.downstream = actual;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
                 this.downstream.onSubscribe(this);
-                s.request((long) this.prefetch);
+                s.request(this.prefetch);
             }
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             long e;
             Throwable ex;
@@ -279,35 +297,34 @@ public final class ParallelRunOn<T> extends ParallelFlowable<T> {
                         return;
                     }
                     boolean d = this.done;
-                    if (!d || (ex = this.error) == null) {
-                        T v = q.poll();
-                        boolean empty = v == null;
-                        if (d && empty) {
-                            a.onComplete();
-                            this.worker.dispose();
-                            return;
-                        } else if (empty) {
-                            break;
-                        } else {
-                            if (a.tryOnNext(v)) {
-                                e2++;
-                            }
-                            c++;
-                            int p = c;
-                            if (p == lim) {
-                                c = 0;
-                                e = e2;
-                                this.upstream.request((long) p);
-                            } else {
-                                e = e2;
-                            }
-                            e2 = e;
-                        }
-                    } else {
+                    if (d && (ex = this.error) != null) {
                         q.clear();
                         a.onError(ex);
                         this.worker.dispose();
                         return;
+                    }
+                    T v = q.poll();
+                    boolean empty = v == null;
+                    if (d && empty) {
+                        a.onComplete();
+                        this.worker.dispose();
+                        return;
+                    } else if (empty) {
+                        break;
+                    } else {
+                        if (a.tryOnNext(v)) {
+                            e2++;
+                        }
+                        c++;
+                        if (c != lim) {
+                            e = e2;
+                        } else {
+                            c = 0;
+                            e = e2;
+                            long e3 = c;
+                            this.upstream.request(e3);
+                        }
+                        e2 = e;
                     }
                 }
                 if (e2 == r) {
@@ -328,7 +345,7 @@ public final class ParallelRunOn<T> extends ParallelFlowable<T> {
                         }
                     }
                 }
-                if (!(e2 == 0 || r == LongCompanionObject.MAX_VALUE)) {
+                if (e2 != 0 && r != LongCompanionObject.MAX_VALUE) {
                     this.requested.addAndGet(-e2);
                 }
                 int w = get();

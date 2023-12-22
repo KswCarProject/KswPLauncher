@@ -8,37 +8,42 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 
+/* loaded from: classes.dex */
 public final class CompletableDisposeOn extends Completable {
     final Scheduler scheduler;
     final CompletableSource source;
 
-    public CompletableDisposeOn(CompletableSource source2, Scheduler scheduler2) {
-        this.source = source2;
-        this.scheduler = scheduler2;
+    public CompletableDisposeOn(CompletableSource source, Scheduler scheduler) {
+        this.source = source;
+        this.scheduler = scheduler;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         this.source.subscribe(new DisposeOnObserver(observer, this.scheduler));
     }
 
+    /* loaded from: classes.dex */
     static final class DisposeOnObserver implements CompletableObserver, Disposable, Runnable {
         volatile boolean disposed;
         final CompletableObserver downstream;
         final Scheduler scheduler;
         Disposable upstream;
 
-        DisposeOnObserver(CompletableObserver observer, Scheduler scheduler2) {
+        DisposeOnObserver(CompletableObserver observer, Scheduler scheduler) {
             this.downstream = observer;
-            this.scheduler = scheduler2;
+            this.scheduler = scheduler;
         }
 
+        @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
         public void onComplete() {
-            if (!this.disposed) {
-                this.downstream.onComplete();
+            if (this.disposed) {
+                return;
             }
+            this.downstream.onComplete();
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onError(Throwable e) {
             if (this.disposed) {
                 RxJavaPlugins.onError(e);
@@ -47,6 +52,7 @@ public final class CompletableDisposeOn extends Completable {
             }
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -54,15 +60,18 @@ public final class CompletableDisposeOn extends Completable {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.disposed = true;
             this.scheduler.scheduleDirect(this);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.disposed;
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             this.upstream.dispose();
             this.upstream = DisposableHelper.DISPOSED;

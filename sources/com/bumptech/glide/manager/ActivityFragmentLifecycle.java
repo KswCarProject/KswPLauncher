@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+/* loaded from: classes.dex */
 class ActivityFragmentLifecycle implements Lifecycle {
     private boolean isDestroyed;
     private boolean isStarted;
@@ -13,6 +14,7 @@ class ActivityFragmentLifecycle implements Lifecycle {
     ActivityFragmentLifecycle() {
     }
 
+    @Override // com.bumptech.glide.manager.Lifecycle
     public void addListener(LifecycleListener listener) {
         this.lifecycleListeners.add(listener);
         if (this.isDestroyed) {
@@ -24,30 +26,28 @@ class ActivityFragmentLifecycle implements Lifecycle {
         }
     }
 
+    @Override // com.bumptech.glide.manager.Lifecycle
     public void removeListener(LifecycleListener listener) {
         this.lifecycleListeners.remove(listener);
     }
 
-    /* access modifiers changed from: package-private */
-    public void onStart() {
+    void onStart() {
         this.isStarted = true;
-        for (T lifecycleListener : Util.getSnapshot(this.lifecycleListeners)) {
+        for (LifecycleListener lifecycleListener : Util.getSnapshot(this.lifecycleListeners)) {
             lifecycleListener.onStart();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void onStop() {
+    void onStop() {
         this.isStarted = false;
-        for (T lifecycleListener : Util.getSnapshot(this.lifecycleListeners)) {
+        for (LifecycleListener lifecycleListener : Util.getSnapshot(this.lifecycleListeners)) {
             lifecycleListener.onStop();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void onDestroy() {
+    void onDestroy() {
         this.isDestroyed = true;
-        for (T lifecycleListener : Util.getSnapshot(this.lifecycleListeners)) {
+        for (LifecycleListener lifecycleListener : Util.getSnapshot(this.lifecycleListeners)) {
             lifecycleListener.onDestroy();
         }
     }

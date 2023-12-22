@@ -4,6 +4,7 @@ import com.ibm.icu.util.ICUCloneNotSupportedException;
 import java.text.CharacterIterator;
 
 @Deprecated
+/* loaded from: classes.dex */
 public final class StringCharacterIterator implements CharacterIterator {
     private int begin;
     private int end;
@@ -11,51 +12,51 @@ public final class StringCharacterIterator implements CharacterIterator {
     private String text;
 
     @Deprecated
-    public StringCharacterIterator(String text2) {
-        this(text2, 0);
+    public StringCharacterIterator(String text) {
+        this(text, 0);
     }
 
     @Deprecated
-    public StringCharacterIterator(String text2, int pos2) {
-        this(text2, 0, text2.length(), pos2);
+    public StringCharacterIterator(String text, int pos) {
+        this(text, 0, text.length(), pos);
     }
 
     @Deprecated
-    public StringCharacterIterator(String text2, int begin2, int end2, int pos2) {
-        if (text2 != null) {
-            this.text = text2;
-            if (begin2 < 0 || begin2 > end2 || end2 > text2.length()) {
-                throw new IllegalArgumentException("Invalid substring range");
-            } else if (pos2 < begin2 || pos2 > end2) {
-                throw new IllegalArgumentException("Invalid position");
-            } else {
-                this.begin = begin2;
-                this.end = end2;
-                this.pos = pos2;
-            }
-        } else {
+    public StringCharacterIterator(String text, int begin, int end, int pos) {
+        if (text == null) {
             throw new NullPointerException();
         }
+        this.text = text;
+        if (begin < 0 || begin > end || end > text.length()) {
+            throw new IllegalArgumentException("Invalid substring range");
+        }
+        if (pos < begin || pos > end) {
+            throw new IllegalArgumentException("Invalid position");
+        }
+        this.begin = begin;
+        this.end = end;
+        this.pos = pos;
     }
 
     @Deprecated
-    public void setText(String text2) {
-        if (text2 != null) {
-            this.text = text2;
-            this.begin = 0;
-            this.end = text2.length();
-            this.pos = 0;
-            return;
+    public void setText(String text) {
+        if (text == null) {
+            throw new NullPointerException();
         }
-        throw new NullPointerException();
+        this.text = text;
+        this.begin = 0;
+        this.end = text.length();
+        this.pos = 0;
     }
 
+    @Override // java.text.CharacterIterator
     @Deprecated
     public char first() {
         this.pos = this.begin;
         return current();
     }
 
+    @Override // java.text.CharacterIterator
     @Deprecated
     public char last() {
         int i = this.end;
@@ -67,6 +68,7 @@ public final class StringCharacterIterator implements CharacterIterator {
         return current();
     }
 
+    @Override // java.text.CharacterIterator
     @Deprecated
     public char setIndex(int p) {
         if (p < this.begin || p > this.end) {
@@ -76,15 +78,17 @@ public final class StringCharacterIterator implements CharacterIterator {
         return current();
     }
 
+    @Override // java.text.CharacterIterator
     @Deprecated
     public char current() {
         int i = this.pos;
-        if (i < this.begin || i >= this.end) {
-            return 65535;
+        if (i >= this.begin && i < this.end) {
+            return this.text.charAt(i);
         }
-        return this.text.charAt(i);
+        return '\uffff';
     }
 
+    @Override // java.text.CharacterIterator
     @Deprecated
     public char next() {
         int i = this.pos;
@@ -95,30 +99,34 @@ public final class StringCharacterIterator implements CharacterIterator {
             return this.text.charAt(i3);
         }
         this.pos = i2;
-        return 65535;
+        return '\uffff';
     }
 
+    @Override // java.text.CharacterIterator
     @Deprecated
     public char previous() {
         int i = this.pos;
-        if (i <= this.begin) {
-            return 65535;
+        if (i > this.begin) {
+            int i2 = i - 1;
+            this.pos = i2;
+            return this.text.charAt(i2);
         }
-        int i2 = i - 1;
-        this.pos = i2;
-        return this.text.charAt(i2);
+        return '\uffff';
     }
 
+    @Override // java.text.CharacterIterator
     @Deprecated
     public int getBeginIndex() {
         return this.begin;
     }
 
+    @Override // java.text.CharacterIterator
     @Deprecated
     public int getEndIndex() {
         return this.end;
     }
 
+    @Override // java.text.CharacterIterator
     @Deprecated
     public int getIndex() {
         return this.pos;
@@ -129,12 +137,9 @@ public final class StringCharacterIterator implements CharacterIterator {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof StringCharacterIterator)) {
-            return false;
-        }
-        StringCharacterIterator that = (StringCharacterIterator) obj;
-        if (hashCode() == that.hashCode() && this.text.equals(that.text) && this.pos == that.pos && this.begin == that.begin && this.end == that.end) {
-            return true;
+        if (obj instanceof StringCharacterIterator) {
+            StringCharacterIterator that = (StringCharacterIterator) obj;
+            return hashCode() == that.hashCode() && this.text.equals(that.text) && this.pos == that.pos && this.begin == that.begin && this.end == that.end;
         }
         return false;
     }
@@ -144,10 +149,12 @@ public final class StringCharacterIterator implements CharacterIterator {
         return ((this.text.hashCode() ^ this.pos) ^ this.begin) ^ this.end;
     }
 
+    @Override // java.text.CharacterIterator
     @Deprecated
     public Object clone() {
         try {
-            return (StringCharacterIterator) super.clone();
+            StringCharacterIterator other = (StringCharacterIterator) super.clone();
+            return other;
         } catch (CloneNotSupportedException e) {
             throw new ICUCloneNotSupportedException(e);
         }

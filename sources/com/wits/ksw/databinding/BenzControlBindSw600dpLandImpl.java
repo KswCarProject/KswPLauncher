@@ -2,64 +2,73 @@ package com.wits.ksw.databinding;
 
 import android.content.Context;
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.CompoundButtonBindingAdapter;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.content.res.AppCompatResources;
+import android.support.constraint.ConstraintLayout;
+import android.support.p001v4.media.session.PlaybackStateCompat;
+import android.support.p004v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.ControlBean;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public class BenzControlBindSw600dpLandImpl extends BenzControlBind {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
     private long mDirtyFlags;
-    private OnClickListenerImpl2 mLauncherViewModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener;
-    private OnClickListenerImpl3 mLauncherViewModelOnHighChasssisClickAndroidViewViewOnClickListener;
+
+    /* renamed from: mLauncherViewModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener */
+    private OnClickListenerImpl2 f181x91270436;
+
+    /* renamed from: mLauncherViewModelOnHighChasssisClickAndroidViewViewOnClickListener */
+    private OnClickListenerImpl3 f182xf249ca93;
     private OnClickListenerImpl mLauncherViewModelOnSportClickAndroidViewViewOnClickListener;
-    private OnClickListenerImpl1 mLauncherViewModelShowBrightnessDialogAndroidViewViewOnClickListener;
+
+    /* renamed from: mLauncherViewModelShowBrightnessDialogAndroidViewViewOnClickListener */
+    private OnClickListenerImpl1 f183xc17a85f1;
 
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.netgControlImageview, 8);
+        sparseIntArray.put(C0899R.C0901id.netgControlImageview, 8);
     }
 
     public BenzControlBindSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 9, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private BenzControlBindSw600dpLandImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 6, bindings[5], (ImageView) null, (ImageView) null, bindings[6], bindings[7], bindings[2], bindings[3], bindings[4], bindings[1], bindings[0], bindings[8]);
-        this.mDirtyFlags = -1;
-        this.brightnessBtn.setTag((Object) null);
-        this.checkBox.setTag((Object) null);
-        this.checkBox2.setTag((Object) null);
-        this.controlBtn1.setTag((Object) null);
-        this.controlBtn2.setTag((Object) null);
-        this.controlBtn3.setTag((Object) null);
-        this.imageView.setTag((Object) null);
-        this.linearLayout.setTag((Object) null);
+        super(bindingComponent, root, 6, (ImageView) bindings[5], null, null, (CheckBox) bindings[6], (CheckBox) bindings[7], (ImageView) bindings[2], (ImageView) bindings[3], (ImageView) bindings[4], (ImageView) bindings[1], (ConstraintLayout) bindings[0], (ImageView) bindings[8]);
+        this.mDirtyFlags = -1L;
+        this.brightnessBtn.setTag(null);
+        this.checkBox.setTag(null);
+        this.checkBox2.setTag(null);
+        this.controlBtn1.setTag(null);
+        this.controlBtn2.setTag(null);
+        this.controlBtn3.setTag(null);
+        this.imageView.setTag(null);
+        this.linearLayout.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 128;
+            this.mDirtyFlags = 128L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -69,14 +78,16 @@ public class BenzControlBindSw600dpLandImpl extends BenzControlBind {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (19 != variableId) {
-            return false;
+        if (19 == variableId) {
+            setLauncherViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setLauncherViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.BenzControlBind
     public void setLauncherViewModel(LauncherViewModel LauncherViewModel) {
         this.mLauncherViewModel = LauncherViewModel;
         synchronized (this) {
@@ -86,8 +97,8 @@ public class BenzControlBindSw600dpLandImpl extends BenzControlBind {
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeLauncherViewModelControlBeanRightBrightnessAdjus((ObservableBoolean) object, fieldId);
@@ -107,72 +118,72 @@ public class BenzControlBindSw600dpLandImpl extends BenzControlBind {
     }
 
     private boolean onChangeLauncherViewModelControlBeanRightBrightnessAdjus(ObservableBoolean LauncherViewModelControlBeanRightBrightnessAdjus, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeLauncherViewModelControlBeanSport(ObservableBoolean LauncherViewModelControlBeanSport, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeLauncherViewModelControlBeanRdarAssistance(ObservableBoolean LauncherViewModelControlBeanRdarAssistance, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeLauncherViewModelControlBeanLeftBrightnessAdjus(ObservableBoolean LauncherViewModelControlBeanLeftBrightnessAdjus, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeLauncherViewModelControlBeanPassairbar(ObservableBoolean LauncherViewModelControlBeanPassairbar, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 16;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 16;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeLauncherViewModelControlBeanChassis(ObservableBoolean LauncherViewModelControlBeanChassis, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 32;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 32;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
-        CompoundButton.OnCheckedChangeListener launcherViewModelRightOnCheckedChangeListener;
-        Drawable launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff;
         boolean launcherViewModelControlBeanRightBrightnessAdjusGet;
         Drawable launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff;
+        Drawable launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff;
+        CompoundButton.OnCheckedChangeListener launcherViewModelRightOnCheckedChangeListener;
         ObservableBoolean launcherViewModelControlBeanRightBrightnessAdjus;
         ControlBean launcherViewModelControlBean;
         ObservableBoolean launcherViewModelControlBeanPassairbar;
@@ -180,14 +191,14 @@ public class BenzControlBindSw600dpLandImpl extends BenzControlBind {
         ObservableBoolean launcherViewModelControlBeanPassairbar2;
         ObservableBoolean launcherViewModelControlBeanChassis;
         long dirtyFlags2;
-        int i;
         Context context;
+        int i;
         long dirtyFlags3;
         Drawable drawable;
         ObservableBoolean launcherViewModelControlBeanLeftBrightnessAdjus;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         Drawable launcherViewModelControlBeanChassisControlBtn1AndroidDrawableNtg55CtrlpanelBtnOnControlBtn1AndroidDrawableNtg55CtrlpanelBtnOff = null;
         ObservableBoolean launcherViewModelControlBeanSport = null;
@@ -208,10 +219,17 @@ public class BenzControlBindSw600dpLandImpl extends BenzControlBind {
         CompoundButton.OnCheckedChangeListener launcherViewModelRightOnCheckedChangeListener2 = null;
         boolean launcherViewModelControlBeanChassisGet = false;
         LauncherViewModel launcherViewModel = this.mLauncherViewModel;
-        if ((dirtyFlags & 255) != 0) {
+        if ((dirtyFlags & 255) == 0) {
+            launcherViewModelControlBeanRightBrightnessAdjusGet = false;
+            launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff = null;
+            launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff = null;
+            launcherViewModelRightOnCheckedChangeListener = null;
+        } else {
             if ((dirtyFlags & 192) == 0) {
                 launcherViewModelControlBeanRightBrightnessAdjus = null;
-            } else if (launcherViewModel != null) {
+            } else if (launcherViewModel == null) {
+                launcherViewModelControlBeanRightBrightnessAdjus = null;
+            } else {
                 launcherViewModelControlBeanRightBrightnessAdjus = null;
                 OnClickListenerImpl onClickListenerImpl = this.mLauncherViewModelOnSportClickAndroidViewViewOnClickListener;
                 if (onClickListenerImpl == null) {
@@ -219,56 +237,48 @@ public class BenzControlBindSw600dpLandImpl extends BenzControlBind {
                     this.mLauncherViewModelOnSportClickAndroidViewViewOnClickListener = onClickListenerImpl;
                 }
                 launcherViewModelOnSportClickAndroidViewViewOnClickListener = onClickListenerImpl.setValue(launcherViewModel);
-                OnClickListenerImpl1 onClickListenerImpl1 = this.mLauncherViewModelShowBrightnessDialogAndroidViewViewOnClickListener;
+                OnClickListenerImpl1 onClickListenerImpl1 = this.f183xc17a85f1;
                 if (onClickListenerImpl1 == null) {
                     onClickListenerImpl1 = new OnClickListenerImpl1();
-                    this.mLauncherViewModelShowBrightnessDialogAndroidViewViewOnClickListener = onClickListenerImpl1;
+                    this.f183xc17a85f1 = onClickListenerImpl1;
                 }
                 launcherViewModelShowBrightnessDialogAndroidViewViewOnClickListener = onClickListenerImpl1.setValue(launcherViewModel);
                 launcherViewModelLeftOnCheckedChangeListener = launcherViewModel.leftOnCheckedChangeListener;
-                OnClickListenerImpl2 onClickListenerImpl2 = this.mLauncherViewModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener;
+                OnClickListenerImpl2 onClickListenerImpl2 = this.f181x91270436;
                 if (onClickListenerImpl2 == null) {
                     onClickListenerImpl2 = new OnClickListenerImpl2();
-                    this.mLauncherViewModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener = onClickListenerImpl2;
+                    this.f181x91270436 = onClickListenerImpl2;
                 }
                 launcherViewModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener = onClickListenerImpl2.setValue(launcherViewModel);
-                OnClickListenerImpl3 onClickListenerImpl3 = this.mLauncherViewModelOnHighChasssisClickAndroidViewViewOnClickListener;
+                OnClickListenerImpl3 onClickListenerImpl3 = this.f182xf249ca93;
                 if (onClickListenerImpl3 == null) {
                     onClickListenerImpl3 = new OnClickListenerImpl3();
-                    this.mLauncherViewModelOnHighChasssisClickAndroidViewViewOnClickListener = onClickListenerImpl3;
+                    this.f182xf249ca93 = onClickListenerImpl3;
                 }
                 launcherViewModelOnHighChasssisClickAndroidViewViewOnClickListener = onClickListenerImpl3.setValue(launcherViewModel);
                 launcherViewModelRightOnCheckedChangeListener2 = launcherViewModel.rightOnCheckedChangeListener;
-            } else {
-                launcherViewModelControlBeanRightBrightnessAdjus = null;
             }
-            if (launcherViewModel != null) {
-                launcherViewModelControlBean = launcherViewModel.controlBean;
-            } else {
+            if (launcherViewModel == null) {
                 launcherViewModelControlBean = null;
+            } else {
+                launcherViewModelControlBean = launcherViewModel.controlBean;
             }
-            if ((dirtyFlags & 193) != 0) {
-                if (launcherViewModelControlBean != null) {
-                    LauncherViewModel launcherViewModel2 = launcherViewModel;
-                    launcherViewModelControlBeanRightBrightnessAdjus2 = launcherViewModelControlBean.rightBrightnessAdjus;
-                } else {
-                    launcherViewModelControlBeanRightBrightnessAdjus2 = launcherViewModelControlBeanRightBrightnessAdjus;
-                }
+            if ((dirtyFlags & 193) == 0) {
                 launcherViewModelControlBeanPassairbar = null;
-                updateRegistration(0, (Observable) launcherViewModelControlBeanRightBrightnessAdjus2);
+                launcherViewModelControlBeanRightBrightnessAdjus2 = launcherViewModelControlBeanRightBrightnessAdjus;
+            } else {
+                launcherViewModelControlBeanRightBrightnessAdjus2 = launcherViewModelControlBean != null ? launcherViewModelControlBean.rightBrightnessAdjus : launcherViewModelControlBeanRightBrightnessAdjus;
+                launcherViewModelControlBeanPassairbar = null;
+                updateRegistration(0, launcherViewModelControlBeanRightBrightnessAdjus2);
                 if (launcherViewModelControlBeanRightBrightnessAdjus2 != null) {
                     launcherViewModelControlBeanRightBrightnessAdjusGet2 = launcherViewModelControlBeanRightBrightnessAdjus2.get();
                 }
-            } else {
-                launcherViewModelControlBeanPassairbar = null;
-                launcherViewModelControlBeanRightBrightnessAdjus2 = launcherViewModelControlBeanRightBrightnessAdjus;
             }
-            ObservableBoolean launcherViewModelControlBeanRightBrightnessAdjus3 = launcherViewModelControlBeanRightBrightnessAdjus2;
             if ((dirtyFlags & 194) != 0) {
                 if (launcherViewModelControlBean != null) {
                     launcherViewModelControlBeanSport = launcherViewModelControlBean.sport;
                 }
-                updateRegistration(1, (Observable) launcherViewModelControlBeanSport);
+                updateRegistration(1, launcherViewModelControlBeanSport);
                 if (launcherViewModelControlBeanSport != null) {
                     launcherViewModelControlBeanSportGet = launcherViewModelControlBeanSport.get();
                 }
@@ -279,13 +289,13 @@ public class BenzControlBindSw600dpLandImpl extends BenzControlBind {
                         dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE;
                     }
                 }
-                launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff2 = launcherViewModelControlBeanSportGet ? AppCompatResources.getDrawable(this.controlBtn2.getContext(), R.drawable.ntg55_ctrlpanel_btn_on) : AppCompatResources.getDrawable(this.controlBtn2.getContext(), R.drawable.ntg55_ctrlpanel_btn_off);
+                launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff2 = launcherViewModelControlBeanSportGet ? AppCompatResources.getDrawable(this.controlBtn2.getContext(), C0899R.C0900drawable.ntg55_ctrlpanel_btn_on) : AppCompatResources.getDrawable(this.controlBtn2.getContext(), C0899R.C0900drawable.ntg55_ctrlpanel_btn_off);
             }
             if ((dirtyFlags & 196) != 0) {
                 if (launcherViewModelControlBean != null) {
                     launcherViewModelControlBeanRdarAssistance = launcherViewModelControlBean.rdarAssistance;
                 }
-                updateRegistration(2, (Observable) launcherViewModelControlBeanRdarAssistance);
+                updateRegistration(2, launcherViewModelControlBeanRdarAssistance);
                 if (launcherViewModelControlBeanRdarAssistance != null) {
                     launcherViewModelControlBeanRdarAssistanceGet = launcherViewModelControlBeanRdarAssistance.get();
                 }
@@ -296,29 +306,28 @@ public class BenzControlBindSw600dpLandImpl extends BenzControlBind {
                         dirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
                     }
                 }
-                launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff2 = AppCompatResources.getDrawable(this.controlBtn3.getContext(), launcherViewModelControlBeanRdarAssistanceGet ? R.drawable.ntg55_ctrlpanel_btn_on : R.drawable.ntg55_ctrlpanel_btn_off);
+                launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff2 = AppCompatResources.getDrawable(this.controlBtn3.getContext(), launcherViewModelControlBeanRdarAssistanceGet ? C0899R.C0900drawable.ntg55_ctrlpanel_btn_on : C0899R.C0900drawable.ntg55_ctrlpanel_btn_off);
             }
             if ((dirtyFlags & 200) != 0) {
-                if (launcherViewModelControlBean != null) {
-                    launcherViewModelControlBeanLeftBrightnessAdjus = launcherViewModelControlBean.leftBrightnessAdjus;
-                } else {
+                if (launcherViewModelControlBean == null) {
                     launcherViewModelControlBeanLeftBrightnessAdjus = null;
+                } else {
+                    launcherViewModelControlBeanLeftBrightnessAdjus = launcherViewModelControlBean.leftBrightnessAdjus;
                 }
-                updateRegistration(3, (Observable) launcherViewModelControlBeanLeftBrightnessAdjus);
+                updateRegistration(3, launcherViewModelControlBeanLeftBrightnessAdjus);
                 if (launcherViewModelControlBeanLeftBrightnessAdjus != null) {
                     launcherViewModelControlBeanLeftBrightnessAdjusGet = launcherViewModelControlBeanLeftBrightnessAdjus.get();
-                    ObservableBoolean observableBoolean = launcherViewModelControlBeanLeftBrightnessAdjus;
-                } else {
-                    ObservableBoolean observableBoolean2 = launcherViewModelControlBeanLeftBrightnessAdjus;
                 }
             }
-            if ((dirtyFlags & 208) != 0) {
-                if (launcherViewModelControlBean != null) {
-                    launcherViewModelControlBeanPassairbar2 = launcherViewModelControlBean.passairbar;
-                } else {
+            if ((dirtyFlags & 208) == 0) {
+                launcherViewModelControlBeanPassairbar2 = launcherViewModelControlBeanPassairbar;
+            } else {
+                if (launcherViewModelControlBean == null) {
                     launcherViewModelControlBeanPassairbar2 = launcherViewModelControlBeanPassairbar;
+                } else {
+                    launcherViewModelControlBeanPassairbar2 = launcherViewModelControlBean.passairbar;
                 }
-                updateRegistration(4, (Observable) launcherViewModelControlBeanPassairbar2);
+                updateRegistration(4, launcherViewModelControlBeanPassairbar2);
                 if (launcherViewModelControlBeanPassairbar2 != null) {
                     launcherViewModelControlBeanPassairbarGet = launcherViewModelControlBeanPassairbar2.get();
                 }
@@ -331,24 +340,21 @@ public class BenzControlBindSw600dpLandImpl extends BenzControlBind {
                 }
                 if (launcherViewModelControlBeanPassairbarGet) {
                     dirtyFlags3 = dirtyFlags;
-                    drawable = AppCompatResources.getDrawable(this.imageView.getContext(), R.drawable.ntg55_ctrlpanel_airbag_on);
+                    drawable = AppCompatResources.getDrawable(this.imageView.getContext(), C0899R.C0900drawable.ntg55_ctrlpanel_airbag_on);
                 } else {
                     dirtyFlags3 = dirtyFlags;
-                    drawable = AppCompatResources.getDrawable(this.imageView.getContext(), R.drawable.ntg55_ctrlpanel_airbag_off);
+                    drawable = AppCompatResources.getDrawable(this.imageView.getContext(), C0899R.C0900drawable.ntg55_ctrlpanel_airbag_off);
                 }
                 launcherViewModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff = drawable;
                 dirtyFlags = dirtyFlags3;
-            } else {
-                launcherViewModelControlBeanPassairbar2 = launcherViewModelControlBeanPassairbar;
             }
             if ((dirtyFlags & 224) != 0) {
-                if (launcherViewModelControlBean != null) {
-                    launcherViewModelControlBeanChassis = launcherViewModelControlBean.chassis;
-                } else {
+                if (launcherViewModelControlBean == null) {
                     launcherViewModelControlBeanChassis = null;
+                } else {
+                    launcherViewModelControlBeanChassis = launcherViewModelControlBean.chassis;
                 }
-                ControlBean launcherViewModelControlBean2 = launcherViewModelControlBean;
-                updateRegistration(5, (Observable) launcherViewModelControlBeanChassis);
+                updateRegistration(5, launcherViewModelControlBeanChassis);
                 if (launcherViewModelControlBeanChassis != null) {
                     launcherViewModelControlBeanChassisGet = launcherViewModelControlBeanChassis.get();
                 }
@@ -362,43 +368,26 @@ public class BenzControlBindSw600dpLandImpl extends BenzControlBind {
                 if (launcherViewModelControlBeanChassisGet) {
                     context = this.controlBtn1.getContext();
                     dirtyFlags2 = dirtyFlags;
-                    i = R.drawable.ntg55_ctrlpanel_btn_on;
+                    i = C0899R.C0900drawable.ntg55_ctrlpanel_btn_on;
                 } else {
                     dirtyFlags2 = dirtyFlags;
                     context = this.controlBtn1.getContext();
-                    i = R.drawable.ntg55_ctrlpanel_btn_off;
+                    i = C0899R.C0900drawable.ntg55_ctrlpanel_btn_off;
                 }
                 launcherViewModelControlBeanChassisControlBtn1AndroidDrawableNtg55CtrlpanelBtnOnControlBtn1AndroidDrawableNtg55CtrlpanelBtnOff = AppCompatResources.getDrawable(context, i);
-                ObservableBoolean observableBoolean3 = launcherViewModelControlBeanChassis;
                 launcherViewModelControlBeanRightBrightnessAdjusGet = launcherViewModelControlBeanRightBrightnessAdjusGet2;
                 launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff = launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff2;
-                ObservableBoolean observableBoolean4 = launcherViewModelControlBeanRightBrightnessAdjus3;
-                ControlBean controlBean = launcherViewModelControlBean2;
                 dirtyFlags = dirtyFlags2;
-                ObservableBoolean observableBoolean5 = launcherViewModelControlBeanPassairbar2;
                 launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff = launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff2;
-                ObservableBoolean observableBoolean6 = launcherViewModelControlBeanSport;
                 launcherViewModelRightOnCheckedChangeListener = launcherViewModelRightOnCheckedChangeListener2;
             } else {
-                ControlBean launcherViewModelControlBean3 = launcherViewModelControlBean;
                 launcherViewModelControlBeanRightBrightnessAdjusGet = launcherViewModelControlBeanRightBrightnessAdjusGet2;
                 launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff = launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff2;
-                ObservableBoolean observableBoolean7 = launcherViewModelControlBeanRightBrightnessAdjus3;
-                ControlBean controlBean2 = launcherViewModelControlBean3;
-                ObservableBoolean observableBoolean8 = launcherViewModelControlBeanPassairbar2;
                 launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff = launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff2;
-                ObservableBoolean observableBoolean9 = launcherViewModelControlBeanSport;
                 launcherViewModelRightOnCheckedChangeListener = launcherViewModelRightOnCheckedChangeListener2;
             }
-        } else {
-            LauncherViewModel launcherViewModel3 = launcherViewModel;
-            launcherViewModelControlBeanRightBrightnessAdjusGet = false;
-            launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff = null;
-            launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff = null;
-            launcherViewModelRightOnCheckedChangeListener = null;
         }
         if ((dirtyFlags & 192) != 0) {
-            ObservableBoolean observableBoolean10 = launcherViewModelControlBeanRdarAssistance;
             this.brightnessBtn.setOnClickListener(launcherViewModelShowBrightnessDialogAndroidViewViewOnClickListener);
             this.checkBox.setOnCheckedChangeListener(launcherViewModelLeftOnCheckedChangeListener);
             this.checkBox2.setOnCheckedChangeListener(launcherViewModelRightOnCheckedChangeListener);
@@ -426,65 +415,73 @@ public class BenzControlBindSw600dpLandImpl extends BenzControlBind {
         }
     }
 
+    /* loaded from: classes7.dex */
     public static class OnClickListenerImpl implements View.OnClickListener {
         private LauncherViewModel value;
 
-        public OnClickListenerImpl setValue(LauncherViewModel value2) {
-            this.value = value2;
-            if (value2 == null) {
+        public OnClickListenerImpl setValue(LauncherViewModel value) {
+            this.value = value;
+            if (value == null) {
                 return null;
             }
             return this;
         }
 
+        @Override // android.view.View.OnClickListener
         public void onClick(View arg0) {
             this.value.onSportClick(arg0);
         }
     }
 
+    /* loaded from: classes7.dex */
     public static class OnClickListenerImpl1 implements View.OnClickListener {
         private LauncherViewModel value;
 
-        public OnClickListenerImpl1 setValue(LauncherViewModel value2) {
-            this.value = value2;
-            if (value2 == null) {
+        public OnClickListenerImpl1 setValue(LauncherViewModel value) {
+            this.value = value;
+            if (value == null) {
                 return null;
             }
             return this;
         }
 
+        @Override // android.view.View.OnClickListener
         public void onClick(View arg0) {
             this.value.showBrightnessDialog(arg0);
         }
     }
 
+    /* loaded from: classes7.dex */
     public static class OnClickListenerImpl2 implements View.OnClickListener {
         private LauncherViewModel value;
 
-        public OnClickListenerImpl2 setValue(LauncherViewModel value2) {
-            this.value = value2;
-            if (value2 == null) {
+        public OnClickListenerImpl2 setValue(LauncherViewModel value) {
+            this.value = value;
+            if (value == null) {
                 return null;
             }
             return this;
         }
 
+        @Override // android.view.View.OnClickListener
         public void onClick(View arg0) {
             this.value.onAuxiliaryRadarClick(arg0);
         }
     }
 
+    /* loaded from: classes7.dex */
     public static class OnClickListenerImpl3 implements View.OnClickListener {
         private LauncherViewModel value;
 
-        public OnClickListenerImpl3 setValue(LauncherViewModel value2) {
-            this.value = value2;
-            if (value2 == null) {
+        public OnClickListenerImpl3 setValue(LauncherViewModel value) {
+            this.value = value;
+            if (value == null) {
                 return null;
             }
             return this;
         }
 
+        @Override // android.view.View.OnClickListener
         public void onClick(View arg0) {
             this.value.onHighChasssisClick(arg0);
         }

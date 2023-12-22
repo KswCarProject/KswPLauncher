@@ -5,6 +5,7 @@ import android.os.Build;
 import android.view.DragAndDropPermissions;
 import android.view.DragEvent;
 
+/* loaded from: classes.dex */
 public final class DragAndDropPermissionsCompat {
     private Object mDragAndDropPermissions;
 
@@ -14,10 +15,10 @@ public final class DragAndDropPermissionsCompat {
 
     public static DragAndDropPermissionsCompat request(Activity activity, DragEvent dragEvent) {
         DragAndDropPermissions dragAndDropPermissions;
-        if (Build.VERSION.SDK_INT < 24 || (dragAndDropPermissions = activity.requestDragAndDropPermissions(dragEvent)) == null) {
-            return null;
+        if (Build.VERSION.SDK_INT >= 24 && (dragAndDropPermissions = activity.requestDragAndDropPermissions(dragEvent)) != null) {
+            return new DragAndDropPermissionsCompat(dragAndDropPermissions);
         }
-        return new DragAndDropPermissionsCompat(dragAndDropPermissions);
+        return null;
     }
 
     public void release() {

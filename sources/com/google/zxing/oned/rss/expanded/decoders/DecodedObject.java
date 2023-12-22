@@ -1,14 +1,14 @@
 package com.google.zxing.oned.rss.expanded.decoders;
 
+/* loaded from: classes.dex */
 abstract class DecodedObject {
     private final int newPosition;
 
-    DecodedObject(int newPosition2) {
-        this.newPosition = newPosition2;
+    DecodedObject(int newPosition) {
+        this.newPosition = newPosition;
     }
 
-    /* access modifiers changed from: package-private */
-    public final int getNewPosition() {
+    final int getNewPosition() {
         return this.newPosition;
     }
 }

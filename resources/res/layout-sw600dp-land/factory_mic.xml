@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="80dp">
+        <TextView android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_mic" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/mic_text" android:lines="1" android:layout_centerVertical="true"/>
+        <SeekBar android:id="@+id/seek_mic" android:background="@drawable/als_sp_id7_progress_bar_bk" android:layout_width="297dp" android:layout_height="25dp" android:layout_marginLeft="10dp" android:layout_marginBottom="5dp" android:progressDrawable="@null" android:thumb="@drawable/factory_ui_seek_thumb" android:layout_toRightOf="@+id/tv_mic" android:layout_alignBottom="@+id/tv_mic"/>
+        <TextView android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_mic_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="0" android:lines="1" android:layout_toRightOf="@+id/seek_mic" android:layout_centerVertical="true"/>
+    </RelativeLayout>
+</LinearLayout>

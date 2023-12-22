@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import com.wits.ksw.KswApplication;
 
+/* loaded from: classes11.dex */
 public class ScreenUtil {
     private static ScreenUtil instance;
 
@@ -23,14 +24,18 @@ public class ScreenUtil {
 
     public boolean is1920X720(Context context) {
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        return dm.widthPixels == 1920 && dm.heightPixels == 720;
+        int screenWidth = dm.widthPixels;
+        int screenHeight = dm.heightPixels;
+        return screenWidth == 1920 && screenHeight == 720;
     }
 
     public static int dip2px(float dpValue) {
-        return (int) ((dpValue * KswApplication.appContext.getResources().getDisplayMetrics().density) + 0.5f);
+        float scale = KswApplication.appContext.getResources().getDisplayMetrics().density;
+        return (int) ((dpValue * scale) + 0.5f);
     }
 
     public static int px2dip(float pxValue) {
-        return (int) ((pxValue / KswApplication.appContext.getResources().getDisplayMetrics().density) + 0.5f);
+        float scale = KswApplication.appContext.getResources().getDisplayMetrics().density;
+        return (int) ((pxValue / scale) + 0.5f);
     }
 }

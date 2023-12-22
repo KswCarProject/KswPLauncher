@@ -1,25 +1,43 @@
 package com.wits.ksw.launcher.view.benzmbux2021kswv2.adapter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.content.Context;
+import android.support.p001v4.app.Fragment;
+import android.support.p001v4.app.FragmentManager;
+import android.support.p001v4.app.FragmentPagerAdapter;
+import android.util.DisplayMetrics;
 import com.wits.ksw.launcher.view.benzmbux2021.BenzMbux2021FragmentTwo;
 import com.wits.ksw.launcher.view.benzmbux2021kswv2.fragment.BenzMbux2021KswV2FragmentOne;
+import com.wits.ksw.launcher.view.benzmbux2021kswv2.fragment.BenzMbux2021KswV2FragmentThree;
 import com.wits.ksw.launcher.view.benzmbux2021kswv2.fragment.BenzMbux2021KswV2FragmentTwo;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes7.dex */
 public class BenzMbux2021KswV2ViewPagerAdapter extends FragmentPagerAdapter {
-    private List<Fragment> fragmentList = new ArrayList();
-    private Fragment fragmentPage1 = new BenzMbux2021KswV2FragmentOne();
-    private Fragment fragmentPage2 = new BenzMbux2021KswV2FragmentTwo();
+    private List<Fragment> fragmentList;
+    private Fragment fragmentPage1;
+    private Fragment fragmentPage2;
+    private Fragment fragmentPage3;
+    private Context mContext;
 
-    public BenzMbux2021KswV2ViewPagerAdapter(FragmentManager fm) {
+    public BenzMbux2021KswV2ViewPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
+        this.mContext = context;
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        this.fragmentList = new ArrayList();
+        this.fragmentPage1 = new BenzMbux2021KswV2FragmentOne();
+        this.fragmentPage2 = new BenzMbux2021KswV2FragmentTwo();
+        this.fragmentPage3 = new BenzMbux2021KswV2FragmentThree();
         this.fragmentList.add(this.fragmentPage1);
         this.fragmentList.add(this.fragmentPage2);
+        if (width == 1280 && height == 720) {
+            this.fragmentList.add(this.fragmentPage3);
+        }
     }
 
+    @Override // android.support.p001v4.app.FragmentPagerAdapter
     public Fragment getItem(int i) {
         List<Fragment> list = this.fragmentList;
         if (list == null) {
@@ -28,6 +46,7 @@ public class BenzMbux2021KswV2ViewPagerAdapter extends FragmentPagerAdapter {
         return list.get(i);
     }
 
+    @Override // android.support.p001v4.view.PagerAdapter
     public int getCount() {
         List<Fragment> list = this.fragmentList;
         if (list == null) {

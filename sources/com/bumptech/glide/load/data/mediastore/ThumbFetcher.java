@@ -11,10 +11,12 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.data.ExifOrientationStream;
+import com.bumptech.glide.load.engine.bitmap_recycle.ArrayPool;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+/* loaded from: classes.dex */
 public class ThumbFetcher implements DataFetcher<InputStream> {
     private static final String TAG = "MediaStoreThumbFetcher";
     private InputStream inputStream;
@@ -30,14 +32,17 @@ public class ThumbFetcher implements DataFetcher<InputStream> {
     }
 
     private static ThumbFetcher build(Context context, Uri uri, ThumbnailQuery query) {
-        return new ThumbFetcher(uri, new ThumbnailStreamOpener(Glide.get(context).getRegistry().getImageHeaderParsers(), query, Glide.get(context).getArrayPool(), context.getContentResolver()));
+        ArrayPool byteArrayPool = Glide.get(context).getArrayPool();
+        ThumbnailStreamOpener opener = new ThumbnailStreamOpener(Glide.get(context).getRegistry().getImageHeaderParsers(), query, byteArrayPool, context.getContentResolver());
+        return new ThumbFetcher(uri, opener);
     }
 
-    ThumbFetcher(Uri mediaStoreImageUri2, ThumbnailStreamOpener opener2) {
-        this.mediaStoreImageUri = mediaStoreImageUri2;
-        this.opener = opener2;
+    ThumbFetcher(Uri mediaStoreImageUri, ThumbnailStreamOpener opener) {
+        this.mediaStoreImageUri = mediaStoreImageUri;
+        this.opener = opener;
     }
 
+    @Override // com.bumptech.glide.load.data.DataFetcher
     public void loadData(Priority priority, DataFetcher.DataCallback<? super InputStream> callback) {
         try {
             InputStream openThumbInputStream = openThumbInputStream();
@@ -63,54 +68,62 @@ public class ThumbFetcher implements DataFetcher<InputStream> {
         return result;
     }
 
+    @Override // com.bumptech.glide.load.data.DataFetcher
     public void cleanup() {
-        InputStream inputStream2 = this.inputStream;
-        if (inputStream2 != null) {
+        InputStream inputStream = this.inputStream;
+        if (inputStream != null) {
             try {
-                inputStream2.close();
+                inputStream.close();
             } catch (IOException e) {
             }
         }
     }
 
+    @Override // com.bumptech.glide.load.data.DataFetcher
     public void cancel() {
     }
 
+    @Override // com.bumptech.glide.load.data.DataFetcher
     public Class<InputStream> getDataClass() {
         return InputStream.class;
     }
 
+    @Override // com.bumptech.glide.load.data.DataFetcher
     public DataSource getDataSource() {
         return DataSource.LOCAL;
     }
 
+    /* loaded from: classes.dex */
     static class VideoThumbnailQuery implements ThumbnailQuery {
         private static final String[] PATH_PROJECTION = {"_data"};
         private static final String PATH_SELECTION = "kind = 1 AND video_id = ?";
         private final ContentResolver contentResolver;
 
-        VideoThumbnailQuery(ContentResolver contentResolver2) {
-            this.contentResolver = contentResolver2;
+        VideoThumbnailQuery(ContentResolver contentResolver) {
+            this.contentResolver = contentResolver;
         }
 
+        @Override // com.bumptech.glide.load.data.mediastore.ThumbnailQuery
         public Cursor query(Uri uri) {
             String videoId = uri.getLastPathSegment();
-            return this.contentResolver.query(MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI, PATH_PROJECTION, PATH_SELECTION, new String[]{videoId}, (String) null);
+            return this.contentResolver.query(MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI, PATH_PROJECTION, PATH_SELECTION, new String[]{videoId}, null);
         }
     }
 
+    /* loaded from: classes.dex */
     static class ImageThumbnailQuery implements ThumbnailQuery {
         private static final String[] PATH_PROJECTION = {"_data"};
         private static final String PATH_SELECTION = "kind = 1 AND image_id = ?";
         private final ContentResolver contentResolver;
 
-        ImageThumbnailQuery(ContentResolver contentResolver2) {
-            this.contentResolver = contentResolver2;
+        ImageThumbnailQuery(ContentResolver contentResolver) {
+            this.contentResolver = contentResolver;
         }
 
+        @Override // com.bumptech.glide.load.data.mediastore.ThumbnailQuery
         public Cursor query(Uri uri) {
             String imageId = uri.getLastPathSegment();
-            return this.contentResolver.query(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, PATH_PROJECTION, PATH_SELECTION, new String[]{imageId}, (String) null);
+            return this.contentResolver.query(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, PATH_PROJECTION, PATH_SELECTION, new String[]{imageId}, null);
         }
     }
 }

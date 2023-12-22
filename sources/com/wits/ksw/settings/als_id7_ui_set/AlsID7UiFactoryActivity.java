@@ -1,13 +1,13 @@
 package com.wits.ksw.settings.als_id7_ui_set;
 
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.p001v4.content.ContextCompat;
+import android.support.p004v7.widget.DividerItemDecoration;
+import android.support.p004v7.widget.LinearLayoutManager;
+import android.support.p004v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.FrameLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.settings.BaseActivity;
 import com.wits.ksw.settings.als_id7_ui_set.adapter.AlsID7UiFunctionAdapter;
 import com.wits.ksw.settings.als_id7_ui_set.factory.AlsID7UiCanBusSelect;
@@ -25,14 +25,13 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes6.dex */
 public class AlsID7UiFactoryActivity extends BaseActivity {
-    /* access modifiers changed from: private */
-    public AlsID7UiFunctionAdapter adapter;
+    private AlsID7UiFunctionAdapter adapter;
     private AlsID7UiCanBusSelect canBusSelect;
     private AlsID7UiCarConfig carConfig;
     private AlsID7UiCarUiConfig carUiConfig;
-    /* access modifiers changed from: private */
-    public List<FunctionBean> data;
+    private List<FunctionBean> data;
     private AlsID7UiFactoryInput factoryInput;
     private FrameLayout factory_Frame;
     private RecyclerView factory_recycle;
@@ -41,23 +40,23 @@ public class AlsID7UiFactoryActivity extends BaseActivity {
     private AlsID7UiLogoSelect logoSelect;
     private AlsID7UiRawCarShow rawCarShow;
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override // com.wits.ksw.settings.BaseActivity, android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("AlsID7UiFactoryActivity", "====onCreate=====");
-        setContentView((int) R.layout.activity_als_id7_ui_factory);
+        setContentView(C0899R.C0902layout.activity_als_id7_ui_factory);
         initData();
         initLayout();
         initView();
     }
 
-    /* access modifiers changed from: protected */
-    public void onResume() {
+    @Override // android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onResume() {
         super.onResume();
     }
 
-    /* access modifiers changed from: protected */
-    public void onStop() {
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onStop() {
         super.onStop();
         Log.d("AlsID7UiFactoryActivity", "====onStop=====");
         finish();
@@ -68,14 +67,12 @@ public class AlsID7UiFactoryActivity extends BaseActivity {
         if (needToDeleteFiles == null) {
             return true;
         }
-        int i = 0;
-        while (i < needToDeleteFiles.length) {
+        for (int i = 0; i < needToDeleteFiles.length; i++) {
             if (needToDeleteFiles[i].isDirectory()) {
                 deleteAllByPath(needToDeleteFiles[i]);
             }
             try {
                 Files.delete(needToDeleteFiles[i].toPath());
-                i++;
             } catch (IOException e) {
                 Log.d("delet", e.getLocalizedMessage());
                 return false;
@@ -85,7 +82,8 @@ public class AlsID7UiFactoryActivity extends BaseActivity {
     }
 
     private void initData() {
-        deleteAllByPath(new File(FileUtils.getLogoFilePath()));
+        File logoFile = new File(FileUtils.getLogoFilePath());
+        deleteAllByPath(logoFile);
         try {
             FileUtils.upZipFile(new File(FileUtils.getUpZipPath()), FileUtils.folderPath);
         } catch (IOException e) {
@@ -94,10 +92,10 @@ public class AlsID7UiFactoryActivity extends BaseActivity {
             Log.d("unzip", e2.getLocalizedMessage());
         }
         this.data = new ArrayList();
-        String[] functions = getResources().getStringArray(R.array.set_factory);
-        for (String title : functions) {
+        String[] functions = getResources().getStringArray(C0899R.array.set_factory);
+        for (String str : functions) {
             FunctionBean fcb = new FunctionBean();
-            fcb.setTitle(title);
+            fcb.setTitle(str);
             this.data.add(fcb);
         }
         this.data.get(0).setIscheck(true);
@@ -114,7 +112,7 @@ public class AlsID7UiFactoryActivity extends BaseActivity {
     }
 
     private void initView() {
-        this.factory_recycle = (RecyclerView) findViewById(R.id.factory_recycle);
+        this.factory_recycle = (RecyclerView) findViewById(C0899R.C0901id.factory_recycle);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         this.layoutManager = linearLayoutManager;
         linearLayoutManager.setOrientation(1);
@@ -123,9 +121,10 @@ public class AlsID7UiFactoryActivity extends BaseActivity {
         this.adapter = alsID7UiFunctionAdapter;
         this.factory_recycle.setAdapter(alsID7UiFunctionAdapter);
         DividerItemDecoration divider = new DividerItemDecoration(this, 1);
-        divider.setDrawable(ContextCompat.getDrawable(this, R.mipmap.id7_lp_line));
+        divider.setDrawable(ContextCompat.getDrawable(this, C0899R.mipmap.id7_lp_line));
         this.factory_recycle.addItemDecoration(divider);
-        this.adapter.registOnFunctionClickListener(new AlsID7UiFunctionAdapter.OnFunctionClickListener() {
+        this.adapter.registOnFunctionClickListener(new AlsID7UiFunctionAdapter.OnFunctionClickListener() { // from class: com.wits.ksw.settings.als_id7_ui_set.AlsID7UiFactoryActivity.1
+            @Override // com.wits.ksw.settings.als_id7_ui_set.adapter.AlsID7UiFunctionAdapter.OnFunctionClickListener
             public void functonClick(int pos) {
                 AlsID7UiFactoryActivity.this.setOneLayout(pos);
                 for (FunctionBean fb : AlsID7UiFactoryActivity.this.data) {
@@ -135,12 +134,12 @@ public class AlsID7UiFactoryActivity extends BaseActivity {
                 AlsID7UiFactoryActivity.this.adapter.notifyDataSetChanged();
             }
         });
-        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.factory_Frame);
+        FrameLayout frameLayout = (FrameLayout) findViewById(C0899R.C0901id.factory_Frame);
         this.factory_Frame = frameLayout;
         frameLayout.addView(this.functionConfig);
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void setOneLayout(int type) {
         this.factory_Frame.removeAllViews();
         switch (type) {

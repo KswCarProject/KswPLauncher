@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+/* loaded from: classes.dex */
 public final class ApplicationVersionSignature {
     private static final ConcurrentMap<String, Key> PACKAGE_NAME_TO_KEY = new ConcurrentHashMap();
     private static final String TAG = "AppVersionSignature";
@@ -16,16 +17,16 @@ public final class ApplicationVersionSignature {
     public static Key obtain(Context context) {
         String packageName = context.getPackageName();
         ConcurrentMap<String, Key> concurrentMap = PACKAGE_NAME_TO_KEY;
-        Key result = (Key) concurrentMap.get(packageName);
-        if (result != null) {
-            return result;
+        Key result = concurrentMap.get(packageName);
+        if (result == null) {
+            Key toAdd = obtainVersionSignature(context);
+            Key result2 = concurrentMap.putIfAbsent(packageName, toAdd);
+            if (result2 == null) {
+                return toAdd;
+            }
+            return result2;
         }
-        Key toAdd = obtainVersionSignature(context);
-        Key result2 = concurrentMap.putIfAbsent(packageName, toAdd);
-        if (result2 == null) {
-            return toAdd;
-        }
-        return result2;
+        return result;
     }
 
     static void reset() {
@@ -33,14 +34,18 @@ public final class ApplicationVersionSignature {
     }
 
     private static Key obtainVersionSignature(Context context) {
-        return new ObjectKey(getVersionCode(getPackageInfo(context)));
+        PackageInfo packageInfo = getPackageInfo(context);
+        String versionCode = getVersionCode(packageInfo);
+        return new ObjectKey(versionCode);
     }
 
     private static String getVersionCode(PackageInfo packageInfo) {
         if (packageInfo != null) {
-            return String.valueOf(packageInfo.versionCode);
+            String versionCode = String.valueOf(packageInfo.versionCode);
+            return versionCode;
         }
-        return UUID.randomUUID().toString();
+        String versionCode2 = UUID.randomUUID().toString();
+        return versionCode2;
     }
 
     private static PackageInfo getPackageInfo(Context context) {

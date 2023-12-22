@@ -3,6 +3,7 @@ package android.support.constraint.solver.widgets;
 import android.support.constraint.solver.widgets.ConstraintWidget;
 import java.util.ArrayList;
 
+/* loaded from: classes.dex */
 public class ChainHead {
     private boolean mDefined;
     protected ConstraintWidget mFirst;
@@ -13,7 +14,7 @@ public class ChainHead {
     protected boolean mHasRatio;
     protected boolean mHasUndefinedWeights;
     protected ConstraintWidget mHead;
-    private boolean mIsRtl = false;
+    private boolean mIsRtl;
     protected ConstraintWidget mLast;
     protected ConstraintWidget mLastMatchConstraintWidget;
     protected ConstraintWidget mLastVisibleWidget;
@@ -28,6 +29,7 @@ public class ChainHead {
     protected int mWidgetsMatchCount;
 
     public ChainHead(ConstraintWidget first, int orientation, boolean isRtl) {
+        this.mIsRtl = false;
         this.mFirst = first;
         this.mOrientation = orientation;
         this.mIsRtl = isRtl;
@@ -95,12 +97,12 @@ public class ChainHead {
                     if (this.mOrientation == 0) {
                         if (widget.mMatchConstraintDefaultWidth != 0) {
                             this.mOptimizable = false;
-                        } else if (!(widget.mMatchConstraintMinWidth == 0 && widget.mMatchConstraintMaxWidth == 0)) {
+                        } else if (widget.mMatchConstraintMinWidth != 0 || widget.mMatchConstraintMaxWidth != 0) {
                             this.mOptimizable = false;
                         }
                     } else if (widget.mMatchConstraintDefaultHeight != 0) {
                         this.mOptimizable = false;
-                    } else if (!(widget.mMatchConstraintMinHeight == 0 && widget.mMatchConstraintMaxHeight == 0)) {
+                    } else if (widget.mMatchConstraintMinHeight != 0 || widget.mMatchConstraintMaxHeight != 0) {
                         this.mOptimizable = false;
                     }
                     if (widget.mDimensionRatio != 0.0f) {
@@ -137,10 +139,10 @@ public class ChainHead {
             this.mTotalSize -= constraintWidget4.mListAnchors[offset + 1].getMargin();
         }
         this.mLast = widget;
-        if (this.mOrientation != 0 || !this.mIsRtl) {
-            this.mHead = this.mFirst;
-        } else {
+        if (this.mOrientation == 0 && this.mIsRtl) {
             this.mHead = widget;
+        } else {
+            this.mHead = this.mFirst;
         }
         if (!this.mHasDefinedWeights || !this.mHasUndefinedWeights) {
             z = false;

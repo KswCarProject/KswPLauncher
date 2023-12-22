@@ -1,6 +1,7 @@
 package com.squareup.picasso;
 
 import android.app.ActivityManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -21,6 +22,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.ThreadFactory;
 
+/* loaded from: classes.dex */
 final class Utils {
     static final int DEFAULT_CONNECT_TIMEOUT_MILLIS = 15000;
     static final int DEFAULT_READ_TIMEOUT_MILLIS = 20000;
@@ -67,19 +69,20 @@ final class Utils {
         if (Build.VERSION.SDK_INT >= 12) {
             result = BitmapHoneycombMR1.getByteCount(bitmap);
         } else {
-            result = bitmap.getRowBytes() * bitmap.getHeight();
+            int result2 = bitmap.getRowBytes();
+            result = result2 * bitmap.getHeight();
         }
-        if (result >= 0) {
-            return result;
+        if (result < 0) {
+            throw new IllegalStateException("Negative size: " + bitmap);
         }
-        throw new IllegalStateException("Negative size: " + bitmap);
+        return result;
     }
 
     static <T> T checkNotNull(T value, String message) {
-        if (value != null) {
-            return value;
+        if (value == null) {
+            throw new NullPointerException(message);
         }
-        throw new NullPointerException(message);
+        return value;
     }
 
     static void checkNotMain() {
@@ -126,7 +129,7 @@ final class Utils {
     }
 
     static void log(String owner, String verb, String logId, String extras) {
-        Log.d("Picasso", String.format("%1$-11s %2$-12s %3$s %4$s", new Object[]{owner, verb, logId, extras}));
+        Log.d("Picasso", String.format("%1$-11s %2$-12s %3$s %4$s", owner, verb, logId, extras));
     }
 
     static String createKey(Request data) {
@@ -176,11 +179,12 @@ final class Utils {
     }
 
     static void closeQuietly(InputStream is) {
-        if (is != null) {
-            try {
-                is.close();
-            } catch (IOException e) {
-            }
+        if (is == null) {
+            return;
+        }
+        try {
+            is.close();
+        } catch (IOException e) {
         }
     }
 
@@ -196,10 +200,10 @@ final class Utils {
             return false;
         }
         try {
-            if (!"CONDITIONAL_CACHE".equals(parts[0]) || Integer.parseInt(parts[1]) != 304) {
-                return false;
+            if ("CONDITIONAL_CACHE".equals(parts[0])) {
+                return Integer.parseInt(parts[1]) == 304;
             }
-            return true;
+            return false;
         } catch (NumberFormatException e) {
             return false;
         }
@@ -226,10 +230,11 @@ final class Utils {
         long size = 5242880;
         try {
             StatFs statFs = new StatFs(dir.getAbsolutePath());
-            size = (((long) statFs.getBlockCount()) * ((long) statFs.getBlockSize())) / 50;
+            long available = statFs.getBlockCount() * statFs.getBlockSize();
+            size = available / 50;
         } catch (IllegalArgumentException e) {
         }
-        return Math.max(Math.min(size, 52428800), 5242880);
+        return Math.max(Math.min(size, 52428800L), 5242880L);
     }
 
     static int calculateMemoryCacheSize(Context context) {
@@ -243,15 +248,16 @@ final class Utils {
     }
 
     static boolean isAirplaneModeOn(Context context) {
+        ContentResolver contentResolver = context.getContentResolver();
         try {
-            return Settings.System.getInt(context.getContentResolver(), "airplane_mode_on", 0) != 0;
+            return Settings.System.getInt(contentResolver, "airplane_mode_on", 0) != 0;
         } catch (NullPointerException e) {
             return false;
         }
     }
 
     static <T> T getService(Context context, String service) {
-        return context.getSystemService(service);
+        return (T) context.getSystemService(service);
     }
 
     static boolean hasPermission(Context context, String permission) {
@@ -262,24 +268,25 @@ final class Utils {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[4096];
         while (true) {
-            int read = input.read(buffer);
-            int n = read;
-            if (-1 == read) {
+            int n = input.read(buffer);
+            if (-1 != n) {
+                byteArrayOutputStream.write(buffer, 0, n);
+            } else {
                 return byteArrayOutputStream.toByteArray();
             }
-            byteArrayOutputStream.write(buffer, 0, n);
         }
     }
 
     static boolean isWebPFile(InputStream stream) throws IOException {
         byte[] fileHeaderBytes = new byte[12];
-        boolean isWebPFile = false;
+        boolean z = false;
         if (stream.read(fileHeaderBytes, 0, 12) != 12) {
             return false;
         }
         if (WEBP_FILE_HEADER_RIFF.equals(new String(fileHeaderBytes, 0, 4, "US-ASCII")) && WEBP_FILE_HEADER_WEBP.equals(new String(fileHeaderBytes, 8, 4, "US-ASCII"))) {
-            isWebPFile = true;
+            z = true;
         }
+        boolean isWebPFile = z;
         return isWebPFile;
     }
 
@@ -288,23 +295,27 @@ final class Utils {
             return data.resourceId;
         }
         String pkg = data.uri.getAuthority();
-        if (pkg != null) {
-            List<String> segments = data.uri.getPathSegments();
-            if (segments == null || segments.isEmpty()) {
-                throw new FileNotFoundException("No path segments: " + data.uri);
-            } else if (segments.size() == 1) {
-                try {
-                    return Integer.parseInt(segments.get(0));
-                } catch (NumberFormatException e) {
-                    throw new FileNotFoundException("Last path segment is not a resource ID: " + data.uri);
-                }
-            } else if (segments.size() == 2) {
-                return resources.getIdentifier(segments.get(1), segments.get(0), pkg);
-            } else {
-                throw new FileNotFoundException("More than two path segments: " + data.uri);
-            }
-        } else {
+        if (pkg == null) {
             throw new FileNotFoundException("No package provided: " + data.uri);
+        }
+        List<String> segments = data.uri.getPathSegments();
+        if (segments == null || segments.isEmpty()) {
+            throw new FileNotFoundException("No path segments: " + data.uri);
+        }
+        if (segments.size() == 1) {
+            try {
+                int id = Integer.parseInt(segments.get(0));
+                return id;
+            } catch (NumberFormatException e) {
+                throw new FileNotFoundException("Last path segment is not a resource ID: " + data.uri);
+            }
+        } else if (segments.size() == 2) {
+            String type = segments.get(0);
+            String name = segments.get(1);
+            int id2 = resources.getIdentifier(name, type, pkg);
+            return id2;
+        } else {
+            throw new FileNotFoundException("More than two path segments: " + data.uri);
         }
     }
 
@@ -313,26 +324,28 @@ final class Utils {
             return context.getResources();
         }
         String pkg = data.uri.getAuthority();
-        if (pkg != null) {
-            try {
-                return context.getPackageManager().getResourcesForApplication(pkg);
-            } catch (PackageManager.NameNotFoundException e) {
-                throw new FileNotFoundException("Unable to obtain resources for package: " + data.uri);
-            }
-        } else {
+        if (pkg == null) {
             throw new FileNotFoundException("No package provided: " + data.uri);
+        }
+        try {
+            PackageManager pm = context.getPackageManager();
+            return pm.getResourcesForApplication(pkg);
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new FileNotFoundException("Unable to obtain resources for package: " + data.uri);
         }
     }
 
     static void flushStackLocalLeaks(Looper looper) {
-        Handler handler = new Handler(looper) {
+        Handler handler = new Handler(looper) { // from class: com.squareup.picasso.Utils.1
+            @Override // android.os.Handler
             public void handleMessage(Message msg) {
-                sendMessageDelayed(obtainMessage(), 1000);
+                sendMessageDelayed(obtainMessage(), 1000L);
             }
         };
-        handler.sendMessageDelayed(handler.obtainMessage(), 1000);
+        handler.sendMessageDelayed(handler.obtainMessage(), 1000L);
     }
 
+    /* loaded from: classes.dex */
     private static class ActivityManagerHoneycomb {
         private ActivityManagerHoneycomb() {
         }
@@ -342,26 +355,31 @@ final class Utils {
         }
     }
 
+    /* loaded from: classes.dex */
     static class PicassoThreadFactory implements ThreadFactory {
         PicassoThreadFactory() {
         }
 
+        @Override // java.util.concurrent.ThreadFactory
         public Thread newThread(Runnable r) {
             return new PicassoThread(r);
         }
     }
 
+    /* loaded from: classes.dex */
     private static class PicassoThread extends Thread {
         public PicassoThread(Runnable r) {
             super(r);
         }
 
+        @Override // java.lang.Thread, java.lang.Runnable
         public void run() {
             Process.setThreadPriority(10);
             super.run();
         }
     }
 
+    /* loaded from: classes.dex */
     private static class BitmapHoneycombMR1 {
         private BitmapHoneycombMR1() {
         }
@@ -371,6 +389,7 @@ final class Utils {
         }
     }
 
+    /* loaded from: classes.dex */
     private static class OkHttpLoaderCreator {
         private OkHttpLoaderCreator() {
         }

@@ -5,6 +5,7 @@ import android.provider.Settings;
 import com.wits.ksw.KswApplication;
 import java.io.IOException;
 
+/* loaded from: classes11.dex */
 public class SettingsSystemUtil {
     public static boolean putString(ContentResolver resolver, String name, String value) {
         boolean b = Settings.System.putString(resolver, name, value);

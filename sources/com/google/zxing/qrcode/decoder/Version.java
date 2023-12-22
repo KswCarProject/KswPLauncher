@@ -4,21 +4,23 @@ import com.google.zxing.FormatException;
 import com.google.zxing.common.BitMatrix;
 import com.wits.pms.statuscontrol.WitsCommand;
 
+/* loaded from: classes.dex */
 public final class Version {
-    private static final Version[] VERSIONS = buildVersions();
-    private static final int[] VERSION_DECODE_INFO = {31892, 34236, 39577, 42195, 48118, 51042, 55367, 58893, 63784, 68472, 70749, 76311, 79154, 84390, 87683, 92361, 96236, 102084, 102881, 110507, 110734, 117786, 119615, 126325, 127568, 133589, 136944, 141498, 145311, 150283, 152622, 158308, 161089, 167017};
     private final int[] alignmentPatternCenters;
     private final ECBlocks[] ecBlocks;
     private final int totalCodewords;
     private final int versionNumber;
+    private static final int[] VERSION_DECODE_INFO = {31892, 34236, 39577, 42195, 48118, 51042, 55367, 58893, 63784, 68472, 70749, 76311, 79154, 84390, 87683, 92361, 96236, 102084, 102881, 110507, 110734, 117786, 119615, 126325, 127568, 133589, 136944, 141498, 145311, 150283, 152622, 158308, 161089, 167017};
+    private static final Version[] VERSIONS = buildVersions();
 
-    private Version(int versionNumber2, int[] alignmentPatternCenters2, ECBlocks... ecBlocks2) {
-        this.versionNumber = versionNumber2;
-        this.alignmentPatternCenters = alignmentPatternCenters2;
-        this.ecBlocks = ecBlocks2;
+    private Version(int versionNumber, int[] alignmentPatternCenters, ECBlocks... ecBlocks) {
+        ECB[] eCBlocks;
+        this.versionNumber = versionNumber;
+        this.alignmentPatternCenters = alignmentPatternCenters;
+        this.ecBlocks = ecBlocks;
         int total = 0;
-        int ecCodewords = ecBlocks2[0].getECCodewordsPerBlock();
-        for (ECB ecBlock : ecBlocks2[0].getECBlocks()) {
+        int ecCodewords = ecBlocks[0].getECCodewordsPerBlock();
+        for (ECB ecBlock : ecBlocks[0].getECBlocks()) {
             total += ecBlock.getCount() * (ecBlock.getDataCodewords() + ecCodewords);
         }
         this.totalCodewords = total;
@@ -45,22 +47,21 @@ public final class Version {
     }
 
     public static Version getProvisionalVersionForDimension(int dimension) throws FormatException {
-        if (dimension % 4 == 1) {
-            try {
-                return getVersionForNumber((dimension - 17) / 4);
-            } catch (IllegalArgumentException e) {
-                throw FormatException.getFormatInstance();
-            }
-        } else {
+        if (dimension % 4 != 1) {
+            throw FormatException.getFormatInstance();
+        }
+        try {
+            return getVersionForNumber((dimension - 17) / 4);
+        } catch (IllegalArgumentException e) {
             throw FormatException.getFormatInstance();
         }
     }
 
-    public static Version getVersionForNumber(int versionNumber2) {
-        if (versionNumber2 > 0 && versionNumber2 <= 40) {
-            return VERSIONS[versionNumber2 - 1];
+    public static Version getVersionForNumber(int versionNumber) {
+        if (versionNumber <= 0 || versionNumber > 40) {
+            throw new IllegalArgumentException();
         }
-        throw new IllegalArgumentException();
+        return VERSIONS[versionNumber - 1];
     }
 
     static Version decodeVersionInformation(int versionBits) {
@@ -70,14 +71,12 @@ public final class Version {
         while (true) {
             int[] iArr = VERSION_DECODE_INFO;
             if (i < iArr.length) {
-                int i2 = iArr[i];
-                int targetVersion = i2;
-                if (i2 == versionBits) {
+                int targetVersion = iArr[i];
+                if (targetVersion == versionBits) {
                     return getVersionForNumber(i + 7);
                 }
-                int numBitsDiffering = FormatInformation.numBitsDiffering(versionBits, targetVersion);
-                int bitsDifference = numBitsDiffering;
-                if (numBitsDiffering < bestDifference) {
+                int bitsDifference = FormatInformation.numBitsDiffering(versionBits, targetVersion);
+                if (bitsDifference < bestDifference) {
                     bestVersion = i + 7;
                     bestDifference = bitsDifference;
                 }
@@ -90,39 +89,39 @@ public final class Version {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public BitMatrix buildFunctionPattern() {
+    BitMatrix buildFunctionPattern() {
         int dimension = getDimensionForVersion();
         BitMatrix bitMatrix = new BitMatrix(dimension);
-        BitMatrix bitMatrix2 = bitMatrix;
         bitMatrix.setRegion(0, 0, 9, 9);
-        bitMatrix2.setRegion(dimension - 8, 0, 8, 9);
-        bitMatrix2.setRegion(0, dimension - 8, 9, 8);
+        bitMatrix.setRegion(dimension - 8, 0, 8, 9);
+        bitMatrix.setRegion(0, dimension - 8, 9, 8);
         int max = this.alignmentPatternCenters.length;
         for (int x = 0; x < max; x++) {
             int i = this.alignmentPatternCenters[x] - 2;
             for (int y = 0; y < max; y++) {
-                if (!((x == 0 && (y == 0 || y == max - 1)) || (x == max - 1 && y == 0))) {
-                    bitMatrix2.setRegion(this.alignmentPatternCenters[y] - 2, i, 5, 5);
+                if ((x != 0 || (y != 0 && y != max - 1)) && (x != max - 1 || y != 0)) {
+                    bitMatrix.setRegion(this.alignmentPatternCenters[y] - 2, i, 5, 5);
                 }
             }
         }
-        bitMatrix2.setRegion(6, 9, 1, dimension - 17);
-        bitMatrix2.setRegion(9, 6, dimension - 17, 1);
+        int x2 = dimension - 17;
+        bitMatrix.setRegion(6, 9, 1, x2);
+        bitMatrix.setRegion(9, 6, dimension - 17, 1);
         if (this.versionNumber > 6) {
-            bitMatrix2.setRegion(dimension - 11, 0, 3, 6);
-            bitMatrix2.setRegion(0, dimension - 11, 6, 3);
+            bitMatrix.setRegion(dimension - 11, 0, 3, 6);
+            bitMatrix.setRegion(0, dimension - 11, 6, 3);
         }
-        return bitMatrix2;
+        return bitMatrix;
     }
 
+    /* loaded from: classes.dex */
     public static final class ECBlocks {
         private final ECB[] ecBlocks;
         private final int ecCodewordsPerBlock;
 
-        ECBlocks(int ecCodewordsPerBlock2, ECB... ecBlocks2) {
-            this.ecCodewordsPerBlock = ecCodewordsPerBlock2;
-            this.ecBlocks = ecBlocks2;
+        ECBlocks(int ecCodewordsPerBlock, ECB... ecBlocks) {
+            this.ecCodewordsPerBlock = ecCodewordsPerBlock;
+            this.ecBlocks = ecBlocks;
         }
 
         public int getECCodewordsPerBlock() {
@@ -130,6 +129,7 @@ public final class Version {
         }
 
         public int getNumBlocks() {
+            ECB[] ecbArr;
             int total = 0;
             for (ECB ecBlock : this.ecBlocks) {
                 total += ecBlock.getCount();
@@ -146,13 +146,14 @@ public final class Version {
         }
     }
 
+    /* loaded from: classes.dex */
     public static final class ECB {
         private final int count;
         private final int dataCodewords;
 
-        ECB(int count2, int dataCodewords2) {
-            this.count = count2;
-            this.dataCodewords = dataCodewords2;
+        ECB(int count, int dataCodewords) {
+            this.count = count;
+            this.dataCodewords = dataCodewords;
         }
 
         public int getCount() {

@@ -11,17 +11,20 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
+/* loaded from: classes.dex */
 public abstract class TypeAdapter<T> {
     public abstract T read(JsonReader jsonReader) throws IOException;
 
     public abstract void write(JsonWriter jsonWriter, T t) throws IOException;
 
     public final void toJson(Writer out, T value) throws IOException {
-        write(new JsonWriter(out), value);
+        JsonWriter writer = new JsonWriter(out);
+        write(writer, value);
     }
 
     public final TypeAdapter<T> nullSafe() {
-        return new TypeAdapter<T>() {
+        return new TypeAdapter<T>() { // from class: com.google.gson.TypeAdapter.1
+            @Override // com.google.gson.TypeAdapter
             public void write(JsonWriter out, T value) throws IOException {
                 if (value == null) {
                     out.nullValue();
@@ -30,12 +33,13 @@ public abstract class TypeAdapter<T> {
                 }
             }
 
+            @Override // com.google.gson.TypeAdapter
             public T read(JsonReader reader) throws IOException {
-                if (reader.peek() != JsonToken.NULL) {
-                    return TypeAdapter.this.read(reader);
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.nextNull();
+                    return null;
                 }
-                reader.nextNull();
-                return null;
+                return (T) TypeAdapter.this.read(reader);
             }
         };
     }
@@ -56,23 +60,25 @@ public abstract class TypeAdapter<T> {
             write(jsonWriter, value);
             return jsonWriter.get();
         } catch (IOException e) {
-            throw new JsonIOException((Throwable) e);
+            throw new JsonIOException(e);
         }
     }
 
     public final T fromJson(Reader in) throws IOException {
-        return read(new JsonReader(in));
+        JsonReader reader = new JsonReader(in);
+        return read(reader);
     }
 
     public final T fromJson(String json) throws IOException {
-        return fromJson((Reader) new StringReader(json));
+        return fromJson(new StringReader(json));
     }
 
     public final T fromJsonTree(JsonElement jsonTree) {
         try {
-            return read(new JsonTreeReader(jsonTree));
+            JsonReader jsonReader = new JsonTreeReader(jsonTree);
+            return read(jsonReader);
         } catch (IOException e) {
-            throw new JsonIOException((Throwable) e);
+            throw new JsonIOException(e);
         }
     }
 }

@@ -9,11 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.AudiViewModel;
 import com.wits.ksw.launcher.view.DateView;
 import com.wits.ksw.launcher.view.LoopRotarySwitchView;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityMainAudiBinding extends ViewDataBinding {
     public final LoopRotarySwitchView MLoopRotarySwitchView;
     public final DateView date;
@@ -51,44 +52,43 @@ public abstract class ActivityMainAudiBinding extends ViewDataBinding {
     public final TextView tvSettings;
     public final TextView tvVideo;
 
-    public abstract void setVm(AudiViewModel audiViewModel);
+    public abstract void setVm(AudiViewModel vm);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected ActivityMainAudiBinding(Object _bindingComponent, View _root, int _localFieldCount, LoopRotarySwitchView MLoopRotarySwitchView2, DateView date2, ImageView ivApps2, ImageView ivBt2, ImageView ivCar2, ImageView ivDashboard2, ImageView ivDvr2, ImageView ivEasyconnection2, ImageView ivGuang2, ImageView ivMusic2, ImageView ivNavi2, ImageView ivSettings2, ImageView ivVideo2, ImageView kswA4LAudiChe2, RelativeLayout rlApps2, RelativeLayout rlBt2, RelativeLayout rlCar2, RelativeLayout rlDashboard2, RelativeLayout rlDvr2, RelativeLayout rlEasyconnection2, RelativeLayout rlMusic2, RelativeLayout rlNavi2, RelativeLayout rlSettings2, RelativeLayout rlVideo2, TextView tvApps2, TextView tvBt2, TextView tvCar2, TextView tvDvr2, TextView tvEasyconnection2, TextView tvMusic2, TextView tvNavi2, TextView tvSettings2, TextView tvVideo2) {
+    protected ActivityMainAudiBinding(Object _bindingComponent, View _root, int _localFieldCount, LoopRotarySwitchView MLoopRotarySwitchView, DateView date, ImageView ivApps, ImageView ivBt, ImageView ivCar, ImageView ivDashboard, ImageView ivDvr, ImageView ivEasyconnection, ImageView ivGuang, ImageView ivMusic, ImageView ivNavi, ImageView ivSettings, ImageView ivVideo, ImageView kswA4LAudiChe, RelativeLayout rlApps, RelativeLayout rlBt, RelativeLayout rlCar, RelativeLayout rlDashboard, RelativeLayout rlDvr, RelativeLayout rlEasyconnection, RelativeLayout rlMusic, RelativeLayout rlNavi, RelativeLayout rlSettings, RelativeLayout rlVideo, TextView tvApps, TextView tvBt, TextView tvCar, TextView tvDvr, TextView tvEasyconnection, TextView tvMusic, TextView tvNavi, TextView tvSettings, TextView tvVideo) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.MLoopRotarySwitchView = MLoopRotarySwitchView2;
-        this.date = date2;
-        this.ivApps = ivApps2;
-        this.ivBt = ivBt2;
-        this.ivCar = ivCar2;
-        this.ivDashboard = ivDashboard2;
-        this.ivDvr = ivDvr2;
-        this.ivEasyconnection = ivEasyconnection2;
-        this.ivGuang = ivGuang2;
-        this.ivMusic = ivMusic2;
-        this.ivNavi = ivNavi2;
-        this.ivSettings = ivSettings2;
-        this.ivVideo = ivVideo2;
-        this.kswA4LAudiChe = kswA4LAudiChe2;
-        this.rlApps = rlApps2;
-        this.rlBt = rlBt2;
-        this.rlCar = rlCar2;
-        this.rlDashboard = rlDashboard2;
-        this.rlDvr = rlDvr2;
-        this.rlEasyconnection = rlEasyconnection2;
-        this.rlMusic = rlMusic2;
-        this.rlNavi = rlNavi2;
-        this.rlSettings = rlSettings2;
-        this.rlVideo = rlVideo2;
-        this.tvApps = tvApps2;
-        this.tvBt = tvBt2;
-        this.tvCar = tvCar2;
-        this.tvDvr = tvDvr2;
-        this.tvEasyconnection = tvEasyconnection2;
-        this.tvMusic = tvMusic2;
-        this.tvNavi = tvNavi2;
-        this.tvSettings = tvSettings2;
-        this.tvVideo = tvVideo2;
+        this.MLoopRotarySwitchView = MLoopRotarySwitchView;
+        this.date = date;
+        this.ivApps = ivApps;
+        this.ivBt = ivBt;
+        this.ivCar = ivCar;
+        this.ivDashboard = ivDashboard;
+        this.ivDvr = ivDvr;
+        this.ivEasyconnection = ivEasyconnection;
+        this.ivGuang = ivGuang;
+        this.ivMusic = ivMusic;
+        this.ivNavi = ivNavi;
+        this.ivSettings = ivSettings;
+        this.ivVideo = ivVideo;
+        this.kswA4LAudiChe = kswA4LAudiChe;
+        this.rlApps = rlApps;
+        this.rlBt = rlBt;
+        this.rlCar = rlCar;
+        this.rlDashboard = rlDashboard;
+        this.rlDvr = rlDvr;
+        this.rlEasyconnection = rlEasyconnection;
+        this.rlMusic = rlMusic;
+        this.rlNavi = rlNavi;
+        this.rlSettings = rlSettings;
+        this.rlVideo = rlVideo;
+        this.tvApps = tvApps;
+        this.tvBt = tvBt;
+        this.tvCar = tvCar;
+        this.tvDvr = tvDvr;
+        this.tvEasyconnection = tvEasyconnection;
+        this.tvMusic = tvMusic;
+        this.tvNavi = tvNavi;
+        this.tvSettings = tvSettings;
+        this.tvVideo = tvVideo;
     }
 
     public AudiViewModel getVm() {
@@ -101,7 +101,7 @@ public abstract class ActivityMainAudiBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainAudiBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityMainAudiBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_audi, root, attachToRoot, component);
+        return (ActivityMainAudiBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_audi, root, attachToRoot, component);
     }
 
     public static ActivityMainAudiBinding inflate(LayoutInflater inflater) {
@@ -110,7 +110,7 @@ public abstract class ActivityMainAudiBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainAudiBinding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityMainAudiBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_audi, (ViewGroup) null, false, component);
+        return (ActivityMainAudiBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_audi, null, false, component);
     }
 
     public static ActivityMainAudiBinding bind(View view) {
@@ -119,6 +119,6 @@ public abstract class ActivityMainAudiBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainAudiBinding bind(View view, Object component) {
-        return (ActivityMainAudiBinding) bind(component, view, R.layout.activity_main_audi);
+        return (ActivityMainAudiBinding) bind(component, view, C0899R.C0902layout.activity_main_audi);
     }
 }

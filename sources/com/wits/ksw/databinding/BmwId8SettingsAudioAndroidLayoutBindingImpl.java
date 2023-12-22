@@ -1,20 +1,22 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.base.BaseBindingModel;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.launcher.bmw_id8_ui.view.ID8ProgressBar;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 
+/* loaded from: classes7.dex */
 public class BmwId8SettingsAudioAndroidLayoutBindingImpl extends BmwId8SettingsAudioAndroidLayoutBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -28,7 +30,7 @@ public class BmwId8SettingsAudioAndroidLayoutBindingImpl extends BmwId8SettingsA
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.bmw_id8_settings_audio_android_lay, 10);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_audio_android_lay, 10);
     }
 
     public BmwId8SettingsAudioAndroidLayoutBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -36,37 +38,39 @@ public class BmwId8SettingsAudioAndroidLayoutBindingImpl extends BmwId8SettingsA
     }
 
     private BmwId8SettingsAudioAndroidLayoutBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 4, bindings[9], bindings[8], bindings[7], bindings[10], bindings[5], bindings[4], bindings[3]);
-        this.mDirtyFlags = -1;
-        this.bmwId8SettingsAndroidCallAddBtn.setTag((Object) null);
-        this.bmwId8SettingsAndroidCallSeekbar.setTag((Object) null);
-        this.bmwId8SettingsAndroidCallSubBtn.setTag((Object) null);
-        this.bmwId8SettingsMeidaAddBtn.setTag((Object) null);
-        this.bmwId8SettingsMeidaSeekbar.setTag((Object) null);
-        this.bmwId8SettingsMeidaSubBtn.setTag((Object) null);
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 4, (ImageButton) bindings[9], (ID8ProgressBar) bindings[8], (ImageButton) bindings[7], (RelativeLayout) bindings[10], (ImageButton) bindings[5], (ID8ProgressBar) bindings[4], (ImageButton) bindings[3]);
+        this.mDirtyFlags = -1L;
+        this.bmwId8SettingsAndroidCallAddBtn.setTag(null);
+        this.bmwId8SettingsAndroidCallSeekbar.setTag(null);
+        this.bmwId8SettingsAndroidCallSubBtn.setTag(null);
+        this.bmwId8SettingsMeidaAddBtn.setTag(null);
+        this.bmwId8SettingsMeidaSeekbar.setTag(null);
+        this.bmwId8SettingsMeidaSubBtn.setTag(null);
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
-        ImageView imageView = bindings[1];
+        relativeLayout.setTag(null);
+        ImageView imageView = (ImageView) bindings[1];
         this.mboundView1 = imageView;
-        imageView.setTag((Object) null);
-        TextView textView = bindings[2];
+        imageView.setTag(null);
+        TextView textView = (TextView) bindings[2];
         this.mboundView2 = textView;
-        textView.setTag((Object) null);
-        TextView textView2 = bindings[6];
+        textView.setTag(null);
+        TextView textView2 = (TextView) bindings[6];
         this.mboundView6 = textView2;
-        textView2.setTag((Object) null);
+        textView2.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 32;
+            this.mDirtyFlags = 32L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -76,14 +80,16 @@ public class BmwId8SettingsAudioAndroidLayoutBindingImpl extends BmwId8SettingsA
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (25 != variableId) {
-            return false;
+        if (25 == variableId) {
+            setViewModel((BmwId8SettingsViewModel) variable);
+            return true;
         }
-        setViewModel((BmwId8SettingsViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.BmwId8SettingsAudioAndroidLayoutBinding
     public void setViewModel(BmwId8SettingsViewModel ViewModel) {
         this.mViewModel = ViewModel;
         synchronized (this) {
@@ -93,8 +99,8 @@ public class BmwId8SettingsAudioAndroidLayoutBindingImpl extends BmwId8SettingsA
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeViewModelAndroidCallVolume((ObservableInt) object, fieldId);
@@ -110,53 +116,53 @@ public class BmwId8SettingsAudioAndroidLayoutBindingImpl extends BmwId8SettingsA
     }
 
     private boolean onChangeViewModelAndroidCallVolume(ObservableInt ViewModelAndroidCallVolume, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelAndroidMediaVolume(ObservableInt ViewModelAndroidMediaVolume, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelAndroidOemVolumeMax(ObservableInt ViewModelAndroidOemVolumeMax, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelAudioBgShow(ObservableBoolean ViewModelAudioBgShow, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         ObservableBoolean viewModelAudioBgShow;
         ObservableInt viewModelAndroidOemVolumeMax;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         String stringValueOfViewModelAndroidMediaVolume = null;
         int viewModelAndroidOemVolumeMaxGet = 0;
@@ -174,13 +180,13 @@ public class BmwId8SettingsAudioAndroidLayoutBindingImpl extends BmwId8SettingsA
                 if (viewModel != null) {
                     viewModelAndroidCallVolume = viewModel.androidCallVolume;
                 }
-                updateRegistration(0, (Observable) viewModelAndroidCallVolume);
+                updateRegistration(0, viewModelAndroidCallVolume);
                 if (viewModelAndroidCallVolume != null) {
                     viewModelAndroidCallVolumeGet = viewModelAndroidCallVolume.get();
                 }
                 stringValueOfViewModelAndroidCallVolume = String.valueOf(viewModelAndroidCallVolumeGet);
             }
-            if (!((dirtyFlags & 48) == 0 || viewModel == null)) {
+            if ((dirtyFlags & 48) != 0 && viewModel != null) {
                 OnClickListenerImpl onClickListenerImpl = this.mViewModelOnClickAndroidViewViewOnClickListener;
                 if (onClickListenerImpl == null) {
                     onClickListenerImpl = new OnClickListenerImpl();
@@ -192,33 +198,30 @@ public class BmwId8SettingsAudioAndroidLayoutBindingImpl extends BmwId8SettingsA
                 if (viewModel != null) {
                     viewModelAndroidMediaVolume = viewModel.androidMediaVolume;
                 }
-                updateRegistration(1, (Observable) viewModelAndroidMediaVolume);
+                updateRegistration(1, viewModelAndroidMediaVolume);
                 if (viewModelAndroidMediaVolume != null) {
                     viewModelAndroidMediaVolumeGet = viewModelAndroidMediaVolume.get();
                 }
                 stringValueOfViewModelAndroidMediaVolume = String.valueOf(viewModelAndroidMediaVolumeGet);
             }
             if ((dirtyFlags & 52) != 0) {
-                if (viewModel != null) {
-                    viewModelAndroidOemVolumeMax = viewModel.androidOemVolumeMax;
-                } else {
+                if (viewModel == null) {
                     viewModelAndroidOemVolumeMax = null;
+                } else {
+                    viewModelAndroidOemVolumeMax = viewModel.androidOemVolumeMax;
                 }
-                updateRegistration(2, (Observable) viewModelAndroidOemVolumeMax);
+                updateRegistration(2, viewModelAndroidOemVolumeMax);
                 if (viewModelAndroidOemVolumeMax != null) {
                     viewModelAndroidOemVolumeMaxGet = viewModelAndroidOemVolumeMax.get();
-                    ObservableInt observableInt = viewModelAndroidOemVolumeMax;
-                } else {
-                    ObservableInt observableInt2 = viewModelAndroidOemVolumeMax;
                 }
             }
             if ((dirtyFlags & 56) != 0) {
-                if (viewModel != null) {
-                    viewModelAudioBgShow = viewModel.audioBgShow;
-                } else {
+                if (viewModel == null) {
                     viewModelAudioBgShow = null;
+                } else {
+                    viewModelAudioBgShow = viewModel.audioBgShow;
                 }
-                updateRegistration(3, (Observable) viewModelAudioBgShow);
+                updateRegistration(3, viewModelAudioBgShow);
                 if (viewModelAudioBgShow != null) {
                     viewModelAudioBgShowGet = viewModelAudioBgShow.get();
                 }
@@ -230,7 +233,6 @@ public class BmwId8SettingsAudioAndroidLayoutBindingImpl extends BmwId8SettingsA
                     }
                 }
                 viewModelAudioBgShowViewGONEViewVISIBLE = viewModelAudioBgShowGet ? 8 : 0;
-                ObservableBoolean observableBoolean = viewModelAudioBgShow;
             }
         }
         if ((dirtyFlags & 48) != 0) {
@@ -256,17 +258,19 @@ public class BmwId8SettingsAudioAndroidLayoutBindingImpl extends BmwId8SettingsA
         }
     }
 
+    /* loaded from: classes7.dex */
     public static class OnClickListenerImpl implements View.OnClickListener {
         private BmwId8SettingsViewModel value;
 
-        public OnClickListenerImpl setValue(BmwId8SettingsViewModel value2) {
-            this.value = value2;
-            if (value2 == null) {
+        public OnClickListenerImpl setValue(BmwId8SettingsViewModel value) {
+            this.value = value;
+            if (value == null) {
                 return null;
             }
             return this;
         }
 
+        @Override // android.view.View.OnClickListener
         public void onClick(View arg0) {
             this.value.onClick(arg0);
         }

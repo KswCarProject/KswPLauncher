@@ -10,10 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.view.CustomBmwMusicLayout;
 
+/* loaded from: classes7.dex */
 public abstract class Id7SubMusicViewBinding extends ViewDataBinding {
     public final ImageView albumImageView;
     public final TextView albumTextView;
@@ -31,24 +32,23 @@ public abstract class Id7SubMusicViewBinding extends ViewDataBinding {
     public final SeekBar seekBar;
     public final TextView totalTimeTextView;
 
-    public abstract void setMediaViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setMediaViewModel(LauncherViewModel MediaViewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected Id7SubMusicViewBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView albumImageView2, TextView albumTextView2, ImageView artistImageView2, TextView artistTextView2, TextView currentTimeTextView2, CustomBmwMusicLayout imageFrameLayout2, ImageView imageView62, ConstraintLayout musicConstraintLayout2, ImageView musicImageView2, ImageView nameImageView2, TextView nameTextView2, SeekBar seekBar2, TextView totalTimeTextView2) {
+    protected Id7SubMusicViewBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView albumImageView, TextView albumTextView, ImageView artistImageView, TextView artistTextView, TextView currentTimeTextView, CustomBmwMusicLayout imageFrameLayout, ImageView imageView6, ConstraintLayout musicConstraintLayout, ImageView musicImageView, ImageView nameImageView, TextView nameTextView, SeekBar seekBar, TextView totalTimeTextView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.albumImageView = albumImageView2;
-        this.albumTextView = albumTextView2;
-        this.artistImageView = artistImageView2;
-        this.artistTextView = artistTextView2;
-        this.currentTimeTextView = currentTimeTextView2;
-        this.imageFrameLayout = imageFrameLayout2;
-        this.imageView6 = imageView62;
-        this.musicConstraintLayout = musicConstraintLayout2;
-        this.musicImageView = musicImageView2;
-        this.nameImageView = nameImageView2;
-        this.nameTextView = nameTextView2;
-        this.seekBar = seekBar2;
-        this.totalTimeTextView = totalTimeTextView2;
+        this.albumImageView = albumImageView;
+        this.albumTextView = albumTextView;
+        this.artistImageView = artistImageView;
+        this.artistTextView = artistTextView;
+        this.currentTimeTextView = currentTimeTextView;
+        this.imageFrameLayout = imageFrameLayout;
+        this.imageView6 = imageView6;
+        this.musicConstraintLayout = musicConstraintLayout;
+        this.musicImageView = musicImageView;
+        this.nameImageView = nameImageView;
+        this.nameTextView = nameTextView;
+        this.seekBar = seekBar;
+        this.totalTimeTextView = totalTimeTextView;
     }
 
     public LauncherViewModel getMediaViewModel() {
@@ -61,7 +61,7 @@ public abstract class Id7SubMusicViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static Id7SubMusicViewBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (Id7SubMusicViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.id7_sub_music_view, root, attachToRoot, component);
+        return (Id7SubMusicViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id7_sub_music_view, root, attachToRoot, component);
     }
 
     public static Id7SubMusicViewBinding inflate(LayoutInflater inflater) {
@@ -70,7 +70,7 @@ public abstract class Id7SubMusicViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static Id7SubMusicViewBinding inflate(LayoutInflater inflater, Object component) {
-        return (Id7SubMusicViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.id7_sub_music_view, (ViewGroup) null, false, component);
+        return (Id7SubMusicViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id7_sub_music_view, null, false, component);
     }
 
     public static Id7SubMusicViewBinding bind(View view) {
@@ -79,6 +79,6 @@ public abstract class Id7SubMusicViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static Id7SubMusicViewBinding bind(View view, Object component) {
-        return (Id7SubMusicViewBinding) bind(component, view, R.layout.id7_sub_music_view);
+        return (Id7SubMusicViewBinding) bind(component, view, C0899R.C0902layout.id7_sub_music_view);
     }
 }

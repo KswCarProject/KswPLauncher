@@ -11,28 +11,30 @@ import io.reactivex.internal.util.QueueDrainHelper;
 import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 
+/* loaded from: classes.dex */
 public abstract class QueueDrainSubscriber<T, U, V> extends QueueDrainSubscriberPad4 implements FlowableSubscriber<T>, QueueDrain<U, V> {
-    /* access modifiers changed from: protected */
-    public volatile boolean cancelled;
+    protected volatile boolean cancelled;
     protected volatile boolean done;
     protected final Subscriber<? super V> downstream;
     protected Throwable error;
-    /* access modifiers changed from: protected */
-    public final SimplePlainQueue<U> queue;
+    protected final SimplePlainQueue<U> queue;
 
-    public QueueDrainSubscriber(Subscriber<? super V> actual, SimplePlainQueue<U> queue2) {
+    public QueueDrainSubscriber(Subscriber<? super V> actual, SimplePlainQueue<U> queue) {
         this.downstream = actual;
-        this.queue = queue2;
+        this.queue = queue;
     }
 
+    @Override // io.reactivex.internal.util.QueueDrain
     public final boolean cancelled() {
         return this.cancelled;
     }
 
+    @Override // io.reactivex.internal.util.QueueDrain
     public final boolean done() {
         return this.done;
     }
 
+    @Override // io.reactivex.internal.util.QueueDrain
     public final boolean enter() {
         return this.wip.getAndIncrement() == 0;
     }
@@ -41,15 +43,14 @@ public abstract class QueueDrainSubscriber<T, U, V> extends QueueDrainSubscriber
         return this.wip.get() == 0 && this.wip.compareAndSet(0, 1);
     }
 
-    /* access modifiers changed from: protected */
-    public final void fastPathEmitMax(U value, boolean delayError, Disposable dispose) {
+    protected final void fastPathEmitMax(U value, boolean delayError, Disposable dispose) {
         Subscriber<? super V> s = this.downstream;
         SimplePlainQueue<U> q = this.queue;
         if (fastEnter()) {
             long r = this.requested.get();
             if (r != 0) {
                 if (accept(s, value) && r != LongCompanionObject.MAX_VALUE) {
-                    produced(1);
+                    produced(1L);
                 }
                 if (leave(-1) == 0) {
                     return;
@@ -68,26 +69,27 @@ public abstract class QueueDrainSubscriber<T, U, V> extends QueueDrainSubscriber
         QueueDrainHelper.drainMaxLoop(q, s, delayError, dispose, this);
     }
 
-    /* access modifiers changed from: protected */
-    public final void fastPathOrderedEmitMax(U value, boolean delayError, Disposable dispose) {
+    protected final void fastPathOrderedEmitMax(U value, boolean delayError, Disposable dispose) {
         Subscriber<? super V> s = this.downstream;
         SimplePlainQueue<U> q = this.queue;
         if (fastEnter()) {
             long r = this.requested.get();
-            if (r == 0) {
+            if (r != 0) {
+                if (q.isEmpty()) {
+                    if (accept(s, value) && r != LongCompanionObject.MAX_VALUE) {
+                        produced(1L);
+                    }
+                    if (leave(-1) == 0) {
+                        return;
+                    }
+                } else {
+                    q.offer(value);
+                }
+            } else {
                 this.cancelled = true;
                 dispose.dispose();
                 s.onError(new MissingBackpressureException("Could not emit buffer due to lack of requests"));
                 return;
-            } else if (q.isEmpty()) {
-                if (accept(s, value) && r != LongCompanionObject.MAX_VALUE) {
-                    produced(1);
-                }
-                if (leave(-1) == 0) {
-                    return;
-                }
-            } else {
-                q.offer(value);
             }
         } else {
             q.offer(value);
@@ -98,22 +100,26 @@ public abstract class QueueDrainSubscriber<T, U, V> extends QueueDrainSubscriber
         QueueDrainHelper.drainMaxLoop(q, s, delayError, dispose, this);
     }
 
-    public boolean accept(Subscriber<? super V> subscriber, U u) {
+    public boolean accept(Subscriber<? super V> a, U v) {
         return false;
     }
 
+    @Override // io.reactivex.internal.util.QueueDrain
     public final Throwable error() {
         return this.error;
     }
 
+    @Override // io.reactivex.internal.util.QueueDrain
     public final int leave(int m) {
         return this.wip.addAndGet(m);
     }
 
+    @Override // io.reactivex.internal.util.QueueDrain
     public final long requested() {
         return this.requested.get();
     }
 
+    @Override // io.reactivex.internal.util.QueueDrain
     public final long produced(long n) {
         return this.requested.addAndGet(-n);
     }

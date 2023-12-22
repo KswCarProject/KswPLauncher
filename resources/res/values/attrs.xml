@@ -82,12 +82,12 @@
     <attr name="alpha" format="float">
     </attr>
     <attr name="alphabeticModifiers">
-        <flag name="META" value="10000" />
-        <flag name="CTRL" value="1000" />
-        <flag name="ALT" value="2" />
-        <flag name="SHIFT" value="1" />
-        <flag name="SYM" value="4" />
-        <flag name="FUNCTION" value="8" />
+        <flag name="META" value="0x10000" />
+        <flag name="CTRL" value="0x1000" />
+        <flag name="ALT" value="0x2" />
+        <flag name="SHIFT" value="0x1" />
+        <flag name="SYM" value="0x4" />
+        <flag name="FUNCTION" value="0x8" />
     </attr>
     <attr name="altSrc" format="reference">
     </attr>
@@ -178,8 +178,8 @@
     <attr name="buttonBarStyle" format="reference">
     </attr>
     <attr name="buttonGravity">
-        <flag name="top" value="30" />
-        <flag name="bottom" value="50" />
+        <flag name="top" value="0x30" />
+        <flag name="bottom" value="0x50" />
     </attr>
     <attr name="buttonIconDimen" format="dimension">
     </attr>
@@ -242,11 +242,11 @@
     <attr name="circle_y_radius" format="dimension">
     </attr>
     <attr name="clickAction">
-        <flag name="toggle" value="11" />
-        <flag name="transitionToEnd" value="1" />
-        <flag name="transitionToStart" value="10" />
-        <flag name="jumpToEnd" value="100" />
-        <flag name="jumpToStart" value="1000" />
+        <flag name="toggle" value="0x11" />
+        <flag name="transitionToEnd" value="0x1" />
+        <flag name="transitionToStart" value="0x10" />
+        <flag name="jumpToEnd" value="0x100" />
+        <flag name="jumpToStart" value="0x1000" />
     </attr>
     <attr name="closeIcon" format="reference">
     </attr>
@@ -378,12 +378,12 @@
     </attr>
     <attr name="displayOptions">
         <flag name="none" value="0" />
-        <flag name="useLogo" value="1" />
-        <flag name="showHome" value="2" />
-        <flag name="homeAsUp" value="4" />
-        <flag name="showTitle" value="8" />
-        <flag name="showCustom" value="10" />
-        <flag name="disableHome" value="20" />
+        <flag name="useLogo" value="0x1" />
+        <flag name="showHome" value="0x2" />
+        <flag name="homeAsUp" value="0x4" />
+        <flag name="showTitle" value="0x8" />
+        <flag name="showCustom" value="0x10" />
+        <flag name="disableHome" value="0x20" />
     </attr>
     <attr name="divider" format="reference">
     </attr>
@@ -642,20 +642,20 @@
     <attr name="layout_anchor" format="reference">
     </attr>
     <attr name="layout_anchorGravity">
-        <flag name="top" value="30" />
-        <flag name="bottom" value="50" />
-        <flag name="left" value="3" />
-        <flag name="right" value="5" />
-        <flag name="center_vertical" value="10" />
-        <flag name="fill_vertical" value="70" />
-        <flag name="center_horizontal" value="1" />
-        <flag name="fill_horizontal" value="7" />
-        <flag name="center" value="11" />
-        <flag name="fill" value="77" />
-        <flag name="clip_vertical" value="80" />
-        <flag name="clip_horizontal" value="8" />
-        <flag name="start" value="800003" />
-        <flag name="end" value="800005" />
+        <flag name="top" value="0x30" />
+        <flag name="bottom" value="0x50" />
+        <flag name="left" value="0x3" />
+        <flag name="right" value="0x5" />
+        <flag name="center_vertical" value="0x10" />
+        <flag name="fill_vertical" value="0x70" />
+        <flag name="center_horizontal" value="0x1" />
+        <flag name="fill_horizontal" value="0x7" />
+        <flag name="center" value="0x11" />
+        <flag name="fill" value="0x77" />
+        <flag name="clip_vertical" value="0x80" />
+        <flag name="clip_horizontal" value="0x8" />
+        <flag name="start" value="0x800003" />
+        <flag name="end" value="0x800005" />
     </attr>
     <attr name="layout_background" format="reference">
     </attr>
@@ -775,14 +775,14 @@
     <attr name="layout_constraintWidth_percent" format="float">
     </attr>
     <attr name="layout_dodgeInsetEdges">
-        <flag name="none" value="0" />
-        <flag name="top" value="30" />
-        <flag name="bottom" value="50" />
-        <flag name="left" value="3" />
-        <flag name="right" value="5" />
-        <flag name="start" value="800003" />
-        <flag name="end" value="800005" />
-        <flag name="all" value="77" />
+        <flag name="none" value="0x0" />
+        <flag name="top" value="0x30" />
+        <flag name="bottom" value="0x50" />
+        <flag name="left" value="0x3" />
+        <flag name="right" value="0x5" />
+        <flag name="start" value="0x800003" />
+        <flag name="end" value="0x800005" />
+        <flag name="all" value="0x77" />
     </attr>
     <attr name="layout_editor_absoluteX" format="dimension">
     </attr>
@@ -803,13 +803,13 @@
     <attr name="layout_indicator" format="reference">
     </attr>
     <attr name="layout_insetEdge">
-        <enum name="none" value="0" />
-        <enum name="top" value="30" />
-        <enum name="bottom" value="50" />
-        <enum name="left" value="3" />
-        <enum name="right" value="5" />
-        <enum name="start" value="800003" />
-        <enum name="end" value="800005" />
+        <enum name="none" value="0x0" />
+        <enum name="top" value="0x30" />
+        <enum name="bottom" value="0x50" />
+        <enum name="left" value="0x3" />
+        <enum name="right" value="0x5" />
+        <enum name="start" value="0x800003" />
+        <enum name="end" value="0x800005" />
     </attr>
     <attr name="layout_keyline" format="integer">
     </attr>
@@ -949,12 +949,12 @@
         <flag name="disableScroll" value="2" />
     </attr>
     <attr name="numericModifiers">
-        <flag name="META" value="10000" />
-        <flag name="CTRL" value="1000" />
-        <flag name="ALT" value="2" />
-        <flag name="SHIFT" value="1" />
-        <flag name="SYM" value="4" />
-        <flag name="FUNCTION" value="8" />
+        <flag name="META" value="0x10000" />
+        <flag name="CTRL" value="0x1000" />
+        <flag name="ALT" value="0x2" />
+        <flag name="SHIFT" value="0x1" />
+        <flag name="SYM" value="0x4" />
+        <flag name="FUNCTION" value="0x8" />
     </attr>
     <attr name="offset" format="boolean">
     </attr>

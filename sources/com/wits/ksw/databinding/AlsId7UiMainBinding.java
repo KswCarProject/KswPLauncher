@@ -11,10 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.als_id7_ui.view.CustomViewpager;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class AlsId7UiMainBinding extends ViewDataBinding {
     public final ConstraintLayout alsRoot;
     public final ImageView blueIv;
@@ -41,33 +42,32 @@ public abstract class AlsId7UiMainBinding extends ViewDataBinding {
     public final CustomViewpager viewPage;
     public final ImageView yellowIv;
 
-    public abstract void setLauncherViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setLauncherViewModel(LauncherViewModel LauncherViewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected AlsId7UiMainBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout alsRoot2, ImageView blueIv2, ImageView btn1Iv2, ImageView btn2Iv2, ImageView btn3Iv2, ImageView btn4Iv2, ImageView btn5Iv2, Guideline guideline2, ImageView imageView12, ImageView imageView32, ImageView imageView42, ImageView itemViewSkinDefault2, RelativeLayout menuButton12, RelativeLayout menuButton22, RelativeLayout menuButton32, RelativeLayout menuButton42, RelativeLayout menuButton52, LinearLayout menuConstraintLayout2, ImageView redIv2, RelativeLayout skinLl2, CustomViewpager viewPage2, ImageView yellowIv2) {
+    protected AlsId7UiMainBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout alsRoot, ImageView blueIv, ImageView btn1Iv, ImageView btn2Iv, ImageView btn3Iv, ImageView btn4Iv, ImageView btn5Iv, Guideline guideline, ImageView imageView1, ImageView imageView3, ImageView imageView4, ImageView itemViewSkinDefault, RelativeLayout menuButton1, RelativeLayout menuButton2, RelativeLayout menuButton3, RelativeLayout menuButton4, RelativeLayout menuButton5, LinearLayout menuConstraintLayout, ImageView redIv, RelativeLayout skinLl, CustomViewpager viewPage, ImageView yellowIv) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.alsRoot = alsRoot2;
-        this.blueIv = blueIv2;
-        this.btn1Iv = btn1Iv2;
-        this.btn2Iv = btn2Iv2;
-        this.btn3Iv = btn3Iv2;
-        this.btn4Iv = btn4Iv2;
-        this.btn5Iv = btn5Iv2;
-        this.guideline = guideline2;
-        this.imageView1 = imageView12;
-        this.imageView3 = imageView32;
-        this.imageView4 = imageView42;
-        this.itemViewSkinDefault = itemViewSkinDefault2;
-        this.menuButton1 = menuButton12;
-        this.menuButton2 = menuButton22;
-        this.menuButton3 = menuButton32;
-        this.menuButton4 = menuButton42;
-        this.menuButton5 = menuButton52;
-        this.menuConstraintLayout = menuConstraintLayout2;
-        this.redIv = redIv2;
-        this.skinLl = skinLl2;
-        this.viewPage = viewPage2;
-        this.yellowIv = yellowIv2;
+        this.alsRoot = alsRoot;
+        this.blueIv = blueIv;
+        this.btn1Iv = btn1Iv;
+        this.btn2Iv = btn2Iv;
+        this.btn3Iv = btn3Iv;
+        this.btn4Iv = btn4Iv;
+        this.btn5Iv = btn5Iv;
+        this.guideline = guideline;
+        this.imageView1 = imageView1;
+        this.imageView3 = imageView3;
+        this.imageView4 = imageView4;
+        this.itemViewSkinDefault = itemViewSkinDefault;
+        this.menuButton1 = menuButton1;
+        this.menuButton2 = menuButton2;
+        this.menuButton3 = menuButton3;
+        this.menuButton4 = menuButton4;
+        this.menuButton5 = menuButton5;
+        this.menuConstraintLayout = menuConstraintLayout;
+        this.redIv = redIv;
+        this.skinLl = skinLl;
+        this.viewPage = viewPage;
+        this.yellowIv = yellowIv;
     }
 
     public LauncherViewModel getLauncherViewModel() {
@@ -80,7 +80,7 @@ public abstract class AlsId7UiMainBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7UiMainBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AlsId7UiMainBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_als_id7_ui, root, attachToRoot, component);
+        return (AlsId7UiMainBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_als_id7_ui, root, attachToRoot, component);
     }
 
     public static AlsId7UiMainBinding inflate(LayoutInflater inflater) {
@@ -89,7 +89,7 @@ public abstract class AlsId7UiMainBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7UiMainBinding inflate(LayoutInflater inflater, Object component) {
-        return (AlsId7UiMainBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_als_id7_ui, (ViewGroup) null, false, component);
+        return (AlsId7UiMainBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_als_id7_ui, null, false, component);
     }
 
     public static AlsId7UiMainBinding bind(View view) {
@@ -98,6 +98,6 @@ public abstract class AlsId7UiMainBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7UiMainBinding bind(View view, Object component) {
-        return (AlsId7UiMainBinding) bind(component, view, R.layout.activity_main_als_id7_ui);
+        return (AlsId7UiMainBinding) bind(component, view, C0899R.C0902layout.activity_main_als_id7_ui);
     }
 }

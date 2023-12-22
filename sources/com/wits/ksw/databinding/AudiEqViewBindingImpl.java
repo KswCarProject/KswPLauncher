@@ -1,7 +1,6 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
@@ -10,12 +9,16 @@ import android.databinding.adapters.SeekBarBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi.vm.EQViewModel;
-import com.wits.ksw.settings.audi_mib3.vm.AudiMib3EQViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi.p007vm.EQViewModel;
+import com.wits.ksw.settings.audi.widget.AudiConstraintLayout;
+import com.wits.ksw.settings.audi.widget.EqSeekBar;
+import com.wits.ksw.settings.audi_mib3.p008vm.AudiMib3EQViewModel;
 
+/* loaded from: classes7.dex */
 public class AudiEqViewBindingImpl extends AudiEqViewBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -32,60 +35,60 @@ public class AudiEqViewBindingImpl extends AudiEqViewBinding {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.hzMediaLinearLayout, 13);
-        sparseIntArray.put(R.id.linearLayout5, 14);
-        sparseIntArray.put(R.id.linearLayout6, 15);
+        sparseIntArray.put(C0899R.C0901id.hzMediaLinearLayout, 13);
+        sparseIntArray.put(C0899R.C0901id.linearLayout5, 14);
+        sparseIntArray.put(C0899R.C0901id.linearLayout6, 15);
     }
 
     public AudiEqViewBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 16, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private AudiEqViewBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 7, bindings[7], bindings[1], bindings[13], bindings[0], bindings[14], bindings[15], bindings[3], bindings[5]);
-        this.mDirtyFlags = -1;
-        this.aaa.setTag((Object) null);
-        this.bassSeekBar.setTag((Object) null);
-        this.linearLayout4.setTag((Object) null);
-        RadioButton radioButton = bindings[10];
+        super(bindingComponent, root, 7, (RadioButton) bindings[7], (EqSeekBar) bindings[1], (LinearLayout) bindings[13], (AudiConstraintLayout) bindings[0], (LinearLayout) bindings[14], (LinearLayout) bindings[15], (EqSeekBar) bindings[3], (EqSeekBar) bindings[5]);
+        this.mDirtyFlags = -1L;
+        this.aaa.setTag(null);
+        this.bassSeekBar.setTag(null);
+        this.linearLayout4.setTag(null);
+        RadioButton radioButton = (RadioButton) bindings[10];
         this.mboundView10 = radioButton;
-        radioButton.setTag((Object) null);
-        RadioButton radioButton2 = bindings[11];
+        radioButton.setTag(null);
+        RadioButton radioButton2 = (RadioButton) bindings[11];
         this.mboundView11 = radioButton2;
-        radioButton2.setTag((Object) null);
-        RadioButton radioButton3 = bindings[12];
+        radioButton2.setTag(null);
+        RadioButton radioButton3 = (RadioButton) bindings[12];
         this.mboundView12 = radioButton3;
-        radioButton3.setTag((Object) null);
-        TextView textView = bindings[2];
+        radioButton3.setTag(null);
+        TextView textView = (TextView) bindings[2];
         this.mboundView2 = textView;
-        textView.setTag((Object) null);
-        TextView textView2 = bindings[4];
+        textView.setTag(null);
+        TextView textView2 = (TextView) bindings[4];
         this.mboundView4 = textView2;
-        textView2.setTag((Object) null);
-        TextView textView3 = bindings[6];
+        textView2.setTag(null);
+        TextView textView3 = (TextView) bindings[6];
         this.mboundView6 = textView3;
-        textView3.setTag((Object) null);
-        RadioButton radioButton4 = bindings[8];
+        textView3.setTag(null);
+        RadioButton radioButton4 = (RadioButton) bindings[8];
         this.mboundView8 = radioButton4;
-        radioButton4.setTag((Object) null);
-        RadioButton radioButton5 = bindings[9];
+        radioButton4.setTag(null);
+        RadioButton radioButton5 = (RadioButton) bindings[9];
         this.mboundView9 = radioButton5;
-        radioButton5.setTag((Object) null);
-        this.mezzoSeekBar.setTag((Object) null);
-        this.trebleSeekBar.setTag((Object) null);
-        View view = root;
+        radioButton5.setTag(null);
+        this.mezzoSeekBar.setTag(null);
+        this.trebleSeekBar.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 256;
+            this.mDirtyFlags = 256L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -95,14 +98,16 @@ public class AudiEqViewBindingImpl extends AudiEqViewBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((EQViewModel) variable);
+            return true;
         }
-        setVm((EQViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AudiEqViewBinding
     public void setVm(EQViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -112,8 +117,8 @@ public class AudiEqViewBindingImpl extends AudiEqViewBinding {
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmMezzoStr((ObservableField) object, fieldId);
@@ -134,85 +139,85 @@ public class AudiEqViewBindingImpl extends AudiEqViewBinding {
         }
     }
 
-    private boolean onChangeVmMezzoStr(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmMezzoStr(ObservableField<String> VmMezzoStr, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmBassStr(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmBassStr(ObservableField<String> VmBassStr, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmTrebleStr(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmTrebleStr(ObservableField<String> VmTrebleStr, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmBassProgress(ObservableInt VmBassProgress, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmMezzoProgress(ObservableInt VmMezzoProgress, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 16;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 16;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmTrebleProgress(ObservableInt VmTrebleProgress, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 32;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 32;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmEqModel(ObservableInt VmEqModel, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 64;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 64;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
-        boolean vmEqModelInt4;
-        boolean vmEqModelInt0;
-        String vmTrebleStrGet;
-        boolean vmEqModelInt2;
         String vmBassStrGet;
+        boolean vmEqModelInt2;
         String vmMezzoStrGet;
+        String vmTrebleStrGet;
+        boolean vmEqModelInt0;
+        boolean vmEqModelInt4;
         int vmTrebleProgressGet;
         ObservableInt vmEqModel;
         int vmEqModelGet;
@@ -220,7 +225,7 @@ public class AudiEqViewBindingImpl extends AudiEqViewBinding {
         ObservableInt vmMezzoProgress;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         ObservableField<String> vmMezzoStr = null;
         ObservableField<String> vmBassStr = null;
@@ -236,12 +241,19 @@ public class AudiEqViewBindingImpl extends AudiEqViewBinding {
         String vmBassStrGet2 = null;
         String vmMezzoStrGet2 = null;
         String vmTrebleStrGet2 = null;
-        if ((dirtyFlags & 511) != 0) {
+        if ((dirtyFlags & 511) == 0) {
+            vmBassStrGet = null;
+            vmEqModelInt2 = false;
+            vmMezzoStrGet = null;
+            vmTrebleStrGet = null;
+            vmEqModelInt0 = false;
+            vmEqModelInt4 = false;
+        } else {
             if ((dirtyFlags & 385) != 0) {
                 if (vm != null) {
                     vmMezzoStr = vm.mezzoStr;
                 }
-                updateRegistration(0, (Observable) vmMezzoStr);
+                updateRegistration(0, vmMezzoStr);
                 if (vmMezzoStr != null) {
                     vmMezzoStrGet2 = vmMezzoStr.get();
                 }
@@ -250,7 +262,7 @@ public class AudiEqViewBindingImpl extends AudiEqViewBinding {
                 if (vm != null) {
                     vmBassStr = vm.bassStr;
                 }
-                updateRegistration(1, (Observable) vmBassStr);
+                updateRegistration(1, vmBassStr);
                 if (vmBassStr != null) {
                     vmBassStrGet2 = vmBassStr.get();
                 }
@@ -259,7 +271,7 @@ public class AudiEqViewBindingImpl extends AudiEqViewBinding {
                 if (vm != null) {
                     vmTrebleStr = vm.trebleStr;
                 }
-                updateRegistration(2, (Observable) vmTrebleStr);
+                updateRegistration(2, vmTrebleStr);
                 if (vmTrebleStr != null) {
                     vmTrebleStrGet2 = vmTrebleStr.get();
                 }
@@ -268,92 +280,70 @@ public class AudiEqViewBindingImpl extends AudiEqViewBinding {
                 if (vm != null) {
                     vmBassProgress = vm.bassProgress;
                 }
-                updateRegistration(3, (Observable) vmBassProgress);
+                updateRegistration(3, vmBassProgress);
                 if (vmBassProgress != null) {
                     vmBassProgressGet = vmBassProgress.get();
                 }
             }
             if ((dirtyFlags & 400) != 0) {
-                if (vm != null) {
-                    vmMezzoProgress = vm.mezzoProgress;
-                } else {
+                if (vm == null) {
                     vmMezzoProgress = null;
+                } else {
+                    vmMezzoProgress = vm.mezzoProgress;
                 }
-                updateRegistration(4, (Observable) vmMezzoProgress);
+                updateRegistration(4, vmMezzoProgress);
                 if (vmMezzoProgress != null) {
                     vmMezzoProgressGet = vmMezzoProgress.get();
-                    ObservableInt observableInt = vmMezzoProgress;
-                } else {
-                    ObservableInt observableInt2 = vmMezzoProgress;
                 }
             }
             if ((dirtyFlags & 416) != 0) {
-                if (vm != null) {
-                    vmTrebleProgress = vm.trebleProgress;
-                } else {
+                if (vm == null) {
                     vmTrebleProgress = null;
+                } else {
+                    vmTrebleProgress = vm.trebleProgress;
                 }
-                updateRegistration(5, (Observable) vmTrebleProgress);
+                updateRegistration(5, vmTrebleProgress);
                 if (vmTrebleProgress != null) {
                     vmTrebleProgressGet2 = vmTrebleProgress.get();
-                    ObservableInt observableInt3 = vmTrebleProgress;
-                } else {
-                    ObservableInt observableInt4 = vmTrebleProgress;
                 }
             }
-            if ((dirtyFlags & 448) != 0) {
-                if (vm != null) {
-                    vmEqModel = vm.eqModel;
-                } else {
+            if ((dirtyFlags & 448) == 0) {
+                vmBassStrGet = vmBassStrGet2;
+                vmEqModelInt2 = false;
+                vmMezzoStrGet = vmMezzoStrGet2;
+                vmTrebleStrGet = vmTrebleStrGet2;
+                vmEqModelInt0 = false;
+                vmEqModelInt4 = false;
+            } else {
+                if (vm == null) {
                     vmEqModel = null;
-                }
-                updateRegistration(6, (Observable) vmEqModel);
-                if (vmEqModel != null) {
-                    vmEqModelGet = vmEqModel.get();
                 } else {
-                    vmEqModelGet = 0;
+                    vmEqModel = vm.eqModel;
                 }
-                ObservableField<String> vmMezzoStr2 = vmMezzoStr;
+                updateRegistration(6, vmEqModel);
+                if (vmEqModel == null) {
+                    vmEqModelGet = 0;
+                } else {
+                    int vmEqModelGet2 = vmEqModel.get();
+                    vmEqModelGet = vmEqModelGet2;
+                }
                 vmEqModelInt1 = vmEqModelGet == 1;
                 vmEqModelInt3 = vmEqModelGet == 3;
                 vmEqModelInt5 = vmEqModelGet == 5;
                 boolean vmEqModelInt22 = vmEqModelGet == 2;
                 boolean vmEqModelInt02 = vmEqModelGet == 0;
                 boolean vmEqModelInt42 = vmEqModelGet == 4;
-                ObservableInt observableInt5 = vmEqModel;
-                int i = vmEqModelGet;
                 vmBassStrGet = vmBassStrGet2;
                 vmEqModelInt2 = vmEqModelInt22;
                 vmMezzoStrGet = vmMezzoStrGet2;
-                ObservableField<String> observableField = vmMezzoStr2;
-                ObservableField<String> observableField2 = vmBassStr;
-                ObservableField<String> observableField3 = vmTrebleStr;
                 vmTrebleStrGet = vmTrebleStrGet2;
                 vmEqModelInt0 = vmEqModelInt02;
-                ObservableInt observableInt6 = vmBassProgress;
                 vmEqModelInt4 = vmEqModelInt42;
-            } else {
-                ObservableField<String> vmMezzoStr3 = vmMezzoStr;
-                vmBassStrGet = vmBassStrGet2;
-                vmEqModelInt2 = false;
-                vmMezzoStrGet = vmMezzoStrGet2;
-                ObservableField<String> observableField4 = vmMezzoStr3;
-                ObservableField<String> observableField5 = vmBassStr;
-                ObservableField<String> observableField6 = vmTrebleStr;
-                vmTrebleStrGet = vmTrebleStrGet2;
-                vmEqModelInt0 = false;
-                ObservableInt observableInt7 = vmBassProgress;
-                vmEqModelInt4 = false;
             }
-        } else {
-            vmBassStrGet = null;
-            vmEqModelInt2 = false;
-            vmMezzoStrGet = null;
-            vmTrebleStrGet = null;
-            vmEqModelInt0 = false;
-            vmEqModelInt4 = false;
         }
-        if ((dirtyFlags & 448) != 0) {
+        if ((dirtyFlags & 448) == 0) {
+            vmTrebleProgressGet = vmTrebleProgressGet2;
+        } else {
             vmTrebleProgressGet = vmTrebleProgressGet2;
             CompoundButtonBindingAdapter.setChecked(this.aaa, vmEqModelInt0);
             this.bassSeekBar.setEnabled(vmEqModelInt0);
@@ -364,11 +354,8 @@ public class AudiEqViewBindingImpl extends AudiEqViewBinding {
             CompoundButtonBindingAdapter.setChecked(this.mboundView9, vmEqModelInt2);
             this.mezzoSeekBar.setEnabled(vmEqModelInt0);
             this.trebleSeekBar.setEnabled(vmEqModelInt0);
-        } else {
-            vmTrebleProgressGet = vmTrebleProgressGet2;
         }
         if ((dirtyFlags & 256) != 0) {
-            boolean z = vmEqModelInt2;
             AudiMib3EQViewModel.setEQModelChangeListener(this.aaa, 0);
             AudiMib3EQViewModel.setEQModelChangeListener(this.mboundView10, 3);
             AudiMib3EQViewModel.setEQModelChangeListener(this.mboundView11, 4);

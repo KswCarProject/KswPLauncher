@@ -12,26 +12,29 @@ import java.util.NoSuchElementException;
 import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableElementAtSingle<T> extends Single<T> implements FuseToFlowable<T> {
     final T defaultValue;
     final long index;
     final Flowable<T> source;
 
-    public FlowableElementAtSingle(Flowable<T> source2, long index2, T defaultValue2) {
-        this.source = source2;
-        this.index = index2;
-        this.defaultValue = defaultValue2;
+    public FlowableElementAtSingle(Flowable<T> source, long index, T defaultValue) {
+        this.source = source;
+        this.index = index;
+        this.defaultValue = defaultValue;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
-        this.source.subscribe(new ElementAtSubscriber(observer, this.index, this.defaultValue));
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
+        this.source.subscribe((FlowableSubscriber) new ElementAtSubscriber(observer, this.index, this.defaultValue));
     }
 
+    @Override // io.reactivex.internal.fuseable.FuseToFlowable
     public Flowable<T> fuseToFlowable() {
         return RxJavaPlugins.onAssembly(new FlowableElementAt(this.source, this.index, this.defaultValue, true));
     }
 
+    /* loaded from: classes.dex */
     static final class ElementAtSubscriber<T> implements FlowableSubscriber<T>, Disposable {
         long count;
         final T defaultValue;
@@ -40,12 +43,13 @@ public final class FlowableElementAtSingle<T> extends Single<T> implements FuseT
         final long index;
         Subscription upstream;
 
-        ElementAtSubscriber(SingleObserver<? super T> actual, long index2, T defaultValue2) {
+        ElementAtSubscriber(SingleObserver<? super T> actual, long index, T defaultValue) {
             this.downstream = actual;
-            this.index = index2;
-            this.defaultValue = defaultValue2;
+            this.index = index;
+            this.defaultValue = defaultValue;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -54,20 +58,23 @@ public final class FlowableElementAtSingle<T> extends Single<T> implements FuseT
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            if (!this.done) {
-                long c = this.count;
-                if (c == this.index) {
-                    this.done = true;
-                    this.upstream.cancel();
-                    this.upstream = SubscriptionHelper.CANCELLED;
-                    this.downstream.onSuccess(t);
-                    return;
-                }
-                this.count = 1 + c;
+            if (this.done) {
+                return;
             }
+            long c = this.count;
+            if (c == this.index) {
+                this.done = true;
+                this.upstream.cancel();
+                this.upstream = SubscriptionHelper.CANCELLED;
+                this.downstream.onSuccess(t);
+                return;
+            }
+            this.count = 1 + c;
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -78,6 +85,7 @@ public final class FlowableElementAtSingle<T> extends Single<T> implements FuseT
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.upstream = SubscriptionHelper.CANCELLED;
             if (!this.done) {
@@ -91,11 +99,13 @@ public final class FlowableElementAtSingle<T> extends Single<T> implements FuseT
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.cancel();
             this.upstream = SubscriptionHelper.CANCELLED;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream == SubscriptionHelper.CANCELLED;
         }

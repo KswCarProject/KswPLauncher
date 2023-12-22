@@ -9,10 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView;
 
+/* loaded from: classes7.dex */
 public abstract class AudiMib3TyTwoBinding extends ViewDataBinding {
     public final LinearLayout appContentLl;
     public final BenzMbuxItemView appItemview;
@@ -39,33 +40,32 @@ public abstract class AudiMib3TyTwoBinding extends ViewDataBinding {
     public final ImageView setIv;
     public final TextView setTv;
 
-    public abstract void setViewModel(BcVieModel bcVieModel);
+    public abstract void setViewModel(BcVieModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected AudiMib3TyTwoBinding(Object _bindingComponent, View _root, int _localFieldCount, LinearLayout appContentLl2, BenzMbuxItemView appItemview2, ImageView appIv2, TextView appTv2, LinearLayout carContentLl2, BenzMbuxItemView carItemview2, ImageView carIv2, TextView carTv2, TextView dashboardContent2, LinearLayout dashboardContentLl2, BenzMbuxItemView dashboardItemview2, ImageView dashboardIv2, TextView dashboardTv2, LinearLayout dvrContentLl2, BenzMbuxItemView dvrItemview2, ImageView dvrIv2, TextView dvrTv2, LinearLayout fragmentTwoLl2, LinearLayout setContentLl2, BenzMbuxItemView setItemview2, ImageView setIv2, TextView setTv2) {
+    protected AudiMib3TyTwoBinding(Object _bindingComponent, View _root, int _localFieldCount, LinearLayout appContentLl, BenzMbuxItemView appItemview, ImageView appIv, TextView appTv, LinearLayout carContentLl, BenzMbuxItemView carItemview, ImageView carIv, TextView carTv, TextView dashboardContent, LinearLayout dashboardContentLl, BenzMbuxItemView dashboardItemview, ImageView dashboardIv, TextView dashboardTv, LinearLayout dvrContentLl, BenzMbuxItemView dvrItemview, ImageView dvrIv, TextView dvrTv, LinearLayout fragmentTwoLl, LinearLayout setContentLl, BenzMbuxItemView setItemview, ImageView setIv, TextView setTv) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.appContentLl = appContentLl2;
-        this.appItemview = appItemview2;
-        this.appIv = appIv2;
-        this.appTv = appTv2;
-        this.carContentLl = carContentLl2;
-        this.carItemview = carItemview2;
-        this.carIv = carIv2;
-        this.carTv = carTv2;
-        this.dashboardContent = dashboardContent2;
-        this.dashboardContentLl = dashboardContentLl2;
-        this.dashboardItemview = dashboardItemview2;
-        this.dashboardIv = dashboardIv2;
-        this.dashboardTv = dashboardTv2;
-        this.dvrContentLl = dvrContentLl2;
-        this.dvrItemview = dvrItemview2;
-        this.dvrIv = dvrIv2;
-        this.dvrTv = dvrTv2;
-        this.fragmentTwoLl = fragmentTwoLl2;
-        this.setContentLl = setContentLl2;
-        this.setItemview = setItemview2;
-        this.setIv = setIv2;
-        this.setTv = setTv2;
+        this.appContentLl = appContentLl;
+        this.appItemview = appItemview;
+        this.appIv = appIv;
+        this.appTv = appTv;
+        this.carContentLl = carContentLl;
+        this.carItemview = carItemview;
+        this.carIv = carIv;
+        this.carTv = carTv;
+        this.dashboardContent = dashboardContent;
+        this.dashboardContentLl = dashboardContentLl;
+        this.dashboardItemview = dashboardItemview;
+        this.dashboardIv = dashboardIv;
+        this.dashboardTv = dashboardTv;
+        this.dvrContentLl = dvrContentLl;
+        this.dvrItemview = dvrItemview;
+        this.dvrIv = dvrIv;
+        this.dvrTv = dvrTv;
+        this.fragmentTwoLl = fragmentTwoLl;
+        this.setContentLl = setContentLl;
+        this.setItemview = setItemview;
+        this.setIv = setIv;
+        this.setTv = setTv;
     }
 
     public BcVieModel getViewModel() {
@@ -78,7 +78,7 @@ public abstract class AudiMib3TyTwoBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3TyTwoBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AudiMib3TyTwoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_audi_mib3_ty_two, root, attachToRoot, component);
+        return (AudiMib3TyTwoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_audi_mib3_ty_two, root, attachToRoot, component);
     }
 
     public static AudiMib3TyTwoBinding inflate(LayoutInflater inflater) {
@@ -87,7 +87,7 @@ public abstract class AudiMib3TyTwoBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3TyTwoBinding inflate(LayoutInflater inflater, Object component) {
-        return (AudiMib3TyTwoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_audi_mib3_ty_two, (ViewGroup) null, false, component);
+        return (AudiMib3TyTwoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_audi_mib3_ty_two, null, false, component);
     }
 
     public static AudiMib3TyTwoBinding bind(View view) {
@@ -96,6 +96,6 @@ public abstract class AudiMib3TyTwoBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3TyTwoBinding bind(View view, Object component) {
-        return (AudiMib3TyTwoBinding) bind(component, view, R.layout.fragment_audi_mib3_ty_two);
+        return (AudiMib3TyTwoBinding) bind(component, view, C0899R.C0902layout.fragment_audi_mib3_ty_two);
     }
 }

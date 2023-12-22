@@ -2,6 +2,7 @@ package com.wits.ksw.settings.id7.bean;
 
 import android.graphics.drawable.Drawable;
 
+/* loaded from: classes4.dex */
 public class MapBean {
     private boolean isCheck;
     private Drawable mapicon;
@@ -20,24 +21,24 @@ public class MapBean {
         return this.name;
     }
 
-    public void setName(String name2) {
-        this.name = name2;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPackageName() {
         return this.packageName;
     }
 
-    public void setPackageName(String packageName2) {
-        this.packageName = packageName2;
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 
     public Drawable getMapicon() {
         return this.mapicon;
     }
 
-    public void setMapicon(Drawable mapicon2) {
-        this.mapicon = mapicon2;
+    public void setMapicon(Drawable mapicon) {
+        this.mapicon = mapicon;
     }
 
     public boolean equals(Object otherObject) {
@@ -48,9 +49,9 @@ public class MapBean {
             return false;
         }
         MapBean other = (MapBean) otherObject;
-        if (!this.name.equals(other.name) || this.packageName != other.packageName) {
-            return false;
+        if (this.name.equals(other.name) && this.packageName == other.packageName) {
+            return true;
         }
-        return true;
+        return false;
     }
 }

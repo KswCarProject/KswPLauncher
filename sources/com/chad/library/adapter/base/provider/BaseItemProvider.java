@@ -4,6 +4,7 @@ import android.content.Context;
 import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public abstract class BaseItemProvider<T, V extends BaseViewHolder> {
     public Context mContext;
     public List<T> mData;
@@ -14,13 +15,13 @@ public abstract class BaseItemProvider<T, V extends BaseViewHolder> {
 
     public abstract int viewType();
 
-    public void convertPayloads(V v, T t, int position, List<Object> list) {
+    public void convertPayloads(V helper, T data, int position, List<Object> payloads) {
     }
 
-    public void onClick(V v, T t, int position) {
+    public void onClick(V helper, T data, int position) {
     }
 
-    public boolean onLongClick(V v, T t, int position) {
+    public boolean onLongClick(V helper, T data, int position) {
         return false;
     }
 }

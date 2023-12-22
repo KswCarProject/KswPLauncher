@@ -9,9 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class BenzControlBind extends ViewDataBinding {
     public final ImageView brightnessBtn;
     public final ImageView brightnessBtnLeft;
@@ -29,19 +30,19 @@ public abstract class BenzControlBind extends ViewDataBinding {
 
     public abstract void setLauncherViewModel(LauncherViewModel launcherViewModel);
 
-    protected BenzControlBind(Object _bindingComponent, View _root, int _localFieldCount, ImageView brightnessBtn2, ImageView brightnessBtnLeft2, ImageView brightnessBtnRight2, CheckBox checkBox3, CheckBox checkBox22, ImageView controlBtn12, ImageView controlBtn22, ImageView controlBtn32, ImageView imageView2, ConstraintLayout linearLayout2, ImageView netgControlImageview2) {
+    protected BenzControlBind(Object _bindingComponent, View _root, int _localFieldCount, ImageView brightnessBtn, ImageView brightnessBtnLeft, ImageView brightnessBtnRight, CheckBox checkBox, CheckBox checkBox2, ImageView controlBtn1, ImageView controlBtn2, ImageView controlBtn3, ImageView imageView, ConstraintLayout linearLayout, ImageView netgControlImageview) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.brightnessBtn = brightnessBtn2;
-        this.brightnessBtnLeft = brightnessBtnLeft2;
-        this.brightnessBtnRight = brightnessBtnRight2;
-        this.checkBox = checkBox3;
-        this.checkBox2 = checkBox22;
-        this.controlBtn1 = controlBtn12;
-        this.controlBtn2 = controlBtn22;
-        this.controlBtn3 = controlBtn32;
-        this.imageView = imageView2;
-        this.linearLayout = linearLayout2;
-        this.netgControlImageview = netgControlImageview2;
+        this.brightnessBtn = brightnessBtn;
+        this.brightnessBtnLeft = brightnessBtnLeft;
+        this.brightnessBtnRight = brightnessBtnRight;
+        this.checkBox = checkBox;
+        this.checkBox2 = checkBox2;
+        this.controlBtn1 = controlBtn1;
+        this.controlBtn2 = controlBtn2;
+        this.controlBtn3 = controlBtn3;
+        this.imageView = imageView;
+        this.linearLayout = linearLayout;
+        this.netgControlImageview = netgControlImageview;
     }
 
     public LauncherViewModel getLauncherViewModel() {
@@ -54,7 +55,7 @@ public abstract class BenzControlBind extends ViewDataBinding {
 
     @Deprecated
     public static BenzControlBind inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BenzControlBind) ViewDataBinding.inflateInternal(inflater, R.layout.ntg6_control_popup, root, attachToRoot, component);
+        return (BenzControlBind) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.ntg6_control_popup, root, attachToRoot, component);
     }
 
     public static BenzControlBind inflate(LayoutInflater inflater) {
@@ -63,7 +64,7 @@ public abstract class BenzControlBind extends ViewDataBinding {
 
     @Deprecated
     public static BenzControlBind inflate(LayoutInflater inflater, Object component) {
-        return (BenzControlBind) ViewDataBinding.inflateInternal(inflater, R.layout.ntg6_control_popup, (ViewGroup) null, false, component);
+        return (BenzControlBind) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.ntg6_control_popup, null, false, component);
     }
 
     public static BenzControlBind bind(View view) {
@@ -72,6 +73,6 @@ public abstract class BenzControlBind extends ViewDataBinding {
 
     @Deprecated
     public static BenzControlBind bind(View view, Object component) {
-        return (BenzControlBind) bind(component, view, R.layout.ntg6_control_popup);
+        return (BenzControlBind) bind(component, view, C0899R.C0902layout.ntg6_control_popup);
     }
 }

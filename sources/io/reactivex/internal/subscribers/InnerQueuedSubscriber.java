@@ -8,6 +8,7 @@ import io.reactivex.internal.util.QueueDrainHelper;
 import java.util.concurrent.atomic.AtomicReference;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class InnerQueuedSubscriber<T> extends AtomicReference<Subscription> implements FlowableSubscriber<T>, Subscription {
     private static final long serialVersionUID = 22876611072430776L;
     volatile boolean done;
@@ -18,12 +19,13 @@ public final class InnerQueuedSubscriber<T> extends AtomicReference<Subscription
     long produced;
     volatile SimpleQueue<T> queue;
 
-    public InnerQueuedSubscriber(InnerQueuedSubscriberSupport<T> parent2, int prefetch2) {
-        this.parent = parent2;
-        this.prefetch = prefetch2;
-        this.limit = prefetch2 - (prefetch2 >> 2);
+    public InnerQueuedSubscriber(InnerQueuedSubscriberSupport<T> parent, int prefetch) {
+        this.parent = parent;
+        this.prefetch = prefetch;
+        this.limit = prefetch - (prefetch >> 2);
     }
 
+    @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
     public void onSubscribe(Subscription s) {
         if (SubscriptionHelper.setOnce(this, s)) {
             if (s instanceof QueueSubscription) {
@@ -47,6 +49,7 @@ public final class InnerQueuedSubscriber<T> extends AtomicReference<Subscription
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onNext(T t) {
         if (this.fusionMode == 0) {
             this.parent.innerNext(this, t);
@@ -55,20 +58,23 @@ public final class InnerQueuedSubscriber<T> extends AtomicReference<Subscription
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onError(Throwable t) {
         this.parent.innerError(this, t);
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onComplete() {
         this.parent.innerComplete(this);
     }
 
+    @Override // org.reactivestreams.Subscription
     public void request(long n) {
         if (this.fusionMode != 1) {
             long p = this.produced + n;
-            if (p >= ((long) this.limit)) {
-                this.produced = 0;
-                ((Subscription) get()).request(p);
+            if (p >= this.limit) {
+                this.produced = 0L;
+                get().request(p);
                 return;
             }
             this.produced = p;
@@ -78,15 +84,16 @@ public final class InnerQueuedSubscriber<T> extends AtomicReference<Subscription
     public void requestOne() {
         if (this.fusionMode != 1) {
             long p = this.produced + 1;
-            if (p == ((long) this.limit)) {
-                this.produced = 0;
-                ((Subscription) get()).request(p);
+            if (p == this.limit) {
+                this.produced = 0L;
+                get().request(p);
                 return;
             }
             this.produced = p;
         }
     }
 
+    @Override // org.reactivestreams.Subscription
     public void cancel() {
         SubscriptionHelper.cancel(this);
     }

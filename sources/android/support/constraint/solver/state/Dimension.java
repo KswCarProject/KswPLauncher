@@ -2,21 +2,23 @@ package android.support.constraint.solver.state;
 
 import android.support.constraint.solver.widgets.ConstraintWidget;
 
+/* loaded from: classes.dex */
 public class Dimension {
+    private final int WRAP_CONTENT;
+    Object mInitialValue;
+    boolean mIsSuggested;
+    int mMax;
+    int mMin;
+    float mPercent;
+    float mRatio;
+    int mValue;
     public static final Object FIXED_DIMENSION = new Object();
+    public static final Object WRAP_DIMENSION = new Object();
+    public static final Object SPREAD_DIMENSION = new Object();
     public static final Object PARENT_DIMENSION = new Object();
     public static final Object PERCENT_DIMENSION = new Object();
-    public static final Object SPREAD_DIMENSION = new Object();
-    public static final Object WRAP_DIMENSION = new Object();
-    private final int WRAP_CONTENT = -2;
-    Object mInitialValue = WRAP_DIMENSION;
-    boolean mIsSuggested = false;
-    int mMax = Integer.MAX_VALUE;
-    int mMin = 0;
-    float mPercent = 1.0f;
-    float mRatio = 1.0f;
-    int mValue = 0;
 
+    /* loaded from: classes.dex */
     public enum Type {
         FIXED,
         WRAP,
@@ -25,9 +27,25 @@ public class Dimension {
     }
 
     private Dimension() {
+        this.WRAP_CONTENT = -2;
+        this.mMin = 0;
+        this.mMax = Integer.MAX_VALUE;
+        this.mPercent = 1.0f;
+        this.mValue = 0;
+        this.mRatio = 1.0f;
+        this.mInitialValue = WRAP_DIMENSION;
+        this.mIsSuggested = false;
     }
 
     private Dimension(Object type) {
+        this.WRAP_CONTENT = -2;
+        this.mMin = 0;
+        this.mMax = Integer.MAX_VALUE;
+        this.mPercent = 1.0f;
+        this.mValue = 0;
+        this.mRatio = 1.0f;
+        this.mInitialValue = WRAP_DIMENSION;
+        this.mIsSuggested = false;
         this.mInitialValue = type;
     }
 
@@ -138,25 +156,21 @@ public class Dimension {
         return this;
     }
 
-    /* access modifiers changed from: package-private */
-    public void setValue(int value) {
+    void setValue(int value) {
         this.mIsSuggested = false;
         this.mInitialValue = null;
         this.mValue = value;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getValue() {
+    int getValue() {
         return this.mValue;
     }
 
-    /* access modifiers changed from: package-private */
-    public void setRatio(float value) {
+    void setRatio(float value) {
         this.mRatio = value;
     }
 
-    /* access modifiers changed from: package-private */
-    public float getRatio() {
+    float getRatio() {
         return this.mRatio;
     }
 

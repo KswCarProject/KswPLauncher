@@ -1,10 +1,12 @@
 package com.google.gson.internal;
 
+/* loaded from: classes.dex */
 public final class JavaVersion {
     private static final int majorJavaVersion = determineMajorJavaVersion();
 
     private static int determineMajorJavaVersion() {
-        return getMajorJavaVersion(System.getProperty("java.version"));
+        String javaVersion = System.getProperty("java.version");
+        return getMajorJavaVersion(javaVersion);
     }
 
     static int getMajorJavaVersion(String javaVersion) {
@@ -22,10 +24,10 @@ public final class JavaVersion {
         try {
             String[] parts = javaVersion.split("[._]");
             int firstVer = Integer.parseInt(parts[0]);
-            if (firstVer != 1 || parts.length <= 1) {
-                return firstVer;
+            if (firstVer == 1 && parts.length > 1) {
+                return Integer.parseInt(parts[1]);
             }
-            return Integer.parseInt(parts[1]);
+            return firstVer;
         } catch (NumberFormatException e) {
             return -1;
         }

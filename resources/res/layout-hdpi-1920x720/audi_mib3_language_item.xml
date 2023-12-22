@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioButton xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/languageRadioButton" android:paddingLeft="115dp" android:paddingTop="20dp" android:paddingBottom="20dp" android:focusable="false" android:focusableInTouchMode="false" android:clickable="false" android:layout_width="match_parent" android:layout_height="63dp" android:button="@null" android:drawablePadding="15dp" android:drawableStart="@drawable/audi_mib3_radio_button_icon" style="@style/audi_mib3_set_default_text"/>

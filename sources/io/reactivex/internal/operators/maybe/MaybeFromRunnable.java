@@ -8,15 +8,16 @@ import io.reactivex.exceptions.Exceptions;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.Callable;
 
+/* loaded from: classes.dex */
 public final class MaybeFromRunnable<T> extends Maybe<T> implements Callable<T> {
     final Runnable runnable;
 
-    public MaybeFromRunnable(Runnable runnable2) {
-        this.runnable = runnable2;
+    public MaybeFromRunnable(Runnable runnable) {
+        this.runnable = runnable;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super T> observer) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super T> observer) {
         Disposable d = Disposables.empty();
         observer.onSubscribe(d);
         if (!d.isDisposed()) {
@@ -36,6 +37,7 @@ public final class MaybeFromRunnable<T> extends Maybe<T> implements Callable<T> 
         }
     }
 
+    @Override // java.util.concurrent.Callable
     public T call() throws Exception {
         this.runnable.run();
         return null;

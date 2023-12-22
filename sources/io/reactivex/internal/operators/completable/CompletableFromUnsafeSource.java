@@ -4,15 +4,16 @@ import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.CompletableSource;
 
+/* loaded from: classes.dex */
 public final class CompletableFromUnsafeSource extends Completable {
     final CompletableSource source;
 
-    public CompletableFromUnsafeSource(CompletableSource source2) {
-        this.source = source2;
+    public CompletableFromUnsafeSource(CompletableSource source) {
+        this.source = source;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         this.source.subscribe(observer);
     }
 }

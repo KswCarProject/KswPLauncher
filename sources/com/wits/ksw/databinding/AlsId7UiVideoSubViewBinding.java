@@ -8,10 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.view.CustomSkinImageView;
 
+/* loaded from: classes7.dex */
 public abstract class AlsId7UiVideoSubViewBinding extends ViewDataBinding {
     @Bindable
     protected LauncherViewModel mMediaViewModel;
@@ -20,14 +21,14 @@ public abstract class AlsId7UiVideoSubViewBinding extends ViewDataBinding {
     public final ConstraintLayout videoConstraintLayout;
     public final CustomSkinImageView videoImageView;
 
-    public abstract void setMediaViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setMediaViewModel(LauncherViewModel MediaViewModel);
 
-    protected AlsId7UiVideoSubViewBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView textView22, TextView textView32, ConstraintLayout videoConstraintLayout2, CustomSkinImageView videoImageView2) {
+    protected AlsId7UiVideoSubViewBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView textView2, TextView textView3, ConstraintLayout videoConstraintLayout, CustomSkinImageView videoImageView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.textView2 = textView22;
-        this.textView3 = textView32;
-        this.videoConstraintLayout = videoConstraintLayout2;
-        this.videoImageView = videoImageView2;
+        this.textView2 = textView2;
+        this.textView3 = textView3;
+        this.videoConstraintLayout = videoConstraintLayout;
+        this.videoImageView = videoImageView;
     }
 
     public LauncherViewModel getMediaViewModel() {
@@ -40,7 +41,7 @@ public abstract class AlsId7UiVideoSubViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7UiVideoSubViewBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AlsId7UiVideoSubViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_ui_sub_video_view, root, attachToRoot, component);
+        return (AlsId7UiVideoSubViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_ui_sub_video_view, root, attachToRoot, component);
     }
 
     public static AlsId7UiVideoSubViewBinding inflate(LayoutInflater inflater) {
@@ -49,7 +50,7 @@ public abstract class AlsId7UiVideoSubViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7UiVideoSubViewBinding inflate(LayoutInflater inflater, Object component) {
-        return (AlsId7UiVideoSubViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_ui_sub_video_view, (ViewGroup) null, false, component);
+        return (AlsId7UiVideoSubViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_ui_sub_video_view, null, false, component);
     }
 
     public static AlsId7UiVideoSubViewBinding bind(View view) {
@@ -58,6 +59,6 @@ public abstract class AlsId7UiVideoSubViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7UiVideoSubViewBinding bind(View view, Object component) {
-        return (AlsId7UiVideoSubViewBinding) bind(component, view, R.layout.als_id7_ui_sub_video_view);
+        return (AlsId7UiVideoSubViewBinding) bind(component, view, C0899R.C0902layout.als_id7_ui_sub_video_view);
     }
 }

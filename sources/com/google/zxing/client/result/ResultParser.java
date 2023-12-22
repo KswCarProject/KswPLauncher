@@ -10,38 +10,34 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/* loaded from: classes.dex */
 public abstract class ResultParser {
-    private static final Pattern AMPERSAND = Pattern.compile("&");
-    private static final String BYTE_ORDER_MARK = "﻿";
-    private static final Pattern DIGITS = Pattern.compile("\\d+");
-    private static final Pattern EQUALS = Pattern.compile("=");
+    private static final String BYTE_ORDER_MARK = "\ufeff";
     private static final ResultParser[] PARSERS = {new BookmarkDoCoMoResultParser(), new AddressBookDoCoMoResultParser(), new EmailDoCoMoResultParser(), new AddressBookAUResultParser(), new VCardResultParser(), new BizcardResultParser(), new VEventResultParser(), new EmailAddressResultParser(), new SMTPResultParser(), new TelResultParser(), new SMSMMSResultParser(), new SMSTOMMSTOResultParser(), new GeoResultParser(), new WifiResultParser(), new URLTOResultParser(), new URIResultParser(), new ISBNResultParser(), new ProductResultParser(), new ExpandedProductResultParser(), new VINResultParser()};
+    private static final Pattern DIGITS = Pattern.compile("\\d+");
+    private static final Pattern AMPERSAND = Pattern.compile("&");
+    private static final Pattern EQUALS = Pattern.compile("=");
 
     public abstract ParsedResult parse(Result result);
 
     protected static String getMassagedText(Result result) {
         String text = result.getText();
-        String text2 = text;
-        if (text.startsWith(BYTE_ORDER_MARK)) {
-            return text2.substring(1);
-        }
-        return text2;
+        return text.startsWith(BYTE_ORDER_MARK) ? text.substring(1) : text;
     }
 
     public static ParsedResult parseResult(Result theResult) {
-        for (ResultParser parse : PARSERS) {
-            ParsedResult parse2 = parse.parse(theResult);
-            ParsedResult result = parse2;
-            if (parse2 != null) {
+        for (ResultParser resultParser : PARSERS) {
+            ParsedResult result = resultParser.parse(theResult);
+            if (result != null) {
                 return result;
             }
         }
-        return new TextParsedResult(theResult.getText(), (String) null);
+        return new TextParsedResult(theResult.getText(), null);
     }
 
     protected static void maybeAppend(String value, StringBuilder result) {
         if (value != null) {
-            result.append(10);
+            result.append('\n');
             result.append(value);
         }
     }
@@ -49,7 +45,7 @@ public abstract class ResultParser {
     protected static void maybeAppend(String[] value, StringBuilder result) {
         if (value != null) {
             for (String s : value) {
-                result.append(10);
+                result.append('\n');
                 result.append(s);
             }
         }
@@ -63,15 +59,13 @@ public abstract class ResultParser {
     }
 
     protected static String unescapeBackslash(String escaped) {
-        int indexOf = escaped.indexOf(92);
-        int backslash = indexOf;
-        if (indexOf < 0) {
+        int backslash = escaped.indexOf(92);
+        if (backslash < 0) {
             return escaped;
         }
         int max = escaped.length();
-        StringBuilder sb = new StringBuilder(max - 1);
-        StringBuilder unescaped = sb;
-        sb.append(escaped.toCharArray(), 0, backslash);
+        StringBuilder unescaped = new StringBuilder(max - 1);
+        unescaped.append(escaped.toCharArray(), 0, backslash);
         boolean nextIsEscaped = false;
         for (int i = backslash; i < max; i++) {
             char c = escaped.charAt(i);
@@ -92,10 +86,10 @@ public abstract class ResultParser {
         if (c >= 'a' && c <= 'f') {
             return (c - 'a') + 10;
         }
-        if (c < 'A' || c > 'F') {
-            return -1;
+        if (c >= 'A' && c <= 'F') {
+            return (c - 'A') + 10;
         }
-        return (c - 'A') + 10;
+        return -1;
     }
 
     protected static boolean isStringOfDigits(CharSequence value, int length) {
@@ -104,31 +98,28 @@ public abstract class ResultParser {
 
     protected static boolean isSubstringOfDigits(CharSequence value, int offset, int length) {
         int max;
-        if (value == null || length <= 0 || value.length() < (max = offset + length) || !DIGITS.matcher(value.subSequence(offset, max)).matches()) {
-            return false;
-        }
-        return true;
+        return value != null && length > 0 && value.length() >= (max = offset + length) && DIGITS.matcher(value.subSequence(offset, max)).matches();
     }
 
     static Map<String, String> parseNameValuePairs(String uri) {
-        int indexOf = uri.indexOf(63);
-        int paramStart = indexOf;
-        if (indexOf < 0) {
+        int paramStart = uri.indexOf(63);
+        if (paramStart < 0) {
             return null;
         }
         Map<String, String> result = new HashMap<>(3);
-        for (String appendKeyValue : AMPERSAND.split(uri.substring(paramStart + 1))) {
-            appendKeyValue(appendKeyValue, result);
+        for (String str : AMPERSAND.split(uri.substring(paramStart + 1))) {
+            appendKeyValue(str, result);
         }
         return result;
     }
 
     private static void appendKeyValue(CharSequence keyValue, Map<String, String> result) {
-        String[] split = EQUALS.split(keyValue, 2);
-        String[] keyValueTokens = split;
-        if (split.length == 2) {
+        String[] keyValueTokens = EQUALS.split(keyValue, 2);
+        if (keyValueTokens.length == 2) {
+            String key = keyValueTokens[0];
+            String value = keyValueTokens[1];
             try {
-                result.put(keyValueTokens[0], urlDecode(keyValueTokens[1]));
+                result.put(key, urlDecode(value));
             } catch (IllegalArgumentException e) {
             }
         }
@@ -147,18 +138,16 @@ public abstract class ResultParser {
         int i = 0;
         int max = rawText.length();
         while (i < max) {
-            int indexOf = rawText.indexOf(prefix, i);
-            int i2 = indexOf;
-            if (indexOf < 0) {
+            int i2 = rawText.indexOf(prefix, i);
+            if (i2 < 0) {
                 break;
             }
             int start = prefix.length() + i2;
             i = start;
             boolean more = true;
             while (more) {
-                int indexOf2 = rawText.indexOf(endChar, i);
-                int i3 = indexOf2;
-                if (indexOf2 < 0) {
+                int i3 = rawText.indexOf(endChar, i);
+                if (i3 < 0) {
                     i = rawText.length();
                     more = false;
                 } else if (countPrecedingBackslashes(rawText, i3) % 2 != 0) {
@@ -187,18 +176,15 @@ public abstract class ResultParser {
 
     private static int countPrecedingBackslashes(CharSequence s, int pos) {
         int count = 0;
-        int i = pos - 1;
-        while (i >= 0 && s.charAt(i) == '\\') {
+        for (int i = pos - 1; i >= 0 && s.charAt(i) == '\\'; i--) {
             count++;
-            i--;
         }
         return count;
     }
 
     static String matchSinglePrefixedField(String prefix, String rawText, char endChar, boolean trim) {
-        String[] matchPrefixedField = matchPrefixedField(prefix, rawText, endChar, trim);
-        String[] matches = matchPrefixedField;
-        if (matchPrefixedField == null) {
+        String[] matches = matchPrefixedField(prefix, rawText, endChar, trim);
+        if (matches == null) {
             return null;
         }
         return matches[0];

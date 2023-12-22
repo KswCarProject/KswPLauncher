@@ -1,5 +1,6 @@
 package com.ibm.icu.text;
 
+/* loaded from: classes.dex */
 interface UnicodeReplacer {
     void addReplacementSetTo(UnicodeSet unicodeSet);
 

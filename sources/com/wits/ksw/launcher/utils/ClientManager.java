@@ -4,13 +4,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
+/* loaded from: classes11.dex */
 public class ClientManager {
     public static final String CLIENT_ALS_6208 = "ALS_6208";
     public static final String CLIENT_GS = "GS";
     public static final String CLIENT_LC_3208 = "LC_3208";
     public static final String CLIENT_yc_2306 = "yc_2306";
     public static final String CUSP_210407 = "CUSP_210407";
-    private static final String TAG = ("KswApplication." + ClientManager.class.getSimpleName());
+    private static final String TAG = "KswApplication." + ClientManager.class.getSimpleName();
     private static ClientManager instance;
 
     private ClientManager() {

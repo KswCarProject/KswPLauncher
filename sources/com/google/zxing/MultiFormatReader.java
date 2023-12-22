@@ -10,86 +10,85 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class MultiFormatReader implements Reader {
     private Map<DecodeHintType, ?> hints;
     private Reader[] readers;
 
+    @Override // com.google.zxing.Reader
     public Result decode(BinaryBitmap image) throws NotFoundException {
-        setHints((Map<DecodeHintType, ?>) null);
+        setHints(null);
         return decodeInternal(image);
     }
 
-    public Result decode(BinaryBitmap image, Map<DecodeHintType, ?> hints2) throws NotFoundException {
-        setHints(hints2);
+    @Override // com.google.zxing.Reader
+    public Result decode(BinaryBitmap image, Map<DecodeHintType, ?> hints) throws NotFoundException {
+        setHints(hints);
         return decodeInternal(image);
     }
 
     public Result decodeWithState(BinaryBitmap image) throws NotFoundException {
         if (this.readers == null) {
-            setHints((Map<DecodeHintType, ?>) null);
+            setHints(null);
         }
         return decodeInternal(image);
     }
 
-    public void setHints(Map<DecodeHintType, ?> hints2) {
-        Collection<BarcodeFormat> formats;
-        this.hints = hints2;
+    public void setHints(Map<DecodeHintType, ?> hints) {
+        this.hints = hints;
         boolean z = true;
-        boolean tryHarder = hints2 != null && hints2.containsKey(DecodeHintType.TRY_HARDER);
-        if (hints2 == null) {
-            formats = null;
-        } else {
-            formats = (Collection) hints2.get(DecodeHintType.POSSIBLE_FORMATS);
-        }
-        Collection<Reader> readers2 = new ArrayList<>();
+        boolean tryHarder = hints != null && hints.containsKey(DecodeHintType.TRY_HARDER);
+        Collection<BarcodeFormat> formats = hints == null ? null : (Collection) hints.get(DecodeHintType.POSSIBLE_FORMATS);
+        Collection<Reader> readers = new ArrayList<>();
         if (formats != null) {
             if (!formats.contains(BarcodeFormat.UPC_A) && !formats.contains(BarcodeFormat.UPC_E) && !formats.contains(BarcodeFormat.EAN_13) && !formats.contains(BarcodeFormat.EAN_8) && !formats.contains(BarcodeFormat.CODABAR) && !formats.contains(BarcodeFormat.CODE_39) && !formats.contains(BarcodeFormat.CODE_93) && !formats.contains(BarcodeFormat.CODE_128) && !formats.contains(BarcodeFormat.ITF) && !formats.contains(BarcodeFormat.RSS_14) && !formats.contains(BarcodeFormat.RSS_EXPANDED)) {
                 z = false;
             }
             boolean addOneDReader = z;
             if (z && !tryHarder) {
-                readers2.add(new MultiFormatOneDReader(hints2));
+                readers.add(new MultiFormatOneDReader(hints));
             }
             if (formats.contains(BarcodeFormat.QR_CODE)) {
-                readers2.add(new QRCodeReader());
+                readers.add(new QRCodeReader());
             }
             if (formats.contains(BarcodeFormat.DATA_MATRIX)) {
-                readers2.add(new DataMatrixReader());
+                readers.add(new DataMatrixReader());
             }
             if (formats.contains(BarcodeFormat.AZTEC)) {
-                readers2.add(new AztecReader());
+                readers.add(new AztecReader());
             }
             if (formats.contains(BarcodeFormat.PDF_417)) {
-                readers2.add(new PDF417Reader());
+                readers.add(new PDF417Reader());
             }
             if (formats.contains(BarcodeFormat.MAXICODE)) {
-                readers2.add(new MaxiCodeReader());
+                readers.add(new MaxiCodeReader());
             }
             if (addOneDReader && tryHarder) {
-                readers2.add(new MultiFormatOneDReader(hints2));
+                readers.add(new MultiFormatOneDReader(hints));
             }
         }
-        if (readers2.isEmpty()) {
+        if (readers.isEmpty()) {
             if (!tryHarder) {
-                readers2.add(new MultiFormatOneDReader(hints2));
+                readers.add(new MultiFormatOneDReader(hints));
             }
-            readers2.add(new QRCodeReader());
-            readers2.add(new DataMatrixReader());
-            readers2.add(new AztecReader());
-            readers2.add(new PDF417Reader());
-            readers2.add(new MaxiCodeReader());
+            readers.add(new QRCodeReader());
+            readers.add(new DataMatrixReader());
+            readers.add(new AztecReader());
+            readers.add(new PDF417Reader());
+            readers.add(new MaxiCodeReader());
             if (tryHarder) {
-                readers2.add(new MultiFormatOneDReader(hints2));
+                readers.add(new MultiFormatOneDReader(hints));
             }
         }
-        this.readers = (Reader[]) readers2.toArray(new Reader[readers2.size()]);
+        this.readers = (Reader[]) readers.toArray(new Reader[readers.size()]);
     }
 
+    @Override // com.google.zxing.Reader
     public void reset() {
         Reader[] readerArr = this.readers;
         if (readerArr != null) {
-            for (Reader reset : readerArr) {
-                reset.reset();
+            for (Reader reader : readerArr) {
+                reader.reset();
             }
         }
     }
@@ -98,12 +97,11 @@ public final class MultiFormatReader implements Reader {
         Reader[] readerArr = this.readers;
         if (readerArr != null) {
             int length = readerArr.length;
-            int i = 0;
-            while (i < length) {
+            for (int i = 0; i < length; i++) {
+                Reader reader = readerArr[i];
                 try {
-                    return readerArr[i].decode(image, this.hints);
+                    return reader.decode(image, this.hints);
                 } catch (ReaderException e) {
-                    i++;
                 }
             }
         }

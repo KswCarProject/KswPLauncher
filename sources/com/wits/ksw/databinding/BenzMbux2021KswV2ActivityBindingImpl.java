@@ -1,7 +1,6 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
@@ -10,16 +9,21 @@ import android.databinding.adapters.ImageViewBindingAdapter;
 import android.databinding.adapters.ViewBindingAdapter;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.content.res.AppCompatResources;
+import android.support.p001v4.media.session.PlaybackStateCompat;
+import android.support.p001v4.view.ViewPager;
+import android.support.p004v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import com.wits.ksw.R;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bean.MediaInfo;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.model.ControlBean;
 
+/* loaded from: classes7.dex */
 public class BenzMbux2021KswV2ActivityBindingImpl extends BenzMbux2021KswV2ActivityBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -30,39 +34,39 @@ public class BenzMbux2021KswV2ActivityBindingImpl extends BenzMbux2021KswV2Activ
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.layout_main_2021_2, 3);
-        sparseIntArray.put(R.id.benzMbux2021Viewpager, 4);
-        sparseIntArray.put(R.id.indicator_benz_mbux_2021, 5);
-        sparseIntArray.put(R.id.layout_coat_benz_mbux_2021, 6);
-        sparseIntArray.put(R.id.iv_coat_2021, 7);
-        sparseIntArray.put(R.id.tv_coat_2021_tip, 8);
+        sparseIntArray.put(C0899R.C0901id.layout_main_2021_2, 3);
+        sparseIntArray.put(C0899R.C0901id.benzMbux2021Viewpager, 4);
+        sparseIntArray.put(C0899R.C0901id.indicator_benz_mbux_2021, 5);
+        sparseIntArray.put(C0899R.C0901id.layout_coat_benz_mbux_2021, 6);
+        sparseIntArray.put(C0899R.C0901id.iv_coat_2021, 7);
+        sparseIntArray.put(C0899R.C0901id.tv_coat_2021_tip, 8);
     }
 
     public BenzMbux2021KswV2ActivityBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 9, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private BenzMbux2021KswV2ActivityBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 4, bindings[4], bindings[2], bindings[5], bindings[7], bindings[6], bindings[1], bindings[3], bindings[8]);
-        this.mDirtyFlags = -1;
-        this.controlBtn.setTag((Object) null);
-        this.layoutMain2021.setTag((Object) null);
-        LinearLayout linearLayout = bindings[0];
+        super(bindingComponent, root, 4, (ViewPager) bindings[4], (ImageView) bindings[2], (LinearLayout) bindings[5], (ImageView) bindings[7], (LinearLayout) bindings[6], (ImageView) bindings[1], (RelativeLayout) bindings[3], (TextView) bindings[8]);
+        this.mDirtyFlags = -1L;
+        this.controlBtn.setTag(null);
+        this.layoutMain2021.setTag(null);
+        LinearLayout linearLayout = (LinearLayout) bindings[0];
         this.mboundView0 = linearLayout;
-        linearLayout.setTag((Object) null);
-        View view = root;
+        linearLayout.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 32;
+            this.mDirtyFlags = 32L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -72,14 +76,16 @@ public class BenzMbux2021KswV2ActivityBindingImpl extends BenzMbux2021KswV2Activ
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (24 != variableId) {
-            return false;
+        if (24 == variableId) {
+            setVieModel((BcVieModel) variable);
+            return true;
         }
-        setVieModel((BcVieModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.BenzMbux2021KswV2ActivityBinding
     public void setVieModel(BcVieModel VieModel) {
         this.mVieModel = VieModel;
         synchronized (this) {
@@ -89,8 +95,8 @@ public class BenzMbux2021KswV2ActivityBindingImpl extends BenzMbux2021KswV2Activ
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVieModelControlBeanControlPanelClose((ObservableBoolean) object, fieldId);
@@ -106,47 +112,47 @@ public class BenzMbux2021KswV2ActivityBindingImpl extends BenzMbux2021KswV2Activ
     }
 
     private boolean onChangeVieModelControlBeanControlPanelClose(ObservableBoolean VieModelControlBeanControlPanelClose, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVieModelMediaInfoPageIndex(ObservableInt VieModelMediaInfoPageIndex, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVieModelMediaInfoPicOther(ObservableField<BitmapDrawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVieModelMediaInfoPicOther(ObservableField<BitmapDrawable> VieModelMediaInfoPicOther, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVieModelControlBeanBenzControlPanelState(ObservableBoolean VieModelControlBeanBenzControlPanelState, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         BitmapDrawable vieModelMediaInfoPicOtherGet;
         Drawable vieModelMediaInfoPageIndexInt1VieModelMediaInfoPicOtherJavaLangObjectNullVieModelMediaInfoPicOtherLayoutMain2021AndroidDrawableTranspLayoutMain2021AndroidDrawableTransp;
@@ -156,7 +162,7 @@ public class BenzMbux2021KswV2ActivityBindingImpl extends BenzMbux2021KswV2Activ
         Drawable drawable;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         ObservableBoolean vieModelControlBeanControlPanelClose2 = null;
         View.OnClickListener vieModelOnControlClickAndroidViewViewOnClickListener = null;
@@ -173,7 +179,7 @@ public class BenzMbux2021KswV2ActivityBindingImpl extends BenzMbux2021KswV2Activ
         boolean vieModelControlBeanBenzControlPanelStateGet = false;
         BitmapDrawable vieModelMediaInfoPicOtherGet2 = null;
         if ((dirtyFlags & 57) != 0) {
-            if (!((dirtyFlags & 48) == 0 || vieModel == null)) {
+            if ((dirtyFlags & 48) != 0 && vieModel != null) {
                 OnClickListenerImpl onClickListenerImpl = this.mVieModelOnControlClickAndroidViewViewOnClickListener;
                 if (onClickListenerImpl == null) {
                     onClickListenerImpl = new OnClickListenerImpl();
@@ -188,7 +194,7 @@ public class BenzMbux2021KswV2ActivityBindingImpl extends BenzMbux2021KswV2Activ
                 if (vieModelControlBean != null) {
                     vieModelControlBeanControlPanelClose2 = vieModelControlBean.controlPanelClose;
                 }
-                updateRegistration(0, (Observable) vieModelControlBeanControlPanelClose2);
+                updateRegistration(0, vieModelControlBeanControlPanelClose2);
                 if (vieModelControlBeanControlPanelClose2 != null) {
                     vieModelControlBeanControlPanelCloseGet = vieModelControlBeanControlPanelClose2.get();
                 }
@@ -202,12 +208,12 @@ public class BenzMbux2021KswV2ActivityBindingImpl extends BenzMbux2021KswV2Activ
                 vieModelControlBeanControlPanelCloseViewGONEViewVISIBLE = vieModelControlBeanControlPanelCloseGet ? 8 : 0;
             }
             if ((dirtyFlags & 56) != 0) {
-                if (vieModelControlBean != null) {
-                    vieModelControlBeanBenzControlPanelState = vieModelControlBean.benzControlPanelState;
-                } else {
+                if (vieModelControlBean == null) {
                     vieModelControlBeanBenzControlPanelState = null;
+                } else {
+                    vieModelControlBeanBenzControlPanelState = vieModelControlBean.benzControlPanelState;
                 }
-                updateRegistration(3, (Observable) vieModelControlBeanBenzControlPanelState);
+                updateRegistration(3, vieModelControlBeanBenzControlPanelState);
                 if (vieModelControlBeanBenzControlPanelState != null) {
                     vieModelControlBeanBenzControlPanelStateGet = vieModelControlBeanBenzControlPanelState.get();
                 }
@@ -220,13 +226,12 @@ public class BenzMbux2021KswV2ActivityBindingImpl extends BenzMbux2021KswV2Activ
                 }
                 if (vieModelControlBeanBenzControlPanelStateGet) {
                     vieModelControlBeanControlPanelClose = vieModelControlBeanControlPanelClose2;
-                    drawable = AppCompatResources.getDrawable(this.controlBtn.getContext(), R.drawable.ntg55_ctrlpanel_down_selector);
+                    drawable = AppCompatResources.getDrawable(this.controlBtn.getContext(), C0899R.C0900drawable.ntg55_ctrlpanel_down_selector);
                 } else {
                     vieModelControlBeanControlPanelClose = vieModelControlBeanControlPanelClose2;
-                    drawable = AppCompatResources.getDrawable(this.controlBtn.getContext(), R.drawable.ntg55_ctrlpanel_up_selector);
+                    drawable = AppCompatResources.getDrawable(this.controlBtn.getContext(), C0899R.C0900drawable.ntg55_ctrlpanel_up_selector);
                 }
                 vieModelControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = drawable;
-                ObservableBoolean observableBoolean = vieModelControlBeanBenzControlPanelState;
                 vieModelControlBeanControlPanelClose2 = vieModelControlBeanControlPanelClose;
             }
         }
@@ -235,13 +240,12 @@ public class BenzMbux2021KswV2ActivityBindingImpl extends BenzMbux2021KswV2Activ
             if (vieModelMediaInfo != null) {
                 vieModelMediaInfoPageIndex = vieModelMediaInfo.pageIndex;
             }
-            updateRegistration(1, (Observable) vieModelMediaInfoPageIndex);
-            if (vieModelMediaInfoPageIndex != null) {
-                ObservableBoolean observableBoolean2 = vieModelControlBeanControlPanelClose2;
-                vieModelMediaInfoPageIndexGet = vieModelMediaInfoPageIndex.get();
-            } else {
-                ObservableBoolean observableBoolean3 = vieModelControlBeanControlPanelClose2;
+            updateRegistration(1, vieModelMediaInfoPageIndex);
+            if (vieModelMediaInfoPageIndex == null) {
                 vieModelMediaInfoPageIndexGet = 0;
+            } else {
+                int vieModelMediaInfoPageIndexGet2 = vieModelMediaInfoPageIndex.get();
+                vieModelMediaInfoPageIndexGet = vieModelMediaInfoPageIndexGet2;
             }
             vieModelMediaInfoPageIndexInt1 = vieModelMediaInfoPageIndexGet == 1;
             if ((dirtyFlags & 38) != 0) {
@@ -255,52 +259,41 @@ public class BenzMbux2021KswV2ActivityBindingImpl extends BenzMbux2021KswV2Activ
                 if (vieModelMediaInfo != null) {
                     vieModelMediaInfoPicOther = vieModelMediaInfo.picOther;
                 }
-                updateRegistration(2, (Observable) vieModelMediaInfoPicOther);
+                updateRegistration(2, vieModelMediaInfoPicOther);
                 if (vieModelMediaInfoPicOther != null) {
                     vieModelMediaInfoPicOtherGet2 = vieModelMediaInfoPicOther.get();
-                    int i = vieModelMediaInfoPageIndexGet;
-                    MediaInfo mediaInfo = vieModelMediaInfo;
-                } else {
-                    int i2 = vieModelMediaInfoPageIndexGet;
-                    MediaInfo mediaInfo2 = vieModelMediaInfo;
                 }
-            } else {
-                int i3 = vieModelMediaInfoPageIndexGet;
-                MediaInfo mediaInfo3 = vieModelMediaInfo;
             }
         }
-        if ((dirtyFlags & PlaybackStateCompat.ACTION_PLAY_FROM_URI) != 0) {
+        if ((dirtyFlags & PlaybackStateCompat.ACTION_PLAY_FROM_URI) == 0) {
+            vieModelMediaInfoPicOtherGet = vieModelMediaInfoPicOtherGet2;
+        } else {
             MediaInfo vieModelMediaInfo2 = BcVieModel.mediaInfo;
             if (vieModelMediaInfo2 != null) {
                 vieModelMediaInfoPicOther = vieModelMediaInfo2.picOther;
             }
-            updateRegistration(2, (Observable) vieModelMediaInfoPicOther);
+            updateRegistration(2, vieModelMediaInfoPicOther);
             if (vieModelMediaInfoPicOther != null) {
                 vieModelMediaInfoPicOtherGet2 = vieModelMediaInfoPicOther.get();
             }
             vieModelMediaInfoPicOtherJavaLangObjectNull = vieModelMediaInfoPicOtherGet2 != null;
             if ((dirtyFlags & PlaybackStateCompat.ACTION_PLAY_FROM_URI) == 0) {
-                MediaInfo mediaInfo4 = vieModelMediaInfo2;
                 vieModelMediaInfoPicOtherGet = vieModelMediaInfoPicOtherGet2;
             } else if (vieModelMediaInfoPicOtherJavaLangObjectNull) {
                 dirtyFlags |= 128;
-                MediaInfo mediaInfo5 = vieModelMediaInfo2;
                 vieModelMediaInfoPicOtherGet = vieModelMediaInfoPicOtherGet2;
             } else {
                 dirtyFlags |= 64;
-                MediaInfo mediaInfo6 = vieModelMediaInfo2;
                 vieModelMediaInfoPicOtherGet = vieModelMediaInfoPicOtherGet2;
             }
-        } else {
-            vieModelMediaInfoPicOtherGet = vieModelMediaInfoPicOtherGet2;
         }
         if ((dirtyFlags & PlaybackStateCompat.ACTION_PLAY_FROM_URI) != 0) {
-            vieModelMediaInfoPicOtherJavaLangObjectNullVieModelMediaInfoPicOtherLayoutMain2021AndroidDrawableTransp = vieModelMediaInfoPicOtherJavaLangObjectNull ? vieModelMediaInfoPicOtherGet : AppCompatResources.getDrawable(this.layoutMain2021.getContext(), R.drawable.transp);
+            vieModelMediaInfoPicOtherJavaLangObjectNullVieModelMediaInfoPicOtherLayoutMain2021AndroidDrawableTransp = vieModelMediaInfoPicOtherJavaLangObjectNull ? vieModelMediaInfoPicOtherGet : AppCompatResources.getDrawable(this.layoutMain2021.getContext(), C0899R.C0900drawable.transp);
         }
-        if ((dirtyFlags & 38) != 0) {
-            vieModelMediaInfoPageIndexInt1VieModelMediaInfoPicOtherJavaLangObjectNullVieModelMediaInfoPicOtherLayoutMain2021AndroidDrawableTranspLayoutMain2021AndroidDrawableTransp = vieModelMediaInfoPageIndexInt1 ? vieModelMediaInfoPicOtherJavaLangObjectNullVieModelMediaInfoPicOtherLayoutMain2021AndroidDrawableTransp : AppCompatResources.getDrawable(this.layoutMain2021.getContext(), R.drawable.transp);
-        } else {
+        if ((dirtyFlags & 38) == 0) {
             vieModelMediaInfoPageIndexInt1VieModelMediaInfoPicOtherJavaLangObjectNullVieModelMediaInfoPicOtherLayoutMain2021AndroidDrawableTranspLayoutMain2021AndroidDrawableTransp = null;
+        } else {
+            vieModelMediaInfoPageIndexInt1VieModelMediaInfoPicOtherJavaLangObjectNullVieModelMediaInfoPicOtherLayoutMain2021AndroidDrawableTranspLayoutMain2021AndroidDrawableTransp = vieModelMediaInfoPageIndexInt1 ? vieModelMediaInfoPicOtherJavaLangObjectNullVieModelMediaInfoPicOtherLayoutMain2021AndroidDrawableTransp : AppCompatResources.getDrawable(this.layoutMain2021.getContext(), C0899R.C0900drawable.transp);
         }
         if ((dirtyFlags & 48) != 0) {
             this.controlBtn.setOnClickListener(vieModelOnControlClickAndroidViewViewOnClickListener);
@@ -319,17 +312,19 @@ public class BenzMbux2021KswV2ActivityBindingImpl extends BenzMbux2021KswV2Activ
         }
     }
 
+    /* loaded from: classes7.dex */
     public static class OnClickListenerImpl implements View.OnClickListener {
         private BcVieModel value;
 
-        public OnClickListenerImpl setValue(BcVieModel value2) {
-            this.value = value2;
-            if (value2 == null) {
+        public OnClickListenerImpl setValue(BcVieModel value) {
+            this.value = value;
+            if (value == null) {
                 return null;
             }
             return this;
         }
 
+        @Override // android.view.View.OnClickListener
         public void onClick(View arg0) {
             this.value.onControlClick(arg0);
         }

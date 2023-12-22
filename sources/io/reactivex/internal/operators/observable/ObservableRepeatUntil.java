@@ -9,20 +9,24 @@ import io.reactivex.functions.BooleanSupplier;
 import io.reactivex.internal.disposables.SequentialDisposable;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/* loaded from: classes.dex */
 public final class ObservableRepeatUntil<T> extends AbstractObservableWithUpstream<T, T> {
     final BooleanSupplier until;
 
-    public ObservableRepeatUntil(Observable<T> source, BooleanSupplier until2) {
+    public ObservableRepeatUntil(Observable<T> source, BooleanSupplier until) {
         super(source);
-        this.until = until2;
+        this.until = until;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super T> observer) {
         SequentialDisposable sd = new SequentialDisposable();
         observer.onSubscribe(sd);
-        new RepeatUntilObserver<>(observer, this.until, sd, this.source).subscribeNext();
+        RepeatUntilObserver<T> rs = new RepeatUntilObserver<>(observer, this.until, sd, this.source);
+        rs.subscribeNext();
     }
 
+    /* loaded from: classes.dex */
     static final class RepeatUntilObserver<T> extends AtomicInteger implements Observer<T> {
         private static final long serialVersionUID = -7098360935104053232L;
         final Observer<? super T> downstream;
@@ -30,28 +34,33 @@ public final class ObservableRepeatUntil<T> extends AbstractObservableWithUpstre
         final BooleanSupplier stop;
         final SequentialDisposable upstream;
 
-        RepeatUntilObserver(Observer<? super T> actual, BooleanSupplier until, SequentialDisposable sd, ObservableSource<? extends T> source2) {
+        RepeatUntilObserver(Observer<? super T> actual, BooleanSupplier until, SequentialDisposable sd, ObservableSource<? extends T> source) {
             this.downstream = actual;
             this.upstream = sd;
-            this.source = source2;
+            this.source = source;
             this.stop = until;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             this.upstream.replace(d);
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             this.downstream.onNext(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             this.downstream.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             try {
-                if (this.stop.getAsBoolean()) {
+                boolean b = this.stop.getAsBoolean();
+                if (b) {
                     this.downstream.onComplete();
                 } else {
                     subscribeNext();
@@ -62,8 +71,7 @@ public final class ObservableRepeatUntil<T> extends AbstractObservableWithUpstre
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void subscribeNext() {
+        void subscribeNext() {
             if (getAndIncrement() == 0) {
                 int missed = 1;
                 do {

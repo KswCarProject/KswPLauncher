@@ -8,27 +8,27 @@ import io.reactivex.exceptions.Exceptions;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.Callable;
 
+/* loaded from: classes.dex */
 public final class MaybeFromCallable<T> extends Maybe<T> implements Callable<T> {
     final Callable<? extends T> callable;
 
-    public MaybeFromCallable(Callable<? extends T> callable2) {
-        this.callable = callable2;
+    public MaybeFromCallable(Callable<? extends T> callable) {
+        this.callable = callable;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super T> observer) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super T> observer) {
         Disposable d = Disposables.empty();
         observer.onSubscribe(d);
         if (!d.isDisposed()) {
             try {
-                T v = this.callable.call();
-                if (d.isDisposed()) {
-                    return;
-                }
-                if (v == null) {
-                    observer.onComplete();
-                } else {
-                    observer.onSuccess(v);
+                Object obj = (T) this.callable.call();
+                if (!d.isDisposed()) {
+                    if (obj == null) {
+                        observer.onComplete();
+                    } else {
+                        observer.onSuccess(obj);
+                    }
                 }
             } catch (Throwable ex) {
                 Exceptions.throwIfFatal(ex);
@@ -41,6 +41,7 @@ public final class MaybeFromCallable<T> extends Maybe<T> implements Callable<T> 
         }
     }
 
+    @Override // java.util.concurrent.Callable
     public T call() throws Exception {
         return this.callable.call();
     }

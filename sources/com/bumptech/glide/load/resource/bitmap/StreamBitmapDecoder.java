@@ -12,22 +12,25 @@ import com.bumptech.glide.util.MarkEnforcingInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/* loaded from: classes.dex */
 public class StreamBitmapDecoder implements ResourceDecoder<InputStream, Bitmap> {
     private final ArrayPool byteArrayPool;
     private final Downsampler downsampler;
 
-    public StreamBitmapDecoder(Downsampler downsampler2, ArrayPool byteArrayPool2) {
-        this.downsampler = downsampler2;
-        this.byteArrayPool = byteArrayPool2;
+    public StreamBitmapDecoder(Downsampler downsampler, ArrayPool byteArrayPool) {
+        this.downsampler = downsampler;
+        this.byteArrayPool = byteArrayPool;
     }
 
+    @Override // com.bumptech.glide.load.ResourceDecoder
     public boolean handles(InputStream source, Options options) {
         return this.downsampler.handles(source);
     }
 
+    @Override // com.bumptech.glide.load.ResourceDecoder
     public Resource<Bitmap> decode(InputStream source, int width, int height, Options options) throws IOException {
-        boolean ownsBufferedStream;
         RecyclableBufferedInputStream bufferedStream;
+        boolean ownsBufferedStream;
         if (source instanceof RecyclableBufferedInputStream) {
             bufferedStream = (RecyclableBufferedInputStream) source;
             ownsBufferedStream = false;
@@ -36,8 +39,10 @@ public class StreamBitmapDecoder implements ResourceDecoder<InputStream, Bitmap>
             ownsBufferedStream = true;
         }
         ExceptionCatchingInputStream exceptionStream = ExceptionCatchingInputStream.obtain(bufferedStream);
+        MarkEnforcingInputStream invalidatingStream = new MarkEnforcingInputStream(exceptionStream);
+        UntrustedCallbacks callbacks = new UntrustedCallbacks(bufferedStream, exceptionStream);
         try {
-            return this.downsampler.decode(new MarkEnforcingInputStream(exceptionStream), width, height, options, new UntrustedCallbacks(bufferedStream, exceptionStream));
+            return this.downsampler.decode(invalidatingStream, width, height, options, callbacks);
         } finally {
             exceptionStream.release();
             if (ownsBufferedStream) {
@@ -46,19 +51,22 @@ public class StreamBitmapDecoder implements ResourceDecoder<InputStream, Bitmap>
         }
     }
 
+    /* loaded from: classes.dex */
     static class UntrustedCallbacks implements Downsampler.DecodeCallbacks {
         private final RecyclableBufferedInputStream bufferedStream;
         private final ExceptionCatchingInputStream exceptionStream;
 
-        UntrustedCallbacks(RecyclableBufferedInputStream bufferedStream2, ExceptionCatchingInputStream exceptionStream2) {
-            this.bufferedStream = bufferedStream2;
-            this.exceptionStream = exceptionStream2;
+        UntrustedCallbacks(RecyclableBufferedInputStream bufferedStream, ExceptionCatchingInputStream exceptionStream) {
+            this.bufferedStream = bufferedStream;
+            this.exceptionStream = exceptionStream;
         }
 
+        @Override // com.bumptech.glide.load.resource.bitmap.Downsampler.DecodeCallbacks
         public void onObtainBounds() {
             this.bufferedStream.fixMarkLimit();
         }
 
+        @Override // com.bumptech.glide.load.resource.bitmap.Downsampler.DecodeCallbacks
         public void onDecodeComplete(BitmapPool bitmapPool, Bitmap downsampled) throws IOException {
             IOException streamException = this.exceptionStream.getException();
             if (streamException != null) {

@@ -10,9 +10,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi.vm.VolumeViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi.p007vm.VolumeViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityAudiSoundBinding extends ViewDataBinding {
     public final SeekBar audioSeekbar;
     public final TextView audioSeekbarRightText;
@@ -27,20 +28,20 @@ public abstract class ActivityAudiSoundBinding extends ViewDataBinding {
     @Bindable
     protected VolumeViewModel mVm;
 
-    public abstract void setVm(VolumeViewModel volumeViewModel);
+    public abstract void setVm(VolumeViewModel vm);
 
-    protected ActivityAudiSoundBinding(Object _bindingComponent, View _root, int _localFieldCount, SeekBar audioSeekbar2, TextView audioSeekbarRightText2, TextView audioSeekbarTitle2, LinearLayout carCallLinearLayout2, LinearLayout carNaviLinearLayout2, TextView carVolumeTextView2, LinearLayout hzCallLinearLayout2, LinearLayout hzMediaLinearLayout2, TextView hzTextView2, ConstraintLayout linearLayout42) {
+    protected ActivityAudiSoundBinding(Object _bindingComponent, View _root, int _localFieldCount, SeekBar audioSeekbar, TextView audioSeekbarRightText, TextView audioSeekbarTitle, LinearLayout carCallLinearLayout, LinearLayout carNaviLinearLayout, TextView carVolumeTextView, LinearLayout hzCallLinearLayout, LinearLayout hzMediaLinearLayout, TextView hzTextView, ConstraintLayout linearLayout4) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.audioSeekbar = audioSeekbar2;
-        this.audioSeekbarRightText = audioSeekbarRightText2;
-        this.audioSeekbarTitle = audioSeekbarTitle2;
-        this.carCallLinearLayout = carCallLinearLayout2;
-        this.carNaviLinearLayout = carNaviLinearLayout2;
-        this.carVolumeTextView = carVolumeTextView2;
-        this.hzCallLinearLayout = hzCallLinearLayout2;
-        this.hzMediaLinearLayout = hzMediaLinearLayout2;
-        this.hzTextView = hzTextView2;
-        this.linearLayout4 = linearLayout42;
+        this.audioSeekbar = audioSeekbar;
+        this.audioSeekbarRightText = audioSeekbarRightText;
+        this.audioSeekbarTitle = audioSeekbarTitle;
+        this.carCallLinearLayout = carCallLinearLayout;
+        this.carNaviLinearLayout = carNaviLinearLayout;
+        this.carVolumeTextView = carVolumeTextView;
+        this.hzCallLinearLayout = hzCallLinearLayout;
+        this.hzMediaLinearLayout = hzMediaLinearLayout;
+        this.hzTextView = hzTextView;
+        this.linearLayout4 = linearLayout4;
     }
 
     public VolumeViewModel getVm() {
@@ -53,7 +54,7 @@ public abstract class ActivityAudiSoundBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityAudiSoundBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityAudiSoundBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_audi_sound, root, attachToRoot, component);
+        return (ActivityAudiSoundBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_audi_sound, root, attachToRoot, component);
     }
 
     public static ActivityAudiSoundBinding inflate(LayoutInflater inflater) {
@@ -62,7 +63,7 @@ public abstract class ActivityAudiSoundBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityAudiSoundBinding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityAudiSoundBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_audi_sound, (ViewGroup) null, false, component);
+        return (ActivityAudiSoundBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_audi_sound, null, false, component);
     }
 
     public static ActivityAudiSoundBinding bind(View view) {
@@ -71,6 +72,6 @@ public abstract class ActivityAudiSoundBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityAudiSoundBinding bind(View view, Object component) {
-        return (ActivityAudiSoundBinding) bind(component, view, R.layout.activity_audi_sound);
+        return (ActivityAudiSoundBinding) bind(component, view, C0899R.C0902layout.activity_audi_sound);
     }
 }

@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class LexusLsBottomFragmentTwo extends ViewDataBinding {
     public final ImageView ivLexusLsAdd;
     public final ImageView ivLexusLsDashboard;
@@ -21,16 +22,16 @@ public abstract class LexusLsBottomFragmentTwo extends ViewDataBinding {
     @Bindable
     protected LauncherViewModel mViewModel;
 
-    public abstract void setViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setViewModel(LauncherViewModel viewModel);
 
-    protected LexusLsBottomFragmentTwo(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivLexusLsAdd2, ImageView ivLexusLsDashboard2, ImageView ivLexusLsDvr2, ImageView ivLexusLsFile2, ImageView ivLexusLsPhonelink2, LinearLayout lexusLsLlBottomFragTwo2) {
+    protected LexusLsBottomFragmentTwo(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivLexusLsAdd, ImageView ivLexusLsDashboard, ImageView ivLexusLsDvr, ImageView ivLexusLsFile, ImageView ivLexusLsPhonelink, LinearLayout lexusLsLlBottomFragTwo) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.ivLexusLsAdd = ivLexusLsAdd2;
-        this.ivLexusLsDashboard = ivLexusLsDashboard2;
-        this.ivLexusLsDvr = ivLexusLsDvr2;
-        this.ivLexusLsFile = ivLexusLsFile2;
-        this.ivLexusLsPhonelink = ivLexusLsPhonelink2;
-        this.lexusLsLlBottomFragTwo = lexusLsLlBottomFragTwo2;
+        this.ivLexusLsAdd = ivLexusLsAdd;
+        this.ivLexusLsDashboard = ivLexusLsDashboard;
+        this.ivLexusLsDvr = ivLexusLsDvr;
+        this.ivLexusLsFile = ivLexusLsFile;
+        this.ivLexusLsPhonelink = ivLexusLsPhonelink;
+        this.lexusLsLlBottomFragTwo = lexusLsLlBottomFragTwo;
     }
 
     public LauncherViewModel getViewModel() {
@@ -43,7 +44,7 @@ public abstract class LexusLsBottomFragmentTwo extends ViewDataBinding {
 
     @Deprecated
     public static LexusLsBottomFragmentTwo inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (LexusLsBottomFragmentTwo) ViewDataBinding.inflateInternal(inflater, R.layout.lexus_ls_bottom_fragment_two, root, attachToRoot, component);
+        return (LexusLsBottomFragmentTwo) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.lexus_ls_bottom_fragment_two, root, attachToRoot, component);
     }
 
     public static LexusLsBottomFragmentTwo inflate(LayoutInflater inflater) {
@@ -52,7 +53,7 @@ public abstract class LexusLsBottomFragmentTwo extends ViewDataBinding {
 
     @Deprecated
     public static LexusLsBottomFragmentTwo inflate(LayoutInflater inflater, Object component) {
-        return (LexusLsBottomFragmentTwo) ViewDataBinding.inflateInternal(inflater, R.layout.lexus_ls_bottom_fragment_two, (ViewGroup) null, false, component);
+        return (LexusLsBottomFragmentTwo) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.lexus_ls_bottom_fragment_two, null, false, component);
     }
 
     public static LexusLsBottomFragmentTwo bind(View view) {
@@ -61,6 +62,6 @@ public abstract class LexusLsBottomFragmentTwo extends ViewDataBinding {
 
     @Deprecated
     public static LexusLsBottomFragmentTwo bind(View view, Object component) {
-        return (LexusLsBottomFragmentTwo) bind(component, view, R.layout.lexus_ls_bottom_fragment_two);
+        return (LexusLsBottomFragmentTwo) bind(component, view, C0899R.C0902layout.lexus_ls_bottom_fragment_two);
     }
 }

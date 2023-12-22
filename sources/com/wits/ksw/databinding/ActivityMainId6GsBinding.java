@@ -7,10 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.view.bmwevoid6gs.BmwId6gsViewMode;
 import com.wits.ksw.launcher.view.bmwevoid6gs.Bmwid6gsViewPager;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityMainId6GsBinding extends ViewDataBinding {
     public final ImageView id6GsLeftBtn;
     public final Bmwid6gsViewPager id6GsMainViewPager;
@@ -18,13 +19,13 @@ public abstract class ActivityMainId6GsBinding extends ViewDataBinding {
     @Bindable
     protected BmwId6gsViewMode mVm;
 
-    public abstract void setVm(BmwId6gsViewMode bmwId6gsViewMode);
+    public abstract void setVm(BmwId6gsViewMode vm);
 
-    protected ActivityMainId6GsBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView id6GsLeftBtn2, Bmwid6gsViewPager id6GsMainViewPager2, ImageView id6GsRightBtn2) {
+    protected ActivityMainId6GsBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView id6GsLeftBtn, Bmwid6gsViewPager id6GsMainViewPager, ImageView id6GsRightBtn) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.id6GsLeftBtn = id6GsLeftBtn2;
-        this.id6GsMainViewPager = id6GsMainViewPager2;
-        this.id6GsRightBtn = id6GsRightBtn2;
+        this.id6GsLeftBtn = id6GsLeftBtn;
+        this.id6GsMainViewPager = id6GsMainViewPager;
+        this.id6GsRightBtn = id6GsRightBtn;
     }
 
     public BmwId6gsViewMode getVm() {
@@ -37,7 +38,7 @@ public abstract class ActivityMainId6GsBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainId6GsBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityMainId6GsBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_id6_gs, root, attachToRoot, component);
+        return (ActivityMainId6GsBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_id6_gs, root, attachToRoot, component);
     }
 
     public static ActivityMainId6GsBinding inflate(LayoutInflater inflater) {
@@ -46,7 +47,7 @@ public abstract class ActivityMainId6GsBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainId6GsBinding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityMainId6GsBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_id6_gs, (ViewGroup) null, false, component);
+        return (ActivityMainId6GsBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_id6_gs, null, false, component);
     }
 
     public static ActivityMainId6GsBinding bind(View view) {
@@ -55,6 +56,6 @@ public abstract class ActivityMainId6GsBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainId6GsBinding bind(View view, Object component) {
-        return (ActivityMainId6GsBinding) bind(component, view, R.layout.activity_main_id6_gs);
+        return (ActivityMainId6GsBinding) bind(component, view, C0899R.C0902layout.activity_main_id6_gs);
     }
 }

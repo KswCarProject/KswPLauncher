@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.databinding.BmwId8SettingsAudioLayoutBinding;
 import com.wits.ksw.launcher.utils.AnimationUtils;
 import com.wits.ksw.launcher.utils.KswUtils;
@@ -16,28 +16,28 @@ import com.wits.ksw.settings.BaseSkinActivity;
 import com.wits.ksw.settings.bmw_id8.layout.BmwId8SettingsAudioAndroidLay;
 import com.wits.ksw.settings.bmw_id8.layout.BmwId8SettingsAudioOEMLay;
 import com.wits.ksw.settings.bmw_id8.layout.BmwId8SettingsAudioSoundLay;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 
+/* loaded from: classes11.dex */
 public class BmwId8SettingsAudioActivity extends BaseSkinActivity implements View.OnClickListener {
-    private final String TAG = "BmwId8SettingsAudioActivity";
     private BmwId8SettingsAudioAndroidLay mAudioAndroidLay;
     private BmwId8SettingsAudioOEMLay mAudioOEMLay;
     private BmwId8SettingsAudioSoundLay mAudioSoundLay;
-    /* access modifiers changed from: private */
-    public BmwId8SettingsAudioLayoutBinding mBinding;
-    /* access modifiers changed from: private */
-    public BmwId8SettingsViewModel mViewModel;
-    private int[] relativeLayoutId = {R.id.bmw_id8_settings_audio_android_item, R.id.bmw_id8_settings_audio_oem_item, R.id.bmw_id8_settings_audio_sound_item};
+    private BmwId8SettingsAudioLayoutBinding mBinding;
+    private BmwId8SettingsViewModel mViewModel;
+    private final String TAG = "BmwId8SettingsAudioActivity";
+    private int[] relativeLayoutId = {C0899R.C0901id.bmw_id8_settings_audio_android_item, C0899R.C0901id.bmw_id8_settings_audio_oem_item, C0899R.C0901id.bmw_id8_settings_audio_sound_item};
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override // com.wits.ksw.settings.BaseSkinActivity, android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("BmwId8SettingsAudioActivity", " onCreate ");
-        this.mBinding = (BmwId8SettingsAudioLayoutBinding) DataBindingUtil.setContentView(this, R.layout.bmw_id8_settings_audio_layout);
-        BmwId8SettingsViewModel instance = BmwId8SettingsViewModel.getInstance();
-        this.mViewModel = instance;
-        this.mBinding.setViewModel(instance);
+        this.mBinding = (BmwId8SettingsAudioLayoutBinding) DataBindingUtil.setContentView(this, C0899R.C0902layout.bmw_id8_settings_audio_layout);
+        BmwId8SettingsViewModel bmwId8SettingsViewModel = BmwId8SettingsViewModel.getInstance();
+        this.mViewModel = bmwId8SettingsViewModel;
+        this.mBinding.setViewModel(bmwId8SettingsViewModel);
         initView();
+        initData();
     }
 
     private void initView() {
@@ -52,7 +52,8 @@ public class BmwId8SettingsAudioActivity extends BaseSkinActivity implements Vie
                     findViewById(iArr[i]).setOnClickListener(this);
                     i++;
                 } else {
-                    this.mViewModel.audioBgShow.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+                    this.mViewModel.audioBgShow.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() { // from class: com.wits.ksw.settings.bmw_id8.activity.BmwId8SettingsAudioActivity.1
+                        @Override // android.databinding.Observable.OnPropertyChangedCallback
                         public void onPropertyChanged(Observable sender, int propertyId) {
                             Log.i("BmwId8SettingsAudioActivity", " onPropertyChanged " + BmwId8SettingsAudioActivity.this.mViewModel.audioBgShow.get());
                             if (BmwId8SettingsAudioActivity.this.mViewModel.audioBgShow.get()) {
@@ -64,7 +65,8 @@ public class BmwId8SettingsAudioActivity extends BaseSkinActivity implements Vie
                             AnimationUtils.playAnimation(BmwId8SettingsAudioActivity.this.getApplicationContext(), BmwId8SettingsAudioActivity.this.mBinding.bmwId8SettingsAudioRightArrow, false);
                         }
                     });
-                    this.mBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
+                    this.mBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() { // from class: com.wits.ksw.settings.bmw_id8.activity.BmwId8SettingsAudioActivity.2
+                        @Override // android.view.ViewTreeObserver.OnGlobalFocusChangeListener
                         public void onGlobalFocusChanged(View oldFocus, View newFocus) {
                             Log.i("BmwId8SettingsAudioActivity", "onGlobalFocusChanged: " + BmwId8SettingsAudioActivity.this.mBinding.bmwId8SettingsAudioLay.hasFocus());
                             if (BmwId8SettingsAudioActivity.this.mBinding.bmwId8SettingsAudioLay.hasFocus()) {
@@ -86,23 +88,35 @@ public class BmwId8SettingsAudioActivity extends BaseSkinActivity implements Vie
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void onNewIntent(Intent intent) {
+    @Override // android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Log.i("BmwId8SettingsAudioActivity", " onNewIntent ");
     }
 
-    /* access modifiers changed from: protected */
-    public void onResume() {
+    @Override // android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onResume() {
         super.onResume();
         Log.i("BmwId8SettingsAudioActivity", " onResume ");
-        initData();
     }
 
     private void initData() {
         try {
-            selectLayout((View) null, 0);
-            this.mViewModel.audioBgShow.set(true);
+            Intent intent = getIntent();
+            String toEqSettings = intent.getStringExtra("voiceEqData");
+            String toVoiceSettings = intent.getStringExtra("voiceData");
+            if (toEqSettings != null) {
+                selectLayout(this.mAudioSoundLay, C0899R.C0901id.bmw_id8_settings_audio_sound_item);
+                this.mAudioSoundLay.requestFocus();
+                this.mViewModel.audioBgShow.set(false);
+            } else if (toVoiceSettings != null) {
+                selectLayout(this.mAudioAndroidLay, C0899R.C0901id.bmw_id8_settings_audio_android_item);
+                this.mAudioAndroidLay.requestFocus();
+                this.mViewModel.audioBgShow.set(false);
+            } else {
+                selectLayout(null, 0);
+                this.mViewModel.audioBgShow.set(true);
+            }
             if (getCurrentFocus() == null) {
                 this.mBinding.bmwId8SettingsAudioAndroidItem.setFocusableInTouchMode(true);
                 this.mBinding.bmwId8SettingsAudioAndroidItem.requestFocus();
@@ -112,20 +126,22 @@ public class BmwId8SettingsAudioActivity extends BaseSkinActivity implements Vie
         }
     }
 
+    @Override // android.view.Window.Callback
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
 
+    @Override // android.view.View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.bmw_id8_settings_audio_android_item /*2131296527*/:
+            case C0899R.C0901id.bmw_id8_settings_audio_android_item /* 2131296552 */:
                 selectLayout(this.mAudioAndroidLay, v.getId());
                 this.mAudioAndroidLay.requestFocus();
                 return;
-            case R.id.bmw_id8_settings_audio_oem_item /*2131296535*/:
+            case C0899R.C0901id.bmw_id8_settings_audio_oem_item /* 2131296560 */:
                 selectLayout(this.mAudioOEMLay, v.getId());
                 this.mAudioOEMLay.requestFocus();
                 return;
-            case R.id.bmw_id8_settings_audio_sound_item /*2131296540*/:
+            case C0899R.C0901id.bmw_id8_settings_audio_sound_item /* 2131296565 */:
                 selectLayout(this.mAudioSoundLay, v.getId());
                 this.mAudioSoundLay.requestFocus();
                 return;
@@ -162,6 +178,7 @@ public class BmwId8SettingsAudioActivity extends BaseSkinActivity implements Vie
         }
     }
 
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity, android.view.Window.Callback
     public boolean dispatchKeyEvent(KeyEvent event) {
         int keyCode = event.getKeyCode();
         int action = event.getAction();
@@ -174,24 +191,25 @@ public class BmwId8SettingsAudioActivity extends BaseSkinActivity implements Vie
                     KswUtils.sendKeyDownUpSync(4);
                     return true;
                 }
+                break;
         }
         return super.dispatchKeyEvent(event);
     }
 
-    /* access modifiers changed from: protected */
-    public void onPause() {
+    @Override // android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onPause() {
         super.onPause();
         Log.i("BmwId8SettingsAudioActivity", " onPause ");
     }
 
-    /* access modifiers changed from: protected */
-    public void onStop() {
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onStop() {
         super.onStop();
         Log.i("BmwId8SettingsAudioActivity", " onStop ");
     }
 
-    /* access modifiers changed from: protected */
-    public void onDestroy() {
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onDestroy() {
         super.onDestroy();
         Log.i("BmwId8SettingsAudioActivity", " onDestroy ");
     }

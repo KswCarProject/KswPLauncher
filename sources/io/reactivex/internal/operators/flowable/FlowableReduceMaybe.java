@@ -16,28 +16,32 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableReduceMaybe<T> extends Maybe<T> implements HasUpstreamPublisher<T>, FuseToFlowable<T> {
     final BiFunction<T, T, T> reducer;
     final Flowable<T> source;
 
-    public FlowableReduceMaybe(Flowable<T> source2, BiFunction<T, T, T> reducer2) {
-        this.source = source2;
-        this.reducer = reducer2;
+    public FlowableReduceMaybe(Flowable<T> source, BiFunction<T, T, T> reducer) {
+        this.source = source;
+        this.reducer = reducer;
     }
 
+    @Override // io.reactivex.internal.fuseable.HasUpstreamPublisher
     public Publisher<T> source() {
         return this.source;
     }
 
+    @Override // io.reactivex.internal.fuseable.FuseToFlowable
     public Flowable<T> fuseToFlowable() {
         return RxJavaPlugins.onAssembly(new FlowableReduce(this.source, this.reducer));
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super T> observer) {
-        this.source.subscribe(new ReduceSubscriber(observer, this.reducer));
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super T> observer) {
+        this.source.subscribe((FlowableSubscriber) new ReduceSubscriber(observer, this.reducer));
     }
 
+    /* loaded from: classes.dex */
     static final class ReduceSubscriber<T> implements FlowableSubscriber<T>, Disposable {
         boolean done;
         final MaybeObserver<? super T> downstream;
@@ -45,20 +49,23 @@ public final class FlowableReduceMaybe<T> extends Maybe<T> implements HasUpstrea
         Subscription upstream;
         T value;
 
-        ReduceSubscriber(MaybeObserver<? super T> actual, BiFunction<T, T, T> reducer2) {
+        ReduceSubscriber(MaybeObserver<? super T> actual, BiFunction<T, T, T> reducer) {
             this.downstream = actual;
-            this.reducer = reducer2;
+            this.reducer = reducer;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.cancel();
             this.done = true;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.done;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -67,23 +74,26 @@ public final class FlowableReduceMaybe<T> extends Maybe<T> implements HasUpstrea
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            if (!this.done) {
-                T v = this.value;
-                if (v == null) {
-                    this.value = t;
-                    return;
-                }
-                try {
-                    this.value = ObjectHelper.requireNonNull(this.reducer.apply(v, t), "The reducer returned a null value");
-                } catch (Throwable ex) {
-                    Exceptions.throwIfFatal(ex);
-                    this.upstream.cancel();
-                    onError(ex);
-                }
+            if (this.done) {
+                return;
+            }
+            T v = this.value;
+            if (v == null) {
+                this.value = t;
+                return;
+            }
+            try {
+                this.value = (T) ObjectHelper.requireNonNull(this.reducer.apply(v, t), "The reducer returned a null value");
+            } catch (Throwable ex) {
+                Exceptions.throwIfFatal(ex);
+                this.upstream.cancel();
+                onError(ex);
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -93,15 +103,17 @@ public final class FlowableReduceMaybe<T> extends Maybe<T> implements HasUpstrea
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                T v = this.value;
-                if (v != null) {
-                    this.downstream.onSuccess(v);
-                } else {
-                    this.downstream.onComplete();
-                }
+            if (this.done) {
+                return;
+            }
+            this.done = true;
+            T v = this.value;
+            if (v != null) {
+                this.downstream.onSuccess(v);
+            } else {
+                this.downstream.onComplete();
             }
         }
     }

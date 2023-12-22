@@ -6,6 +6,7 @@ import com.squareup.picasso.Picasso;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 
+/* loaded from: classes.dex */
 abstract class Action<T> {
     boolean cancelled;
     final Drawable errorDrawable;
@@ -20,46 +21,42 @@ abstract class Action<T> {
     final WeakReference<T> target;
     boolean willReplay;
 
-    /* access modifiers changed from: package-private */
-    public abstract void complete(Bitmap bitmap, Picasso.LoadedFrom loadedFrom);
+    abstract void complete(Bitmap bitmap, Picasso.LoadedFrom loadedFrom);
 
-    /* access modifiers changed from: package-private */
-    public abstract void error();
+    abstract void error();
 
+    /* loaded from: classes.dex */
     static class RequestWeakReference<M> extends WeakReference<M> {
         final Action action;
 
-        public RequestWeakReference(Action action2, M referent, ReferenceQueue<? super M> q) {
+        public RequestWeakReference(Action action, M referent, ReferenceQueue<? super M> q) {
             super(referent, q);
-            this.action = action2;
+            this.action = action;
         }
     }
 
-    Action(Picasso picasso2, T target2, Request request2, int memoryPolicy2, int networkPolicy2, int errorResId2, Drawable errorDrawable2, String key2, Object tag2, boolean noFade2) {
-        this.picasso = picasso2;
-        this.request = request2;
-        this.target = target2 == null ? null : new RequestWeakReference(this, target2, picasso2.referenceQueue);
-        this.memoryPolicy = memoryPolicy2;
-        this.networkPolicy = networkPolicy2;
-        this.noFade = noFade2;
-        this.errorResId = errorResId2;
-        this.errorDrawable = errorDrawable2;
-        this.key = key2;
-        this.tag = tag2 != null ? tag2 : this;
+    Action(Picasso picasso, T target, Request request, int memoryPolicy, int networkPolicy, int errorResId, Drawable errorDrawable, String key, Object tag, boolean noFade) {
+        this.picasso = picasso;
+        this.request = request;
+        this.target = target == null ? null : new RequestWeakReference(this, target, picasso.referenceQueue);
+        this.memoryPolicy = memoryPolicy;
+        this.networkPolicy = networkPolicy;
+        this.noFade = noFade;
+        this.errorResId = errorResId;
+        this.errorDrawable = errorDrawable;
+        this.key = key;
+        this.tag = tag != null ? tag : this;
     }
 
-    /* access modifiers changed from: package-private */
-    public void cancel() {
+    void cancel() {
         this.cancelled = true;
     }
 
-    /* access modifiers changed from: package-private */
-    public Request getRequest() {
+    Request getRequest() {
         return this.request;
     }
 
-    /* access modifiers changed from: package-private */
-    public T getTarget() {
+    T getTarget() {
         WeakReference<T> weakReference = this.target;
         if (weakReference == null) {
             return null;
@@ -67,43 +64,35 @@ abstract class Action<T> {
         return weakReference.get();
     }
 
-    /* access modifiers changed from: package-private */
-    public String getKey() {
+    String getKey() {
         return this.key;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isCancelled() {
+    boolean isCancelled() {
         return this.cancelled;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean willReplay() {
+    boolean willReplay() {
         return this.willReplay;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getMemoryPolicy() {
+    int getMemoryPolicy() {
         return this.memoryPolicy;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getNetworkPolicy() {
+    int getNetworkPolicy() {
         return this.networkPolicy;
     }
 
-    /* access modifiers changed from: package-private */
-    public Picasso getPicasso() {
+    Picasso getPicasso() {
         return this.picasso;
     }
 
-    /* access modifiers changed from: package-private */
-    public Picasso.Priority getPriority() {
+    Picasso.Priority getPriority() {
         return this.request.priority;
     }
 
-    /* access modifiers changed from: package-private */
-    public Object getTag() {
+    Object getTag() {
         return this.tag;
     }
 }

@@ -12,44 +12,50 @@ import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.internal.functions.ObjectHelper;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class SingleFlatMapCompletable<T> extends Completable {
     final Function<? super T, ? extends CompletableSource> mapper;
     final SingleSource<T> source;
 
-    public SingleFlatMapCompletable(SingleSource<T> source2, Function<? super T, ? extends CompletableSource> mapper2) {
-        this.source = source2;
-        this.mapper = mapper2;
+    public SingleFlatMapCompletable(SingleSource<T> source, Function<? super T, ? extends CompletableSource> mapper) {
+        this.source = source;
+        this.mapper = mapper;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         FlatMapCompletableObserver<T> parent = new FlatMapCompletableObserver<>(observer, this.mapper);
         observer.onSubscribe(parent);
         this.source.subscribe(parent);
     }
 
+    /* loaded from: classes.dex */
     static final class FlatMapCompletableObserver<T> extends AtomicReference<Disposable> implements SingleObserver<T>, CompletableObserver, Disposable {
         private static final long serialVersionUID = -2177128922851101253L;
         final CompletableObserver downstream;
         final Function<? super T, ? extends CompletableSource> mapper;
 
-        FlatMapCompletableObserver(CompletableObserver actual, Function<? super T, ? extends CompletableSource> mapper2) {
+        FlatMapCompletableObserver(CompletableObserver actual, Function<? super T, ? extends CompletableSource> mapper) {
             this.downstream = actual;
-            this.mapper = mapper2;
+            this.mapper = mapper;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             DisposableHelper.dispose(this);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return DisposableHelper.isDisposed((Disposable) get());
+            return DisposableHelper.isDisposed(get());
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
             DisposableHelper.replace(this, d);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSuccess(T value) {
             try {
                 CompletableSource cs = (CompletableSource) ObjectHelper.requireNonNull(this.mapper.apply(value), "The mapper returned a null CompletableSource");
@@ -62,10 +68,12 @@ public final class SingleFlatMapCompletable<T> extends Completable {
             }
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
             this.downstream.onError(e);
         }
 
+        @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
         public void onComplete() {
             this.downstream.onComplete();
         }

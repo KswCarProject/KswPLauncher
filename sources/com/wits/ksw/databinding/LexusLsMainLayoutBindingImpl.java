@@ -2,11 +2,16 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
+import android.support.p001v4.view.ViewPager;
+import android.support.p004v7.widget.RecyclerView;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public class LexusLsMainLayoutBindingImpl extends LexusLsMainLayoutBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -15,11 +20,11 @@ public class LexusLsMainLayoutBindingImpl extends LexusLsMainLayoutBinding {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.lexus_ls_recycleview_desktop, 1);
-        sparseIntArray.put(R.id.iv_lexus_ls_bg_app_layerlist, 2);
-        sparseIntArray.put(R.id.iv_lexusls_left_btn, 3);
-        sparseIntArray.put(R.id.lexus_ls_viewpager_bottom, 4);
-        sparseIntArray.put(R.id.iv_lexusls_right_btn, 5);
+        sparseIntArray.put(C0899R.C0901id.lexus_ls_recycleview_desktop, 1);
+        sparseIntArray.put(C0899R.C0901id.iv_lexus_ls_bg_app_layerlist, 2);
+        sparseIntArray.put(C0899R.C0901id.iv_lexusls_left_btn, 3);
+        sparseIntArray.put(C0899R.C0901id.lexus_ls_viewpager_bottom, 4);
+        sparseIntArray.put(C0899R.C0901id.iv_lexusls_right_btn, 5);
     }
 
     public LexusLsMainLayoutBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -27,20 +32,22 @@ public class LexusLsMainLayoutBindingImpl extends LexusLsMainLayoutBinding {
     }
 
     private LexusLsMainLayoutBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[2], bindings[3], bindings[5], bindings[0], bindings[1], bindings[4]);
-        this.mDirtyFlags = -1;
-        this.lexusLsMainLl.setTag((Object) null);
+        super(bindingComponent, root, 0, (ImageView) bindings[2], (ImageView) bindings[3], (ImageView) bindings[5], (RelativeLayout) bindings[0], (RecyclerView) bindings[1], (ViewPager) bindings[4]);
+        this.mDirtyFlags = -1L;
+        this.lexusLsMainLl.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 2;
+            this.mDirtyFlags = 2L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -50,28 +57,30 @@ public class LexusLsMainLayoutBindingImpl extends LexusLsMainLayoutBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (9 != variableId) {
-            return false;
+        if (9 == variableId) {
+            setLexusLsViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setLexusLsViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.LexusLsMainLayoutBinding
     public void setLexusLsViewModel(LauncherViewModel LexusLsViewModel) {
         this.mLexusLsViewModel = LexusLsViewModel;
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         synchronized (this) {
-            long dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            long j = this.mDirtyFlags;
+            this.mDirtyFlags = 0L;
         }
     }
 }

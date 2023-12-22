@@ -8,10 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bmw_id8_ui.view.ID8AudioProgressBar;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class BmwId8SettingsAudioSoundLayoutBinding extends ViewDataBinding {
     public final ID8AudioProgressBar bmwId8SettingsAudioLow;
     public final ID8AudioProgressBar bmwId8SettingsAudioMid;
@@ -32,27 +33,26 @@ public abstract class BmwId8SettingsAudioSoundLayoutBinding extends ViewDataBind
     @Bindable
     protected BmwId8SettingsViewModel mViewModel;
 
-    public abstract void setViewModel(BmwId8SettingsViewModel bmwId8SettingsViewModel);
+    public abstract void setViewModel(BmwId8SettingsViewModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected BmwId8SettingsAudioSoundLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, ID8AudioProgressBar bmwId8SettingsAudioLow2, ID8AudioProgressBar bmwId8SettingsAudioMid2, RelativeLayout bmwId8SettingsAudioSoundClass2, RelativeLayout bmwId8SettingsAudioSoundDance2, RelativeLayout bmwId8SettingsAudioSoundJazz2, RelativeLayout bmwId8SettingsAudioSoundLay2, RelativeLayout bmwId8SettingsAudioSoundPop2, RelativeLayout bmwId8SettingsAudioSoundRock2, RelativeLayout bmwId8SettingsAudioSoundUser2, ID8AudioProgressBar bmwId8SettingsAudioTre2, ImageButton bmwId8SettingsBassAddBtn2, ImageButton bmwId8SettingsBassSubBtn2, ImageButton bmwId8SettingsMidAddBtn2, ImageButton bmwId8SettingsMidSubBtn2, ImageButton bmwId8SettingsTreAddBtn2, ImageButton bmwId8SettingsTreSubBtn2) {
+    protected BmwId8SettingsAudioSoundLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, ID8AudioProgressBar bmwId8SettingsAudioLow, ID8AudioProgressBar bmwId8SettingsAudioMid, RelativeLayout bmwId8SettingsAudioSoundClass, RelativeLayout bmwId8SettingsAudioSoundDance, RelativeLayout bmwId8SettingsAudioSoundJazz, RelativeLayout bmwId8SettingsAudioSoundLay, RelativeLayout bmwId8SettingsAudioSoundPop, RelativeLayout bmwId8SettingsAudioSoundRock, RelativeLayout bmwId8SettingsAudioSoundUser, ID8AudioProgressBar bmwId8SettingsAudioTre, ImageButton bmwId8SettingsBassAddBtn, ImageButton bmwId8SettingsBassSubBtn, ImageButton bmwId8SettingsMidAddBtn, ImageButton bmwId8SettingsMidSubBtn, ImageButton bmwId8SettingsTreAddBtn, ImageButton bmwId8SettingsTreSubBtn) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.bmwId8SettingsAudioLow = bmwId8SettingsAudioLow2;
-        this.bmwId8SettingsAudioMid = bmwId8SettingsAudioMid2;
-        this.bmwId8SettingsAudioSoundClass = bmwId8SettingsAudioSoundClass2;
-        this.bmwId8SettingsAudioSoundDance = bmwId8SettingsAudioSoundDance2;
-        this.bmwId8SettingsAudioSoundJazz = bmwId8SettingsAudioSoundJazz2;
-        this.bmwId8SettingsAudioSoundLay = bmwId8SettingsAudioSoundLay2;
-        this.bmwId8SettingsAudioSoundPop = bmwId8SettingsAudioSoundPop2;
-        this.bmwId8SettingsAudioSoundRock = bmwId8SettingsAudioSoundRock2;
-        this.bmwId8SettingsAudioSoundUser = bmwId8SettingsAudioSoundUser2;
-        this.bmwId8SettingsAudioTre = bmwId8SettingsAudioTre2;
-        this.bmwId8SettingsBassAddBtn = bmwId8SettingsBassAddBtn2;
-        this.bmwId8SettingsBassSubBtn = bmwId8SettingsBassSubBtn2;
-        this.bmwId8SettingsMidAddBtn = bmwId8SettingsMidAddBtn2;
-        this.bmwId8SettingsMidSubBtn = bmwId8SettingsMidSubBtn2;
-        this.bmwId8SettingsTreAddBtn = bmwId8SettingsTreAddBtn2;
-        this.bmwId8SettingsTreSubBtn = bmwId8SettingsTreSubBtn2;
+        this.bmwId8SettingsAudioLow = bmwId8SettingsAudioLow;
+        this.bmwId8SettingsAudioMid = bmwId8SettingsAudioMid;
+        this.bmwId8SettingsAudioSoundClass = bmwId8SettingsAudioSoundClass;
+        this.bmwId8SettingsAudioSoundDance = bmwId8SettingsAudioSoundDance;
+        this.bmwId8SettingsAudioSoundJazz = bmwId8SettingsAudioSoundJazz;
+        this.bmwId8SettingsAudioSoundLay = bmwId8SettingsAudioSoundLay;
+        this.bmwId8SettingsAudioSoundPop = bmwId8SettingsAudioSoundPop;
+        this.bmwId8SettingsAudioSoundRock = bmwId8SettingsAudioSoundRock;
+        this.bmwId8SettingsAudioSoundUser = bmwId8SettingsAudioSoundUser;
+        this.bmwId8SettingsAudioTre = bmwId8SettingsAudioTre;
+        this.bmwId8SettingsBassAddBtn = bmwId8SettingsBassAddBtn;
+        this.bmwId8SettingsBassSubBtn = bmwId8SettingsBassSubBtn;
+        this.bmwId8SettingsMidAddBtn = bmwId8SettingsMidAddBtn;
+        this.bmwId8SettingsMidSubBtn = bmwId8SettingsMidSubBtn;
+        this.bmwId8SettingsTreAddBtn = bmwId8SettingsTreAddBtn;
+        this.bmwId8SettingsTreSubBtn = bmwId8SettingsTreSubBtn;
     }
 
     public BmwId8SettingsViewModel getViewModel() {
@@ -65,7 +65,7 @@ public abstract class BmwId8SettingsAudioSoundLayoutBinding extends ViewDataBind
 
     @Deprecated
     public static BmwId8SettingsAudioSoundLayoutBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BmwId8SettingsAudioSoundLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_audio_sound_layout, root, attachToRoot, component);
+        return (BmwId8SettingsAudioSoundLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_audio_sound_layout, root, attachToRoot, component);
     }
 
     public static BmwId8SettingsAudioSoundLayoutBinding inflate(LayoutInflater inflater) {
@@ -74,7 +74,7 @@ public abstract class BmwId8SettingsAudioSoundLayoutBinding extends ViewDataBind
 
     @Deprecated
     public static BmwId8SettingsAudioSoundLayoutBinding inflate(LayoutInflater inflater, Object component) {
-        return (BmwId8SettingsAudioSoundLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_audio_sound_layout, (ViewGroup) null, false, component);
+        return (BmwId8SettingsAudioSoundLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_audio_sound_layout, null, false, component);
     }
 
     public static BmwId8SettingsAudioSoundLayoutBinding bind(View view) {
@@ -83,6 +83,6 @@ public abstract class BmwId8SettingsAudioSoundLayoutBinding extends ViewDataBind
 
     @Deprecated
     public static BmwId8SettingsAudioSoundLayoutBinding bind(View view, Object component) {
-        return (BmwId8SettingsAudioSoundLayoutBinding) bind(component, view, R.layout.bmw_id8_settings_audio_sound_layout);
+        return (BmwId8SettingsAudioSoundLayoutBinding) bind(component, view, C0899R.C0902layout.bmw_id8_settings_audio_sound_layout);
     }
 }

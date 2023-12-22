@@ -11,15 +11,16 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.AppCompatImageView;
+import android.support.p004v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.util.Log;
 
+/* loaded from: classes16.dex */
 public class RoundRectImageView extends AppCompatImageView {
     private Paint paint;
 
     public RoundRectImageView(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public RoundRectImageView(Context context, AttributeSet attrs) {
@@ -31,8 +32,8 @@ public class RoundRectImageView extends AppCompatImageView {
         this.paint = new Paint();
     }
 
-    /* access modifiers changed from: protected */
-    public void onDraw(Canvas canvas) {
+    @Override // android.widget.ImageView, android.view.View
+    protected void onDraw(Canvas canvas) {
         Drawable drawable = getDrawable();
         if (drawable != null) {
             Bitmap bitmap = getBitmapFromDrawable(drawable);
@@ -50,15 +51,9 @@ public class RoundRectImageView extends AppCompatImageView {
     }
 
     public Bitmap getBitmapFromDrawable(Drawable drawable) {
-        Bitmap.Config config;
         int width = drawable.getIntrinsicWidth();
         int height = drawable.getIntrinsicHeight();
-        if (drawable.getOpacity() != -1) {
-            config = Bitmap.Config.ARGB_8888;
-        } else {
-            config = Bitmap.Config.RGB_565;
-        }
-        Bitmap bitmap = Bitmap.createBitmap(width, height, config);
+        Bitmap bitmap = Bitmap.createBitmap(width, height, drawable.getOpacity() != -1 ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(bitmap);
         canvas.setDrawFilter(new PaintFlagsDrawFilter(0, 3));
         drawable.draw(canvas);
@@ -72,8 +67,8 @@ public class RoundRectImageView extends AppCompatImageView {
         Canvas canvas = new Canvas(bitmap);
         canvas.setDrawFilter(new PaintFlagsDrawFilter(0, 3));
         canvas.drawColor(-1);
-        canvas.drawBitmap(firstBitmap, new Matrix(), (Paint) null);
-        canvas.drawBitmap(secondBitmap2, (float) ((getWidth() - secondBitmap2.getWidth()) / 2), (float) ((getHeight() - secondBitmap2.getHeight()) / 2), (Paint) null);
+        canvas.drawBitmap(firstBitmap, new Matrix(), null);
+        canvas.drawBitmap(secondBitmap2, (getWidth() - secondBitmap2.getWidth()) / 2, (getHeight() - secondBitmap2.getHeight()) / 2, (Paint) null);
         return bitmap;
     }
 
@@ -83,8 +78,10 @@ public class RoundRectImageView extends AppCompatImageView {
         }
         int height = origin.getHeight();
         int width = origin.getWidth();
+        float scaleWidth = newWidth / width;
+        float scaleHeight = newHeight / height;
         Matrix matrix = new Matrix();
-        matrix.postScale(((float) newWidth) / ((float) width), ((float) newHeight) / ((float) height));
+        matrix.postScale(scaleWidth, scaleHeight);
         Bitmap newBM = Bitmap.createBitmap(origin, 0, 0, width, height, matrix, true);
         if (!origin.isRecycled()) {
             origin.recycle();
@@ -93,33 +90,30 @@ public class RoundRectImageView extends AppCompatImageView {
     }
 
     public static Bitmap getRoundBitmapByShader(Bitmap bitmap, int outWidth, int outHeight, int radius, int boarder) {
-        Bitmap bitmap2 = bitmap;
-        int i = outWidth;
-        int i2 = outHeight;
-        int i3 = radius;
-        int i4 = boarder;
-        if (bitmap2 == null) {
+        if (bitmap == null) {
             return null;
         }
         int width = bitmap.getWidth();
-        float heightScale = (((float) i2) * 1.0f) / ((float) bitmap.getHeight());
+        int height = bitmap.getHeight();
+        float widthScale = (outWidth * 1.0f) / width;
+        float heightScale = (outHeight * 1.0f) / height;
         Matrix matrix = new Matrix();
-        matrix.setScale((((float) i) * 1.0f) / ((float) width), heightScale);
-        Bitmap desBitmap = Bitmap.createBitmap(i, i2, Bitmap.Config.ARGB_8888);
+        matrix.setScale(widthScale, heightScale);
+        Bitmap desBitmap = Bitmap.createBitmap(outWidth, outHeight, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(desBitmap);
-        Paint paint2 = new Paint(1);
-        BitmapShader bitmapShader = new BitmapShader(bitmap2, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        Paint paint = new Paint(1);
+        BitmapShader bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         bitmapShader.setLocalMatrix(matrix);
-        paint2.setShader(bitmapShader);
-        int i5 = width;
-        RectF rect = new RectF((float) i4, (float) i4, (float) (i - i4), (float) (i2 - i4));
-        canvas.drawRoundRect(rect, (float) i3, (float) i3, paint2);
-        if (i4 > 0) {
+        paint.setShader(bitmapShader);
+        int width2 = outWidth - boarder;
+        RectF rect = new RectF(boarder, boarder, width2, outHeight - boarder);
+        canvas.drawRoundRect(rect, radius, radius, paint);
+        if (boarder > 0) {
             Paint boarderPaint = new Paint(1);
             boarderPaint.setColor(-16711936);
             boarderPaint.setStyle(Paint.Style.STROKE);
-            boarderPaint.setStrokeWidth((float) i4);
-            canvas.drawRoundRect(rect, (float) i3, (float) i3, boarderPaint);
+            boarderPaint.setStrokeWidth(boarder);
+            canvas.drawRoundRect(rect, radius, radius, boarderPaint);
         }
         return desBitmap;
     }

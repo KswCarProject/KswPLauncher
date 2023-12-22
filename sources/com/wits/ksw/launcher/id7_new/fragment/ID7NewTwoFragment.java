@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.wits.ksw.BuildConfig;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bean.MediaInfo;
 import com.wits.ksw.launcher.id7_new.SavaUtils;
 import com.wits.ksw.launcher.model.LauncherViewModel;
@@ -24,8 +24,9 @@ import com.wits.ksw.launcher.model.MediaImpl;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.WitsCommand;
 
+/* loaded from: classes13.dex */
 public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickListener {
-    protected ContentResolver contentResolver = this.m_con.getContentResolver();
+    protected ContentResolver contentResolver;
     private Context m_con;
     private RelativeLayout rel_firtMs;
     private RelativeLayout rel_firtfm;
@@ -38,34 +39,36 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
     public ID7NewTwoFragment(Context context) {
         super(context);
         this.m_con = context;
-        this.view = LayoutInflater.from(context).inflate(R.layout.fragment_id7_new_two, (ViewGroup) null);
+        this.view = LayoutInflater.from(context).inflate(C0899R.C0902layout.fragment_id7_new_two, (ViewGroup) null);
+        this.contentResolver = this.m_con.getContentResolver();
         init();
-        this.view.setLayoutParams(new FrameLayout.LayoutParams(-1, -1));
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(-1, -1);
+        this.view.setLayoutParams(layoutParams);
         addView(this.view);
     }
 
     private void init() {
-        RelativeLayout relativeLayout = (RelativeLayout) this.view.findViewById(R.id.rel_firtfm);
+        RelativeLayout relativeLayout = (RelativeLayout) this.view.findViewById(C0899R.C0901id.rel_firtfm);
         this.rel_firtfm = relativeLayout;
         relativeLayout.setOnClickListener(this);
-        this.tv_msInfo = (TextView) this.view.findViewById(R.id.tv_msInfo);
-        RelativeLayout relativeLayout2 = (RelativeLayout) this.view.findViewById(R.id.rel_firtMs);
+        this.tv_msInfo = (TextView) this.view.findViewById(C0899R.C0901id.tv_msInfo);
+        RelativeLayout relativeLayout2 = (RelativeLayout) this.view.findViewById(C0899R.C0901id.rel_firtMs);
         this.rel_firtMs = relativeLayout2;
         relativeLayout2.setOnClickListener(this);
-        RelativeLayout relativeLayout3 = (RelativeLayout) this.view.findViewById(R.id.rel_firtvd);
+        RelativeLayout relativeLayout3 = (RelativeLayout) this.view.findViewById(C0899R.C0901id.rel_firtvd);
         this.rel_firtvd = relativeLayout3;
         relativeLayout3.setOnClickListener(this);
-        RelativeLayout relativeLayout4 = (RelativeLayout) this.view.findViewById(R.id.rel_firtie);
+        RelativeLayout relativeLayout4 = (RelativeLayout) this.view.findViewById(C0899R.C0901id.rel_firtie);
         this.rel_firtie = relativeLayout4;
         relativeLayout4.setOnClickListener(this);
-        RelativeLayout relativeLayout5 = (RelativeLayout) this.view.findViewById(R.id.rel_firtset);
+        RelativeLayout relativeLayout5 = (RelativeLayout) this.view.findViewById(C0899R.C0901id.rel_firtset);
         this.rel_firtset = relativeLayout5;
         relativeLayout5.setOnClickListener(this);
         try {
             if (TextUtils.isEmpty(MediaImpl.getInstance().getMediaInfo().musicName.get())) {
                 Context context = this.m_con;
                 if (context != null) {
-                    this.tv_msInfo.setText(context.getString(R.string.unkonw));
+                    this.tv_msInfo.setText(context.getString(C0899R.string.unkonw));
                 }
             } else {
                 this.tv_msInfo.setText(MediaImpl.getInstance().getMediaInfo().musicName.get());
@@ -85,7 +88,7 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
         if (TextUtils.isEmpty(mediaInfo.musicName.get())) {
             Context context = this.m_con;
             if (context != null) {
-                this.tv_msInfo.setText(context.getString(R.string.unkonw));
+                this.tv_msInfo.setText(context.getString(C0899R.string.unkonw));
                 return;
             }
             return;
@@ -107,6 +110,13 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
                 this.rel_firtie.setSelected(false);
                 this.rel_firtfm.setSelected(false);
                 this.rel_firtset.setSelected(false);
+                return;
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            default:
                 return;
             case 5:
                 this.rel_firtMs.setSelected(true);
@@ -143,8 +153,6 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
                 this.rel_firtfm.setSelected(false);
                 this.rel_firtset.setSelected(true);
                 return;
-            default:
-                return;
         }
     }
 
@@ -173,7 +181,8 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
                     return;
                 }
             case 8:
-                openApp(getContext().getPackageManager().getLaunchIntentForPackage("com.estrongs.android.pop"));
+                Intent esintent = getContext().getPackageManager().getLaunchIntentForPackage("com.estrongs.android.pop");
+                openApp(esintent);
                 Settings.System.putInt(this.m_con.getContentResolver(), SavaUtils.PAGE_INDEX, 8);
                 updateFouce(8);
                 return;
@@ -187,32 +196,37 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
         }
     }
 
+    @Override // android.view.View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.rel_firtMs /*2131297568*/:
+            case C0899R.C0901id.rel_firtMs /* 2131297615 */:
                 oncheckID(5);
                 return;
-            case R.id.rel_firtfm /*2131297573*/:
+            case C0899R.C0901id.rel_firtNav /* 2131297616 */:
+            case C0899R.C0901id.rel_firtaps /* 2131297617 */:
+            case C0899R.C0901id.rel_firtbt /* 2131297618 */:
+            case C0899R.C0901id.rel_firtci /* 2131297619 */:
+            default:
+                return;
+            case C0899R.C0901id.rel_firtfm /* 2131297620 */:
                 oncheckID(8);
                 return;
-            case R.id.rel_firtie /*2131297574*/:
+            case C0899R.C0901id.rel_firtie /* 2131297621 */:
                 oncheckID(7);
                 return;
-            case R.id.rel_firtset /*2131297575*/:
+            case C0899R.C0901id.rel_firtset /* 2131297622 */:
                 oncheckID(9);
                 return;
-            case R.id.rel_firtvd /*2131297576*/:
+            case C0899R.C0901id.rel_firtvd /* 2131297623 */:
                 oncheckID(6);
-                return;
-            default:
                 return;
         }
     }
 
-    private void onSendCommand(int command, int subCommand) {
+    private void onSendCommand(final int command, final int subCommand) {
         Log.i(Constraints.TAG, "onSendCommand: command:" + command + " subCommand:" + subCommand);
         try {
-            WitsCommand.sendCommand(command, subCommand, (String) null);
+            WitsCommand.sendCommand(command, subCommand, null);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(Constraints.TAG, "onSendCommand: " + e.getMessage());
@@ -227,7 +241,7 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
             Log.i(Constraints.TAG, "openApp: " + component.toString());
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), getContext().getString(R.string.uninstall), 0).show();
+            Toast.makeText(getContext(), getContext().getString(C0899R.string.uninstall), 0).show();
         }
     }
 
@@ -237,33 +251,39 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
             Log.i(Constraints.TAG, "openApp: " + intent.toString());
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), getContext().getString(R.string.uninstall), 0).show();
+            Toast.makeText(getContext(), getContext().getString(C0899R.string.uninstall), 0).show();
         }
     }
 
     public void openMusicMulti() {
         String pkg = Settings.System.getString(this.m_con.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_PKG);
         String cls = Settings.System.getString(this.m_con.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_CLS);
-        if (TextUtils.isEmpty(pkg) || TextUtils.isEmpty(cls) || KeyConfig.CLS_LOCAL_MUSIC.equals(cls)) {
-            openMusic();
-        } else if (KeyConfig.CLS_LOCAL_VIDEO.equals(cls)) {
-            openApp(new Intent("com.wits.media.VIDEO"));
-        } else {
-            openAppByCls(new ComponentName(pkg, cls));
+        if (!TextUtils.isEmpty(pkg) && !TextUtils.isEmpty(cls) && !KeyConfig.CLS_LOCAL_MUSIC.equals(cls)) {
+            if (KeyConfig.CLS_LOCAL_VIDEO.equals(cls)) {
+                openApp(new Intent("com.wits.media.VIDEO"));
+                return;
+            }
+            ComponentName componentName = new ComponentName(pkg, cls);
+            openAppByCls(componentName);
+            return;
         }
+        openMusic();
     }
 
     public void openVideoMulti() {
         Log.d("openVideoMulti", "000000000000000000");
         String pkg = Settings.System.getString(this.m_con.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_PKG);
         String cls = Settings.System.getString(this.m_con.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_CLS);
-        if (TextUtils.isEmpty(pkg) || TextUtils.isEmpty(cls) || KeyConfig.CLS_LOCAL_VIDEO.equals(cls)) {
-            openApp(new Intent("com.wits.media.VIDEO"));
-        } else if (KeyConfig.CLS_LOCAL_MUSIC.equals(cls)) {
-            openMusic();
-        } else {
-            openAppByCls(new ComponentName(pkg, cls));
+        if (!TextUtils.isEmpty(pkg) && !TextUtils.isEmpty(cls) && !KeyConfig.CLS_LOCAL_VIDEO.equals(cls)) {
+            if (KeyConfig.CLS_LOCAL_MUSIC.equals(cls)) {
+                openMusic();
+                return;
+            }
+            ComponentName componentName = new ComponentName(pkg, cls);
+            openAppByCls(componentName);
+            return;
         }
+        openApp(new Intent("com.wits.media.VIDEO"));
     }
 
     public void openAppByCls(ComponentName component) {
@@ -276,7 +296,7 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
         } catch (Exception e) {
             e.printStackTrace();
             Context context = this.m_con;
-            Toast.makeText(context, context.getString(R.string.uninstall), 0).show();
+            Toast.makeText(context, context.getString(C0899R.string.uninstall), 0).show();
         }
     }
 
@@ -286,7 +306,7 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
         if (TextUtils.isEmpty(pkg)) {
             pkg = "com.wits.media.MUSIC";
         }
-        if (pkg.equals("com.wits.ksw.media")) {
+        if (pkg.equals("com.wits.ksw.music")) {
             openApp(new Intent("com.wits.media.MUSIC"));
             return;
         }

@@ -3,12 +3,15 @@ package android.support.constraint.solver.state.helpers;
 import android.support.constraint.solver.state.HelperReference;
 import android.support.constraint.solver.state.State;
 
+/* loaded from: classes.dex */
 public class ChainReference extends HelperReference {
-    protected float mBias = 0.5f;
-    protected State.Chain mStyle = State.Chain.SPREAD;
+    protected float mBias;
+    protected State.Chain mStyle;
 
     public ChainReference(State state, State.Helper type) {
         super(state, type);
+        this.mBias = 0.5f;
+        this.mStyle = State.Chain.SPREAD;
     }
 
     public State.Chain getStyle() {

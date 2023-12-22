@@ -7,9 +7,10 @@ import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ScaleDrawable;
 import android.os.Build;
-import android.support.v7.graphics.drawable.DrawableWrapper;
+import android.support.p004v7.graphics.drawable.DrawableWrapper;
 import skin.support.utils.SkinCompatVersionUtils;
 
+/* loaded from: classes.dex */
 class SkinCompatDrawableUtils {
     private static final String VECTOR_DRAWABLE_CLAZZ_NAME = "android.graphics.drawable.VectorDrawable";
 
@@ -23,40 +24,42 @@ class SkinCompatDrawableUtils {
     }
 
     public static boolean canSafelyMutateDrawable(Drawable drawable) {
-        if (Build.VERSION.SDK_INT < 15 && (drawable instanceof InsetDrawable)) {
-            return false;
-        }
-        if (Build.VERSION.SDK_INT < 15 && (drawable instanceof GradientDrawable)) {
-            return false;
-        }
-        if (Build.VERSION.SDK_INT < 17 && (drawable instanceof LayerDrawable)) {
-            return false;
-        }
-        if (drawable instanceof DrawableContainer) {
-            Drawable.ConstantState state = drawable.getConstantState();
-            if (!(state instanceof DrawableContainer.DrawableContainerState)) {
-                return true;
-            }
-            for (Drawable child : ((DrawableContainer.DrawableContainerState) state).getChildren()) {
-                if (!canSafelyMutateDrawable(child)) {
-                    return false;
+        Drawable[] children;
+        if (Build.VERSION.SDK_INT >= 15 || !(drawable instanceof InsetDrawable)) {
+            if (Build.VERSION.SDK_INT >= 15 || !(drawable instanceof GradientDrawable)) {
+                if (Build.VERSION.SDK_INT >= 17 || !(drawable instanceof LayerDrawable)) {
+                    if (!(drawable instanceof DrawableContainer)) {
+                        if (SkinCompatVersionUtils.isV4DrawableWrapper(drawable)) {
+                            return canSafelyMutateDrawable(SkinCompatVersionUtils.getV4DrawableWrapperWrappedDrawable(drawable));
+                        }
+                        if (SkinCompatVersionUtils.isV4WrappedDrawable(drawable)) {
+                            return canSafelyMutateDrawable(SkinCompatVersionUtils.getV4WrappedDrawableWrappedDrawable(drawable));
+                        }
+                        if (drawable instanceof DrawableWrapper) {
+                            return canSafelyMutateDrawable(((DrawableWrapper) drawable).getWrappedDrawable());
+                        }
+                        if (drawable instanceof ScaleDrawable) {
+                            return canSafelyMutateDrawable(((ScaleDrawable) drawable).getDrawable());
+                        }
+                        return true;
+                    }
+                    Drawable.ConstantState state = drawable.getConstantState();
+                    if (state instanceof DrawableContainer.DrawableContainerState) {
+                        DrawableContainer.DrawableContainerState containerState = (DrawableContainer.DrawableContainerState) state;
+                        for (Drawable child : containerState.getChildren()) {
+                            if (!canSafelyMutateDrawable(child)) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                    return true;
                 }
+                return false;
             }
-            return true;
-        } else if (SkinCompatVersionUtils.isV4DrawableWrapper(drawable)) {
-            return canSafelyMutateDrawable(SkinCompatVersionUtils.getV4DrawableWrapperWrappedDrawable(drawable));
-        } else {
-            if (SkinCompatVersionUtils.isV4WrappedDrawable(drawable)) {
-                return canSafelyMutateDrawable(SkinCompatVersionUtils.getV4WrappedDrawableWrappedDrawable(drawable));
-            }
-            if (drawable instanceof DrawableWrapper) {
-                return canSafelyMutateDrawable(((DrawableWrapper) drawable).getWrappedDrawable());
-            }
-            if (drawable instanceof ScaleDrawable) {
-                return canSafelyMutateDrawable(((ScaleDrawable) drawable).getDrawable());
-            }
-            return true;
+            return false;
         }
+        return false;
     }
 
     private static void fixVectorDrawableTinting(Drawable drawable) {

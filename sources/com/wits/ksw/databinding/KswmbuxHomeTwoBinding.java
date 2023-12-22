@@ -8,10 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
-import com.wits.ksw.launcher.view.ug.UgHomeImageView;
+import com.wits.ksw.launcher.view.p006ug.UgHomeImageView;
 
+/* loaded from: classes7.dex */
 public abstract class KswmbuxHomeTwoBinding extends ViewDataBinding {
     public final ConstraintLayout carConstraintLayout;
     public final UgHomeImageView kswmbuxHomeAppVaiw;
@@ -21,15 +22,15 @@ public abstract class KswmbuxHomeTwoBinding extends ViewDataBinding {
     protected LauncherViewModel mViewModel;
     public final TextView tvVideo;
 
-    public abstract void setViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setViewModel(LauncherViewModel viewModel);
 
-    protected KswmbuxHomeTwoBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout carConstraintLayout2, UgHomeImageView kswmbuxHomeAppVaiw2, UgHomeImageView kswmbuxHomeHdvideoVaiw2, UgHomeImageView kswmbuxHomeSettingVaiw2, TextView tvVideo2) {
+    protected KswmbuxHomeTwoBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout carConstraintLayout, UgHomeImageView kswmbuxHomeAppVaiw, UgHomeImageView kswmbuxHomeHdvideoVaiw, UgHomeImageView kswmbuxHomeSettingVaiw, TextView tvVideo) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.carConstraintLayout = carConstraintLayout2;
-        this.kswmbuxHomeAppVaiw = kswmbuxHomeAppVaiw2;
-        this.kswmbuxHomeHdvideoVaiw = kswmbuxHomeHdvideoVaiw2;
-        this.kswmbuxHomeSettingVaiw = kswmbuxHomeSettingVaiw2;
-        this.tvVideo = tvVideo2;
+        this.carConstraintLayout = carConstraintLayout;
+        this.kswmbuxHomeAppVaiw = kswmbuxHomeAppVaiw;
+        this.kswmbuxHomeHdvideoVaiw = kswmbuxHomeHdvideoVaiw;
+        this.kswmbuxHomeSettingVaiw = kswmbuxHomeSettingVaiw;
+        this.tvVideo = tvVideo;
     }
 
     public LauncherViewModel getViewModel() {
@@ -42,7 +43,7 @@ public abstract class KswmbuxHomeTwoBinding extends ViewDataBinding {
 
     @Deprecated
     public static KswmbuxHomeTwoBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (KswmbuxHomeTwoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.kswmbux_home_two, root, attachToRoot, component);
+        return (KswmbuxHomeTwoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.kswmbux_home_two, root, attachToRoot, component);
     }
 
     public static KswmbuxHomeTwoBinding inflate(LayoutInflater inflater) {
@@ -51,7 +52,7 @@ public abstract class KswmbuxHomeTwoBinding extends ViewDataBinding {
 
     @Deprecated
     public static KswmbuxHomeTwoBinding inflate(LayoutInflater inflater, Object component) {
-        return (KswmbuxHomeTwoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.kswmbux_home_two, (ViewGroup) null, false, component);
+        return (KswmbuxHomeTwoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.kswmbux_home_two, null, false, component);
     }
 
     public static KswmbuxHomeTwoBinding bind(View view) {
@@ -60,6 +61,6 @@ public abstract class KswmbuxHomeTwoBinding extends ViewDataBinding {
 
     @Deprecated
     public static KswmbuxHomeTwoBinding bind(View view, Object component) {
-        return (KswmbuxHomeTwoBinding) bind(component, view, R.layout.kswmbux_home_two);
+        return (KswmbuxHomeTwoBinding) bind(component, view, C0899R.C0902layout.kswmbux_home_two);
     }
 }

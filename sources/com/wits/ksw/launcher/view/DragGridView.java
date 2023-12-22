@@ -13,53 +13,45 @@ import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+/* loaded from: classes16.dex */
 public class DragGridView extends GridView {
     private static final String TAG = "DragGridView";
     private static final int scrollSpeed = 20;
     private long dragRespondTime;
     private Runnable dragRunnable;
-    /* access modifiers changed from: private */
-    public Handler handler;
-    /* access modifiers changed from: private */
-    public boolean isDrag;
+    private Handler handler;
+    private boolean isDrag;
     private boolean isMoveStart;
     onItemChangerListener listener;
-    /* access modifiers changed from: private */
-    public int mDownX;
-    /* access modifiers changed from: private */
-    public int mDownY;
-    /* access modifiers changed from: private */
-    public Bitmap mDragBitmap;
+    private int mDownX;
+    private int mDownY;
+    private Bitmap mDragBitmap;
     private ImageView mDragImageView;
     private int mDragPosition;
     private int mOffsetLeft;
     private int mOffsetTop;
     private int mPoint2ItemLeft;
     private int mPoint2ItemTop;
-    /* access modifiers changed from: private */
-    public int mStartDownScrollHeight;
-    /* access modifiers changed from: private */
-    public View mStartDragItemView;
-    /* access modifiers changed from: private */
-    public int mStartUpScrollHeight;
+    private int mStartDownScrollHeight;
+    private View mStartDragItemView;
+    private int mStartUpScrollHeight;
     private int mStatusHeight;
     private int movePosXy;
     private int moveX;
-    /* access modifiers changed from: private */
-    public int moveY;
-    /* access modifiers changed from: private */
-    public Runnable scrollRunnable;
+    private int moveY;
+    private Runnable scrollRunnable;
     WindowManager.LayoutParams winLayoutParams;
     private WindowManager windowManager;
 
+    /* loaded from: classes16.dex */
     public interface onItemChangerListener {
-        void onChange(GridView gridView, int i, int i2);
+        void onChange(GridView gridView, int from, int to);
 
         void onStartMoving();
     }
 
     public DragGridView(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public DragGridView(Context context, AttributeSet attrs) {
@@ -68,33 +60,37 @@ public class DragGridView extends GridView {
 
     public DragGridView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        this.dragRespondTime = 1000;
+        this.dragRespondTime = 1000L;
         this.movePosXy = 30;
         this.mStatusHeight = 0;
         this.mDragPosition = 0;
         this.isDrag = false;
         this.isMoveStart = true;
         this.handler = new Handler();
-        this.dragRunnable = new Runnable() {
+        this.dragRunnable = new Runnable() { // from class: com.wits.ksw.launcher.view.DragGridView.1
+            @Override // java.lang.Runnable
             public void run() {
-                boolean unused = DragGridView.this.isDrag = true;
+                DragGridView.this.isDrag = true;
                 DragGridView.this.mStartDragItemView.setVisibility(4);
                 DragGridView dragGridView = DragGridView.this;
                 dragGridView.createDragImage(dragGridView.mDragBitmap, DragGridView.this.mDownX, DragGridView.this.mDownY);
             }
         };
-        this.scrollRunnable = new Runnable() {
+        this.scrollRunnable = new Runnable() { // from class: com.wits.ksw.launcher.view.DragGridView.2
+            @Override // java.lang.Runnable
             public void run() {
                 int speed;
-                if (DragGridView.this.moveY < DragGridView.this.mStartDownScrollHeight) {
-                    speed = -20;
-                    DragGridView.this.handler.postDelayed(DragGridView.this.scrollRunnable, 25);
-                } else if (DragGridView.this.moveY > DragGridView.this.mStartUpScrollHeight) {
-                    speed = 20;
-                    DragGridView.this.handler.postDelayed(DragGridView.this.scrollRunnable, 25);
+                if (DragGridView.this.moveY >= DragGridView.this.mStartDownScrollHeight) {
+                    if (DragGridView.this.moveY > DragGridView.this.mStartUpScrollHeight) {
+                        speed = 20;
+                        DragGridView.this.handler.postDelayed(DragGridView.this.scrollRunnable, 25L);
+                    } else {
+                        speed = 0;
+                        DragGridView.this.handler.removeCallbacks(DragGridView.this.scrollRunnable);
+                    }
                 } else {
-                    speed = 0;
-                    DragGridView.this.handler.removeCallbacks(DragGridView.this.scrollRunnable);
+                    speed = -20;
+                    DragGridView.this.handler.postDelayed(DragGridView.this.scrollRunnable, 25L);
                 }
                 DragGridView.this.smoothScrollBy(speed, 10);
             }
@@ -103,39 +99,39 @@ public class DragGridView extends GridView {
         this.mStatusHeight = getStatusHeight(context);
     }
 
+    @Override // android.view.ViewGroup, android.view.View
     public boolean dispatchTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
             case 0:
                 this.mDownX = (int) ev.getX();
                 this.mDownY = (int) ev.getY();
-                Log.i(TAG, "手指按下ev.getX---------->" + this.mDownX + "  ev.getY-------->" + this.mDownY);
+                Log.i(TAG, "\u624b\u6307\u6309\u4e0bev.getX---------->" + this.mDownX + "  ev.getY-------->" + this.mDownY);
                 int pointToPosition = pointToPosition(this.mDownX, this.mDownY);
                 this.mDragPosition = pointToPosition;
-                if (pointToPosition != -1) {
-                    Log.i(TAG, "手指按下mDragPosition---------->" + this.mDragPosition);
-                    this.mStartDragItemView = getChildAt(this.mDragPosition - getFirstVisiblePosition());
-                    this.handler.postDelayed(this.dragRunnable, this.dragRespondTime);
-                    this.mPoint2ItemTop = this.mDownY - this.mStartDragItemView.getTop();
-                    this.mPoint2ItemLeft = this.mDownX - this.mStartDragItemView.getLeft();
-                    Log.i(TAG, "手指按下mPoint2ItemTop---------->" + this.mPoint2ItemTop + "  mPoint2ItemLeft-------->" + this.mPoint2ItemLeft);
-                    this.mOffsetLeft = ((int) ev.getRawX()) - this.mDownX;
-                    this.mOffsetTop = ((int) ev.getRawY()) - this.mDownY;
-                    this.mStartDownScrollHeight = getHeight() / 4;
-                    this.mStartUpScrollHeight = (getHeight() * 3) / 4;
-                    this.mStartDragItemView.setDrawingCacheEnabled(true);
-                    this.mDragBitmap = Bitmap.createBitmap(this.mStartDragItemView.getDrawingCache());
-                    this.mStartDragItemView.destroyDrawingCache();
-                    break;
-                } else {
+                if (pointToPosition == -1) {
                     return super.dispatchTouchEvent(ev);
                 }
+                Log.i(TAG, "\u624b\u6307\u6309\u4e0bmDragPosition---------->" + this.mDragPosition);
+                this.mStartDragItemView = getChildAt(this.mDragPosition - getFirstVisiblePosition());
+                this.handler.postDelayed(this.dragRunnable, this.dragRespondTime);
+                this.mPoint2ItemTop = this.mDownY - this.mStartDragItemView.getTop();
+                this.mPoint2ItemLeft = this.mDownX - this.mStartDragItemView.getLeft();
+                Log.i(TAG, "\u624b\u6307\u6309\u4e0bmPoint2ItemTop---------->" + this.mPoint2ItemTop + "  mPoint2ItemLeft-------->" + this.mPoint2ItemLeft);
+                this.mOffsetLeft = ((int) ev.getRawX()) - this.mDownX;
+                this.mOffsetTop = ((int) ev.getRawY()) - this.mDownY;
+                this.mStartDownScrollHeight = getHeight() / 4;
+                this.mStartUpScrollHeight = (getHeight() * 3) / 4;
+                this.mStartDragItemView.setDrawingCacheEnabled(true);
+                this.mDragBitmap = Bitmap.createBitmap(this.mStartDragItemView.getDrawingCache());
+                this.mStartDragItemView.destroyDrawingCache();
+                break;
             case 1:
                 this.handler.removeCallbacks(this.dragRunnable);
                 this.handler.removeCallbacks(this.scrollRunnable);
                 this.isMoveStart = true;
                 break;
             case 2:
-                if (this.isDrag && this.isMoveStart && (Math.abs(ev.getX() - ((float) this.mDownX)) > ((float) this.movePosXy) || Math.abs(ev.getY() - ((float) this.mDownY)) > ((float) this.movePosXy))) {
+                if (this.isDrag && this.isMoveStart && (Math.abs(ev.getX() - this.mDownX) > this.movePosXy || Math.abs(ev.getY() - this.mDownY) > this.movePosXy)) {
                     this.isMoveStart = false;
                     onItemChangerListener onitemchangerlistener = this.listener;
                     if (onitemchangerlistener != null) {
@@ -148,6 +144,7 @@ public class DragGridView extends GridView {
         return super.dispatchTouchEvent(ev);
     }
 
+    @Override // android.widget.AbsListView, android.view.View
     public boolean onTouchEvent(MotionEvent ev) {
         if (this.isDrag && this.mDragImageView != null) {
             switch (ev.getAction()) {
@@ -170,22 +167,22 @@ public class DragGridView extends GridView {
         return super.onTouchEvent(ev);
     }
 
-    /* access modifiers changed from: private */
-    public void createDragImage(Bitmap mDragBitmap2, int mDownX2, int mDownY2) {
+    /* JADX INFO: Access modifiers changed from: private */
+    public void createDragImage(Bitmap mDragBitmap, int mDownX, int mDownY) {
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         this.winLayoutParams = layoutParams;
         layoutParams.format = -3;
         this.winLayoutParams.gravity = 51;
-        Log.i(TAG, "createDragImage ev.getX---------->" + mDownX2 + "  ev.getY-------->" + mDownY2);
-        this.winLayoutParams.x = (mDownX2 - this.mPoint2ItemLeft) + this.mOffsetLeft;
-        this.winLayoutParams.y = ((mDownY2 - this.mPoint2ItemTop) + this.mOffsetTop) - this.mStatusHeight;
+        Log.i(TAG, "createDragImage ev.getX---------->" + mDownX + "  ev.getY-------->" + mDownY);
+        this.winLayoutParams.x = (mDownX - this.mPoint2ItemLeft) + this.mOffsetLeft;
+        this.winLayoutParams.y = ((mDownY - this.mPoint2ItemTop) + this.mOffsetTop) - this.mStatusHeight;
         this.winLayoutParams.alpha = 0.55f;
         this.winLayoutParams.width = -2;
         this.winLayoutParams.height = -2;
         this.winLayoutParams.flags = 24;
         ImageView imageView = new ImageView(getContext());
         this.mDragImageView = imageView;
-        imageView.setImageBitmap(mDragBitmap2);
+        imageView.setImageBitmap(mDragBitmap);
         this.windowManager.addView(this.mDragImageView, this.winLayoutParams);
     }
 
@@ -205,9 +202,9 @@ public class DragGridView extends GridView {
         }
     }
 
-    private void updateDragImage(int moveX2, int moveY2) {
-        this.winLayoutParams.x = (moveX2 - this.mPoint2ItemLeft) + this.mOffsetLeft;
-        this.winLayoutParams.y = ((moveY2 - this.mPoint2ItemTop) + this.mOffsetTop) - this.mStatusHeight;
+    private void updateDragImage(int moveX, int moveY) {
+        this.winLayoutParams.x = (moveX - this.mPoint2ItemLeft) + this.mOffsetLeft;
+        this.winLayoutParams.y = ((moveY - this.mPoint2ItemTop) + this.mOffsetTop) - this.mStatusHeight;
         this.windowManager.updateViewLayout(this.mDragImageView, this.winLayoutParams);
         this.handler.post(this.scrollRunnable);
     }
@@ -228,19 +225,21 @@ public class DragGridView extends GridView {
         Rect rect = new Rect();
         ((Activity) context).getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
         int statusHeight = rect.top;
-        if (statusHeight != 0) {
-            return statusHeight;
+        if (statusHeight == 0) {
+            try {
+                Class<?> localClass = Class.forName("com.android.internal.R$dimen");
+                Object localObject = localClass.newInstance();
+                int i5 = Integer.parseInt(localClass.getField("status_bar_height").get(localObject).toString());
+                return context.getResources().getDimensionPixelSize(i5);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return statusHeight;
+            }
         }
-        try {
-            Class<?> localClass = Class.forName("com.android.internal.R$dimen");
-            return context.getResources().getDimensionPixelSize(Integer.parseInt(localClass.getField("status_bar_height").get(localClass.newInstance()).toString()));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return statusHeight;
-        }
+        return statusHeight;
     }
 
-    public void setOnItemChangeListener(onItemChangerListener listener2) {
-        this.listener = listener2;
+    public void setOnItemChangeListener(onItemChangerListener listener) {
+        this.listener = listener;
     }
 }

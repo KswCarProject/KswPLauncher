@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="audi_mib3_fy_item_txt_style">
+    <style name="audi_mib3_fy_item_txt_style" parent="">
         <item name="android:textSize">23sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_marginLeft">13dp</item>

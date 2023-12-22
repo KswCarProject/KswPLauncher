@@ -9,6 +9,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class AsyncSubject<T> extends Subject<T> {
     static final AsyncDisposable[] EMPTY = new AsyncDisposable[0];
     static final AsyncDisposable[] TERMINATED = new AsyncDisposable[0];
@@ -24,20 +25,25 @@ public final class AsyncSubject<T> extends Subject<T> {
     AsyncSubject() {
     }
 
+    @Override // io.reactivex.Observer
     public void onSubscribe(Disposable d) {
         if (this.subscribers.get() == TERMINATED) {
             d.dispose();
         }
     }
 
+    @Override // io.reactivex.Observer
     public void onNext(T t) {
         ObjectHelper.requireNonNull(t, "onNext called with null. Null values are generally not allowed in 2.x operators and sources.");
-        if (this.subscribers.get() != TERMINATED) {
-            this.value = t;
+        if (this.subscribers.get() == TERMINATED) {
+            return;
         }
+        this.value = t;
     }
 
+    @Override // io.reactivex.Observer
     public void onError(Throwable t) {
+        AsyncDisposable<T>[] andSet;
         ObjectHelper.requireNonNull(t, "onError called with null. Null values are generally not allowed in 2.x operators and sources.");
         AsyncDisposable<T>[] asyncDisposableArr = this.subscribers.get();
         AsyncDisposable<T>[] asyncDisposableArr2 = TERMINATED;
@@ -47,46 +53,54 @@ public final class AsyncSubject<T> extends Subject<T> {
         }
         this.value = null;
         this.error = t;
-        for (AsyncDisposable<T> as : (AsyncDisposable[]) this.subscribers.getAndSet(asyncDisposableArr2)) {
+        for (AsyncDisposable<T> as : this.subscribers.getAndSet(asyncDisposableArr2)) {
             as.onError(t);
         }
     }
 
+    @Override // io.reactivex.Observer
     public void onComplete() {
         AsyncDisposable<T>[] asyncDisposableArr = this.subscribers.get();
         AsyncDisposable<T>[] asyncDisposableArr2 = TERMINATED;
-        if (asyncDisposableArr != asyncDisposableArr2) {
-            T v = this.value;
-            AsyncDisposable<T>[] array = (AsyncDisposable[]) this.subscribers.getAndSet(asyncDisposableArr2);
-            int i = 0;
-            if (v == null) {
-                int length = array.length;
-                while (i < length) {
-                    array[i].onComplete();
-                    i++;
-                }
-                return;
-            }
-            int length2 = array.length;
-            while (i < length2) {
-                array[i].complete(v);
+        if (asyncDisposableArr == asyncDisposableArr2) {
+            return;
+        }
+        T v = this.value;
+        AsyncDisposable<T>[] array = this.subscribers.getAndSet(asyncDisposableArr2);
+        int i = 0;
+        if (v == null) {
+            int length = array.length;
+            while (i < length) {
+                AsyncDisposable<T> as = array[i];
+                as.onComplete();
                 i++;
             }
+            return;
+        }
+        int length2 = array.length;
+        while (i < length2) {
+            AsyncDisposable<T> as2 = array[i];
+            as2.complete(v);
+            i++;
         }
     }
 
+    @Override // io.reactivex.subjects.Subject
     public boolean hasObservers() {
-        return ((AsyncDisposable[]) this.subscribers.get()).length != 0;
+        return this.subscribers.get().length != 0;
     }
 
+    @Override // io.reactivex.subjects.Subject
     public boolean hasThrowable() {
         return this.subscribers.get() == TERMINATED && this.error != null;
     }
 
+    @Override // io.reactivex.subjects.Subject
     public boolean hasComplete() {
         return this.subscribers.get() == TERMINATED && this.error == null;
     }
 
+    @Override // io.reactivex.subjects.Subject
     public Throwable getThrowable() {
         if (this.subscribers.get() == TERMINATED) {
             return this.error;
@@ -94,78 +108,78 @@ public final class AsyncSubject<T> extends Subject<T> {
         return null;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Observer<? super T> observer) {
+    @Override // io.reactivex.Observable
+    protected void subscribeActual(Observer<? super T> observer) {
         AsyncDisposable<T> as = new AsyncDisposable<>(observer, this);
         observer.onSubscribe(as);
-        if (!add(as)) {
-            Throwable ex = this.error;
-            if (ex != null) {
-                observer.onError(ex);
+        if (add(as)) {
+            if (as.isDisposed()) {
+                remove(as);
                 return;
             }
-            T v = this.value;
-            if (v != null) {
-                as.complete(v);
-            } else {
-                as.onComplete();
-            }
-        } else if (as.isDisposed()) {
-            remove(as);
+            return;
+        }
+        Throwable ex = this.error;
+        if (ex != null) {
+            observer.onError(ex);
+            return;
+        }
+        T v = this.value;
+        if (v != null) {
+            as.complete(v);
+        } else {
+            as.onComplete();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean add(AsyncDisposable<T> ps) {
+    boolean add(AsyncDisposable<T> ps) {
         AsyncDisposable<T>[] a;
         AsyncDisposable<T>[] b;
         do {
-            a = (AsyncDisposable[]) this.subscribers.get();
+            a = this.subscribers.get();
             if (a == TERMINATED) {
                 return false;
             }
             int n = a.length;
-            b = new AsyncDisposable[(n + 1)];
+            b = new AsyncDisposable[n + 1];
             System.arraycopy(a, 0, b, 0, n);
             b[n] = ps;
         } while (!this.subscribers.compareAndSet(a, b));
         return true;
     }
 
-    /* access modifiers changed from: package-private */
-    public void remove(AsyncDisposable<T> ps) {
+    /* JADX WARN: Multi-variable type inference failed */
+    void remove(AsyncDisposable<T> ps) {
         AsyncDisposable<T>[] a;
         AsyncDisposable<T>[] b;
         do {
-            a = (AsyncDisposable[]) this.subscribers.get();
+            a = this.subscribers.get();
             int n = a.length;
-            if (n != 0) {
-                int j = -1;
-                int i = 0;
-                while (true) {
-                    if (i >= n) {
-                        break;
-                    } else if (a[i] == ps) {
-                        j = i;
-                        break;
-                    } else {
-                        i++;
-                    }
-                }
-                if (j >= 0) {
-                    if (n == 1) {
-                        b = EMPTY;
-                    } else {
-                        AsyncDisposable<T>[] b2 = new AsyncDisposable[(n - 1)];
-                        System.arraycopy(a, 0, b2, 0, j);
-                        System.arraycopy(a, j + 1, b2, j, (n - j) - 1);
-                        b = b2;
-                    }
-                } else {
-                    return;
-                }
-            } else {
+            if (n == 0) {
                 return;
+            }
+            int j = -1;
+            int i = 0;
+            while (true) {
+                if (i >= n) {
+                    break;
+                } else if (a[i] != ps) {
+                    i++;
+                } else {
+                    j = i;
+                    break;
+                }
+            }
+            if (j < 0) {
+                return;
+            }
+            if (n == 1) {
+                b = EMPTY;
+            } else {
+                AsyncDisposable<T>[] b2 = new AsyncDisposable[n - 1];
+                System.arraycopy(a, 0, b2, 0, j);
+                System.arraycopy(a, j + 1, b2, j, (n - j) - 1);
+                b = b2;
             }
         } while (!this.subscribers.compareAndSet(a, b));
     }
@@ -184,10 +198,7 @@ public final class AsyncSubject<T> extends Subject<T> {
     @Deprecated
     public Object[] getValues() {
         T v = getValue();
-        if (v == null) {
-            return new Object[0];
-        }
-        return new Object[]{v};
+        return v != null ? new Object[]{v} : new Object[0];
     }
 
     @Deprecated
@@ -200,7 +211,7 @@ public final class AsyncSubject<T> extends Subject<T> {
             return array;
         }
         if (array.length == 0) {
-            array = Arrays.copyOf(array, 1);
+            array = (T[]) Arrays.copyOf(array, 1);
         }
         array[0] = v;
         if (array.length != 1) {
@@ -209,30 +220,30 @@ public final class AsyncSubject<T> extends Subject<T> {
         return array;
     }
 
+    /* loaded from: classes.dex */
     static final class AsyncDisposable<T> extends DeferredScalarDisposable<T> {
         private static final long serialVersionUID = 5629876084736248016L;
         final AsyncSubject<T> parent;
 
-        AsyncDisposable(Observer<? super T> actual, AsyncSubject<T> parent2) {
+        AsyncDisposable(Observer<? super T> actual, AsyncSubject<T> parent) {
             super(actual);
-            this.parent = parent2;
+            this.parent = parent;
         }
 
+        @Override // io.reactivex.internal.observers.DeferredScalarDisposable, io.reactivex.disposables.Disposable
         public void dispose() {
             if (super.tryDispose()) {
                 this.parent.remove(this);
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void onComplete() {
+        void onComplete() {
             if (!isDisposed()) {
                 this.downstream.onComplete();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void onError(Throwable t) {
+        void onError(Throwable t) {
             if (isDisposed()) {
                 RxJavaPlugins.onError(t);
             } else {

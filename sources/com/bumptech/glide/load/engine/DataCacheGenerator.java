@@ -8,10 +8,13 @@ import com.bumptech.glide.load.model.ModelLoader;
 import java.io.File;
 import java.util.List;
 
+/* loaded from: classes.dex */
 class DataCacheGenerator implements DataFetcherGenerator, DataFetcher.DataCallback<Object> {
     private File cacheFile;
     private final List<Key> cacheKeys;
-    private final DataFetcherGenerator.FetcherReadyCallback cb;
+
+    /* renamed from: cb */
+    private final DataFetcherGenerator.FetcherReadyCallback f77cb;
     private final DecodeHelper<?> helper;
     private volatile ModelLoader.LoadData<?> loadData;
     private int modelLoaderIndex;
@@ -19,17 +22,18 @@ class DataCacheGenerator implements DataFetcherGenerator, DataFetcher.DataCallba
     private int sourceIdIndex;
     private Key sourceKey;
 
-    DataCacheGenerator(DecodeHelper<?> helper2, DataFetcherGenerator.FetcherReadyCallback cb2) {
-        this(helper2.getCacheKeys(), helper2, cb2);
+    DataCacheGenerator(DecodeHelper<?> helper, DataFetcherGenerator.FetcherReadyCallback cb) {
+        this(helper.getCacheKeys(), helper, cb);
     }
 
-    DataCacheGenerator(List<Key> cacheKeys2, DecodeHelper<?> helper2, DataFetcherGenerator.FetcherReadyCallback cb2) {
+    DataCacheGenerator(List<Key> cacheKeys, DecodeHelper<?> helper, DataFetcherGenerator.FetcherReadyCallback cb) {
         this.sourceIdIndex = -1;
-        this.cacheKeys = cacheKeys2;
-        this.helper = helper2;
-        this.cb = cb2;
+        this.cacheKeys = cacheKeys;
+        this.helper = helper;
+        this.f77cb = cb;
     }
 
+    @Override // com.bumptech.glide.load.engine.DataFetcherGenerator
     public boolean startNext() {
         while (true) {
             if (this.modelLoaders == null || !hasNextModelLoader()) {
@@ -39,7 +43,8 @@ class DataCacheGenerator implements DataFetcherGenerator, DataFetcher.DataCallba
                     return false;
                 }
                 Key sourceId = this.cacheKeys.get(this.sourceIdIndex);
-                File file = this.helper.getDiskCache().get(new DataCacheKey(sourceId, this.helper.getSignature()));
+                Key originalKey = new DataCacheKey(sourceId, this.helper.getSignature());
+                File file = this.helper.getDiskCache().get(originalKey);
                 this.cacheFile = file;
                 if (file != null) {
                     this.sourceKey = sourceId;
@@ -53,7 +58,8 @@ class DataCacheGenerator implements DataFetcherGenerator, DataFetcher.DataCallba
                     List<ModelLoader<File, ?>> list = this.modelLoaders;
                     int i2 = this.modelLoaderIndex;
                     this.modelLoaderIndex = i2 + 1;
-                    this.loadData = list.get(i2).buildLoadData(this.cacheFile, this.helper.getWidth(), this.helper.getHeight(), this.helper.getOptions());
+                    ModelLoader<File, ?> modelLoader = list.get(i2);
+                    this.loadData = modelLoader.buildLoadData(this.cacheFile, this.helper.getWidth(), this.helper.getHeight(), this.helper.getOptions());
                     if (this.loadData != null && this.helper.hasLoadPath(this.loadData.fetcher.getDataClass())) {
                         started = true;
                         this.loadData.fetcher.loadData(this.helper.getPriority(), this);
@@ -68,6 +74,7 @@ class DataCacheGenerator implements DataFetcherGenerator, DataFetcher.DataCallba
         return this.modelLoaderIndex < this.modelLoaders.size();
     }
 
+    @Override // com.bumptech.glide.load.engine.DataFetcherGenerator
     public void cancel() {
         ModelLoader.LoadData<?> local = this.loadData;
         if (local != null) {
@@ -75,11 +82,13 @@ class DataCacheGenerator implements DataFetcherGenerator, DataFetcher.DataCallba
         }
     }
 
+    @Override // com.bumptech.glide.load.data.DataFetcher.DataCallback
     public void onDataReady(Object data) {
-        this.cb.onDataFetcherReady(this.sourceKey, data, this.loadData.fetcher, DataSource.DATA_DISK_CACHE, this.sourceKey);
+        this.f77cb.onDataFetcherReady(this.sourceKey, data, this.loadData.fetcher, DataSource.DATA_DISK_CACHE, this.sourceKey);
     }
 
+    @Override // com.bumptech.glide.load.data.DataFetcher.DataCallback
     public void onLoadFailed(Exception e) {
-        this.cb.onDataFetcherFailed(this.sourceKey, e, this.loadData.fetcher, DataSource.DATA_DISK_CACHE);
+        this.f77cb.onDataFetcherFailed(this.sourceKey, e, this.loadData.fetcher, DataSource.DATA_DISK_CACHE);
     }
 }

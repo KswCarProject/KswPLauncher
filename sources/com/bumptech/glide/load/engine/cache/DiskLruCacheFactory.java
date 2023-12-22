@@ -3,43 +3,48 @@ package com.bumptech.glide.load.engine.cache;
 import com.bumptech.glide.load.engine.cache.DiskCache;
 import java.io.File;
 
+/* loaded from: classes.dex */
 public class DiskLruCacheFactory implements DiskCache.Factory {
     private final CacheDirectoryGetter cacheDirectoryGetter;
     private final long diskCacheSize;
 
+    /* loaded from: classes.dex */
     public interface CacheDirectoryGetter {
         File getCacheDirectory();
     }
 
-    public DiskLruCacheFactory(final String diskCacheFolder, long diskCacheSize2) {
-        this((CacheDirectoryGetter) new CacheDirectoryGetter() {
+    public DiskLruCacheFactory(final String diskCacheFolder, long diskCacheSize) {
+        this(new CacheDirectoryGetter() { // from class: com.bumptech.glide.load.engine.cache.DiskLruCacheFactory.1
+            @Override // com.bumptech.glide.load.engine.cache.DiskLruCacheFactory.CacheDirectoryGetter
             public File getCacheDirectory() {
                 return new File(diskCacheFolder);
             }
-        }, diskCacheSize2);
+        }, diskCacheSize);
     }
 
-    public DiskLruCacheFactory(final String diskCacheFolder, final String diskCacheName, long diskCacheSize2) {
-        this((CacheDirectoryGetter) new CacheDirectoryGetter() {
+    public DiskLruCacheFactory(final String diskCacheFolder, final String diskCacheName, long diskCacheSize) {
+        this(new CacheDirectoryGetter() { // from class: com.bumptech.glide.load.engine.cache.DiskLruCacheFactory.2
+            @Override // com.bumptech.glide.load.engine.cache.DiskLruCacheFactory.CacheDirectoryGetter
             public File getCacheDirectory() {
                 return new File(diskCacheFolder, diskCacheName);
             }
-        }, diskCacheSize2);
+        }, diskCacheSize);
     }
 
-    public DiskLruCacheFactory(CacheDirectoryGetter cacheDirectoryGetter2, long diskCacheSize2) {
-        this.diskCacheSize = diskCacheSize2;
-        this.cacheDirectoryGetter = cacheDirectoryGetter2;
+    public DiskLruCacheFactory(CacheDirectoryGetter cacheDirectoryGetter, long diskCacheSize) {
+        this.diskCacheSize = diskCacheSize;
+        this.cacheDirectoryGetter = cacheDirectoryGetter;
     }
 
+    @Override // com.bumptech.glide.load.engine.cache.DiskCache.Factory
     public DiskCache build() {
         File cacheDir = this.cacheDirectoryGetter.getCacheDirectory();
         if (cacheDir == null) {
             return null;
         }
-        if (cacheDir.mkdirs() || (cacheDir.exists() && cacheDir.isDirectory())) {
-            return DiskLruCacheWrapper.create(cacheDir, this.diskCacheSize);
+        if (!cacheDir.mkdirs() && (!cacheDir.exists() || !cacheDir.isDirectory())) {
+            return null;
         }
-        return null;
+        return DiskLruCacheWrapper.create(cacheDir, this.diskCacheSize);
     }
 }

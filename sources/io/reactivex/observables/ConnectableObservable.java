@@ -17,6 +17,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import java.util.concurrent.TimeUnit;
 
+/* loaded from: classes.dex */
 public abstract class ConnectableObservable<T> extends Observable<T> {
     public abstract void connect(Consumer<? super Disposable> consumer);
 
@@ -28,43 +29,43 @@ public abstract class ConnectableObservable<T> extends Observable<T> {
 
     private ConnectableObservable<T> onRefCount() {
         if (this instanceof ObservablePublishClassic) {
-            return RxJavaPlugins.onAssembly(new ObservablePublishAlt(((ObservablePublishClassic) this).publishSource()));
+            return RxJavaPlugins.onAssembly((ConnectableObservable) new ObservablePublishAlt(((ObservablePublishClassic) this).publishSource()));
         }
         return this;
     }
 
+    @SchedulerSupport(SchedulerSupport.NONE)
     @CheckReturnValue
-    @SchedulerSupport("none")
     public Observable<T> refCount() {
         return RxJavaPlugins.onAssembly(new ObservableRefCount(onRefCount()));
     }
 
+    @SchedulerSupport(SchedulerSupport.NONE)
     @CheckReturnValue
-    @SchedulerSupport("none")
     public final Observable<T> refCount(int subscriberCount) {
-        return refCount(subscriberCount, 0, TimeUnit.NANOSECONDS, Schedulers.trampoline());
+        return refCount(subscriberCount, 0L, TimeUnit.NANOSECONDS, Schedulers.trampoline());
     }
 
+    @SchedulerSupport(SchedulerSupport.COMPUTATION)
     @CheckReturnValue
-    @SchedulerSupport("io.reactivex:computation")
     public final Observable<T> refCount(long timeout, TimeUnit unit) {
         return refCount(1, timeout, unit, Schedulers.computation());
     }
 
+    @SchedulerSupport(SchedulerSupport.CUSTOM)
     @CheckReturnValue
-    @SchedulerSupport("custom")
     public final Observable<T> refCount(long timeout, TimeUnit unit, Scheduler scheduler) {
         return refCount(1, timeout, unit, scheduler);
     }
 
+    @SchedulerSupport(SchedulerSupport.COMPUTATION)
     @CheckReturnValue
-    @SchedulerSupport("io.reactivex:computation")
     public final Observable<T> refCount(int subscriberCount, long timeout, TimeUnit unit) {
         return refCount(subscriberCount, timeout, unit, Schedulers.computation());
     }
 
+    @SchedulerSupport(SchedulerSupport.CUSTOM)
     @CheckReturnValue
-    @SchedulerSupport("custom")
     public final Observable<T> refCount(int subscriberCount, long timeout, TimeUnit unit, Scheduler scheduler) {
         ObjectHelper.verifyPositive(subscriberCount, "subscriberCount");
         ObjectHelper.requireNonNull(unit, "unit is null");
@@ -81,10 +82,10 @@ public abstract class ConnectableObservable<T> extends Observable<T> {
     }
 
     public Observable<T> autoConnect(int numberOfSubscribers, Consumer<? super Disposable> connection) {
-        if (numberOfSubscribers > 0) {
-            return RxJavaPlugins.onAssembly(new ObservableAutoConnect(this, numberOfSubscribers, connection));
+        if (numberOfSubscribers <= 0) {
+            connect(connection);
+            return RxJavaPlugins.onAssembly((ConnectableObservable) this);
         }
-        connect(connection);
-        return RxJavaPlugins.onAssembly(this);
+        return RxJavaPlugins.onAssembly(new ObservableAutoConnect(this, numberOfSubscribers, connection));
     }
 }

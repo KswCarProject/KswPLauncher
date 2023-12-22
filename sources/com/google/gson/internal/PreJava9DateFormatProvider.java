@@ -4,13 +4,15 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+/* loaded from: classes.dex */
 public class PreJava9DateFormatProvider {
     public static DateFormat getUSDateFormat(int style) {
         return new SimpleDateFormat(getDateFormatPattern(style), Locale.US);
     }
 
     public static DateFormat getUSDateTimeFormat(int dateStyle, int timeStyle) {
-        return new SimpleDateFormat(getDatePartOfDateTimePattern(dateStyle) + " " + getTimePartOfDateTimePattern(timeStyle), Locale.US);
+        String pattern = getDatePartOfDateTimePattern(dateStyle) + " " + getTimePartOfDateTimePattern(timeStyle);
+        return new SimpleDateFormat(pattern, Locale.US);
     }
 
     private static String getDateFormatPattern(int style) {

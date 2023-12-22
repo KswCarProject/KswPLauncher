@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class ID6FragmentFour extends ViewDataBinding {
     public final ImageView id6AppsImageView;
     public final TextView id6AppsMess;
@@ -21,16 +22,16 @@ public abstract class ID6FragmentFour extends ViewDataBinding {
     @Bindable
     protected LauncherViewModel mViewModel;
 
-    public abstract void setViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setViewModel(LauncherViewModel viewModel);
 
-    protected ID6FragmentFour(Object _bindingComponent, View _root, int _localFieldCount, ImageView id6AppsImageView2, TextView id6AppsMess2, ImageView id6PhoneIamgeView2, TextView id6PhoneMess2, ImageView id6SettingImageView2, TextView id6SettingMess2) {
+    protected ID6FragmentFour(Object _bindingComponent, View _root, int _localFieldCount, ImageView id6AppsImageView, TextView id6AppsMess, ImageView id6PhoneIamgeView, TextView id6PhoneMess, ImageView id6SettingImageView, TextView id6SettingMess) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.id6AppsImageView = id6AppsImageView2;
-        this.id6AppsMess = id6AppsMess2;
-        this.id6PhoneIamgeView = id6PhoneIamgeView2;
-        this.id6PhoneMess = id6PhoneMess2;
-        this.id6SettingImageView = id6SettingImageView2;
-        this.id6SettingMess = id6SettingMess2;
+        this.id6AppsImageView = id6AppsImageView;
+        this.id6AppsMess = id6AppsMess;
+        this.id6PhoneIamgeView = id6PhoneIamgeView;
+        this.id6PhoneMess = id6PhoneMess;
+        this.id6SettingImageView = id6SettingImageView;
+        this.id6SettingMess = id6SettingMess;
     }
 
     public LauncherViewModel getViewModel() {
@@ -43,7 +44,7 @@ public abstract class ID6FragmentFour extends ViewDataBinding {
 
     @Deprecated
     public static ID6FragmentFour inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ID6FragmentFour) ViewDataBinding.inflateInternal(inflater, R.layout.id6_fragment_four, root, attachToRoot, component);
+        return (ID6FragmentFour) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id6_fragment_four, root, attachToRoot, component);
     }
 
     public static ID6FragmentFour inflate(LayoutInflater inflater) {
@@ -52,7 +53,7 @@ public abstract class ID6FragmentFour extends ViewDataBinding {
 
     @Deprecated
     public static ID6FragmentFour inflate(LayoutInflater inflater, Object component) {
-        return (ID6FragmentFour) ViewDataBinding.inflateInternal(inflater, R.layout.id6_fragment_four, (ViewGroup) null, false, component);
+        return (ID6FragmentFour) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id6_fragment_four, null, false, component);
     }
 
     public static ID6FragmentFour bind(View view) {
@@ -61,6 +62,6 @@ public abstract class ID6FragmentFour extends ViewDataBinding {
 
     @Deprecated
     public static ID6FragmentFour bind(View view, Object component) {
-        return (ID6FragmentFour) bind(component, view, R.layout.id6_fragment_four);
+        return (ID6FragmentFour) bind(component, view, C0899R.C0902layout.id6_fragment_four);
     }
 }

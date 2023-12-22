@@ -1,17 +1,20 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.CompoundButtonBindingAdapter;
+import android.support.p004v7.widget.AppCompatTextView;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi_mib3.vm.AudiMib3EQViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi.widget.AudiConstraintLayout;
+import com.wits.ksw.settings.audi_mib3.p008vm.AudiMib3EQViewModel;
 
+/* loaded from: classes7.dex */
 public class AudiMib3EqViewBindingImpl extends AudiMib3EqViewBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -26,11 +29,11 @@ public class AudiMib3EqViewBindingImpl extends AudiMib3EqViewBinding {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.title, 7);
-        sparseIntArray.put(R.id.title_divider, 8);
-        sparseIntArray.put(R.id.linearLayout4, 9);
-        sparseIntArray.put(R.id.rg_list, 10);
-        sparseIntArray.put(R.id.v_divider, 11);
+        sparseIntArray.put(C0899R.C0901id.title, 7);
+        sparseIntArray.put(C0899R.C0901id.title_divider, 8);
+        sparseIntArray.put(C0899R.C0901id.linearLayout4, 9);
+        sparseIntArray.put(C0899R.C0901id.rg_list, 10);
+        sparseIntArray.put(C0899R.C0901id.v_divider, 11);
     }
 
     public AudiMib3EqViewBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -38,38 +41,40 @@ public class AudiMib3EqViewBindingImpl extends AudiMib3EqViewBinding {
     }
 
     private AudiMib3EqViewBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 1, bindings[1], bindings[9], bindings[10], bindings[7], bindings[8], bindings[11]);
-        this.mDirtyFlags = -1;
-        this.aaa.setTag((Object) null);
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 1, (RadioButton) bindings[1], (AudiConstraintLayout) bindings[9], (RadioGroup) bindings[10], (AppCompatTextView) bindings[7], (View) bindings[8], (View) bindings[11]);
+        this.mDirtyFlags = -1L;
+        this.aaa.setTag(null);
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
-        RadioButton radioButton = bindings[2];
+        relativeLayout.setTag(null);
+        RadioButton radioButton = (RadioButton) bindings[2];
         this.mboundView2 = radioButton;
-        radioButton.setTag((Object) null);
-        RadioButton radioButton2 = bindings[3];
+        radioButton.setTag(null);
+        RadioButton radioButton2 = (RadioButton) bindings[3];
         this.mboundView3 = radioButton2;
-        radioButton2.setTag((Object) null);
-        RadioButton radioButton3 = bindings[4];
+        radioButton2.setTag(null);
+        RadioButton radioButton3 = (RadioButton) bindings[4];
         this.mboundView4 = radioButton3;
-        radioButton3.setTag((Object) null);
-        RadioButton radioButton4 = bindings[5];
+        radioButton3.setTag(null);
+        RadioButton radioButton4 = (RadioButton) bindings[5];
         this.mboundView5 = radioButton4;
-        radioButton4.setTag((Object) null);
-        RadioButton radioButton5 = bindings[6];
+        radioButton4.setTag(null);
+        RadioButton radioButton5 = (RadioButton) bindings[6];
         this.mboundView6 = radioButton5;
-        radioButton5.setTag((Object) null);
+        radioButton5.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 4;
+            this.mDirtyFlags = 4L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -79,14 +84,16 @@ public class AudiMib3EqViewBindingImpl extends AudiMib3EqViewBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((AudiMib3EQViewModel) variable);
+            return true;
         }
-        setVm((AudiMib3EQViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AudiMib3EqViewBinding
     public void setVm(AudiMib3EQViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -96,8 +103,8 @@ public class AudiMib3EqViewBindingImpl extends AudiMib3EqViewBinding {
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmEqModel((ObservableInt) object, fieldId);
@@ -107,21 +114,21 @@ public class AudiMib3EqViewBindingImpl extends AudiMib3EqViewBinding {
     }
 
     private boolean onChangeVmEqModel(ObservableInt VmEqModel, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         int vmEqModelGet = 0;
         AudiMib3EQViewModel vm = this.mVm;
@@ -136,7 +143,7 @@ public class AudiMib3EqViewBindingImpl extends AudiMib3EqViewBinding {
             if (vm != null) {
                 vmEqModel = vm.eqModel;
             }
-            updateRegistration(0, (Observable) vmEqModel);
+            updateRegistration(0, vmEqModel);
             if (vmEqModel != null) {
                 vmEqModelGet = vmEqModel.get();
             }

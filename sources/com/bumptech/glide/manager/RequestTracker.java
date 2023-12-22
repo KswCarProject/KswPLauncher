@@ -9,11 +9,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+/* loaded from: classes.dex */
 public class RequestTracker {
     private static final String TAG = "RequestTracker";
     private boolean isPaused;
-    private final List<Request> pendingRequests = new ArrayList();
     private final Set<Request> requests = Collections.newSetFromMap(new WeakHashMap());
+    private final List<Request> pendingRequests = new ArrayList();
 
     public void runRequest(Request request) {
         this.requests.add(request);
@@ -28,8 +29,7 @@ public class RequestTracker {
         this.pendingRequests.add(request);
     }
 
-    /* access modifiers changed from: package-private */
-    public void addRequest(Request request) {
+    void addRequest(Request request) {
         this.requests.add(request);
     }
 
@@ -61,7 +61,7 @@ public class RequestTracker {
 
     public void pauseRequests() {
         this.isPaused = true;
-        for (T request : Util.getSnapshot(this.requests)) {
+        for (Request request : Util.getSnapshot(this.requests)) {
             if (request.isRunning()) {
                 request.clear();
                 this.pendingRequests.add(request);
@@ -71,7 +71,7 @@ public class RequestTracker {
 
     public void pauseAllRequests() {
         this.isPaused = true;
-        for (T request : Util.getSnapshot(this.requests)) {
+        for (Request request : Util.getSnapshot(this.requests)) {
             if (request.isRunning() || request.isComplete()) {
                 request.clear();
                 this.pendingRequests.add(request);
@@ -81,7 +81,7 @@ public class RequestTracker {
 
     public void resumeRequests() {
         this.isPaused = false;
-        for (T request : Util.getSnapshot(this.requests)) {
+        for (Request request : Util.getSnapshot(this.requests)) {
             if (!request.isComplete() && !request.isRunning()) {
                 request.begin();
             }
@@ -90,14 +90,14 @@ public class RequestTracker {
     }
 
     public void clearRequests() {
-        for (T request : Util.getSnapshot(this.requests)) {
+        for (Request request : Util.getSnapshot(this.requests)) {
             clearRemoveAndMaybeRecycle(request, false);
         }
         this.pendingRequests.clear();
     }
 
     public void restartRequests() {
-        for (T request : Util.getSnapshot(this.requests)) {
+        for (Request request : Util.getSnapshot(this.requests)) {
             if (!request.isComplete() && !request.isCleared()) {
                 request.clear();
                 if (!this.isPaused) {

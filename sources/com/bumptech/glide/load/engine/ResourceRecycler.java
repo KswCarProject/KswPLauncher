@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+/* loaded from: classes.dex */
 class ResourceRecycler {
     private final Handler handler = new Handler(Looper.getMainLooper(), new ResourceRecyclerCallback());
     private boolean isRecycling;
@@ -11,8 +12,7 @@ class ResourceRecycler {
     ResourceRecycler() {
     }
 
-    /* access modifiers changed from: package-private */
-    public synchronized void recycle(Resource<?> resource) {
+    synchronized void recycle(Resource<?> resource) {
         if (this.isRecycling) {
             this.handler.obtainMessage(1, resource).sendToTarget();
         } else {
@@ -22,18 +22,21 @@ class ResourceRecycler {
         }
     }
 
+    /* loaded from: classes.dex */
     private static final class ResourceRecyclerCallback implements Handler.Callback {
         static final int RECYCLE_RESOURCE = 1;
 
         ResourceRecyclerCallback() {
         }
 
+        @Override // android.os.Handler.Callback
         public boolean handleMessage(Message message) {
-            if (message.what != 1) {
-                return false;
+            if (message.what == 1) {
+                Resource<?> resource = (Resource) message.obj;
+                resource.recycle();
+                return true;
             }
-            ((Resource) message.obj).recycle();
-            return true;
+            return false;
         }
     }
 }

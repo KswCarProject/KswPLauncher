@@ -6,15 +6,16 @@ import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.internal.operators.mixed.MaterializeSingleObserver;
 
+/* loaded from: classes.dex */
 public final class MaybeMaterialize<T> extends Single<Notification<T>> {
     final Maybe<T> source;
 
-    public MaybeMaterialize(Maybe<T> source2) {
-        this.source = source2;
+    public MaybeMaterialize(Maybe<T> source) {
+        this.source = source;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super Notification<T>> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super Notification<T>> observer) {
         this.source.subscribe(new MaterializeSingleObserver(observer));
     }
 }

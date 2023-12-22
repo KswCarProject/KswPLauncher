@@ -4,9 +4,12 @@ import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public class LexusLsBottomFragmentOneImpl extends LexusLsBottomFragmentOne {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -15,36 +18,37 @@ public class LexusLsBottomFragmentOneImpl extends LexusLsBottomFragmentOne {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.iv_lexus_ls_navi, 1);
-        sparseIntArray.put(R.id.iv_lexus_ls_music, 2);
-        sparseIntArray.put(R.id.iv_lexus_ls_bt, 3);
-        sparseIntArray.put(R.id.iv_lexus_ls_app, 4);
-        sparseIntArray.put(R.id.iv_lexus_ls_video, 5);
-        sparseIntArray.put(R.id.iv_lexus_ls_car, 6);
-        sparseIntArray.put(R.id.iv_lexus_ls_set, 7);
-        sparseIntArray.put(R.id.iv_lexus_ls_air, 8);
+        sparseIntArray.put(C0899R.C0901id.iv_lexus_ls_navi, 1);
+        sparseIntArray.put(C0899R.C0901id.iv_lexus_ls_music, 2);
+        sparseIntArray.put(C0899R.C0901id.iv_lexus_ls_bt, 3);
+        sparseIntArray.put(C0899R.C0901id.iv_lexus_ls_app, 4);
+        sparseIntArray.put(C0899R.C0901id.iv_lexus_ls_video, 5);
+        sparseIntArray.put(C0899R.C0901id.iv_lexus_ls_car, 6);
+        sparseIntArray.put(C0899R.C0901id.iv_lexus_ls_set, 7);
+        sparseIntArray.put(C0899R.C0901id.iv_lexus_ls_air, 8);
     }
 
     public LexusLsBottomFragmentOneImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 9, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private LexusLsBottomFragmentOneImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[8], bindings[4], bindings[3], bindings[6], bindings[2], bindings[1], bindings[7], bindings[5], bindings[0]);
-        this.mDirtyFlags = -1;
-        this.lexusLsLlBottomFragOne.setTag((Object) null);
+        super(bindingComponent, root, 0, (ImageView) bindings[8], (ImageView) bindings[4], (ImageView) bindings[3], (ImageView) bindings[6], (ImageView) bindings[2], (ImageView) bindings[1], (ImageView) bindings[7], (ImageView) bindings[5], (LinearLayout) bindings[0]);
+        this.mDirtyFlags = -1L;
+        this.lexusLsLlBottomFragOne.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 2;
+            this.mDirtyFlags = 2L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -54,28 +58,30 @@ public class LexusLsBottomFragmentOneImpl extends LexusLsBottomFragmentOne {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (25 != variableId) {
-            return false;
+        if (25 == variableId) {
+            setViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.LexusLsBottomFragmentOne
     public void setViewModel(LauncherViewModel ViewModel) {
         this.mViewModel = ViewModel;
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         synchronized (this) {
-            long dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            long j = this.mDirtyFlags;
+            this.mDirtyFlags = 0L;
         }
     }
 }

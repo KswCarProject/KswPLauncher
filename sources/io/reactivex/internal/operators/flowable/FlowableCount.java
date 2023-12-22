@@ -8,16 +8,18 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableCount<T> extends AbstractFlowableWithUpstream<T, Long> {
     public FlowableCount(Flowable<T> source) {
         super(source);
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super Long> s) {
-        this.source.subscribe(new CountSubscriber(s));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super Long> s) {
+        this.source.subscribe((FlowableSubscriber) new CountSubscriber(s));
     }
 
+    /* loaded from: classes.dex */
     static final class CountSubscriber extends DeferredScalarSubscription<Long> implements FlowableSubscriber<Object> {
         private static final long serialVersionUID = 4973004223787171406L;
         long count;
@@ -27,6 +29,7 @@ public final class FlowableCount<T> extends AbstractFlowableWithUpstream<T, Long
             super(downstream);
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -35,18 +38,22 @@ public final class FlowableCount<T> extends AbstractFlowableWithUpstream<T, Long
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(Object t) {
             this.count++;
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             complete(Long.valueOf(this.count));
         }
 
+        @Override // io.reactivex.internal.subscriptions.DeferredScalarSubscription, org.reactivestreams.Subscription
         public void cancel() {
             super.cancel();
             this.upstream.cancel();

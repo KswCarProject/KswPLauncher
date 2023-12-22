@@ -1,5 +1,6 @@
 package com.google.zxing;
 
+/* loaded from: classes.dex */
 public final class RGBLuminanceSource extends LuminanceSource {
     private final int dataHeight;
     private final int dataWidth;
@@ -16,24 +17,27 @@ public final class RGBLuminanceSource extends LuminanceSource {
         int size = width * height;
         this.luminances = new byte[size];
         for (int offset = 0; offset < size; offset++) {
-            int i = pixels[offset];
-            int pixel = i;
-            this.luminances[offset] = (byte) (((((i >> 16) & 255) + ((pixel >> 7) & 510)) + (pixel & 255)) / 4);
+            int pixel = pixels[offset];
+            int r = (pixel >> 16) & 255;
+            int g2 = (pixel >> 7) & 510;
+            int b = pixel & 255;
+            this.luminances[offset] = (byte) (((r + g2) + b) / 4);
         }
     }
 
-    private RGBLuminanceSource(byte[] pixels, int dataWidth2, int dataHeight2, int left2, int top2, int width, int height) {
+    private RGBLuminanceSource(byte[] pixels, int dataWidth, int dataHeight, int left, int top, int width, int height) {
         super(width, height);
-        if (left2 + width > dataWidth2 || top2 + height > dataHeight2) {
+        if (left + width > dataWidth || top + height > dataHeight) {
             throw new IllegalArgumentException("Crop rectangle does not fit within image data.");
         }
         this.luminances = pixels;
-        this.dataWidth = dataWidth2;
-        this.dataHeight = dataHeight2;
-        this.left = left2;
-        this.top = top2;
+        this.dataWidth = dataWidth;
+        this.dataHeight = dataHeight;
+        this.left = left;
+        this.top = top;
     }
 
+    @Override // com.google.zxing.LuminanceSource
     public byte[] getRow(int y, byte[] row) {
         if (y < 0 || y >= getHeight()) {
             throw new IllegalArgumentException("Requested row is outside the image: ".concat(String.valueOf(y)));
@@ -42,10 +46,12 @@ public final class RGBLuminanceSource extends LuminanceSource {
         if (row == null || row.length < width) {
             row = new byte[width];
         }
-        System.arraycopy(this.luminances, ((this.top + y) * this.dataWidth) + this.left, row, 0, width);
+        int offset = ((this.top + y) * this.dataWidth) + this.left;
+        System.arraycopy(this.luminances, offset, row, 0, width);
         return row;
     }
 
+    @Override // com.google.zxing.LuminanceSource
     public byte[] getMatrix() {
         int width = getWidth();
         int height = getHeight();
@@ -53,26 +59,28 @@ public final class RGBLuminanceSource extends LuminanceSource {
         if (width == i && height == this.dataHeight) {
             return this.luminances;
         }
-        int i2 = width * height;
-        int area = i2;
-        byte[] matrix = new byte[i2];
+        int area = width * height;
+        byte[] matrix = new byte[area];
         int inputOffset = (this.top * i) + this.left;
         if (width == i) {
             System.arraycopy(this.luminances, inputOffset, matrix, 0, area);
             return matrix;
         }
         for (int y = 0; y < height; y++) {
-            System.arraycopy(this.luminances, inputOffset, matrix, y * width, width);
+            int outputOffset = y * width;
+            System.arraycopy(this.luminances, inputOffset, matrix, outputOffset, width);
             inputOffset += this.dataWidth;
         }
         return matrix;
     }
 
+    @Override // com.google.zxing.LuminanceSource
     public boolean isCropSupported() {
         return true;
     }
 
-    public LuminanceSource crop(int left2, int top2, int width, int height) {
-        return new RGBLuminanceSource(this.luminances, this.dataWidth, this.dataHeight, this.left + left2, this.top + top2, width, height);
+    @Override // com.google.zxing.LuminanceSource
+    public LuminanceSource crop(int left, int top, int width, int height) {
+        return new RGBLuminanceSource(this.luminances, this.dataWidth, this.dataHeight, this.left + left, this.top + top, width, height);
     }
 }

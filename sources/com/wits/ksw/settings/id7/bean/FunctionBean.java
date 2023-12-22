@@ -1,5 +1,6 @@
 package com.wits.ksw.settings.id7.bean;
 
+/* loaded from: classes4.dex */
 public class FunctionBean {
     private String display;
     private int icon;
@@ -10,20 +11,20 @@ public class FunctionBean {
         return this.ischeck;
     }
 
-    public void setIscheck(boolean ischeck2) {
-        this.ischeck = ischeck2;
+    public void setIscheck(boolean ischeck) {
+        this.ischeck = ischeck;
     }
 
     public String getTitle() {
         return this.title;
     }
 
-    public void setTitle(String title2) {
-        this.title = title2;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setDisplay(String display2) {
-        this.display = display2;
+    public void setDisplay(String display) {
+        this.display = display;
     }
 
     public String getDisplay() {
@@ -34,7 +35,7 @@ public class FunctionBean {
         return this.icon;
     }
 
-    public void setIcon(int icon2) {
-        this.icon = icon2;
+    public void setIcon(int icon) {
+        this.icon = icon;
     }
 }

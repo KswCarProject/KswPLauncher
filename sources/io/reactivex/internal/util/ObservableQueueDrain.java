@@ -2,6 +2,7 @@ package io.reactivex.internal.util;
 
 import io.reactivex.Observer;
 
+/* loaded from: classes.dex */
 public interface ObservableQueueDrain<T, U> {
     void accept(Observer<? super U> observer, T t);
 

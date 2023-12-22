@@ -9,10 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.view.CustomSkinImageView;
 
+/* loaded from: classes7.dex */
 public abstract class AlsId7UiSubNaviViewBinding extends ViewDataBinding {
     public final ImageView alsId7MainNaviImg;
     @Bindable
@@ -22,15 +23,15 @@ public abstract class AlsId7UiSubNaviViewBinding extends ViewDataBinding {
     public final TextView textView2;
     public final TextView textView3;
 
-    public abstract void setNaviViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setNaviViewModel(LauncherViewModel NaviViewModel);
 
-    protected AlsId7UiSubNaviViewBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView alsId7MainNaviImg2, ConstraintLayout naviConstraintLayout2, CustomSkinImageView naviImageView2, TextView textView22, TextView textView32) {
+    protected AlsId7UiSubNaviViewBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView alsId7MainNaviImg, ConstraintLayout naviConstraintLayout, CustomSkinImageView naviImageView, TextView textView2, TextView textView3) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.alsId7MainNaviImg = alsId7MainNaviImg2;
-        this.naviConstraintLayout = naviConstraintLayout2;
-        this.naviImageView = naviImageView2;
-        this.textView2 = textView22;
-        this.textView3 = textView32;
+        this.alsId7MainNaviImg = alsId7MainNaviImg;
+        this.naviConstraintLayout = naviConstraintLayout;
+        this.naviImageView = naviImageView;
+        this.textView2 = textView2;
+        this.textView3 = textView3;
     }
 
     public LauncherViewModel getNaviViewModel() {
@@ -43,7 +44,7 @@ public abstract class AlsId7UiSubNaviViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7UiSubNaviViewBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AlsId7UiSubNaviViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_ui_sub_navi_view, root, attachToRoot, component);
+        return (AlsId7UiSubNaviViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_ui_sub_navi_view, root, attachToRoot, component);
     }
 
     public static AlsId7UiSubNaviViewBinding inflate(LayoutInflater inflater) {
@@ -52,7 +53,7 @@ public abstract class AlsId7UiSubNaviViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7UiSubNaviViewBinding inflate(LayoutInflater inflater, Object component) {
-        return (AlsId7UiSubNaviViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_ui_sub_navi_view, (ViewGroup) null, false, component);
+        return (AlsId7UiSubNaviViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_ui_sub_navi_view, null, false, component);
     }
 
     public static AlsId7UiSubNaviViewBinding bind(View view) {
@@ -61,6 +62,6 @@ public abstract class AlsId7UiSubNaviViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AlsId7UiSubNaviViewBinding bind(View view, Object component) {
-        return (AlsId7UiSubNaviViewBinding) bind(component, view, R.layout.als_id7_ui_sub_navi_view);
+        return (AlsId7UiSubNaviViewBinding) bind(component, view, C0899R.C0902layout.als_id7_ui_sub_navi_view);
     }
 }

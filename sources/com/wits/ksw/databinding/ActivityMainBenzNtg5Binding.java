@@ -4,14 +4,15 @@ import android.databinding.Bindable;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.RecyclerView;
+import android.support.p004v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BcNTG5ViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityMainBenzNtg5Binding extends ViewDataBinding {
     public final ImageView controlBtn;
     public final ConstraintLayout linearLayout3;
@@ -19,13 +20,13 @@ public abstract class ActivityMainBenzNtg5Binding extends ViewDataBinding {
     protected BcNTG5ViewModel mMBcVieModel;
     public final RecyclerView recyclerView2;
 
-    public abstract void setMBcVieModel(BcNTG5ViewModel bcNTG5ViewModel);
+    public abstract void setMBcVieModel(BcNTG5ViewModel mBcVieModel);
 
-    protected ActivityMainBenzNtg5Binding(Object _bindingComponent, View _root, int _localFieldCount, ImageView controlBtn2, ConstraintLayout linearLayout32, RecyclerView recyclerView22) {
+    protected ActivityMainBenzNtg5Binding(Object _bindingComponent, View _root, int _localFieldCount, ImageView controlBtn, ConstraintLayout linearLayout3, RecyclerView recyclerView2) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.controlBtn = controlBtn2;
-        this.linearLayout3 = linearLayout32;
-        this.recyclerView2 = recyclerView22;
+        this.controlBtn = controlBtn;
+        this.linearLayout3 = linearLayout3;
+        this.recyclerView2 = recyclerView2;
     }
 
     public BcNTG5ViewModel getMBcVieModel() {
@@ -38,7 +39,7 @@ public abstract class ActivityMainBenzNtg5Binding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainBenzNtg5Binding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityMainBenzNtg5Binding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_benz_ntg5, root, attachToRoot, component);
+        return (ActivityMainBenzNtg5Binding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_benz_ntg5, root, attachToRoot, component);
     }
 
     public static ActivityMainBenzNtg5Binding inflate(LayoutInflater inflater) {
@@ -47,7 +48,7 @@ public abstract class ActivityMainBenzNtg5Binding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainBenzNtg5Binding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityMainBenzNtg5Binding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_benz_ntg5, (ViewGroup) null, false, component);
+        return (ActivityMainBenzNtg5Binding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_benz_ntg5, null, false, component);
     }
 
     public static ActivityMainBenzNtg5Binding bind(View view) {
@@ -56,6 +57,6 @@ public abstract class ActivityMainBenzNtg5Binding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainBenzNtg5Binding bind(View view, Object component) {
-        return (ActivityMainBenzNtg5Binding) bind(component, view, R.layout.activity_main_benz_ntg5);
+        return (ActivityMainBenzNtg5Binding) bind(component, view, C0899R.C0902layout.activity_main_benz_ntg5);
     }
 }

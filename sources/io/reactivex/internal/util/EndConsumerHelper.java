@@ -9,6 +9,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicReference;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class EndConsumerHelper {
     private EndConsumerHelper() {
         throw new IllegalStateException("No instances!");
@@ -16,54 +17,54 @@ public final class EndConsumerHelper {
 
     public static boolean validate(Disposable upstream, Disposable next, Class<?> observer) {
         ObjectHelper.requireNonNull(next, "next is null");
-        if (upstream == null) {
-            return true;
-        }
-        next.dispose();
-        if (upstream == DisposableHelper.DISPOSED) {
+        if (upstream != null) {
+            next.dispose();
+            if (upstream != DisposableHelper.DISPOSED) {
+                reportDoubleSubscription(observer);
+                return false;
+            }
             return false;
         }
-        reportDoubleSubscription(observer);
-        return false;
+        return true;
     }
 
     public static boolean setOnce(AtomicReference<Disposable> upstream, Disposable next, Class<?> observer) {
         ObjectHelper.requireNonNull(next, "next is null");
-        if (upstream.compareAndSet((Object) null, next)) {
-            return true;
-        }
-        next.dispose();
-        if (upstream.get() == DisposableHelper.DISPOSED) {
+        if (!upstream.compareAndSet(null, next)) {
+            next.dispose();
+            if (upstream.get() != DisposableHelper.DISPOSED) {
+                reportDoubleSubscription(observer);
+                return false;
+            }
             return false;
         }
-        reportDoubleSubscription(observer);
-        return false;
+        return true;
     }
 
     public static boolean validate(Subscription upstream, Subscription next, Class<?> subscriber) {
         ObjectHelper.requireNonNull(next, "next is null");
-        if (upstream == null) {
-            return true;
-        }
-        next.cancel();
-        if (upstream == SubscriptionHelper.CANCELLED) {
+        if (upstream != null) {
+            next.cancel();
+            if (upstream != SubscriptionHelper.CANCELLED) {
+                reportDoubleSubscription(subscriber);
+                return false;
+            }
             return false;
         }
-        reportDoubleSubscription(subscriber);
-        return false;
+        return true;
     }
 
     public static boolean setOnce(AtomicReference<Subscription> upstream, Subscription next, Class<?> subscriber) {
         ObjectHelper.requireNonNull(next, "next is null");
-        if (upstream.compareAndSet((Object) null, next)) {
-            return true;
-        }
-        next.cancel();
-        if (upstream.get() == SubscriptionHelper.CANCELLED) {
+        if (!upstream.compareAndSet(null, next)) {
+            next.cancel();
+            if (upstream.get() != SubscriptionHelper.CANCELLED) {
+                reportDoubleSubscription(subscriber);
+                return false;
+            }
             return false;
         }
-        reportDoubleSubscription(subscriber);
-        return false;
+        return true;
     }
 
     public static String composeMessage(String consumer) {

@@ -1,11 +1,10 @@
 package com.ibm.icu.text;
 
+/* loaded from: classes.dex */
 abstract class CharsetRecognizer {
-    /* access modifiers changed from: package-private */
-    public abstract String getName();
+    abstract String getName();
 
-    /* access modifiers changed from: package-private */
-    public abstract CharsetMatch match(CharsetDetector charsetDetector);
+    abstract CharsetMatch match(CharsetDetector charsetDetector);
 
     CharsetRecognizer() {
     }

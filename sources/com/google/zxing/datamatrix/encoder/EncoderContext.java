@@ -4,6 +4,7 @@ import com.google.zxing.Dimension;
 import java.nio.charset.StandardCharsets;
 import kotlin.UByte;
 
+/* loaded from: classes.dex */
 final class EncoderContext {
     private final StringBuilder codewords;
     private Dimension maxSize;
@@ -15,34 +16,30 @@ final class EncoderContext {
     private int skipAtEnd;
     private SymbolInfo symbolInfo;
 
-    EncoderContext(String msg2) {
-        byte[] msgBinary = msg2.getBytes(StandardCharsets.ISO_8859_1);
+    EncoderContext(String msg) {
+        byte[] msgBinary = msg.getBytes(StandardCharsets.ISO_8859_1);
         StringBuilder sb = new StringBuilder(msgBinary.length);
-        int i = 0;
         int c = msgBinary.length;
-        while (i < c) {
-            char c2 = (char) (msgBinary[i] & UByte.MAX_VALUE);
-            char ch = c2;
-            if (c2 != '?' || msg2.charAt(i) == '?') {
-                sb.append(ch);
-                i++;
-            } else {
+        for (int i = 0; i < c; i++) {
+            char ch = (char) (msgBinary[i] & UByte.MAX_VALUE);
+            if (ch == '?' && msg.charAt(i) != '?') {
                 throw new IllegalArgumentException("Message contains characters outside ISO-8859-1 encoding.");
             }
+            sb.append(ch);
         }
         this.msg = sb.toString();
         this.shape = SymbolShapeHint.FORCE_NONE;
-        this.codewords = new StringBuilder(msg2.length());
+        this.codewords = new StringBuilder(msg.length());
         this.newEncoding = -1;
     }
 
-    public void setSymbolShape(SymbolShapeHint shape2) {
-        this.shape = shape2;
+    public void setSymbolShape(SymbolShapeHint shape) {
+        this.shape = shape;
     }
 
-    public void setSizeConstraints(Dimension minSize2, Dimension maxSize2) {
-        this.minSize = minSize2;
-        this.maxSize = maxSize2;
+    public void setSizeConstraints(Dimension minSize, Dimension maxSize) {
+        this.minSize = minSize;
+        this.maxSize = maxSize;
     }
 
     public String getMessage() {
@@ -65,8 +62,8 @@ final class EncoderContext {
         return this.codewords;
     }
 
-    public void writeCodewords(String codewords2) {
-        this.codewords.append(codewords2);
+    public void writeCodewords(String codewords) {
+        this.codewords.append(codewords);
     }
 
     public void writeCodeword(char codeword) {
@@ -110,8 +107,8 @@ final class EncoderContext {
     }
 
     public void updateSymbolInfo(int len) {
-        SymbolInfo symbolInfo2 = this.symbolInfo;
-        if (symbolInfo2 == null || len > symbolInfo2.getDataCapacity()) {
+        SymbolInfo symbolInfo = this.symbolInfo;
+        if (symbolInfo == null || len > symbolInfo.getDataCapacity()) {
             this.symbolInfo = SymbolInfo.lookup(len, this.shape, this.minSize, this.maxSize, true);
         }
     }

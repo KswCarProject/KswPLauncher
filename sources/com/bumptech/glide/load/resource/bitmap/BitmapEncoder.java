@@ -17,14 +17,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/* loaded from: classes.dex */
 public class BitmapEncoder implements ResourceEncoder<Bitmap> {
-    public static final Option<Bitmap.CompressFormat> COMPRESSION_FORMAT = Option.memory("com.bumptech.glide.load.resource.bitmap.BitmapEncoder.CompressionFormat");
-    public static final Option<Integer> COMPRESSION_QUALITY = Option.memory("com.bumptech.glide.load.resource.bitmap.BitmapEncoder.CompressionQuality", 90);
     private static final String TAG = "BitmapEncoder";
     private final ArrayPool arrayPool;
+    public static final Option<Integer> COMPRESSION_QUALITY = Option.memory("com.bumptech.glide.load.resource.bitmap.BitmapEncoder.CompressionQuality", 90);
+    public static final Option<Bitmap.CompressFormat> COMPRESSION_FORMAT = Option.memory("com.bumptech.glide.load.resource.bitmap.BitmapEncoder.CompressionFormat");
 
-    public BitmapEncoder(ArrayPool arrayPool2) {
-        this.arrayPool = arrayPool2;
+    public BitmapEncoder(ArrayPool arrayPool) {
+        this.arrayPool = arrayPool;
     }
 
     @Deprecated
@@ -32,8 +33,8 @@ public class BitmapEncoder implements ResourceEncoder<Bitmap> {
         this.arrayPool = null;
     }
 
+    @Override // com.bumptech.glide.load.Encoder
     public boolean encode(Resource<Bitmap> resource, File file, Options options) {
-        OutputStream os;
         Bitmap bitmap = resource.get();
         Bitmap.CompressFormat format = getFormat(bitmap, options);
         GlideTrace.beginSectionFormat("encode: [%dx%d] %s", Integer.valueOf(bitmap.getWidth()), Integer.valueOf(bitmap.getHeight()), format);
@@ -41,37 +42,35 @@ public class BitmapEncoder implements ResourceEncoder<Bitmap> {
             long start = LogTime.getLogTime();
             int quality = ((Integer) options.get(COMPRESSION_QUALITY)).intValue();
             boolean success = false;
-            os = null;
+            OutputStream os = null;
             try {
-                OutputStream os2 = new FileOutputStream(file);
-                if (this.arrayPool != null) {
-                    os2 = new BufferedOutputStream(os2, this.arrayPool);
-                }
-                bitmap.compress(format, quality, os2);
-                os2.close();
-                success = true;
-                if (os2 != null) {
-                    try {
-                        os2.close();
-                    } catch (IOException e) {
+                try {
+                    os = new FileOutputStream(file);
+                    if (this.arrayPool != null) {
+                        os = new BufferedOutputStream(os, this.arrayPool);
                     }
-                }
-            } catch (IOException e2) {
-                if (Log.isLoggable(TAG, 3)) {
-                    Log.d(TAG, "Failed to encode Bitmap", e2);
+                    bitmap.compress(format, quality, os);
+                    os.close();
+                    success = true;
+                } catch (IOException e) {
+                    if (Log.isLoggable(TAG, 3)) {
+                        Log.d(TAG, "Failed to encode Bitmap", e);
+                    }
+                    if (os != null) {
+                        os.close();
+                    }
                 }
                 if (os != null) {
                     os.close();
                 }
+            } catch (IOException e2) {
             }
             if (Log.isLoggable(TAG, 2)) {
                 Log.v(TAG, "Compressed with type: " + format + " of size " + Util.getBitmapByteSize(bitmap) + " in " + LogTime.getElapsedMillis(start) + ", options format: " + options.get(COMPRESSION_FORMAT) + ", hasAlpha: " + bitmap.hasAlpha());
             }
-            GlideTrace.endSection();
             return success;
-        } catch (Throwable th) {
+        } finally {
             GlideTrace.endSection();
-            throw th;
         }
     }
 
@@ -86,6 +85,7 @@ public class BitmapEncoder implements ResourceEncoder<Bitmap> {
         return Bitmap.CompressFormat.JPEG;
     }
 
+    @Override // com.bumptech.glide.load.ResourceEncoder
     public EncodeStrategy getEncodeStrategy(Options options) {
         return EncodeStrategy.TRANSFORMED;
     }

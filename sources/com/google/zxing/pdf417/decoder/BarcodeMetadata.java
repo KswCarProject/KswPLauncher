@@ -1,5 +1,6 @@
 package com.google.zxing.pdf417.decoder;
 
+/* loaded from: classes.dex */
 final class BarcodeMetadata {
     private final int columnCount;
     private final int errorCorrectionLevel;
@@ -7,36 +8,31 @@ final class BarcodeMetadata {
     private final int rowCountLowerPart;
     private final int rowCountUpperPart;
 
-    BarcodeMetadata(int columnCount2, int rowCountUpperPart2, int rowCountLowerPart2, int errorCorrectionLevel2) {
-        this.columnCount = columnCount2;
-        this.errorCorrectionLevel = errorCorrectionLevel2;
-        this.rowCountUpperPart = rowCountUpperPart2;
-        this.rowCountLowerPart = rowCountLowerPart2;
-        this.rowCount = rowCountUpperPart2 + rowCountLowerPart2;
+    BarcodeMetadata(int columnCount, int rowCountUpperPart, int rowCountLowerPart, int errorCorrectionLevel) {
+        this.columnCount = columnCount;
+        this.errorCorrectionLevel = errorCorrectionLevel;
+        this.rowCountUpperPart = rowCountUpperPart;
+        this.rowCountLowerPart = rowCountLowerPart;
+        this.rowCount = rowCountUpperPart + rowCountLowerPart;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getColumnCount() {
+    int getColumnCount() {
         return this.columnCount;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getErrorCorrectionLevel() {
+    int getErrorCorrectionLevel() {
         return this.errorCorrectionLevel;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getRowCount() {
+    int getRowCount() {
         return this.rowCount;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getRowCountUpperPart() {
+    int getRowCountUpperPart() {
         return this.rowCountUpperPart;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getRowCountLowerPart() {
+    int getRowCountLowerPart() {
         return this.rowCountLowerPart;
     }
 }

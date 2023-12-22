@@ -7,16 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 
+/* loaded from: classes7.dex */
 public abstract class AudiNaviBinding extends ViewDataBinding {
     public final ConstraintLayout linearLayout4;
     public final ListView naviListView;
 
-    protected AudiNaviBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout linearLayout42, ListView naviListView2) {
+    protected AudiNaviBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout linearLayout4, ListView naviListView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.linearLayout4 = linearLayout42;
-        this.naviListView = naviListView2;
+        this.linearLayout4 = linearLayout4;
+        this.naviListView = naviListView;
     }
 
     public static AudiNaviBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot) {
@@ -25,7 +26,7 @@ public abstract class AudiNaviBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiNaviBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AudiNaviBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_navi, root, attachToRoot, component);
+        return (AudiNaviBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_navi, root, attachToRoot, component);
     }
 
     public static AudiNaviBinding inflate(LayoutInflater inflater) {
@@ -34,7 +35,7 @@ public abstract class AudiNaviBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiNaviBinding inflate(LayoutInflater inflater, Object component) {
-        return (AudiNaviBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_navi, (ViewGroup) null, false, component);
+        return (AudiNaviBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_navi, null, false, component);
     }
 
     public static AudiNaviBinding bind(View view) {
@@ -43,6 +44,6 @@ public abstract class AudiNaviBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiNaviBinding bind(View view, Object component) {
-        return (AudiNaviBinding) bind(component, view, R.layout.audi_navi);
+        return (AudiNaviBinding) bind(component, view, C0899R.C0902layout.audi_navi);
     }
 }

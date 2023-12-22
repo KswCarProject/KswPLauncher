@@ -8,17 +8,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/* loaded from: classes.dex */
 final class ViewInjection {
-    private final int id;
-    private final Map<ListenerClass, Map<ListenerMethod, ListenerBinding>> listenerBindings = new LinkedHashMap();
-    private final Set<ViewBinding> viewBindings = new LinkedHashSet();
 
-    ViewInjection(int id2) {
-        this.id = id2;
+    /* renamed from: id */
+    private final int f66id;
+    private final Set<ViewBinding> viewBindings = new LinkedHashSet();
+    private final Map<ListenerClass, Map<ListenerMethod, ListenerBinding>> listenerBindings = new LinkedHashMap();
+
+    ViewInjection(int id) {
+        this.f66id = id;
     }
 
     public int getId() {
-        return this.id;
+        return this.f66id;
     }
 
     public Collection<ViewBinding> getViewBindings() {
@@ -37,15 +40,14 @@ final class ViewInjection {
     public void addListenerBinding(ListenerClass listener, ListenerMethod method, ListenerBinding binding) {
         Map<ListenerMethod, ListenerBinding> methods = this.listenerBindings.get(listener);
         if (methods == null) {
-            methods = new LinkedHashMap<>();
+            methods = new LinkedHashMap();
             this.listenerBindings.put(listener, methods);
         }
         ListenerBinding existing = methods.get(method);
-        if (existing == null) {
-            methods.put(method, binding);
-            return;
+        if (existing != null) {
+            throw new IllegalStateException("View " + this.f66id + " already has listener binding for " + listener.type() + "." + method.name() + " on " + existing.getDescription());
         }
-        throw new IllegalStateException("View " + this.id + " already has listener binding for " + listener.type() + "." + method.name() + " on " + existing.getDescription());
+        methods.put(method, binding);
     }
 
     public void addViewBinding(ViewBinding viewBinding) {

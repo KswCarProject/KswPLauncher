@@ -2,6 +2,7 @@ package android.support.constraint.solver.widgets.analyzer;
 
 import android.support.constraint.solver.widgets.analyzer.DependencyNode;
 
+/* loaded from: classes.dex */
 class DimensionDependency extends DependencyNode {
     public int wrapValue;
 
@@ -14,13 +15,15 @@ class DimensionDependency extends DependencyNode {
         }
     }
 
+    @Override // android.support.constraint.solver.widgets.analyzer.DependencyNode
     public void resolve(int value) {
-        if (!this.resolved) {
-            this.resolved = true;
-            this.value = value;
-            for (Dependency node : this.dependencies) {
-                node.update(node);
-            }
+        if (this.resolved) {
+            return;
+        }
+        this.resolved = true;
+        this.value = value;
+        for (Dependency node : this.dependencies) {
+            node.update(node);
         }
     }
 }

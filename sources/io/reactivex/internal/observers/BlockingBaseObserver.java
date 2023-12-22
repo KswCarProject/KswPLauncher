@@ -6,6 +6,7 @@ import io.reactivex.internal.util.BlockingHelper;
 import io.reactivex.internal.util.ExceptionHelper;
 import java.util.concurrent.CountDownLatch;
 
+/* loaded from: classes.dex */
 public abstract class BlockingBaseObserver<T> extends CountDownLatch implements Observer<T>, Disposable {
     volatile boolean cancelled;
     Throwable error;
@@ -16,6 +17,7 @@ public abstract class BlockingBaseObserver<T> extends CountDownLatch implements 
         super(1);
     }
 
+    @Override // io.reactivex.Observer
     public final void onSubscribe(Disposable d) {
         this.upstream = d;
         if (this.cancelled) {
@@ -23,10 +25,12 @@ public abstract class BlockingBaseObserver<T> extends CountDownLatch implements 
         }
     }
 
+    @Override // io.reactivex.Observer
     public final void onComplete() {
         countDown();
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public final void dispose() {
         this.cancelled = true;
         Disposable d = this.upstream;
@@ -35,6 +39,7 @@ public abstract class BlockingBaseObserver<T> extends CountDownLatch implements 
         }
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public final boolean isDisposed() {
         return this.cancelled;
     }
@@ -50,9 +55,9 @@ public abstract class BlockingBaseObserver<T> extends CountDownLatch implements 
             }
         }
         Throwable e = this.error;
-        if (e == null) {
-            return this.value;
+        if (e != null) {
+            throw ExceptionHelper.wrapOrThrow(e);
         }
-        throw ExceptionHelper.wrapOrThrow(e);
+        return this.value;
     }
 }

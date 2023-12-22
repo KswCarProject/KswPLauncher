@@ -8,29 +8,25 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.databinding.AudiMib3TwoDataClsV2;
 import com.wits.ksw.launcher.model.BcVieModel;
-import com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView;
 
+/* loaded from: classes12.dex */
 public class AudiMib3FragmentTwoV2 extends AudiMib3BaseFragmentV2 implements View.OnKeyListener {
     public static final String TAG = "AudiMib3FragmentTwo - Two";
     public static AudiMib3TwoDataClsV2 bindingTwo;
-    /* access modifiers changed from: private */
-    public AnimationDrawable animDrawApp;
-    /* access modifiers changed from: private */
-    public AnimationDrawable animDrawBrowser;
-    /* access modifiers changed from: private */
-    public AnimationDrawable animDrawDashboard;
-    /* access modifiers changed from: private */
-    public AnimationDrawable animDrawDvr;
-    /* access modifiers changed from: private */
-    public AnimationDrawable animDrawFile;
-    private View.OnFocusChangeListener mFocusChangeListener = new View.OnFocusChangeListener() {
+    private AnimationDrawable animDrawApp;
+    private AnimationDrawable animDrawBrowser;
+    private AnimationDrawable animDrawDashboard;
+    private AnimationDrawable animDrawDvr;
+    private AnimationDrawable animDrawFile;
+    private View.OnFocusChangeListener mFocusChangeListener = new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.view.audimib3v2.AudiMib3FragmentTwoV2.1
+        @Override // android.view.View.OnFocusChangeListener
         public void onFocusChange(View v, boolean hasFocus) {
             AudiMib3FragmentTwoV2.this.viewModel.clearLastSel();
             switch (v.getId()) {
-                case R.id.app_itemview /*2131296342*/:
+                case C0899R.C0901id.app_itemview /* 2131296344 */:
                     if (hasFocus) {
                         if (!AudiMib3FragmentTwoV2.this.animDrawApp.isRunning()) {
                             AudiMib3FragmentTwoV2.this.animDrawApp.start();
@@ -43,7 +39,7 @@ public class AudiMib3FragmentTwoV2 extends AudiMib3BaseFragmentV2 implements Vie
                     } else {
                         return;
                     }
-                case R.id.browser_itemview /*2131296651*/:
+                case C0899R.C0901id.browser_itemview /* 2131296677 */:
                     if (hasFocus) {
                         if (!AudiMib3FragmentTwoV2.this.animDrawBrowser.isRunning()) {
                             AudiMib3FragmentTwoV2.this.animDrawBrowser.start();
@@ -56,7 +52,7 @@ public class AudiMib3FragmentTwoV2 extends AudiMib3BaseFragmentV2 implements Vie
                     } else {
                         return;
                     }
-                case R.id.dashboard_itemview /*2131296776*/:
+                case C0899R.C0901id.dashboard_itemview /* 2131296804 */:
                     if (hasFocus) {
                         if (!AudiMib3FragmentTwoV2.this.animDrawDashboard.isRunning()) {
                             AudiMib3FragmentTwoV2.this.animDrawDashboard.start();
@@ -69,7 +65,7 @@ public class AudiMib3FragmentTwoV2 extends AudiMib3BaseFragmentV2 implements Vie
                     } else {
                         return;
                     }
-                case R.id.dvr_itemview /*2131296820*/:
+                case C0899R.C0901id.dvr_itemview /* 2131296851 */:
                     if (hasFocus) {
                         if (!AudiMib3FragmentTwoV2.this.animDrawDvr.isRunning()) {
                             AudiMib3FragmentTwoV2.this.animDrawDvr.start();
@@ -82,7 +78,7 @@ public class AudiMib3FragmentTwoV2 extends AudiMib3BaseFragmentV2 implements Vie
                     } else {
                         return;
                     }
-                case R.id.file_itemview /*2131296843*/:
+                case C0899R.C0901id.file_itemview /* 2131296874 */:
                     if (hasFocus) {
                         if (!AudiMib3FragmentTwoV2.this.animDrawFile.isRunning()) {
                             AudiMib3FragmentTwoV2.this.animDrawFile.start();
@@ -100,34 +96,35 @@ public class AudiMib3FragmentTwoV2 extends AudiMib3BaseFragmentV2 implements Vie
             }
         }
     };
-    private View.OnClickListener mItemClickListener = new View.OnClickListener() {
+    private View.OnClickListener mItemClickListener = new View.OnClickListener() { // from class: com.wits.ksw.launcher.view.audimib3v2.AudiMib3FragmentTwoV2.2
+        @Override // android.view.View.OnClickListener
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.app_itemview /*2131296342*/:
+                case C0899R.C0901id.app_itemview /* 2131296344 */:
                     BcVieModel bcVieModel = AudiMib3FragmentTwoV2.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3FragmentTwoV2.bindingTwo.appItemview;
                     AudiMib3FragmentTwoV2.setItemSelected(AudiMib3FragmentTwoV2.bindingTwo.appItemview);
                     AudiMib3FragmentTwoV2.this.viewModel.openApps(v);
                     return;
-                case R.id.browser_itemview /*2131296651*/:
+                case C0899R.C0901id.browser_itemview /* 2131296677 */:
                     BcVieModel bcVieModel2 = AudiMib3FragmentTwoV2.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3FragmentTwoV2.bindingTwo.browserItemview;
                     AudiMib3FragmentTwoV2.setItemSelected(AudiMib3FragmentTwoV2.bindingTwo.browserItemview);
                     AudiMib3FragmentTwoV2.this.viewModel.openBrowser(v);
                     return;
-                case R.id.dashboard_itemview /*2131296776*/:
+                case C0899R.C0901id.dashboard_itemview /* 2131296804 */:
                     BcVieModel bcVieModel3 = AudiMib3FragmentTwoV2.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3FragmentTwoV2.bindingTwo.dashboardItemview;
                     AudiMib3FragmentTwoV2.setItemSelected(AudiMib3FragmentTwoV2.bindingTwo.dashboardItemview);
                     AudiMib3FragmentTwoV2.this.viewModel.openDashboard(v);
                     return;
-                case R.id.dvr_itemview /*2131296820*/:
+                case C0899R.C0901id.dvr_itemview /* 2131296851 */:
                     BcVieModel bcVieModel4 = AudiMib3FragmentTwoV2.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3FragmentTwoV2.bindingTwo.dvrItemview;
                     AudiMib3FragmentTwoV2.setItemSelected(AudiMib3FragmentTwoV2.bindingTwo.dvrItemview);
                     AudiMib3FragmentTwoV2.this.viewModel.openDvr(v);
                     return;
-                case R.id.file_itemview /*2131296843*/:
+                case C0899R.C0901id.file_itemview /* 2131296874 */:
                     BcVieModel bcVieModel5 = AudiMib3FragmentTwoV2.this.viewModel;
                     BcVieModel.viewLastSel = AudiMib3FragmentTwoV2.bindingTwo.fileItemview;
                     AudiMib3FragmentTwoV2.setItemSelected(AudiMib3FragmentTwoV2.bindingTwo.fileItemview);
@@ -139,16 +136,19 @@ public class AudiMib3FragmentTwoV2 extends AudiMib3BaseFragmentV2 implements Vie
         }
     };
 
+    @Override // com.wits.ksw.launcher.view.audimib3v2.AudiMib3BaseFragmentV2, android.support.p001v4.app.Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        AudiMib3TwoDataClsV2 audiMib3TwoDataClsV2 = (AudiMib3TwoDataClsV2) DataBindingUtil.inflate(inflater, R.layout.audi_mib3_fragment_two_v2, (ViewGroup) null, false);
+        AudiMib3TwoDataClsV2 audiMib3TwoDataClsV2 = (AudiMib3TwoDataClsV2) DataBindingUtil.inflate(inflater, C0899R.C0902layout.audi_mib3_fragment_two_v2, null, false);
         bindingTwo = audiMib3TwoDataClsV2;
         return audiMib3TwoDataClsV2.getRoot();
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         bindingTwo.setViewModel(this.viewModel);
@@ -185,16 +185,11 @@ public class AudiMib3FragmentTwoV2 extends AudiMib3BaseFragmentV2 implements Vie
     }
 
     public static void setItemSelected(View view) {
-        boolean z = true;
         bindingTwo.dvrItemview.setSelected(bindingTwo.dvrItemview == view);
         bindingTwo.dashboardItemview.setSelected(bindingTwo.dashboardItemview == view);
         bindingTwo.fileItemview.setSelected(bindingTwo.fileItemview == view);
         bindingTwo.browserItemview.setSelected(bindingTwo.browserItemview == view);
-        BenzMbuxItemView benzMbuxItemView = bindingTwo.appItemview;
-        if (bindingTwo.appItemview != view) {
-            z = false;
-        }
-        benzMbuxItemView.setSelected(z);
+        bindingTwo.appItemview.setSelected(bindingTwo.appItemview == view);
     }
 
     public void setDefaultSelected() {
@@ -205,16 +200,19 @@ public class AudiMib3FragmentTwoV2 extends AudiMib3BaseFragmentV2 implements Vie
         }
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onDestroy() {
         super.onDestroy();
     }
 
+    @Override // android.support.p001v4.app.Fragment
     public void onResume() {
         super.onResume();
         Log.d("AudiMib3FragmentOne", "onResume() 2222222222 ");
         this.viewModel.refreshLastSel();
     }
 
+    @Override // android.view.View.OnKeyListener
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (event.getAction() == 0) {
             Log.i("AudiMib3FragmentTwo - Two", "onKey: " + keyCode);
@@ -233,7 +231,7 @@ public class AudiMib3FragmentTwoV2 extends AudiMib3BaseFragmentV2 implements Vie
                 }
             } else if (keyCode == 19 || keyCode == 21) {
                 if (v == bindingTwo.appItemview) {
-                    Log.i("AudiMib3FragmentTwo - Two", "onKey: 进入app判断");
+                    Log.i("AudiMib3FragmentTwo - Two", "onKey: \u8fdb\u5165app\u5224\u65ad");
                     setItemSelected(bindingTwo.browserItemview);
                     bindingTwo.browserItemview.requestFocus();
                     return true;

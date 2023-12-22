@@ -7,9 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BcVieModel;
 
+/* loaded from: classes7.dex */
 public abstract class AudiMib3FyMainLeftBinding extends ViewDataBinding {
     public final ImageView ivBtAudimib3;
     public final ImageView ivCarAudimib3;
@@ -19,15 +20,15 @@ public abstract class AudiMib3FyMainLeftBinding extends ViewDataBinding {
     @Bindable
     protected BcVieModel mViewModel;
 
-    public abstract void setViewModel(BcVieModel bcVieModel);
+    public abstract void setViewModel(BcVieModel viewModel);
 
-    protected AudiMib3FyMainLeftBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivBtAudimib32, ImageView ivCarAudimib32, ImageView ivMusicAudimib32, ImageView ivNaviAudimib32, ImageView ivSetAudimib32) {
+    protected AudiMib3FyMainLeftBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivBtAudimib3, ImageView ivCarAudimib3, ImageView ivMusicAudimib3, ImageView ivNaviAudimib3, ImageView ivSetAudimib3) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.ivBtAudimib3 = ivBtAudimib32;
-        this.ivCarAudimib3 = ivCarAudimib32;
-        this.ivMusicAudimib3 = ivMusicAudimib32;
-        this.ivNaviAudimib3 = ivNaviAudimib32;
-        this.ivSetAudimib3 = ivSetAudimib32;
+        this.ivBtAudimib3 = ivBtAudimib3;
+        this.ivCarAudimib3 = ivCarAudimib3;
+        this.ivMusicAudimib3 = ivMusicAudimib3;
+        this.ivNaviAudimib3 = ivNaviAudimib3;
+        this.ivSetAudimib3 = ivSetAudimib3;
     }
 
     public BcVieModel getViewModel() {
@@ -40,7 +41,7 @@ public abstract class AudiMib3FyMainLeftBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3FyMainLeftBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AudiMib3FyMainLeftBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_mib3_fy_main_left, root, attachToRoot, component);
+        return (AudiMib3FyMainLeftBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_mib3_fy_main_left, root, attachToRoot, component);
     }
 
     public static AudiMib3FyMainLeftBinding inflate(LayoutInflater inflater) {
@@ -49,7 +50,7 @@ public abstract class AudiMib3FyMainLeftBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3FyMainLeftBinding inflate(LayoutInflater inflater, Object component) {
-        return (AudiMib3FyMainLeftBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_mib3_fy_main_left, (ViewGroup) null, false, component);
+        return (AudiMib3FyMainLeftBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_mib3_fy_main_left, null, false, component);
     }
 
     public static AudiMib3FyMainLeftBinding bind(View view) {
@@ -58,6 +59,6 @@ public abstract class AudiMib3FyMainLeftBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3FyMainLeftBinding bind(View view, Object component) {
-        return (AudiMib3FyMainLeftBinding) bind(component, view, R.layout.audi_mib3_fy_main_left);
+        return (AudiMib3FyMainLeftBinding) bind(component, view, C0899R.C0902layout.audi_mib3_fy_main_left);
     }
 }

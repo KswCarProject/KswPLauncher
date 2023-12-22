@@ -1,5 +1,6 @@
 package com.ibm.icu.text;
 
+/* loaded from: classes.dex */
 public enum DisplayContext {
     STANDARD_NAMES(Type.DIALECT_HANDLING, 0),
     DIALECT_NAMES(Type.DIALECT_HANDLING, 1),
@@ -16,6 +17,7 @@ public enum DisplayContext {
     private final Type type;
     private final int value;
 
+    /* loaded from: classes.dex */
     public enum Type {
         DIALECT_HANDLING,
         CAPITALIZATION,
@@ -23,9 +25,9 @@ public enum DisplayContext {
         SUBSTITUTE_HANDLING
     }
 
-    private DisplayContext(Type type2, int value2) {
-        this.type = type2;
-        this.value = value2;
+    DisplayContext(Type type, int value) {
+        this.type = type;
+        this.value = value;
     }
 
     public Type type() {

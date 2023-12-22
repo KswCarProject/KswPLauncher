@@ -5,11 +5,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public final class SorterFunction<T> implements Function<List<T>, List<T>> {
     final Comparator<? super T> comparator;
 
-    public SorterFunction(Comparator<? super T> comparator2) {
-        this.comparator = comparator2;
+    @Override // io.reactivex.functions.Function
+    public /* bridge */ /* synthetic */ Object apply(Object obj) throws Exception {
+        return apply((List) ((List) obj));
+    }
+
+    public SorterFunction(Comparator<? super T> comparator) {
+        this.comparator = comparator;
     }
 
     public List<T> apply(List<T> t) throws Exception {

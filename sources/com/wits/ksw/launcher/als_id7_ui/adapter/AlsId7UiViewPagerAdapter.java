@@ -1,27 +1,33 @@
 package com.wits.ksw.launcher.als_id7_ui.adapter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.p001v4.app.Fragment;
+import android.support.p001v4.app.FragmentManager;
+import android.support.p001v4.app.FragmentPagerAdapter;
 import com.wits.ksw.launcher.als_id7_ui.fragment.AlsId7UiCarFragment;
 import com.wits.ksw.launcher.als_id7_ui.fragment.AlsId7UiMediaFragment;
 import com.wits.ksw.launcher.als_id7_ui.fragment.AlsId7UiNaviFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes8.dex */
 public class AlsId7UiViewPagerAdapter extends FragmentPagerAdapter {
-    private List<Fragment> fragmentList = new ArrayList();
-    private Fragment musicFragment = new AlsId7UiMediaFragment();
-    private Fragment naviFragment = new AlsId7UiNaviFragment();
-    private Fragment setFragment = new AlsId7UiCarFragment();
+    private List<Fragment> fragmentList;
+    private Fragment musicFragment;
+    private Fragment naviFragment;
+    private Fragment setFragment;
 
     public AlsId7UiViewPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
+        this.fragmentList = new ArrayList();
+        this.naviFragment = new AlsId7UiNaviFragment();
+        this.musicFragment = new AlsId7UiMediaFragment();
+        this.setFragment = new AlsId7UiCarFragment();
         this.fragmentList.add(this.naviFragment);
         this.fragmentList.add(this.musicFragment);
         this.fragmentList.add(this.setFragment);
     }
 
+    @Override // android.support.p001v4.app.FragmentPagerAdapter
     public Fragment getItem(int i) {
         List<Fragment> list = this.fragmentList;
         if (list == null) {
@@ -30,6 +36,7 @@ public class AlsId7UiViewPagerAdapter extends FragmentPagerAdapter {
         return list.get(i);
     }
 
+    @Override // android.support.p001v4.view.PagerAdapter
     public int getCount() {
         List<Fragment> list = this.fragmentList;
         if (list == null) {

@@ -1,10 +1,10 @@
 package android.databinding.adapters;
 
-import android.content.Context;
-import android.support.v7.widget.SwitchCompat;
+import android.support.p004v7.widget.SwitchCompat;
 
+/* loaded from: classes.dex */
 public class SwitchCompatBindingAdapter {
     public static void setSwitchTextAppearance(SwitchCompat view, int value) {
-        view.setSwitchTextAppearance((Context) null, value);
+        view.setSwitchTextAppearance(null, value);
     }
 }

@@ -13,44 +13,48 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ObservableMergeWithSingle<T> extends AbstractObservableWithUpstream<T, T> {
     final SingleSource<? extends T> other;
 
-    public ObservableMergeWithSingle(Observable<T> source, SingleSource<? extends T> other2) {
+    public ObservableMergeWithSingle(Observable<T> source, SingleSource<? extends T> other) {
         super(source);
-        this.other = other2;
+        this.other = other;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Observer<? super T> observer) {
+    @Override // io.reactivex.Observable
+    protected void subscribeActual(Observer<? super T> observer) {
         MergeWithObserver<T> parent = new MergeWithObserver<>(observer);
         observer.onSubscribe(parent);
         this.source.subscribe(parent);
         this.other.subscribe(parent.otherObserver);
     }
 
+    /* loaded from: classes.dex */
     static final class MergeWithObserver<T> extends AtomicInteger implements Observer<T>, Disposable {
         static final int OTHER_STATE_CONSUMED_OR_EMPTY = 2;
         static final int OTHER_STATE_HAS_VALUE = 1;
         private static final long serialVersionUID = -4592979584110982903L;
         volatile boolean disposed;
         final Observer<? super T> downstream;
-        final AtomicThrowable error = new AtomicThrowable();
-        final AtomicReference<Disposable> mainDisposable = new AtomicReference<>();
         volatile boolean mainDone;
-        final OtherObserver<T> otherObserver = new OtherObserver<>(this);
         volatile int otherState;
         volatile SimplePlainQueue<T> queue;
         T singleItem;
+        final AtomicReference<Disposable> mainDisposable = new AtomicReference<>();
+        final OtherObserver<T> otherObserver = new OtherObserver<>(this);
+        final AtomicThrowable error = new AtomicThrowable();
 
-        MergeWithObserver(Observer<? super T> downstream2) {
-            this.downstream = downstream2;
+        MergeWithObserver(Observer<? super T> downstream) {
+            this.downstream = downstream;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             DisposableHelper.setOnce(this.mainDisposable, d);
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             if (compareAndSet(0, 1)) {
                 this.downstream.onNext(t);
@@ -58,7 +62,8 @@ public final class ObservableMergeWithSingle<T> extends AbstractObservableWithUp
                     return;
                 }
             } else {
-                getOrCreateQueue().offer(t);
+                SimplePlainQueue<T> q = getOrCreateQueue();
+                q.offer(t);
                 if (getAndIncrement() != 0) {
                     return;
                 }
@@ -66,6 +71,7 @@ public final class ObservableMergeWithSingle<T> extends AbstractObservableWithUp
             drainLoop();
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable ex) {
             if (this.error.addThrowable(ex)) {
                 DisposableHelper.dispose(this.otherObserver);
@@ -75,15 +81,18 @@ public final class ObservableMergeWithSingle<T> extends AbstractObservableWithUp
             RxJavaPlugins.onError(ex);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             this.mainDone = true;
             drain();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return DisposableHelper.isDisposed(this.mainDisposable.get());
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.disposed = true;
             DisposableHelper.dispose(this.mainDisposable);
@@ -94,8 +103,7 @@ public final class ObservableMergeWithSingle<T> extends AbstractObservableWithUp
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void otherSuccess(T value) {
+        void otherSuccess(T value) {
             if (compareAndSet(0, 1)) {
                 this.downstream.onNext(value);
                 this.otherState = 2;
@@ -109,8 +117,7 @@ public final class ObservableMergeWithSingle<T> extends AbstractObservableWithUp
             drainLoop();
         }
 
-        /* access modifiers changed from: package-private */
-        public void otherError(Throwable ex) {
+        void otherError(Throwable ex) {
             if (this.error.addThrowable(ex)) {
                 DisposableHelper.dispose(this.mainDisposable);
                 drain();
@@ -119,26 +126,23 @@ public final class ObservableMergeWithSingle<T> extends AbstractObservableWithUp
             RxJavaPlugins.onError(ex);
         }
 
-        /* access modifiers changed from: package-private */
-        public SimplePlainQueue<T> getOrCreateQueue() {
+        SimplePlainQueue<T> getOrCreateQueue() {
             SimplePlainQueue<T> q = this.queue;
-            if (q != null) {
-                return q;
+            if (q == null) {
+                SimplePlainQueue<T> q2 = new SpscLinkedArrayQueue<>(Observable.bufferSize());
+                this.queue = q2;
+                return q2;
             }
-            SimplePlainQueue<T> q2 = new SpscLinkedArrayQueue<>(Observable.bufferSize());
-            this.queue = q2;
-            return q2;
+            return q;
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
+        void drain() {
             if (getAndIncrement() == 0) {
                 drainLoop();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drainLoop() {
+        void drainLoop() {
             Observer<? super T> actual = this.downstream;
             int missed = 1;
             while (!this.disposed) {
@@ -149,53 +153,53 @@ public final class ObservableMergeWithSingle<T> extends AbstractObservableWithUp
                     return;
                 }
                 int os = this.otherState;
-                boolean empty = true;
                 if (os == 1) {
-                    T v = this.singleItem;
                     this.singleItem = null;
                     this.otherState = 2;
                     os = 2;
-                    actual.onNext(v);
+                    actual.onNext((T) this.singleItem);
                 }
                 boolean d = this.mainDone;
                 SimplePlainQueue<T> q = this.queue;
-                T v2 = q != null ? q.poll() : null;
-                if (v2 != null) {
-                    empty = false;
-                }
+                T poll = q != null ? q.poll() : (Object) null;
+                boolean empty = poll == null;
                 if (d && empty && os == 2) {
                     this.queue = null;
                     actual.onComplete();
                     return;
-                } else if (empty) {
+                } else if (!empty) {
+                    actual.onNext(poll);
+                } else {
                     missed = addAndGet(-missed);
                     if (missed == 0) {
                         return;
                     }
-                } else {
-                    actual.onNext(v2);
                 }
             }
             this.singleItem = null;
             this.queue = null;
         }
 
+        /* loaded from: classes.dex */
         static final class OtherObserver<T> extends AtomicReference<Disposable> implements SingleObserver<T> {
             private static final long serialVersionUID = -2935427570954647017L;
             final MergeWithObserver<T> parent;
 
-            OtherObserver(MergeWithObserver<T> parent2) {
-                this.parent = parent2;
+            OtherObserver(MergeWithObserver<T> parent) {
+                this.parent = parent;
             }
 
+            @Override // io.reactivex.SingleObserver
             public void onSubscribe(Disposable d) {
                 DisposableHelper.setOnce(this, d);
             }
 
+            @Override // io.reactivex.SingleObserver
             public void onSuccess(T t) {
                 this.parent.otherSuccess(t);
             }
 
+            @Override // io.reactivex.SingleObserver
             public void onError(Throwable e) {
                 this.parent.otherError(e);
             }

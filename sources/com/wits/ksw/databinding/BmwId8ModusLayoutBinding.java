@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class BmwId8ModusLayoutBinding extends ViewDataBinding {
     public final Id8LauncherLeftBarBinding llLeftContainer;
     public final RelativeLayout llModusEfficient;
@@ -25,19 +26,19 @@ public abstract class BmwId8ModusLayoutBinding extends ViewDataBinding {
     public final RelativeLayout rlModusContainer;
     public final TextView tvChangeModusTitle;
 
-    public abstract void setLauncherViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setLauncherViewModel(LauncherViewModel LauncherViewModel);
 
-    protected BmwId8ModusLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, Id8LauncherLeftBarBinding llLeftContainer2, RelativeLayout llModusEfficient2, ImageView llModusEfficientImg2, RelativeLayout llModusPersonal2, ImageView llModusPersonalImg2, RelativeLayout llModusSport2, ImageView llModusSportImg2, RelativeLayout rlModusContainer2, TextView tvChangeModusTitle2) {
+    protected BmwId8ModusLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, Id8LauncherLeftBarBinding llLeftContainer, RelativeLayout llModusEfficient, ImageView llModusEfficientImg, RelativeLayout llModusPersonal, ImageView llModusPersonalImg, RelativeLayout llModusSport, ImageView llModusSportImg, RelativeLayout rlModusContainer, TextView tvChangeModusTitle) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.llLeftContainer = llLeftContainer2;
-        this.llModusEfficient = llModusEfficient2;
-        this.llModusEfficientImg = llModusEfficientImg2;
-        this.llModusPersonal = llModusPersonal2;
-        this.llModusPersonalImg = llModusPersonalImg2;
-        this.llModusSport = llModusSport2;
-        this.llModusSportImg = llModusSportImg2;
-        this.rlModusContainer = rlModusContainer2;
-        this.tvChangeModusTitle = tvChangeModusTitle2;
+        this.llLeftContainer = llLeftContainer;
+        this.llModusEfficient = llModusEfficient;
+        this.llModusEfficientImg = llModusEfficientImg;
+        this.llModusPersonal = llModusPersonal;
+        this.llModusPersonalImg = llModusPersonalImg;
+        this.llModusSport = llModusSport;
+        this.llModusSportImg = llModusSportImg;
+        this.rlModusContainer = rlModusContainer;
+        this.tvChangeModusTitle = tvChangeModusTitle;
     }
 
     public LauncherViewModel getLauncherViewModel() {
@@ -50,7 +51,7 @@ public abstract class BmwId8ModusLayoutBinding extends ViewDataBinding {
 
     @Deprecated
     public static BmwId8ModusLayoutBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BmwId8ModusLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_id8_modus_layout, root, attachToRoot, component);
+        return (BmwId8ModusLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_id8_modus_layout, root, attachToRoot, component);
     }
 
     public static BmwId8ModusLayoutBinding inflate(LayoutInflater inflater) {
@@ -59,7 +60,7 @@ public abstract class BmwId8ModusLayoutBinding extends ViewDataBinding {
 
     @Deprecated
     public static BmwId8ModusLayoutBinding inflate(LayoutInflater inflater, Object component) {
-        return (BmwId8ModusLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_id8_modus_layout, (ViewGroup) null, false, component);
+        return (BmwId8ModusLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_id8_modus_layout, null, false, component);
     }
 
     public static BmwId8ModusLayoutBinding bind(View view) {
@@ -68,6 +69,6 @@ public abstract class BmwId8ModusLayoutBinding extends ViewDataBinding {
 
     @Deprecated
     public static BmwId8ModusLayoutBinding bind(View view, Object component) {
-        return (BmwId8ModusLayoutBinding) bind(component, view, R.layout.activity_id8_modus_layout);
+        return (BmwId8ModusLayoutBinding) bind(component, view, C0899R.C0902layout.activity_id8_modus_layout);
     }
 }

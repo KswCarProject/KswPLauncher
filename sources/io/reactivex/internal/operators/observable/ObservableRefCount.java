@@ -7,34 +7,38 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.internal.disposables.ResettableConnectable;
+import io.reactivex.internal.disposables.SequentialDisposable;
 import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ObservableRefCount<T> extends Observable<T> {
     RefConnection connection;
-    final int n;
+
+    /* renamed from: n */
+    final int f321n;
     final Scheduler scheduler;
     final ConnectableObservable<T> source;
     final long timeout;
     final TimeUnit unit;
 
-    public ObservableRefCount(ConnectableObservable<T> source2) {
-        this(source2, 1, 0, TimeUnit.NANOSECONDS, (Scheduler) null);
+    public ObservableRefCount(ConnectableObservable<T> source) {
+        this(source, 1, 0L, TimeUnit.NANOSECONDS, null);
     }
 
-    public ObservableRefCount(ConnectableObservable<T> source2, int n2, long timeout2, TimeUnit unit2, Scheduler scheduler2) {
-        this.source = source2;
-        this.n = n2;
-        this.timeout = timeout2;
-        this.unit = unit2;
-        this.scheduler = scheduler2;
+    public ObservableRefCount(ConnectableObservable<T> source, int n, long timeout, TimeUnit unit, Scheduler scheduler) {
+        this.source = source;
+        this.f321n = n;
+        this.timeout = timeout;
+        this.unit = unit;
+        this.scheduler = scheduler;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Observer<? super T> observer) {
+    @Override // io.reactivex.Observable
+    protected void subscribeActual(Observer<? super T> observer) {
         RefConnection conn;
         boolean connect = false;
         synchronized (this) {
@@ -48,7 +52,7 @@ public final class ObservableRefCount<T> extends Observable<T> {
                 conn.timer.dispose();
             }
             conn.subscriberCount = c + 1;
-            if (!conn.connected && 1 + c == ((long) this.n)) {
+            if (!conn.connected && 1 + c == this.f321n) {
                 connect = true;
                 conn.connected = true;
             }
@@ -59,64 +63,26 @@ public final class ObservableRefCount<T> extends Observable<T> {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    /* JADX WARNING: Code restructure failed: missing block: B:24:0x003e, code lost:
-        return;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void cancel(io.reactivex.internal.operators.observable.ObservableRefCount.RefConnection r7) {
-        /*
-            r6 = this;
-            monitor-enter(r6)
-            io.reactivex.internal.operators.observable.ObservableRefCount$RefConnection r0 = r6.connection     // Catch:{ all -> 0x003f }
-            if (r0 == 0) goto L_0x003d
-            if (r0 == r7) goto L_0x0008
-            goto L_0x003d
-        L_0x0008:
-            long r0 = r7.subscriberCount     // Catch:{ all -> 0x003f }
-            r2 = 1
-            long r0 = r0 - r2
-            r7.subscriberCount = r0     // Catch:{ all -> 0x003f }
-            r2 = 0
-            int r4 = (r0 > r2 ? 1 : (r0 == r2 ? 0 : -1))
-            if (r4 != 0) goto L_0x003b
-            boolean r4 = r7.connected     // Catch:{ all -> 0x003f }
-            if (r4 != 0) goto L_0x001a
-            goto L_0x003b
-        L_0x001a:
-            long r4 = r6.timeout     // Catch:{ all -> 0x003f }
-            int r2 = (r4 > r2 ? 1 : (r4 == r2 ? 0 : -1))
-            if (r2 != 0) goto L_0x0025
-            r6.timeout(r7)     // Catch:{ all -> 0x003f }
-            monitor-exit(r6)     // Catch:{ all -> 0x003f }
-            return
-        L_0x0025:
-            io.reactivex.internal.disposables.SequentialDisposable r2 = new io.reactivex.internal.disposables.SequentialDisposable     // Catch:{ all -> 0x003f }
-            r2.<init>()     // Catch:{ all -> 0x003f }
-            r7.timer = r2     // Catch:{ all -> 0x003f }
-            monitor-exit(r6)     // Catch:{ all -> 0x003f }
-            io.reactivex.Scheduler r0 = r6.scheduler
-            long r3 = r6.timeout
-            java.util.concurrent.TimeUnit r1 = r6.unit
-            io.reactivex.disposables.Disposable r0 = r0.scheduleDirect(r7, r3, r1)
-            r2.replace(r0)
-            return
-        L_0x003b:
-            monitor-exit(r6)     // Catch:{ all -> 0x003f }
-            return
-        L_0x003d:
-            monitor-exit(r6)     // Catch:{ all -> 0x003f }
-            return
-        L_0x003f:
-            r0 = move-exception
-            monitor-exit(r6)     // Catch:{ all -> 0x003f }
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.operators.observable.ObservableRefCount.cancel(io.reactivex.internal.operators.observable.ObservableRefCount$RefConnection):void");
+    void cancel(RefConnection rc) {
+        synchronized (this) {
+            RefConnection refConnection = this.connection;
+            if (refConnection != null && refConnection == rc) {
+                long c = rc.subscriberCount - 1;
+                rc.subscriberCount = c;
+                if (c == 0 && rc.connected) {
+                    if (this.timeout == 0) {
+                        timeout(rc);
+                        return;
+                    }
+                    SequentialDisposable sd = new SequentialDisposable();
+                    rc.timer = sd;
+                    sd.replace(this.scheduler.scheduleDirect(rc, this.timeout, this.unit));
+                }
+            }
+        }
     }
 
-    /* access modifiers changed from: package-private */
-    public void terminated(RefConnection rc) {
+    void terminated(RefConnection rc) {
         synchronized (this) {
             if (this.source instanceof ObservablePublishClassic) {
                 RefConnection refConnection = this.connection;
@@ -144,30 +110,27 @@ public final class ObservableRefCount<T> extends Observable<T> {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void clearTimer(RefConnection rc) {
+    void clearTimer(RefConnection rc) {
         if (rc.timer != null) {
             rc.timer.dispose();
             rc.timer = null;
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void reset(RefConnection rc) {
+    void reset(RefConnection rc) {
         ConnectableObservable<T> connectableObservable = this.source;
         if (connectableObservable instanceof Disposable) {
             ((Disposable) connectableObservable).dispose();
         } else if (connectableObservable instanceof ResettableConnectable) {
-            ((ResettableConnectable) connectableObservable).resetIf((Disposable) rc.get());
+            ((ResettableConnectable) connectableObservable).resetIf(rc.get());
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void timeout(RefConnection rc) {
+    void timeout(RefConnection rc) {
         synchronized (this) {
             if (rc.subscriberCount == 0 && rc == this.connection) {
                 this.connection = null;
-                Disposable connectionObject = (Disposable) rc.get();
+                Disposable connectionObject = rc.get();
                 DisposableHelper.dispose(rc);
                 ConnectableObservable<T> connectableObservable = this.source;
                 if (connectableObservable instanceof Disposable) {
@@ -183,6 +146,7 @@ public final class ObservableRefCount<T> extends Observable<T> {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class RefConnection extends AtomicReference<Disposable> implements Runnable, Consumer<Disposable> {
         private static final long serialVersionUID = -4552101107598366241L;
         boolean connected;
@@ -191,14 +155,16 @@ public final class ObservableRefCount<T> extends Observable<T> {
         long subscriberCount;
         Disposable timer;
 
-        RefConnection(ObservableRefCount<?> parent2) {
-            this.parent = parent2;
+        RefConnection(ObservableRefCount<?> parent) {
+            this.parent = parent;
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             this.parent.timeout(this);
         }
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(Disposable t) throws Exception {
             DisposableHelper.replace(this, t);
             synchronized (this.parent) {
@@ -209,6 +175,7 @@ public final class ObservableRefCount<T> extends Observable<T> {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class RefCountObserver<T> extends AtomicBoolean implements Observer<T>, Disposable {
         private static final long serialVersionUID = -7419642935409022375L;
         final RefConnection connection;
@@ -216,16 +183,18 @@ public final class ObservableRefCount<T> extends Observable<T> {
         final ObservableRefCount<T> parent;
         Disposable upstream;
 
-        RefCountObserver(Observer<? super T> downstream2, ObservableRefCount<T> parent2, RefConnection connection2) {
-            this.downstream = downstream2;
-            this.parent = parent2;
-            this.connection = connection2;
+        RefCountObserver(Observer<? super T> downstream, ObservableRefCount<T> parent, RefConnection connection) {
+            this.downstream = downstream;
+            this.parent = parent;
+            this.connection = connection;
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             this.downstream.onNext(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             if (compareAndSet(false, true)) {
                 this.parent.terminated(this.connection);
@@ -235,6 +204,7 @@ public final class ObservableRefCount<T> extends Observable<T> {
             RxJavaPlugins.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             if (compareAndSet(false, true)) {
                 this.parent.terminated(this.connection);
@@ -242,6 +212,7 @@ public final class ObservableRefCount<T> extends Observable<T> {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
             if (compareAndSet(false, true)) {
@@ -249,10 +220,12 @@ public final class ObservableRefCount<T> extends Observable<T> {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;

@@ -6,6 +6,7 @@ import java.lang.annotation.Target;
 
 @Target({})
 @Retention(RetentionPolicy.CLASS)
+/* loaded from: classes.dex */
 public @interface Index {
     String name() default "";
 

@@ -18,25 +18,27 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.ArrayDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/* loaded from: classes.dex */
 public final class ObservableConcatMapEager<T, R> extends AbstractObservableWithUpstream<T, R> {
     final ErrorMode errorMode;
     final Function<? super T, ? extends ObservableSource<? extends R>> mapper;
     final int maxConcurrency;
     final int prefetch;
 
-    public ObservableConcatMapEager(ObservableSource<T> source, Function<? super T, ? extends ObservableSource<? extends R>> mapper2, ErrorMode errorMode2, int maxConcurrency2, int prefetch2) {
+    public ObservableConcatMapEager(ObservableSource<T> source, Function<? super T, ? extends ObservableSource<? extends R>> mapper, ErrorMode errorMode, int maxConcurrency, int prefetch) {
         super(source);
-        this.mapper = mapper2;
-        this.errorMode = errorMode2;
-        this.maxConcurrency = maxConcurrency2;
-        this.prefetch = prefetch2;
+        this.mapper = mapper;
+        this.errorMode = errorMode;
+        this.maxConcurrency = maxConcurrency;
+        this.prefetch = prefetch;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Observer<? super R> observer) {
+    @Override // io.reactivex.Observable
+    protected void subscribeActual(Observer<? super R> observer) {
         this.source.subscribe(new ConcatMapEagerMainObserver(observer, this.mapper, this.maxConcurrency, this.prefetch, this.errorMode));
     }
 
+    /* loaded from: classes.dex */
     static final class ConcatMapEagerMainObserver<T, R> extends AtomicInteger implements Observer<T>, Disposable, InnerQueuedObserverSupport<R> {
         private static final long serialVersionUID = 8080567949447303262L;
         int activeCount;
@@ -44,24 +46,25 @@ public final class ObservableConcatMapEager<T, R> extends AbstractObservableWith
         InnerQueuedObserver<R> current;
         volatile boolean done;
         final Observer<? super R> downstream;
-        final AtomicThrowable error = new AtomicThrowable();
         final ErrorMode errorMode;
         final Function<? super T, ? extends ObservableSource<? extends R>> mapper;
         final int maxConcurrency;
-        final ArrayDeque<InnerQueuedObserver<R>> observers = new ArrayDeque<>();
         final int prefetch;
         SimpleQueue<T> queue;
         int sourceMode;
         Disposable upstream;
+        final AtomicThrowable error = new AtomicThrowable();
+        final ArrayDeque<InnerQueuedObserver<R>> observers = new ArrayDeque<>();
 
-        ConcatMapEagerMainObserver(Observer<? super R> actual, Function<? super T, ? extends ObservableSource<? extends R>> mapper2, int maxConcurrency2, int prefetch2, ErrorMode errorMode2) {
+        ConcatMapEagerMainObserver(Observer<? super R> actual, Function<? super T, ? extends ObservableSource<? extends R>> mapper, int maxConcurrency, int prefetch, ErrorMode errorMode) {
             this.downstream = actual;
-            this.mapper = mapper2;
-            this.maxConcurrency = maxConcurrency2;
-            this.prefetch = prefetch2;
-            this.errorMode = errorMode2;
+            this.mapper = mapper;
+            this.maxConcurrency = maxConcurrency;
+            this.prefetch = prefetch;
+            this.errorMode = errorMode;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -87,6 +90,7 @@ public final class ObservableConcatMapEager<T, R> extends AbstractObservableWith
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T value) {
             if (this.sourceMode == 0) {
                 this.queue.offer(value);
@@ -94,6 +98,7 @@ public final class ObservableConcatMapEager<T, R> extends AbstractObservableWith
             drain();
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable e) {
             if (this.error.addThrowable(e)) {
                 this.done = true;
@@ -103,21 +108,23 @@ public final class ObservableConcatMapEager<T, R> extends AbstractObservableWith
             RxJavaPlugins.onError(e);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             this.done = true;
             drain();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
-            if (!this.cancelled) {
-                this.cancelled = true;
-                this.upstream.dispose();
-                drainAndDispose();
+            if (this.cancelled) {
+                return;
             }
+            this.cancelled = true;
+            this.upstream.dispose();
+            drainAndDispose();
         }
 
-        /* access modifiers changed from: package-private */
-        public void drainAndDispose() {
+        void drainAndDispose() {
             if (getAndIncrement() == 0) {
                 do {
                     this.queue.clear();
@@ -126,31 +133,32 @@ public final class ObservableConcatMapEager<T, R> extends AbstractObservableWith
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.cancelled;
         }
 
-        /* access modifiers changed from: package-private */
-        public void disposeAll() {
+        void disposeAll() {
             InnerQueuedObserver<R> inner = this.current;
             if (inner != null) {
                 inner.dispose();
             }
             while (true) {
                 InnerQueuedObserver<R> inner2 = this.observers.poll();
-                if (inner2 != null) {
-                    inner2.dispose();
-                } else {
+                if (inner2 == null) {
                     return;
                 }
+                inner2.dispose();
             }
         }
 
+        @Override // io.reactivex.internal.observers.InnerQueuedObserverSupport
         public void innerNext(InnerQueuedObserver<R> inner, R value) {
             inner.queue().offer(value);
             drain();
         }
 
+        @Override // io.reactivex.internal.observers.InnerQueuedObserverSupport
         public void innerError(InnerQueuedObserver<R> inner, Throwable e) {
             if (this.error.addThrowable(e)) {
                 if (this.errorMode == ErrorMode.IMMEDIATE) {
@@ -163,125 +171,125 @@ public final class ObservableConcatMapEager<T, R> extends AbstractObservableWith
             RxJavaPlugins.onError(e);
         }
 
+        @Override // io.reactivex.internal.observers.InnerQueuedObserverSupport
         public void innerComplete(InnerQueuedObserver<R> inner) {
             inner.setDone();
             drain();
         }
 
+        @Override // io.reactivex.internal.observers.InnerQueuedObserverSupport
         public void drain() {
-            if (getAndIncrement() == 0) {
-                int missed = 1;
-                SimpleQueue<T> q = this.queue;
-                ArrayDeque<InnerQueuedObserver<R>> observers2 = this.observers;
-                Observer<? super R> a = this.downstream;
-                ErrorMode errorMode2 = this.errorMode;
-                while (true) {
-                    int ac = this.activeCount;
-                    while (true) {
-                        if (ac == this.maxConcurrency) {
-                            break;
-                        } else if (this.cancelled) {
+            R w;
+            boolean empty;
+            if (getAndIncrement() != 0) {
+                return;
+            }
+            int missed = 1;
+            SimpleQueue<T> q = this.queue;
+            ArrayDeque<InnerQueuedObserver<R>> observers = this.observers;
+            Observer<? super R> a = this.downstream;
+            ErrorMode errorMode = this.errorMode;
+            while (true) {
+                int ac = this.activeCount;
+                while (ac != this.maxConcurrency) {
+                    if (this.cancelled) {
+                        q.clear();
+                        disposeAll();
+                        return;
+                    } else if (errorMode == ErrorMode.IMMEDIATE && this.error.get() != null) {
+                        q.clear();
+                        disposeAll();
+                        a.onError(this.error.terminate());
+                        return;
+                    } else {
+                        try {
+                            T v = q.poll();
+                            if (v == null) {
+                                break;
+                            }
+                            ObservableSource<? extends R> source = (ObservableSource) ObjectHelper.requireNonNull(this.mapper.apply(v), "The mapper returned a null ObservableSource");
+                            InnerQueuedObserver<R> inner = new InnerQueuedObserver<>(this, this.prefetch);
+                            observers.offer(inner);
+                            source.subscribe(inner);
+                            ac++;
+                        } catch (Throwable ex) {
+                            Exceptions.throwIfFatal(ex);
+                            this.upstream.dispose();
                             q.clear();
                             disposeAll();
+                            this.error.addThrowable(ex);
+                            a.onError(this.error.terminate());
                             return;
-                        } else if (errorMode2 != ErrorMode.IMMEDIATE || ((Throwable) this.error.get()) == null) {
-                            try {
-                                T v = q.poll();
-                                if (v == null) {
-                                    break;
-                                }
-                                ObservableSource<? extends R> source = (ObservableSource) ObjectHelper.requireNonNull(this.mapper.apply(v), "The mapper returned a null ObservableSource");
-                                InnerQueuedObserver<R> inner = new InnerQueuedObserver<>(this, this.prefetch);
-                                observers2.offer(inner);
-                                source.subscribe(inner);
-                                ac++;
-                            } catch (Throwable ex) {
-                                Exceptions.throwIfFatal(ex);
-                                this.upstream.dispose();
-                                q.clear();
-                                disposeAll();
-                                this.error.addThrowable(ex);
-                                a.onError(this.error.terminate());
-                                return;
-                            }
-                        } else {
+                        }
+                    }
+                }
+                this.activeCount = ac;
+                if (this.cancelled) {
+                    q.clear();
+                    disposeAll();
+                    return;
+                } else if (errorMode == ErrorMode.IMMEDIATE && this.error.get() != null) {
+                    q.clear();
+                    disposeAll();
+                    a.onError(this.error.terminate());
+                    return;
+                } else {
+                    InnerQueuedObserver<R> active = this.current;
+                    if (active == null) {
+                        if (errorMode == ErrorMode.BOUNDARY && this.error.get() != null) {
                             q.clear();
                             disposeAll();
                             a.onError(this.error.terminate());
                             return;
                         }
-                    }
-                    this.activeCount = ac;
-                    if (this.cancelled) {
-                        q.clear();
-                        disposeAll();
-                        return;
-                    } else if (errorMode2 != ErrorMode.IMMEDIATE || ((Throwable) this.error.get()) == null) {
-                        InnerQueuedObserver<R> active = this.current;
-                        if (active == null) {
-                            if (errorMode2 != ErrorMode.BOUNDARY || ((Throwable) this.error.get()) == null) {
-                                boolean d = this.done;
-                                active = observers2.poll();
-                                boolean empty = active == null;
-                                if (!d || !empty) {
-                                    if (!empty) {
-                                        this.current = active;
-                                    }
-                                } else if (((Throwable) this.error.get()) != null) {
-                                    q.clear();
-                                    disposeAll();
-                                    a.onError(this.error.terminate());
-                                    return;
-                                } else {
-                                    a.onComplete();
-                                    return;
-                                }
-                            } else {
+                        boolean d = this.done;
+                        active = observers.poll();
+                        boolean empty2 = active == null;
+                        if (d && empty2) {
+                            if (this.error.get() != null) {
                                 q.clear();
                                 disposeAll();
                                 a.onError(this.error.terminate());
                                 return;
                             }
+                            a.onComplete();
+                            return;
+                        } else if (!empty2) {
+                            this.current = active;
                         }
-                        if (active != null) {
-                            SimpleQueue<R> aq = active.queue();
-                            while (!this.cancelled) {
-                                boolean d2 = active.isDone();
-                                if (errorMode2 != ErrorMode.IMMEDIATE || ((Throwable) this.error.get()) == null) {
-                                    try {
-                                        R w = aq.poll();
-                                        boolean empty2 = w == null;
-                                        if (d2 && empty2) {
-                                            this.current = null;
-                                            this.activeCount--;
-                                        } else if (!empty2) {
-                                            a.onNext(w);
-                                        }
-                                    } catch (Throwable ex2) {
-                                        Exceptions.throwIfFatal(ex2);
-                                        this.error.addThrowable(ex2);
-                                        this.current = null;
-                                        this.activeCount--;
-                                    }
-                                } else {
-                                    q.clear();
-                                    disposeAll();
-                                    a.onError(this.error.terminate());
-                                    return;
-                                }
+                    }
+                    if (active != null) {
+                        SimpleQueue<R> aq = active.queue();
+                        while (!this.cancelled) {
+                            boolean d2 = active.isDone();
+                            if (errorMode == ErrorMode.IMMEDIATE && this.error.get() != null) {
+                                q.clear();
+                                disposeAll();
+                                a.onError(this.error.terminate());
+                                return;
                             }
-                            q.clear();
-                            disposeAll();
-                            return;
+                            try {
+                                w = aq.poll();
+                                empty = w == null;
+                            } catch (Throwable ex2) {
+                                Exceptions.throwIfFatal(ex2);
+                                this.error.addThrowable(ex2);
+                                this.current = null;
+                                this.activeCount--;
+                            }
+                            if (d2 && empty) {
+                                this.current = null;
+                                this.activeCount--;
+                            } else if (!empty) {
+                                a.onNext(w);
+                            }
                         }
-                        missed = addAndGet(-missed);
-                        if (missed == 0) {
-                            return;
-                        }
-                    } else {
                         q.clear();
                         disposeAll();
-                        a.onError(this.error.terminate());
+                        return;
+                    }
+                    missed = addAndGet(-missed);
+                    if (missed == 0) {
                         return;
                     }
                 }

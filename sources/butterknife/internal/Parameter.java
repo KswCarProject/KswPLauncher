@@ -1,22 +1,21 @@
 package butterknife.internal;
 
+/* loaded from: classes.dex */
 final class Parameter {
     static final Parameter[] NONE = new Parameter[0];
     private final int listenerPosition;
     private final String type;
 
-    Parameter(int listenerPosition2, String type2) {
-        this.listenerPosition = listenerPosition2;
-        this.type = type2;
+    Parameter(int listenerPosition, String type) {
+        this.listenerPosition = listenerPosition;
+        this.type = type;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getListenerPosition() {
+    int getListenerPosition() {
         return this.listenerPosition;
     }
 
-    /* access modifiers changed from: package-private */
-    public String getType() {
+    String getType() {
         return this.type;
     }
 }

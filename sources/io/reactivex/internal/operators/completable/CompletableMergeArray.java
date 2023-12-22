@@ -9,54 +9,56 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/* loaded from: classes.dex */
 public final class CompletableMergeArray extends Completable {
     final CompletableSource[] sources;
 
-    public CompletableMergeArray(CompletableSource[] sources2) {
-        this.sources = sources2;
+    public CompletableMergeArray(CompletableSource[] sources) {
+        this.sources = sources;
     }
 
+    @Override // io.reactivex.Completable
     public void subscribeActual(CompletableObserver observer) {
+        CompletableSource[] completableSourceArr;
         CompositeDisposable set = new CompositeDisposable();
-        InnerCompletableObserver shared = new InnerCompletableObserver(observer, new AtomicBoolean(), set, this.sources.length + 1);
+        AtomicBoolean once = new AtomicBoolean();
+        InnerCompletableObserver shared = new InnerCompletableObserver(observer, once, set, this.sources.length + 1);
         observer.onSubscribe(set);
-        CompletableSource[] completableSourceArr = this.sources;
-        int length = completableSourceArr.length;
-        int i = 0;
-        while (i < length) {
-            CompletableSource c = completableSourceArr[i];
-            if (!set.isDisposed()) {
-                if (c == null) {
-                    set.dispose();
-                    shared.onError(new NullPointerException("A completable source is null"));
-                    return;
-                }
-                c.subscribe(shared);
-                i++;
-            } else {
+        for (CompletableSource c : this.sources) {
+            if (set.isDisposed()) {
                 return;
             }
+            if (c == null) {
+                set.dispose();
+                NullPointerException npe = new NullPointerException("A completable source is null");
+                shared.onError(npe);
+                return;
+            }
+            c.subscribe(shared);
         }
         shared.onComplete();
     }
 
+    /* loaded from: classes.dex */
     static final class InnerCompletableObserver extends AtomicInteger implements CompletableObserver {
         private static final long serialVersionUID = -8360547806504310570L;
         final CompletableObserver downstream;
         final AtomicBoolean once;
         final CompositeDisposable set;
 
-        InnerCompletableObserver(CompletableObserver actual, AtomicBoolean once2, CompositeDisposable set2, int n) {
+        InnerCompletableObserver(CompletableObserver actual, AtomicBoolean once, CompositeDisposable set, int n) {
             this.downstream = actual;
-            this.once = once2;
-            this.set = set2;
+            this.once = once;
+            this.set = set;
             lazySet(n);
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onSubscribe(Disposable d) {
             this.set.add(d);
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onError(Throwable e) {
             this.set.dispose();
             if (this.once.compareAndSet(false, true)) {
@@ -66,6 +68,7 @@ public final class CompletableMergeArray extends Completable {
             }
         }
 
+        @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
         public void onComplete() {
             if (decrementAndGet() == 0 && this.once.compareAndSet(false, true)) {
                 this.downstream.onComplete();

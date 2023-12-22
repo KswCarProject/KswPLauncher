@@ -1,23 +1,24 @@
 package android.support.constraint.motion;
 
+import android.support.constraint.C0088R;
 import android.support.constraint.ConstraintSet;
-import android.support.constraint.R;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import java.util.HashMap;
 
+/* loaded from: classes.dex */
 public class DesignTool implements ProxyInterface {
     private static final boolean DEBUG = false;
     private static final String TAG = "DesignTool";
     static final HashMap<Pair<Integer, Integer>, String> allAttributes;
     static final HashMap<String, String> allMargins;
-    private String mLastEndState = null;
-    private int mLastEndStateId = -1;
-    private String mLastStartState = null;
-    private int mLastStartStateId = -1;
     private final MotionLayout mMotionLayout;
     private MotionScene mSceneCache;
+    private String mLastStartState = null;
+    private String mLastEndState = null;
+    private int mLastStartStateId = -1;
+    private int mLastEndStateId = -1;
 
     public DesignTool(MotionLayout motionLayout) {
         this.mMotionLayout = motionLayout;
@@ -60,27 +61,23 @@ public class DesignTool implements ProxyInterface {
         if (value == null || (index = value.indexOf(100)) == -1) {
             return 0;
         }
-        return (int) (((float) (Integer.valueOf(value.substring(0, index)).intValue() * dpi)) / 160.0f);
+        String filteredValue = value.substring(0, index);
+        int dpValue = (int) ((Integer.valueOf(filteredValue).intValue() * dpi) / 160.0f);
+        return dpValue;
     }
 
     private static void Connect(int dpi, ConstraintSet set, View view, HashMap<String, String> attributes, int from, int to) {
-        HashMap<String, String> hashMap = attributes;
         String connection = allAttributes.get(Pair.create(Integer.valueOf(from), Integer.valueOf(to)));
-        String connectionValue = hashMap.get(connection);
+        String connectionValue = attributes.get(connection);
         if (connectionValue != null) {
             int marginValue = 0;
             String margin = allMargins.get(connection);
             if (margin != null) {
-                int i = dpi;
-                marginValue = GetPxFromDp(dpi, hashMap.get(margin));
-            } else {
-                int i2 = dpi;
+                marginValue = GetPxFromDp(dpi, attributes.get(margin));
             }
-            ConstraintSet constraintSet = set;
-            constraintSet.connect(view.getId(), from, Integer.parseInt(connectionValue), to, marginValue);
-            return;
+            int id = Integer.parseInt(connectionValue);
+            set.connect(view.getId(), from, id, to, marginValue);
         }
-        int i3 = dpi;
     }
 
     private static void SetBias(ConstraintSet set, View view, HashMap<String, String> attributes, int type) {
@@ -89,13 +86,12 @@ public class DesignTool implements ProxyInterface {
             bias = "layout_constraintVertical_bias";
         }
         String biasValue = attributes.get(bias);
-        if (biasValue == null) {
-            return;
-        }
-        if (type == 0) {
-            set.setHorizontalBias(view.getId(), Float.parseFloat(biasValue));
-        } else if (type == 1) {
-            set.setVerticalBias(view.getId(), Float.parseFloat(biasValue));
+        if (biasValue != null) {
+            if (type == 0) {
+                set.setHorizontalBias(view.getId(), Float.parseFloat(biasValue));
+            } else if (type == 1) {
+                set.setVerticalBias(view.getId(), Float.parseFloat(biasValue));
+            }
         }
     }
 
@@ -142,28 +138,33 @@ public class DesignTool implements ProxyInterface {
     }
 
     public void getAnimationRectangles(Object view, float[] path) {
-        if (this.mMotionLayout.mScene != null) {
-            int frames = this.mMotionLayout.mScene.getDuration() / 16;
-            MotionController motionController = this.mMotionLayout.mFrameArrayList.get(view);
-            if (motionController != null) {
-                motionController.buildRectangles(path, frames);
-            }
+        if (this.mMotionLayout.mScene == null) {
+            return;
         }
+        int duration = this.mMotionLayout.mScene.getDuration();
+        int frames = duration / 16;
+        MotionController motionController = this.mMotionLayout.mFrameArrayList.get(view);
+        if (motionController == null) {
+            return;
+        }
+        motionController.buildRectangles(path, frames);
     }
 
     public int getAnimationKeyFrames(Object view, float[] key) {
         if (this.mMotionLayout.mScene == null) {
             return -1;
         }
-        int frames = this.mMotionLayout.mScene.getDuration() / 16;
+        int duration = this.mMotionLayout.mScene.getDuration();
+        int frames = duration / 16;
         MotionController motionController = this.mMotionLayout.mFrameArrayList.get(view);
         if (motionController == null) {
             return 0;
         }
-        motionController.buildKeyFrames(key, (int[]) null);
+        motionController.buildKeyFrames(key, null);
         return frames;
     }
 
+    @Override // android.support.constraint.motion.ProxyInterface
     public void setToolPosition(float position) {
         if (this.mMotionLayout.mScene == null) {
             this.mMotionLayout.mScene = this.mSceneCache;
@@ -178,26 +179,27 @@ public class DesignTool implements ProxyInterface {
         if (id == null) {
             id = "motion_base";
         }
-        if (this.mLastStartState != id) {
-            this.mLastStartState = id;
-            this.mLastEndState = null;
-            if (this.mMotionLayout.mScene == null) {
-                this.mMotionLayout.mScene = this.mSceneCache;
-            }
-            int rscId = id != null ? this.mMotionLayout.lookUpConstraintId(id) : R.id.motion_base;
-            this.mLastStartStateId = rscId;
-            if (rscId != 0) {
-                if (rscId == this.mMotionLayout.getStartState()) {
-                    this.mMotionLayout.setProgress(0.0f);
-                } else if (rscId == this.mMotionLayout.getEndState()) {
-                    this.mMotionLayout.setProgress(1.0f);
-                } else {
-                    this.mMotionLayout.transitionToState(rscId);
-                    this.mMotionLayout.setProgress(1.0f);
-                }
-            }
-            this.mMotionLayout.requestLayout();
+        if (this.mLastStartState == id) {
+            return;
         }
+        this.mLastStartState = id;
+        this.mLastEndState = null;
+        if (this.mMotionLayout.mScene == null) {
+            this.mMotionLayout.mScene = this.mSceneCache;
+        }
+        int rscId = id != null ? this.mMotionLayout.lookUpConstraintId(id) : C0088R.C0090id.motion_base;
+        this.mLastStartStateId = rscId;
+        if (rscId != 0) {
+            if (rscId == this.mMotionLayout.getStartState()) {
+                this.mMotionLayout.setProgress(0.0f);
+            } else if (rscId == this.mMotionLayout.getEndState()) {
+                this.mMotionLayout.setProgress(1.0f);
+            } else {
+                this.mMotionLayout.transitionToState(rscId);
+                this.mMotionLayout.setProgress(1.0f);
+            }
+        }
+        this.mMotionLayout.requestLayout();
     }
 
     public String getStartState() {
@@ -231,13 +233,14 @@ public class DesignTool implements ProxyInterface {
     }
 
     public String getState() {
-        if (!(this.mLastStartState == null || this.mLastEndState == null)) {
+        if (this.mLastStartState != null && this.mLastEndState != null) {
             float progress = getProgress();
-            if (progress <= 0.01f) {
+            if (progress > 0.01f) {
+                if (progress >= 1.0f - 0.01f) {
+                    return this.mLastEndState;
+                }
+            } else {
                 return this.mLastStartState;
-            }
-            if (progress >= 1.0f - 0.01f) {
-                return this.mLastEndState;
             }
         }
         return this.mLastStartState;
@@ -264,6 +267,7 @@ public class DesignTool implements ProxyInterface {
         this.mMotionLayout.disableAutoTransition(disable);
     }
 
+    @Override // android.support.constraint.motion.ProxyInterface
     public long getTransitionTimeMs() {
         return this.mMotionLayout.getTransitionTimeMs();
     }
@@ -284,37 +288,40 @@ public class DesignTool implements ProxyInterface {
         return controller.getKeyFrameInfo(type, info);
     }
 
+    @Override // android.support.constraint.motion.ProxyInterface
     public float getKeyFramePosition(Object view, int type, float x, float y) {
         return this.mMotionLayout.mFrameArrayList.get((View) view).getKeyFrameParameter(type, x, y);
     }
 
+    @Override // android.support.constraint.motion.ProxyInterface
     public void setKeyFrame(Object view, int position, String name, Object value) {
         if (this.mMotionLayout.mScene != null) {
             this.mMotionLayout.mScene.setKeyframe((View) view, position, name, value);
-            this.mMotionLayout.mTransitionGoalPosition = ((float) position) / 100.0f;
+            this.mMotionLayout.mTransitionGoalPosition = position / 100.0f;
             this.mMotionLayout.mTransitionLastPosition = 0.0f;
             this.mMotionLayout.rebuildScene();
             this.mMotionLayout.evaluate(true);
         }
     }
 
+    @Override // android.support.constraint.motion.ProxyInterface
     public boolean setKeyFramePosition(Object view, int position, int type, float x, float y) {
-        if (this.mMotionLayout.mScene == null) {
+        if (this.mMotionLayout.mScene != null) {
+            MotionController motionController = this.mMotionLayout.mFrameArrayList.get(view);
+            int position2 = (int) (this.mMotionLayout.mTransitionPosition * 100.0f);
+            if (motionController != null && this.mMotionLayout.mScene.hasKeyFramePosition((View) view, position2)) {
+                float fx = motionController.getKeyFrameParameter(2, x, y);
+                float fy = motionController.getKeyFrameParameter(5, x, y);
+                this.mMotionLayout.mScene.setKeyframe((View) view, position2, "motion:percentX", Float.valueOf(fx));
+                this.mMotionLayout.mScene.setKeyframe((View) view, position2, "motion:percentY", Float.valueOf(fy));
+                this.mMotionLayout.rebuildScene();
+                this.mMotionLayout.evaluate(true);
+                this.mMotionLayout.invalidate();
+                return true;
+            }
             return false;
         }
-        MotionController motionController = this.mMotionLayout.mFrameArrayList.get(view);
-        int position2 = (int) (this.mMotionLayout.mTransitionPosition * 100.0f);
-        if (motionController == null || !this.mMotionLayout.mScene.hasKeyFramePosition((View) view, position2)) {
-            return false;
-        }
-        float fx = motionController.getKeyFrameParameter(2, x, y);
-        float fy = motionController.getKeyFrameParameter(5, x, y);
-        this.mMotionLayout.mScene.setKeyframe((View) view, position2, "motion:percentX", Float.valueOf(fx));
-        this.mMotionLayout.mScene.setKeyframe((View) view, position2, "motion:percentY", Float.valueOf(fy));
-        this.mMotionLayout.rebuildScene();
-        this.mMotionLayout.evaluate(true);
-        this.mMotionLayout.invalidate();
-        return true;
+        return false;
     }
 
     public void setViewDebug(Object view, int debugMode) {
@@ -325,25 +332,36 @@ public class DesignTool implements ProxyInterface {
         }
     }
 
+    @Override // android.support.constraint.motion.ProxyInterface
     public int designAccess(int cmd, String type, Object viewObject, float[] in, int inLength, float[] out, int outLength) {
         View view = (View) viewObject;
         MotionController motionController = null;
-        if (cmd != 0 && (this.mMotionLayout.mScene == null || view == null || (motionController = this.mMotionLayout.mFrameArrayList.get(view)) == null)) {
-            return -1;
+        if (cmd != 0) {
+            if (this.mMotionLayout.mScene == null || view == null) {
+                return -1;
+            }
+            MotionController motionController2 = this.mMotionLayout.mFrameArrayList.get(view);
+            motionController = motionController2;
+            if (motionController == null) {
+                return -1;
+            }
         }
         switch (cmd) {
             case 0:
                 return 1;
             case 1:
-                int frames = this.mMotionLayout.mScene.getDuration() / 16;
+                int duration = this.mMotionLayout.mScene.getDuration();
+                int frames = duration / 16;
                 motionController.buildPath(out, frames);
                 return frames;
             case 2:
-                int frames2 = this.mMotionLayout.mScene.getDuration() / 16;
-                motionController.buildKeyFrames(out, (int[]) null);
+                int duration2 = this.mMotionLayout.mScene.getDuration();
+                int frames2 = duration2 / 16;
+                motionController.buildKeyFrames(out, null);
                 return frames2;
             case 3:
-                int duration = this.mMotionLayout.mScene.getDuration() / 16;
+                int duration3 = this.mMotionLayout.mScene.getDuration();
+                int i = duration3 / 16;
                 return motionController.getAttributeValues(type, out, outLength);
             default:
                 return -1;
@@ -357,6 +375,7 @@ public class DesignTool implements ProxyInterface {
         return this.mMotionLayout.mScene.getKeyFrame(this.mMotionLayout.getContext(), type, target, position);
     }
 
+    @Override // android.support.constraint.motion.ProxyInterface
     public Object getKeyframeAtLocation(Object viewObject, float x, float y) {
         MotionController motionController;
         View view = (View) viewObject;
@@ -367,67 +386,71 @@ public class DesignTool implements ProxyInterface {
             return null;
         }
         ViewGroup viewGroup = (ViewGroup) view.getParent();
-        return motionController.getPositionKeyframe(viewGroup.getWidth(), viewGroup.getHeight(), x, y);
+        int layoutWidth = viewGroup.getWidth();
+        int layoutHeight = viewGroup.getHeight();
+        return motionController.getPositionKeyframe(layoutWidth, layoutHeight, x, y);
     }
 
+    @Override // android.support.constraint.motion.ProxyInterface
     public Boolean getPositionKeyframe(Object keyFrame, Object view, float x, float y, String[] attribute, float[] value) {
-        if (!(keyFrame instanceof KeyPositionBase)) {
-            return false;
+        if (keyFrame instanceof KeyPositionBase) {
+            KeyPositionBase key = (KeyPositionBase) keyFrame;
+            MotionController motionController = this.mMotionLayout.mFrameArrayList.get((View) view);
+            motionController.positionKeyframe((View) view, key, x, y, attribute, value);
+            this.mMotionLayout.rebuildScene();
+            this.mMotionLayout.mInTransition = true;
+            return true;
         }
-        this.mMotionLayout.mFrameArrayList.get((View) view).positionKeyframe((View) view, (KeyPositionBase) keyFrame, x, y, attribute, value);
-        this.mMotionLayout.rebuildScene();
-        this.mMotionLayout.mInTransition = true;
-        return true;
+        return false;
     }
 
     public Object getKeyframe(Object view, int type, int position) {
         if (this.mMotionLayout.mScene == null) {
             return null;
         }
-        return this.mMotionLayout.mScene.getKeyFrame(this.mMotionLayout.getContext(), type, ((View) view).getId(), position);
+        int target = ((View) view).getId();
+        return this.mMotionLayout.mScene.getKeyFrame(this.mMotionLayout.getContext(), type, target, position);
     }
 
     public void setKeyframe(Object keyFrame, String tag, Object value) {
         if (keyFrame instanceof Key) {
-            ((Key) keyFrame).setValue(tag, value);
+            Key key = (Key) keyFrame;
+            key.setValue(tag, value);
             this.mMotionLayout.rebuildScene();
             this.mMotionLayout.mInTransition = true;
         }
     }
 
+    @Override // android.support.constraint.motion.ProxyInterface
     public void setAttributes(int dpi, String constraintSetId, Object opaqueView, Object opaqueAttributes) {
-        int i = dpi;
         View view = (View) opaqueView;
         HashMap<String, String> attributes = (HashMap) opaqueAttributes;
         int rscId = this.mMotionLayout.lookUpConstraintId(constraintSetId);
         ConstraintSet set = this.mMotionLayout.mScene.getConstraintSet(rscId);
-        if (set != null) {
-            set.clear(view.getId());
-            SetDimensions(i, set, view, attributes, 0);
-            SetDimensions(i, set, view, attributes, 1);
-            int i2 = dpi;
-            ConstraintSet constraintSet = set;
-            View view2 = view;
-            HashMap<String, String> hashMap = attributes;
-            Connect(i2, constraintSet, view2, hashMap, 6, 6);
-            Connect(i2, constraintSet, view2, hashMap, 6, 7);
-            Connect(i2, constraintSet, view2, hashMap, 7, 7);
-            Connect(i2, constraintSet, view2, hashMap, 7, 6);
-            Connect(i2, constraintSet, view2, hashMap, 1, 1);
-            Connect(i2, constraintSet, view2, hashMap, 1, 2);
-            Connect(i2, constraintSet, view2, hashMap, 2, 2);
-            Connect(i2, constraintSet, view2, hashMap, 2, 1);
-            Connect(i2, constraintSet, view2, hashMap, 3, 3);
-            Connect(i2, constraintSet, view2, hashMap, 3, 4);
-            Connect(i2, constraintSet, view2, hashMap, 4, 3);
-            Connect(i2, constraintSet, view2, hashMap, 4, 4);
-            Connect(i2, constraintSet, view2, hashMap, 5, 5);
-            SetBias(set, view, attributes, 0);
-            SetBias(set, view, attributes, 1);
-            SetAbsolutePositions(i, set, view, attributes);
-            this.mMotionLayout.updateState(rscId, set);
-            this.mMotionLayout.requestLayout();
+        if (set == null) {
+            return;
         }
+        set.clear(view.getId());
+        SetDimensions(dpi, set, view, attributes, 0);
+        SetDimensions(dpi, set, view, attributes, 1);
+        Connect(dpi, set, view, attributes, 6, 6);
+        Connect(dpi, set, view, attributes, 6, 7);
+        Connect(dpi, set, view, attributes, 7, 7);
+        Connect(dpi, set, view, attributes, 7, 6);
+        Connect(dpi, set, view, attributes, 1, 1);
+        Connect(dpi, set, view, attributes, 1, 2);
+        Connect(dpi, set, view, attributes, 2, 2);
+        Connect(dpi, set, view, attributes, 2, 1);
+        Connect(dpi, set, view, attributes, 3, 3);
+        Connect(dpi, set, view, attributes, 3, 4);
+        Connect(dpi, set, view, attributes, 4, 3);
+        Connect(dpi, set, view, attributes, 4, 4);
+        Connect(dpi, set, view, attributes, 5, 5);
+        SetBias(set, view, attributes, 0);
+        SetBias(set, view, attributes, 1);
+        SetAbsolutePositions(dpi, set, view, attributes);
+        this.mMotionLayout.updateState(rscId, set);
+        this.mMotionLayout.requestLayout();
     }
 
     public void dumpConstraintSet(String set) {

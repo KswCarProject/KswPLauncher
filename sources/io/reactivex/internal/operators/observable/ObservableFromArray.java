@@ -5,21 +5,25 @@ import io.reactivex.Observer;
 import io.reactivex.internal.functions.ObjectHelper;
 import io.reactivex.internal.observers.BasicQueueDisposable;
 
+/* loaded from: classes.dex */
 public final class ObservableFromArray<T> extends Observable<T> {
     final T[] array;
 
-    public ObservableFromArray(T[] array2) {
-        this.array = array2;
+    public ObservableFromArray(T[] array) {
+        this.array = array;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super T> observer) {
         FromArrayDisposable<T> d = new FromArrayDisposable<>(observer, this.array);
         observer.onSubscribe(d);
-        if (!d.fusionMode) {
-            d.run();
+        if (d.fusionMode) {
+            return;
         }
+        d.run();
     }
 
+    /* loaded from: classes.dex */
     static final class FromArrayDisposable<T> extends BasicQueueDisposable<T> {
         final T[] array;
         volatile boolean disposed;
@@ -27,61 +31,63 @@ public final class ObservableFromArray<T> extends Observable<T> {
         boolean fusionMode;
         int index;
 
-        FromArrayDisposable(Observer<? super T> actual, T[] array2) {
+        FromArrayDisposable(Observer<? super T> actual, T[] array) {
             this.downstream = actual;
-            this.array = array2;
+            this.array = array;
         }
 
+        @Override // io.reactivex.internal.fuseable.QueueFuseable
         public int requestFusion(int mode) {
-            if ((mode & 1) == 0) {
-                return 0;
+            if ((mode & 1) != 0) {
+                this.fusionMode = true;
+                return 1;
             }
-            this.fusionMode = true;
-            return 1;
+            return 0;
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public T poll() {
             int i = this.index;
             T[] a = this.array;
-            if (i == a.length) {
-                return null;
+            if (i != a.length) {
+                this.index = i + 1;
+                return (T) ObjectHelper.requireNonNull(a[i], "The array element is null");
             }
-            this.index = i + 1;
-            return ObjectHelper.requireNonNull(a[i], "The array element is null");
+            return null;
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public boolean isEmpty() {
             return this.index == this.array.length;
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public void clear() {
             this.index = this.array.length;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.disposed = true;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.disposed;
         }
 
-        /* access modifiers changed from: package-private */
-        public void run() {
+        void run() {
             T[] a = this.array;
             int n = a.length;
-            int i = 0;
-            while (i < n && !isDisposed()) {
+            for (int i = 0; i < n && !isDisposed(); i++) {
                 T value = a[i];
                 if (value == null) {
                     this.downstream.onError(new NullPointerException("The element at index " + i + " is null"));
                     return;
-                } else {
-                    this.downstream.onNext(value);
-                    i++;
                 }
+                this.downstream.onNext(value);
             }
-            if (isDisposed() == 0) {
+            if (!isDisposed()) {
                 this.downstream.onComplete();
             }
         }

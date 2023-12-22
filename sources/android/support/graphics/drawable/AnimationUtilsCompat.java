@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.os.Build;
-import android.support.v4.view.animation.FastOutLinearInInterpolator;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.support.p001v4.view.animation.FastOutLinearInInterpolator;
+import android.support.p001v4.view.animation.FastOutSlowInInterpolator;
+import android.support.p001v4.view.animation.LinearOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -24,62 +24,66 @@ import java.io.IOException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+/* loaded from: classes.dex */
 public class AnimationUtilsCompat {
     public static Interpolator loadInterpolator(Context context, int id) throws Resources.NotFoundException {
         if (Build.VERSION.SDK_INT >= 21) {
             return AnimationUtils.loadInterpolator(context, id);
         }
         XmlResourceParser parser = null;
-        if (id == 17563663) {
+        try {
             try {
-                FastOutLinearInInterpolator fastOutLinearInInterpolator = new FastOutLinearInInterpolator();
-                if (parser != null) {
-                    parser.close();
+                if (id == 17563663) {
+                    return new FastOutLinearInInterpolator();
                 }
-                return fastOutLinearInInterpolator;
-            } catch (XmlPullParserException ex) {
+                if (id == 17563661) {
+                    FastOutSlowInInterpolator fastOutSlowInInterpolator = new FastOutSlowInInterpolator();
+                    if (0 != 0) {
+                        parser.close();
+                    }
+                    return fastOutSlowInInterpolator;
+                } else if (id == 17563662) {
+                    LinearOutSlowInInterpolator linearOutSlowInInterpolator = new LinearOutSlowInInterpolator();
+                    if (0 != 0) {
+                        parser.close();
+                    }
+                    return linearOutSlowInInterpolator;
+                } else {
+                    XmlResourceParser parser2 = context.getResources().getAnimation(id);
+                    Interpolator createInterpolatorFromXml = createInterpolatorFromXml(context, context.getResources(), context.getTheme(), parser2);
+                    if (parser2 != null) {
+                        parser2.close();
+                    }
+                    return createInterpolatorFromXml;
+                }
+            } catch (IOException ex) {
                 Resources.NotFoundException rnf = new Resources.NotFoundException("Can't load animation resource ID #0x" + Integer.toHexString(id));
                 rnf.initCause(ex);
                 throw rnf;
-            } catch (IOException ex2) {
+            } catch (XmlPullParserException ex2) {
                 Resources.NotFoundException rnf2 = new Resources.NotFoundException("Can't load animation resource ID #0x" + Integer.toHexString(id));
                 rnf2.initCause(ex2);
                 throw rnf2;
-            } catch (Throwable th) {
-                if (parser != null) {
-                    parser.close();
-                }
-                throw th;
             }
-        } else if (id == 17563661) {
-            FastOutSlowInInterpolator fastOutSlowInInterpolator = new FastOutSlowInInterpolator();
-            if (parser != null) {
+        } finally {
+            if (0 != 0) {
                 parser.close();
             }
-            return fastOutSlowInInterpolator;
-        } else if (id == 17563662) {
-            LinearOutSlowInInterpolator linearOutSlowInInterpolator = new LinearOutSlowInInterpolator();
-            if (parser != null) {
-                parser.close();
-            }
-            return linearOutSlowInInterpolator;
-        } else {
-            XmlResourceParser parser2 = context.getResources().getAnimation(id);
-            Interpolator createInterpolatorFromXml = createInterpolatorFromXml(context, context.getResources(), context.getTheme(), parser2);
-            if (parser2 != null) {
-                parser2.close();
-            }
-            return createInterpolatorFromXml;
         }
     }
 
+    /* JADX WARN: Code restructure failed: missing block: B:45:0x00d9, code lost:
+        return r0;
+     */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
     private static Interpolator createInterpolatorFromXml(Context context, Resources res, Resources.Theme theme, XmlPullParser parser) throws XmlPullParserException, IOException {
         Interpolator interpolator = null;
         int depth = parser.getDepth();
         while (true) {
-            int next = parser.next();
-            int type = next;
-            if ((next != 3 || parser.getDepth() > depth) && type != 1) {
+            int type = parser.next();
+            if ((type != 3 || parser.getDepth() > depth) && type != 1) {
                 if (type == 2) {
                     AttributeSet attrs = Xml.asAttributeSet(parser);
                     String name = parser.getName();
@@ -109,7 +113,6 @@ public class AnimationUtilsCompat {
                 }
             }
         }
-        return interpolator;
     }
 
     private AnimationUtilsCompat() {

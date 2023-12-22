@@ -3,6 +3,7 @@ package kotlin.jvm.internal;
 import java.io.Serializable;
 import kotlin.reflect.KDeclarationContainer;
 
+/* loaded from: classes.dex */
 public class AdaptedFunctionReference implements FunctionBase, Serializable {
     private final int arity;
     private final int flags;
@@ -12,20 +13,21 @@ public class AdaptedFunctionReference implements FunctionBase, Serializable {
     protected final Object receiver;
     private final String signature;
 
-    public AdaptedFunctionReference(int arity2, Class owner2, String name2, String signature2, int flags2) {
-        this(arity2, CallableReference.NO_RECEIVER, owner2, name2, signature2, flags2);
+    public AdaptedFunctionReference(int arity, Class owner, String name, String signature, int flags) {
+        this(arity, CallableReference.NO_RECEIVER, owner, name, signature, flags);
     }
 
-    public AdaptedFunctionReference(int arity2, Object receiver2, Class owner2, String name2, String signature2, int flags2) {
-        this.receiver = receiver2;
-        this.owner = owner2;
-        this.name = name2;
-        this.signature = signature2;
-        this.isTopLevel = (flags2 & 1) != 1 ? false : true;
-        this.arity = arity2;
-        this.flags = flags2 >> 1;
+    public AdaptedFunctionReference(int arity, Object receiver, Class owner, String name, String signature, int flags) {
+        this.receiver = receiver;
+        this.owner = owner;
+        this.name = name;
+        this.signature = signature;
+        this.isTopLevel = (flags & 1) == 1;
+        this.arity = arity;
+        this.flags = flags >> 1;
     }
 
+    @Override // kotlin.jvm.internal.FunctionBase
     public int getArity() {
         return this.arity;
     }
@@ -42,28 +44,23 @@ public class AdaptedFunctionReference implements FunctionBase, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof AdaptedFunctionReference)) {
-            return false;
+        if (o instanceof AdaptedFunctionReference) {
+            AdaptedFunctionReference other = (AdaptedFunctionReference) o;
+            return this.isTopLevel == other.isTopLevel && this.arity == other.arity && this.flags == other.flags && Intrinsics.areEqual(this.receiver, other.receiver) && Intrinsics.areEqual(this.owner, other.owner) && this.name.equals(other.name) && this.signature.equals(other.signature);
         }
-        AdaptedFunctionReference other = (AdaptedFunctionReference) o;
-        if (this.isTopLevel != other.isTopLevel || this.arity != other.arity || this.flags != other.flags || !Intrinsics.areEqual(this.receiver, other.receiver) || !Intrinsics.areEqual((Object) this.owner, (Object) other.owner) || !this.name.equals(other.name) || !this.signature.equals(other.signature)) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
     public int hashCode() {
         Object obj = this.receiver;
-        int i = 0;
-        int hashCode = (obj != null ? obj.hashCode() : 0) * 31;
+        int result = obj != null ? obj.hashCode() : 0;
+        int i = result * 31;
         Class cls = this.owner;
-        if (cls != null) {
-            i = cls.hashCode();
-        }
-        return ((((((((((hashCode + i) * 31) + this.name.hashCode()) * 31) + this.signature.hashCode()) * 31) + (this.isTopLevel ? 1231 : 1237)) * 31) + this.arity) * 31) + this.flags;
+        int result2 = i + (cls != null ? cls.hashCode() : 0);
+        return (((((((((result2 * 31) + this.name.hashCode()) * 31) + this.signature.hashCode()) * 31) + (this.isTopLevel ? 1231 : 1237)) * 31) + this.arity) * 31) + this.flags;
     }
 
     public String toString() {
-        return Reflection.renderLambdaToString((FunctionBase) this);
+        return Reflection.renderLambdaToString(this);
     }
 }

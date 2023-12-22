@@ -1,5 +1,6 @@
 package com.google.zxing;
 
+/* loaded from: classes.dex */
 public final class FormatException extends ReaderException {
     private static final FormatException INSTANCE;
 

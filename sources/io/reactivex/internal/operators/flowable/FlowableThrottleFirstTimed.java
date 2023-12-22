@@ -16,23 +16,25 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableThrottleFirstTimed<T> extends AbstractFlowableWithUpstream<T, T> {
     final Scheduler scheduler;
     final long timeout;
     final TimeUnit unit;
 
-    public FlowableThrottleFirstTimed(Flowable<T> source, long timeout2, TimeUnit unit2, Scheduler scheduler2) {
+    public FlowableThrottleFirstTimed(Flowable<T> source, long timeout, TimeUnit unit, Scheduler scheduler) {
         super(source);
-        this.timeout = timeout2;
-        this.unit = unit2;
-        this.scheduler = scheduler2;
+        this.timeout = timeout;
+        this.unit = unit;
+        this.scheduler = scheduler;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
-        this.source.subscribe(new DebounceTimedSubscriber(new SerializedSubscriber(s), this.timeout, this.unit, this.scheduler.createWorker()));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
+        this.source.subscribe((FlowableSubscriber) new DebounceTimedSubscriber(new SerializedSubscriber(s), this.timeout, this.unit, this.scheduler.createWorker()));
     }
 
+    /* loaded from: classes.dex */
     static final class DebounceTimedSubscriber<T> extends AtomicLong implements FlowableSubscriber<T>, Subscription, Runnable {
         private static final long serialVersionUID = -9102637559663639004L;
         boolean done;
@@ -44,13 +46,14 @@ public final class FlowableThrottleFirstTimed<T> extends AbstractFlowableWithUps
         Subscription upstream;
         final Scheduler.Worker worker;
 
-        DebounceTimedSubscriber(Subscriber<? super T> actual, long timeout2, TimeUnit unit2, Scheduler.Worker worker2) {
+        DebounceTimedSubscriber(Subscriber<? super T> actual, long timeout, TimeUnit unit, Scheduler.Worker worker) {
             this.downstream = actual;
-            this.timeout = timeout2;
-            this.unit = unit2;
-            this.worker = worker2;
+            this.timeout = timeout;
+            this.unit = unit;
+            this.worker = worker;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -59,13 +62,15 @@ public final class FlowableThrottleFirstTimed<T> extends AbstractFlowableWithUps
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             if (!this.done && !this.gate) {
                 this.gate = true;
-                if (get() != 0) {
+                long r = get();
+                if (r != 0) {
                     this.downstream.onNext(t);
-                    BackpressureHelper.produced(this, 1);
-                    Disposable d = (Disposable) this.timer.get();
+                    BackpressureHelper.produced(this, 1L);
+                    Disposable d = this.timer.get();
                     if (d != null) {
                         d.dispose();
                     }
@@ -78,10 +83,12 @@ public final class FlowableThrottleFirstTimed<T> extends AbstractFlowableWithUps
             }
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             this.gate = false;
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -92,20 +99,24 @@ public final class FlowableThrottleFirstTimed<T> extends AbstractFlowableWithUps
             this.worker.dispose();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                this.downstream.onComplete();
-                this.worker.dispose();
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            this.downstream.onComplete();
+            this.worker.dispose();
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             if (SubscriptionHelper.validate(n)) {
                 BackpressureHelper.add(this, n);
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             this.upstream.cancel();
             this.worker.dispose();

@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.wits.pms.statuscontrol.BtPhoneStatus;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public class CenterManager {
     public void mediaPrevious() {
         WitsCommand.sendCommand(1, 103);

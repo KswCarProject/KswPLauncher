@@ -4,12 +4,13 @@ import android.content.Context;
 import android.provider.Settings;
 import android.text.format.DateFormat;
 
+/* loaded from: classes10.dex */
 public class TimeUtil {
     static final String HOURS_12 = "12";
     static final String HOURS_24 = "24";
 
     public static void setAudoTime(Context mContext, boolean autoEnabled) {
-        Settings.Global.putInt(mContext.getContentResolver(), "auto_time", autoEnabled);
+        Settings.Global.putInt(mContext.getContentResolver(), "auto_time", autoEnabled ? 1 : 0);
     }
 
     public static void set24Hour(Context mContext, boolean enabled) {

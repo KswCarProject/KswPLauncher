@@ -4,15 +4,16 @@ import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.internal.disposables.EmptyDisposable;
 
+/* loaded from: classes.dex */
 public final class CompletableError extends Completable {
     final Throwable error;
 
-    public CompletableError(Throwable error2) {
-        this.error = error2;
+    public CompletableError(Throwable error) {
+        this.error = error;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         EmptyDisposable.error(this.error, observer);
     }
 }

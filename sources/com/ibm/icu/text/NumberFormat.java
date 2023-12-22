@@ -22,6 +22,7 @@ import java.util.MissingResourceException;
 import java.util.Set;
 import kotlin.text.Typography;
 
+/* loaded from: classes.dex */
 public abstract class NumberFormat extends UFormat {
     static final /* synthetic */ boolean $assertionsDisabled = false;
     public static final int ACCOUNTINGCURRENCYSTYLE = 7;
@@ -41,20 +42,20 @@ public abstract class NumberFormat extends UFormat {
     private static final String doubleCurrencyStr;
     private static final long serialVersionUID = -2308460125733713944L;
     private static NumberFormatShim shim;
-    private DisplayContext capitalizationSetting = DisplayContext.CAPITALIZATION_NONE;
     private Currency currency;
-    private boolean groupingUsed = true;
-    private byte maxFractionDigits = 3;
-    private byte maxIntegerDigits = 40;
-    private int maximumFractionDigits = 3;
-    private int maximumIntegerDigits = 40;
-    private byte minFractionDigits = 0;
-    private byte minIntegerDigits = 1;
-    private int minimumFractionDigits = 0;
-    private int minimumIntegerDigits = 1;
-    private boolean parseIntegerOnly = false;
     private boolean parseStrict;
+    private boolean groupingUsed = true;
+    private byte maxIntegerDigits = 40;
+    private byte minIntegerDigits = 1;
+    private byte maxFractionDigits = 3;
+    private byte minFractionDigits = 0;
+    private boolean parseIntegerOnly = false;
+    private int maximumIntegerDigits = 40;
+    private int minimumIntegerDigits = 1;
+    private int maximumFractionDigits = 3;
+    private int minimumFractionDigits = 0;
     private int serialVersionOnStream = 2;
+    private DisplayContext capitalizationSetting = DisplayContext.CAPITALIZATION_NONE;
 
     public abstract StringBuffer format(double d, StringBuffer stringBuffer, FieldPosition fieldPosition);
 
@@ -69,11 +70,12 @@ public abstract class NumberFormat extends UFormat {
     public abstract Number parse(String str, ParsePosition parsePosition);
 
     static {
-        char[] cArr = {164, 164};
+        char[] cArr = {'\u00a4', '\u00a4'};
         doubleCurrencySign = cArr;
         doubleCurrencyStr = new String(cArr);
     }
 
+    @Override // java.text.Format
     public StringBuffer format(Object number, StringBuffer toAppendTo, FieldPosition pos) {
         if (number instanceof Long) {
             return format(((Long) number).longValue(), toAppendTo, pos);
@@ -96,6 +98,7 @@ public abstract class NumberFormat extends UFormat {
         throw new IllegalArgumentException("Cannot format given Object as a Number");
     }
 
+    @Override // java.text.Format
     public final Object parseObject(String source, ParsePosition parsePosition) {
         return parse(source, parsePosition);
     }
@@ -106,7 +109,8 @@ public abstract class NumberFormat extends UFormat {
 
     public final String format(long number) {
         StringBuffer buf = new StringBuffer(19);
-        format(number, buf, new FieldPosition(0));
+        FieldPosition pos = new FieldPosition(0);
+        format(number, buf, pos);
         return buf.toString();
     }
 
@@ -134,7 +138,7 @@ public abstract class NumberFormat extends UFormat {
             if (!same) {
                 setCurrency(curr);
             }
-            format((Object) currAmt.getNumber(), toAppendTo, pos);
+            format(currAmt.getNumber(), toAppendTo, pos);
             if (!same) {
                 setCurrency(save);
             }
@@ -145,10 +149,10 @@ public abstract class NumberFormat extends UFormat {
     public Number parse(String text) throws ParseException {
         ParsePosition parsePosition = new ParsePosition(0);
         Number result = parse(text, parsePosition);
-        if (parsePosition.getIndex() != 0) {
-            return result;
+        if (parsePosition.getIndex() == 0) {
+            throw new ParseException("Unparseable number: \"" + text + Typography.quote, parsePosition.getErrorIndex());
         }
-        throw new ParseException("Unparseable number: \"" + text + Typography.quote, parsePosition.getErrorIndex());
+        return result;
     }
 
     public CurrencyAmount parseCurrency(CharSequence text, ParsePosition pos) {
@@ -181,24 +185,9 @@ public abstract class NumberFormat extends UFormat {
         }
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:2:0x0004, code lost:
-        r0 = r1.capitalizationSetting;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public com.ibm.icu.text.DisplayContext getContext(com.ibm.icu.text.DisplayContext.Type r2) {
-        /*
-            r1 = this;
-            com.ibm.icu.text.DisplayContext$Type r0 = com.ibm.icu.text.DisplayContext.Type.CAPITALIZATION
-            if (r2 != r0) goto L_0x0009
-            com.ibm.icu.text.DisplayContext r0 = r1.capitalizationSetting
-            if (r0 == 0) goto L_0x0009
-            goto L_0x000b
-        L_0x0009:
-            com.ibm.icu.text.DisplayContext r0 = com.ibm.icu.text.DisplayContext.CAPITALIZATION_NONE
-        L_0x000b:
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.NumberFormat.getContext(com.ibm.icu.text.DisplayContext$Type):com.ibm.icu.text.DisplayContext");
+    public DisplayContext getContext(DisplayContext.Type type) {
+        DisplayContext displayContext;
+        return (type != DisplayContext.Type.CAPITALIZATION || (displayContext = this.capitalizationSetting) == null) ? DisplayContext.CAPITALIZATION_NONE : displayContext;
     }
 
     public static final NumberFormat getInstance() {
@@ -281,6 +270,7 @@ public abstract class NumberFormat extends UFormat {
         return getInstance(inLocale, 3);
     }
 
+    /* loaded from: classes.dex */
     public static abstract class NumberFormatFactory {
         public static final int FORMAT_CURRENCY = 1;
         public static final int FORMAT_INTEGER = 4;
@@ -306,6 +296,7 @@ public abstract class NumberFormat extends UFormat {
         }
     }
 
+    /* loaded from: classes.dex */
     public static abstract class SimpleNumberFormatFactory extends NumberFormatFactory {
         final Set<String> localeNames;
         final boolean visible;
@@ -314,44 +305,42 @@ public abstract class NumberFormat extends UFormat {
             this(locale, true);
         }
 
-        public SimpleNumberFormatFactory(Locale locale, boolean visible2) {
+        public SimpleNumberFormatFactory(Locale locale, boolean visible) {
             this.localeNames = Collections.singleton(ULocale.forLocale(locale).getBaseName());
-            this.visible = visible2;
+            this.visible = visible;
         }
 
         public SimpleNumberFormatFactory(ULocale locale) {
             this(locale, true);
         }
 
-        public SimpleNumberFormatFactory(ULocale locale, boolean visible2) {
+        public SimpleNumberFormatFactory(ULocale locale, boolean visible) {
             this.localeNames = Collections.singleton(locale.getBaseName());
-            this.visible = visible2;
+            this.visible = visible;
         }
 
+        @Override // com.ibm.icu.text.NumberFormat.NumberFormatFactory
         public final boolean visible() {
             return this.visible;
         }
 
+        @Override // com.ibm.icu.text.NumberFormat.NumberFormatFactory
         public final Set<String> getSupportedLocaleNames() {
             return this.localeNames;
         }
     }
 
+    /* loaded from: classes.dex */
     static abstract class NumberFormatShim {
-        /* access modifiers changed from: package-private */
-        public abstract NumberFormat createInstance(ULocale uLocale, int i);
+        abstract NumberFormat createInstance(ULocale uLocale, int i);
 
-        /* access modifiers changed from: package-private */
-        public abstract Locale[] getAvailableLocales();
+        abstract Locale[] getAvailableLocales();
 
-        /* access modifiers changed from: package-private */
-        public abstract ULocale[] getAvailableULocales();
+        abstract ULocale[] getAvailableULocales();
 
-        /* access modifiers changed from: package-private */
-        public abstract Object registerFactory(NumberFormatFactory numberFormatFactory);
+        abstract Object registerFactory(NumberFormatFactory numberFormatFactory);
 
-        /* access modifiers changed from: package-private */
-        public abstract boolean unregister(Object obj);
+        abstract boolean unregister(Object obj);
 
         NumberFormatShim() {
         }
@@ -360,7 +349,8 @@ public abstract class NumberFormat extends UFormat {
     private static NumberFormatShim getShim() {
         if (shim == null) {
             try {
-                shim = (NumberFormatShim) Class.forName("com.ibm.icu.text.NumberFormatServiceShim").newInstance();
+                Class<?> cls = Class.forName("com.ibm.icu.text.NumberFormatServiceShim");
+                shim = (NumberFormatShim) cls.newInstance();
             } catch (MissingResourceException e) {
                 throw e;
             } catch (Exception e2) {
@@ -385,21 +375,21 @@ public abstract class NumberFormat extends UFormat {
     }
 
     public static Object registerFactory(NumberFormatFactory factory) {
-        if (factory != null) {
-            return getShim().registerFactory(factory);
+        if (factory == null) {
+            throw new IllegalArgumentException("factory must not be null");
         }
-        throw new IllegalArgumentException("factory must not be null");
+        return getShim().registerFactory(factory);
     }
 
     public static boolean unregister(Object registryKey) {
-        if (registryKey != null) {
-            NumberFormatShim numberFormatShim = shim;
-            if (numberFormatShim == null) {
-                return false;
-            }
-            return numberFormatShim.unregister(registryKey);
+        if (registryKey == null) {
+            throw new IllegalArgumentException("registryKey must not be null");
         }
-        throw new IllegalArgumentException("registryKey must not be null");
+        NumberFormatShim numberFormatShim = shim;
+        if (numberFormatShim == null) {
+            return false;
+        }
+        return numberFormatShim.unregister(registryKey);
     }
 
     public int hashCode() {
@@ -417,14 +407,16 @@ public abstract class NumberFormat extends UFormat {
             return false;
         }
         NumberFormat other = (NumberFormat) obj;
-        if (this.maximumIntegerDigits == other.maximumIntegerDigits && this.minimumIntegerDigits == other.minimumIntegerDigits && this.maximumFractionDigits == other.maximumFractionDigits && this.minimumFractionDigits == other.minimumFractionDigits && this.groupingUsed == other.groupingUsed && this.parseIntegerOnly == other.parseIntegerOnly && this.parseStrict == other.parseStrict && this.capitalizationSetting == other.capitalizationSetting) {
-            return true;
+        if (this.maximumIntegerDigits != other.maximumIntegerDigits || this.minimumIntegerDigits != other.minimumIntegerDigits || this.maximumFractionDigits != other.maximumFractionDigits || this.minimumFractionDigits != other.minimumFractionDigits || this.groupingUsed != other.groupingUsed || this.parseIntegerOnly != other.parseIntegerOnly || this.parseStrict != other.parseStrict || this.capitalizationSetting != other.capitalizationSetting) {
+            return false;
         }
-        return false;
+        return true;
     }
 
+    @Override // java.text.Format
     public Object clone() {
-        return (NumberFormat) super.clone();
+        NumberFormat other = (NumberFormat) super.clone();
+        return other;
     }
 
     public boolean isGroupingUsed() {
@@ -491,18 +483,17 @@ public abstract class NumberFormat extends UFormat {
         return this.currency;
     }
 
-    /* access modifiers changed from: protected */
     @Deprecated
-    public Currency getEffectiveCurrency() {
+    protected Currency getEffectiveCurrency() {
         Currency c = getCurrency();
-        if (c != null) {
-            return c;
+        if (c == null) {
+            ULocale uloc = getLocale(ULocale.VALID_LOCALE);
+            if (uloc == null) {
+                uloc = ULocale.getDefault(ULocale.Category.FORMAT);
+            }
+            return Currency.getInstance(uloc);
         }
-        ULocale uloc = getLocale(ULocale.VALID_LOCALE);
-        if (uloc == null) {
-            uloc = ULocale.getDefault(ULocale.Category.FORMAT);
-        }
-        return Currency.getInstance(uloc);
+        return c;
     }
 
     public int getRoundingMode() {
@@ -514,108 +505,69 @@ public abstract class NumberFormat extends UFormat {
     }
 
     public static NumberFormat getInstance(ULocale desiredLocale, int choice) {
-        if (choice >= 0 && choice <= 9) {
-            return getShim().createInstance(desiredLocale, choice);
+        if (choice < 0 || choice > 9) {
+            throw new IllegalArgumentException("choice should be from NUMBERSTYLE to STANDARDCURRENCYSTYLE");
         }
-        throw new IllegalArgumentException("choice should be from NUMBERSTYLE to STANDARDCURRENCYSTYLE");
+        return getShim().createInstance(desiredLocale, choice);
     }
 
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v1, resolved type: com.ibm.icu.text.DecimalFormat} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v3, resolved type: com.ibm.icu.text.DecimalFormat} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r5v3, resolved type: com.ibm.icu.text.RuleBasedNumberFormat} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v8, resolved type: com.ibm.icu.text.DecimalFormat} */
-    /* JADX WARNING: Multi-variable type inference failed */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    static com.ibm.icu.text.NumberFormat createInstance(com.ibm.icu.util.ULocale r12, int r13) {
-        /*
-            java.lang.String r0 = getPattern((com.ibm.icu.util.ULocale) r12, (int) r13)
-            com.ibm.icu.text.DecimalFormatSymbols r1 = new com.ibm.icu.text.DecimalFormatSymbols
-            r1.<init>((com.ibm.icu.util.ULocale) r12)
-            r2 = 8
-            r3 = 5
-            r4 = 1
-            if (r13 == r4) goto L_0x001a
-            if (r13 == r3) goto L_0x001a
-            r5 = 7
-            if (r13 == r5) goto L_0x001a
-            if (r13 == r2) goto L_0x001a
-            r5 = 9
-            if (r13 != r5) goto L_0x0021
-        L_0x001a:
-            java.lang.String r5 = r1.getCurrencyPattern()
-            if (r5 == 0) goto L_0x0021
-            r0 = r5
-        L_0x0021:
-            if (r13 != r3) goto L_0x002c
-            java.lang.String r3 = doubleCurrencyStr
-            java.lang.String r5 = "¤"
-            java.lang.String r0 = r0.replace(r5, r3)
-        L_0x002c:
-            com.ibm.icu.text.NumberingSystem r3 = com.ibm.icu.text.NumberingSystem.getInstance((com.ibm.icu.util.ULocale) r12)
-            if (r3 != 0) goto L_0x0034
-            r2 = 0
-            return r2
-        L_0x0034:
-            r5 = 0
-            if (r3 == 0) goto L_0x0079
-            boolean r6 = r3.isAlgorithmic()
-            if (r6 == 0) goto L_0x0079
-            r2 = 4
-            java.lang.String r4 = r3.getDescription()
-            java.lang.String r6 = "/"
-            int r7 = r4.indexOf(r6)
-            int r6 = r4.lastIndexOf(r6)
-            if (r6 <= r7) goto L_0x006d
-            java.lang.String r5 = r4.substring(r5, r7)
-            int r8 = r7 + 1
-            java.lang.String r8 = r4.substring(r8, r6)
-            int r9 = r6 + 1
-            java.lang.String r9 = r4.substring(r9)
-            com.ibm.icu.util.ULocale r10 = new com.ibm.icu.util.ULocale
-            r10.<init>(r5)
-            java.lang.String r11 = "SpelloutRules"
-            boolean r11 = r8.equals(r11)
-            if (r11 == 0) goto L_0x006c
-            r2 = 1
-        L_0x006c:
-            goto L_0x006f
-        L_0x006d:
-            r10 = r12
-            r9 = r4
-        L_0x006f:
-            com.ibm.icu.text.RuleBasedNumberFormat r5 = new com.ibm.icu.text.RuleBasedNumberFormat
-            r5.<init>((com.ibm.icu.util.ULocale) r10, (int) r2)
-            r5.setDefaultRuleSet(r9)
-            r2 = r5
-            goto L_0x009c
-        L_0x0079:
-            com.ibm.icu.text.DecimalFormat r6 = new com.ibm.icu.text.DecimalFormat
-            r6.<init>(r0, r1, r13)
-            r7 = 4
-            if (r13 != r7) goto L_0x008a
-            r6.setMaximumFractionDigits(r5)
-            r6.setDecimalSeparatorAlwaysShown(r5)
-            r6.setParseIntegerOnly(r4)
-        L_0x008a:
-            if (r13 != r2) goto L_0x0091
-            com.ibm.icu.util.Currency$CurrencyUsage r2 = com.ibm.icu.util.Currency.CurrencyUsage.CASH
-            r6.setCurrencyUsage(r2)
-        L_0x0091:
-            r2 = 6
-            if (r13 != r2) goto L_0x009b
-            com.ibm.icu.text.CurrencyPluralInfo r2 = com.ibm.icu.text.CurrencyPluralInfo.getInstance((com.ibm.icu.util.ULocale) r12)
-            r6.setCurrencyPluralInfo(r2)
-        L_0x009b:
-            r2 = r6
-        L_0x009c:
-            com.ibm.icu.util.ULocale$Type r4 = com.ibm.icu.util.ULocale.VALID_LOCALE
-            com.ibm.icu.util.ULocale r4 = r1.getLocale(r4)
-            com.ibm.icu.util.ULocale$Type r5 = com.ibm.icu.util.ULocale.ACTUAL_LOCALE
-            com.ibm.icu.util.ULocale r5 = r1.getLocale(r5)
-            r2.setLocale(r4, r5)
-            return r2
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.NumberFormat.createInstance(com.ibm.icu.util.ULocale, int):com.ibm.icu.text.NumberFormat");
+    /* JADX WARN: Multi-variable type inference failed */
+    static NumberFormat createInstance(ULocale desiredLocale, int choice) {
+        String temp;
+        NumberFormat format;
+        ULocale nsLoc;
+        String nsRuleSetName;
+        String pattern = getPattern(desiredLocale, choice);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(desiredLocale);
+        if ((choice == 1 || choice == 5 || choice == 7 || choice == 8 || choice == 9) && (temp = symbols.getCurrencyPattern()) != null) {
+            pattern = temp;
+        }
+        if (choice == 5) {
+            pattern = pattern.replace("\u00a4", doubleCurrencyStr);
+        }
+        NumberingSystem ns = NumberingSystem.getInstance(desiredLocale);
+        if (ns == null) {
+            return null;
+        }
+        if (ns != null && ns.isAlgorithmic()) {
+            int desiredRulesType = 4;
+            String nsDesc = ns.getDescription();
+            int firstSlash = nsDesc.indexOf("/");
+            int lastSlash = nsDesc.lastIndexOf("/");
+            if (lastSlash > firstSlash) {
+                String nsLocID = nsDesc.substring(0, firstSlash);
+                String nsRuleSetGroup = nsDesc.substring(firstSlash + 1, lastSlash);
+                nsRuleSetName = nsDesc.substring(lastSlash + 1);
+                nsLoc = new ULocale(nsLocID);
+                if (nsRuleSetGroup.equals("SpelloutRules")) {
+                    desiredRulesType = 1;
+                }
+            } else {
+                nsLoc = desiredLocale;
+                nsRuleSetName = nsDesc;
+            }
+            RuleBasedNumberFormat r = new RuleBasedNumberFormat(nsLoc, desiredRulesType);
+            r.setDefaultRuleSet(nsRuleSetName);
+            format = r;
+        } else {
+            DecimalFormat f = new DecimalFormat(pattern, symbols, choice);
+            if (choice == 4) {
+                f.setMaximumFractionDigits(0);
+                f.setDecimalSeparatorAlwaysShown(false);
+                f.setParseIntegerOnly(true);
+            }
+            if (choice == 8) {
+                f.setCurrencyUsage(Currency.CurrencyUsage.CASH);
+            }
+            if (choice == 6) {
+                f.setCurrencyPluralInfo(CurrencyPluralInfo.getInstance(desiredLocale));
+            }
+            format = f;
+        }
+        ULocale valid = symbols.getLocale(ULocale.VALID_LOCALE);
+        ULocale actual = symbols.getLocale(ULocale.ACTUAL_LOCALE);
+        format.setLocale(valid, actual);
+        return format;
     }
 
     @Deprecated
@@ -629,7 +581,9 @@ public abstract class NumberFormat extends UFormat {
 
     @Deprecated
     public static String getPatternForStyle(ULocale forLocale, int choice) {
-        return getPatternForStyleAndNumberingSystem(forLocale, NumberingSystem.getInstance(forLocale).getName(), choice);
+        NumberingSystem ns = NumberingSystem.getInstance(forLocale);
+        String nsName = ns.getName();
+        return getPatternForStyleAndNumberingSystem(forLocale, nsName, choice);
     }
 
     @Deprecated
@@ -692,40 +646,37 @@ public abstract class NumberFormat extends UFormat {
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
         int i = this.maximumIntegerDigits;
-        byte b = Byte.MAX_VALUE;
         this.maxIntegerDigits = i > 127 ? Byte.MAX_VALUE : (byte) i;
         int i2 = this.minimumIntegerDigits;
         this.minIntegerDigits = i2 > 127 ? Byte.MAX_VALUE : (byte) i2;
         int i3 = this.maximumFractionDigits;
         this.maxFractionDigits = i3 > 127 ? Byte.MAX_VALUE : (byte) i3;
         int i4 = this.minimumFractionDigits;
-        if (i4 <= 127) {
-            b = (byte) i4;
-        }
-        this.minFractionDigits = b;
+        this.minFractionDigits = i4 <= 127 ? (byte) i4 : Byte.MAX_VALUE;
         stream.defaultWriteObject();
     }
 
+    /* loaded from: classes.dex */
     public static class Field extends Format.Field {
-        public static final Field CURRENCY = new Field("currency");
-        public static final Field DECIMAL_SEPARATOR = new Field("decimal separator");
+        static final long serialVersionUID = -4516273749929385842L;
+        public static final Field SIGN = new Field("sign");
+        public static final Field INTEGER = new Field("integer");
+        public static final Field FRACTION = new Field("fraction");
         public static final Field EXPONENT = new Field("exponent");
         public static final Field EXPONENT_SIGN = new Field("exponent sign");
         public static final Field EXPONENT_SYMBOL = new Field("exponent symbol");
-        public static final Field FRACTION = new Field("fraction");
+        public static final Field DECIMAL_SEPARATOR = new Field("decimal separator");
         public static final Field GROUPING_SEPARATOR = new Field("grouping separator");
-        public static final Field INTEGER = new Field("integer");
         public static final Field PERCENT = new Field("percent");
         public static final Field PERMILLE = new Field("per mille");
-        public static final Field SIGN = new Field("sign");
-        static final long serialVersionUID = -4516273749929385842L;
+        public static final Field CURRENCY = new Field("currency");
 
         protected Field(String fieldName) {
             super(fieldName);
         }
 
-        /* access modifiers changed from: protected */
-        public Object readResolve() throws InvalidObjectException {
+        @Override // java.text.AttributedCharacterIterator.Attribute
+        protected Object readResolve() throws InvalidObjectException {
             String name = getName();
             Field field = INTEGER;
             if (name.equals(field.getName())) {

@@ -17,17 +17,18 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+/* loaded from: classes.dex */
 public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> implements Disposable {
     protected boolean checkSubscriptionOnce;
     protected long completions;
-    protected final CountDownLatch done = new CountDownLatch(1);
-    protected final List<Throwable> errors = new VolatileSizeArrayList();
     protected int establishedFusionMode;
     protected int initialFusionMode;
     protected Thread lastThread;
     protected CharSequence tag;
     protected boolean timeout;
     protected final List<T> values = new VolatileSizeArrayList();
+    protected final List<Throwable> errors = new VolatileSizeArrayList();
+    protected final CountDownLatch done = new CountDownLatch(1);
 
     public abstract U assertNotSubscribed();
 
@@ -61,8 +62,7 @@ public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> impl
         return this.errors.size();
     }
 
-    /* access modifiers changed from: protected */
-    public final AssertionError fail(String message) {
+    protected final AssertionError fail(String message) {
         StringBuilder b = new StringBuilder(message.length() + 64);
         b.append(message);
         b.append(" (").append("latch = ").append(this.done.getCount()).append(", ").append("values = ").append(this.values.size()).append(", ").append("errors = ").append(this.errors.size()).append(", ").append("completions = ").append(this.completions);
@@ -72,9 +72,9 @@ public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> impl
         if (isDisposed()) {
             b.append(", disposed!");
         }
-        CharSequence tag2 = this.tag;
-        if (tag2 != null) {
-            b.append(", tag = ").append(tag2);
+        CharSequence tag = this.tag;
+        if (tag != null) {
+            b.append(", tag = ").append(tag);
         }
         b.append(')');
         AssertionError ae = new AssertionError(b.toString());
@@ -82,7 +82,8 @@ public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> impl
             if (this.errors.size() == 1) {
                 ae.initCause(this.errors.get(0));
             } else {
-                ae.initCause(new CompositeException((Iterable<? extends Throwable>) this.errors));
+                CompositeException ce = new CompositeException(this.errors);
+                ae.initCause(ce);
             }
         }
         return ae;
@@ -97,12 +98,8 @@ public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> impl
     }
 
     public final boolean await(long time, TimeUnit unit) throws InterruptedException {
-        boolean z = false;
         boolean d = this.done.getCount() == 0 || this.done.await(time, unit);
-        if (!d) {
-            z = true;
-        }
-        this.timeout = z;
+        this.timeout = d ? false : true;
         return d;
     }
 
@@ -110,87 +107,87 @@ public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> impl
         long c = this.completions;
         if (c == 0) {
             throw fail("Not completed");
-        } else if (c <= 1) {
-            return this;
-        } else {
+        }
+        if (c > 1) {
             throw fail("Multiple completions: " + c);
         }
+        return this;
     }
 
     public final U assertNotComplete() {
         long c = this.completions;
         if (c == 1) {
             throw fail("Completed!");
-        } else if (c <= 1) {
-            return this;
-        } else {
+        }
+        if (c > 1) {
             throw fail("Multiple completions: " + c);
         }
+        return this;
     }
 
     public final U assertNoErrors() {
-        if (this.errors.size() == 0) {
-            return this;
+        int s = this.errors.size();
+        if (s != 0) {
+            throw fail("Error(s) present: " + this.errors);
         }
-        throw fail("Error(s) present: " + this.errors);
+        return this;
     }
 
     public final U assertError(Throwable error) {
-        return assertError((Predicate<Throwable>) Functions.equalsWith(error));
+        return assertError(Functions.equalsWith(error));
     }
 
     public final U assertError(Class<? extends Throwable> errorClass) {
-        return assertError((Predicate<Throwable>) Functions.isInstanceOf(errorClass));
+        return assertError(Functions.isInstanceOf(errorClass));
     }
 
     public final U assertError(Predicate<Throwable> errorPredicate) {
         int s = this.errors.size();
-        if (s != 0) {
-            boolean found = false;
-            Iterator<Throwable> it = this.errors.iterator();
-            while (true) {
-                if (!it.hasNext()) {
-                    break;
-                }
-                try {
-                    if (errorPredicate.test(it.next())) {
-                        found = true;
-                        break;
-                    }
-                } catch (Exception ex) {
-                    throw ExceptionHelper.wrapOrThrow(ex);
-                }
-            }
-            if (!found) {
-                throw fail("Error not present");
-            } else if (s == 1) {
-                return this;
-            } else {
-                throw fail("Error present but other errors as well");
-            }
-        } else {
+        if (s == 0) {
             throw fail("No errors");
         }
+        boolean found = false;
+        Iterator<Throwable> it = this.errors.iterator();
+        while (true) {
+            if (!it.hasNext()) {
+                break;
+            }
+            Throwable e = it.next();
+            try {
+                if (errorPredicate.test(e)) {
+                    found = true;
+                    break;
+                }
+            } catch (Exception ex) {
+                throw ExceptionHelper.wrapOrThrow(ex);
+            }
+        }
+        if (found) {
+            if (s != 1) {
+                throw fail("Error present but other errors as well");
+            }
+            return this;
+        }
+        throw fail("Error not present");
     }
 
     public final U assertValue(T value) {
-        if (this.values.size() == 1) {
-            T v = this.values.get(0);
-            if (ObjectHelper.equals(value, v)) {
-                return this;
-            }
+        int s = this.values.size();
+        if (s != 1) {
+            throw fail("expected: " + valueAndClass(value) + " but was: " + this.values);
+        }
+        T v = this.values.get(0);
+        if (!ObjectHelper.equals(value, v)) {
             throw fail("expected: " + valueAndClass(value) + " but was: " + valueAndClass(v));
         }
-        throw fail("expected: " + valueAndClass(value) + " but was: " + this.values);
+        return this;
     }
 
     public final U assertNever(T value) {
         int s = this.values.size();
-        int i = 0;
-        while (i < s) {
-            if (!ObjectHelper.equals(this.values.get(i), value)) {
-                i++;
-            } else {
+        for (int i = 0; i < s; i++) {
+            T v = this.values.get(i);
+            if (ObjectHelper.equals(v, value)) {
                 throw fail("Value at position " + i + " is equal to " + valueAndClass(value) + "; Expected them to be different");
             }
         }
@@ -198,21 +195,18 @@ public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> impl
     }
 
     public final U assertValue(Predicate<T> valuePredicate) {
-        assertValueAt(0, valuePredicate);
-        if (this.values.size() <= 1) {
-            return this;
+        assertValueAt(0, (Predicate) valuePredicate);
+        if (this.values.size() > 1) {
+            throw fail("Value present but other values as well");
         }
-        throw fail("Value present but other values as well");
+        return this;
     }
 
     public final U assertNever(Predicate<? super T> valuePredicate) {
         int s = this.values.size();
-        int i = 0;
-        while (i < s) {
+        for (int i = 0; i < s; i++) {
             try {
-                if (!valuePredicate.test(this.values.get(i))) {
-                    i++;
-                } else {
+                if (valuePredicate.test((T) this.values.get(i))) {
                     throw fail("Value at position " + i + " matches predicate " + valuePredicate.toString() + ", which was not expected.");
                 }
             } catch (Exception ex) {
@@ -226,35 +220,36 @@ public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> impl
         int s = this.values.size();
         if (s == 0) {
             throw fail("No values");
-        } else if (index < s) {
-            T v = this.values.get(index);
-            if (ObjectHelper.equals(value, v)) {
-                return this;
-            }
-            throw fail("expected: " + valueAndClass(value) + " but was: " + valueAndClass(v));
-        } else {
+        }
+        if (index >= s) {
             throw fail("Invalid index: " + index);
         }
+        T v = this.values.get(index);
+        if (!ObjectHelper.equals(value, v)) {
+            throw fail("expected: " + valueAndClass(value) + " but was: " + valueAndClass(v));
+        }
+        return this;
     }
 
     public final U assertValueAt(int index, Predicate<T> valuePredicate) {
-        if (this.values.size() == 0) {
+        int s = this.values.size();
+        if (s == 0) {
             throw fail("No values");
-        } else if (index < this.values.size()) {
-            boolean found = false;
-            try {
-                if (valuePredicate.test(this.values.get(index))) {
-                    found = true;
-                }
-                if (found) {
-                    return this;
-                }
-                throw fail("Value not present");
-            } catch (Exception ex) {
-                throw ExceptionHelper.wrapOrThrow(ex);
-            }
-        } else {
+        }
+        if (index >= this.values.size()) {
             throw fail("Invalid index: " + index);
+        }
+        boolean found = false;
+        try {
+            if (valuePredicate.test(this.values.get(index))) {
+                found = true;
+            }
+            if (!found) {
+                throw fail("Value not present");
+            }
+            return this;
+        } catch (Exception ex) {
+            throw ExceptionHelper.wrapOrThrow(ex);
         }
     }
 
@@ -267,36 +262,33 @@ public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> impl
 
     public final U assertValueCount(int count) {
         int s = this.values.size();
-        if (s == count) {
-            return this;
+        if (s != count) {
+            throw fail("Value counts differ; expected: " + count + " but was: " + s);
         }
-        throw fail("Value counts differ; expected: " + count + " but was: " + s);
+        return this;
     }
 
     public final U assertNoValues() {
         return assertValueCount(0);
     }
 
-    public final U assertValues(T... values2) {
+    public final U assertValues(T... values) {
         int s = this.values.size();
-        if (s == values2.length) {
-            int i = 0;
-            while (i < s) {
-                T v = this.values.get(i);
-                T u = values2[i];
-                if (ObjectHelper.equals(u, v)) {
-                    i++;
-                } else {
-                    throw fail("Values at position " + i + " differ; expected: " + valueAndClass(u) + " but was: " + valueAndClass(v));
-                }
-            }
-            return this;
+        if (s != values.length) {
+            throw fail("Value count differs; expected: " + values.length + " " + Arrays.toString(values) + " but was: " + s + " " + this.values);
         }
-        throw fail("Value count differs; expected: " + values2.length + " " + Arrays.toString(values2) + " but was: " + s + " " + this.values);
+        for (int i = 0; i < s; i++) {
+            T v = this.values.get(i);
+            T u = values[i];
+            if (!ObjectHelper.equals(u, v)) {
+                throw fail("Values at position " + i + " differ; expected: " + valueAndClass(u) + " but was: " + valueAndClass(v));
+            }
+        }
+        return this;
     }
 
-    public final U assertValuesOnly(T... values2) {
-        return assertSubscribed().assertValues(values2).assertNoErrors().assertNotComplete();
+    public final U assertValuesOnly(T... values) {
+        return (U) assertSubscribed().assertValues(values).assertNoErrors().assertNotComplete();
     }
 
     public final U assertValueSet(Collection<? extends T> expected) {
@@ -313,7 +305,7 @@ public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> impl
     }
 
     public final U assertValueSetOnly(Collection<? extends T> expected) {
-        return assertSubscribed().assertValueSet(expected).assertNoErrors().assertNotComplete();
+        return (U) assertSubscribed().assertValueSet(expected).assertNoErrors().assertNotComplete();
     }
 
     public final U assertValueSequence(Iterable<? extends T> sequence) {
@@ -325,54 +317,52 @@ public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> impl
         while (true) {
             expectedNext = expectedIterator.hasNext();
             actualNext = actualIterator.hasNext();
-            if (actualNext && expectedNext) {
-                T u = expectedIterator.next();
-                T v = actualIterator.next();
-                if (ObjectHelper.equals(u, v)) {
-                    i++;
-                } else {
-                    throw fail("Values at position " + i + " differ; expected: " + valueAndClass(u) + " but was: " + valueAndClass(v));
-                }
+            if (!actualNext || !expectedNext) {
+                break;
             }
+            T u = expectedIterator.next();
+            T v = actualIterator.next();
+            if (!ObjectHelper.equals(u, v)) {
+                throw fail("Values at position " + i + " differ; expected: " + valueAndClass(u) + " but was: " + valueAndClass(v));
+            }
+            i++;
         }
         if (actualNext) {
             throw fail("More values received than expected (" + i + ")");
-        } else if (!expectedNext) {
-            return this;
-        } else {
+        }
+        if (expectedNext) {
             throw fail("Fewer values received than expected (" + i + ")");
         }
+        return this;
     }
 
     public final U assertValueSequenceOnly(Iterable<? extends T> sequence) {
-        return assertSubscribed().assertValueSequence(sequence).assertNoErrors().assertNotComplete();
+        return (U) assertSubscribed().assertValueSequence(sequence).assertNoErrors().assertNotComplete();
     }
 
     public final U assertTerminated() {
-        if (this.done.getCount() == 0) {
-            long c = this.completions;
-            if (c <= 1) {
-                int s = this.errors.size();
-                if (s > 1) {
-                    throw fail("Terminated with multiple errors: " + s);
-                } else if (c == 0 || s == 0) {
-                    return this;
-                } else {
-                    throw fail("Terminated with multiple completions and errors: " + c);
-                }
-            } else {
-                throw fail("Terminated with multiple completions: " + c);
-            }
-        } else {
+        if (this.done.getCount() != 0) {
             throw fail("Subscriber still running!");
         }
+        long c = this.completions;
+        if (c > 1) {
+            throw fail("Terminated with multiple completions: " + c);
+        }
+        int s = this.errors.size();
+        if (s > 1) {
+            throw fail("Terminated with multiple errors: " + s);
+        }
+        if (c != 0 && s != 0) {
+            throw fail("Terminated with multiple completions and errors: " + c);
+        }
+        return this;
     }
 
     public final U assertNotTerminated() {
-        if (this.done.getCount() != 0) {
-            return this;
+        if (this.done.getCount() == 0) {
+            throw fail("Subscriber terminated!");
         }
-        throw fail("Subscriber terminated!");
+        return this;
     }
 
     public final boolean awaitTerminalEvent() {
@@ -398,15 +388,16 @@ public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> impl
         int s = this.errors.size();
         if (s == 0) {
             throw fail("No errors");
-        } else if (s == 1) {
-            String errorMessage = this.errors.get(0).getMessage();
-            if (ObjectHelper.equals(message, errorMessage)) {
-                return this;
-            }
-            throw fail("Error message differs; exptected: " + message + " but was: " + errorMessage);
-        } else {
-            throw fail("Multiple errors");
         }
+        if (s == 1) {
+            Throwable e = this.errors.get(0);
+            String errorMessage = e.getMessage();
+            if (!ObjectHelper.equals(message, errorMessage)) {
+                throw fail("Error message differs; exptected: " + message + " but was: " + errorMessage);
+            }
+            return this;
+        }
+        throw fail("Multiple errors");
     }
 
     public final List<List<Object>> getEvents() {
@@ -421,20 +412,20 @@ public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> impl
         return result;
     }
 
-    public final U assertResult(T... values2) {
-        return assertSubscribed().assertValues(values2).assertNoErrors().assertComplete();
+    public final U assertResult(T... values) {
+        return (U) assertSubscribed().assertValues(values).assertNoErrors().assertComplete();
     }
 
-    public final U assertFailure(Class<? extends Throwable> error, T... values2) {
-        return assertSubscribed().assertValues(values2).assertError(error).assertNotComplete();
+    public final U assertFailure(Class<? extends Throwable> error, T... values) {
+        return (U) assertSubscribed().assertValues(values).assertError(error).assertNotComplete();
     }
 
-    public final U assertFailure(Predicate<Throwable> errorPredicate, T... values2) {
-        return assertSubscribed().assertValues(values2).assertError(errorPredicate).assertNotComplete();
+    public final U assertFailure(Predicate<Throwable> errorPredicate, T... values) {
+        return (U) assertSubscribed().assertValues(values).assertError(errorPredicate).assertNotComplete();
     }
 
-    public final U assertFailureAndMessage(Class<? extends Throwable> error, String message, T... values2) {
-        return assertSubscribed().assertValues(values2).assertError(error).assertErrorMessage(message).assertNotComplete();
+    public final U assertFailureAndMessage(Class<? extends Throwable> error, String message, T... values) {
+        return (U) assertSubscribed().assertValues(values).assertError(error).assertErrorMessage(message).assertNotComplete();
     }
 
     public final U awaitDone(long time, TimeUnit unit) {
@@ -451,50 +442,58 @@ public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> impl
     }
 
     public final U assertEmpty() {
-        return assertSubscribed().assertNoValues().assertNoErrors().assertNotComplete();
+        return (U) assertSubscribed().assertNoValues().assertNoErrors().assertNotComplete();
     }
 
-    public final U withTag(CharSequence tag2) {
-        this.tag = tag2;
+    public final U withTag(CharSequence tag) {
+        this.tag = tag;
         return this;
     }
 
+    /* loaded from: classes.dex */
     public enum TestWaitStrategy implements Runnable {
-        SPIN {
+        SPIN { // from class: io.reactivex.observers.BaseTestConsumer.TestWaitStrategy.1
+            @Override // io.reactivex.observers.BaseTestConsumer.TestWaitStrategy, java.lang.Runnable
             public void run() {
             }
         },
-        YIELD {
+        YIELD { // from class: io.reactivex.observers.BaseTestConsumer.TestWaitStrategy.2
+            @Override // io.reactivex.observers.BaseTestConsumer.TestWaitStrategy, java.lang.Runnable
             public void run() {
                 Thread.yield();
             }
         },
-        SLEEP_1MS {
+        SLEEP_1MS { // from class: io.reactivex.observers.BaseTestConsumer.TestWaitStrategy.3
+            @Override // io.reactivex.observers.BaseTestConsumer.TestWaitStrategy, java.lang.Runnable
             public void run() {
                 sleep(1);
             }
         },
-        SLEEP_10MS {
+        SLEEP_10MS { // from class: io.reactivex.observers.BaseTestConsumer.TestWaitStrategy.4
+            @Override // io.reactivex.observers.BaseTestConsumer.TestWaitStrategy, java.lang.Runnable
             public void run() {
                 sleep(10);
             }
         },
-        SLEEP_100MS {
+        SLEEP_100MS { // from class: io.reactivex.observers.BaseTestConsumer.TestWaitStrategy.5
+            @Override // io.reactivex.observers.BaseTestConsumer.TestWaitStrategy, java.lang.Runnable
             public void run() {
                 sleep(100);
             }
         },
-        SLEEP_1000MS {
+        SLEEP_1000MS { // from class: io.reactivex.observers.BaseTestConsumer.TestWaitStrategy.6
+            @Override // io.reactivex.observers.BaseTestConsumer.TestWaitStrategy, java.lang.Runnable
             public void run() {
                 sleep(1000);
             }
         };
 
+        @Override // java.lang.Runnable
         public abstract void run();
 
         static void sleep(int millis) {
             try {
-                Thread.sleep((long) millis);
+                Thread.sleep(millis);
             } catch (InterruptedException ex) {
                 throw new RuntimeException(ex);
             }
@@ -502,11 +501,11 @@ public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> impl
     }
 
     public final U awaitCount(int atLeast) {
-        return awaitCount(atLeast, TestWaitStrategy.SLEEP_10MS, 5000);
+        return awaitCount(atLeast, TestWaitStrategy.SLEEP_10MS, 5000L);
     }
 
     public final U awaitCount(int atLeast, Runnable waitStrategy) {
-        return awaitCount(atLeast, waitStrategy, 5000);
+        return awaitCount(atLeast, waitStrategy, 5000L);
     }
 
     public final U awaitCount(int atLeast, Runnable waitStrategy, long timeoutMillis) {
@@ -535,16 +534,16 @@ public abstract class BaseTestConsumer<T, U extends BaseTestConsumer<T, U>> impl
     }
 
     public final U assertTimeout() {
-        if (this.timeout) {
-            return this;
+        if (!this.timeout) {
+            throw fail("No timeout?!");
         }
-        throw fail("No timeout?!");
+        return this;
     }
 
     public final U assertNoTimeout() {
-        if (!this.timeout) {
-            return this;
+        if (this.timeout) {
+            throw fail("Timeout?!");
         }
-        throw fail("Timeout?!");
+        return this;
     }
 }

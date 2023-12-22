@@ -1,26 +1,29 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
+import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
+import com.wits.ksw.launcher.view.CustomBmwImageView;
 
+/* loaded from: classes7.dex */
 public class Id7SubHicarViewBindingImpl extends Id7SubHicarViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback52;
+    private final View.OnClickListener mCallback86;
     private long mDirtyFlags;
 
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.textView2, 4);
+        sparseIntArray.put(C0899R.C0901id.textView2, 4);
     }
 
     public Id7SubHicarViewBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -28,24 +31,26 @@ public class Id7SubHicarViewBindingImpl extends Id7SubHicarViewBinding implement
     }
 
     private Id7SubHicarViewBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 2, bindings[3], bindings[2], bindings[0], bindings[1], bindings[4]);
-        this.mDirtyFlags = -1;
-        this.dayTextView.setTag((Object) null);
-        this.monthTextView.setTag((Object) null);
-        this.phoneConstraintLayout.setTag((Object) null);
-        this.phoneImageView.setTag((Object) null);
+        super(bindingComponent, root, 2, (TextView) bindings[3], (TextView) bindings[2], (ConstraintLayout) bindings[0], (CustomBmwImageView) bindings[1], (TextView) bindings[4]);
+        this.mDirtyFlags = -1L;
+        this.dayTextView.setTag(null);
+        this.monthTextView.setTag(null);
+        this.phoneConstraintLayout.setTag(null);
+        this.phoneImageView.setTag(null);
         setRootTag(root);
-        this.mCallback52 = new OnClickListener(this, 1);
+        this.mCallback86 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 8;
+            this.mDirtyFlags = 8L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -55,14 +60,16 @@ public class Id7SubHicarViewBindingImpl extends Id7SubHicarViewBinding implement
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (14 != variableId) {
-            return false;
+        if (14 == variableId) {
+            setNaviViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setNaviViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.Id7SubHicarViewBinding
     public void setNaviViewModel(LauncherViewModel NaviViewModel) {
         this.mNaviViewModel = NaviViewModel;
         synchronized (this) {
@@ -72,8 +79,8 @@ public class Id7SubHicarViewBindingImpl extends Id7SubHicarViewBinding implement
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeNaviViewModelMonth((ObservableField) object, fieldId);
@@ -84,32 +91,32 @@ public class Id7SubHicarViewBindingImpl extends Id7SubHicarViewBinding implement
         }
     }
 
-    private boolean onChangeNaviViewModelMonth(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeNaviViewModelMonth(ObservableField<String> NaviViewModelMonth, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeNaviViewModelDay(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeNaviViewModelDay(ObservableField<String> NaviViewModelDay, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         LauncherViewModel naviViewModel = this.mNaviViewModel;
         String naviViewModelDayGet = null;
@@ -122,7 +129,7 @@ public class Id7SubHicarViewBindingImpl extends Id7SubHicarViewBinding implement
                 if (naviViewModel != null) {
                     naviViewModelMonth = naviViewModel.month;
                 }
-                updateRegistration(0, (Observable) naviViewModelMonth);
+                updateRegistration(0, naviViewModelMonth);
                 if (naviViewModelMonth != null) {
                     naviViewModelMonthGet = naviViewModelMonth.get();
                 }
@@ -131,12 +138,12 @@ public class Id7SubHicarViewBindingImpl extends Id7SubHicarViewBinding implement
                 if (naviViewModel != null) {
                     naviViewModelDay = naviViewModel.day;
                 }
-                updateRegistration(1, (Observable) naviViewModelDay);
+                updateRegistration(1, naviViewModelDay);
                 if (naviViewModelDay != null) {
                     naviViewModelDayGet = naviViewModelDay.get();
                 }
             }
-            if (!((dirtyFlags & 12) == 0 || naviViewModel == null)) {
+            if ((dirtyFlags & 12) != 0 && naviViewModel != null) {
                 naviViewModelPhoneViewFocusChangeListener = naviViewModel.phoneViewFocusChangeListener;
             }
         }
@@ -147,16 +154,18 @@ public class Id7SubHicarViewBindingImpl extends Id7SubHicarViewBinding implement
             TextViewBindingAdapter.setText(this.monthTextView, naviViewModelMonthGet);
         }
         if ((8 & dirtyFlags) != 0) {
-            this.phoneImageView.setOnClickListener(this.mCallback52);
+            this.phoneImageView.setOnClickListener(this.mCallback86);
         }
         if ((dirtyFlags & 12) != 0) {
             this.phoneImageView.setOnFocusChangeListener(naviViewModelPhoneViewFocusChangeListener);
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
         LauncherViewModel naviViewModel = this.mNaviViewModel;
-        if (naviViewModel != null) {
+        boolean naviViewModelJavaLangObjectNull = naviViewModel != null;
+        if (naviViewModelJavaLangObjectNull) {
             naviViewModel.openHicar(callbackArg_0);
         }
     }

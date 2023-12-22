@@ -6,14 +6,15 @@ import android.databinding.ViewDataBinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class DashVideoFragment extends ViewDataBinding {
     @Bindable
     protected AlsID7ViewModel mDashVideoViewModel;
 
-    public abstract void setDashVideoViewModel(AlsID7ViewModel alsID7ViewModel);
+    public abstract void setDashVideoViewModel(AlsID7ViewModel DashVideoViewModel);
 
     protected DashVideoFragment(Object _bindingComponent, View _root, int _localFieldCount) {
         super(_bindingComponent, _root, _localFieldCount);
@@ -29,7 +30,7 @@ public abstract class DashVideoFragment extends ViewDataBinding {
 
     @Deprecated
     public static DashVideoFragment inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (DashVideoFragment) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_fragment_dash_video, root, attachToRoot, component);
+        return (DashVideoFragment) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_fragment_dash_video, root, attachToRoot, component);
     }
 
     public static DashVideoFragment inflate(LayoutInflater inflater) {
@@ -38,7 +39,7 @@ public abstract class DashVideoFragment extends ViewDataBinding {
 
     @Deprecated
     public static DashVideoFragment inflate(LayoutInflater inflater, Object component) {
-        return (DashVideoFragment) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_fragment_dash_video, (ViewGroup) null, false, component);
+        return (DashVideoFragment) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_fragment_dash_video, null, false, component);
     }
 
     public static DashVideoFragment bind(View view) {
@@ -47,6 +48,6 @@ public abstract class DashVideoFragment extends ViewDataBinding {
 
     @Deprecated
     public static DashVideoFragment bind(View view, Object component) {
-        return (DashVideoFragment) bind(component, view, R.layout.als_id7_fragment_dash_video);
+        return (DashVideoFragment) bind(component, view, C0899R.C0902layout.als_id7_fragment_dash_video);
     }
 }

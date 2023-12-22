@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:scrollbars="none" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout android:paddingRight="10dp" android:descendantFocusability="afterDescendants" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <RelativeLayout android:id="@+id/relate_timeSync" android:descendantFocusability="afterDescendants" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <RadioGroup android:id="@+id/rdg_timeSy" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="30dp" android:checkedButton="@+id/rdb_sync1">
+                <com.wits.ksw.settings.utlis_view.RtlRadioButton android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rdb_sync1" android:background="@drawable/ksw_als_id7_seting_rp_bg" android:focusable="true" android:nextFocusUp="@+id/rdb_sync1" android:layout_width="match_parent" android:layout_height="78dp" android:button="@drawable/als_rad_btn_sel" android:text="@string/text_4"/>
+                <ImageView android:background="@mipmap/als_id7_rp_line" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                <com.wits.ksw.settings.utlis_view.RtlRadioButton android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rdb_sync2" android:background="@drawable/ksw_als_id7_seting_rp_bg" android:focusable="true" android:nextFocusDown="@+id/rdb_sync2" android:layout_width="match_parent" android:layout_height="78dp" android:button="@drawable/als_rad_btn_sel" android:text="@string/text_5"/>
+            </RadioGroup>
+        </RelativeLayout>
+        <RelativeLayout android:id="@+id/relate_timeZhis" android:visibility="gone" android:descendantFocusability="afterDescendants" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <RadioGroup android:id="@+id/rdg_timeZhis" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="30dp" android:checkedButton="@+id/rdb_zhis2">
+                <com.wits.ksw.settings.utlis_view.RtlRadioButton android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rdb_zhis1" android:background="@drawable/ksw_als_id7_seting_rp_bg" android:focusable="true" android:nextFocusUp="@+id/rdb_zhis1" android:layout_width="match_parent" android:layout_height="78dp" android:button="@drawable/als_rad_btn_sel" android:text="@string/text_6"/>
+                <ImageView android:background="@mipmap/als_id7_rp_line" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                <com.wits.ksw.settings.utlis_view.RtlRadioButton android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rdb_zhis2" android:background="@drawable/ksw_als_id7_seting_rp_bg" android:focusable="true" android:nextFocusDown="@+id/rdb_zhis2" android:layout_width="match_parent" android:layout_height="78dp" android:button="@drawable/als_rad_btn_sel" android:text="@string/text_7"/>
+            </RadioGroup>
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

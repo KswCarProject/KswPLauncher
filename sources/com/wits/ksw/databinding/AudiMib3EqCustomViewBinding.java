@@ -3,17 +3,18 @@ package com.wits.ksw.databinding;
 import android.databinding.Bindable;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.v7.widget.AppCompatTextView;
+import android.support.p004v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.settings.audi.widget.AudiConstraintLayout;
 import com.wits.ksw.settings.audi.widget.EqSeekBar;
-import com.wits.ksw.settings.audi_mib3.vm.AudiMib3EQViewModel;
+import com.wits.ksw.settings.audi_mib3.p008vm.AudiMib3EQViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class AudiMib3EqCustomViewBinding extends ViewDataBinding {
     public final EqSeekBar bassSeekBar;
     public final TextView bassTv;
@@ -37,30 +38,29 @@ public abstract class AudiMib3EqCustomViewBinding extends ViewDataBinding {
     public final TextView trebleTv;
     public final View vDivider;
 
-    public abstract void setVm(AudiMib3EQViewModel audiMib3EQViewModel);
+    public abstract void setVm(AudiMib3EQViewModel vm);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected AudiMib3EqCustomViewBinding(Object _bindingComponent, View _root, int _localFieldCount, EqSeekBar bassSeekBar2, TextView bassTv2, ImageView eqText7Iv2, TextView eqText7Tv2, ImageView eqText8Iv2, TextView eqText8Tv2, ImageView eqText9Iv2, TextView eqText9Tv2, View hzMediaLinearLayout2, AudiConstraintLayout linearLayout42, View linearLayout52, View linearLayout62, EqSeekBar mezzoSeekBar2, TextView mezzoTv2, AppCompatTextView title2, View titleDivider2, EqSeekBar trebleSeekBar2, TextView trebleTv2, View vDivider2) {
+    protected AudiMib3EqCustomViewBinding(Object _bindingComponent, View _root, int _localFieldCount, EqSeekBar bassSeekBar, TextView bassTv, ImageView eqText7Iv, TextView eqText7Tv, ImageView eqText8Iv, TextView eqText8Tv, ImageView eqText9Iv, TextView eqText9Tv, View hzMediaLinearLayout, AudiConstraintLayout linearLayout4, View linearLayout5, View linearLayout6, EqSeekBar mezzoSeekBar, TextView mezzoTv, AppCompatTextView title, View titleDivider, EqSeekBar trebleSeekBar, TextView trebleTv, View vDivider) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.bassSeekBar = bassSeekBar2;
-        this.bassTv = bassTv2;
-        this.eqText7Iv = eqText7Iv2;
-        this.eqText7Tv = eqText7Tv2;
-        this.eqText8Iv = eqText8Iv2;
-        this.eqText8Tv = eqText8Tv2;
-        this.eqText9Iv = eqText9Iv2;
-        this.eqText9Tv = eqText9Tv2;
-        this.hzMediaLinearLayout = hzMediaLinearLayout2;
-        this.linearLayout4 = linearLayout42;
-        this.linearLayout5 = linearLayout52;
-        this.linearLayout6 = linearLayout62;
-        this.mezzoSeekBar = mezzoSeekBar2;
-        this.mezzoTv = mezzoTv2;
-        this.title = title2;
-        this.titleDivider = titleDivider2;
-        this.trebleSeekBar = trebleSeekBar2;
-        this.trebleTv = trebleTv2;
-        this.vDivider = vDivider2;
+        this.bassSeekBar = bassSeekBar;
+        this.bassTv = bassTv;
+        this.eqText7Iv = eqText7Iv;
+        this.eqText7Tv = eqText7Tv;
+        this.eqText8Iv = eqText8Iv;
+        this.eqText8Tv = eqText8Tv;
+        this.eqText9Iv = eqText9Iv;
+        this.eqText9Tv = eqText9Tv;
+        this.hzMediaLinearLayout = hzMediaLinearLayout;
+        this.linearLayout4 = linearLayout4;
+        this.linearLayout5 = linearLayout5;
+        this.linearLayout6 = linearLayout6;
+        this.mezzoSeekBar = mezzoSeekBar;
+        this.mezzoTv = mezzoTv;
+        this.title = title;
+        this.titleDivider = titleDivider;
+        this.trebleSeekBar = trebleSeekBar;
+        this.trebleTv = trebleTv;
+        this.vDivider = vDivider;
     }
 
     public AudiMib3EQViewModel getVm() {
@@ -73,7 +73,7 @@ public abstract class AudiMib3EqCustomViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3EqCustomViewBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AudiMib3EqCustomViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_mib3_eq_custom_view, root, attachToRoot, component);
+        return (AudiMib3EqCustomViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_mib3_eq_custom_view, root, attachToRoot, component);
     }
 
     public static AudiMib3EqCustomViewBinding inflate(LayoutInflater inflater) {
@@ -82,7 +82,7 @@ public abstract class AudiMib3EqCustomViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3EqCustomViewBinding inflate(LayoutInflater inflater, Object component) {
-        return (AudiMib3EqCustomViewBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_mib3_eq_custom_view, (ViewGroup) null, false, component);
+        return (AudiMib3EqCustomViewBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_mib3_eq_custom_view, null, false, component);
     }
 
     public static AudiMib3EqCustomViewBinding bind(View view) {
@@ -91,6 +91,6 @@ public abstract class AudiMib3EqCustomViewBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3EqCustomViewBinding bind(View view, Object component) {
-        return (AudiMib3EqCustomViewBinding) bind(component, view, R.layout.audi_mib3_eq_custom_view);
+        return (AudiMib3EqCustomViewBinding) bind(component, view, C0899R.C0902layout.audi_mib3_eq_custom_view);
     }
 }

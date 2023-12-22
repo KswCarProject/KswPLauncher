@@ -10,6 +10,7 @@ import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.LazyBitmapDrawableResource;
 import com.bumptech.glide.util.Preconditions;
 
+/* loaded from: classes.dex */
 public class BitmapDrawableTranscoder implements ResourceTranscoder<Bitmap, BitmapDrawable> {
     private final Resources resources;
 
@@ -18,14 +19,15 @@ public class BitmapDrawableTranscoder implements ResourceTranscoder<Bitmap, Bitm
     }
 
     @Deprecated
-    public BitmapDrawableTranscoder(Resources resources2, BitmapPool bitmapPool) {
-        this(resources2);
+    public BitmapDrawableTranscoder(Resources resources, BitmapPool bitmapPool) {
+        this(resources);
     }
 
-    public BitmapDrawableTranscoder(Resources resources2) {
-        this.resources = (Resources) Preconditions.checkNotNull(resources2);
+    public BitmapDrawableTranscoder(Resources resources) {
+        this.resources = (Resources) Preconditions.checkNotNull(resources);
     }
 
+    @Override // com.bumptech.glide.load.resource.transcode.ResourceTranscoder
     public Resource<BitmapDrawable> transcode(Resource<Bitmap> toTranscode, Options options) {
         return LazyBitmapDrawableResource.obtain(this.resources, toTranscode);
     }

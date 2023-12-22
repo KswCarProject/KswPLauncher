@@ -4,7 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.TextView;
+import java.util.Locale;
 
+/* loaded from: classes10.dex */
 public class RtlTextView extends TextView {
     private static final String TAG = "RtlTextView";
 
@@ -28,7 +30,9 @@ public class RtlTextView extends TextView {
     }
 
     private void init() {
-        if (getResources().getConfiguration().locale.getLanguage().contains("ar")) {
+        Locale locale = getResources().getConfiguration().locale;
+        String language = locale.getLanguage();
+        if (language.contains("ar")) {
             Log.i(TAG, "RtlTextView: ");
             setGravity(21);
             return;

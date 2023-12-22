@@ -13,27 +13,29 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public abstract class BaseGlideUrlLoader<Model> implements ModelLoader<Model, InputStream> {
     private final ModelLoader<GlideUrl, InputStream> concreteLoader;
     private final ModelCache<Model, GlideUrl> modelCache;
 
-    /* access modifiers changed from: protected */
-    public abstract String getUrl(Model model, int i, int i2, Options options);
+    protected abstract String getUrl(Model model, int i, int i2, Options options);
 
-    protected BaseGlideUrlLoader(ModelLoader<GlideUrl, InputStream> concreteLoader2) {
-        this(concreteLoader2, (ModelCache) null);
+    protected BaseGlideUrlLoader(ModelLoader<GlideUrl, InputStream> concreteLoader) {
+        this(concreteLoader, null);
     }
 
-    protected BaseGlideUrlLoader(ModelLoader<GlideUrl, InputStream> concreteLoader2, ModelCache<Model, GlideUrl> modelCache2) {
-        this.concreteLoader = concreteLoader2;
-        this.modelCache = modelCache2;
+    protected BaseGlideUrlLoader(ModelLoader<GlideUrl, InputStream> concreteLoader, ModelCache<Model, GlideUrl> modelCache) {
+        this.concreteLoader = concreteLoader;
+        this.modelCache = modelCache;
     }
 
+    @Override // com.bumptech.glide.load.model.ModelLoader
     public ModelLoader.LoadData<InputStream> buildLoadData(Model model, int width, int height, Options options) {
         GlideUrl result = null;
-        ModelCache<Model, GlideUrl> modelCache2 = this.modelCache;
-        if (modelCache2 != null) {
-            result = modelCache2.get(model, width, height);
+        ModelCache<Model, GlideUrl> modelCache = this.modelCache;
+        if (modelCache != null) {
+            GlideUrl result2 = modelCache.get(model, width, height);
+            result = result2;
         }
         if (result == null) {
             String stringURL = getUrl(model, width, height, options);
@@ -41,9 +43,9 @@ public abstract class BaseGlideUrlLoader<Model> implements ModelLoader<Model, In
                 return null;
             }
             result = new GlideUrl(stringURL, getHeaders(model, width, height, options));
-            ModelCache<Model, GlideUrl> modelCache3 = this.modelCache;
-            if (modelCache3 != null) {
-                modelCache3.put(model, width, height, result);
+            ModelCache<Model, GlideUrl> modelCache2 = this.modelCache;
+            if (modelCache2 != null) {
+                modelCache2.put(model, width, height, result);
             }
         }
         List<String> alternateUrls = getAlternateUrls(model, width, height, options);
@@ -62,13 +64,11 @@ public abstract class BaseGlideUrlLoader<Model> implements ModelLoader<Model, In
         return result;
     }
 
-    /* access modifiers changed from: protected */
-    public List<String> getAlternateUrls(Model model, int width, int height, Options options) {
+    protected List<String> getAlternateUrls(Model model, int width, int height, Options options) {
         return Collections.emptyList();
     }
 
-    /* access modifiers changed from: protected */
-    public Headers getHeaders(Model model, int width, int height, Options options) {
+    protected Headers getHeaders(Model model, int width, int height, Options options) {
         return Headers.DEFAULT;
     }
 }

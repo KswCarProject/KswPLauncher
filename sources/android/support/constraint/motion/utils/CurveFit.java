@@ -1,5 +1,6 @@
 package android.support.constraint.motion.utils;
 
+/* loaded from: classes.dex */
 public abstract class CurveFit {
     public static final int CONSTANT = 2;
     public static final int LINEAR = 1;
@@ -24,10 +25,11 @@ public abstract class CurveFit {
         switch (type) {
             case 0:
                 return new MonotonicCurveFit(time, y);
-            case 2:
-                return new Constant(time[0], y[0]);
+            case 1:
             default:
                 return new LinearCurveFit(time, y);
+            case 2:
+                return new Constant(time[0], y[0]);
         }
     }
 
@@ -35,6 +37,7 @@ public abstract class CurveFit {
         return new ArcCurveFit(arcModes, time, y);
     }
 
+    /* loaded from: classes.dex */
     static class Constant extends CurveFit {
         double mTime;
         double[] mValue;
@@ -44,11 +47,13 @@ public abstract class CurveFit {
             this.mValue = value;
         }
 
+        @Override // android.support.constraint.motion.utils.CurveFit
         public void getPos(double t, double[] v) {
             double[] dArr = this.mValue;
             System.arraycopy(dArr, 0, v, 0, dArr.length);
         }
 
+        @Override // android.support.constraint.motion.utils.CurveFit
         public void getPos(double t, float[] v) {
             int i = 0;
             while (true) {
@@ -62,20 +67,24 @@ public abstract class CurveFit {
             }
         }
 
+        @Override // android.support.constraint.motion.utils.CurveFit
         public double getPos(double t, int j) {
             return this.mValue[j];
         }
 
+        @Override // android.support.constraint.motion.utils.CurveFit
         public void getSlope(double t, double[] v) {
             for (int i = 0; i < this.mValue.length; i++) {
                 v[i] = 0.0d;
             }
         }
 
+        @Override // android.support.constraint.motion.utils.CurveFit
         public double getSlope(double t, int j) {
             return 0.0d;
         }
 
+        @Override // android.support.constraint.motion.utils.CurveFit
         public double[] getTimePoints() {
             return new double[]{this.mTime};
         }

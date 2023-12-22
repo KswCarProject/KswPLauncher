@@ -11,17 +11,20 @@ import io.reactivex.internal.functions.ObjectHelper;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/* loaded from: classes.dex */
 public final class CompletableConcatIterable extends Completable {
     final Iterable<? extends CompletableSource> sources;
 
-    public CompletableConcatIterable(Iterable<? extends CompletableSource> sources2) {
-        this.sources = sources2;
+    public CompletableConcatIterable(Iterable<? extends CompletableSource> sources) {
+        this.sources = sources;
     }
 
+    @Override // io.reactivex.Completable
     public void subscribeActual(CompletableObserver observer) {
         try {
-            ConcatInnerObserver inner = new ConcatInnerObserver(observer, (Iterator) ObjectHelper.requireNonNull(this.sources.iterator(), "The iterator returned is null"));
-            observer.onSubscribe(inner.sd);
+            Iterator<? extends CompletableSource> it = (Iterator) ObjectHelper.requireNonNull(this.sources.iterator(), "The iterator returned is null");
+            ConcatInnerObserver inner = new ConcatInnerObserver(observer, it);
+            observer.onSubscribe(inner.f275sd);
             inner.next();
         } catch (Throwable e) {
             Exceptions.throwIfFatal(e);
@@ -29,54 +32,62 @@ public final class CompletableConcatIterable extends Completable {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ConcatInnerObserver extends AtomicInteger implements CompletableObserver {
         private static final long serialVersionUID = -7965400327305809232L;
         final CompletableObserver downstream;
-        final SequentialDisposable sd = new SequentialDisposable();
+
+        /* renamed from: sd */
+        final SequentialDisposable f275sd = new SequentialDisposable();
         final Iterator<? extends CompletableSource> sources;
 
-        ConcatInnerObserver(CompletableObserver actual, Iterator<? extends CompletableSource> sources2) {
+        ConcatInnerObserver(CompletableObserver actual, Iterator<? extends CompletableSource> sources) {
             this.downstream = actual;
-            this.sources = sources2;
+            this.sources = sources;
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onSubscribe(Disposable d) {
-            this.sd.replace(d);
+            this.f275sd.replace(d);
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onError(Throwable e) {
             this.downstream.onError(e);
         }
 
+        @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
         public void onComplete() {
             next();
         }
 
-        /* access modifiers changed from: package-private */
-        public void next() {
-            if (!this.sd.isDisposed() && getAndIncrement() == 0) {
-                Iterator<? extends CompletableSource> a = this.sources;
-                while (!this.sd.isDisposed()) {
-                    try {
-                        if (!a.hasNext()) {
-                            this.downstream.onComplete();
-                            return;
-                        }
-                        try {
-                            ((CompletableSource) ObjectHelper.requireNonNull(a.next(), "The CompletableSource returned is null")).subscribe(this);
-                            if (decrementAndGet() == 0) {
-                                return;
-                            }
-                        } catch (Throwable ex) {
-                            Exceptions.throwIfFatal(ex);
-                            this.downstream.onError(ex);
-                            return;
-                        }
-                    } catch (Throwable ex2) {
-                        Exceptions.throwIfFatal(ex2);
-                        this.downstream.onError(ex2);
+        void next() {
+            if (this.f275sd.isDisposed() || getAndIncrement() != 0) {
+                return;
+            }
+            Iterator<? extends CompletableSource> a = this.sources;
+            while (!this.f275sd.isDisposed()) {
+                try {
+                    boolean b = a.hasNext();
+                    if (!b) {
+                        this.downstream.onComplete();
                         return;
                     }
+                    try {
+                        CompletableSource c = (CompletableSource) ObjectHelper.requireNonNull(a.next(), "The CompletableSource returned is null");
+                        c.subscribe(this);
+                        if (decrementAndGet() == 0) {
+                            return;
+                        }
+                    } catch (Throwable ex) {
+                        Exceptions.throwIfFatal(ex);
+                        this.downstream.onError(ex);
+                        return;
+                    }
+                } catch (Throwable ex2) {
+                    Exceptions.throwIfFatal(ex2);
+                    this.downstream.onError(ex2);
+                    return;
                 }
             }
         }

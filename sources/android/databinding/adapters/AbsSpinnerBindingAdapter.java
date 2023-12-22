@@ -5,6 +5,7 @@ import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public class AbsSpinnerBindingAdapter {
     public static <T extends CharSequence> void setEntries(AbsSpinner view, T[] entries) {
         if (entries != null) {
@@ -16,18 +17,18 @@ public class AbsSpinnerBindingAdapter {
                 while (true) {
                     if (i >= entries.length) {
                         break;
-                    } else if (!entries[i].equals(oldAdapter.getItem(i))) {
+                    } else if (entries[i].equals(oldAdapter.getItem(i))) {
+                        i++;
+                    } else {
                         changed = true;
                         break;
-                    } else {
-                        i++;
                     }
                 }
             }
             if (changed) {
                 ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(view.getContext(), 17367048, entries);
                 adapter.setDropDownViewResource(17367049);
-                view.setAdapter(adapter);
+                view.setAdapter((SpinnerAdapter) adapter);
                 return;
             }
             return;
@@ -40,11 +41,12 @@ public class AbsSpinnerBindingAdapter {
             SpinnerAdapter oldAdapter = view.getAdapter();
             if (oldAdapter instanceof ObservableListAdapter) {
                 ((ObservableListAdapter) oldAdapter).setList(entries);
+                return;
             } else {
-                view.setAdapter(new ObservableListAdapter(view.getContext(), entries, 17367048, 17367049, 0));
+                view.setAdapter((SpinnerAdapter) new ObservableListAdapter(view.getContext(), entries, 17367048, 17367049, 0));
+                return;
             }
-        } else {
-            view.setAdapter((SpinnerAdapter) null);
         }
+        view.setAdapter((SpinnerAdapter) null);
     }
 }

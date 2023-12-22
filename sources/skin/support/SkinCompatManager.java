@@ -3,6 +3,7 @@ package skin.support;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -21,25 +22,24 @@ import skin.support.load.SkinPrefixBuildInLoader;
 import skin.support.observe.SkinObservable;
 import skin.support.utils.SkinPreference;
 
+/* loaded from: classes.dex */
 public class SkinCompatManager extends SkinObservable {
     public static final int SKIN_LOADER_STRATEGY_ASSETS = 0;
     public static final int SKIN_LOADER_STRATEGY_BUILD_IN = 1;
     public static final int SKIN_LOADER_STRATEGY_NONE = -1;
     public static final int SKIN_LOADER_STRATEGY_PREFIX_BUILD_IN = 2;
     private static volatile SkinCompatManager sInstance;
-    /* access modifiers changed from: private */
-    public final Context mAppContext;
-    private List<SkinLayoutInflater> mHookInflaters = new ArrayList();
+    private final Context mAppContext;
+    private final Object mLock = new Object();
+    private boolean mLoading = false;
     private List<SkinLayoutInflater> mInflaters = new ArrayList();
-    /* access modifiers changed from: private */
-    public boolean mLoading = false;
-    /* access modifiers changed from: private */
-    public final Object mLock = new Object();
+    private List<SkinLayoutInflater> mHookInflaters = new ArrayList();
+    private SparseArray<SkinLoaderStrategy> mStrategyMap = new SparseArray<>();
     private boolean mSkinAllActivityEnable = true;
     private boolean mSkinStatusBarColorEnable = false;
     private boolean mSkinWindowBackgroundColorEnable = true;
-    private SparseArray<SkinLoaderStrategy> mStrategyMap = new SparseArray<>();
 
+    /* loaded from: classes.dex */
     public interface SkinLoaderListener {
         void onFailed(String str);
 
@@ -48,6 +48,7 @@ public class SkinCompatManager extends SkinObservable {
         void onSuccess();
     }
 
+    /* loaded from: classes.dex */
     public interface SkinLoaderStrategy {
         ColorStateList getColor(Context context, String str, int i);
 
@@ -169,7 +170,7 @@ public class SkinCompatManager extends SkinObservable {
         if (TextUtils.isEmpty(skin2) || strategy == -1) {
             return null;
         }
-        return loadSkin(skin2, (SkinLoaderListener) null, strategy);
+        return loadSkin(skin2, null, strategy);
     }
 
     public AsyncTask loadSkin(SkinLoaderListener listener) {
@@ -192,7 +193,7 @@ public class SkinCompatManager extends SkinObservable {
     }
 
     public AsyncTask loadSkin(String skinName, int strategy) {
-        return loadSkin(skinName, (SkinLoaderListener) null, strategy);
+        return loadSkin(skinName, null, strategy);
     }
 
     public AsyncTask loadSkin(String skinName, SkinLoaderListener listener, int strategy) {
@@ -200,9 +201,10 @@ public class SkinCompatManager extends SkinObservable {
         if (loaderStrategy == null) {
             return null;
         }
-        return new SkinLoadTask(listener, loaderStrategy).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new String[]{skinName});
+        return new SkinLoadTask(listener, loaderStrategy).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, skinName);
     }
 
+    /* loaded from: classes.dex */
     private class SkinLoadTask extends AsyncTask<String, Void, String> {
         private final SkinLoaderListener mListener;
         private final SkinLoaderStrategy mStrategy;
@@ -212,15 +214,16 @@ public class SkinCompatManager extends SkinObservable {
             this.mStrategy = strategy;
         }
 
-        /* access modifiers changed from: protected */
-        public void onPreExecute() {
+        @Override // android.os.AsyncTask
+        protected void onPreExecute() {
             SkinLoaderListener skinLoaderListener = this.mListener;
             if (skinLoaderListener != null) {
                 skinLoaderListener.onStart();
             }
         }
 
-        /* access modifiers changed from: protected */
+        /* JADX INFO: Access modifiers changed from: protected */
+        @Override // android.os.AsyncTask
         public String doInBackground(String... params) {
             synchronized (SkinCompatManager.this.mLock) {
                 while (SkinCompatManager.this.mLoading) {
@@ -230,11 +233,12 @@ public class SkinCompatManager extends SkinObservable {
                         e.printStackTrace();
                     }
                 }
-                boolean unused = SkinCompatManager.this.mLoading = true;
+                SkinCompatManager.this.mLoading = true;
             }
             try {
                 if (params.length == 1) {
-                    if (TextUtils.isEmpty(this.mStrategy.loadSkinInBackground(SkinCompatManager.this.mAppContext, params[0]))) {
+                    String skinName = this.mStrategy.loadSkinInBackground(SkinCompatManager.this.mAppContext, params[0]);
+                    if (TextUtils.isEmpty(skinName)) {
                         SkinCompatResources.getInstance().reset(this.mStrategy);
                     }
                     return params[0];
@@ -246,7 +250,8 @@ public class SkinCompatManager extends SkinObservable {
             return null;
         }
 
-        /* access modifiers changed from: protected */
+        /* JADX INFO: Access modifiers changed from: protected */
+        @Override // android.os.AsyncTask
         public void onPostExecute(String skinName) {
             synchronized (SkinCompatManager.this.mLock) {
                 if (skinName != null) {
@@ -260,17 +265,19 @@ public class SkinCompatManager extends SkinObservable {
                     SkinPreference.getInstance().setSkinName("").setSkinStrategy(-1).commitEditor();
                     SkinLoaderListener skinLoaderListener2 = this.mListener;
                     if (skinLoaderListener2 != null) {
-                        skinLoaderListener2.onFailed("皮肤资源获取失败");
+                        skinLoaderListener2.onFailed("\u76ae\u80a4\u8d44\u6e90\u83b7\u53d6\u5931\u8d25");
                     }
                 }
-                boolean unused = SkinCompatManager.this.mLoading = false;
+                SkinCompatManager.this.mLoading = false;
                 SkinCompatManager.this.mLock.notifyAll();
             }
         }
     }
 
     public String getSkinPackageName(String skinPkgPath) {
-        return this.mAppContext.getPackageManager().getPackageArchiveInfo(skinPkgPath, 1).packageName;
+        PackageManager mPm = this.mAppContext.getPackageManager();
+        PackageInfo info = mPm.getPackageArchiveInfo(skinPkgPath, 1);
+        return info.packageName;
     }
 
     public Resources getSkinResources(String skinPkgPath) {

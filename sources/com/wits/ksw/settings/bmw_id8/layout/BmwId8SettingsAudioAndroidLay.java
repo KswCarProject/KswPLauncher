@@ -11,35 +11,36 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.databinding.BmwId8SettingsAudioAndroidLayoutBinding;
 import com.wits.ksw.launcher.bmw_id8_ui.view.ID8ProgressBar;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
+/* loaded from: classes8.dex */
 public class BmwId8SettingsAudioAndroidLay extends RelativeLayout implements ID8ProgressBar.OnValueChangeListener, ID8ProgressBar.OnTouchChangeListener {
-    private final String TAG = "BmwId8SettingsAudioAndroidLay";
+    private final String TAG;
     private Context context;
-    private int[] imageButtonId = {R.id.bmw_id8_settings_meida_sub_btn, R.id.bmw_id8_settings_meida_add_btn, R.id.bmw_id8_settings_android_call_sub_btn, R.id.bmw_id8_settings_android_call_add_btn};
-    /* access modifiers changed from: private */
-    public BmwId8SettingsAudioAndroidLayoutBinding mBinding;
-    /* access modifiers changed from: private */
-    public BmwId8SettingsViewModel mViewModel;
+    private int[] imageButtonId;
+    private BmwId8SettingsAudioAndroidLayoutBinding mBinding;
+    private BmwId8SettingsViewModel mViewModel;
 
-    public BmwId8SettingsAudioAndroidLay(Context context2) {
-        super(context2);
-        this.context = context2;
-        this.mBinding = (BmwId8SettingsAudioAndroidLayoutBinding) DataBindingUtil.inflate(LayoutInflater.from(context2), R.layout.bmw_id8_settings_audio_android_layout, (ViewGroup) null, false);
-        this.mBinding.getRoot().setLayoutParams(new FrameLayout.LayoutParams(-1, -1));
-        BmwId8SettingsViewModel instance = BmwId8SettingsViewModel.getInstance();
-        this.mViewModel = instance;
-        this.mBinding.setViewModel(instance);
+    public BmwId8SettingsAudioAndroidLay(Context context) {
+        super(context);
+        this.TAG = "BmwId8SettingsAudioAndroidLay";
+        this.imageButtonId = new int[]{C0899R.C0901id.bmw_id8_settings_meida_sub_btn, C0899R.C0901id.bmw_id8_settings_meida_add_btn, C0899R.C0901id.bmw_id8_settings_android_call_sub_btn, C0899R.C0901id.bmw_id8_settings_android_call_add_btn};
+        this.context = context;
+        this.mBinding = (BmwId8SettingsAudioAndroidLayoutBinding) DataBindingUtil.inflate(LayoutInflater.from(context), C0899R.C0902layout.bmw_id8_settings_audio_android_layout, null, false);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(-1, -1);
+        this.mBinding.getRoot().setLayoutParams(layoutParams);
+        BmwId8SettingsViewModel bmwId8SettingsViewModel = BmwId8SettingsViewModel.getInstance();
+        this.mViewModel = bmwId8SettingsViewModel;
+        this.mBinding.setViewModel(bmwId8SettingsViewModel);
         addView(this.mBinding.getRoot());
         initView();
         initData();
@@ -55,19 +56,21 @@ public class BmwId8SettingsAudioAndroidLay extends RelativeLayout implements ID8
             while (true) {
                 int[] iArr = this.imageButtonId;
                 if (i < iArr.length) {
-                    findViewById(iArr[i]).setOnTouchListener(new View.OnTouchListener() {
+                    findViewById(iArr[i]).setOnTouchListener(new View.OnTouchListener() { // from class: com.wits.ksw.settings.bmw_id8.layout.BmwId8SettingsAudioAndroidLay.1
+                        @Override // android.view.View.OnTouchListener
                         public boolean onTouch(View v, MotionEvent event) {
                             Log.i("BmwId8SettingsAudioAndroidLay", " onTouch v " + v.toString() + " Action " + event.getAction() + " v.isFocused() " + v.isFocused());
-                            if (event.getAction() != 1 || v.isFocused()) {
+                            if (event.getAction() == 1 && !v.isFocused()) {
+                                v.requestFocus();
                                 return false;
                             }
-                            v.requestFocus();
                             return false;
                         }
                     });
                     i++;
                 } else {
-                    this.mBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
+                    this.mBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() { // from class: com.wits.ksw.settings.bmw_id8.layout.BmwId8SettingsAudioAndroidLay.2
+                        @Override // android.view.ViewTreeObserver.OnGlobalFocusChangeListener
                         public void onGlobalFocusChanged(View oldFocus, View newFocus) {
                             Log.i("BmwId8SettingsAudioAndroidLay", "onGlobalFocusChanged: " + BmwId8SettingsAudioAndroidLay.this.mBinding.bmwId8SettingsAudioAndroidLay.hasFocus());
                             if (BmwId8SettingsAudioAndroidLay.this.mBinding.bmwId8SettingsAudioAndroidLay.hasFocus()) {
@@ -88,7 +91,8 @@ public class BmwId8SettingsAudioAndroidLay extends RelativeLayout implements ID8
             this.mViewModel.androidMediaVolume.set(PowerManagerApp.getSettingsInt(KeyConfig.ANDROID_MEDIA_VOL));
             this.mViewModel.androidCallVolume.set(PowerManagerApp.getSettingsInt(KeyConfig.ANDROID_PHONE_VOL));
             ContentResolver contentResolver = getContext().getContentResolver();
-            contentResolver.registerContentObserver(Settings.System.getUriFor(KeyConfig.ANDROID_MEDIA_VOL), true, new ContentObserver(new Handler()) {
+            contentResolver.registerContentObserver(Settings.System.getUriFor(KeyConfig.ANDROID_MEDIA_VOL), true, new ContentObserver(new Handler()) { // from class: com.wits.ksw.settings.bmw_id8.layout.BmwId8SettingsAudioAndroidLay.3
+                @Override // android.database.ContentObserver
                 public void onChange(boolean selfChange) {
                     Log.i("BmwId8SettingsAudioAndroidLay", "KeyConfig.ANDROID_MEDIA_VOL onChange ");
                     try {
@@ -97,7 +101,8 @@ public class BmwId8SettingsAudioAndroidLay extends RelativeLayout implements ID8
                     }
                 }
             });
-            contentResolver.registerContentObserver(Settings.System.getUriFor(KeyConfig.ANDROID_PHONE_VOL), true, new ContentObserver(new Handler()) {
+            contentResolver.registerContentObserver(Settings.System.getUriFor(KeyConfig.ANDROID_PHONE_VOL), true, new ContentObserver(new Handler()) { // from class: com.wits.ksw.settings.bmw_id8.layout.BmwId8SettingsAudioAndroidLay.4
+                @Override // android.database.ContentObserver
                 public void onChange(boolean selfChange) {
                     Log.i("BmwId8SettingsAudioAndroidLay", "KeyConfig.ANDROID_PHONE_VOL onChange ");
                     try {
@@ -111,13 +116,14 @@ public class BmwId8SettingsAudioAndroidLay extends RelativeLayout implements ID8
         }
     }
 
+    @Override // com.wits.ksw.launcher.bmw_id8_ui.view.ID8ProgressBar.OnValueChangeListener
     public void onValueChange(ID8ProgressBar progressBar, int value, float progress) {
         switch (progressBar.getId()) {
-            case R.id.bmw_id8_settings_android_call_seekbar /*2131296525*/:
+            case C0899R.C0901id.bmw_id8_settings_android_call_seekbar /* 2131296550 */:
                 FileUtils.savaIntData(KeyConfig.ANDROID_PHONE_VOL, value);
                 this.mViewModel.androidCallVolume.set(value);
                 return;
-            case R.id.bmw_id8_settings_meida_seekbar /*2131296580*/:
+            case C0899R.C0901id.bmw_id8_settings_meida_seekbar /* 2131296605 */:
                 FileUtils.savaIntData(KeyConfig.ANDROID_MEDIA_VOL, value);
                 this.mViewModel.androidMediaVolume.set(value);
                 return;
@@ -126,11 +132,13 @@ public class BmwId8SettingsAudioAndroidLay extends RelativeLayout implements ID8
         }
     }
 
+    @Override // com.wits.ksw.launcher.bmw_id8_ui.view.ID8ProgressBar.OnTouchChangeListener
     public void onStartTrackingTouch(ID8ProgressBar progressBar) {
         this.mViewModel.audioBgShow.set(false);
         progressBar.requestFocus();
     }
 
+    @Override // com.wits.ksw.launcher.bmw_id8_ui.view.ID8ProgressBar.OnTouchChangeListener
     public void onStopTrackingTouch(ID8ProgressBar progressBar) {
     }
 }

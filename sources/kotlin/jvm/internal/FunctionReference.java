@@ -3,55 +3,62 @@ package kotlin.jvm.internal;
 import kotlin.reflect.KCallable;
 import kotlin.reflect.KFunction;
 
+/* loaded from: classes.dex */
 public class FunctionReference extends CallableReference implements FunctionBase, KFunction {
     private final int arity;
     private final int flags;
 
-    public FunctionReference(int arity2) {
-        this(arity2, NO_RECEIVER, (Class) null, (String) null, (String) null, 0);
+    public FunctionReference(int arity) {
+        this(arity, NO_RECEIVER, null, null, null, 0);
     }
 
-    public FunctionReference(int arity2, Object receiver) {
-        this(arity2, receiver, (Class) null, (String) null, (String) null, 0);
+    public FunctionReference(int arity, Object receiver) {
+        this(arity, receiver, null, null, null, 0);
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    public FunctionReference(int arity2, Object receiver, Class owner, String name, String signature, int flags2) {
-        super(receiver, owner, name, signature, (flags2 & 1) != 1 ? false : true);
-        this.arity = arity2;
-        this.flags = flags2 >> 1;
+    public FunctionReference(int arity, Object receiver, Class owner, String name, String signature, int flags) {
+        super(receiver, owner, name, signature, (flags & 1) == 1);
+        this.arity = arity;
+        this.flags = flags >> 1;
     }
 
+    @Override // kotlin.jvm.internal.FunctionBase
     public int getArity() {
         return this.arity;
     }
 
-    /* access modifiers changed from: protected */
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // kotlin.jvm.internal.CallableReference
     public KFunction getReflected() {
         return (KFunction) super.getReflected();
     }
 
-    /* access modifiers changed from: protected */
-    public KCallable computeReflected() {
+    @Override // kotlin.jvm.internal.CallableReference
+    protected KCallable computeReflected() {
         return Reflection.function(this);
     }
 
+    @Override // kotlin.reflect.KFunction
     public boolean isInline() {
         return getReflected().isInline();
     }
 
+    @Override // kotlin.reflect.KFunction
     public boolean isExternal() {
         return getReflected().isExternal();
     }
 
+    @Override // kotlin.reflect.KFunction
     public boolean isOperator() {
         return getReflected().isOperator();
     }
 
+    @Override // kotlin.reflect.KFunction
     public boolean isInfix() {
         return getReflected().isInfix();
     }
 
+    @Override // kotlin.jvm.internal.CallableReference, kotlin.reflect.KCallable
     public boolean isSuspend() {
         return getReflected().isSuspend();
     }
@@ -62,10 +69,7 @@ public class FunctionReference extends CallableReference implements FunctionBase
         }
         if (obj instanceof FunctionReference) {
             FunctionReference other = (FunctionReference) obj;
-            if (!getName().equals(other.getName()) || !getSignature().equals(other.getSignature()) || this.flags != other.flags || this.arity != other.arity || !Intrinsics.areEqual(getBoundReceiver(), other.getBoundReceiver()) || !Intrinsics.areEqual((Object) getOwner(), (Object) other.getOwner())) {
-                return false;
-            }
-            return true;
+            return getName().equals(other.getName()) && getSignature().equals(other.getSignature()) && this.flags == other.flags && this.arity == other.arity && Intrinsics.areEqual(getBoundReceiver(), other.getBoundReceiver()) && Intrinsics.areEqual(getOwner(), other.getOwner());
         } else if (obj instanceof KFunction) {
             return obj.equals(compute());
         } else {

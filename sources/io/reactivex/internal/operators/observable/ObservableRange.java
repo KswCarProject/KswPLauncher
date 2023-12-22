@@ -4,22 +4,24 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.internal.observers.BasicIntQueueDisposable;
 
+/* loaded from: classes.dex */
 public final class ObservableRange extends Observable<Integer> {
     private final long end;
     private final int start;
 
-    public ObservableRange(int start2, int count) {
-        this.start = start2;
-        this.end = ((long) start2) + ((long) count);
+    public ObservableRange(int start, int count) {
+        this.start = start;
+        this.end = start + count;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Observer<? super Integer> o) {
-        RangeDisposable parent = new RangeDisposable(o, (long) this.start, this.end);
+    @Override // io.reactivex.Observable
+    protected void subscribeActual(Observer<? super Integer> o) {
+        RangeDisposable parent = new RangeDisposable(o, this.start, this.end);
         o.onSubscribe(parent);
         parent.run();
     }
 
+    /* loaded from: classes.dex */
     static final class RangeDisposable extends BasicIntQueueDisposable<Integer> {
         private static final long serialVersionUID = 396518478098735504L;
         final Observer<? super Integer> downstream;
@@ -27,27 +29,28 @@ public final class ObservableRange extends Observable<Integer> {
         boolean fused;
         long index;
 
-        RangeDisposable(Observer<? super Integer> actual, long start, long end2) {
+        RangeDisposable(Observer<? super Integer> actual, long start, long end) {
             this.downstream = actual;
             this.index = start;
-            this.end = end2;
+            this.end = end;
         }
 
-        /* access modifiers changed from: package-private */
-        public void run() {
-            if (!this.fused) {
-                Observer<? super Integer> actual = this.downstream;
-                long e = this.end;
-                for (long i = this.index; i != e && get() == 0; i++) {
-                    actual.onNext(Integer.valueOf((int) i));
-                }
-                if (get() == 0) {
-                    lazySet(1);
-                    actual.onComplete();
-                }
+        void run() {
+            if (this.fused) {
+                return;
+            }
+            Observer<? super Integer> actual = this.downstream;
+            long e = this.end;
+            for (long i = this.index; i != e && get() == 0; i++) {
+                actual.onNext(Integer.valueOf((int) i));
+            }
+            if (get() == 0) {
+                lazySet(1);
+                actual.onComplete();
             }
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public Integer poll() throws Exception {
             long i = this.index;
             if (i != this.end) {
@@ -58,29 +61,34 @@ public final class ObservableRange extends Observable<Integer> {
             return null;
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public boolean isEmpty() {
             return this.index == this.end;
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public void clear() {
             this.index = this.end;
             lazySet(1);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             set(1);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return get() != 0;
         }
 
+        @Override // io.reactivex.internal.fuseable.QueueFuseable
         public int requestFusion(int mode) {
-            if ((mode & 1) == 0) {
-                return 0;
+            if ((mode & 1) != 0) {
+                this.fused = true;
+                return 1;
             }
-            this.fused = true;
-            return 1;
+            return 0;
         }
     }
 }

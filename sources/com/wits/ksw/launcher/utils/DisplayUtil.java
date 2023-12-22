@@ -5,6 +5,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
 
+/* loaded from: classes11.dex */
 public class DisplayUtil {
     public static void getScreenRelatedInformation(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService("window");
@@ -15,22 +16,24 @@ public class DisplayUtil {
             int heightPixels = outMetrics.heightPixels;
             int densityDpi = outMetrics.densityDpi;
             float density = outMetrics.density;
-            Log.d("display", "widthPixels = " + widthPixels + ",heightPixels = " + heightPixels + "\n,densityDpi = " + densityDpi + "\n,density = " + density + ",scaledDensity = " + outMetrics.scaledDensity);
+            float scaledDensity = outMetrics.scaledDensity;
+            Log.d("display", "widthPixels = " + widthPixels + ",heightPixels = " + heightPixels + "\n,densityDpi = " + densityDpi + "\n,density = " + density + ",scaledDensity = " + scaledDensity);
         }
     }
 
     public static String getRealScreenRelatedInformation(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService("window");
-        if (windowManager == null) {
-            return "";
+        if (windowManager != null) {
+            DisplayMetrics outMetrics = new DisplayMetrics();
+            windowManager.getDefaultDisplay().getRealMetrics(outMetrics);
+            int widthPixels = outMetrics.widthPixels;
+            int heightPixels = outMetrics.heightPixels;
+            int densityDpi = outMetrics.densityDpi;
+            float density = outMetrics.density;
+            float scaledDensity = outMetrics.scaledDensity;
+            Log.d("display", "widthPixels = " + widthPixels + ",heightPixels = " + heightPixels + "\n,densityDpi = " + densityDpi + "\n,density = " + density + ",scaledDensity = " + scaledDensity);
+            return widthPixels + "," + heightPixels;
         }
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getRealMetrics(outMetrics);
-        int widthPixels = outMetrics.widthPixels;
-        int heightPixels = outMetrics.heightPixels;
-        int densityDpi = outMetrics.densityDpi;
-        float density = outMetrics.density;
-        Log.d("display", "widthPixels = " + widthPixels + ",heightPixels = " + heightPixels + "\n,densityDpi = " + densityDpi + "\n,density = " + density + ",scaledDensity = " + outMetrics.scaledDensity);
-        return widthPixels + "," + heightPixels;
+        return "";
     }
 }

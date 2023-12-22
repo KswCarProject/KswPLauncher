@@ -7,44 +7,50 @@ import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class MaybeTakeUntilMaybe<T, U> extends AbstractMaybeWithUpstream<T, T> {
     final MaybeSource<U> other;
 
-    public MaybeTakeUntilMaybe(MaybeSource<T> source, MaybeSource<U> other2) {
+    public MaybeTakeUntilMaybe(MaybeSource<T> source, MaybeSource<U> other) {
         super(source);
-        this.other = other2;
+        this.other = other;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super T> observer) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super T> observer) {
         TakeUntilMainMaybeObserver<T, U> parent = new TakeUntilMainMaybeObserver<>(observer);
         observer.onSubscribe(parent);
         this.other.subscribe(parent.other);
         this.source.subscribe(parent);
     }
 
+    /* loaded from: classes.dex */
     static final class TakeUntilMainMaybeObserver<T, U> extends AtomicReference<Disposable> implements MaybeObserver<T>, Disposable {
         private static final long serialVersionUID = -2187421758664251153L;
         final MaybeObserver<? super T> downstream;
         final TakeUntilOtherMaybeObserver<U> other = new TakeUntilOtherMaybeObserver<>(this);
 
-        TakeUntilMainMaybeObserver(MaybeObserver<? super T> downstream2) {
-            this.downstream = downstream2;
+        TakeUntilMainMaybeObserver(MaybeObserver<? super T> downstream) {
+            this.downstream = downstream;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             DisposableHelper.dispose(this);
             DisposableHelper.dispose(this.other);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return DisposableHelper.isDisposed((Disposable) get());
+            return DisposableHelper.isDisposed(get());
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSubscribe(Disposable d) {
             DisposableHelper.setOnce(this, d);
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSuccess(T value) {
             DisposableHelper.dispose(this.other);
             if (getAndSet(DisposableHelper.DISPOSED) != DisposableHelper.DISPOSED) {
@@ -52,6 +58,7 @@ public final class MaybeTakeUntilMaybe<T, U> extends AbstractMaybeWithUpstream<T
             }
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onError(Throwable e) {
             DisposableHelper.dispose(this.other);
             if (getAndSet(DisposableHelper.DISPOSED) != DisposableHelper.DISPOSED) {
@@ -61,6 +68,7 @@ public final class MaybeTakeUntilMaybe<T, U> extends AbstractMaybeWithUpstream<T
             }
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onComplete() {
             DisposableHelper.dispose(this.other);
             if (getAndSet(DisposableHelper.DISPOSED) != DisposableHelper.DISPOSED) {
@@ -68,8 +76,7 @@ public final class MaybeTakeUntilMaybe<T, U> extends AbstractMaybeWithUpstream<T
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void otherError(Throwable e) {
+        void otherError(Throwable e) {
             if (DisposableHelper.dispose(this)) {
                 this.downstream.onError(e);
             } else {
@@ -77,33 +84,37 @@ public final class MaybeTakeUntilMaybe<T, U> extends AbstractMaybeWithUpstream<T
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void otherComplete() {
+        void otherComplete() {
             if (DisposableHelper.dispose(this)) {
                 this.downstream.onComplete();
             }
         }
 
+        /* loaded from: classes.dex */
         static final class TakeUntilOtherMaybeObserver<U> extends AtomicReference<Disposable> implements MaybeObserver<U> {
             private static final long serialVersionUID = -1266041316834525931L;
             final TakeUntilMainMaybeObserver<?, U> parent;
 
-            TakeUntilOtherMaybeObserver(TakeUntilMainMaybeObserver<?, U> parent2) {
-                this.parent = parent2;
+            TakeUntilOtherMaybeObserver(TakeUntilMainMaybeObserver<?, U> parent) {
+                this.parent = parent;
             }
 
+            @Override // io.reactivex.MaybeObserver
             public void onSubscribe(Disposable d) {
                 DisposableHelper.setOnce(this, d);
             }
 
+            @Override // io.reactivex.MaybeObserver
             public void onSuccess(Object value) {
                 this.parent.otherComplete();
             }
 
+            @Override // io.reactivex.MaybeObserver
             public void onError(Throwable e) {
                 this.parent.otherError(e);
             }
 
+            @Override // io.reactivex.MaybeObserver
             public void onComplete() {
                 this.parent.otherComplete();
             }

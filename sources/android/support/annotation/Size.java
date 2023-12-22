@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.PARAMETER, ElementType.LOCAL_VARIABLE, ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.CLASS)
+/* loaded from: classes.dex */
 public @interface Size {
     long max() default Long.MAX_VALUE;
 

@@ -18,46 +18,49 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ObservableGroupBy<T, K, V> extends AbstractObservableWithUpstream<T, GroupedObservable<K, V>> {
     final int bufferSize;
     final boolean delayError;
     final Function<? super T, ? extends K> keySelector;
     final Function<? super T, ? extends V> valueSelector;
 
-    public ObservableGroupBy(ObservableSource<T> source, Function<? super T, ? extends K> keySelector2, Function<? super T, ? extends V> valueSelector2, int bufferSize2, boolean delayError2) {
+    public ObservableGroupBy(ObservableSource<T> source, Function<? super T, ? extends K> keySelector, Function<? super T, ? extends V> valueSelector, int bufferSize, boolean delayError) {
         super(source);
-        this.keySelector = keySelector2;
-        this.valueSelector = valueSelector2;
-        this.bufferSize = bufferSize2;
-        this.delayError = delayError2;
+        this.keySelector = keySelector;
+        this.valueSelector = valueSelector;
+        this.bufferSize = bufferSize;
+        this.delayError = delayError;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super GroupedObservable<K, V>> t) {
         this.source.subscribe(new GroupByObserver(t, this.keySelector, this.valueSelector, this.bufferSize, this.delayError));
     }
 
+    /* loaded from: classes.dex */
     public static final class GroupByObserver<T, K, V> extends AtomicInteger implements Observer<T>, Disposable {
         static final Object NULL_KEY = new Object();
         private static final long serialVersionUID = -3688291656102519502L;
         final int bufferSize;
-        final AtomicBoolean cancelled = new AtomicBoolean();
         final boolean delayError;
         final Observer<? super GroupedObservable<K, V>> downstream;
-        final Map<Object, GroupedUnicast<K, V>> groups;
         final Function<? super T, ? extends K> keySelector;
         Disposable upstream;
         final Function<? super T, ? extends V> valueSelector;
+        final AtomicBoolean cancelled = new AtomicBoolean();
+        final Map<Object, GroupedUnicast<K, V>> groups = new ConcurrentHashMap();
 
-        public GroupByObserver(Observer<? super GroupedObservable<K, V>> actual, Function<? super T, ? extends K> keySelector2, Function<? super T, ? extends V> valueSelector2, int bufferSize2, boolean delayError2) {
+        public GroupByObserver(Observer<? super GroupedObservable<K, V>> actual, Function<? super T, ? extends K> keySelector, Function<? super T, ? extends V> valueSelector, int bufferSize, boolean delayError) {
             this.downstream = actual;
-            this.keySelector = keySelector2;
-            this.valueSelector = valueSelector2;
-            this.bufferSize = bufferSize2;
-            this.delayError = delayError2;
-            this.groups = new ConcurrentHashMap();
+            this.keySelector = keySelector;
+            this.valueSelector = valueSelector;
+            this.bufferSize = bufferSize;
+            this.delayError = delayError;
             lazySet(1);
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -65,20 +68,21 @@ public final class ObservableGroupBy<T, K, V> extends AbstractObservableWithUpst
             }
         }
 
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             try {
-                Object key = this.keySelector.apply(t);
+                K key = this.keySelector.apply(t);
                 Object mapKey = key != null ? key : NULL_KEY;
                 GroupedUnicast<K, V> group = this.groups.get(mapKey);
                 if (group == null) {
-                    if (!this.cancelled.get()) {
-                        group = GroupedUnicast.createWith(key, this.bufferSize, this, this.delayError);
-                        this.groups.put(mapKey, group);
-                        getAndIncrement();
-                        this.downstream.onNext(group);
-                    } else {
+                    if (this.cancelled.get()) {
                         return;
                     }
+                    group = GroupedUnicast.createWith(key, this.bufferSize, this, this.delayError);
+                    this.groups.put(mapKey, group);
+                    getAndIncrement();
+                    this.downstream.onNext(group);
                 }
                 try {
                     group.onNext(ObjectHelper.requireNonNull(this.valueSelector.apply(t), "The value supplied is null"));
@@ -94,6 +98,7 @@ public final class ObservableGroupBy<T, K, V> extends AbstractObservableWithUpst
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             List<GroupedUnicast<K, V>> list = new ArrayList<>(this.groups.values());
             this.groups.clear();
@@ -103,6 +108,7 @@ public final class ObservableGroupBy<T, K, V> extends AbstractObservableWithUpst
             this.downstream.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             List<GroupedUnicast<K, V>> list = new ArrayList<>(this.groups.values());
             this.groups.clear();
@@ -112,38 +118,43 @@ public final class ObservableGroupBy<T, K, V> extends AbstractObservableWithUpst
             this.downstream.onComplete();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             if (this.cancelled.compareAndSet(false, true) && decrementAndGet() == 0) {
                 this.upstream.dispose();
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.cancelled.get();
         }
 
         public void cancel(K key) {
-            this.groups.remove(key != null ? key : NULL_KEY);
+            Object mapKey = key != null ? key : NULL_KEY;
+            this.groups.remove(mapKey);
             if (decrementAndGet() == 0) {
                 this.upstream.dispose();
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class GroupedUnicast<K, T> extends GroupedObservable<K, T> {
         final State<T, K> state;
 
         public static <T, K> GroupedUnicast<K, T> createWith(K key, int bufferSize, GroupByObserver<?, K, T> parent, boolean delayError) {
-            return new GroupedUnicast<>(key, new State<>(bufferSize, parent, key, delayError));
+            State<T, K> state = new State<>(bufferSize, parent, key, delayError);
+            return new GroupedUnicast<>(key, state);
         }
 
-        protected GroupedUnicast(K key, State<T, K> state2) {
+        protected GroupedUnicast(K key, State<T, K> state) {
             super(key);
-            this.state = state2;
+            this.state = state;
         }
 
-        /* access modifiers changed from: protected */
-        public void subscribeActual(Observer<? super T> observer) {
+        @Override // io.reactivex.Observable
+        protected void subscribeActual(Observer<? super T> observer) {
             this.state.subscribe(observer);
         }
 
@@ -160,48 +171,53 @@ public final class ObservableGroupBy<T, K, V> extends AbstractObservableWithUpst
         }
     }
 
+    /* loaded from: classes.dex */
     static final class State<T, K> extends AtomicInteger implements Disposable, ObservableSource<T> {
         private static final long serialVersionUID = -3852313036005250360L;
-        final AtomicReference<Observer<? super T>> actual = new AtomicReference<>();
-        final AtomicBoolean cancelled = new AtomicBoolean();
         final boolean delayError;
         volatile boolean done;
         Throwable error;
         final K key;
-        final AtomicBoolean once = new AtomicBoolean();
         final GroupByObserver<?, K, T> parent;
         final SpscLinkedArrayQueue<T> queue;
+        final AtomicBoolean cancelled = new AtomicBoolean();
+        final AtomicBoolean once = new AtomicBoolean();
+        final AtomicReference<Observer<? super T>> actual = new AtomicReference<>();
 
-        State(int bufferSize, GroupByObserver<?, K, T> parent2, K key2, boolean delayError2) {
+        State(int bufferSize, GroupByObserver<?, K, T> parent, K key, boolean delayError) {
             this.queue = new SpscLinkedArrayQueue<>(bufferSize);
-            this.parent = parent2;
-            this.key = key2;
-            this.delayError = delayError2;
+            this.parent = parent;
+            this.key = key;
+            this.delayError = delayError;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             if (this.cancelled.compareAndSet(false, true) && getAndIncrement() == 0) {
-                this.actual.lazySet((Object) null);
+                this.actual.lazySet(null);
                 this.parent.cancel(this.key);
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.cancelled.get();
         }
 
+        @Override // io.reactivex.ObservableSource
         public void subscribe(Observer<? super T> observer) {
             if (this.once.compareAndSet(false, true)) {
                 observer.onSubscribe(this);
                 this.actual.lazySet(observer);
                 if (this.cancelled.get()) {
-                    this.actual.lazySet((Object) null);
+                    this.actual.lazySet(null);
+                    return;
                 } else {
                     drain();
+                    return;
                 }
-            } else {
-                EmptyDisposable.error((Throwable) new IllegalStateException("Only one Observer allowed!"), (Observer<?>) observer);
             }
+            EmptyDisposable.error(new IllegalStateException("Only one Observer allowed!"), observer);
         }
 
         public void onNext(T t) {
@@ -220,77 +236,76 @@ public final class ObservableGroupBy<T, K, V> extends AbstractObservableWithUpst
             drain();
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
-            if (getAndIncrement() == 0) {
-                int missed = 1;
-                SpscLinkedArrayQueue<T> q = this.queue;
-                boolean delayError2 = this.delayError;
-                Observer<? super T> a = this.actual.get();
-                while (true) {
-                    if (a != null) {
-                        while (true) {
-                            boolean d = this.done;
-                            T v = q.poll();
-                            boolean empty = v == null;
-                            if (!checkTerminated(d, empty, a, delayError2)) {
-                                if (empty) {
-                                    break;
-                                }
-                                a.onNext(v);
-                            } else {
-                                return;
-                            }
+        void drain() {
+            if (getAndIncrement() != 0) {
+                return;
+            }
+            int missed = 1;
+            SpscLinkedArrayQueue<T> q = this.queue;
+            boolean delayError = this.delayError;
+            Observer<? super T> a = this.actual.get();
+            while (true) {
+                if (a != null) {
+                    while (true) {
+                        boolean d = this.done;
+                        Object obj = (T) q.poll();
+                        boolean empty = obj == null;
+                        if (checkTerminated(d, empty, a, delayError)) {
+                            return;
                         }
-                    }
-                    missed = addAndGet(-missed);
-                    if (missed != 0) {
-                        if (a == null) {
-                            a = this.actual.get();
+                        if (empty) {
+                            break;
                         }
-                    } else {
-                        return;
+                        a.onNext(obj);
                     }
+                }
+                missed = addAndGet(-missed);
+                if (missed != 0) {
+                    if (a == null) {
+                        Observer<? super T> a2 = this.actual.get();
+                        a = a2;
+                    }
+                } else {
+                    return;
                 }
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean checkTerminated(boolean d, boolean empty, Observer<? super T> a, boolean delayError2) {
+        boolean checkTerminated(boolean d, boolean empty, Observer<? super T> a, boolean delayError) {
             if (this.cancelled.get()) {
                 this.queue.clear();
                 this.parent.cancel(this.key);
-                this.actual.lazySet((Object) null);
+                this.actual.lazySet(null);
                 return true;
-            } else if (!d) {
-                return false;
-            } else {
-                if (!delayError2) {
-                    Throwable e = this.error;
-                    if (e != null) {
-                        this.queue.clear();
-                        this.actual.lazySet((Object) null);
-                        a.onError(e);
-                        return true;
-                    } else if (!empty) {
-                        return false;
-                    } else {
-                        this.actual.lazySet((Object) null);
-                        a.onComplete();
+            } else if (d) {
+                if (delayError) {
+                    if (empty) {
+                        Throwable e = this.error;
+                        this.actual.lazySet(null);
+                        if (e != null) {
+                            a.onError(e);
+                        } else {
+                            a.onComplete();
+                        }
                         return true;
                     }
-                } else if (!empty) {
                     return false;
-                } else {
-                    Throwable e2 = this.error;
-                    this.actual.lazySet((Object) null);
-                    if (e2 != null) {
-                        a.onError(e2);
-                    } else {
-                        a.onComplete();
-                    }
-                    return true;
                 }
+                Throwable e2 = this.error;
+                if (e2 != null) {
+                    this.queue.clear();
+                    this.actual.lazySet(null);
+                    a.onError(e2);
+                    return true;
+                } else if (empty) {
+                    this.actual.lazySet(null);
+                    a.onComplete();
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
             }
         }
     }

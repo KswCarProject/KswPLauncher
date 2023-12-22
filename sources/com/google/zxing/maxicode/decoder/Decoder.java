@@ -11,6 +11,7 @@ import com.google.zxing.common.reedsolomon.ReedSolomonException;
 import java.util.Map;
 import kotlin.UByte;
 
+/* loaded from: classes.dex */
 public final class Decoder {
     private static final int ALL = 0;
     private static final int EVEN = 1;
@@ -18,28 +19,25 @@ public final class Decoder {
     private final ReedSolomonDecoder rsDecoder = new ReedSolomonDecoder(GenericGF.MAXICODE_FIELD_64);
 
     public DecoderResult decode(BitMatrix bits) throws ChecksumException, FormatException {
-        return decode(bits, (Map<DecodeHintType, ?>) null);
+        return decode(bits, null);
     }
 
-    public DecoderResult decode(BitMatrix bits, Map<DecodeHintType, ?> map) throws FormatException, ChecksumException {
+    public DecoderResult decode(BitMatrix bits, Map<DecodeHintType, ?> hints) throws FormatException, ChecksumException {
         byte[] datawords;
         byte[] codewords = new BitMatrixParser(bits).readCodewords();
         correctErrors(codewords, 0, 10, 10, 0);
-        int i = codewords[0] & 15;
-        int mode = i;
-        switch (i) {
+        int mode = codewords[0] & 15;
+        switch (mode) {
             case 2:
             case 3:
             case 4:
-                byte[] bArr = codewords;
-                correctErrors(bArr, 20, 84, 40, 1);
-                correctErrors(bArr, 20, 84, 40, 2);
+                correctErrors(codewords, 20, 84, 40, 1);
+                correctErrors(codewords, 20, 84, 40, 2);
                 datawords = new byte[94];
                 break;
             case 5:
-                byte[] bArr2 = codewords;
-                correctErrors(bArr2, 20, 68, 56, 1);
-                correctErrors(bArr2, 20, 68, 56, 2);
+                correctErrors(codewords, 20, 68, 56, 1);
+                correctErrors(codewords, 20, 68, 56, 2);
                 datawords = new byte[78];
                 break;
             default:
@@ -53,7 +51,7 @@ public final class Decoder {
     private void correctErrors(byte[] bArr, int i, int i2, int i3, int i4) throws ChecksumException {
         int i5 = i2 + i3;
         int i6 = i4 == 0 ? 1 : 2;
-        int[] iArr = new int[(i5 / i6)];
+        int[] iArr = new int[i5 / i6];
         for (int i7 = 0; i7 < i5; i7++) {
             if (i4 == 0 || i7 % 2 == i4 - 1) {
                 iArr[i7 / i6] = bArr[i7 + i] & UByte.MAX_VALUE;

@@ -1,5 +1,6 @@
 package com.wits.ksw.settings.romeo.interfaces;
 
+/* loaded from: classes16.dex */
 public interface IUpdateListBg {
-    void updateListBg(int i, int i2);
+    void updateListBg(int top, int type);
 }

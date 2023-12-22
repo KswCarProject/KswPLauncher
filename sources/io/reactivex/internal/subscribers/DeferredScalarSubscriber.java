@@ -7,6 +7,7 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public abstract class DeferredScalarSubscriber<T, R> extends DeferredScalarSubscription<R> implements FlowableSubscriber<T> {
     private static final long serialVersionUID = 2984505488220891551L;
     protected boolean hasValue;
@@ -37,6 +38,7 @@ public abstract class DeferredScalarSubscriber<T, R> extends DeferredScalarSubsc
         }
     }
 
+    @Override // io.reactivex.internal.subscriptions.DeferredScalarSubscription, org.reactivestreams.Subscription
     public void cancel() {
         super.cancel();
         this.upstream.cancel();

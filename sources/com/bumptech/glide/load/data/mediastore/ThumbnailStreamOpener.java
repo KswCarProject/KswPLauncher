@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+/* loaded from: classes.dex */
 class ThumbnailStreamOpener {
     private static final FileService DEFAULT_SERVICE = new FileService();
     private static final String TAG = "ThumbStreamOpener";
@@ -23,52 +24,45 @@ class ThumbnailStreamOpener {
     private final ThumbnailQuery query;
     private final FileService service;
 
-    ThumbnailStreamOpener(List<ImageHeaderParser> parsers2, ThumbnailQuery query2, ArrayPool byteArrayPool2, ContentResolver contentResolver2) {
-        this(parsers2, DEFAULT_SERVICE, query2, byteArrayPool2, contentResolver2);
+    ThumbnailStreamOpener(List<ImageHeaderParser> parsers, ThumbnailQuery query, ArrayPool byteArrayPool, ContentResolver contentResolver) {
+        this(parsers, DEFAULT_SERVICE, query, byteArrayPool, contentResolver);
     }
 
-    ThumbnailStreamOpener(List<ImageHeaderParser> parsers2, FileService service2, ThumbnailQuery query2, ArrayPool byteArrayPool2, ContentResolver contentResolver2) {
-        this.service = service2;
-        this.query = query2;
-        this.byteArrayPool = byteArrayPool2;
-        this.contentResolver = contentResolver2;
-        this.parsers = parsers2;
+    ThumbnailStreamOpener(List<ImageHeaderParser> parsers, FileService service, ThumbnailQuery query, ArrayPool byteArrayPool, ContentResolver contentResolver) {
+        this.service = service;
+        this.query = query;
+        this.byteArrayPool = byteArrayPool;
+        this.contentResolver = contentResolver;
+        this.parsers = parsers;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getOrientation(Uri uri) {
+    int getOrientation(Uri uri) {
         InputStream is = null;
         try {
-            InputStream is2 = this.contentResolver.openInputStream(uri);
-            int orientation = ImageHeaderParserUtils.getOrientation(this.parsers, is2, this.byteArrayPool);
-            if (is2 != null) {
-                try {
-                    is2.close();
-                } catch (IOException e) {
-                }
-            }
-            return orientation;
-        } catch (IOException | NullPointerException e2) {
-            if (Log.isLoggable(TAG, 3)) {
-                Log.d(TAG, "Failed to open uri: " + uri, e2);
-            }
-            if (is == null) {
-                return -1;
-            }
             try {
-                is.close();
-                return -1;
-            } catch (IOException e3) {
+                is = this.contentResolver.openInputStream(uri);
+                return ImageHeaderParserUtils.getOrientation(this.parsers, is, this.byteArrayPool);
+            } catch (IOException | NullPointerException e) {
+                if (Log.isLoggable(TAG, 3)) {
+                    Log.d(TAG, "Failed to open uri: " + uri, e);
+                }
+                if (is != null) {
+                    try {
+                        is.close();
+                        return -1;
+                    } catch (IOException e2) {
+                        return -1;
+                    }
+                }
                 return -1;
             }
-        } catch (Throwable th) {
-            if (is != null) {
+        } finally {
+            if (0 != 0) {
                 try {
                     is.close();
-                } catch (IOException e4) {
+                } catch (IOException e3) {
                 }
             }
-            throw th;
         }
     }
 
@@ -78,15 +72,15 @@ class ThumbnailStreamOpener {
             return null;
         }
         File file = this.service.get(path);
-        if (!isValid(file)) {
-            return null;
+        if (isValid(file)) {
+            Uri thumbnailUri = Uri.fromFile(file);
+            try {
+                return this.contentResolver.openInputStream(thumbnailUri);
+            } catch (NullPointerException e) {
+                throw ((FileNotFoundException) new FileNotFoundException("NPE opening uri: " + uri + " -> " + thumbnailUri).initCause(e));
+            }
         }
-        Uri thumbnailUri = Uri.fromFile(file);
-        try {
-            return this.contentResolver.openInputStream(thumbnailUri);
-        } catch (NullPointerException e) {
-            throw ((FileNotFoundException) new FileNotFoundException("NPE opening uri: " + uri + " -> " + thumbnailUri).initCause(e));
-        }
+        return null;
     }
 
     private String getPath(Uri uri) {

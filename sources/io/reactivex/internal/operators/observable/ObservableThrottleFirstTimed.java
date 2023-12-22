@@ -10,22 +10,25 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ObservableThrottleFirstTimed<T> extends AbstractObservableWithUpstream<T, T> {
     final Scheduler scheduler;
     final long timeout;
     final TimeUnit unit;
 
-    public ObservableThrottleFirstTimed(ObservableSource<T> source, long timeout2, TimeUnit unit2, Scheduler scheduler2) {
+    public ObservableThrottleFirstTimed(ObservableSource<T> source, long timeout, TimeUnit unit, Scheduler scheduler) {
         super(source);
-        this.timeout = timeout2;
-        this.unit = unit2;
-        this.scheduler = scheduler2;
+        this.timeout = timeout;
+        this.unit = unit;
+        this.scheduler = scheduler;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super T> t) {
         this.source.subscribe(new DebounceTimedObserver(new SerializedObserver(t), this.timeout, this.unit, this.scheduler.createWorker()));
     }
 
+    /* loaded from: classes.dex */
     static final class DebounceTimedObserver<T> extends AtomicReference<Disposable> implements Observer<T>, Disposable, Runnable {
         private static final long serialVersionUID = 786994795061867455L;
         boolean done;
@@ -36,13 +39,14 @@ public final class ObservableThrottleFirstTimed<T> extends AbstractObservableWit
         Disposable upstream;
         final Scheduler.Worker worker;
 
-        DebounceTimedObserver(Observer<? super T> actual, long timeout2, TimeUnit unit2, Scheduler.Worker worker2) {
+        DebounceTimedObserver(Observer<? super T> actual, long timeout, TimeUnit unit, Scheduler.Worker worker) {
             this.downstream = actual;
-            this.timeout = timeout2;
-            this.unit = unit2;
-            this.worker = worker2;
+            this.timeout = timeout;
+            this.unit = unit;
+            this.worker = worker;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -50,11 +54,12 @@ public final class ObservableThrottleFirstTimed<T> extends AbstractObservableWit
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             if (!this.gate && !this.done) {
                 this.gate = true;
                 this.downstream.onNext(t);
-                Disposable d = (Disposable) get();
+                Disposable d = get();
                 if (d != null) {
                     d.dispose();
                 }
@@ -62,10 +67,12 @@ public final class ObservableThrottleFirstTimed<T> extends AbstractObservableWit
             }
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             this.gate = false;
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -76,6 +83,7 @@ public final class ObservableThrottleFirstTimed<T> extends AbstractObservableWit
             this.worker.dispose();
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             if (!this.done) {
                 this.done = true;
@@ -84,11 +92,13 @@ public final class ObservableThrottleFirstTimed<T> extends AbstractObservableWit
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
             this.worker.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.worker.isDisposed();
         }

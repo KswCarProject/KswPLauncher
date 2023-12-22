@@ -8,15 +8,17 @@ import io.reactivex.internal.util.BackpressureHelper;
 import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 
+/* loaded from: classes.dex */
 public final class FlowableRange extends Flowable<Integer> {
     final int end;
     final int start;
 
-    public FlowableRange(int start2, int count) {
-        this.start = start2;
-        this.end = start2 + count;
+    public FlowableRange(int start, int count) {
+        this.start = start;
+        this.end = start + count;
     }
 
+    @Override // io.reactivex.Flowable
     public void subscribeActual(Subscriber<? super Integer> s) {
         if (s instanceof ConditionalSubscriber) {
             s.onSubscribe(new RangeConditionalSubscription((ConditionalSubscriber) s, this.start, this.end));
@@ -25,27 +27,28 @@ public final class FlowableRange extends Flowable<Integer> {
         }
     }
 
+    /* loaded from: classes.dex */
     static abstract class BaseRangeSubscription extends BasicQueueSubscription<Integer> {
         private static final long serialVersionUID = -2252972430506210021L;
         volatile boolean cancelled;
         final int end;
         int index;
 
-        /* access modifiers changed from: package-private */
-        public abstract void fastPath();
+        abstract void fastPath();
 
-        /* access modifiers changed from: package-private */
-        public abstract void slowPath(long j);
+        abstract void slowPath(long j);
 
-        BaseRangeSubscription(int index2, int end2) {
-            this.index = index2;
-            this.end = end2;
+        BaseRangeSubscription(int index, int end) {
+            this.index = index;
+            this.end = end;
         }
 
+        @Override // io.reactivex.internal.fuseable.QueueFuseable
         public final int requestFusion(int mode) {
             return mode & 1;
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public final Integer poll() {
             int i = this.index;
             if (i == this.end) {
@@ -55,14 +58,17 @@ public final class FlowableRange extends Flowable<Integer> {
             return Integer.valueOf(i);
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public final boolean isEmpty() {
             return this.index == this.end;
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public final void clear() {
             this.index = this.end;
         }
 
+        @Override // org.reactivestreams.Subscription
         public final void request(long n) {
             if (SubscriptionHelper.validate(n) && BackpressureHelper.add(this, n) == 0) {
                 if (n == LongCompanionObject.MAX_VALUE) {
@@ -73,11 +79,13 @@ public final class FlowableRange extends Flowable<Integer> {
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public final void cancel() {
             this.cancelled = true;
         }
     }
 
+    /* loaded from: classes.dex */
     static final class RangeSubscription extends BaseRangeSubscription {
         private static final long serialVersionUID = 2587302975077663557L;
         final Subscriber<? super Integer> downstream;
@@ -87,62 +95,60 @@ public final class FlowableRange extends Flowable<Integer> {
             this.downstream = actual;
         }
 
-        /* access modifiers changed from: package-private */
-        public void fastPath() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableRange.BaseRangeSubscription
+        void fastPath() {
             int f = this.end;
             Subscriber<? super Integer> a = this.downstream;
-            int i = this.index;
-            while (i != f) {
-                if (!this.cancelled) {
-                    a.onNext(Integer.valueOf(i));
-                    i++;
-                } else {
+            for (int i = this.index; i != f; i++) {
+                if (this.cancelled) {
                     return;
                 }
+                a.onNext(Integer.valueOf(i));
             }
-            if (this.cancelled == 0) {
-                a.onComplete();
+            if (this.cancelled) {
+                return;
             }
+            a.onComplete();
         }
 
-        /* access modifiers changed from: package-private */
-        public void slowPath(long r) {
+        @Override // io.reactivex.internal.operators.flowable.FlowableRange.BaseRangeSubscription
+        void slowPath(long r) {
             long e = 0;
             int f = this.end;
             int i = this.index;
             Subscriber<? super Integer> a = this.downstream;
             while (true) {
-                if (e == r || i == f) {
-                    if (i != f) {
-                        r = get();
-                        if (e == r) {
-                            this.index = i;
-                            r = addAndGet(-e);
-                            if (r != 0) {
-                                e = 0;
-                            } else {
-                                return;
-                            }
-                        } else {
-                            continue;
-                        }
-                    } else if (!this.cancelled) {
-                        a.onComplete();
-                        return;
-                    } else {
+                if (e != r && i != f) {
+                    if (this.cancelled) {
                         return;
                     }
-                } else if (!this.cancelled) {
                     a.onNext(Integer.valueOf(i));
                     e++;
                     i++;
-                } else {
+                } else if (i == f) {
+                    if (!this.cancelled) {
+                        a.onComplete();
+                        return;
+                    }
                     return;
+                } else {
+                    r = get();
+                    if (e == r) {
+                        this.index = i;
+                        r = addAndGet(-e);
+                        if (r == 0) {
+                            return;
+                        }
+                        e = 0;
+                    } else {
+                        continue;
+                    }
                 }
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class RangeConditionalSubscription extends BaseRangeSubscription {
         private static final long serialVersionUID = 2587302975077663557L;
         final ConditionalSubscriber<? super Integer> downstream;
@@ -152,58 +158,55 @@ public final class FlowableRange extends Flowable<Integer> {
             this.downstream = actual;
         }
 
-        /* access modifiers changed from: package-private */
-        public void fastPath() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableRange.BaseRangeSubscription
+        void fastPath() {
             int f = this.end;
             ConditionalSubscriber<? super Integer> a = this.downstream;
-            int i = this.index;
-            while (i != f) {
-                if (!this.cancelled) {
-                    a.tryOnNext(Integer.valueOf(i));
-                    i++;
-                } else {
+            for (int i = this.index; i != f; i++) {
+                if (this.cancelled) {
                     return;
                 }
+                a.tryOnNext(Integer.valueOf(i));
             }
-            if (this.cancelled == 0) {
-                a.onComplete();
+            if (this.cancelled) {
+                return;
             }
+            a.onComplete();
         }
 
-        /* access modifiers changed from: package-private */
-        public void slowPath(long r) {
+        @Override // io.reactivex.internal.operators.flowable.FlowableRange.BaseRangeSubscription
+        void slowPath(long r) {
             long e = 0;
             int f = this.end;
             int i = this.index;
             ConditionalSubscriber<? super Integer> a = this.downstream;
             while (true) {
-                if (e == r || i == f) {
-                    if (i != f) {
-                        r = get();
-                        if (e == r) {
-                            this.index = i;
-                            r = addAndGet(-e);
-                            if (r != 0) {
-                                e = 0;
-                            } else {
-                                return;
-                            }
-                        } else {
-                            continue;
-                        }
-                    } else if (!this.cancelled) {
-                        a.onComplete();
-                        return;
-                    } else {
+                if (e != r && i != f) {
+                    if (this.cancelled) {
                         return;
                     }
-                } else if (!this.cancelled) {
                     if (a.tryOnNext(Integer.valueOf(i))) {
                         e++;
                     }
                     i++;
-                } else {
+                } else if (i == f) {
+                    if (!this.cancelled) {
+                        a.onComplete();
+                        return;
+                    }
                     return;
+                } else {
+                    r = get();
+                    if (e == r) {
+                        this.index = i;
+                        r = addAndGet(-e);
+                        if (r == 0) {
+                            return;
+                        }
+                        e = 0;
+                    } else {
+                        continue;
+                    }
                 }
             }
         }

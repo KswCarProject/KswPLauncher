@@ -1,16 +1,18 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.ScrollView;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi.vm.AudiSettingViewModel;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi.p007vm.AudiSettingViewModel;
+import com.wits.ksw.settings.audi.widget.AudiConstraintLayout;
 
+/* loaded from: classes7.dex */
 public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -20,39 +22,40 @@ public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.audiSysInfParentPanel, 6);
-        sparseIntArray.put(R.id.audioSysInfoMcuUpdata, 7);
-        sparseIntArray.put(R.id.audioSysInfoRestoreFactory, 8);
-        sparseIntArray.put(R.id.audioSysInfoUpDateFactory, 9);
+        sparseIntArray.put(C0899R.C0901id.audiSysInfParentPanel, 6);
+        sparseIntArray.put(C0899R.C0901id.audioSysInfoMcuUpdata, 7);
+        sparseIntArray.put(C0899R.C0901id.audioSysInfoRestoreFactory, 8);
+        sparseIntArray.put(C0899R.C0901id.audioSysInfoUpDateFactory, 9);
     }
 
     public AudiSysinfoBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 10, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private AudiSysinfoBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 5, bindings[6], bindings[2], bindings[1], bindings[3], bindings[4], bindings[7], bindings[5], bindings[8], bindings[9]);
-        this.mDirtyFlags = -1;
-        this.audiSysInfoAppVer.setTag((Object) null);
-        this.audiSysInfoMcuVer.setTag((Object) null);
-        this.audiSysInfoSysVer.setTag((Object) null);
-        this.audioSysInfoFlash.setTag((Object) null);
-        this.audioSysInfoRam.setTag((Object) null);
-        ScrollView scrollView = bindings[0];
+        super(bindingComponent, root, 5, (AudiConstraintLayout) bindings[6], (TextView) bindings[2], (TextView) bindings[1], (TextView) bindings[3], (TextView) bindings[4], (TextView) bindings[7], (TextView) bindings[5], (TextView) bindings[8], (TextView) bindings[9]);
+        this.mDirtyFlags = -1L;
+        this.audiSysInfoAppVer.setTag(null);
+        this.audiSysInfoMcuVer.setTag(null);
+        this.audiSysInfoSysVer.setTag(null);
+        this.audioSysInfoFlash.setTag(null);
+        this.audioSysInfoRam.setTag(null);
+        ScrollView scrollView = (ScrollView) bindings[0];
         this.mboundView0 = scrollView;
-        scrollView.setTag((Object) null);
+        scrollView.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 64;
+            this.mDirtyFlags = 64L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -62,14 +65,16 @@ public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((AudiSettingViewModel) variable);
+            return true;
         }
-        setVm((AudiSettingViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AudiSysinfoBinding
     public void setVm(AudiSettingViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -79,8 +84,8 @@ public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmAppVer((ObservableField) object, fieldId);
@@ -97,62 +102,62 @@ public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
         }
     }
 
-    private boolean onChangeVmAppVer(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmAppVer(ObservableField<String> VmAppVer, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmNandflash(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmNandflash(ObservableField<String> VmNandflash, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmMcuVer(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmMcuVer(ObservableField<String> VmMcuVer, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmSystemVersion(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmSystemVersion(ObservableField<String> VmSystemVersion, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmRamVer(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmRamVer(ObservableField<String> VmRamVer, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 16;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 16;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         ObservableField<String> vmAppVer = null;
         ObservableField<String> vmNandflash = null;
@@ -170,7 +175,7 @@ public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
                 if (vm != null) {
                     vmAppVer = vm.appVer;
                 }
-                updateRegistration(0, (Observable) vmAppVer);
+                updateRegistration(0, vmAppVer);
                 if (vmAppVer != null) {
                     vmAppVerGet = vmAppVer.get();
                 }
@@ -179,7 +184,7 @@ public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
                 if (vm != null) {
                     vmNandflash = vm.nandflash;
                 }
-                updateRegistration(1, (Observable) vmNandflash);
+                updateRegistration(1, vmNandflash);
                 if (vmNandflash != null) {
                     vmNandflashGet = vmNandflash.get();
                 }
@@ -188,7 +193,7 @@ public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
                 if (vm != null) {
                     vmMcuVer = vm.mcuVer;
                 }
-                updateRegistration(2, (Observable) vmMcuVer);
+                updateRegistration(2, vmMcuVer);
                 if (vmMcuVer != null) {
                     vmMcuVerGet = vmMcuVer.get();
                 }
@@ -197,7 +202,7 @@ public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
                 if (vm != null) {
                     vmSystemVersion = vm.systemVersion;
                 }
-                updateRegistration(3, (Observable) vmSystemVersion);
+                updateRegistration(3, vmSystemVersion);
                 if (vmSystemVersion != null) {
                     vmSystemVersionGet = vmSystemVersion.get();
                 }
@@ -206,7 +211,7 @@ public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
                 if (vm != null) {
                     vmRamVer = vm.ramVer;
                 }
-                updateRegistration(4, (Observable) vmRamVer);
+                updateRegistration(4, vmRamVer);
                 if (vmRamVer != null) {
                     vmRamVerGet = vmRamVer.get();
                 }

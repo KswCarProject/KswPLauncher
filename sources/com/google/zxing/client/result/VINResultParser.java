@@ -4,10 +4,12 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import java.util.regex.Pattern;
 
+/* loaded from: classes.dex */
 public final class VINResultParser extends ResultParser {
-    private static final Pattern AZ09 = Pattern.compile("[A-Z0-9]{17}");
     private static final Pattern IOQ = Pattern.compile("[IOQ]");
+    private static final Pattern AZ09 = Pattern.compile("[A-Z0-9]{17}");
 
+    @Override // com.google.zxing.client.result.ResultParser
     public VINParsedResult parse(Result result) {
         String wmi;
         if (result.getBarcodeFormat() != BarcodeFormat.CODE_39) {
@@ -18,20 +20,17 @@ public final class VINResultParser extends ResultParser {
             return null;
         }
         try {
-            if (!checkChecksum(rawText)) {
-                return null;
+            if (checkChecksum(rawText)) {
+                wmi = rawText.substring(0, 3);
+                try {
+                    return new VINParsedResult(rawText, wmi, rawText.substring(3, 9), rawText.substring(9, 17), countryCode(wmi), rawText.substring(3, 8), modelYear(rawText.charAt(9)), rawText.charAt(10), rawText.substring(11));
+                } catch (IllegalArgumentException e) {
+                    return null;
+                }
             }
-            wmi = rawText.substring(0, 3);
-            try {
-                return new VINParsedResult(rawText, wmi, rawText.substring(3, 9), rawText.substring(9, 17), countryCode(wmi), rawText.substring(3, 8), modelYear(rawText.charAt(9)), rawText.charAt(10), rawText.substring(11));
-            } catch (IllegalArgumentException e) {
-                String str = wmi;
-                return null;
-            }
+            return null;
         } catch (IllegalArgumentException e2) {
             wmi = null;
-            String str2 = wmi;
-            return null;
         }
     }
 
@@ -40,7 +39,9 @@ public final class VINResultParser extends ResultParser {
         for (int i = 0; i < vin.length(); i++) {
             sum += vinPositionWeight(i + 1) * vinCharValue(vin.charAt(i));
         }
-        return vin.charAt(8) == checkChar(sum % 11);
+        char checkChar = vin.charAt(8);
+        char expectedCheckChar = checkChar(sum % 11);
+        return checkChar == expectedCheckChar;
     }
 
     private static int vinCharValue(char c) {
@@ -121,35 +122,35 @@ public final class VINResultParser extends ResultParser {
             case '2':
                 return "CA";
             case '3':
-                if (c2 < 'A' || c2 > 'W') {
-                    return null;
+                if (c2 >= 'A' && c2 <= 'W') {
+                    return "MX";
                 }
-                return "MX";
+                return null;
             case '9':
-                if (c2 >= 'A' && c2 <= 'E') {
-                    return "BR";
-                }
-                if (c2 < '3' || c2 > '9') {
+                if (c2 < 'A' || c2 > 'E') {
+                    if (c2 >= '3' && c2 <= '9') {
+                        return "BR";
+                    }
                     return null;
                 }
                 return "BR";
             case 'J':
-                if (c2 < 'A' || c2 > 'T') {
-                    return null;
+                if (c2 >= 'A' && c2 <= 'T') {
+                    return "JP";
                 }
-                return "JP";
+                return null;
             case 'K':
-                if (c2 < 'L' || c2 > 'R') {
-                    return null;
+                if (c2 >= 'L' && c2 <= 'R') {
+                    return "KO";
                 }
-                return "KO";
+                return null;
             case 'L':
                 return "CN";
             case 'M':
-                if (c2 < 'A' || c2 > 'E') {
-                    return null;
+                if (c2 >= 'A' && c2 <= 'E') {
+                    return "IN";
                 }
-                return "IN";
+                return null;
             case 'S':
                 if (c2 >= 'A' && c2 <= 'M') {
                     return "UK";
@@ -162,25 +163,25 @@ public final class VINResultParser extends ResultParser {
                 if (c2 >= 'F' && c2 <= 'R') {
                     return "FR";
                 }
-                if (c2 < 'S' || c2 > 'W') {
-                    return null;
+                if (c2 >= 'S' && c2 <= 'W') {
+                    return "ES";
                 }
-                return "ES";
+                return null;
             case 'W':
                 return "DE";
             case 'X':
-                if (c2 == '0') {
-                    return "RU";
-                }
-                if (c2 < '3' || c2 > '9') {
+                if (c2 != '0') {
+                    if (c2 >= '3' && c2 <= '9') {
+                        return "RU";
+                    }
                     return null;
                 }
                 return "RU";
             case 'Z':
-                if (c2 < 'A' || c2 > 'R') {
-                    return null;
+                if (c2 >= 'A' && c2 <= 'R') {
+                    return "IT";
                 }
-                return "IT";
+                return null;
             default:
                 return null;
         }

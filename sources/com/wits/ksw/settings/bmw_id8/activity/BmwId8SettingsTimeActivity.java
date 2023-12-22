@@ -7,30 +7,31 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.databinding.BmwId8SettingsTimeLayoutBinding;
 import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.ksw.settings.BaseSkinActivity;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
+/* loaded from: classes11.dex */
 public class BmwId8SettingsTimeActivity extends BaseSkinActivity {
-    private final String TAG = "BmwId8SettingsTimeActivity";
     private BmwId8SettingsTimeLayoutBinding mBinding;
     private BmwId8SettingsViewModel mViewModel;
-    private int[] relativeLayoutId = {R.id.bmw_id8_settings_time_sync, R.id.bmw_id8_settings_time_car, R.id.bmw_id8_settings_time_android, R.id.bmw_id8_settings_time_format, R.id.bmw_id8_settings_time_12, R.id.bmw_id8_settings_time_24};
     private int timeFormat;
     private int timeSync;
+    private final String TAG = "BmwId8SettingsTimeActivity";
+    private int[] relativeLayoutId = {C0899R.C0901id.bmw_id8_settings_time_sync, C0899R.C0901id.bmw_id8_settings_time_car, C0899R.C0901id.bmw_id8_settings_time_android, C0899R.C0901id.bmw_id8_settings_time_format, C0899R.C0901id.bmw_id8_settings_time_12, C0899R.C0901id.bmw_id8_settings_time_24};
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override // com.wits.ksw.settings.BaseSkinActivity, android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("BmwId8SettingsTimeActivity", " onCreate ");
-        this.mBinding = (BmwId8SettingsTimeLayoutBinding) DataBindingUtil.setContentView(this, R.layout.bmw_id8_settings_time_layout);
-        BmwId8SettingsViewModel instance = BmwId8SettingsViewModel.getInstance();
-        this.mViewModel = instance;
-        this.mBinding.setViewModel(instance);
+        this.mBinding = (BmwId8SettingsTimeLayoutBinding) DataBindingUtil.setContentView(this, C0899R.C0902layout.bmw_id8_settings_time_layout);
+        BmwId8SettingsViewModel bmwId8SettingsViewModel = BmwId8SettingsViewModel.getInstance();
+        this.mViewModel = bmwId8SettingsViewModel;
+        this.mBinding.setViewModel(bmwId8SettingsViewModel);
         initView();
     }
 
@@ -40,13 +41,14 @@ public class BmwId8SettingsTimeActivity extends BaseSkinActivity {
             try {
                 int[] iArr = this.relativeLayoutId;
                 if (i < iArr.length) {
-                    findViewById(iArr[i]).setOnTouchListener(new View.OnTouchListener() {
+                    findViewById(iArr[i]).setOnTouchListener(new View.OnTouchListener() { // from class: com.wits.ksw.settings.bmw_id8.activity.BmwId8SettingsTimeActivity.1
+                        @Override // android.view.View.OnTouchListener
                         public boolean onTouch(View v, MotionEvent event) {
                             Log.i("BmwId8SettingsTimeActivity", " onTouch v " + v.toString() + " Action " + event.getAction() + " v.isFocused() " + v.isFocused());
-                            if (event.getAction() != 1 || v.isFocused()) {
+                            if (event.getAction() == 1 && !v.isFocused()) {
+                                v.requestFocus();
                                 return false;
                             }
-                            v.requestFocus();
                             return false;
                         }
                     });
@@ -61,14 +63,14 @@ public class BmwId8SettingsTimeActivity extends BaseSkinActivity {
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void onNewIntent(Intent intent) {
+    @Override // android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Log.i("BmwId8SettingsTimeActivity", " onNewIntent ");
     }
 
-    /* access modifiers changed from: protected */
-    public void onResume() {
+    @Override // android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onResume() {
         super.onResume();
         Log.i("BmwId8SettingsTimeActivity", " onResume ");
         initData();
@@ -88,6 +90,7 @@ public class BmwId8SettingsTimeActivity extends BaseSkinActivity {
         }
     }
 
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity, android.view.Window.Callback
     public boolean dispatchKeyEvent(KeyEvent event) {
         int keyCode = event.getKeyCode();
         int action = event.getAction();
@@ -100,22 +103,24 @@ public class BmwId8SettingsTimeActivity extends BaseSkinActivity {
                     KswUtils.sendKeyDownUpSync(4);
                     break;
                 }
+                break;
         }
         return super.dispatchKeyEvent(event);
     }
 
-    /* access modifiers changed from: protected */
-    public void onStop() {
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onStop() {
         super.onStop();
         Log.i("BmwId8SettingsTimeActivity", " onStop ");
     }
 
-    /* access modifiers changed from: protected */
-    public void onDestroy() {
+    @Override // android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.app.Activity
+    protected void onDestroy() {
         super.onDestroy();
         Log.i("BmwId8SettingsTimeActivity", " onDestroy ");
     }
 
+    @Override // android.view.Window.Callback
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
 }

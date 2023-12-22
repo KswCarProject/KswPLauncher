@@ -6,20 +6,21 @@ import android.databinding.ViewDataBinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.AppViewModel;
 import com.wits.ksw.launcher.view.CustomGridView;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityRoundAppsBinding extends ViewDataBinding {
     public final CustomGridView appGridView;
     @Bindable
     protected AppViewModel mAppViewModel;
 
-    public abstract void setAppViewModel(AppViewModel appViewModel);
+    public abstract void setAppViewModel(AppViewModel AppViewModel);
 
-    protected ActivityRoundAppsBinding(Object _bindingComponent, View _root, int _localFieldCount, CustomGridView appGridView2) {
+    protected ActivityRoundAppsBinding(Object _bindingComponent, View _root, int _localFieldCount, CustomGridView appGridView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.appGridView = appGridView2;
+        this.appGridView = appGridView;
     }
 
     public AppViewModel getAppViewModel() {
@@ -32,7 +33,7 @@ public abstract class ActivityRoundAppsBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityRoundAppsBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityRoundAppsBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_round_apps, root, attachToRoot, component);
+        return (ActivityRoundAppsBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_round_apps, root, attachToRoot, component);
     }
 
     public static ActivityRoundAppsBinding inflate(LayoutInflater inflater) {
@@ -41,7 +42,7 @@ public abstract class ActivityRoundAppsBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityRoundAppsBinding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityRoundAppsBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_round_apps, (ViewGroup) null, false, component);
+        return (ActivityRoundAppsBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_round_apps, null, false, component);
     }
 
     public static ActivityRoundAppsBinding bind(View view) {
@@ -50,6 +51,6 @@ public abstract class ActivityRoundAppsBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityRoundAppsBinding bind(View view, Object component) {
-        return (ActivityRoundAppsBinding) bind(component, view, R.layout.activity_round_apps);
+        return (ActivityRoundAppsBinding) bind(component, view, C0899R.C0902layout.activity_round_apps);
     }
 }

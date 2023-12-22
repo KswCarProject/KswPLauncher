@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class Ntg630ControlPopupBinding extends ViewDataBinding {
     public final ImageView brightnessBtnLeft;
     public final ImageView brightnessBtnRight;
@@ -26,17 +27,17 @@ public abstract class Ntg630ControlPopupBinding extends ViewDataBinding {
 
     public abstract void setLauncherViewModel(LauncherViewModel launcherViewModel);
 
-    protected Ntg630ControlPopupBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView brightnessBtnLeft2, ImageView brightnessBtnRight2, ImageView controlBtn12, ImageView controlBtn22, ImageView controlBtn32, ImageView foldLeftBtn2, ImageView foldRightBtn2, ImageView imageView2, RelativeLayout linearLayout2) {
+    protected Ntg630ControlPopupBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView brightnessBtnLeft, ImageView brightnessBtnRight, ImageView controlBtn1, ImageView controlBtn2, ImageView controlBtn3, ImageView foldLeftBtn, ImageView foldRightBtn, ImageView imageView, RelativeLayout linearLayout) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.brightnessBtnLeft = brightnessBtnLeft2;
-        this.brightnessBtnRight = brightnessBtnRight2;
-        this.controlBtn1 = controlBtn12;
-        this.controlBtn2 = controlBtn22;
-        this.controlBtn3 = controlBtn32;
-        this.foldLeftBtn = foldLeftBtn2;
-        this.foldRightBtn = foldRightBtn2;
-        this.imageView = imageView2;
-        this.linearLayout = linearLayout2;
+        this.brightnessBtnLeft = brightnessBtnLeft;
+        this.brightnessBtnRight = brightnessBtnRight;
+        this.controlBtn1 = controlBtn1;
+        this.controlBtn2 = controlBtn2;
+        this.controlBtn3 = controlBtn3;
+        this.foldLeftBtn = foldLeftBtn;
+        this.foldRightBtn = foldRightBtn;
+        this.imageView = imageView;
+        this.linearLayout = linearLayout;
     }
 
     public LauncherViewModel getLauncherViewModel() {
@@ -49,7 +50,7 @@ public abstract class Ntg630ControlPopupBinding extends ViewDataBinding {
 
     @Deprecated
     public static Ntg630ControlPopupBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (Ntg630ControlPopupBinding) ViewDataBinding.inflateInternal(inflater, R.layout.ntg630_control_popup, root, attachToRoot, component);
+        return (Ntg630ControlPopupBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.ntg630_control_popup, root, attachToRoot, component);
     }
 
     public static Ntg630ControlPopupBinding inflate(LayoutInflater inflater) {
@@ -58,7 +59,7 @@ public abstract class Ntg630ControlPopupBinding extends ViewDataBinding {
 
     @Deprecated
     public static Ntg630ControlPopupBinding inflate(LayoutInflater inflater, Object component) {
-        return (Ntg630ControlPopupBinding) ViewDataBinding.inflateInternal(inflater, R.layout.ntg630_control_popup, (ViewGroup) null, false, component);
+        return (Ntg630ControlPopupBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.ntg630_control_popup, null, false, component);
     }
 
     public static Ntg630ControlPopupBinding bind(View view) {
@@ -67,6 +68,6 @@ public abstract class Ntg630ControlPopupBinding extends ViewDataBinding {
 
     @Deprecated
     public static Ntg630ControlPopupBinding bind(View view, Object component) {
-        return (Ntg630ControlPopupBinding) bind(component, view, R.layout.ntg630_control_popup);
+        return (Ntg630ControlPopupBinding) bind(component, view, C0899R.C0902layout.ntg630_control_popup);
     }
 }

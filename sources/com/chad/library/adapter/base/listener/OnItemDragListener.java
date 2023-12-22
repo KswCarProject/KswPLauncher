@@ -1,7 +1,8 @@
 package com.chad.library.adapter.base.listener;
 
-import android.support.v7.widget.RecyclerView;
+import android.support.p004v7.widget.RecyclerView;
 
+/* loaded from: classes.dex */
 public interface OnItemDragListener {
     void onItemDragEnd(RecyclerView.ViewHolder viewHolder, int i);
 

@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public class MusicStatus {
     public static final int TYPE_MUSIC_STATUS = 21;
     public String mode;
@@ -12,11 +13,11 @@ public class MusicStatus {
     public boolean play;
     public int position;
 
-    public MusicStatus(String path2, String mode2, boolean play2, int position2) {
-        this.path = path2;
-        this.mode = mode2;
-        this.play = play2;
-        this.position = position2;
+    public MusicStatus(String path, String mode, boolean play, int position) {
+        this.path = path;
+        this.mode = mode;
+        this.play = play;
+        this.position = position;
     }
 
     public MusicStatus() {
@@ -26,36 +27,36 @@ public class MusicStatus {
         return this.play;
     }
 
-    public void setPlay(boolean play2) {
-        this.play = play2;
+    public void setPlay(boolean play) {
+        this.play = play;
     }
 
     public String getPath() {
         return this.path;
     }
 
-    public void setPath(String path2) {
-        this.path = path2;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getMode() {
         return this.mode;
     }
 
-    public void setMode(String mode2) {
-        this.mode = mode2;
+    public void setMode(String mode) {
+        this.mode = mode;
     }
 
     public int getPosition() {
         return this.position;
     }
 
-    public void setPosition(int position2) {
-        this.position = position2;
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public static MusicStatus getStatusFromJson(String jsonArg) {
-        return (MusicStatus) new Gson().fromJson(jsonArg, MusicStatus.class);
+        return (MusicStatus) new Gson().fromJson(jsonArg, (Class<Object>) MusicStatus.class);
     }
 
     public List<String> compare(MusicStatus musicStatus) {

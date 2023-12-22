@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:scrollbars="none" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:scrollbars="none" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
     <RelativeLayout android:descendantFocusability="afterDescendants" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <RelativeLayout android:id="@+id/relate_naviv" android:visibility="gone" android:descendantFocusability="afterDescendants" android:layout_width="wrap_content" android:layout_height="wrap_content">
             <RadioGroup android:id="@+id/rdg_naviv" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="30dp" android:checkedButton="@+id/rdb_naviv1">
@@ -18,7 +18,7 @@
             </RadioGroup>
         </RelativeLayout>
         <RelativeLayout android:id="@+id/relate_app" android:descendantFocusability="afterDescendants" android:layout_width="wrap_content" android:layout_height="wrap_content">
-            <android.support.v7.widget.RecyclerView android:id="@+id/navi_recycle" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <android.support.p004v7.widget.RecyclerView android:id="@+id/navi_recycle" android:layout_width="match_parent" android:layout_height="wrap_content"/>
         </RelativeLayout>
     </RelativeLayout>
 </ScrollView>

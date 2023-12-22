@@ -27,10 +27,12 @@ import io.reactivex.internal.schedulers.SingleScheduler;
 import io.reactivex.internal.util.ExceptionHelper;
 import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.parallel.ParallelFlowable;
+import java.lang.Thread;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadFactory;
 import org.reactivestreams.Subscriber;
 
+/* loaded from: classes.dex */
 public final class RxJavaPlugins {
     static volatile Consumer<? super Throwable> errorHandler;
     static volatile boolean failNonBlockingScheduler;
@@ -68,11 +70,10 @@ public final class RxJavaPlugins {
     }
 
     public static void setFailOnNonBlockingScheduler(boolean enable) {
-        if (!lockdown) {
-            failNonBlockingScheduler = enable;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        failNonBlockingScheduler = enable;
     }
 
     public static boolean isFailOnNonBlockingScheduler() {
@@ -184,15 +185,13 @@ public final class RxJavaPlugins {
     }
 
     static boolean isBug(Throwable error) {
-        if (!(error instanceof OnErrorNotImplementedException) && !(error instanceof MissingBackpressureException) && !(error instanceof IllegalStateException) && !(error instanceof NullPointerException) && !(error instanceof IllegalArgumentException) && !(error instanceof CompositeException)) {
-            return false;
-        }
-        return true;
+        return (error instanceof OnErrorNotImplementedException) || (error instanceof MissingBackpressureException) || (error instanceof IllegalStateException) || (error instanceof NullPointerException) || (error instanceof IllegalArgumentException) || (error instanceof CompositeException);
     }
 
     static void uncaught(Throwable error) {
         Thread currentThread = Thread.currentThread();
-        currentThread.getUncaughtExceptionHandler().uncaughtException(currentThread, error);
+        Thread.UncaughtExceptionHandler handler = currentThread.getUncaughtExceptionHandler();
+        handler.uncaughtException(currentThread, error);
     }
 
     public static Scheduler onIoScheduler(Scheduler defaultScheduler) {
@@ -229,111 +228,101 @@ public final class RxJavaPlugins {
     }
 
     public static void reset() {
-        setErrorHandler((Consumer<? super Throwable>) null);
-        setScheduleHandler((Function<? super Runnable, ? extends Runnable>) null);
-        setComputationSchedulerHandler((Function<? super Scheduler, ? extends Scheduler>) null);
-        setInitComputationSchedulerHandler((Function<? super Callable<Scheduler>, ? extends Scheduler>) null);
-        setIoSchedulerHandler((Function<? super Scheduler, ? extends Scheduler>) null);
-        setInitIoSchedulerHandler((Function<? super Callable<Scheduler>, ? extends Scheduler>) null);
-        setSingleSchedulerHandler((Function<? super Scheduler, ? extends Scheduler>) null);
-        setInitSingleSchedulerHandler((Function<? super Callable<Scheduler>, ? extends Scheduler>) null);
-        setNewThreadSchedulerHandler((Function<? super Scheduler, ? extends Scheduler>) null);
-        setInitNewThreadSchedulerHandler((Function<? super Callable<Scheduler>, ? extends Scheduler>) null);
-        setOnFlowableAssembly((Function<? super Flowable, ? extends Flowable>) null);
-        setOnFlowableSubscribe((BiFunction<? super Flowable, ? super Subscriber, ? extends Subscriber>) null);
-        setOnObservableAssembly((Function<? super Observable, ? extends Observable>) null);
-        setOnObservableSubscribe((BiFunction<? super Observable, ? super Observer, ? extends Observer>) null);
-        setOnSingleAssembly((Function<? super Single, ? extends Single>) null);
-        setOnSingleSubscribe((BiFunction<? super Single, ? super SingleObserver, ? extends SingleObserver>) null);
-        setOnCompletableAssembly((Function<? super Completable, ? extends Completable>) null);
-        setOnCompletableSubscribe((BiFunction<? super Completable, ? super CompletableObserver, ? extends CompletableObserver>) null);
-        setOnConnectableFlowableAssembly((Function<? super ConnectableFlowable, ? extends ConnectableFlowable>) null);
-        setOnConnectableObservableAssembly((Function<? super ConnectableObservable, ? extends ConnectableObservable>) null);
-        setOnMaybeAssembly((Function<? super Maybe, ? extends Maybe>) null);
-        setOnMaybeSubscribe((BiFunction<? super Maybe, MaybeObserver, ? extends MaybeObserver>) null);
-        setOnParallelAssembly((Function<? super ParallelFlowable, ? extends ParallelFlowable>) null);
+        setErrorHandler(null);
+        setScheduleHandler(null);
+        setComputationSchedulerHandler(null);
+        setInitComputationSchedulerHandler(null);
+        setIoSchedulerHandler(null);
+        setInitIoSchedulerHandler(null);
+        setSingleSchedulerHandler(null);
+        setInitSingleSchedulerHandler(null);
+        setNewThreadSchedulerHandler(null);
+        setInitNewThreadSchedulerHandler(null);
+        setOnFlowableAssembly(null);
+        setOnFlowableSubscribe(null);
+        setOnObservableAssembly(null);
+        setOnObservableSubscribe(null);
+        setOnSingleAssembly(null);
+        setOnSingleSubscribe(null);
+        setOnCompletableAssembly(null);
+        setOnCompletableSubscribe(null);
+        setOnConnectableFlowableAssembly(null);
+        setOnConnectableObservableAssembly(null);
+        setOnMaybeAssembly(null);
+        setOnMaybeSubscribe(null);
+        setOnParallelAssembly(null);
         setFailOnNonBlockingScheduler(false);
-        setOnBeforeBlocking((BooleanSupplier) null);
+        setOnBeforeBlocking(null);
     }
 
     public static void setComputationSchedulerHandler(Function<? super Scheduler, ? extends Scheduler> handler) {
-        if (!lockdown) {
-            onComputationHandler = handler;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onComputationHandler = handler;
     }
 
     public static void setErrorHandler(Consumer<? super Throwable> handler) {
-        if (!lockdown) {
-            errorHandler = handler;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        errorHandler = handler;
     }
 
     public static void setInitComputationSchedulerHandler(Function<? super Callable<Scheduler>, ? extends Scheduler> handler) {
-        if (!lockdown) {
-            onInitComputationHandler = handler;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onInitComputationHandler = handler;
     }
 
     public static void setInitIoSchedulerHandler(Function<? super Callable<Scheduler>, ? extends Scheduler> handler) {
-        if (!lockdown) {
-            onInitIoHandler = handler;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onInitIoHandler = handler;
     }
 
     public static void setInitNewThreadSchedulerHandler(Function<? super Callable<Scheduler>, ? extends Scheduler> handler) {
-        if (!lockdown) {
-            onInitNewThreadHandler = handler;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onInitNewThreadHandler = handler;
     }
 
     public static void setInitSingleSchedulerHandler(Function<? super Callable<Scheduler>, ? extends Scheduler> handler) {
-        if (!lockdown) {
-            onInitSingleHandler = handler;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onInitSingleHandler = handler;
     }
 
     public static void setIoSchedulerHandler(Function<? super Scheduler, ? extends Scheduler> handler) {
-        if (!lockdown) {
-            onIoHandler = handler;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onIoHandler = handler;
     }
 
     public static void setNewThreadSchedulerHandler(Function<? super Scheduler, ? extends Scheduler> handler) {
-        if (!lockdown) {
-            onNewThreadHandler = handler;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onNewThreadHandler = handler;
     }
 
     public static void setScheduleHandler(Function<? super Runnable, ? extends Runnable> handler) {
-        if (!lockdown) {
-            onScheduleHandler = handler;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onScheduleHandler = handler;
     }
 
     public static void setSingleSchedulerHandler(Function<? super Scheduler, ? extends Scheduler> handler) {
-        if (!lockdown) {
-            onSingleHandler = handler;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onSingleHandler = handler;
     }
 
     static void unlock() {
@@ -389,99 +378,87 @@ public final class RxJavaPlugins {
     }
 
     public static void setOnCompletableAssembly(Function<? super Completable, ? extends Completable> onCompletableAssembly2) {
-        if (!lockdown) {
-            onCompletableAssembly = onCompletableAssembly2;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onCompletableAssembly = onCompletableAssembly2;
     }
 
     public static void setOnCompletableSubscribe(BiFunction<? super Completable, ? super CompletableObserver, ? extends CompletableObserver> onCompletableSubscribe2) {
-        if (!lockdown) {
-            onCompletableSubscribe = onCompletableSubscribe2;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onCompletableSubscribe = onCompletableSubscribe2;
     }
 
     public static void setOnFlowableAssembly(Function<? super Flowable, ? extends Flowable> onFlowableAssembly2) {
-        if (!lockdown) {
-            onFlowableAssembly = onFlowableAssembly2;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onFlowableAssembly = onFlowableAssembly2;
     }
 
     public static void setOnMaybeAssembly(Function<? super Maybe, ? extends Maybe> onMaybeAssembly2) {
-        if (!lockdown) {
-            onMaybeAssembly = onMaybeAssembly2;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onMaybeAssembly = onMaybeAssembly2;
     }
 
     public static void setOnConnectableFlowableAssembly(Function<? super ConnectableFlowable, ? extends ConnectableFlowable> onConnectableFlowableAssembly2) {
-        if (!lockdown) {
-            onConnectableFlowableAssembly = onConnectableFlowableAssembly2;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onConnectableFlowableAssembly = onConnectableFlowableAssembly2;
     }
 
     public static void setOnFlowableSubscribe(BiFunction<? super Flowable, ? super Subscriber, ? extends Subscriber> onFlowableSubscribe2) {
-        if (!lockdown) {
-            onFlowableSubscribe = onFlowableSubscribe2;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onFlowableSubscribe = onFlowableSubscribe2;
     }
 
     public static void setOnMaybeSubscribe(BiFunction<? super Maybe, MaybeObserver, ? extends MaybeObserver> onMaybeSubscribe2) {
-        if (!lockdown) {
-            onMaybeSubscribe = onMaybeSubscribe2;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onMaybeSubscribe = onMaybeSubscribe2;
     }
 
     public static void setOnObservableAssembly(Function<? super Observable, ? extends Observable> onObservableAssembly2) {
-        if (!lockdown) {
-            onObservableAssembly = onObservableAssembly2;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onObservableAssembly = onObservableAssembly2;
     }
 
     public static void setOnConnectableObservableAssembly(Function<? super ConnectableObservable, ? extends ConnectableObservable> onConnectableObservableAssembly2) {
-        if (!lockdown) {
-            onConnectableObservableAssembly = onConnectableObservableAssembly2;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onConnectableObservableAssembly = onConnectableObservableAssembly2;
     }
 
     public static void setOnObservableSubscribe(BiFunction<? super Observable, ? super Observer, ? extends Observer> onObservableSubscribe2) {
-        if (!lockdown) {
-            onObservableSubscribe = onObservableSubscribe2;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onObservableSubscribe = onObservableSubscribe2;
     }
 
     public static void setOnSingleAssembly(Function<? super Single, ? extends Single> onSingleAssembly2) {
-        if (!lockdown) {
-            onSingleAssembly = onSingleAssembly2;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onSingleAssembly = onSingleAssembly2;
     }
 
     public static void setOnSingleSubscribe(BiFunction<? super Single, ? super SingleObserver, ? extends SingleObserver> onSingleSubscribe2) {
-        if (!lockdown) {
-            onSingleSubscribe = onSingleSubscribe2;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onSingleSubscribe = onSingleSubscribe2;
     }
 
     public static <T> Subscriber<? super T> onSubscribe(Flowable<T> source, Subscriber<? super T> subscriber) {
@@ -581,11 +558,10 @@ public final class RxJavaPlugins {
     }
 
     public static void setOnParallelAssembly(Function<? super ParallelFlowable, ? extends ParallelFlowable> handler) {
-        if (!lockdown) {
-            onParallelAssembly = handler;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onParallelAssembly = handler;
     }
 
     public static Function<? super ParallelFlowable, ? extends ParallelFlowable> getOnParallelAssembly() {
@@ -602,22 +578,21 @@ public final class RxJavaPlugins {
 
     public static boolean onBeforeBlocking() {
         BooleanSupplier f = onBeforeBlocking;
-        if (f == null) {
-            return false;
+        if (f != null) {
+            try {
+                return f.getAsBoolean();
+            } catch (Throwable ex) {
+                throw ExceptionHelper.wrapOrThrow(ex);
+            }
         }
-        try {
-            return f.getAsBoolean();
-        } catch (Throwable ex) {
-            throw ExceptionHelper.wrapOrThrow(ex);
-        }
+        return false;
     }
 
     public static void setOnBeforeBlocking(BooleanSupplier handler) {
-        if (!lockdown) {
-            onBeforeBlocking = handler;
-            return;
+        if (lockdown) {
+            throw new IllegalStateException("Plugins can't be changed anymore");
         }
-        throw new IllegalStateException("Plugins can't be changed anymore");
+        onBeforeBlocking = handler;
     }
 
     public static BooleanSupplier getOnBeforeBlocking() {

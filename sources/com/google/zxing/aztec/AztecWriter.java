@@ -10,11 +10,14 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class AztecWriter implements Writer {
+    @Override // com.google.zxing.Writer
     public BitMatrix encode(String contents, BarcodeFormat format, int width, int height) {
-        return encode(contents, format, width, height, (Map<EncodeHintType, ?>) null);
+        return encode(contents, format, width, height, null);
     }
 
+    @Override // com.google.zxing.Writer
     public BitMatrix encode(String contents, BarcodeFormat format, int width, int height, Map<EncodeHintType, ?> hints) {
         Charset charset = StandardCharsets.ISO_8859_1;
         int eccPercent = 33;
@@ -34,25 +37,25 @@ public final class AztecWriter implements Writer {
     }
 
     private static BitMatrix encode(String contents, BarcodeFormat format, int width, int height, Charset charset, int eccPercent, int layers) {
-        if (format == BarcodeFormat.AZTEC) {
-            return renderResult(Encoder.encode(contents.getBytes(charset), eccPercent, layers), width, height);
+        if (format != BarcodeFormat.AZTEC) {
+            throw new IllegalArgumentException("Can only encode AZTEC, but got ".concat(String.valueOf(format)));
         }
-        throw new IllegalArgumentException("Can only encode AZTEC, but got ".concat(String.valueOf(format)));
+        return renderResult(Encoder.encode(contents.getBytes(charset), eccPercent, layers), width, height);
     }
 
     private static BitMatrix renderResult(AztecCode code, int width, int height) {
-        BitMatrix matrix = code.getMatrix();
-        BitMatrix input = matrix;
-        if (matrix != null) {
+        BitMatrix input = code.getMatrix();
+        if (input != null) {
             int inputWidth = input.getWidth();
             int inputHeight = input.getHeight();
             int outputWidth = Math.max(width, inputWidth);
             int outputHeight = Math.max(height, inputHeight);
             int multiple = Math.min(outputWidth / inputWidth, outputHeight / inputHeight);
             int leftPadding = (outputWidth - (inputWidth * multiple)) / 2;
+            int topPadding = (outputHeight - (inputHeight * multiple)) / 2;
             BitMatrix output = new BitMatrix(outputWidth, outputHeight);
             int inputY = 0;
-            int outputY = (outputHeight - (inputHeight * multiple)) / 2;
+            int outputY = topPadding;
             while (inputY < inputHeight) {
                 int inputX = 0;
                 int outputX = leftPadding;
@@ -68,8 +71,6 @@ public final class AztecWriter implements Writer {
             }
             return output;
         }
-        int i = width;
-        int i2 = height;
         throw new IllegalStateException();
     }
 }

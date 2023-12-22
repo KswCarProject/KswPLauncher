@@ -4,19 +4,21 @@ import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.land_rover.model.LandroverViewModel;
 
+/* loaded from: classes7.dex */
 public class LandroverOneFragmentImpl extends LandroverOneFragment implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback174;
-    private final View.OnClickListener mCallback175;
-    private final View.OnClickListener mCallback176;
-    private final View.OnClickListener mCallback177;
-    private final View.OnClickListener mCallback178;
-    private final View.OnClickListener mCallback179;
+    private final View.OnClickListener mCallback261;
+    private final View.OnClickListener mCallback262;
+    private final View.OnClickListener mCallback263;
+    private final View.OnClickListener mCallback264;
+    private final View.OnClickListener mCallback265;
+    private final View.OnClickListener mCallback266;
     private long mDirtyFlags;
     private final RelativeLayout mboundView0;
 
@@ -24,36 +26,37 @@ public class LandroverOneFragmentImpl extends LandroverOneFragment implements On
         this(bindingComponent, root, mapBindings(bindingComponent, root, 7, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private LandroverOneFragmentImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[4], bindings[5], bindings[1], bindings[3], bindings[6], bindings[2]);
-        this.mDirtyFlags = -1;
-        this.landroverMainIconCar.setTag((Object) null);
-        this.landroverMainIconDvr.setTag((Object) null);
-        this.landroverMainIconGps.setTag((Object) null);
-        this.landroverMainIconMusic.setTag((Object) null);
-        this.landroverMainIconSettings.setTag((Object) null);
-        this.landroverMainIconVideo.setTag((Object) null);
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 0, (ImageView) bindings[4], (ImageView) bindings[5], (ImageView) bindings[1], (ImageView) bindings[3], (ImageView) bindings[6], (ImageView) bindings[2]);
+        this.mDirtyFlags = -1L;
+        this.landroverMainIconCar.setTag(null);
+        this.landroverMainIconDvr.setTag(null);
+        this.landroverMainIconGps.setTag(null);
+        this.landroverMainIconMusic.setTag(null);
+        this.landroverMainIconSettings.setTag(null);
+        this.landroverMainIconVideo.setTag(null);
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
+        relativeLayout.setTag(null);
         setRootTag(root);
-        this.mCallback179 = new OnClickListener(this, 6);
-        this.mCallback177 = new OnClickListener(this, 4);
-        this.mCallback178 = new OnClickListener(this, 5);
-        this.mCallback175 = new OnClickListener(this, 2);
-        this.mCallback176 = new OnClickListener(this, 3);
-        this.mCallback174 = new OnClickListener(this, 1);
+        this.mCallback265 = new OnClickListener(this, 5);
+        this.mCallback266 = new OnClickListener(this, 6);
+        this.mCallback263 = new OnClickListener(this, 3);
+        this.mCallback264 = new OnClickListener(this, 4);
+        this.mCallback261 = new OnClickListener(this, 1);
+        this.mCallback262 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 2;
+            this.mDirtyFlags = 2L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -63,14 +66,16 @@ public class LandroverOneFragmentImpl extends LandroverOneFragment implements On
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
-            return false;
+        if (16 == variableId) {
+            setViewModel((LandroverViewModel) variable);
+            return true;
         }
-        setViewModel((LandroverViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.LandroverOneFragment
     public void setViewModel(LandroverViewModel ViewModel) {
         this.mViewModel = ViewModel;
         synchronized (this) {
@@ -80,44 +85,43 @@ public class LandroverOneFragmentImpl extends LandroverOneFragment implements On
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         LandroverViewModel viewModel = this.mViewModel;
         View.OnFocusChangeListener viewModelSettingsViewFocusChangeListener = null;
-        if (!((dirtyFlags & 3) == 0 || viewModel == null)) {
+        if ((dirtyFlags & 3) != 0 && viewModel != null) {
             viewModelSettingsViewFocusChangeListener = viewModel.settingsViewFocusChangeListener;
         }
         if ((2 & dirtyFlags) != 0) {
-            this.landroverMainIconCar.setOnClickListener(this.mCallback177);
-            this.landroverMainIconDvr.setOnClickListener(this.mCallback178);
-            this.landroverMainIconGps.setOnClickListener(this.mCallback174);
-            this.landroverMainIconMusic.setOnClickListener(this.mCallback176);
-            this.landroverMainIconSettings.setOnClickListener(this.mCallback179);
-            this.landroverMainIconVideo.setOnClickListener(this.mCallback175);
+            this.landroverMainIconCar.setOnClickListener(this.mCallback264);
+            this.landroverMainIconDvr.setOnClickListener(this.mCallback265);
+            this.landroverMainIconGps.setOnClickListener(this.mCallback261);
+            this.landroverMainIconMusic.setOnClickListener(this.mCallback263);
+            this.landroverMainIconSettings.setOnClickListener(this.mCallback266);
+            this.landroverMainIconVideo.setOnClickListener(this.mCallback262);
         }
         if ((3 & dirtyFlags) != 0) {
             this.landroverMainIconSettings.setOnFocusChangeListener(viewModelSettingsViewFocusChangeListener);
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean viewModelJavaLangObjectNull = true;
+        boolean viewModelJavaLangObjectNull;
         switch (sourceId) {
             case 1:
                 LandroverViewModel viewModel = this.mViewModel;
-                if (viewModel == null) {
-                    viewModelJavaLangObjectNull = false;
-                }
+                viewModelJavaLangObjectNull = viewModel != null;
                 if (viewModelJavaLangObjectNull) {
                     viewModel.openNaviApp(callbackArg_0);
                     return;
@@ -125,9 +129,7 @@ public class LandroverOneFragmentImpl extends LandroverOneFragment implements On
                 return;
             case 2:
                 LandroverViewModel viewModel2 = this.mViewModel;
-                if (viewModel2 == null) {
-                    viewModelJavaLangObjectNull = false;
-                }
+                viewModelJavaLangObjectNull = viewModel2 != null;
                 if (viewModelJavaLangObjectNull) {
                     viewModel2.openVideoMulti(callbackArg_0);
                     return;
@@ -135,9 +137,7 @@ public class LandroverOneFragmentImpl extends LandroverOneFragment implements On
                 return;
             case 3:
                 LandroverViewModel viewModel3 = this.mViewModel;
-                if (viewModel3 == null) {
-                    viewModelJavaLangObjectNull = false;
-                }
+                viewModelJavaLangObjectNull = viewModel3 != null;
                 if (viewModelJavaLangObjectNull) {
                     viewModel3.openMusicMulti(callbackArg_0);
                     return;
@@ -145,9 +145,7 @@ public class LandroverOneFragmentImpl extends LandroverOneFragment implements On
                 return;
             case 4:
                 LandroverViewModel viewModel4 = this.mViewModel;
-                if (viewModel4 == null) {
-                    viewModelJavaLangObjectNull = false;
-                }
+                viewModelJavaLangObjectNull = viewModel4 != null;
                 if (viewModelJavaLangObjectNull) {
                     viewModel4.openCar(callbackArg_0);
                     return;
@@ -155,9 +153,7 @@ public class LandroverOneFragmentImpl extends LandroverOneFragment implements On
                 return;
             case 5:
                 LandroverViewModel viewModel5 = this.mViewModel;
-                if (viewModel5 == null) {
-                    viewModelJavaLangObjectNull = false;
-                }
+                viewModelJavaLangObjectNull = viewModel5 != null;
                 if (viewModelJavaLangObjectNull) {
                     viewModel5.openDvr(callbackArg_0);
                     return;
@@ -165,9 +161,7 @@ public class LandroverOneFragmentImpl extends LandroverOneFragment implements On
                 return;
             case 6:
                 LandroverViewModel viewModel6 = this.mViewModel;
-                if (viewModel6 == null) {
-                    viewModelJavaLangObjectNull = false;
-                }
+                viewModelJavaLangObjectNull = viewModel6 != null;
                 if (viewModelJavaLangObjectNull) {
                     viewModel6.openSettings(callbackArg_0);
                     return;

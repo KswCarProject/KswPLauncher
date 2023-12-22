@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v7.widget.RecyclerView;
+import android.support.p004v7.widget.RecyclerView;
 import android.text.util.Linkify;
 import android.util.SparseArray;
 import android.view.View;
@@ -21,16 +21,16 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/* loaded from: classes.dex */
 public class BaseViewHolder extends RecyclerView.ViewHolder {
-    /* access modifiers changed from: private */
-    public BaseQuickAdapter adapter;
+    private BaseQuickAdapter adapter;
     private Object associatedObject;
-    private final LinkedHashSet<Integer> childClickViewIds = new LinkedHashSet<>();
+    private final LinkedHashSet<Integer> childClickViewIds;
     @Deprecated
     public View convertView;
-    private final LinkedHashSet<Integer> itemChildLongClickViewIds = new LinkedHashSet<>();
-    private final HashSet<Integer> nestViews = new HashSet<>();
-    private final SparseArray<View> views = new SparseArray<>();
+    private final LinkedHashSet<Integer> itemChildLongClickViewIds;
+    private final HashSet<Integer> nestViews;
+    private final SparseArray<View> views;
 
     public Set<Integer> getNestViews() {
         return this.nestViews;
@@ -38,6 +38,10 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
 
     public BaseViewHolder(View view) {
         super(view);
+        this.views = new SparseArray<>();
+        this.childClickViewIds = new LinkedHashSet<>();
+        this.itemChildLongClickViewIds = new LinkedHashSet<>();
+        this.nestViews = new HashSet<>();
         this.convertView = view;
     }
 
@@ -55,42 +59,50 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     }
 
     public BaseViewHolder setText(int viewId, CharSequence value) {
-        ((TextView) getView(viewId)).setText(value);
+        TextView view = (TextView) getView(viewId);
+        view.setText(value);
         return this;
     }
 
     public BaseViewHolder setText(int viewId, int strId) {
-        ((TextView) getView(viewId)).setText(strId);
+        TextView view = (TextView) getView(viewId);
+        view.setText(strId);
         return this;
     }
 
     public BaseViewHolder setImageResource(int viewId, int imageResId) {
-        ((ImageView) getView(viewId)).setImageResource(imageResId);
+        ImageView view = (ImageView) getView(viewId);
+        view.setImageResource(imageResId);
         return this;
     }
 
     public BaseViewHolder setBackgroundColor(int viewId, int color) {
-        getView(viewId).setBackgroundColor(color);
+        View view = getView(viewId);
+        view.setBackgroundColor(color);
         return this;
     }
 
     public BaseViewHolder setBackgroundRes(int viewId, int backgroundRes) {
-        getView(viewId).setBackgroundResource(backgroundRes);
+        View view = getView(viewId);
+        view.setBackgroundResource(backgroundRes);
         return this;
     }
 
     public BaseViewHolder setTextColor(int viewId, int textColor) {
-        ((TextView) getView(viewId)).setTextColor(textColor);
+        TextView view = (TextView) getView(viewId);
+        view.setTextColor(textColor);
         return this;
     }
 
     public BaseViewHolder setImageDrawable(int viewId, Drawable drawable) {
-        ((ImageView) getView(viewId)).setImageDrawable(drawable);
+        ImageView view = (ImageView) getView(viewId);
+        view.setImageDrawable(drawable);
         return this;
     }
 
     public BaseViewHolder setImageBitmap(int viewId, Bitmap bitmap) {
-        ((ImageView) getView(viewId)).setImageBitmap(bitmap);
+        ImageView view = (ImageView) getView(viewId);
+        view.setImageBitmap(bitmap);
         return this;
     }
 
@@ -99,7 +111,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
             getView(viewId).setAlpha(value);
         } else {
             AlphaAnimation alpha = new AlphaAnimation(value, value);
-            alpha.setDuration(0);
+            alpha.setDuration(0L);
             alpha.setFillAfter(true);
             getView(viewId).startAnimation(alpha);
         }
@@ -107,17 +119,20 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     }
 
     public BaseViewHolder setGone(int viewId, boolean visible) {
-        getView(viewId).setVisibility(visible ? 0 : 8);
+        View view = getView(viewId);
+        view.setVisibility(visible ? 0 : 8);
         return this;
     }
 
     public BaseViewHolder setVisible(int viewId, boolean visible) {
-        getView(viewId).setVisibility(visible ? 0 : 4);
+        View view = getView(viewId);
+        view.setVisibility(visible ? 0 : 4);
         return this;
     }
 
     public BaseViewHolder linkify(int viewId) {
-        Linkify.addLinks((TextView) getView(viewId), 15);
+        TextView view = (TextView) getView(viewId);
+        Linkify.addLinks(view, 15);
         return this;
     }
 
@@ -138,7 +153,8 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     }
 
     public BaseViewHolder setProgress(int viewId, int progress) {
-        ((ProgressBar) getView(viewId)).setProgress(progress);
+        ProgressBar view = (ProgressBar) getView(viewId);
+        view.setProgress(progress);
         return this;
     }
 
@@ -150,12 +166,14 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     }
 
     public BaseViewHolder setMax(int viewId, int max) {
-        ((ProgressBar) getView(viewId)).setMax(max);
+        ProgressBar view = (ProgressBar) getView(viewId);
+        view.setMax(max);
         return this;
     }
 
     public BaseViewHolder setRating(int viewId, float rating) {
-        ((RatingBar) getView(viewId)).setRating(rating);
+        RatingBar view = (RatingBar) getView(viewId);
+        view.setRating(rating);
         return this;
     }
 
@@ -168,7 +186,8 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
 
     @Deprecated
     public BaseViewHolder setOnClickListener(int viewId, View.OnClickListener listener) {
-        getView(viewId).setOnClickListener(listener);
+        View view = getView(viewId);
+        view.setOnClickListener(listener);
         return this;
     }
 
@@ -180,7 +199,8 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
                 if (!view.isClickable()) {
                     view.setClickable(true);
                 }
-                view.setOnClickListener(new View.OnClickListener() {
+                view.setOnClickListener(new View.OnClickListener() { // from class: com.chad.library.adapter.base.BaseViewHolder.1
+                    @Override // android.view.View.OnClickListener
                     public void onClick(View v) {
                         int position;
                         if (BaseViewHolder.this.adapter.getOnItemChildClickListener() != null && (position = BaseViewHolder.this.getAdapterPosition()) != -1) {
@@ -210,7 +230,8 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
                 if (!view.isLongClickable()) {
                     view.setLongClickable(true);
                 }
-                view.setOnLongClickListener(new View.OnLongClickListener() {
+                view.setOnLongClickListener(new View.OnLongClickListener() { // from class: com.chad.library.adapter.base.BaseViewHolder.2
+                    @Override // android.view.View.OnLongClickListener
                     public boolean onLongClick(View v) {
                         int position;
                         if (BaseViewHolder.this.adapter.getOnItemChildLongClickListener() == null || (position = BaseViewHolder.this.getAdapterPosition()) == -1) {
@@ -226,44 +247,52 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
 
     @Deprecated
     public BaseViewHolder setOnTouchListener(int viewId, View.OnTouchListener listener) {
-        getView(viewId).setOnTouchListener(listener);
+        View view = getView(viewId);
+        view.setOnTouchListener(listener);
         return this;
     }
 
     @Deprecated
     public BaseViewHolder setOnLongClickListener(int viewId, View.OnLongClickListener listener) {
-        getView(viewId).setOnLongClickListener(listener);
+        View view = getView(viewId);
+        view.setOnLongClickListener(listener);
         return this;
     }
 
     @Deprecated
     public BaseViewHolder setOnItemClickListener(int viewId, AdapterView.OnItemClickListener listener) {
-        ((AdapterView) getView(viewId)).setOnItemClickListener(listener);
+        AdapterView view = (AdapterView) getView(viewId);
+        view.setOnItemClickListener(listener);
         return this;
     }
 
     public BaseViewHolder setOnItemLongClickListener(int viewId, AdapterView.OnItemLongClickListener listener) {
-        ((AdapterView) getView(viewId)).setOnItemLongClickListener(listener);
+        AdapterView view = (AdapterView) getView(viewId);
+        view.setOnItemLongClickListener(listener);
         return this;
     }
 
     public BaseViewHolder setOnItemSelectedClickListener(int viewId, AdapterView.OnItemSelectedListener listener) {
-        ((AdapterView) getView(viewId)).setOnItemSelectedListener(listener);
+        AdapterView view = (AdapterView) getView(viewId);
+        view.setOnItemSelectedListener(listener);
         return this;
     }
 
     public BaseViewHolder setOnCheckedChangeListener(int viewId, CompoundButton.OnCheckedChangeListener listener) {
-        ((CompoundButton) getView(viewId)).setOnCheckedChangeListener(listener);
+        CompoundButton view = (CompoundButton) getView(viewId);
+        view.setOnCheckedChangeListener(listener);
         return this;
     }
 
     public BaseViewHolder setTag(int viewId, Object tag) {
-        getView(viewId).setTag(tag);
+        View view = getView(viewId);
+        view.setTag(tag);
         return this;
     }
 
     public BaseViewHolder setTag(int viewId, int key, Object tag) {
-        getView(viewId).setTag(key, tag);
+        View view = getView(viewId);
+        view.setTag(key, tag);
         return this;
     }
 
@@ -276,36 +305,38 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     }
 
     public BaseViewHolder setEnabled(int viewId, boolean enable) {
-        getView(viewId).setEnabled(enable);
+        View view = getView(viewId);
+        view.setEnabled(enable);
         return this;
     }
 
-    public BaseViewHolder setAdapter(int viewId, Adapter adapter2) {
-        ((AdapterView) getView(viewId)).setAdapter(adapter2);
+    public BaseViewHolder setAdapter(int viewId, Adapter adapter) {
+        AdapterView view = (AdapterView) getView(viewId);
+        view.setAdapter(adapter);
         return this;
     }
 
-    /* access modifiers changed from: protected */
-    public BaseViewHolder setAdapter(BaseQuickAdapter adapter2) {
-        this.adapter = adapter2;
+    protected BaseViewHolder setAdapter(BaseQuickAdapter adapter) {
+        this.adapter = adapter;
         return this;
     }
 
     public <T extends View> T getView(int viewId) {
-        View view = this.views.get(viewId);
-        if (view != null) {
-            return view;
+        T t = (T) this.views.get(viewId);
+        if (t == null) {
+            View view = this.itemView.findViewById(viewId);
+            T t2 = (T) view;
+            this.views.put(viewId, t2);
+            return t2;
         }
-        View view2 = this.itemView.findViewById(viewId);
-        this.views.put(viewId, view2);
-        return view2;
+        return t;
     }
 
     public Object getAssociatedObject() {
         return this.associatedObject;
     }
 
-    public void setAssociatedObject(Object associatedObject2) {
-        this.associatedObject = associatedObject2;
+    public void setAssociatedObject(Object associatedObject) {
+        this.associatedObject = associatedObject;
     }
 }

@@ -1,32 +1,30 @@
 package com.chad.library.adapter.base;
 
 import android.graphics.Canvas;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.support.p001v4.view.MotionEventCompat;
+import android.support.p004v7.widget.RecyclerView;
+import android.support.p004v7.widget.helper.ItemTouchHelper;
 import android.view.MotionEvent;
 import android.view.View;
-import com.chad.library.R;
+import com.chad.library.C0561R;
 import com.chad.library.adapter.base.listener.IDraggableListener;
 import com.chad.library.adapter.base.listener.OnItemDragListener;
 import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 import java.util.Collections;
 
+/* loaded from: classes.dex */
 public class DraggableController implements IDraggableListener {
     private static final int NO_TOGGLE_VIEW = 0;
-    /* access modifiers changed from: private */
-    public boolean itemDragEnabled = false;
-    private boolean itemSwipeEnabled = false;
     private BaseQuickAdapter mAdapter;
-    /* access modifiers changed from: private */
-    public boolean mDragOnLongPress = true;
-    /* access modifiers changed from: private */
-    public ItemTouchHelper mItemTouchHelper;
+    private ItemTouchHelper mItemTouchHelper;
     private OnItemDragListener mOnItemDragListener;
     private OnItemSwipeListener mOnItemSwipeListener;
     private View.OnLongClickListener mOnToggleViewLongClickListener;
     private View.OnTouchListener mOnToggleViewTouchListener;
     private int mToggleViewId = 0;
+    private boolean itemDragEnabled = false;
+    private boolean itemSwipeEnabled = false;
+    private boolean mDragOnLongPress = true;
 
     public DraggableController(BaseQuickAdapter adapter) {
         this.mAdapter = adapter;
@@ -36,7 +34,7 @@ public class DraggableController implements IDraggableListener {
         View toggleView;
         int viewType = holder.getItemViewType();
         if (this.mItemTouchHelper != null && this.itemDragEnabled && viewType != 546 && viewType != 273 && viewType != 1365 && viewType != 819 && hasToggleView() && (toggleView = holder.getView(this.mToggleViewId)) != null) {
-            toggleView.setTag(R.id.BaseQuickAdapter_viewholder_support, holder);
+            toggleView.setTag(C0561R.C0563id.BaseQuickAdapter_viewholder_support, holder);
             if (this.mDragOnLongPress) {
                 toggleView.setOnLongClickListener(this.mOnToggleViewLongClickListener);
             } else {
@@ -53,27 +51,29 @@ public class DraggableController implements IDraggableListener {
         this.mDragOnLongPress = longPress;
         if (longPress) {
             this.mOnToggleViewTouchListener = null;
-            this.mOnToggleViewLongClickListener = new View.OnLongClickListener() {
+            this.mOnToggleViewLongClickListener = new View.OnLongClickListener() { // from class: com.chad.library.adapter.base.DraggableController.1
+                @Override // android.view.View.OnLongClickListener
                 public boolean onLongClick(View v) {
-                    if (DraggableController.this.mItemTouchHelper == null || !DraggableController.this.itemDragEnabled) {
+                    if (DraggableController.this.mItemTouchHelper != null && DraggableController.this.itemDragEnabled) {
+                        DraggableController.this.mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(C0561R.C0563id.BaseQuickAdapter_viewholder_support));
                         return true;
                     }
-                    DraggableController.this.mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(R.id.BaseQuickAdapter_viewholder_support));
                     return true;
                 }
             };
             return;
         }
-        this.mOnToggleViewTouchListener = new View.OnTouchListener() {
+        this.mOnToggleViewTouchListener = new View.OnTouchListener() { // from class: com.chad.library.adapter.base.DraggableController.2
+            @Override // android.view.View.OnTouchListener
             public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEventCompat.getActionMasked(event) != 0 || DraggableController.this.mDragOnLongPress) {
-                    return false;
-                }
-                if (DraggableController.this.mItemTouchHelper == null || !DraggableController.this.itemDragEnabled) {
+                if (MotionEventCompat.getActionMasked(event) == 0 && !DraggableController.this.mDragOnLongPress) {
+                    if (DraggableController.this.mItemTouchHelper != null && DraggableController.this.itemDragEnabled) {
+                        DraggableController.this.mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(C0561R.C0563id.BaseQuickAdapter_viewholder_support));
+                        return true;
+                    }
                     return true;
                 }
-                DraggableController.this.mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(R.id.BaseQuickAdapter_viewholder_support));
-                return true;
+                return false;
             }
         };
         this.mOnToggleViewLongClickListener = null;
@@ -99,10 +99,12 @@ public class DraggableController implements IDraggableListener {
         this.mItemTouchHelper = null;
     }
 
+    @Override // com.chad.library.adapter.base.listener.IDraggableListener
     public boolean isItemDraggable() {
         return this.itemDragEnabled;
     }
 
+    @Override // com.chad.library.adapter.base.listener.IDraggableListener
     public boolean hasToggleView() {
         return this.mToggleViewId != 0;
     }
@@ -115,6 +117,7 @@ public class DraggableController implements IDraggableListener {
         this.itemSwipeEnabled = false;
     }
 
+    @Override // com.chad.library.adapter.base.listener.IDraggableListener
     public boolean isItemSwipeEnable() {
         return this.itemSwipeEnabled;
     }
@@ -127,6 +130,7 @@ public class DraggableController implements IDraggableListener {
         return viewHolder.getAdapterPosition() - this.mAdapter.getHeaderLayoutCount();
     }
 
+    @Override // com.chad.library.adapter.base.listener.IDraggableListener
     public void onItemDragStart(RecyclerView.ViewHolder viewHolder) {
         OnItemDragListener onItemDragListener = this.mOnItemDragListener;
         if (onItemDragListener != null && this.itemDragEnabled) {
@@ -134,6 +138,7 @@ public class DraggableController implements IDraggableListener {
         }
     }
 
+    @Override // com.chad.library.adapter.base.listener.IDraggableListener
     public void onItemDragMoving(RecyclerView.ViewHolder source, RecyclerView.ViewHolder target) {
         int from = getViewHolderPosition(source);
         int to = getViewHolderPosition(target);
@@ -155,6 +160,7 @@ public class DraggableController implements IDraggableListener {
         }
     }
 
+    @Override // com.chad.library.adapter.base.listener.IDraggableListener
     public void onItemDragEnd(RecyclerView.ViewHolder viewHolder) {
         OnItemDragListener onItemDragListener = this.mOnItemDragListener;
         if (onItemDragListener != null && this.itemDragEnabled) {
@@ -166,6 +172,7 @@ public class DraggableController implements IDraggableListener {
         this.mOnItemSwipeListener = listener;
     }
 
+    @Override // com.chad.library.adapter.base.listener.IDraggableListener
     public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder) {
         OnItemSwipeListener onItemSwipeListener = this.mOnItemSwipeListener;
         if (onItemSwipeListener != null && this.itemSwipeEnabled) {
@@ -173,6 +180,7 @@ public class DraggableController implements IDraggableListener {
         }
     }
 
+    @Override // com.chad.library.adapter.base.listener.IDraggableListener
     public void onItemSwipeClear(RecyclerView.ViewHolder viewHolder) {
         OnItemSwipeListener onItemSwipeListener = this.mOnItemSwipeListener;
         if (onItemSwipeListener != null && this.itemSwipeEnabled) {
@@ -180,6 +188,7 @@ public class DraggableController implements IDraggableListener {
         }
     }
 
+    @Override // com.chad.library.adapter.base.listener.IDraggableListener
     public void onItemSwiped(RecyclerView.ViewHolder viewHolder) {
         OnItemSwipeListener onItemSwipeListener = this.mOnItemSwipeListener;
         if (onItemSwipeListener != null && this.itemSwipeEnabled) {
@@ -192,6 +201,7 @@ public class DraggableController implements IDraggableListener {
         }
     }
 
+    @Override // com.chad.library.adapter.base.listener.IDraggableListener
     public void onItemSwiping(Canvas canvas, RecyclerView.ViewHolder viewHolder, float x, float y, boolean isCurrentlyActive) {
         OnItemSwipeListener onItemSwipeListener = this.mOnItemSwipeListener;
         if (onItemSwipeListener != null && this.itemSwipeEnabled) {

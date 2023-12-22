@@ -20,26 +20,28 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ObservableConcatMapCompletable<T> extends Completable {
     final ErrorMode errorMode;
     final Function<? super T, ? extends CompletableSource> mapper;
     final int prefetch;
     final Observable<T> source;
 
-    public ObservableConcatMapCompletable(Observable<T> source2, Function<? super T, ? extends CompletableSource> mapper2, ErrorMode errorMode2, int prefetch2) {
-        this.source = source2;
-        this.mapper = mapper2;
-        this.errorMode = errorMode2;
-        this.prefetch = prefetch2;
+    public ObservableConcatMapCompletable(Observable<T> source, Function<? super T, ? extends CompletableSource> mapper, ErrorMode errorMode, int prefetch) {
+        this.source = source;
+        this.mapper = mapper;
+        this.errorMode = errorMode;
+        this.prefetch = prefetch;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         if (!ScalarXMapZHelper.tryAsCompletable(this.source, this.mapper, observer)) {
             this.source.subscribe(new ConcatMapCompletableObserver(observer, this.mapper, this.errorMode, this.prefetch));
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ConcatMapCompletableObserver<T> extends AtomicInteger implements Observer<T>, Disposable {
         private static final long serialVersionUID = 3610901111000061034L;
         volatile boolean active;
@@ -54,13 +56,14 @@ public final class ObservableConcatMapCompletable<T> extends Completable {
         SimpleQueue<T> queue;
         Disposable upstream;
 
-        ConcatMapCompletableObserver(CompletableObserver downstream2, Function<? super T, ? extends CompletableSource> mapper2, ErrorMode errorMode2, int prefetch2) {
-            this.downstream = downstream2;
-            this.mapper = mapper2;
-            this.errorMode = errorMode2;
-            this.prefetch = prefetch2;
+        ConcatMapCompletableObserver(CompletableObserver downstream, Function<? super T, ? extends CompletableSource> mapper, ErrorMode errorMode, int prefetch) {
+            this.downstream = downstream;
+            this.mapper = mapper;
+            this.errorMode = errorMode;
+            this.prefetch = prefetch;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -84,6 +87,7 @@ public final class ObservableConcatMapCompletable<T> extends Completable {
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             if (t != null) {
                 this.queue.offer(t);
@@ -91,30 +95,36 @@ public final class ObservableConcatMapCompletable<T> extends Completable {
             drain();
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
-            if (!this.errors.addThrowable(t)) {
-                RxJavaPlugins.onError(t);
-            } else if (this.errorMode == ErrorMode.IMMEDIATE) {
-                this.disposed = true;
-                this.inner.dispose();
-                Throwable t2 = this.errors.terminate();
-                if (t2 != ExceptionHelper.TERMINATED) {
-                    this.downstream.onError(t2);
+            if (this.errors.addThrowable(t)) {
+                if (this.errorMode == ErrorMode.IMMEDIATE) {
+                    this.disposed = true;
+                    this.inner.dispose();
+                    Throwable t2 = this.errors.terminate();
+                    if (t2 != ExceptionHelper.TERMINATED) {
+                        this.downstream.onError(t2);
+                    }
+                    if (getAndIncrement() == 0) {
+                        this.queue.clear();
+                        return;
+                    }
+                    return;
                 }
-                if (getAndIncrement() == 0) {
-                    this.queue.clear();
-                }
-            } else {
                 this.done = true;
                 drain();
+                return;
             }
+            RxJavaPlugins.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             this.done = true;
             drain();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.disposed = true;
             this.upstream.dispose();
@@ -124,113 +134,117 @@ public final class ObservableConcatMapCompletable<T> extends Completable {
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.disposed;
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerError(Throwable ex) {
-            if (!this.errors.addThrowable(ex)) {
-                RxJavaPlugins.onError(ex);
-            } else if (this.errorMode == ErrorMode.IMMEDIATE) {
-                this.disposed = true;
-                this.upstream.dispose();
-                Throwable ex2 = this.errors.terminate();
-                if (ex2 != ExceptionHelper.TERMINATED) {
-                    this.downstream.onError(ex2);
+        void innerError(Throwable ex) {
+            if (this.errors.addThrowable(ex)) {
+                if (this.errorMode == ErrorMode.IMMEDIATE) {
+                    this.disposed = true;
+                    this.upstream.dispose();
+                    Throwable ex2 = this.errors.terminate();
+                    if (ex2 != ExceptionHelper.TERMINATED) {
+                        this.downstream.onError(ex2);
+                    }
+                    if (getAndIncrement() == 0) {
+                        this.queue.clear();
+                        return;
+                    }
+                    return;
                 }
-                if (getAndIncrement() == 0) {
-                    this.queue.clear();
-                }
-            } else {
                 this.active = false;
                 drain();
+                return;
             }
+            RxJavaPlugins.onError(ex);
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerComplete() {
+        void innerComplete() {
             this.active = false;
             drain();
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
-            if (getAndIncrement() == 0) {
-                AtomicThrowable errors2 = this.errors;
-                ErrorMode errorMode2 = this.errorMode;
-                while (!this.disposed) {
-                    if (!this.active) {
-                        if (errorMode2 != ErrorMode.BOUNDARY || errors2.get() == null) {
-                            boolean d = this.done;
-                            boolean empty = true;
-                            CompletableSource cs = null;
-                            try {
-                                T v = this.queue.poll();
-                                if (v != null) {
-                                    cs = (CompletableSource) ObjectHelper.requireNonNull(this.mapper.apply(v), "The mapper returned a null CompletableSource");
-                                    empty = false;
-                                }
-                                if (d && empty) {
-                                    this.disposed = true;
-                                    Throwable ex = errors2.terminate();
-                                    if (ex != null) {
-                                        this.downstream.onError(ex);
-                                        return;
-                                    } else {
-                                        this.downstream.onComplete();
-                                        return;
-                                    }
-                                } else if (!empty) {
-                                    this.active = true;
-                                    cs.subscribe(this.inner);
-                                }
-                            } catch (Throwable ex2) {
-                                Exceptions.throwIfFatal(ex2);
-                                this.disposed = true;
-                                this.queue.clear();
-                                this.upstream.dispose();
-                                errors2.addThrowable(ex2);
-                                this.downstream.onError(errors2.terminate());
+        void drain() {
+            if (getAndIncrement() != 0) {
+                return;
+            }
+            AtomicThrowable errors = this.errors;
+            ErrorMode errorMode = this.errorMode;
+            while (!this.disposed) {
+                if (!this.active) {
+                    if (errorMode == ErrorMode.BOUNDARY && errors.get() != null) {
+                        this.disposed = true;
+                        this.queue.clear();
+                        this.downstream.onError(errors.terminate());
+                        return;
+                    }
+                    boolean d = this.done;
+                    boolean empty = true;
+                    CompletableSource cs = null;
+                    try {
+                        T v = this.queue.poll();
+                        if (v != null) {
+                            cs = (CompletableSource) ObjectHelper.requireNonNull(this.mapper.apply(v), "The mapper returned a null CompletableSource");
+                            empty = false;
+                        }
+                        if (d && empty) {
+                            this.disposed = true;
+                            Throwable ex = errors.terminate();
+                            if (ex != null) {
+                                this.downstream.onError(ex);
+                                return;
+                            } else {
+                                this.downstream.onComplete();
                                 return;
                             }
-                        } else {
-                            this.disposed = true;
-                            this.queue.clear();
-                            this.downstream.onError(errors2.terminate());
-                            return;
+                        } else if (!empty) {
+                            this.active = true;
+                            cs.subscribe(this.inner);
                         }
-                    }
-                    if (decrementAndGet() == 0) {
+                    } catch (Throwable ex2) {
+                        Exceptions.throwIfFatal(ex2);
+                        this.disposed = true;
+                        this.queue.clear();
+                        this.upstream.dispose();
+                        errors.addThrowable(ex2);
+                        this.downstream.onError(errors.terminate());
                         return;
                     }
                 }
-                this.queue.clear();
+                if (decrementAndGet() == 0) {
+                    return;
+                }
             }
+            this.queue.clear();
         }
 
+        /* loaded from: classes.dex */
         static final class ConcatMapInnerObserver extends AtomicReference<Disposable> implements CompletableObserver {
             private static final long serialVersionUID = 5638352172918776687L;
             final ConcatMapCompletableObserver<?> parent;
 
-            ConcatMapInnerObserver(ConcatMapCompletableObserver<?> parent2) {
-                this.parent = parent2;
+            ConcatMapInnerObserver(ConcatMapCompletableObserver<?> parent) {
+                this.parent = parent;
             }
 
+            @Override // io.reactivex.CompletableObserver
             public void onSubscribe(Disposable d) {
                 DisposableHelper.replace(this, d);
             }
 
+            @Override // io.reactivex.CompletableObserver
             public void onError(Throwable e) {
                 this.parent.innerError(e);
             }
 
+            @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
             public void onComplete() {
                 this.parent.innerComplete();
             }
 
-            /* access modifiers changed from: package-private */
-            public void dispose() {
+            void dispose() {
                 DisposableHelper.dispose(this);
             }
         }

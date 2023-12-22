@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 
+/* loaded from: classes.dex */
 public class Group extends ConstraintHelper {
     public Group(Context context) {
         super(context);
@@ -17,27 +18,31 @@ public class Group extends ConstraintHelper {
         super(context, attrs, defStyleAttr);
     }
 
-    /* access modifiers changed from: protected */
-    public void init(AttributeSet attrs) {
+    @Override // android.support.constraint.ConstraintHelper
+    protected void init(AttributeSet attrs) {
         super.init(attrs);
         this.mUseViewMeasure = false;
     }
 
+    @Override // android.support.constraint.ConstraintHelper, android.view.View
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         applyLayoutFeatures();
     }
 
+    @Override // android.view.View
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         applyLayoutFeatures();
     }
 
+    @Override // android.view.View
     public void setElevation(float elevation) {
         super.setElevation(elevation);
         applyLayoutFeatures();
     }
 
+    @Override // android.support.constraint.ConstraintHelper
     public void updatePostLayout(ConstraintLayout container) {
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) getLayoutParams();
         params.widget.setWidth(0);

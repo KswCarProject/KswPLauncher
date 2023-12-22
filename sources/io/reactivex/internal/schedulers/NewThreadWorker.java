@@ -5,12 +5,14 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableContainer;
 import io.reactivex.internal.disposables.EmptyDisposable;
 import io.reactivex.plugins.RxJavaPlugins;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+/* loaded from: classes.dex */
 public class NewThreadWorker extends Scheduler.Worker implements Disposable {
     volatile boolean disposed;
     private final ScheduledExecutorService executor;
@@ -19,32 +21,34 @@ public class NewThreadWorker extends Scheduler.Worker implements Disposable {
         this.executor = SchedulerPoolFactory.create(threadFactory);
     }
 
+    @Override // io.reactivex.Scheduler.Worker
     public Disposable schedule(Runnable run) {
-        return schedule(run, 0, (TimeUnit) null);
+        return schedule(run, 0L, null);
     }
 
+    @Override // io.reactivex.Scheduler.Worker
     public Disposable schedule(Runnable action, long delayTime, TimeUnit unit) {
         if (this.disposed) {
             return EmptyDisposable.INSTANCE;
         }
-        return scheduleActual(action, delayTime, unit, (DisposableContainer) null);
+        return scheduleActual(action, delayTime, unit, null);
     }
 
     public Disposable scheduleDirect(Runnable run, long delayTime, TimeUnit unit) {
         Future<?> f;
         ScheduledDirectTask task = new ScheduledDirectTask(RxJavaPlugins.onSchedule(run));
-        if (delayTime <= 0) {
-            try {
+        try {
+            if (delayTime <= 0) {
                 f = this.executor.submit(task);
-            } catch (RejectedExecutionException ex) {
-                RxJavaPlugins.onError(ex);
-                return EmptyDisposable.INSTANCE;
+            } else {
+                f = this.executor.schedule(task, delayTime, unit);
             }
-        } else {
-            f = this.executor.schedule(task, delayTime, unit);
+            task.setFuture(f);
+            return task;
+        } catch (RejectedExecutionException ex) {
+            RxJavaPlugins.onError(ex);
+            return EmptyDisposable.INSTANCE;
         }
-        task.setFuture(f);
-        return task;
     }
 
     public Disposable schedulePeriodicallyDirect(Runnable run, long initialDelay, long period, TimeUnit unit) {
@@ -52,22 +56,23 @@ public class NewThreadWorker extends Scheduler.Worker implements Disposable {
         Runnable decoratedRun = RxJavaPlugins.onSchedule(run);
         if (period <= 0) {
             InstantPeriodicTask periodicWrapper = new InstantPeriodicTask(decoratedRun, this.executor);
-            if (initialDelay <= 0) {
-                try {
+            try {
+                if (initialDelay <= 0) {
                     f = this.executor.submit(periodicWrapper);
-                } catch (RejectedExecutionException ex) {
-                    RxJavaPlugins.onError(ex);
-                    return EmptyDisposable.INSTANCE;
+                } else {
+                    f = this.executor.schedule(periodicWrapper, initialDelay, unit);
                 }
-            } else {
-                f = this.executor.schedule(periodicWrapper, initialDelay, unit);
+                periodicWrapper.setFirst(f);
+                return periodicWrapper;
+            } catch (RejectedExecutionException ex) {
+                RxJavaPlugins.onError(ex);
+                return EmptyDisposable.INSTANCE;
             }
-            periodicWrapper.setFirst(f);
-            return periodicWrapper;
         }
         ScheduledDirectPeriodicTask task = new ScheduledDirectPeriodicTask(decoratedRun);
         try {
-            task.setFuture(this.executor.scheduleAtFixedRate(task, initialDelay, period, unit));
+            Future<?> f2 = this.executor.scheduleAtFixedRate(task, initialDelay, period, unit);
+            task.setFuture(f2);
             return task;
         } catch (RejectedExecutionException ex2) {
             RxJavaPlugins.onError(ex2);
@@ -77,26 +82,28 @@ public class NewThreadWorker extends Scheduler.Worker implements Disposable {
 
     public ScheduledRunnable scheduleActual(Runnable run, long delayTime, TimeUnit unit, DisposableContainer parent) {
         Future<?> f;
-        ScheduledRunnable sr = new ScheduledRunnable(RxJavaPlugins.onSchedule(run), parent);
+        Runnable decoratedRun = RxJavaPlugins.onSchedule(run);
+        ScheduledRunnable sr = new ScheduledRunnable(decoratedRun, parent);
         if (parent != null && !parent.add(sr)) {
             return sr;
         }
-        if (delayTime <= 0) {
-            try {
-                f = this.executor.submit(sr);
-            } catch (RejectedExecutionException ex) {
-                if (parent != null) {
-                    parent.remove(sr);
-                }
-                RxJavaPlugins.onError(ex);
+        try {
+            if (delayTime <= 0) {
+                f = this.executor.submit((Callable) sr);
+            } else {
+                f = this.executor.schedule((Callable) sr, delayTime, unit);
             }
-        } else {
-            f = this.executor.schedule(sr, delayTime, unit);
+            sr.setFuture(f);
+        } catch (RejectedExecutionException ex) {
+            if (parent != null) {
+                parent.remove(sr);
+            }
+            RxJavaPlugins.onError(ex);
         }
-        sr.setFuture(f);
         return sr;
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public void dispose() {
         if (!this.disposed) {
             this.disposed = true;
@@ -111,6 +118,7 @@ public class NewThreadWorker extends Scheduler.Worker implements Disposable {
         }
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public boolean isDisposed() {
         return this.disposed;
     }

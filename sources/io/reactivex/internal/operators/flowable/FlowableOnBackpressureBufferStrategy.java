@@ -17,43 +17,46 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableOnBackpressureBufferStrategy<T> extends AbstractFlowableWithUpstream<T, T> {
     final long bufferSize;
     final Action onOverflow;
     final BackpressureOverflowStrategy strategy;
 
-    public FlowableOnBackpressureBufferStrategy(Flowable<T> source, long bufferSize2, Action onOverflow2, BackpressureOverflowStrategy strategy2) {
+    public FlowableOnBackpressureBufferStrategy(Flowable<T> source, long bufferSize, Action onOverflow, BackpressureOverflowStrategy strategy) {
         super(source);
-        this.bufferSize = bufferSize2;
-        this.onOverflow = onOverflow2;
-        this.strategy = strategy2;
+        this.bufferSize = bufferSize;
+        this.onOverflow = onOverflow;
+        this.strategy = strategy;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
-        this.source.subscribe(new OnBackpressureBufferStrategySubscriber(s, this.onOverflow, this.strategy, this.bufferSize));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
+        this.source.subscribe((FlowableSubscriber) new OnBackpressureBufferStrategySubscriber(s, this.onOverflow, this.strategy, this.bufferSize));
     }
 
+    /* loaded from: classes.dex */
     static final class OnBackpressureBufferStrategySubscriber<T> extends AtomicInteger implements FlowableSubscriber<T>, Subscription {
         private static final long serialVersionUID = 3240706908776709697L;
         final long bufferSize;
         volatile boolean cancelled;
-        final Deque<T> deque = new ArrayDeque();
         volatile boolean done;
         final Subscriber<? super T> downstream;
         Throwable error;
         final Action onOverflow;
-        final AtomicLong requested = new AtomicLong();
         final BackpressureOverflowStrategy strategy;
         Subscription upstream;
+        final AtomicLong requested = new AtomicLong();
+        final Deque<T> deque = new ArrayDeque();
 
-        OnBackpressureBufferStrategySubscriber(Subscriber<? super T> actual, Action onOverflow2, BackpressureOverflowStrategy strategy2, long bufferSize2) {
+        OnBackpressureBufferStrategySubscriber(Subscriber<? super T> actual, Action onOverflow, BackpressureOverflowStrategy strategy, long bufferSize) {
             this.downstream = actual;
-            this.onOverflow = onOverflow2;
-            this.strategy = strategy2;
-            this.bufferSize = bufferSize2;
+            this.onOverflow = onOverflow;
+            this.strategy = strategy;
+            this.bufferSize = bufferSize;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -62,52 +65,55 @@ public final class FlowableOnBackpressureBufferStrategy<T> extends AbstractFlowa
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            if (!this.done) {
-                boolean callOnOverflow = false;
-                boolean callError = false;
-                Deque<T> dq = this.deque;
-                synchronized (dq) {
-                    if (((long) dq.size()) == this.bufferSize) {
-                        switch (AnonymousClass1.$SwitchMap$io$reactivex$BackpressureOverflowStrategy[this.strategy.ordinal()]) {
-                            case 1:
-                                dq.pollLast();
-                                dq.offer(t);
-                                callOnOverflow = true;
-                                break;
-                            case 2:
-                                dq.poll();
-                                dq.offer(t);
-                                callOnOverflow = true;
-                                break;
-                            default:
-                                callError = true;
-                                break;
-                        }
-                    } else {
-                        dq.offer(t);
+            if (this.done) {
+                return;
+            }
+            boolean callOnOverflow = false;
+            boolean callError = false;
+            Deque<T> dq = this.deque;
+            synchronized (dq) {
+                if (dq.size() == this.bufferSize) {
+                    switch (C18821.$SwitchMap$io$reactivex$BackpressureOverflowStrategy[this.strategy.ordinal()]) {
+                        case 1:
+                            dq.pollLast();
+                            dq.offer(t);
+                            callOnOverflow = true;
+                            break;
+                        case 2:
+                            dq.poll();
+                            dq.offer(t);
+                            callOnOverflow = true;
+                            break;
+                        default:
+                            callError = true;
+                            break;
                     }
-                }
-                if (callOnOverflow) {
-                    Action action = this.onOverflow;
-                    if (action != null) {
-                        try {
-                            action.run();
-                        } catch (Throwable ex) {
-                            Exceptions.throwIfFatal(ex);
-                            this.upstream.cancel();
-                            onError(ex);
-                        }
-                    }
-                } else if (callError) {
-                    this.upstream.cancel();
-                    onError(new MissingBackpressureException());
                 } else {
-                    drain();
+                    dq.offer(t);
                 }
+            }
+            if (callOnOverflow) {
+                Action action = this.onOverflow;
+                if (action != null) {
+                    try {
+                        action.run();
+                    } catch (Throwable ex) {
+                        Exceptions.throwIfFatal(ex);
+                        this.upstream.cancel();
+                        onError(ex);
+                    }
+                }
+            } else if (callError) {
+                this.upstream.cancel();
+                onError(new MissingBackpressureException());
+            } else {
+                drain();
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -118,11 +124,13 @@ public final class FlowableOnBackpressureBufferStrategy<T> extends AbstractFlowa
             drain();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.done = true;
             drain();
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             if (SubscriptionHelper.validate(n)) {
                 BackpressureHelper.add(this.requested, n);
@@ -130,6 +138,7 @@ public final class FlowableOnBackpressureBufferStrategy<T> extends AbstractFlowa
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             this.cancelled = true;
             this.upstream.cancel();
@@ -138,83 +147,83 @@ public final class FlowableOnBackpressureBufferStrategy<T> extends AbstractFlowa
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void clear(Deque<T> dq) {
+        void clear(Deque<T> dq) {
             synchronized (dq) {
                 dq.clear();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
+        void drain() {
             boolean empty;
             T v;
-            if (getAndIncrement() == 0) {
-                int missed = 1;
-                Deque<T> dq = this.deque;
-                Subscriber<? super T> a = this.downstream;
-                do {
-                    long r = this.requested.get();
-                    long e = 0;
-                    while (e != r) {
-                        if (this.cancelled) {
-                            clear(dq);
-                            return;
-                        }
-                        boolean d = this.done;
-                        synchronized (dq) {
-                            v = dq.poll();
-                        }
-                        boolean empty2 = v == null;
-                        if (d) {
-                            Throwable ex = this.error;
-                            if (ex != null) {
-                                clear(dq);
-                                a.onError(ex);
-                                return;
-                            } else if (empty2) {
-                                a.onComplete();
-                                return;
-                            }
-                        }
-                        if (empty2) {
-                            break;
-                        }
-                        a.onNext(v);
-                        e++;
-                    }
-                    if (e == r) {
-                        if (this.cancelled) {
-                            clear(dq);
-                            return;
-                        }
-                        boolean d2 = this.done;
-                        synchronized (dq) {
-                            empty = dq.isEmpty();
-                        }
-                        if (d2) {
-                            Throwable ex2 = this.error;
-                            if (ex2 != null) {
-                                clear(dq);
-                                a.onError(ex2);
-                                return;
-                            } else if (empty) {
-                                a.onComplete();
-                                return;
-                            }
-                        }
-                    }
-                    if (e != 0) {
-                        BackpressureHelper.produced(this.requested, e);
-                    }
-                    missed = addAndGet(-missed);
-                } while (missed != 0);
+            if (getAndIncrement() != 0) {
+                return;
             }
+            int missed = 1;
+            Deque<T> dq = this.deque;
+            Subscriber<? super T> a = this.downstream;
+            do {
+                long r = this.requested.get();
+                long e = 0;
+                while (e != r) {
+                    if (this.cancelled) {
+                        clear(dq);
+                        return;
+                    }
+                    boolean d = this.done;
+                    synchronized (dq) {
+                        v = dq.poll();
+                    }
+                    boolean empty2 = v == null;
+                    if (d) {
+                        Throwable ex = this.error;
+                        if (ex != null) {
+                            clear(dq);
+                            a.onError(ex);
+                            return;
+                        } else if (empty2) {
+                            a.onComplete();
+                            return;
+                        }
+                    }
+                    if (empty2) {
+                        break;
+                    }
+                    a.onNext(v);
+                    e++;
+                }
+                if (e == r) {
+                    if (this.cancelled) {
+                        clear(dq);
+                        return;
+                    }
+                    boolean d2 = this.done;
+                    synchronized (dq) {
+                        empty = dq.isEmpty();
+                    }
+                    if (d2) {
+                        Throwable ex2 = this.error;
+                        if (ex2 != null) {
+                            clear(dq);
+                            a.onError(ex2);
+                            return;
+                        } else if (empty) {
+                            a.onComplete();
+                            return;
+                        }
+                    }
+                }
+                if (e != 0) {
+                    BackpressureHelper.produced(this.requested, e);
+                }
+                missed = addAndGet(-missed);
+            } while (missed != 0);
         }
     }
 
-    /* renamed from: io.reactivex.internal.operators.flowable.FlowableOnBackpressureBufferStrategy$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
+    /* renamed from: io.reactivex.internal.operators.flowable.FlowableOnBackpressureBufferStrategy$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C18821 {
         static final /* synthetic */ int[] $SwitchMap$io$reactivex$BackpressureOverflowStrategy;
 
         static {

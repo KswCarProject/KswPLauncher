@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.utils.ExceptionPrint;
 import com.wits.ksw.settings.als_id7_ui_set.interfaces.AlsID7UiIUpdateTwoLayout;
 import com.wits.ksw.settings.utlis_view.FileUtils;
@@ -18,6 +18,7 @@ import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import skin.support.content.res.SkinCompatResources;
 
+/* loaded from: classes6.dex */
 public class AlsID7UiSetSystemLayout extends RelativeLayout implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private ImageView aux_bottom_iv;
     private CheckBox cbox_sysDcgj;
@@ -25,14 +26,14 @@ public class AlsID7UiSetSystemLayout extends RelativeLayout implements View.OnCl
     private CheckBox cbox_sysDcld;
     private CheckBox cbox_sysHjs;
     private CheckBox cbox_sysXcjz;
-    private int cheVideo = 0;
+    private int cheVideo;
     private Context context;
-    private int dcgj = 0;
-    private int dcjy = 0;
-    private int dcld = 0;
+    private int dcgj;
+    private int dcjy;
+    private int dcld;
     private TextView fuelUnitView;
-    private int housi = 0;
-    private int nbauxsw = 0;
+    private int housi;
+    private int nbauxsw;
     private TextView tempUnitView;
     private TextView tv_music_app;
     private TextView tv_sysBgld;
@@ -45,10 +46,16 @@ public class AlsID7UiSetSystemLayout extends RelativeLayout implements View.OnCl
         this.updateTwoLayout = twoLayout;
     }
 
-    public AlsID7UiSetSystemLayout(Context context2) {
-        super(context2);
-        this.context = context2;
-        View view = LayoutInflater.from(context2).inflate(R.layout.als_id7_ui_layout_set_system, (ViewGroup) null);
+    public AlsID7UiSetSystemLayout(Context context) {
+        super(context);
+        this.housi = 0;
+        this.cheVideo = 0;
+        this.dcgj = 0;
+        this.dcld = 0;
+        this.dcjy = 0;
+        this.nbauxsw = 0;
+        this.context = context;
+        View view = LayoutInflater.from(context).inflate(C0899R.C0902layout.als_id7_ui_layout_set_system, (ViewGroup) null);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(-1, -1);
         initData();
         initView(view);
@@ -70,27 +77,22 @@ public class AlsID7UiSetSystemLayout extends RelativeLayout implements View.OnCl
     }
 
     private void initView(View view) {
-        this.tempUnitView = (TextView) view.findViewById(R.id.tv_sysTempUnit);
-        this.fuelUnitView = (TextView) view.findViewById(R.id.tv_sysFuelUnit);
-        this.tv_sysDcsxt = (TextView) view.findViewById(R.id.tv_sysDcsxt);
-        this.tv_sysBgld = (TextView) view.findViewById(R.id.tv_sysBgld);
-        this.cbox_sysHjs = (CheckBox) view.findViewById(R.id.cbox_sysHjs);
-        this.cbox_sysXcjz = (CheckBox) view.findViewById(R.id.cbox_sysXcjz);
-        this.cbox_sysDcgj = (CheckBox) view.findViewById(R.id.cbox_sysDcgj);
-        this.cbox_sysDcld = (CheckBox) view.findViewById(R.id.cbox_sysDcld);
-        this.tv_sysCaux = (TextView) view.findViewById(R.id.tv_sysCaux);
-        this.aux_bottom_iv = (ImageView) view.findViewById(R.id.aux_bottom_iv);
-        this.cbox_sysDcjy = (CheckBox) view.findViewById(R.id.cbox_sysDcjy);
-        boolean z = true;
+        this.tempUnitView = (TextView) view.findViewById(C0899R.C0901id.tv_sysTempUnit);
+        this.fuelUnitView = (TextView) view.findViewById(C0899R.C0901id.tv_sysFuelUnit);
+        this.tv_sysDcsxt = (TextView) view.findViewById(C0899R.C0901id.tv_sysDcsxt);
+        this.tv_sysBgld = (TextView) view.findViewById(C0899R.C0901id.tv_sysBgld);
+        this.cbox_sysHjs = (CheckBox) view.findViewById(C0899R.C0901id.cbox_sysHjs);
+        this.cbox_sysXcjz = (CheckBox) view.findViewById(C0899R.C0901id.cbox_sysXcjz);
+        this.cbox_sysDcgj = (CheckBox) view.findViewById(C0899R.C0901id.cbox_sysDcgj);
+        this.cbox_sysDcld = (CheckBox) view.findViewById(C0899R.C0901id.cbox_sysDcld);
+        this.tv_sysCaux = (TextView) view.findViewById(C0899R.C0901id.tv_sysCaux);
+        this.aux_bottom_iv = (ImageView) view.findViewById(C0899R.C0901id.aux_bottom_iv);
+        this.cbox_sysDcjy = (CheckBox) view.findViewById(C0899R.C0901id.cbox_sysDcjy);
         this.cbox_sysHjs.setChecked(this.housi != 0);
         this.cbox_sysXcjz.setChecked(this.cheVideo != 0);
         this.cbox_sysDcgj.setChecked(this.dcgj != 0);
         this.cbox_sysDcld.setChecked(this.dcld != 0);
-        CheckBox checkBox = this.cbox_sysDcjy;
-        if (this.dcjy == 0) {
-            z = false;
-        }
-        checkBox.setChecked(z);
+        this.cbox_sysDcjy.setChecked(this.dcjy != 0);
         this.tv_sysDcsxt.setOnClickListener(this);
         this.tv_sysBgld.setOnClickListener(this);
         this.tv_sysCaux.setOnClickListener(this);
@@ -108,8 +110,8 @@ public class AlsID7UiSetSystemLayout extends RelativeLayout implements View.OnCl
             this.tv_sysCaux.setVisibility(8);
             this.aux_bottom_iv.setVisibility(8);
         }
-        this.tv_music_app = (TextView) view.findViewById(R.id.tv_music_app);
-        this.tv_video_app = (TextView) view.findViewById(R.id.tv_video_app);
+        this.tv_music_app = (TextView) view.findViewById(C0899R.C0901id.tv_music_app);
+        this.tv_video_app = (TextView) view.findViewById(C0899R.C0901id.tv_video_app);
         this.tv_music_app.setOnClickListener(this);
         this.tv_video_app.setOnClickListener(this);
     }
@@ -128,6 +130,7 @@ public class AlsID7UiSetSystemLayout extends RelativeLayout implements View.OnCl
         }
     }
 
+    @Override // android.view.View.OnClickListener
     public void onClick(View v) {
         if (this.updateTwoLayout == null) {
             ExceptionPrint.print("updateTwoLayout is null");
@@ -135,32 +138,32 @@ public class AlsID7UiSetSystemLayout extends RelativeLayout implements View.OnCl
         }
         resetTextColor();
         switch (v.getId()) {
-            case R.id.tv_music_app /*2131297900*/:
-                this.tv_music_app.setTextColor(SkinCompatResources.getColor(this.context, R.color.als_id7_ui_text_color));
+            case C0899R.C0901id.tv_music_app /* 2131297952 */:
+                this.tv_music_app.setTextColor(SkinCompatResources.getColor(this.context, C0899R.color.als_id7_ui_text_color));
                 this.updateTwoLayout.updateTwoLayout(1, 6);
                 return;
-            case R.id.tv_sysBgld /*2131297929*/:
-                this.tv_sysBgld.setTextColor(SkinCompatResources.getColor(this.context, R.color.als_id7_ui_text_color));
+            case C0899R.C0901id.tv_sysBgld /* 2131297981 */:
+                this.tv_sysBgld.setTextColor(SkinCompatResources.getColor(this.context, C0899R.color.als_id7_ui_text_color));
                 this.updateTwoLayout.updateTwoLayout(1, 2);
                 return;
-            case R.id.tv_sysCaux /*2131297930*/:
-                this.tv_sysCaux.setTextColor(SkinCompatResources.getColor(this.context, R.color.als_id7_ui_text_color));
+            case C0899R.C0901id.tv_sysCaux /* 2131297982 */:
+                this.tv_sysCaux.setTextColor(SkinCompatResources.getColor(this.context, C0899R.color.als_id7_ui_text_color));
                 this.updateTwoLayout.updateTwoLayout(1, 3);
                 return;
-            case R.id.tv_sysDcsxt /*2131297931*/:
-                this.tv_sysDcsxt.setTextColor(SkinCompatResources.getColor(this.context, R.color.als_id7_ui_text_color));
+            case C0899R.C0901id.tv_sysDcsxt /* 2131297983 */:
+                this.tv_sysDcsxt.setTextColor(SkinCompatResources.getColor(this.context, C0899R.color.als_id7_ui_text_color));
                 this.updateTwoLayout.updateTwoLayout(1, 1);
                 return;
-            case R.id.tv_sysFuelUnit /*2131297932*/:
-                this.fuelUnitView.setTextColor(SkinCompatResources.getColor(this.context, R.color.als_id7_ui_text_color));
+            case C0899R.C0901id.tv_sysFuelUnit /* 2131297984 */:
+                this.fuelUnitView.setTextColor(SkinCompatResources.getColor(this.context, C0899R.color.als_id7_ui_text_color));
                 this.updateTwoLayout.updateTwoLayout(1, 5);
                 return;
-            case R.id.tv_sysTempUnit /*2131297933*/:
-                this.tempUnitView.setTextColor(SkinCompatResources.getColor(this.context, R.color.als_id7_ui_text_color));
+            case C0899R.C0901id.tv_sysTempUnit /* 2131297985 */:
+                this.tempUnitView.setTextColor(SkinCompatResources.getColor(this.context, C0899R.color.als_id7_ui_text_color));
                 this.updateTwoLayout.updateTwoLayout(1, 4);
                 return;
-            case R.id.tv_video_app /*2131297951*/:
-                this.tv_video_app.setTextColor(SkinCompatResources.getColor(this.context, R.color.als_id7_ui_text_color));
+            case C0899R.C0901id.tv_video_app /* 2131298003 */:
+                this.tv_video_app.setTextColor(SkinCompatResources.getColor(this.context, C0899R.color.als_id7_ui_text_color));
                 this.updateTwoLayout.updateTwoLayout(1, 7);
                 return;
             default:
@@ -168,21 +171,22 @@ public class AlsID7UiSetSystemLayout extends RelativeLayout implements View.OnCl
         }
     }
 
+    @Override // android.widget.CompoundButton.OnCheckedChangeListener
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
-            case R.id.cbox_sysDcgj /*2131296728*/:
+            case C0899R.C0901id.cbox_sysDcgj /* 2131296756 */:
                 FileUtils.savaData(KeyConfig.DAO_CHE_GJ, isChecked);
                 return;
-            case R.id.cbox_sysDcjy /*2131296729*/:
+            case C0899R.C0901id.cbox_sysDcjy /* 2131296757 */:
                 FileUtils.savaData(KeyConfig.DAO_CHE_JY, isChecked);
                 return;
-            case R.id.cbox_sysDcld /*2131296730*/:
+            case C0899R.C0901id.cbox_sysDcld /* 2131296758 */:
                 FileUtils.savaData(KeyConfig.DAO_CHE_LD, isChecked);
                 return;
-            case R.id.cbox_sysHjs /*2131296731*/:
+            case C0899R.C0901id.cbox_sysHjs /* 2131296759 */:
                 FileUtils.savaData(KeyConfig.HOU_SHI_SX, isChecked);
                 return;
-            case R.id.cbox_sysXcjz /*2131296732*/:
+            case C0899R.C0901id.cbox_sysXcjz /* 2131296760 */:
                 FileUtils.savaData(KeyConfig.XING_CHE_JZSP, isChecked);
                 return;
             default:

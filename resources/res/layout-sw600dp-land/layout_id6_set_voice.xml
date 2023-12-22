@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:scrollbars="none" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical" android:padding="10dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/tv_houzvoc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginTop="10dp" android:text="@string/voic_1"/>
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="90dp" android:layout_marginTop="10dp">
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:ellipsize="end" android:gravity="center" android:id="@+id/tv_mtvoc" android:layout_width="130dp" android:layout_height="wrap_content" android:text="@string/voic_2" android:lines="1" android:drawableRight="@mipmap/id6_icon_spk" android:drawablePadding="10dp"/>
+            <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <ImageView android:background="@mipmap/id6_progress_bar_bg" android:layout_width="240dp" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="15dp"/>
+                <SeekBar android:id="@+id/seek_mtb" android:background="@null" android:focusable="false" android:layout_width="270dp" android:layout_height="40dp" android:maxHeight="20dp" android:progressDrawable="@drawable/layer_id6_bgpro" android:minHeight="20dp" android:thumb="@null"/>
+            </RelativeLayout>
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_mtsize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="0" android:lines="1"/>
+        </LinearLayout>
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="90dp" android:layout_marginTop="15dp">
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:ellipsize="end" android:gravity="center" android:id="@+id/tv_tonghvoc" android:layout_width="130dp" android:layout_height="wrap_content" android:text="@string/voic_3" android:lines="1" android:drawableRight="@mipmap/id6_icon_spk" android:drawablePadding="10dp"/>
+            <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <ImageView android:background="@mipmap/id6_progress_bar_bg" android:layout_width="240dp" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="15dp"/>
+                <SeekBar android:id="@+id/seek_tonghb" android:background="@null" android:focusable="false" android:layout_width="270dp" android:layout_height="40dp" android:maxHeight="20dp" android:progressDrawable="@drawable/layer_id6_bgpro" android:minHeight="20dp" android:thumb="@null"/>
+            </RelativeLayout>
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:layout_gravity="center_vertical" android:id="@+id/tv_tonghsize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="0" android:lines="1"/>
+        </LinearLayout>
+        <TextView android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/tv_yuancvoc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginTop="10dp" android:text="@string/voic_4"/>
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="90dp" android:layout_marginTop="10dp">
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:ellipsize="end" android:gravity="center" android:id="@+id/tv_yuancthvoc" android:layout_width="130dp" android:layout_height="wrap_content" android:text="@string/voic_3" android:lines="1" android:drawableRight="@mipmap/id6_icon_spk" android:drawablePadding="10dp"/>
+            <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <ImageView android:background="@mipmap/id6_progress_bar_bg" android:layout_width="240dp" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="15dp"/>
+                <SeekBar android:id="@+id/seek_yuancthb" android:background="@null" android:focusable="false" android:layout_width="270dp" android:layout_height="40dp" android:maxHeight="20dp" android:progressDrawable="@drawable/layer_id6_bgpro" android:minHeight="20dp" android:thumb="@null"/>
+            </RelativeLayout>
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_yuancthsize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="0" android:lines="1"/>
+        </LinearLayout>
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="90dp" android:layout_marginTop="15dp">
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:ellipsize="end" android:gravity="center" android:id="@+id/tv_daohvoic" android:layout_width="130dp" android:layout_height="wrap_content" android:text="@string/voic_5" android:lines="1" android:drawableRight="@mipmap/id6_icon_spk" android:drawablePadding="10dp"/>
+            <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <ImageView android:background="@mipmap/id6_progress_bar_bg" android:layout_width="240dp" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="15dp"/>
+                <SeekBar android:id="@+id/seek_daohvoicb" android:background="@null" android:focusable="false" android:layout_width="270dp" android:layout_height="40dp" android:maxHeight="20dp" android:progressDrawable="@drawable/layer_id6_bgpro" android:minHeight="20dp" android:thumb="@null"/>
+            </RelativeLayout>
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_daohvoicsize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="0" android:lines="1"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

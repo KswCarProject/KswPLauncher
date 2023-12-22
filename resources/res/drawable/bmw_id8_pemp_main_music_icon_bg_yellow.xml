@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <layer-list>
+            <item android:drawable="@drawable/pemp_id8_main_icon_music_btn_y_d"/>
+            <item android:drawable="@drawable/pemp_id8_main_icon_music_btn_f"/>
+        </layer-list>
+    </item>
+    <item android:state_focused="true" android:drawable="@drawable/pemp_id8_main_icon_music_btn_f"/>
+    <item android:state_selected="true" android:drawable="@drawable/pemp_id8_main_icon_music_btn_f"/>
+    <item android:state_checked="true" android:drawable="@drawable/pemp_id8_main_icon_music_btn_f"/>
+    <item android:drawable="@color/transparent"/>
+</selector>

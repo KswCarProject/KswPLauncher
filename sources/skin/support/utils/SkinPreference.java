@@ -3,6 +3,7 @@ package skin.support.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+/* loaded from: classes.dex */
 public class SkinPreference {
     private static final String FILE_NAME = "meta-data";
     private static final String KEY_SKIN_NAME = "skin-name";

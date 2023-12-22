@@ -1,5 +1,6 @@
 package com.bumptech.glide.request;
 
+/* loaded from: classes.dex */
 public class ThumbnailRequestCoordinator implements RequestCoordinator, Request {
     private Request full;
     private boolean isRunning;
@@ -7,18 +8,19 @@ public class ThumbnailRequestCoordinator implements RequestCoordinator, Request 
     private Request thumb;
 
     ThumbnailRequestCoordinator() {
-        this((RequestCoordinator) null);
+        this(null);
     }
 
-    public ThumbnailRequestCoordinator(RequestCoordinator parent2) {
-        this.parent = parent2;
+    public ThumbnailRequestCoordinator(RequestCoordinator parent) {
+        this.parent = parent;
     }
 
-    public void setRequests(Request full2, Request thumb2) {
-        this.full = full2;
-        this.thumb = thumb2;
+    public void setRequests(Request full, Request thumb) {
+        this.full = full;
+        this.thumb = thumb;
     }
 
+    @Override // com.bumptech.glide.request.RequestCoordinator
     public boolean canSetImage(Request request) {
         return parentCanSetImage() && (request.equals(this.full) || !this.full.isResourceSet());
     }
@@ -28,10 +30,12 @@ public class ThumbnailRequestCoordinator implements RequestCoordinator, Request 
         return requestCoordinator == null || requestCoordinator.canSetImage(this);
     }
 
+    @Override // com.bumptech.glide.request.RequestCoordinator
     public boolean canNotifyStatusChanged(Request request) {
         return parentCanNotifyStatusChanged() && request.equals(this.full) && !isAnyResourceSet();
     }
 
+    @Override // com.bumptech.glide.request.RequestCoordinator
     public boolean canNotifyCleared(Request request) {
         return parentCanNotifyCleared() && request.equals(this.full);
     }
@@ -46,22 +50,26 @@ public class ThumbnailRequestCoordinator implements RequestCoordinator, Request 
         return requestCoordinator == null || requestCoordinator.canNotifyStatusChanged(this);
     }
 
+    @Override // com.bumptech.glide.request.RequestCoordinator
     public boolean isAnyResourceSet() {
         return parentIsAnyResourceSet() || isResourceSet();
     }
 
+    @Override // com.bumptech.glide.request.RequestCoordinator
     public void onRequestSuccess(Request request) {
-        if (!request.equals(this.thumb)) {
-            RequestCoordinator requestCoordinator = this.parent;
-            if (requestCoordinator != null) {
-                requestCoordinator.onRequestSuccess(this);
-            }
-            if (!this.thumb.isComplete()) {
-                this.thumb.clear();
-            }
+        if (request.equals(this.thumb)) {
+            return;
+        }
+        RequestCoordinator requestCoordinator = this.parent;
+        if (requestCoordinator != null) {
+            requestCoordinator.onRequestSuccess(this);
+        }
+        if (!this.thumb.isComplete()) {
+            this.thumb.clear();
         }
     }
 
+    @Override // com.bumptech.glide.request.RequestCoordinator
     public void onRequestFailed(Request request) {
         RequestCoordinator requestCoordinator;
         if (request.equals(this.full) && (requestCoordinator = this.parent) != null) {
@@ -74,6 +82,7 @@ public class ThumbnailRequestCoordinator implements RequestCoordinator, Request 
         return requestCoordinator != null && requestCoordinator.isAnyResourceSet();
     }
 
+    @Override // com.bumptech.glide.request.Request
     public void begin() {
         this.isRunning = true;
         if (!this.full.isComplete() && !this.thumb.isRunning()) {
@@ -84,75 +93,66 @@ public class ThumbnailRequestCoordinator implements RequestCoordinator, Request 
         }
     }
 
+    @Override // com.bumptech.glide.request.Request
     public void clear() {
         this.isRunning = false;
         this.thumb.clear();
         this.full.clear();
     }
 
+    @Override // com.bumptech.glide.request.Request
     public boolean isRunning() {
         return this.full.isRunning();
     }
 
+    @Override // com.bumptech.glide.request.Request
     public boolean isComplete() {
         return this.full.isComplete() || this.thumb.isComplete();
     }
 
+    @Override // com.bumptech.glide.request.Request
     public boolean isResourceSet() {
         return this.full.isResourceSet() || this.thumb.isResourceSet();
     }
 
+    @Override // com.bumptech.glide.request.Request
     public boolean isCleared() {
         return this.full.isCleared();
     }
 
+    @Override // com.bumptech.glide.request.Request
     public boolean isFailed() {
         return this.full.isFailed();
     }
 
+    @Override // com.bumptech.glide.request.Request
     public void recycle() {
         this.full.recycle();
         this.thumb.recycle();
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:14:0x002a A[ORIG_RETURN, RETURN, SYNTHETIC] */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public boolean isEquivalentTo(com.bumptech.glide.request.Request r5) {
-        /*
-            r4 = this;
-            boolean r0 = r5 instanceof com.bumptech.glide.request.ThumbnailRequestCoordinator
-            r1 = 0
-            if (r0 == 0) goto L_0x002e
-            r0 = r5
-            com.bumptech.glide.request.ThumbnailRequestCoordinator r0 = (com.bumptech.glide.request.ThumbnailRequestCoordinator) r0
-            com.bumptech.glide.request.Request r2 = r4.full
-            if (r2 != 0) goto L_0x0011
-            com.bumptech.glide.request.Request r2 = r0.full
-            if (r2 != 0) goto L_0x002c
-            goto L_0x0019
-        L_0x0011:
-            com.bumptech.glide.request.Request r3 = r0.full
-            boolean r2 = r2.isEquivalentTo(r3)
-            if (r2 == 0) goto L_0x002c
-        L_0x0019:
-            com.bumptech.glide.request.Request r2 = r4.thumb
-            if (r2 != 0) goto L_0x0022
-            com.bumptech.glide.request.Request r2 = r0.thumb
-            if (r2 != 0) goto L_0x002c
-            goto L_0x002a
-        L_0x0022:
-            com.bumptech.glide.request.Request r3 = r0.thumb
-            boolean r2 = r2.isEquivalentTo(r3)
-            if (r2 == 0) goto L_0x002c
-        L_0x002a:
-            r1 = 1
-            goto L_0x002d
-        L_0x002c:
-        L_0x002d:
-            return r1
-        L_0x002e:
-            return r1
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.request.ThumbnailRequestCoordinator.isEquivalentTo(com.bumptech.glide.request.Request):boolean");
+    @Override // com.bumptech.glide.request.Request
+    public boolean isEquivalentTo(Request o) {
+        if (o instanceof ThumbnailRequestCoordinator) {
+            ThumbnailRequestCoordinator that = (ThumbnailRequestCoordinator) o;
+            Request request = this.full;
+            if (request == null) {
+                if (that.full != null) {
+                    return false;
+                }
+            } else if (!request.isEquivalentTo(that.full)) {
+                return false;
+            }
+            Request request2 = this.thumb;
+            if (request2 == null) {
+                if (that.thumb != null) {
+                    return false;
+                }
+            } else if (!request2.isEquivalentTo(that.thumb)) {
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 }

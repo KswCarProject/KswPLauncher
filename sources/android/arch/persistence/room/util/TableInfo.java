@@ -1,6 +1,6 @@
 package android.arch.persistence.room.util;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
+import android.arch.persistence.p000db.SupportSQLiteDatabase;
 import android.database.Cursor;
 import android.os.Build;
 import java.util.ArrayList;
@@ -13,21 +13,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+/* loaded from: classes.dex */
 public class TableInfo {
     public final Map<String, Column> columns;
     public final Set<ForeignKey> foreignKeys;
     public final Set<Index> indices;
     public final String name;
 
-    public TableInfo(String name2, Map<String, Column> columns2, Set<ForeignKey> foreignKeys2, Set<Index> indices2) {
-        this.name = name2;
-        this.columns = Collections.unmodifiableMap(columns2);
-        this.foreignKeys = Collections.unmodifiableSet(foreignKeys2);
-        this.indices = indices2 == null ? null : Collections.unmodifiableSet(indices2);
+    public TableInfo(String name, Map<String, Column> columns, Set<ForeignKey> foreignKeys, Set<Index> indices) {
+        this.name = name;
+        this.columns = Collections.unmodifiableMap(columns);
+        this.foreignKeys = Collections.unmodifiableSet(foreignKeys);
+        this.indices = indices == null ? null : Collections.unmodifiableSet(indices);
     }
 
-    public TableInfo(String name2, Map<String, Column> columns2, Set<ForeignKey> foreignKeys2) {
-        this(name2, columns2, foreignKeys2, Collections.emptySet());
+    public TableInfo(String name, Map<String, Column> columns, Set<ForeignKey> foreignKeys) {
+        this(name, columns, foreignKeys, Collections.emptySet());
     }
 
     public boolean equals(Object o) {
@@ -60,28 +61,29 @@ public class TableInfo {
 
     public int hashCode() {
         String str = this.name;
-        int i = 0;
-        int hashCode = (str != null ? str.hashCode() : 0) * 31;
+        int result = str != null ? str.hashCode() : 0;
+        int i = result * 31;
         Map<String, Column> map = this.columns;
-        int result = (hashCode + (map != null ? map.hashCode() : 0)) * 31;
+        int result2 = i + (map != null ? map.hashCode() : 0);
+        int result3 = result2 * 31;
         Set<ForeignKey> set = this.foreignKeys;
-        if (set != null) {
-            i = set.hashCode();
-        }
-        return result + i;
+        return result3 + (set != null ? set.hashCode() : 0);
     }
 
     public String toString() {
-        return "TableInfo{name='" + this.name + '\'' + ", columns=" + this.columns + ", foreignKeys=" + this.foreignKeys + ", indices=" + this.indices + '}';
+        return "TableInfo{name='" + this.name + "', columns=" + this.columns + ", foreignKeys=" + this.foreignKeys + ", indices=" + this.indices + '}';
     }
 
     public static TableInfo read(SupportSQLiteDatabase database, String tableName) {
-        return new TableInfo(tableName, readColumns(database, tableName), readForeignKeys(database, tableName), readIndices(database, tableName));
+        Map<String, Column> columns = readColumns(database, tableName);
+        Set<ForeignKey> foreignKeys = readForeignKeys(database, tableName);
+        Set<Index> indices = readIndices(database, tableName);
+        return new TableInfo(tableName, columns, foreignKeys, indices);
     }
 
     private static Set<ForeignKey> readForeignKeys(SupportSQLiteDatabase database, String tableName) {
         int idColumnIndex;
-        Set<ForeignKey> foreignKeys2 = new HashSet<>();
+        Set<ForeignKey> foreignKeys = new HashSet<>();
         Cursor cursor = database.query("PRAGMA foreign_key_list(`" + tableName + "`)");
         try {
             int idColumnIndex2 = cursor.getColumnIndex("id");
@@ -94,7 +96,8 @@ public class TableInfo {
             int position = 0;
             while (position < count) {
                 cursor.moveToPosition(position);
-                if (cursor.getInt(seqColumnIndex) != 0) {
+                int seq = cursor.getInt(seqColumnIndex);
+                if (seq != 0) {
                     idColumnIndex = idColumnIndex2;
                 } else {
                     int id = cursor.getInt(idColumnIndex2);
@@ -106,17 +109,15 @@ public class TableInfo {
                             myColumns.add(key.mFrom);
                             refColumns.add(key.mTo);
                         }
-                        String str = tableName;
                         idColumnIndex2 = idColumnIndex3;
                     }
                     idColumnIndex = idColumnIndex2;
-                    foreignKeys2.add(new ForeignKey(cursor.getString(tableColumnIndex), cursor.getString(onDeleteColumnIndex), cursor.getString(onUpdateColumnIndex), myColumns, refColumns));
+                    foreignKeys.add(new ForeignKey(cursor.getString(tableColumnIndex), cursor.getString(onDeleteColumnIndex), cursor.getString(onUpdateColumnIndex), myColumns, refColumns));
                 }
                 position++;
-                String str2 = tableName;
                 idColumnIndex2 = idColumnIndex;
             }
-            return foreignKeys2;
+            return foreignKeys;
         } finally {
             cursor.close();
         }
@@ -139,7 +140,7 @@ public class TableInfo {
 
     private static Map<String, Column> readColumns(SupportSQLiteDatabase database, String tableName) {
         Cursor cursor = database.query("PRAGMA table_info(`" + tableName + "`)");
-        Map<String, Column> columns2 = new HashMap<>();
+        Map<String, Column> columns = new HashMap<>();
         try {
             if (cursor.getColumnCount() > 0) {
                 int nameIndex = cursor.getColumnIndex("name");
@@ -147,11 +148,14 @@ public class TableInfo {
                 int notNullIndex = cursor.getColumnIndex("notnull");
                 int pkIndex = cursor.getColumnIndex("pk");
                 while (cursor.moveToNext()) {
-                    String name2 = cursor.getString(nameIndex);
-                    columns2.put(name2, new Column(name2, cursor.getString(typeIndex), cursor.getInt(notNullIndex) != 0, cursor.getInt(pkIndex)));
+                    String name = cursor.getString(nameIndex);
+                    String type = cursor.getString(typeIndex);
+                    boolean notNull = cursor.getInt(notNullIndex) != 0;
+                    int primaryKeyPosition = cursor.getInt(pkIndex);
+                    columns.put(name, new Column(name, type, notNull, primaryKeyPosition));
                 }
             }
-            return columns2;
+            return columns;
         } finally {
             cursor.close();
         }
@@ -163,27 +167,25 @@ public class TableInfo {
             int nameColumnIndex = cursor.getColumnIndex("name");
             int originColumnIndex = cursor.getColumnIndex("origin");
             int uniqueIndex = cursor.getColumnIndex("unique");
-            if (!(nameColumnIndex == -1 || originColumnIndex == -1)) {
-                if (uniqueIndex != -1) {
-                    HashSet<Index> indices2 = new HashSet<>();
-                    while (cursor.moveToNext()) {
-                        if ("c".equals(cursor.getString(originColumnIndex))) {
-                            String name2 = cursor.getString(nameColumnIndex);
-                            boolean unique = true;
-                            if (cursor.getInt(uniqueIndex) != 1) {
-                                unique = false;
-                            }
-                            Index index = readIndex(database, name2, unique);
-                            if (index == null) {
-                                cursor.close();
-                                return null;
-                            }
-                            indices2.add(index);
+            if (nameColumnIndex != -1 && originColumnIndex != -1 && uniqueIndex != -1) {
+                HashSet<Index> indices = new HashSet<>();
+                while (cursor.moveToNext()) {
+                    String origin = cursor.getString(originColumnIndex);
+                    if ("c".equals(origin)) {
+                        String name = cursor.getString(nameColumnIndex);
+                        boolean z = true;
+                        if (cursor.getInt(uniqueIndex) != 1) {
+                            z = false;
                         }
+                        boolean unique = z;
+                        Index index = readIndex(database, name, unique);
+                        if (index == null) {
+                            return null;
+                        }
+                        indices.add(index);
                     }
-                    cursor.close();
-                    return indices2;
                 }
+                return indices;
             }
             return null;
         } finally {
@@ -191,27 +193,25 @@ public class TableInfo {
         }
     }
 
-    private static Index readIndex(SupportSQLiteDatabase database, String name2, boolean unique) {
-        Cursor cursor = database.query("PRAGMA index_xinfo(`" + name2 + "`)");
+    private static Index readIndex(SupportSQLiteDatabase database, String name, boolean unique) {
+        Cursor cursor = database.query("PRAGMA index_xinfo(`" + name + "`)");
         try {
             int seqnoColumnIndex = cursor.getColumnIndex("seqno");
             int cidColumnIndex = cursor.getColumnIndex("cid");
             int nameColumnIndex = cursor.getColumnIndex("name");
-            if (!(seqnoColumnIndex == -1 || cidColumnIndex == -1)) {
-                if (nameColumnIndex != -1) {
-                    TreeMap<Integer, String> results = new TreeMap<>();
-                    while (cursor.moveToNext()) {
-                        if (cursor.getInt(cidColumnIndex) >= 0) {
-                            int seq = cursor.getInt(seqnoColumnIndex);
-                            results.put(Integer.valueOf(seq), cursor.getString(nameColumnIndex));
-                        }
+            if (seqnoColumnIndex != -1 && cidColumnIndex != -1 && nameColumnIndex != -1) {
+                TreeMap<Integer, String> results = new TreeMap<>();
+                while (cursor.moveToNext()) {
+                    int cid = cursor.getInt(cidColumnIndex);
+                    if (cid >= 0) {
+                        int seq = cursor.getInt(seqnoColumnIndex);
+                        String columnName = cursor.getString(nameColumnIndex);
+                        results.put(Integer.valueOf(seq), columnName);
                     }
-                    List<String> columns2 = new ArrayList<>(results.size());
-                    columns2.addAll(results.values());
-                    Index index = new Index(name2, unique, columns2);
-                    cursor.close();
-                    return index;
                 }
+                List<String> columns = new ArrayList<>(results.size());
+                columns.addAll(results.values());
+                return new Index(name, unique, columns);
             }
             return null;
         } finally {
@@ -219,6 +219,7 @@ public class TableInfo {
         }
     }
 
+    /* loaded from: classes.dex */
     public static class Column {
         public final int affinity;
         public final String name;
@@ -226,19 +227,19 @@ public class TableInfo {
         public final int primaryKeyPosition;
         public final String type;
 
-        public Column(String name2, String type2, boolean notNull2, int primaryKeyPosition2) {
-            this.name = name2;
-            this.type = type2;
-            this.notNull = notNull2;
-            this.primaryKeyPosition = primaryKeyPosition2;
-            this.affinity = findAffinity(type2);
+        public Column(String name, String type, boolean notNull, int primaryKeyPosition) {
+            this.name = name;
+            this.type = type;
+            this.notNull = notNull;
+            this.primaryKeyPosition = primaryKeyPosition;
+            this.affinity = findAffinity(type);
         }
 
-        private static int findAffinity(String type2) {
-            if (type2 == null) {
+        private static int findAffinity(String type) {
+            if (type == null) {
                 return 5;
             }
-            String uppercaseType = type2.toUpperCase(Locale.US);
+            String uppercaseType = type.toUpperCase(Locale.US);
             if (uppercaseType.contains("INT")) {
                 return 3;
             }
@@ -269,10 +270,7 @@ public class TableInfo {
             } else if (isPrimaryKey() != column.isPrimaryKey()) {
                 return false;
             }
-            if (!this.name.equals(column.name) || this.notNull != column.notNull) {
-                return false;
-            }
-            if (this.affinity == column.affinity) {
+            if (this.name.equals(column.name) && this.notNull == column.notNull && this.affinity == column.affinity) {
                 return true;
             }
             return false;
@@ -283,14 +281,16 @@ public class TableInfo {
         }
 
         public int hashCode() {
-            return (((((this.name.hashCode() * 31) + this.affinity) * 31) + (this.notNull ? 1231 : 1237)) * 31) + this.primaryKeyPosition;
+            int result = this.name.hashCode();
+            return (((((result * 31) + this.affinity) * 31) + (this.notNull ? 1231 : 1237)) * 31) + this.primaryKeyPosition;
         }
 
         public String toString() {
-            return "Column{name='" + this.name + '\'' + ", type='" + this.type + '\'' + ", affinity='" + this.affinity + '\'' + ", notNull=" + this.notNull + ", primaryKeyPosition=" + this.primaryKeyPosition + '}';
+            return "Column{name='" + this.name + "', type='" + this.type + "', affinity='" + this.affinity + "', notNull=" + this.notNull + ", primaryKeyPosition=" + this.primaryKeyPosition + '}';
         }
     }
 
+    /* loaded from: classes.dex */
     public static class ForeignKey {
         public final List<String> columnNames;
         public final String onDelete;
@@ -298,12 +298,12 @@ public class TableInfo {
         public final List<String> referenceColumnNames;
         public final String referenceTable;
 
-        public ForeignKey(String referenceTable2, String onDelete2, String onUpdate2, List<String> columnNames2, List<String> referenceColumnNames2) {
-            this.referenceTable = referenceTable2;
-            this.onDelete = onDelete2;
-            this.onUpdate = onUpdate2;
-            this.columnNames = Collections.unmodifiableList(columnNames2);
-            this.referenceColumnNames = Collections.unmodifiableList(referenceColumnNames2);
+        public ForeignKey(String referenceTable, String onDelete, String onUpdate, List<String> columnNames, List<String> referenceColumnNames) {
+            this.referenceTable = referenceTable;
+            this.onDelete = onDelete;
+            this.onUpdate = onUpdate;
+            this.columnNames = Collections.unmodifiableList(columnNames);
+            this.referenceColumnNames = Collections.unmodifiableList(referenceColumnNames);
         }
 
         public boolean equals(Object o) {
@@ -314,21 +314,23 @@ public class TableInfo {
                 return false;
             }
             ForeignKey that = (ForeignKey) o;
-            if (this.referenceTable.equals(that.referenceTable) && this.onDelete.equals(that.onDelete) && this.onUpdate.equals(that.onUpdate) && this.columnNames.equals(that.columnNames)) {
-                return this.referenceColumnNames.equals(that.referenceColumnNames);
+            if (!this.referenceTable.equals(that.referenceTable) || !this.onDelete.equals(that.onDelete) || !this.onUpdate.equals(that.onUpdate) || !this.columnNames.equals(that.columnNames)) {
+                return false;
             }
-            return false;
+            return this.referenceColumnNames.equals(that.referenceColumnNames);
         }
 
         public int hashCode() {
-            return (((((((this.referenceTable.hashCode() * 31) + this.onDelete.hashCode()) * 31) + this.onUpdate.hashCode()) * 31) + this.columnNames.hashCode()) * 31) + this.referenceColumnNames.hashCode();
+            int result = this.referenceTable.hashCode();
+            return (((((((result * 31) + this.onDelete.hashCode()) * 31) + this.onUpdate.hashCode()) * 31) + this.columnNames.hashCode()) * 31) + this.referenceColumnNames.hashCode();
         }
 
         public String toString() {
-            return "ForeignKey{referenceTable='" + this.referenceTable + '\'' + ", onDelete='" + this.onDelete + '\'' + ", onUpdate='" + this.onUpdate + '\'' + ", columnNames=" + this.columnNames + ", referenceColumnNames=" + this.referenceColumnNames + '}';
+            return "ForeignKey{referenceTable='" + this.referenceTable + "', onDelete='" + this.onDelete + "', onUpdate='" + this.onUpdate + "', columnNames=" + this.columnNames + ", referenceColumnNames=" + this.referenceColumnNames + '}';
         }
     }
 
+    /* loaded from: classes.dex */
     static class ForeignKeyWithSequence implements Comparable<ForeignKeyWithSequence> {
         final String mFrom;
         final int mId;
@@ -342,6 +344,7 @@ public class TableInfo {
             this.mTo = to;
         }
 
+        @Override // java.lang.Comparable
         public int compareTo(ForeignKeyWithSequence o) {
             int idCmp = this.mId - o.mId;
             if (idCmp == 0) {
@@ -351,16 +354,17 @@ public class TableInfo {
         }
     }
 
+    /* loaded from: classes.dex */
     public static class Index {
         public static final String DEFAULT_PREFIX = "index_";
         public final List<String> columns;
         public final String name;
         public final boolean unique;
 
-        public Index(String name2, boolean unique2, List<String> columns2) {
-            this.name = name2;
-            this.unique = unique2;
-            this.columns = columns2;
+        public Index(String name, boolean unique, List<String> columns) {
+            this.name = name;
+            this.unique = unique;
+            this.columns = columns;
         }
 
         public boolean equals(Object o) {
@@ -391,7 +395,7 @@ public class TableInfo {
         }
 
         public String toString() {
-            return "Index{name='" + this.name + '\'' + ", unique=" + this.unique + ", columns=" + this.columns + '}';
+            return "Index{name='" + this.name + "', unique=" + this.unique + ", columns=" + this.columns + '}';
         }
     }
 }

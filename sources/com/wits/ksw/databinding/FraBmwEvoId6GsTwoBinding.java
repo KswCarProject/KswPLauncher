@@ -8,9 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.view.bmwevoid6gs.BmwId6gsViewMode;
 
+/* loaded from: classes7.dex */
 public abstract class FraBmwEvoId6GsTwoBinding extends ViewDataBinding {
     public final ConstraintLayout bmwEvoId6GsHmoeCarBtn;
     public final TextView bmwEvoId6GsHmoeCarHintTextview;
@@ -20,15 +21,15 @@ public abstract class FraBmwEvoId6GsTwoBinding extends ViewDataBinding {
     @Bindable
     protected BmwId6gsViewMode mVm;
 
-    public abstract void setVm(BmwId6gsViewMode bmwId6gsViewMode);
+    public abstract void setVm(BmwId6gsViewMode vm);
 
-    protected FraBmwEvoId6GsTwoBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout bmwEvoId6GsHmoeCarBtn2, TextView bmwEvoId6GsHmoeCarHintTextview2, TextView bmwEvoId6GsHmoeFileHintTextview2, TextView bmwEvoId6GsHmoeVideoHintTextview2, TextView id6BrowserMessTextview2) {
+    protected FraBmwEvoId6GsTwoBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout bmwEvoId6GsHmoeCarBtn, TextView bmwEvoId6GsHmoeCarHintTextview, TextView bmwEvoId6GsHmoeFileHintTextview, TextView bmwEvoId6GsHmoeVideoHintTextview, TextView id6BrowserMessTextview) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.bmwEvoId6GsHmoeCarBtn = bmwEvoId6GsHmoeCarBtn2;
-        this.bmwEvoId6GsHmoeCarHintTextview = bmwEvoId6GsHmoeCarHintTextview2;
-        this.bmwEvoId6GsHmoeFileHintTextview = bmwEvoId6GsHmoeFileHintTextview2;
-        this.bmwEvoId6GsHmoeVideoHintTextview = bmwEvoId6GsHmoeVideoHintTextview2;
-        this.id6BrowserMessTextview = id6BrowserMessTextview2;
+        this.bmwEvoId6GsHmoeCarBtn = bmwEvoId6GsHmoeCarBtn;
+        this.bmwEvoId6GsHmoeCarHintTextview = bmwEvoId6GsHmoeCarHintTextview;
+        this.bmwEvoId6GsHmoeFileHintTextview = bmwEvoId6GsHmoeFileHintTextview;
+        this.bmwEvoId6GsHmoeVideoHintTextview = bmwEvoId6GsHmoeVideoHintTextview;
+        this.id6BrowserMessTextview = id6BrowserMessTextview;
     }
 
     public BmwId6gsViewMode getVm() {
@@ -41,7 +42,7 @@ public abstract class FraBmwEvoId6GsTwoBinding extends ViewDataBinding {
 
     @Deprecated
     public static FraBmwEvoId6GsTwoBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (FraBmwEvoId6GsTwoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fra_bmw_evo_id6_gs_two, root, attachToRoot, component);
+        return (FraBmwEvoId6GsTwoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fra_bmw_evo_id6_gs_two, root, attachToRoot, component);
     }
 
     public static FraBmwEvoId6GsTwoBinding inflate(LayoutInflater inflater) {
@@ -50,7 +51,7 @@ public abstract class FraBmwEvoId6GsTwoBinding extends ViewDataBinding {
 
     @Deprecated
     public static FraBmwEvoId6GsTwoBinding inflate(LayoutInflater inflater, Object component) {
-        return (FraBmwEvoId6GsTwoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fra_bmw_evo_id6_gs_two, (ViewGroup) null, false, component);
+        return (FraBmwEvoId6GsTwoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fra_bmw_evo_id6_gs_two, null, false, component);
     }
 
     public static FraBmwEvoId6GsTwoBinding bind(View view) {
@@ -59,6 +60,6 @@ public abstract class FraBmwEvoId6GsTwoBinding extends ViewDataBinding {
 
     @Deprecated
     public static FraBmwEvoId6GsTwoBinding bind(View view, Object component) {
-        return (FraBmwEvoId6GsTwoBinding) bind(component, view, R.layout.fra_bmw_evo_id6_gs_two);
+        return (FraBmwEvoId6GsTwoBinding) bind(component, view, C0899R.C0902layout.fra_bmw_evo_id6_gs_two);
     }
 }

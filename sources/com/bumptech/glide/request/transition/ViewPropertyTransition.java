@@ -3,22 +3,26 @@ package com.bumptech.glide.request.transition;
 import android.view.View;
 import com.bumptech.glide.request.transition.Transition;
 
+/* loaded from: classes.dex */
 public class ViewPropertyTransition<R> implements Transition<R> {
     private final Animator animator;
 
+    /* loaded from: classes.dex */
     public interface Animator {
         void animate(View view);
     }
 
-    public ViewPropertyTransition(Animator animator2) {
-        this.animator = animator2;
+    public ViewPropertyTransition(Animator animator) {
+        this.animator = animator;
     }
 
-    public boolean transition(R r, Transition.ViewAdapter adapter) {
-        if (adapter.getView() == null) {
+    @Override // com.bumptech.glide.request.transition.Transition
+    public boolean transition(R current, Transition.ViewAdapter adapter) {
+        View view = adapter.getView();
+        if (view != null) {
+            this.animator.animate(adapter.getView());
             return false;
         }
-        this.animator.animate(adapter.getView());
         return false;
     }
 }

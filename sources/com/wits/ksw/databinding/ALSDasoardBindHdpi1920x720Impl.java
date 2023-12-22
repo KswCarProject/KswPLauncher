@@ -1,7 +1,6 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableFloat;
@@ -10,16 +9,20 @@ import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.content.res.AppCompatResources;
+import android.support.constraint.ConstraintLayout;
+import android.support.p001v4.media.session.PlaybackStateCompat;
+import android.support.p004v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.ImageView;
-import com.wits.ksw.R;
-import com.wits.ksw.launcher.bean.CarInfo;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.DashboardViewModel;
 import com.wits.ksw.launcher.view.ID7SpeedImageView;
 
+/* loaded from: classes7.dex */
 public class ALSDasoardBindHdpi1920x720Impl extends ALSDasoardBind {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -30,17 +33,17 @@ public class ALSDasoardBindHdpi1920x720Impl extends ALSDasoardBind {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.carImageView, 13);
-        sparseIntArray.put(R.id.dorr_left_fl_imageView, 14);
-        sparseIntArray.put(R.id.dorr_left_fr_imageView, 15);
-        sparseIntArray.put(R.id.dorr_left_rl_imageView, 16);
-        sparseIntArray.put(R.id.imageView19, 17);
-        sparseIntArray.put(R.id.dorr_back_imageView, 18);
-        sparseIntArray.put(R.id.alsCloseView, 19);
-        sparseIntArray.put(R.id.alsRadioGroup, 20);
-        sparseIntArray.put(R.id.alsRadioButton1, 21);
-        sparseIntArray.put(R.id.alsRadioButton2, 22);
-        sparseIntArray.put(R.id.alsRadioButton3, 23);
+        sparseIntArray.put(C0899R.C0901id.carImageView, 13);
+        sparseIntArray.put(C0899R.C0901id.dorr_left_fl_imageView, 14);
+        sparseIntArray.put(C0899R.C0901id.dorr_left_fr_imageView, 15);
+        sparseIntArray.put(C0899R.C0901id.dorr_left_rl_imageView, 16);
+        sparseIntArray.put(C0899R.C0901id.imageView19, 17);
+        sparseIntArray.put(C0899R.C0901id.dorr_back_imageView, 18);
+        sparseIntArray.put(C0899R.C0901id.alsCloseView, 19);
+        sparseIntArray.put(C0899R.C0901id.alsRadioGroup, 20);
+        sparseIntArray.put(C0899R.C0901id.alsRadioButton1, 21);
+        sparseIntArray.put(C0899R.C0901id.alsRadioButton2, 22);
+        sparseIntArray.put(C0899R.C0901id.alsRadioButton3, 23);
     }
 
     public ALSDasoardBindHdpi1920x720Impl(DataBindingComponent bindingComponent, View root) {
@@ -48,29 +51,30 @@ public class ALSDasoardBindHdpi1920x720Impl extends ALSDasoardBind {
     }
 
     private ALSDasoardBindHdpi1920x720Impl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 11, bindings[19], bindings[12], bindings[21], bindings[22], bindings[23], bindings[20], bindings[10], bindings[13], bindings[18], bindings[14], bindings[15], bindings[16], bindings[17], bindings[0], bindings[8], bindings[11], (ImageView) null, bindings[4], bindings[2], bindings[5], bindings[9], bindings[6], bindings[7]);
-        this.mDirtyFlags = -1;
-        this.alsMenu.setTag((Object) null);
-        this.brakeTextView.setTag((Object) null);
-        this.linearLayout2.setTag((Object) null);
-        ID7SpeedImageView iD7SpeedImageView = bindings[1];
+        super(bindingComponent, root, 11, (ImageView) bindings[19], (ConstraintLayout) bindings[12], (RadioButton) bindings[21], (RadioButton) bindings[22], (RadioButton) bindings[23], (RadioGroup) bindings[20], (ImageView) bindings[10], (ImageView) bindings[13], (ImageView) bindings[18], (ImageView) bindings[14], (ImageView) bindings[15], (ImageView) bindings[16], (ImageView) bindings[17], (ConstraintLayout) bindings[0], (TextView) bindings[8], (ImageView) bindings[11], null, (TextView) bindings[4], (ID7SpeedImageView) bindings[2], (ID7SpeedImageView) bindings[5], (TextView) bindings[9], (ImageView) bindings[6], (TextView) bindings[7]);
+        this.mDirtyFlags = -1L;
+        this.alsMenu.setTag(null);
+        this.brakeTextView.setTag(null);
+        this.linearLayout2.setTag(null);
+        ID7SpeedImageView iD7SpeedImageView = (ID7SpeedImageView) bindings[1];
         this.mboundView1 = iD7SpeedImageView;
-        iD7SpeedImageView.setTag((Object) null);
-        ImageView imageView = bindings[3];
+        iD7SpeedImageView.setTag(null);
+        ImageView imageView = (ImageView) bindings[3];
         this.mboundView3 = imageView;
-        imageView.setTag((Object) null);
-        this.oilTextView.setTag((Object) null);
-        this.seatBeltTextView.setTag((Object) null);
-        this.speedPointerTextView.setTag((Object) null);
-        this.speedometerImageView.setTag((Object) null);
-        this.tachometerImageView.setTag((Object) null);
-        this.tempTextView.setTag((Object) null);
-        this.zspeedPointerImageView.setTag((Object) null);
-        this.zspeedPointerTextView.setTag((Object) null);
+        imageView.setTag(null);
+        this.oilTextView.setTag(null);
+        this.seatBeltTextView.setTag(null);
+        this.speedPointerTextView.setTag(null);
+        this.speedometerImageView.setTag(null);
+        this.tachometerImageView.setTag(null);
+        this.tempTextView.setTag(null);
+        this.zspeedPointerImageView.setTag(null);
+        this.zspeedPointerTextView.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
             this.mDirtyFlags = PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
@@ -78,6 +82,7 @@ public class ALSDasoardBindHdpi1920x720Impl extends ALSDasoardBind {
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -87,14 +92,16 @@ public class ALSDasoardBindHdpi1920x720Impl extends ALSDasoardBind {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (25 != variableId) {
-            return false;
+        if (25 == variableId) {
+            setViewModel((DashboardViewModel) variable);
+            return true;
         }
-        setViewModel((DashboardViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.ALSDasoardBind
     public void setViewModel(DashboardViewModel ViewModel) {
         this.mViewModel = ViewModel;
         synchronized (this) {
@@ -104,8 +111,8 @@ public class ALSDasoardBindHdpi1920x720Impl extends ALSDasoardBind {
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeViewModelCarInfoTurnSpeed((ObservableInt) object, fieldId);
@@ -135,133 +142,132 @@ public class ALSDasoardBindHdpi1920x720Impl extends ALSDasoardBind {
     }
 
     private boolean onChangeViewModelCarInfoTurnSpeed(ObservableInt ViewModelCarInfoTurnSpeed, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelCarInfoAlsmode(ObservableInt ViewModelCarInfoAlsmode, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelShowAls(ObservableBoolean ViewModelShowAls, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelHideOil(ObservableBoolean ViewModelHideOil, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeViewModelCarInfoOilValue(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelCarInfoOilValue(ObservableField<String> ViewModelCarInfoOilValue, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 16;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 16;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeViewModelCarInfoTempStr(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelCarInfoTempStr(ObservableField<String> ViewModelCarInfoTempStr, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 32;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 32;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelCarInfoUnit(ObservableInt ViewModelCarInfoUnit, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 64;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 64;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelCarInfoTurnSpeedAnge(ObservableFloat ViewModelCarInfoTurnSpeedAnge, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 128;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 128;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeViewModelCarInfoSeatBeltpValue(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelCarInfoSeatBeltpValue(ObservableField<Boolean> ViewModelCarInfoSeatBeltpValue, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 256;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 256;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelCarInfoSpeed(ObservableInt ViewModelCarInfoSpeed, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 512;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 512;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeViewModelCarInfoBrakeValue(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelCarInfoBrakeValue(ObservableField<Boolean> ViewModelCarInfoBrakeValue, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
-        boolean viewModelHideOilGet;
-        int viewModelHideOilViewGONEViewVISIBLE;
-        int viewModelCarInfoAlsmodeGet;
-        String stringValueOfViewModelCarInfoTurnSpeed;
-        String viewModelCarInfoTempStrGet;
-        Drawable viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableId7AlsMphSpeedWtachLevelSpeedometerImageViewAndroidDrawableId7AlsSpeedWtachLevel;
+        int viewModelCarInfoBrakeValueViewVISIBLEViewGONE;
         long dirtyFlags2;
         String stringValueOfViewModelCarInfoSpeed;
+        String viewModelCarInfoTempStrGet;
         float viewModelCarInfoTurnSpeedAngeGet;
-        int viewModelCarInfoBrakeValueViewVISIBLEViewGONE;
-        int viewModelShowAlsViewVISIBLEViewGONE;
+        int viewModelHideOilViewGONEViewVISIBLE;
+        boolean viewModelHideOilGet;
+        Drawable viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableId7AlsMphSpeedWtachLevelSpeedometerImageViewAndroidDrawableId7AlsSpeedWtachLevel;
+        int viewModelCarInfoAlsmodeGet;
+        String stringValueOfViewModelCarInfoTurnSpeed;
         int viewModelHideOilViewGONEViewVISIBLE2;
+        int viewModelShowAlsViewVISIBLEViewGONE;
         ObservableBoolean viewModelHideOil;
         boolean viewModelHideOilGet2;
-        ObservableBoolean viewModelShowAls;
         ObservableField<Boolean> viewModelCarInfoBrakeValue;
         ObservableField<Boolean> viewModelCarInfoBrakeValue2;
         ObservableInt viewModelCarInfoSpeed;
@@ -274,7 +280,7 @@ public class ALSDasoardBindHdpi1920x720Impl extends ALSDasoardBind {
         ObservableField<String> viewModelCarInfoOilValue;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         ObservableInt viewModelCarInfoTurnSpeed = null;
         int viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE = 0;
@@ -294,74 +300,74 @@ public class ALSDasoardBindHdpi1920x720Impl extends ALSDasoardBind {
         DashboardViewModel viewModel = this.mViewModel;
         int viewModelCarInfoAlsmodeGet2 = 0;
         float viewModelCarInfoTurnSpeedAngeGet2 = 0.0f;
-        if ((dirtyFlags & 6131) != 0) {
-            CarInfo viewModelCarInfo = DashboardViewModel.carInfo;
-            if ((dirtyFlags & 4097) != 0) {
+        if ((dirtyFlags & 6131) == 0) {
+            viewModelCarInfoBrakeValueViewVISIBLEViewGONE = 0;
+            dirtyFlags2 = dirtyFlags;
+            stringValueOfViewModelCarInfoSpeed = null;
+            viewModelCarInfoTempStrGet = null;
+            viewModelCarInfoTurnSpeedAngeGet = 0.0f;
+            viewModelHideOilViewGONEViewVISIBLE = 0;
+            viewModelHideOilGet = false;
+            viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableId7AlsMphSpeedWtachLevelSpeedometerImageViewAndroidDrawableId7AlsSpeedWtachLevel = null;
+            viewModelCarInfoAlsmodeGet = 0;
+            stringValueOfViewModelCarInfoTurnSpeed = null;
+        } else {
+            com.wits.ksw.launcher.bean.CarInfo viewModelCarInfo = DashboardViewModel.carInfo;
+            if ((dirtyFlags & 4097) == 0) {
+                viewModelCarInfoBrakeValue = null;
+            } else {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoTurnSpeed = viewModelCarInfo.turnSpeed;
                 }
                 viewModelCarInfoBrakeValue = null;
-                updateRegistration(0, (Observable) viewModelCarInfoTurnSpeed);
+                updateRegistration(0, viewModelCarInfoTurnSpeed);
                 if (viewModelCarInfoTurnSpeed != null) {
                     viewModelCarInfoTurnSpeedGet = viewModelCarInfoTurnSpeed.get();
                 }
                 stringValueOfViewModelCarInfoTurnSpeed2 = String.valueOf(viewModelCarInfoTurnSpeedGet);
-            } else {
-                viewModelCarInfoBrakeValue = null;
             }
             if ((dirtyFlags & 4098) != 0) {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoAlsmode = viewModelCarInfo.alsmode;
                 }
-                updateRegistration(1, (Observable) viewModelCarInfoAlsmode);
+                updateRegistration(1, viewModelCarInfoAlsmode);
                 if (viewModelCarInfoAlsmode != null) {
                     viewModelCarInfoAlsmodeGet2 = viewModelCarInfoAlsmode.get();
                 }
             }
             if ((dirtyFlags & 4112) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoOilValue = viewModelCarInfo.oilValue;
-                } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoOilValue = null;
+                } else {
+                    viewModelCarInfoOilValue = viewModelCarInfo.oilValue;
                 }
-                ObservableInt observableInt = viewModelCarInfoTurnSpeed;
-                updateRegistration(4, (Observable) viewModelCarInfoOilValue);
+                updateRegistration(4, viewModelCarInfoOilValue);
                 if (viewModelCarInfoOilValue != null) {
                     viewModelCarInfoOilValueGet = viewModelCarInfoOilValue.get();
-                    ObservableField<String> observableField = viewModelCarInfoOilValue;
-                } else {
-                    ObservableField<String> observableField2 = viewModelCarInfoOilValue;
                 }
             }
             if ((dirtyFlags & 4128) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoTempStr = viewModelCarInfo.tempStr;
-                } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoTempStr = null;
+                } else {
+                    viewModelCarInfoTempStr = viewModelCarInfo.tempStr;
                 }
-                updateRegistration(5, (Observable) viewModelCarInfoTempStr);
+                updateRegistration(5, viewModelCarInfoTempStr);
                 if (viewModelCarInfoTempStr != null) {
                     viewModelCarInfoTempStrGet2 = viewModelCarInfoTempStr.get();
-                    ObservableField<String> observableField3 = viewModelCarInfoTempStr;
-                } else {
-                    ObservableField<String> observableField4 = viewModelCarInfoTempStr;
                 }
             }
             if ((dirtyFlags & 4160) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoUnit = viewModelCarInfo.unit;
-                } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoUnit = null;
+                } else {
+                    viewModelCarInfoUnit = viewModelCarInfo.unit;
                 }
-                updateRegistration(6, (Observable) viewModelCarInfoUnit);
+                updateRegistration(6, viewModelCarInfoUnit);
                 if (viewModelCarInfoUnit != null) {
                     viewModelCarInfoUnitGet = viewModelCarInfoUnit.get();
                 }
-                boolean z = true;
-                if (viewModelCarInfoUnitGet != 1) {
-                    z = false;
-                }
-                boolean viewModelCarInfoUnitInt1 = z;
+                boolean viewModelCarInfoUnitInt1 = viewModelCarInfoUnitGet == 1;
                 if ((dirtyFlags & 4160) != 0) {
                     if (viewModelCarInfoUnitInt1) {
                         dirtyFlags |= 4194304;
@@ -371,36 +377,32 @@ public class ALSDasoardBindHdpi1920x720Impl extends ALSDasoardBind {
                 }
                 if (viewModelCarInfoUnitInt1) {
                     dirtyFlags3 = dirtyFlags;
-                    drawable = AppCompatResources.getDrawable(this.speedometerImageView.getContext(), R.drawable.id7_als_mph_speed_wtach_level);
+                    drawable = AppCompatResources.getDrawable(this.speedometerImageView.getContext(), C0899R.C0900drawable.id7_als_mph_speed_wtach_level);
                 } else {
                     dirtyFlags3 = dirtyFlags;
-                    drawable = AppCompatResources.getDrawable(this.speedometerImageView.getContext(), R.drawable.id7_als_speed_wtach_level);
+                    drawable = AppCompatResources.getDrawable(this.speedometerImageView.getContext(), C0899R.C0900drawable.id7_als_speed_wtach_level);
                 }
                 viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableId7AlsMphSpeedWtachLevelSpeedometerImageViewAndroidDrawableId7AlsSpeedWtachLevel2 = drawable;
-                ObservableInt observableInt2 = viewModelCarInfoUnit;
                 dirtyFlags = dirtyFlags3;
             }
             if ((dirtyFlags & 4224) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoTurnSpeedAnge = viewModelCarInfo.turnSpeedAnge;
-                } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoTurnSpeedAnge = null;
-                }
-                updateRegistration(7, (Observable) viewModelCarInfoTurnSpeedAnge);
-                if (viewModelCarInfoTurnSpeedAnge != null) {
-                    ObservableFloat observableFloat = viewModelCarInfoTurnSpeedAnge;
-                    viewModelCarInfoTurnSpeedAngeGet2 = viewModelCarInfoTurnSpeedAnge.get();
                 } else {
-                    ObservableFloat observableFloat2 = viewModelCarInfoTurnSpeedAnge;
+                    viewModelCarInfoTurnSpeedAnge = viewModelCarInfo.turnSpeedAnge;
+                }
+                updateRegistration(7, viewModelCarInfoTurnSpeedAnge);
+                if (viewModelCarInfoTurnSpeedAnge != null) {
+                    viewModelCarInfoTurnSpeedAngeGet2 = viewModelCarInfoTurnSpeedAnge.get();
                 }
             }
             if ((dirtyFlags & 4352) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoSeatBeltpValue = viewModelCarInfo.seatBeltpValue;
-                } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoSeatBeltpValue = null;
+                } else {
+                    viewModelCarInfoSeatBeltpValue = viewModelCarInfo.seatBeltpValue;
                 }
-                updateRegistration(8, (Observable) viewModelCarInfoSeatBeltpValue);
+                updateRegistration(8, viewModelCarInfoSeatBeltpValue);
                 if (viewModelCarInfoSeatBeltpValue != null) {
                     viewModelCarInfoSeatBeltpValueGet = viewModelCarInfoSeatBeltpValue.get();
                 }
@@ -413,55 +415,20 @@ public class ALSDasoardBindHdpi1920x720Impl extends ALSDasoardBind {
                     }
                 }
                 viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoSeatBeltpValueGet ? 8 : 0;
-                ObservableField<Boolean> observableField5 = viewModelCarInfoSeatBeltpValue;
             }
             if ((dirtyFlags & 4608) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoSpeed = viewModelCarInfo.speed;
-                } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoSpeed = null;
+                } else {
+                    viewModelCarInfoSpeed = viewModelCarInfo.speed;
                 }
-                updateRegistration(9, (Observable) viewModelCarInfoSpeed);
+                updateRegistration(9, viewModelCarInfoSpeed);
                 if (viewModelCarInfoSpeed != null) {
                     viewModelCarInfoSpeedGet = viewModelCarInfoSpeed.get();
                 }
                 stringValueOfViewModelCarInfoSpeed2 = String.valueOf(viewModelCarInfoSpeedGet);
-                ObservableInt observableInt3 = viewModelCarInfoSpeed;
             }
-            if ((dirtyFlags & 5120) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoBrakeValue2 = viewModelCarInfo.brakeValue;
-                } else {
-                    viewModelCarInfoBrakeValue2 = viewModelCarInfoBrakeValue;
-                }
-                updateRegistration(10, (Observable) viewModelCarInfoBrakeValue2);
-                if (viewModelCarInfoBrakeValue2 != null) {
-                    viewModelCarInfoBrakeValueGet = viewModelCarInfoBrakeValue2.get();
-                }
-                int androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet = ViewDataBinding.safeUnbox(viewModelCarInfoBrakeValueGet);
-                if ((dirtyFlags & 5120) != 0) {
-                    if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet == true) {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_CAPTIONING_ENABLED;
-                    } else {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE_ENABLED;
-                    }
-                }
-                CarInfo carInfo = viewModelCarInfo;
-                ObservableField<Boolean> observableField6 = viewModelCarInfoBrakeValue2;
-                viewModelCarInfoBrakeValueViewVISIBLEViewGONE = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet != 0 ? 0 : 8;
-                dirtyFlags2 = dirtyFlags;
-                int viewModelCarInfoBrakeValueViewVISIBLEViewGONE2 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet;
-                stringValueOfViewModelCarInfoSpeed = stringValueOfViewModelCarInfoSpeed2;
-                viewModelCarInfoTempStrGet = viewModelCarInfoTempStrGet2;
-                viewModelCarInfoTurnSpeedAngeGet = viewModelCarInfoTurnSpeedAngeGet2;
-                viewModelHideOilViewGONEViewVISIBLE = 0;
-                viewModelHideOilGet = false;
-                viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableId7AlsMphSpeedWtachLevelSpeedometerImageViewAndroidDrawableId7AlsSpeedWtachLevel = viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableId7AlsMphSpeedWtachLevelSpeedometerImageViewAndroidDrawableId7AlsSpeedWtachLevel2;
-                viewModelCarInfoAlsmodeGet = viewModelCarInfoAlsmodeGet2;
-                int i = viewModelCarInfoUnitGet;
-                stringValueOfViewModelCarInfoTurnSpeed = stringValueOfViewModelCarInfoTurnSpeed2;
-            } else {
-                CarInfo carInfo2 = viewModelCarInfo;
+            if ((dirtyFlags & 5120) == 0) {
                 dirtyFlags2 = dirtyFlags;
                 stringValueOfViewModelCarInfoSpeed = stringValueOfViewModelCarInfoSpeed2;
                 viewModelCarInfoBrakeValueViewVISIBLEViewGONE = 0;
@@ -469,33 +436,48 @@ public class ALSDasoardBindHdpi1920x720Impl extends ALSDasoardBind {
                 viewModelHideOilViewGONEViewVISIBLE = 0;
                 viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableId7AlsMphSpeedWtachLevelSpeedometerImageViewAndroidDrawableId7AlsSpeedWtachLevel = viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableId7AlsMphSpeedWtachLevelSpeedometerImageViewAndroidDrawableId7AlsSpeedWtachLevel2;
                 viewModelCarInfoTempStrGet = viewModelCarInfoTempStrGet2;
-                int i2 = viewModelCarInfoUnitGet;
                 viewModelHideOilGet = false;
                 stringValueOfViewModelCarInfoTurnSpeed = stringValueOfViewModelCarInfoTurnSpeed2;
                 viewModelCarInfoAlsmodeGet = viewModelCarInfoAlsmodeGet2;
-            }
-        } else {
-            viewModelCarInfoBrakeValueViewVISIBLEViewGONE = 0;
-            dirtyFlags2 = dirtyFlags;
-            stringValueOfViewModelCarInfoSpeed = null;
-            viewModelCarInfoTempStrGet = null;
-            viewModelCarInfoTurnSpeedAngeGet = 0.0f;
-            viewModelHideOilViewGONEViewVISIBLE = 0;
-            viewModelHideOilGet = false;
-            viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableId7AlsMphSpeedWtachLevelSpeedometerImageViewAndroidDrawableId7AlsSpeedWtachLevel = null;
-            viewModelCarInfoAlsmodeGet = 0;
-            stringValueOfViewModelCarInfoTurnSpeed = null;
-        }
-        if ((dirtyFlags2 & 6156) != 0) {
-            if ((dirtyFlags2 & 6148) != 0) {
-                if (viewModel != null) {
-                    Boolean bool = viewModelCarInfoSeatBeltpValueGet;
-                    viewModelShowAls = viewModel.showAls;
+            } else {
+                if (viewModelCarInfo == null) {
+                    viewModelCarInfoBrakeValue2 = viewModelCarInfoBrakeValue;
                 } else {
-                    viewModelShowAls = null;
+                    viewModelCarInfoBrakeValue2 = viewModelCarInfo.brakeValue;
                 }
-                ObservableInt observableInt4 = viewModelCarInfoAlsmode;
-                updateRegistration(2, (Observable) viewModelShowAls);
+                updateRegistration(10, viewModelCarInfoBrakeValue2);
+                if (viewModelCarInfoBrakeValue2 != null) {
+                    Boolean viewModelCarInfoBrakeValueGet2 = viewModelCarInfoBrakeValue2.get();
+                    viewModelCarInfoBrakeValueGet = viewModelCarInfoBrakeValueGet2;
+                }
+                boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet = ViewDataBinding.safeUnbox(viewModelCarInfoBrakeValueGet);
+                if ((dirtyFlags & 5120) != 0) {
+                    if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet) {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_CAPTIONING_ENABLED;
+                    } else {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE_ENABLED;
+                    }
+                }
+                int viewModelCarInfoBrakeValueViewVISIBLEViewGONE2 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet ? 0 : 8;
+                viewModelCarInfoBrakeValueViewVISIBLEViewGONE = viewModelCarInfoBrakeValueViewVISIBLEViewGONE2;
+                dirtyFlags2 = dirtyFlags;
+                stringValueOfViewModelCarInfoSpeed = stringValueOfViewModelCarInfoSpeed2;
+                viewModelCarInfoTempStrGet = viewModelCarInfoTempStrGet2;
+                viewModelCarInfoTurnSpeedAngeGet = viewModelCarInfoTurnSpeedAngeGet2;
+                viewModelHideOilViewGONEViewVISIBLE = 0;
+                viewModelHideOilGet = false;
+                viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableId7AlsMphSpeedWtachLevelSpeedometerImageViewAndroidDrawableId7AlsSpeedWtachLevel = viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableId7AlsMphSpeedWtachLevelSpeedometerImageViewAndroidDrawableId7AlsSpeedWtachLevel2;
+                viewModelCarInfoAlsmodeGet = viewModelCarInfoAlsmodeGet2;
+                stringValueOfViewModelCarInfoTurnSpeed = stringValueOfViewModelCarInfoTurnSpeed2;
+            }
+        }
+        if ((dirtyFlags2 & 6156) == 0) {
+            viewModelHideOilViewGONEViewVISIBLE2 = viewModelHideOilViewGONEViewVISIBLE;
+            viewModelShowAlsViewVISIBLEViewGONE = 0;
+        } else {
+            if ((dirtyFlags2 & 6148) != 0) {
+                ObservableBoolean viewModelShowAls = viewModel != null ? viewModel.showAls : null;
+                updateRegistration(2, viewModelShowAls);
                 if (viewModelShowAls != null) {
                     viewModelShowAlsGet = viewModelShowAls.get();
                 }
@@ -507,21 +489,21 @@ public class ALSDasoardBindHdpi1920x720Impl extends ALSDasoardBind {
                     }
                 }
                 viewModelShowAlsViewVISIBLEViewGONE2 = viewModelShowAlsGet ? 0 : 8;
-                ObservableBoolean observableBoolean = viewModelShowAls;
-            } else {
-                ObservableInt observableInt5 = viewModelCarInfoAlsmode;
             }
-            if ((dirtyFlags2 & 6152) != 0) {
-                if (viewModel != null) {
-                    viewModelHideOil = viewModel.hideOil;
-                } else {
+            if ((dirtyFlags2 & 6152) == 0) {
+                viewModelHideOilViewGONEViewVISIBLE2 = viewModelHideOilViewGONEViewVISIBLE;
+                viewModelShowAlsViewVISIBLEViewGONE = viewModelShowAlsViewVISIBLEViewGONE2;
+            } else {
+                if (viewModel == null) {
                     viewModelHideOil = null;
-                }
-                updateRegistration(3, (Observable) viewModelHideOil);
-                if (viewModelHideOil != null) {
-                    viewModelHideOilGet2 = viewModelHideOil.get();
                 } else {
+                    viewModelHideOil = viewModel.hideOil;
+                }
+                updateRegistration(3, viewModelHideOil);
+                if (viewModelHideOil == null) {
                     viewModelHideOilGet2 = viewModelHideOilGet;
+                } else {
+                    viewModelHideOilGet2 = viewModelHideOil.get();
                 }
                 if ((dirtyFlags2 & 6152) != 0) {
                     if (viewModelHideOilGet2) {
@@ -530,22 +512,12 @@ public class ALSDasoardBindHdpi1920x720Impl extends ALSDasoardBind {
                         dirtyFlags2 |= PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID;
                     }
                 }
-                int i3 = viewModelHideOilGet2 ? 8 : 0;
-                boolean z2 = viewModelHideOilGet2;
+                int i = viewModelHideOilGet2 ? 8 : 0;
                 viewModelShowAlsViewVISIBLEViewGONE = viewModelShowAlsViewVISIBLEViewGONE2;
-                ObservableBoolean observableBoolean2 = viewModelHideOil;
-                viewModelHideOilViewGONEViewVISIBLE2 = i3;
-            } else {
-                viewModelHideOilViewGONEViewVISIBLE2 = viewModelHideOilViewGONEViewVISIBLE;
-                viewModelShowAlsViewVISIBLEViewGONE = viewModelShowAlsViewVISIBLEViewGONE2;
+                viewModelHideOilViewGONEViewVISIBLE2 = i;
             }
-        } else {
-            ObservableInt observableInt6 = viewModelCarInfoAlsmode;
-            viewModelHideOilViewGONEViewVISIBLE2 = viewModelHideOilViewGONEViewVISIBLE;
-            viewModelShowAlsViewVISIBLEViewGONE = 0;
         }
         if ((dirtyFlags2 & 6148) != 0) {
-            DashboardViewModel dashboardViewModel = viewModel;
             this.alsMenu.setVisibility(viewModelShowAlsViewVISIBLEViewGONE);
         }
         if ((dirtyFlags2 & 5120) != 0) {

@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
+/* loaded from: classes.dex */
 public abstract class Normalizer2 {
 
+    /* loaded from: classes.dex */
     public enum Mode {
         COMPOSE,
         DECOMPOSE,
@@ -68,23 +70,24 @@ public abstract class Normalizer2 {
                 throw new ICUUncheckedIOException(e);
             }
         }
-        IOException e2 = Norm2AllModes.getInstance(bytes, name);
-        switch (AnonymousClass1.$SwitchMap$com$ibm$icu$text$Normalizer2$Mode[mode.ordinal()]) {
+        Norm2AllModes all2Modes = Norm2AllModes.getInstance(bytes, name);
+        switch (C07411.$SwitchMap$com$ibm$icu$text$Normalizer2$Mode[mode.ordinal()]) {
             case 1:
-                return e2.comp;
+                return all2Modes.comp;
             case 2:
-                return e2.decomp;
+                return all2Modes.decomp;
             case 3:
-                return e2.fcd;
+                return all2Modes.fcd;
             case 4:
-                return e2.fcc;
+                return all2Modes.fcc;
             default:
                 return null;
         }
     }
 
-    /* renamed from: com.ibm.icu.text.Normalizer2$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
+    /* renamed from: com.ibm.icu.text.Normalizer2$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C07411 {
         static final /* synthetic */ int[] $SwitchMap$com$ibm$icu$text$Normalizer2$Mode;
 
         static {
@@ -116,7 +119,8 @@ public abstract class Normalizer2 {
                 return (String) src;
             }
             if (spanLength != 0) {
-                return normalizeSecondAndAppend(new StringBuilder(src.length()).append(src, 0, spanLength), src.subSequence(spanLength, src.length())).toString();
+                StringBuilder sb = new StringBuilder(src.length()).append(src, 0, spanLength);
+                return normalizeSecondAndAppend(sb, src.subSequence(spanLength, src.length())).toString();
             }
         }
         return normalize(src, new StringBuilder(src.length())).toString();

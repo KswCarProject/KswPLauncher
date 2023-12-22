@@ -7,6 +7,7 @@ import io.reactivex.internal.functions.ObjectHelper;
 import java.util.concurrent.Future;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class Disposables {
     private Disposables() {
         throw new IllegalStateException("No instances!");

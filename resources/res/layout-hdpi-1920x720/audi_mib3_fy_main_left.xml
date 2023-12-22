@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="center" android:orientation="vertical" android:tag="layout-hdpi-1920x720/audi_mib3_fy_main_left_0" android:focusable="false" android:focusableInTouchMode="false" android:layout_width="match_parent" android:layout_height="match_parent" android:focusedByDefault="false">
+    <ImageView android:id="@+id/iv_music_audimib3" android:nextFocusRight="@+id/navi_itemview" android:nextFocusUp="@+id/iv_music_audimib3" android:nextFocusDown="@+id/iv_navi_audimib3" android:layout_width="match_parent" android:layout_height="0dp" android:src="@drawable/audi_mib3_fy_left_music_selector" android:scaleType="fitXY" android:layout_weight="1"/>
+    <View android:layout_width="match_parent" android:layout_height="1dp"/>
+    <ImageView android:id="@+id/iv_navi_audimib3" android:nextFocusRight="@+id/navi_itemview" android:nextFocusUp="@+id/iv_music_audimib3" android:nextFocusDown="@+id/iv_bt_audimib3" android:layout_width="match_parent" android:layout_height="0dp" android:src="@drawable/audi_mib3_fy_left_navi_selector" android:scaleType="fitXY" android:layout_weight="1"/>
+    <View android:layout_width="match_parent" android:layout_height="1dp"/>
+    <ImageView android:id="@+id/iv_bt_audimib3" android:nextFocusRight="@+id/navi_itemview" android:nextFocusUp="@+id/iv_navi_audimib3" android:nextFocusDown="@+id/iv_set_audimib3" android:layout_width="match_parent" android:layout_height="0dp" android:src="@drawable/audi_mib3_fy_left_bt_selector" android:scaleType="fitXY" android:layout_weight="1"/>
+    <View android:layout_width="match_parent" android:layout_height="1dp"/>
+    <ImageView android:id="@+id/iv_set_audimib3" android:nextFocusRight="@+id/navi_itemview" android:nextFocusUp="@+id/iv_bt_audimib3" android:nextFocusDown="@+id/iv_car_audimib3" android:layout_width="match_parent" android:layout_height="0dp" android:src="@drawable/audi_mib3_fy_left_set_selector" android:scaleType="fitXY" android:layout_weight="1"/>
+    <View android:layout_width="match_parent" android:layout_height="1dp"/>
+    <ImageView android:id="@+id/iv_car_audimib3" android:nextFocusRight="@+id/navi_itemview" android:nextFocusUp="@+id/iv_set_audimib3" android:nextFocusDown="@+id/iv_car_audimib3" android:layout_width="match_parent" android:layout_height="0dp" android:src="@drawable/audi_mib3_fy_left_car_selector" android:scaleType="fitXY" android:layout_weight="1"/>
+</LinearLayout>

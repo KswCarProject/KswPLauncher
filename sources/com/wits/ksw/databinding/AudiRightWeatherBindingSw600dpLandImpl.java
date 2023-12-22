@@ -1,7 +1,6 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
@@ -9,23 +8,25 @@ import android.databinding.adapters.ImageViewBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.databinding.adapters.ViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.constraint.ConstraintLayout;
+import android.support.p001v4.media.session.PlaybackStateCompat;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.bean.WeatherInfo;
 import com.wits.ksw.launcher.model.AudiViewModel;
 import com.wits.ksw.launcher.view.MarqueeTextView;
 
+/* loaded from: classes7.dex */
 public class AudiRightWeatherBindingSw600dpLandImpl extends AudiRightWeatherBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback132;
+    private final View.OnClickListener mCallback215;
     private long mDirtyFlags;
     private final RelativeLayout mboundView0;
     private final TextView mboundView10;
@@ -45,53 +46,54 @@ public class AudiRightWeatherBindingSw600dpLandImpl extends AudiRightWeatherBind
     }
 
     private AudiRightWeatherBindingSw600dpLandImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 16, bindings[1], bindings[2], bindings[5], bindings[6]);
-        this.mDirtyFlags = -1;
-        this.clWeather.setTag((Object) null);
-        this.ivIcon.setTag((Object) null);
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 16, (ConstraintLayout) bindings[1], (ImageView) bindings[2], (TextView) bindings[5], (TextView) bindings[6]);
+        this.mDirtyFlags = -1L;
+        this.clWeather.setTag(null);
+        this.ivIcon.setTag(null);
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
-        TextView textView = bindings[10];
+        relativeLayout.setTag(null);
+        TextView textView = (TextView) bindings[10];
         this.mboundView10 = textView;
-        textView.setTag((Object) null);
-        ImageView imageView = bindings[11];
+        textView.setTag(null);
+        ImageView imageView = (ImageView) bindings[11];
         this.mboundView11 = imageView;
-        imageView.setTag((Object) null);
-        TextView textView2 = bindings[12];
+        imageView.setTag(null);
+        TextView textView2 = (TextView) bindings[12];
         this.mboundView12 = textView2;
-        textView2.setTag((Object) null);
-        ImageView imageView2 = bindings[13];
+        textView2.setTag(null);
+        ImageView imageView2 = (ImageView) bindings[13];
         this.mboundView13 = imageView2;
-        imageView2.setTag((Object) null);
-        TextView textView3 = bindings[14];
+        imageView2.setTag(null);
+        TextView textView3 = (TextView) bindings[14];
         this.mboundView14 = textView3;
-        textView3.setTag((Object) null);
-        MarqueeTextView marqueeTextView = bindings[15];
+        textView3.setTag(null);
+        MarqueeTextView marqueeTextView = (MarqueeTextView) bindings[15];
         this.mboundView15 = marqueeTextView;
-        marqueeTextView.setTag((Object) null);
-        LinearLayout linearLayout = bindings[3];
+        marqueeTextView.setTag(null);
+        LinearLayout linearLayout = (LinearLayout) bindings[3];
         this.mboundView3 = linearLayout;
-        linearLayout.setTag((Object) null);
-        TextView textView4 = bindings[4];
+        linearLayout.setTag(null);
+        TextView textView4 = (TextView) bindings[4];
         this.mboundView4 = textView4;
-        textView4.setTag((Object) null);
-        TextView textView5 = bindings[7];
+        textView4.setTag(null);
+        TextView textView5 = (TextView) bindings[7];
         this.mboundView7 = textView5;
-        textView5.setTag((Object) null);
-        TextView textView6 = bindings[8];
+        textView5.setTag(null);
+        TextView textView6 = (TextView) bindings[8];
         this.mboundView8 = textView6;
-        textView6.setTag((Object) null);
-        ImageView imageView3 = bindings[9];
+        textView6.setTag(null);
+        ImageView imageView3 = (ImageView) bindings[9];
         this.mboundView9 = imageView3;
-        imageView3.setTag((Object) null);
-        this.temperatureTv.setTag((Object) null);
-        this.unitWeather.setTag((Object) null);
+        imageView3.setTag(null);
+        this.temperatureTv.setTag(null);
+        this.unitWeather.setTag(null);
         setRootTag(root);
-        this.mCallback132 = new OnClickListener(this, 1);
+        this.mCallback215 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
             this.mDirtyFlags = PlaybackStateCompat.ACTION_PREPARE_FROM_URI;
@@ -99,6 +101,7 @@ public class AudiRightWeatherBindingSw600dpLandImpl extends AudiRightWeatherBind
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -108,14 +111,16 @@ public class AudiRightWeatherBindingSw600dpLandImpl extends AudiRightWeatherBind
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((AudiViewModel) variable);
+            return true;
         }
-        setVm((AudiViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AudiRightWeatherBinding
     public void setVm(AudiViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -125,8 +130,8 @@ public class AudiRightWeatherBindingSw600dpLandImpl extends AudiRightWeatherBind
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmWeatherInfoTemperature((ObservableField) object, fieldId);
@@ -165,187 +170,187 @@ public class AudiRightWeatherBindingSw600dpLandImpl extends AudiRightWeatherBind
         }
     }
 
-    private boolean onChangeVmWeatherInfoTemperature(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmWeatherInfoTemperature(ObservableField<String> VmWeatherInfoTemperature, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmWeatherInfoPhrase(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmWeatherInfoPhrase(ObservableField<String> VmWeatherInfoPhrase, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmWeatherInfoAudiCardDetailImg2(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmWeatherInfoAudiCardDetailImg2(ObservableField<Drawable> VmWeatherInfoAudiCardDetailImg2, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmWeatherInfoAudiCardDetailText1(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmWeatherInfoAudiCardDetailText1(ObservableField<String> VmWeatherInfoAudiCardDetailText1, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmWeatherInfoAudiCardDetailText3(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmWeatherInfoAudiCardDetailText3(ObservableField<String> VmWeatherInfoAudiCardDetailText3, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 16;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 16;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmWeatherInfoCity(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmWeatherInfoCity(ObservableField<String> VmWeatherInfoCity, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 32;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 32;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmWeatherInfoIsLoadSuccess(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmWeatherInfoIsLoadSuccess(ObservableField<Boolean> VmWeatherInfoIsLoadSuccess, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 64;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 64;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmWeatherInfoIsInitFinished(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmWeatherInfoIsInitFinished(ObservableField<Boolean> VmWeatherInfoIsInitFinished, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 128;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 128;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmLogoView(ObservableInt VmLogoView, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 256;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 256;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmWeatherInfoAudiImageIcon(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmWeatherInfoAudiImageIcon(ObservableField<Drawable> VmWeatherInfoAudiImageIcon, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 512;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 512;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmWeatherInfoTemperatureRange(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmWeatherInfoTemperatureRange(ObservableField<String> VmWeatherInfoTemperatureRange, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmWeatherInfoTemperUnit(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmWeatherInfoTemperUnit(ObservableField<String> VmWeatherInfoTemperUnit, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmWeatherInfoAudiCardDetailImg3(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmWeatherInfoAudiCardDetailImg3(ObservableField<Drawable> VmWeatherInfoAudiCardDetailImg3, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmWeatherInfoAudiCardDetailImg1(ObservableField<Drawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmWeatherInfoAudiCardDetailImg1(ObservableField<Drawable> VmWeatherInfoAudiCardDetailImg1, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmWeatherInfoErrorMessage(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmWeatherInfoErrorMessage(ObservableField<String> VmWeatherInfoErrorMessage, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmWeatherInfoAudiCardDetailText2(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmWeatherInfoAudiCardDetailText2(ObservableField<String> VmWeatherInfoAudiCardDetailText2, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         int vmLogoViewGet;
-        String vmWeatherInfoTemperUnitGet;
-        int VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE1;
-        int vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE;
-        String vmWeatherInfoAudiCardDetailText1Get;
-        WeatherInfo vmWeatherInfo;
-        Drawable vmWeatherInfoAudiCardDetailImg3Get;
-        String vmWeatherInfoTemperatureGet;
-        String vmWeatherInfoTemperatureRangeGet;
-        String vmWeatherInfoAudiCardDetailText2Get;
+        Drawable vmWeatherInfoAudiCardDetailImg2Get;
         long dirtyFlags2;
         String vmWeatherInfoAudiCardDetailText3Get;
         String vmWeatherInfoPhraseGet;
-        Drawable vmWeatherInfoAudiCardDetailImg2Get;
+        int vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE;
+        String vmWeatherInfoAudiCardDetailText2Get;
+        String vmWeatherInfoTemperatureGet;
+        Drawable vmWeatherInfoAudiCardDetailImg3Get;
+        String vmWeatherInfoAudiCardDetailText1Get;
+        String vmWeatherInfoTemperUnitGet;
+        int VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE1;
+        String vmWeatherInfoTemperatureRangeGet;
+        WeatherInfo vmWeatherInfo;
         Drawable vmWeatherInfoAudiCardDetailImg1Get;
         String vmWeatherInfoTemperatureGet2;
-        int VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE12;
         int vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE2;
+        int VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE12;
         String vmWeatherInfoPhraseGet2;
         String vmWeatherInfoIsLoadSuccessVmWeatherInfoCityMboundView15AndroidStringKswId8Weather;
         String vmWeatherInfoTemperatureRangeGet2;
@@ -370,7 +375,7 @@ public class AudiRightWeatherBindingSw600dpLandImpl extends AudiRightWeatherBind
         ObservableInt vmLogoView;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         ObservableField<String> vmWeatherInfoTemperature = null;
         Drawable vmWeatherInfoAudiCardDetailImg1Get3 = null;
@@ -393,95 +398,101 @@ public class AudiRightWeatherBindingSw600dpLandImpl extends AudiRightWeatherBind
         String vmWeatherInfoCityGet = null;
         String vmWeatherInfoAudiCardDetailText1Get2 = null;
         Drawable vmWeatherInfoAudiCardDetailImg2Get2 = null;
-        if ((dirtyFlags & 196864) != 0) {
-            if (vm != null) {
-                vmLogoView = vm.logoView;
-            } else {
-                vmLogoView = null;
-            }
-            updateRegistration(8, (Observable) vmLogoView);
-            if (vmLogoView != null) {
-                ObservableInt observableInt = vmLogoView;
-                vmLogoViewGet = vmLogoView.get();
-            } else {
-                ObservableInt observableInt2 = vmLogoView;
-                vmLogoViewGet = 0;
-            }
-        } else {
+        if ((dirtyFlags & 196864) == 0) {
             vmLogoViewGet = 0;
+        } else {
+            if (vm == null) {
+                vmLogoView = null;
+            } else {
+                vmLogoView = vm.logoView;
+            }
+            updateRegistration(8, vmLogoView);
+            if (vmLogoView == null) {
+                vmLogoViewGet = 0;
+            } else {
+                int vmLogoViewGet2 = vmLogoView.get();
+                vmLogoViewGet = vmLogoViewGet2;
+            }
         }
-        if ((dirtyFlags & 196351) != 0) {
+        if ((dirtyFlags & 196351) == 0) {
+            vmWeatherInfoAudiCardDetailImg2Get = null;
+            dirtyFlags2 = dirtyFlags;
+            vmWeatherInfoAudiCardDetailText3Get = null;
+            vmWeatherInfoPhraseGet = null;
+            vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE = 0;
+            vmWeatherInfoAudiCardDetailText2Get = null;
+            vmWeatherInfoTemperatureGet = null;
+            vmWeatherInfoAudiCardDetailImg3Get = null;
+            vmWeatherInfoAudiCardDetailText1Get = null;
+            vmWeatherInfoTemperUnitGet = null;
+            VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE1 = 0;
+            vmWeatherInfoTemperatureRangeGet = null;
+            vmWeatherInfo = null;
+        } else {
             WeatherInfo vmWeatherInfo2 = AudiViewModel.weatherInfo;
             if ((dirtyFlags & 131073) != 0) {
                 if (vmWeatherInfo2 != null) {
                     vmWeatherInfoTemperature = vmWeatherInfo2.temperature;
                 }
-                updateRegistration(0, (Observable) vmWeatherInfoTemperature);
+                updateRegistration(0, vmWeatherInfoTemperature);
                 if (vmWeatherInfoTemperature != null) {
                     vmWeatherInfoTemperatureGet4 = vmWeatherInfoTemperature.get();
                 }
             }
-            if ((dirtyFlags & 131074) != 0) {
+            if ((dirtyFlags & 131074) == 0) {
+                vmWeatherInfoPhraseGet4 = null;
+            } else {
                 if (vmWeatherInfo2 != null) {
                     vmWeatherInfoPhrase = vmWeatherInfo2.phrase;
                 }
-                updateRegistration(1, (Observable) vmWeatherInfoPhrase);
-                if (vmWeatherInfoPhrase != null) {
-                    vmWeatherInfoPhraseGet4 = vmWeatherInfoPhrase.get();
-                } else {
+                updateRegistration(1, vmWeatherInfoPhrase);
+                if (vmWeatherInfoPhrase == null) {
                     vmWeatherInfoPhraseGet4 = null;
+                } else {
+                    vmWeatherInfoPhraseGet4 = vmWeatherInfoPhrase.get();
                 }
-            } else {
-                vmWeatherInfoPhraseGet4 = null;
             }
-            if ((dirtyFlags & 131076) != 0) {
+            if ((dirtyFlags & 131076) == 0) {
+                vmWeatherInfoPhraseGet5 = vmWeatherInfoPhraseGet4;
+            } else {
                 if (vmWeatherInfo2 != null) {
                     vmWeatherInfoAudiCardDetailImg2 = vmWeatherInfo2.audiCardDetailImg2;
                 }
                 vmWeatherInfoPhraseGet5 = vmWeatherInfoPhraseGet4;
-                updateRegistration(2, (Observable) vmWeatherInfoAudiCardDetailImg2);
+                updateRegistration(2, vmWeatherInfoAudiCardDetailImg2);
                 if (vmWeatherInfoAudiCardDetailImg2 != null) {
                     vmWeatherInfoAudiCardDetailImg2Get2 = vmWeatherInfoAudiCardDetailImg2.get();
                 }
-            } else {
-                vmWeatherInfoPhraseGet5 = vmWeatherInfoPhraseGet4;
             }
             if ((dirtyFlags & 131080) != 0) {
-                if (vmWeatherInfo2 != null) {
-                    vmWeatherInfoAudiCardDetailText1 = vmWeatherInfo2.audiCardDetailText1;
-                } else {
+                if (vmWeatherInfo2 == null) {
                     vmWeatherInfoAudiCardDetailText1 = null;
+                } else {
+                    vmWeatherInfoAudiCardDetailText1 = vmWeatherInfo2.audiCardDetailText1;
                 }
-                ObservableField<String> observableField = vmWeatherInfoTemperature;
-                updateRegistration(3, (Observable) vmWeatherInfoAudiCardDetailText1);
+                updateRegistration(3, vmWeatherInfoAudiCardDetailText1);
                 if (vmWeatherInfoAudiCardDetailText1 != null) {
                     vmWeatherInfoAudiCardDetailText1Get2 = vmWeatherInfoAudiCardDetailText1.get();
-                    ObservableField<String> observableField2 = vmWeatherInfoAudiCardDetailText1;
-                } else {
-                    ObservableField<String> observableField3 = vmWeatherInfoAudiCardDetailText1;
                 }
             }
             if ((dirtyFlags & 131088) != 0) {
-                if (vmWeatherInfo2 != null) {
-                    vmWeatherInfoAudiCardDetailText3 = vmWeatherInfo2.audiCardDetailText3;
-                } else {
+                if (vmWeatherInfo2 == null) {
                     vmWeatherInfoAudiCardDetailText3 = null;
+                } else {
+                    vmWeatherInfoAudiCardDetailText3 = vmWeatherInfo2.audiCardDetailText3;
                 }
-                updateRegistration(4, (Observable) vmWeatherInfoAudiCardDetailText3);
+                updateRegistration(4, vmWeatherInfoAudiCardDetailText3);
                 if (vmWeatherInfoAudiCardDetailText3 != null) {
                     vmWeatherInfoAudiCardDetailText3Get2 = vmWeatherInfoAudiCardDetailText3.get();
-                    ObservableField<String> observableField4 = vmWeatherInfoAudiCardDetailText3;
-                } else {
-                    ObservableField<String> observableField5 = vmWeatherInfoAudiCardDetailText3;
                 }
             }
             if ((dirtyFlags & 131168) != 0) {
-                if (vmWeatherInfo2 != null) {
-                    vmWeatherInfoIsLoadSuccess2 = vmWeatherInfo2.isLoadSuccess;
-                } else {
+                if (vmWeatherInfo2 == null) {
                     vmWeatherInfoIsLoadSuccess2 = null;
+                } else {
+                    vmWeatherInfoIsLoadSuccess2 = vmWeatherInfo2.isLoadSuccess;
                 }
-                updateRegistration(6, (Observable) vmWeatherInfoIsLoadSuccess2);
+                updateRegistration(6, vmWeatherInfoIsLoadSuccess2);
                 if (vmWeatherInfoIsLoadSuccess2 != null) {
                     vmWeatherInfoIsLoadSuccessGet = vmWeatherInfoIsLoadSuccess2.get();
                 }
@@ -497,198 +508,157 @@ public class AudiRightWeatherBindingSw600dpLandImpl extends AudiRightWeatherBind
                 }
             }
             if ((dirtyFlags & 131264) != 0) {
-                if (vmWeatherInfo2 != null) {
-                    vmWeatherInfoIsInitFinished = vmWeatherInfo2.isInitFinished;
-                } else {
+                if (vmWeatherInfo2 == null) {
                     vmWeatherInfoIsInitFinished = null;
+                } else {
+                    vmWeatherInfoIsInitFinished = vmWeatherInfo2.isInitFinished;
                 }
-                updateRegistration(7, (Observable) vmWeatherInfoIsInitFinished);
+                updateRegistration(7, vmWeatherInfoIsInitFinished);
                 if (vmWeatherInfoIsInitFinished != null) {
-                    vmWeatherInfoIsInitFinishedGet = vmWeatherInfoIsInitFinished.get();
+                    Boolean vmWeatherInfoIsInitFinishedGet2 = vmWeatherInfoIsInitFinished.get();
+                    vmWeatherInfoIsInitFinishedGet = vmWeatherInfoIsInitFinishedGet2;
                 }
                 androidDatabindingViewDataBindingSafeUnboxVmWeatherInfoIsInitFinishedGet = ViewDataBinding.safeUnbox(vmWeatherInfoIsInitFinishedGet);
-                if ((dirtyFlags & 131264) == 0) {
-                    ObservableField<Boolean> observableField6 = vmWeatherInfoIsInitFinished;
-                } else if (androidDatabindingViewDataBindingSafeUnboxVmWeatherInfoIsInitFinishedGet) {
-                    dirtyFlags = dirtyFlags | 8388608 | 33554432;
-                    ObservableField<Boolean> observableField7 = vmWeatherInfoIsInitFinished;
-                } else {
-                    dirtyFlags = dirtyFlags | 4194304 | 16777216;
-                    ObservableField<Boolean> observableField8 = vmWeatherInfoIsInitFinished;
+                if ((dirtyFlags & 131264) != 0) {
+                    if (androidDatabindingViewDataBindingSafeUnboxVmWeatherInfoIsInitFinishedGet) {
+                        dirtyFlags = dirtyFlags | 8388608 | 33554432;
+                    } else {
+                        dirtyFlags = dirtyFlags | 4194304 | 16777216;
+                    }
                 }
             }
             if ((dirtyFlags & 131584) != 0) {
-                if (vmWeatherInfo2 != null) {
-                    vmWeatherInfoAudiImageIcon = vmWeatherInfo2.audiImageIcon;
-                } else {
+                if (vmWeatherInfo2 == null) {
                     vmWeatherInfoAudiImageIcon = null;
+                } else {
+                    vmWeatherInfoAudiImageIcon = vmWeatherInfo2.audiImageIcon;
                 }
-                updateRegistration(9, (Observable) vmWeatherInfoAudiImageIcon);
+                updateRegistration(9, vmWeatherInfoAudiImageIcon);
                 if (vmWeatherInfoAudiImageIcon != null) {
                     vmWeatherInfoAudiImageIconGet = vmWeatherInfoAudiImageIcon.get();
-                    ObservableField<Drawable> observableField9 = vmWeatherInfoAudiImageIcon;
-                } else {
-                    ObservableField<Drawable> observableField10 = vmWeatherInfoAudiImageIcon;
                 }
             }
             if ((dirtyFlags & 132096) != 0) {
-                if (vmWeatherInfo2 != null) {
-                    vmWeatherInfoTemperatureRange = vmWeatherInfo2.temperatureRange;
-                } else {
+                if (vmWeatherInfo2 == null) {
                     vmWeatherInfoTemperatureRange = null;
+                } else {
+                    vmWeatherInfoTemperatureRange = vmWeatherInfo2.temperatureRange;
                 }
-                updateRegistration(10, (Observable) vmWeatherInfoTemperatureRange);
+                updateRegistration(10, vmWeatherInfoTemperatureRange);
                 if (vmWeatherInfoTemperatureRange != null) {
                     vmWeatherInfoTemperatureRangeGet3 = vmWeatherInfoTemperatureRange.get();
-                    ObservableField<String> observableField11 = vmWeatherInfoTemperatureRange;
-                } else {
-                    ObservableField<String> observableField12 = vmWeatherInfoTemperatureRange;
                 }
             }
             if ((dirtyFlags & 133120) != 0) {
-                if (vmWeatherInfo2 != null) {
-                    vmWeatherInfoTemperUnit = vmWeatherInfo2.temperUnit;
-                } else {
+                if (vmWeatherInfo2 == null) {
                     vmWeatherInfoTemperUnit = null;
+                } else {
+                    vmWeatherInfoTemperUnit = vmWeatherInfo2.temperUnit;
                 }
-                updateRegistration(11, (Observable) vmWeatherInfoTemperUnit);
+                updateRegistration(11, vmWeatherInfoTemperUnit);
                 if (vmWeatherInfoTemperUnit != null) {
                     vmWeatherInfoTemperUnitGet2 = vmWeatherInfoTemperUnit.get();
-                    ObservableField<String> observableField13 = vmWeatherInfoTemperUnit;
-                } else {
-                    ObservableField<String> observableField14 = vmWeatherInfoTemperUnit;
                 }
             }
             if ((dirtyFlags & 135168) != 0) {
-                if (vmWeatherInfo2 != null) {
-                    vmWeatherInfoAudiCardDetailImg3 = vmWeatherInfo2.audiCardDetailImg3;
-                } else {
+                if (vmWeatherInfo2 == null) {
                     vmWeatherInfoAudiCardDetailImg3 = null;
+                } else {
+                    vmWeatherInfoAudiCardDetailImg3 = vmWeatherInfo2.audiCardDetailImg3;
                 }
-                updateRegistration(12, (Observable) vmWeatherInfoAudiCardDetailImg3);
+                updateRegistration(12, vmWeatherInfoAudiCardDetailImg3);
                 if (vmWeatherInfoAudiCardDetailImg3 != null) {
                     vmWeatherInfoAudiCardDetailImg3Get2 = vmWeatherInfoAudiCardDetailImg3.get();
-                    ObservableField<Drawable> observableField15 = vmWeatherInfoAudiCardDetailImg3;
-                } else {
-                    ObservableField<Drawable> observableField16 = vmWeatherInfoAudiCardDetailImg3;
                 }
             }
             if ((dirtyFlags & 139264) != 0) {
-                if (vmWeatherInfo2 != null) {
-                    vmWeatherInfoAudiCardDetailImg1 = vmWeatherInfo2.audiCardDetailImg1;
-                } else {
+                if (vmWeatherInfo2 == null) {
                     vmWeatherInfoAudiCardDetailImg1 = null;
+                } else {
+                    vmWeatherInfoAudiCardDetailImg1 = vmWeatherInfo2.audiCardDetailImg1;
                 }
-                updateRegistration(13, (Observable) vmWeatherInfoAudiCardDetailImg1);
+                updateRegistration(13, vmWeatherInfoAudiCardDetailImg1);
                 if (vmWeatherInfoAudiCardDetailImg1 != null) {
                     vmWeatherInfoAudiCardDetailImg1Get3 = vmWeatherInfoAudiCardDetailImg1.get();
-                    ObservableField<Drawable> observableField17 = vmWeatherInfoAudiCardDetailImg1;
-                } else {
-                    ObservableField<Drawable> observableField18 = vmWeatherInfoAudiCardDetailImg1;
                 }
             }
             if ((dirtyFlags & 147456) != 0) {
-                if (vmWeatherInfo2 != null) {
-                    vmWeatherInfoErrorMessage = vmWeatherInfo2.errorMessage;
-                } else {
+                if (vmWeatherInfo2 == null) {
                     vmWeatherInfoErrorMessage = null;
+                } else {
+                    vmWeatherInfoErrorMessage = vmWeatherInfo2.errorMessage;
                 }
-                updateRegistration(14, (Observable) vmWeatherInfoErrorMessage);
+                updateRegistration(14, vmWeatherInfoErrorMessage);
                 if (vmWeatherInfoErrorMessage != null) {
                     vmWeatherInfoErrorMessageGet = vmWeatherInfoErrorMessage.get();
-                    ObservableField<String> observableField19 = vmWeatherInfoErrorMessage;
-                } else {
-                    ObservableField<String> observableField20 = vmWeatherInfoErrorMessage;
                 }
             }
-            if ((dirtyFlags & 163840) != 0) {
-                if (vmWeatherInfo2 != null) {
-                    vmWeatherInfoAudiCardDetailText2 = vmWeatherInfo2.audiCardDetailText2;
-                } else {
-                    vmWeatherInfoAudiCardDetailText2 = null;
-                }
-                updateRegistration(15, (Observable) vmWeatherInfoAudiCardDetailText2);
-                if (vmWeatherInfoAudiCardDetailText2 != null) {
-                    ObservableField<String> observableField21 = vmWeatherInfoAudiCardDetailText2;
-                    vmWeatherInfoAudiCardDetailImg2Get = vmWeatherInfoAudiCardDetailImg2Get2;
-                    vmWeatherInfo = vmWeatherInfo2;
-                    dirtyFlags2 = dirtyFlags;
-                    vmWeatherInfoAudiCardDetailText3Get = vmWeatherInfoAudiCardDetailText3Get2;
-                    vmWeatherInfoPhraseGet = vmWeatherInfoPhraseGet5;
-                    vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE = 0;
-                    ObservableField<String> observableField22 = vmWeatherInfoPhrase;
-                    vmWeatherInfoAudiCardDetailText2Get = vmWeatherInfoAudiCardDetailText2.get();
-                    vmWeatherInfoTemperatureGet = vmWeatherInfoTemperatureGet4;
-                    AudiViewModel audiViewModel = vm;
-                    ObservableField<Drawable> observableField23 = vmWeatherInfoAudiCardDetailImg2;
-                    vmWeatherInfoAudiCardDetailImg3Get = vmWeatherInfoAudiCardDetailImg3Get2;
-                    vmWeatherInfoAudiCardDetailText1Get = vmWeatherInfoAudiCardDetailText1Get2;
-                    vmWeatherInfoTemperUnitGet = vmWeatherInfoTemperUnitGet2;
-                    VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE1 = 0;
-                    vmWeatherInfoTemperatureRangeGet = vmWeatherInfoTemperatureRangeGet3;
-                } else {
-                    ObservableField<String> observableField24 = vmWeatherInfoAudiCardDetailText2;
-                    vmWeatherInfoAudiCardDetailImg2Get = vmWeatherInfoAudiCardDetailImg2Get2;
-                    vmWeatherInfo = vmWeatherInfo2;
-                    dirtyFlags2 = dirtyFlags;
-                    vmWeatherInfoAudiCardDetailText3Get = vmWeatherInfoAudiCardDetailText3Get2;
-                    vmWeatherInfoPhraseGet = vmWeatherInfoPhraseGet5;
-                    vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE = 0;
-                    ObservableField<String> observableField25 = vmWeatherInfoPhrase;
-                    vmWeatherInfoAudiCardDetailText2Get = null;
-                    vmWeatherInfoTemperatureGet = vmWeatherInfoTemperatureGet4;
-                    AudiViewModel audiViewModel2 = vm;
-                    ObservableField<Drawable> observableField26 = vmWeatherInfoAudiCardDetailImg2;
-                    vmWeatherInfoAudiCardDetailImg3Get = vmWeatherInfoAudiCardDetailImg3Get2;
-                    vmWeatherInfoAudiCardDetailText1Get = vmWeatherInfoAudiCardDetailText1Get2;
-                    vmWeatherInfoTemperUnitGet = vmWeatherInfoTemperUnitGet2;
-                    VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE1 = 0;
-                    vmWeatherInfoTemperatureRangeGet = vmWeatherInfoTemperatureRangeGet3;
-                }
-            } else {
+            if ((dirtyFlags & 163840) == 0) {
                 vmWeatherInfoAudiCardDetailImg2Get = vmWeatherInfoAudiCardDetailImg2Get2;
                 vmWeatherInfo = vmWeatherInfo2;
                 dirtyFlags2 = dirtyFlags;
                 vmWeatherInfoAudiCardDetailText3Get = vmWeatherInfoAudiCardDetailText3Get2;
                 vmWeatherInfoPhraseGet = vmWeatherInfoPhraseGet5;
                 vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE = 0;
-                ObservableField<String> observableField27 = vmWeatherInfoPhrase;
                 vmWeatherInfoAudiCardDetailText2Get = null;
                 vmWeatherInfoTemperatureGet = vmWeatherInfoTemperatureGet4;
-                AudiViewModel audiViewModel3 = vm;
-                ObservableField<Drawable> observableField28 = vmWeatherInfoAudiCardDetailImg2;
                 vmWeatherInfoAudiCardDetailImg3Get = vmWeatherInfoAudiCardDetailImg3Get2;
                 vmWeatherInfoAudiCardDetailText1Get = vmWeatherInfoAudiCardDetailText1Get2;
                 vmWeatherInfoTemperUnitGet = vmWeatherInfoTemperUnitGet2;
                 VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE1 = 0;
                 vmWeatherInfoTemperatureRangeGet = vmWeatherInfoTemperatureRangeGet3;
-            }
-        } else {
-            vmWeatherInfoAudiCardDetailImg2Get = null;
-            dirtyFlags2 = dirtyFlags;
-            vmWeatherInfoAudiCardDetailText3Get = null;
-            vmWeatherInfoPhraseGet = null;
-            vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE = 0;
-            vmWeatherInfoAudiCardDetailText2Get = null;
-            vmWeatherInfoTemperatureGet = null;
-            AudiViewModel audiViewModel4 = vm;
-            vmWeatherInfoAudiCardDetailImg3Get = null;
-            vmWeatherInfoAudiCardDetailText1Get = null;
-            vmWeatherInfoTemperUnitGet = null;
-            VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE1 = 0;
-            vmWeatherInfoTemperatureRangeGet = null;
-            vmWeatherInfo = null;
-        }
-        if ((dirtyFlags2 & 41943040) != 0) {
-            if (vmWeatherInfo != null) {
-                vmWeatherInfoTemperatureGet2 = vmWeatherInfoTemperatureGet;
-                vmWeatherInfoIsLoadSuccess = vmWeatherInfo.isLoadSuccess;
             } else {
+                if (vmWeatherInfo2 == null) {
+                    vmWeatherInfoAudiCardDetailText2 = null;
+                } else {
+                    vmWeatherInfoAudiCardDetailText2 = vmWeatherInfo2.audiCardDetailText2;
+                }
+                updateRegistration(15, vmWeatherInfoAudiCardDetailText2);
+                if (vmWeatherInfoAudiCardDetailText2 == null) {
+                    vmWeatherInfoAudiCardDetailImg2Get = vmWeatherInfoAudiCardDetailImg2Get2;
+                    vmWeatherInfo = vmWeatherInfo2;
+                    dirtyFlags2 = dirtyFlags;
+                    vmWeatherInfoAudiCardDetailText3Get = vmWeatherInfoAudiCardDetailText3Get2;
+                    vmWeatherInfoPhraseGet = vmWeatherInfoPhraseGet5;
+                    vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE = 0;
+                    vmWeatherInfoAudiCardDetailText2Get = null;
+                    vmWeatherInfoTemperatureGet = vmWeatherInfoTemperatureGet4;
+                    vmWeatherInfoAudiCardDetailImg3Get = vmWeatherInfoAudiCardDetailImg3Get2;
+                    vmWeatherInfoAudiCardDetailText1Get = vmWeatherInfoAudiCardDetailText1Get2;
+                    vmWeatherInfoTemperUnitGet = vmWeatherInfoTemperUnitGet2;
+                    VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE1 = 0;
+                    vmWeatherInfoTemperatureRangeGet = vmWeatherInfoTemperatureRangeGet3;
+                } else {
+                    String vmWeatherInfoAudiCardDetailText2Get2 = vmWeatherInfoAudiCardDetailText2.get();
+                    vmWeatherInfoAudiCardDetailImg2Get = vmWeatherInfoAudiCardDetailImg2Get2;
+                    vmWeatherInfo = vmWeatherInfo2;
+                    dirtyFlags2 = dirtyFlags;
+                    vmWeatherInfoAudiCardDetailText3Get = vmWeatherInfoAudiCardDetailText3Get2;
+                    vmWeatherInfoPhraseGet = vmWeatherInfoPhraseGet5;
+                    vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE = 0;
+                    vmWeatherInfoAudiCardDetailText2Get = vmWeatherInfoAudiCardDetailText2Get2;
+                    vmWeatherInfoTemperatureGet = vmWeatherInfoTemperatureGet4;
+                    vmWeatherInfoAudiCardDetailImg3Get = vmWeatherInfoAudiCardDetailImg3Get2;
+                    vmWeatherInfoAudiCardDetailText1Get = vmWeatherInfoAudiCardDetailText1Get2;
+                    vmWeatherInfoTemperUnitGet = vmWeatherInfoTemperUnitGet2;
+                    VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE1 = 0;
+                    vmWeatherInfoTemperatureRangeGet = vmWeatherInfoTemperatureRangeGet3;
+                }
+            }
+        }
+        if ((dirtyFlags2 & 41943040) == 0) {
+            vmWeatherInfoAudiCardDetailImg1Get = vmWeatherInfoAudiCardDetailImg1Get3;
+            vmWeatherInfoTemperatureGet2 = vmWeatherInfoTemperatureGet;
+        } else {
+            if (vmWeatherInfo == null) {
                 vmWeatherInfoTemperatureGet2 = vmWeatherInfoTemperatureGet;
                 vmWeatherInfoIsLoadSuccess = vmWeatherInfoIsLoadSuccess3;
+            } else {
+                vmWeatherInfoTemperatureGet2 = vmWeatherInfoTemperatureGet;
+                vmWeatherInfoIsLoadSuccess = vmWeatherInfo.isLoadSuccess;
             }
             vmWeatherInfoAudiCardDetailImg1Get = vmWeatherInfoAudiCardDetailImg1Get3;
-            updateRegistration(6, (Observable) vmWeatherInfoIsLoadSuccess);
+            updateRegistration(6, vmWeatherInfoIsLoadSuccess);
             if (vmWeatherInfoIsLoadSuccess != null) {
                 vmWeatherInfoIsLoadSuccessGet = vmWeatherInfoIsLoadSuccess.get();
             }
@@ -702,15 +672,12 @@ public class AudiRightWeatherBindingSw600dpLandImpl extends AudiRightWeatherBind
             }
             if ((dirtyFlags2 & 33554432) != 0) {
                 VmWeatherInfoIsLoadSuccess1 = !androidDatabindingViewDataBindingSafeUnboxVmWeatherInfoIsLoadSuccessGet;
-                ObservableField<Boolean> observableField29 = vmWeatherInfoIsLoadSuccess;
-            } else {
-                ObservableField<Boolean> observableField30 = vmWeatherInfoIsLoadSuccess;
             }
-        } else {
-            vmWeatherInfoAudiCardDetailImg1Get = vmWeatherInfoAudiCardDetailImg1Get3;
-            vmWeatherInfoTemperatureGet2 = vmWeatherInfoTemperatureGet;
         }
-        if ((dirtyFlags2 & 131264) != 0) {
+        if ((dirtyFlags2 & 131264) == 0) {
+            vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE2 = vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE;
+            VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE12 = VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE1;
+        } else {
             boolean vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalse = androidDatabindingViewDataBindingSafeUnboxVmWeatherInfoIsInitFinishedGet ? androidDatabindingViewDataBindingSafeUnboxVmWeatherInfoIsLoadSuccessGet : false;
             boolean VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalse1 = androidDatabindingViewDataBindingSafeUnboxVmWeatherInfoIsInitFinishedGet ? VmWeatherInfoIsLoadSuccess1 : false;
             if ((dirtyFlags2 & 131264) != 0) {
@@ -728,40 +695,32 @@ public class AudiRightWeatherBindingSw600dpLandImpl extends AudiRightWeatherBind
                 }
             }
             VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE12 = vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalse ? 0 : 4;
-            boolean z = vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalse;
-            vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE2 = VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalse1 ? 0 : 4;
-        } else {
-            vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE2 = vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE;
-            VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE12 = VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE1;
+            int vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE3 = VmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalse1 ? 0 : 4;
+            vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE2 = vmWeatherInfoIsInitFinishedVmWeatherInfoIsLoadSuccessBooleanFalseViewVISIBLEViewINVISIBLE3;
         }
-        if ((dirtyFlags2 & 134217728) != 0) {
-            if (vmWeatherInfo != null) {
-                vmWeatherInfoPhraseGet2 = vmWeatherInfoPhraseGet;
-                vmWeatherInfoCity = vmWeatherInfo.city;
-            } else {
+        if ((dirtyFlags2 & 134217728) == 0) {
+            vmWeatherInfoPhraseGet2 = vmWeatherInfoPhraseGet;
+        } else {
+            if (vmWeatherInfo == null) {
                 vmWeatherInfoPhraseGet2 = vmWeatherInfoPhraseGet;
                 vmWeatherInfoCity = null;
+            } else {
+                vmWeatherInfoPhraseGet2 = vmWeatherInfoPhraseGet;
+                vmWeatherInfoCity = vmWeatherInfo.city;
             }
-            WeatherInfo weatherInfo = vmWeatherInfo;
-            updateRegistration(5, (Observable) vmWeatherInfoCity);
+            updateRegistration(5, vmWeatherInfoCity);
             if (vmWeatherInfoCity != null) {
                 vmWeatherInfoCityGet = vmWeatherInfoCity.get();
-                ObservableField<String> observableField31 = vmWeatherInfoCity;
-            } else {
-                ObservableField<String> observableField32 = vmWeatherInfoCity;
             }
-        } else {
-            vmWeatherInfoPhraseGet2 = vmWeatherInfoPhraseGet;
-            WeatherInfo weatherInfo2 = vmWeatherInfo;
         }
-        if ((dirtyFlags2 & 131168) != 0) {
-            vmWeatherInfoIsLoadSuccessVmWeatherInfoCityMboundView15AndroidStringKswId8Weather = androidDatabindingViewDataBindingSafeUnboxVmWeatherInfoIsLoadSuccessGet ? vmWeatherInfoCityGet : this.mboundView15.getResources().getString(R.string.ksw_id8_weather);
-        } else {
+        if ((dirtyFlags2 & 131168) == 0) {
             vmWeatherInfoIsLoadSuccessVmWeatherInfoCityMboundView15AndroidStringKswId8Weather = null;
+        } else {
+            vmWeatherInfoIsLoadSuccessVmWeatherInfoCityMboundView15AndroidStringKswId8Weather = androidDatabindingViewDataBindingSafeUnboxVmWeatherInfoIsLoadSuccessGet ? vmWeatherInfoCityGet : this.mboundView15.getResources().getString(C0899R.string.ksw_id8_weather);
         }
         if ((dirtyFlags2 & PlaybackStateCompat.ACTION_PREPARE_FROM_URI) != 0) {
             vmWeatherInfoTemperatureRangeGet2 = vmWeatherInfoTemperatureRangeGet;
-            this.clWeather.setOnClickListener(this.mCallback132);
+            this.clWeather.setOnClickListener(this.mCallback215);
         } else {
             vmWeatherInfoTemperatureRangeGet2 = vmWeatherInfoTemperatureRangeGet;
         }
@@ -805,37 +764,33 @@ public class AudiRightWeatherBindingSw600dpLandImpl extends AudiRightWeatherBind
             TextViewBindingAdapter.setText(this.mboundView7, vmWeatherInfoTemperatureRangeGet2);
         }
         if ((dirtyFlags2 & 131074) != 0) {
-            Drawable drawable = vmWeatherInfoAudiCardDetailImg2Get;
             vmWeatherInfoPhraseGet3 = vmWeatherInfoPhraseGet2;
             TextViewBindingAdapter.setText(this.mboundView8, vmWeatherInfoPhraseGet3);
         } else {
             vmWeatherInfoPhraseGet3 = vmWeatherInfoPhraseGet2;
         }
         if ((dirtyFlags2 & 139264) != 0) {
-            String str = vmWeatherInfoPhraseGet3;
             vmWeatherInfoAudiCardDetailImg1Get2 = vmWeatherInfoAudiCardDetailImg1Get;
             ImageViewBindingAdapter.setImageDrawable(this.mboundView9, vmWeatherInfoAudiCardDetailImg1Get2);
         } else {
             vmWeatherInfoAudiCardDetailImg1Get2 = vmWeatherInfoAudiCardDetailImg1Get;
         }
         if ((dirtyFlags2 & 131073) != 0) {
-            Drawable drawable2 = vmWeatherInfoAudiCardDetailImg1Get2;
             vmWeatherInfoTemperatureGet3 = vmWeatherInfoTemperatureGet2;
             TextViewBindingAdapter.setText(this.temperatureTv, vmWeatherInfoTemperatureGet3);
         } else {
             vmWeatherInfoTemperatureGet3 = vmWeatherInfoTemperatureGet2;
         }
         if ((dirtyFlags2 & 133120) != 0) {
-            String str2 = vmWeatherInfoTemperatureGet3;
             TextViewBindingAdapter.setText(this.unitWeather, vmWeatherInfoTemperUnitGet);
-            return;
         }
-        String vmWeatherInfoTemperatureGet5 = vmWeatherInfoTemperUnitGet;
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
         AudiViewModel vm = this.mVm;
-        if (vm != null) {
+        boolean vmJavaLangObjectNull = vm != null;
+        if (vmJavaLangObjectNull) {
             vm.openWeatherApp(callbackArg_0);
         }
     }

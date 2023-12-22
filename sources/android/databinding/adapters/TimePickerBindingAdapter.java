@@ -4,6 +4,7 @@ import android.databinding.InverseBindingListener;
 import android.os.Build;
 import android.widget.TimePicker;
 
+/* loaded from: classes.dex */
 public class TimePickerBindingAdapter {
     public static void setHour(TimePicker view, int hour) {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -51,11 +52,12 @@ public class TimePickerBindingAdapter {
         if (hourChange == null && minuteChange == null) {
             view.setOnTimeChangedListener(listener);
         } else {
-            view.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+            view.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() { // from class: android.databinding.adapters.TimePickerBindingAdapter.1
+                @Override // android.widget.TimePicker.OnTimeChangedListener
+                public void onTimeChanged(TimePicker view2, int hourOfDay, int minute) {
                     TimePicker.OnTimeChangedListener onTimeChangedListener = listener;
                     if (onTimeChangedListener != null) {
-                        onTimeChangedListener.onTimeChanged(view, hourOfDay, minute);
+                        onTimeChangedListener.onTimeChanged(view2, hourOfDay, minute);
                     }
                     InverseBindingListener inverseBindingListener = hourChange;
                     if (inverseBindingListener != null) {

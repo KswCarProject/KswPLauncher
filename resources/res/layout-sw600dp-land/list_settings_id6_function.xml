@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/relat_id6functionItem" android:background="@drawable/id6_list_bg" android:focusable="true" android:layout_width="597dp" android:layout_height="63dp" android:layout_marginTop="2dp">
+    <TextView android:textSize="25sp" android:textColor="@android:color/white" android:ellipsize="end" android:gravity="center_vertical" android:id="@+id/tv_functionItem" android:padding="10dp" android:focusable="false" android:layout_width="260dp" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:lines="1"/>
+</RelativeLayout>

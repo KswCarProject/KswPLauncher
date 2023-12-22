@@ -1,10 +1,11 @@
 package com.wits.ksw.launcher.view;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatTextView;
+import android.support.p004v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+/* loaded from: classes16.dex */
 public class CapitalizeTextView extends AppCompatTextView {
     public CapitalizeTextView(Context context) {
         super(context);
@@ -18,6 +19,7 @@ public class CapitalizeTextView extends AppCompatTextView {
         super(context, attrs, defStyleAttr);
     }
 
+    @Override // android.widget.TextView
     public void setText(CharSequence text, TextView.BufferType type) {
         StringBuilder builder = new StringBuilder(text);
         try {

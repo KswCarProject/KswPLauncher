@@ -3,20 +3,22 @@ package android.support.constraint.solver.widgets.analyzer;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public class DependencyNode implements Dependency {
-    public boolean delegateToWidgetRun = false;
-    List<Dependency> dependencies = new ArrayList();
     int margin;
-    DimensionDependency marginDependency = null;
-    int marginFactor = 1;
-    public boolean readyToSolve = false;
-    public boolean resolved = false;
     WidgetRun run;
-    List<DependencyNode> targets = new ArrayList();
-    Type type = Type.UNKNOWN;
-    public Dependency updateDelegate = null;
     public int value;
+    public Dependency updateDelegate = null;
+    public boolean delegateToWidgetRun = false;
+    public boolean readyToSolve = false;
+    Type type = Type.UNKNOWN;
+    int marginFactor = 1;
+    DimensionDependency marginDependency = null;
+    public boolean resolved = false;
+    List<Dependency> dependencies = new ArrayList();
+    List<DependencyNode> targets = new ArrayList();
 
+    /* loaded from: classes.dex */
     enum Type {
         UNKNOWN,
         HORIZONTAL_DIMENSION,
@@ -28,24 +30,26 @@ public class DependencyNode implements Dependency {
         BASELINE
     }
 
-    public DependencyNode(WidgetRun run2) {
-        this.run = run2;
+    public DependencyNode(WidgetRun run) {
+        this.run = run;
     }
 
     public String toString() {
         return this.run.widget.getDebugName() + ":" + this.type + "(" + (this.resolved ? Integer.valueOf(this.value) : "unresolved") + ") <t=" + this.targets.size() + ":d=" + this.dependencies.size() + ">";
     }
 
-    public void resolve(int value2) {
-        if (!this.resolved) {
-            this.resolved = true;
-            this.value = value2;
-            for (Dependency node : this.dependencies) {
-                node.update(node);
-            }
+    public void resolve(int value) {
+        if (this.resolved) {
+            return;
+        }
+        this.resolved = true;
+        this.value = value;
+        for (Dependency node : this.dependencies) {
+            node.update(node);
         }
     }
 
+    @Override // android.support.constraint.solver.widgets.analyzer.Dependency
     public void update(Dependency node) {
         for (DependencyNode target : this.targets) {
             if (!target.resolved) {

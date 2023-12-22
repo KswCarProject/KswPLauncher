@@ -2,6 +2,7 @@ package android.support.constraint.solver;
 
 import java.util.ArrayList;
 
+/* loaded from: classes.dex */
 public class Metrics {
     public long additionalMeasures;
     public long barrierConnectionResolved;
@@ -50,37 +51,37 @@ public class Metrics {
     }
 
     public void reset() {
-        this.measures = 0;
-        this.widgets = 0;
-        this.additionalMeasures = 0;
-        this.resolutions = 0;
-        this.tableSizeIncrease = 0;
-        this.maxTableSize = 0;
-        this.lastTableSize = 0;
-        this.maxVariables = 0;
-        this.maxRows = 0;
-        this.minimize = 0;
-        this.minimizeGoal = 0;
-        this.constraints = 0;
-        this.simpleconstraints = 0;
-        this.optimize = 0;
-        this.iterations = 0;
-        this.pivots = 0;
-        this.bfs = 0;
-        this.variables = 0;
-        this.errors = 0;
-        this.slackvariables = 0;
-        this.extravariables = 0;
-        this.fullySolved = 0;
-        this.graphOptimizer = 0;
-        this.graphSolved = 0;
-        this.resolvedWidgets = 0;
-        this.oldresolvedWidgets = 0;
-        this.nonresolvedWidgets = 0;
-        this.centerConnectionResolved = 0;
-        this.matchConnectionResolved = 0;
-        this.chainConnectionResolved = 0;
-        this.barrierConnectionResolved = 0;
+        this.measures = 0L;
+        this.widgets = 0L;
+        this.additionalMeasures = 0L;
+        this.resolutions = 0L;
+        this.tableSizeIncrease = 0L;
+        this.maxTableSize = 0L;
+        this.lastTableSize = 0L;
+        this.maxVariables = 0L;
+        this.maxRows = 0L;
+        this.minimize = 0L;
+        this.minimizeGoal = 0L;
+        this.constraints = 0L;
+        this.simpleconstraints = 0L;
+        this.optimize = 0L;
+        this.iterations = 0L;
+        this.pivots = 0L;
+        this.bfs = 0L;
+        this.variables = 0L;
+        this.errors = 0L;
+        this.slackvariables = 0L;
+        this.extravariables = 0L;
+        this.fullySolved = 0L;
+        this.graphOptimizer = 0L;
+        this.graphSolved = 0L;
+        this.resolvedWidgets = 0L;
+        this.oldresolvedWidgets = 0L;
+        this.nonresolvedWidgets = 0L;
+        this.centerConnectionResolved = 0L;
+        this.matchConnectionResolved = 0L;
+        this.chainConnectionResolved = 0L;
+        this.barrierConnectionResolved = 0L;
         this.problematicLayouts.clear();
     }
 }

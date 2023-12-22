@@ -1,6 +1,7 @@
 package com.ibm.icu.text;
 
 @Deprecated
+/* loaded from: classes.dex */
 public interface RbnfLenientScanner {
     @Deprecated
     boolean allIgnorable(String str);

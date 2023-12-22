@@ -7,8 +7,10 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+/* loaded from: classes.dex */
 public @interface ListenerClass {
 
+    /* loaded from: classes.dex */
     public enum NONE {
     }
 

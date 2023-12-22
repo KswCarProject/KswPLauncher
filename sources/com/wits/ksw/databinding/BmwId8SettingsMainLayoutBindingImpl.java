@@ -4,12 +4,14 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
 import android.support.constraint.ConstraintLayout;
+import android.support.p004v7.widget.RecyclerView;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 
+/* loaded from: classes7.dex */
 public class BmwId8SettingsMainLayoutBindingImpl extends BmwId8SettingsMainLayoutBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes;
     private static final SparseIntArray sViewsWithIds;
@@ -19,10 +21,10 @@ public class BmwId8SettingsMainLayoutBindingImpl extends BmwId8SettingsMainLayou
     static {
         ViewDataBinding.IncludedLayouts includedLayouts = new ViewDataBinding.IncludedLayouts(3);
         sIncludes = includedLayouts;
-        includedLayouts.setIncludes(0, new String[]{"id8_launcher_left_bar"}, new int[]{1}, new int[]{R.layout.id8_launcher_left_bar});
+        includedLayouts.setIncludes(0, new String[]{"id8_launcher_left_bar"}, new int[]{1}, new int[]{C0899R.C0902layout.id8_launcher_left_bar});
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.bmw_id8_settings_main_recycle, 2);
+        sparseIntArray.put(C0899R.C0901id.bmw_id8_settings_main_recycle, 2);
     }
 
     public BmwId8SettingsMainLayoutBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -30,74 +32,49 @@ public class BmwId8SettingsMainLayoutBindingImpl extends BmwId8SettingsMainLayou
     }
 
     private BmwId8SettingsMainLayoutBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 1, bindings[1], bindings[2]);
-        this.mDirtyFlags = -1;
+        super(bindingComponent, root, 1, (Id8LauncherLeftBarBinding) bindings[1], (RecyclerView) bindings[2]);
+        this.mDirtyFlags = -1L;
         setContainedBinding(this.bmwId8SettingsMainLeftBar);
-        ConstraintLayout constraintLayout = bindings[0];
+        ConstraintLayout constraintLayout = (ConstraintLayout) bindings[0];
         this.mboundView0 = constraintLayout;
-        constraintLayout.setTag((Object) null);
+        constraintLayout.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 8;
+            this.mDirtyFlags = 8L;
         }
         this.bmwId8SettingsMainLeftBar.invalidateAll();
         requestRebind();
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:10:0x0016, code lost:
-        return false;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:8:0x0013, code lost:
-        if (r4.bmwId8SettingsMainLeftBar.hasPendingBindings() == false) goto L_0x0016;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:9:0x0015, code lost:
-        return true;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
-        /*
-            r4 = this;
-            monitor-enter(r4)
-            long r0 = r4.mDirtyFlags     // Catch:{ all -> 0x0018 }
-            r2 = 0
-            int r0 = (r0 > r2 ? 1 : (r0 == r2 ? 0 : -1))
-            r1 = 1
-            if (r0 == 0) goto L_0x000c
-            monitor-exit(r4)     // Catch:{ all -> 0x0018 }
-            return r1
-        L_0x000c:
-            monitor-exit(r4)     // Catch:{ all -> 0x0018 }
-            com.wits.ksw.databinding.Id8LauncherLeftBarBinding r0 = r4.bmwId8SettingsMainLeftBar
-            boolean r0 = r0.hasPendingBindings()
-            if (r0 == 0) goto L_0x0016
-            return r1
-        L_0x0016:
-            r0 = 0
-            return r0
-        L_0x0018:
-            r0 = move-exception
-            monitor-exit(r4)     // Catch:{ all -> 0x0018 }
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.BmwId8SettingsMainLayoutBindingImpl.hasPendingBindings():boolean");
+        synchronized (this) {
+            if (this.mDirtyFlags != 0) {
+                return true;
+            }
+            return this.bmwId8SettingsMainLeftBar.hasPendingBindings();
+        }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
         if (7 == variableId) {
             setLauncherViewModel((LauncherViewModel) variable);
             return true;
-        } else if (16 != variableId) {
-            return false;
-        } else {
+        } else if (16 == variableId) {
             setViewModel((BmwId8SettingsViewModel) variable);
             return true;
+        } else {
+            return false;
         }
     }
 
+    @Override // com.wits.ksw.databinding.BmwId8SettingsMainLayoutBinding
     public void setLauncherViewModel(LauncherViewModel LauncherViewModel) {
         this.mLauncherViewModel = LauncherViewModel;
         synchronized (this) {
@@ -107,17 +84,19 @@ public class BmwId8SettingsMainLayoutBindingImpl extends BmwId8SettingsMainLayou
         super.requestRebind();
     }
 
+    @Override // com.wits.ksw.databinding.BmwId8SettingsMainLayoutBinding
     public void setViewModel(BmwId8SettingsViewModel ViewModel) {
         this.mViewModel = ViewModel;
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         super.setLifecycleOwner(lifecycleOwner);
         this.bmwId8SettingsMainLeftBar.setLifecycleOwner(lifecycleOwner);
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeBmwId8SettingsMainLeftBar((Id8LauncherLeftBarBinding) object, fieldId);
@@ -127,21 +106,21 @@ public class BmwId8SettingsMainLayoutBindingImpl extends BmwId8SettingsMainLayou
     }
 
     private boolean onChangeBmwId8SettingsMainLeftBar(Id8LauncherLeftBarBinding BmwId8SettingsMainLeftBar, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         LauncherViewModel launcherViewModel = this.mLauncherViewModel;
         if ((10 & dirtyFlags) != 0) {

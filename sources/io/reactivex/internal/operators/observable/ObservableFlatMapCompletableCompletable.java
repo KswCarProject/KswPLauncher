@@ -18,43 +18,47 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ObservableFlatMapCompletableCompletable<T> extends Completable implements FuseToObservable<T> {
     final boolean delayErrors;
     final Function<? super T, ? extends CompletableSource> mapper;
     final ObservableSource<T> source;
 
-    public ObservableFlatMapCompletableCompletable(ObservableSource<T> source2, Function<? super T, ? extends CompletableSource> mapper2, boolean delayErrors2) {
-        this.source = source2;
-        this.mapper = mapper2;
-        this.delayErrors = delayErrors2;
+    public ObservableFlatMapCompletableCompletable(ObservableSource<T> source, Function<? super T, ? extends CompletableSource> mapper, boolean delayErrors) {
+        this.source = source;
+        this.mapper = mapper;
+        this.delayErrors = delayErrors;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         this.source.subscribe(new FlatMapCompletableMainObserver(observer, this.mapper, this.delayErrors));
     }
 
+    @Override // io.reactivex.internal.fuseable.FuseToObservable
     public Observable<T> fuseToObservable() {
         return RxJavaPlugins.onAssembly(new ObservableFlatMapCompletable(this.source, this.mapper, this.delayErrors));
     }
 
+    /* loaded from: classes.dex */
     static final class FlatMapCompletableMainObserver<T> extends AtomicInteger implements Disposable, Observer<T> {
         private static final long serialVersionUID = 8443155186132538303L;
         final boolean delayErrors;
         volatile boolean disposed;
         final CompletableObserver downstream;
-        final AtomicThrowable errors = new AtomicThrowable();
         final Function<? super T, ? extends CompletableSource> mapper;
-        final CompositeDisposable set = new CompositeDisposable();
         Disposable upstream;
+        final AtomicThrowable errors = new AtomicThrowable();
+        final CompositeDisposable set = new CompositeDisposable();
 
-        FlatMapCompletableMainObserver(CompletableObserver observer, Function<? super T, ? extends CompletableSource> mapper2, boolean delayErrors2) {
+        FlatMapCompletableMainObserver(CompletableObserver observer, Function<? super T, ? extends CompletableSource> mapper, boolean delayErrors) {
             this.downstream = observer;
-            this.mapper = mapper2;
-            this.delayErrors = delayErrors2;
+            this.mapper = mapper;
+            this.delayErrors = delayErrors;
             lazySet(1);
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -62,6 +66,7 @@ public final class ObservableFlatMapCompletableCompletable<T> extends Completabl
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T value) {
             try {
                 CompletableSource cs = (CompletableSource) ObjectHelper.requireNonNull(this.mapper.apply(value), "The mapper returned a null CompletableSource");
@@ -77,19 +82,29 @@ public final class ObservableFlatMapCompletableCompletable<T> extends Completabl
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable e) {
-            if (!this.errors.addThrowable(e)) {
-                RxJavaPlugins.onError(e);
-            } else if (!this.delayErrors) {
+            if (this.errors.addThrowable(e)) {
+                if (this.delayErrors) {
+                    if (decrementAndGet() == 0) {
+                        Throwable ex = this.errors.terminate();
+                        this.downstream.onError(ex);
+                        return;
+                    }
+                    return;
+                }
                 dispose();
                 if (getAndSet(0) > 0) {
-                    this.downstream.onError(this.errors.terminate());
+                    Throwable ex2 = this.errors.terminate();
+                    this.downstream.onError(ex2);
+                    return;
                 }
-            } else if (decrementAndGet() == 0) {
-                this.downstream.onError(this.errors.terminate());
+                return;
             }
+            RxJavaPlugins.onError(e);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             if (decrementAndGet() == 0) {
                 Throwable ex = this.errors.terminate();
@@ -101,52 +116,58 @@ public final class ObservableFlatMapCompletableCompletable<T> extends Completabl
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.disposed = true;
             this.upstream.dispose();
             this.set.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerComplete(FlatMapCompletableMainObserver<T>.InnerObserver inner) {
+        void innerComplete(FlatMapCompletableMainObserver<T>.InnerObserver inner) {
             this.set.delete(inner);
             onComplete();
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerError(FlatMapCompletableMainObserver<T>.InnerObserver inner, Throwable e) {
+        void innerError(FlatMapCompletableMainObserver<T>.InnerObserver inner, Throwable e) {
             this.set.delete(inner);
             onError(e);
         }
 
+        /* loaded from: classes.dex */
         final class InnerObserver extends AtomicReference<Disposable> implements CompletableObserver, Disposable {
             private static final long serialVersionUID = 8606673141535671828L;
 
             InnerObserver() {
             }
 
+            @Override // io.reactivex.CompletableObserver
             public void onSubscribe(Disposable d) {
                 DisposableHelper.setOnce(this, d);
             }
 
+            @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
             public void onComplete() {
                 FlatMapCompletableMainObserver.this.innerComplete(this);
             }
 
+            @Override // io.reactivex.CompletableObserver
             public void onError(Throwable e) {
                 FlatMapCompletableMainObserver.this.innerError(this, e);
             }
 
+            @Override // io.reactivex.disposables.Disposable
             public void dispose() {
                 DisposableHelper.dispose(this);
             }
 
+            @Override // io.reactivex.disposables.Disposable
             public boolean isDisposed() {
-                return DisposableHelper.isDisposed((Disposable) get());
+                return DisposableHelper.isDisposed(get());
             }
         }
     }

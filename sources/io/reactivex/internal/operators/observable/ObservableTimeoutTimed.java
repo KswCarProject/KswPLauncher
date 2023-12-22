@@ -15,73 +15,79 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import kotlin.jvm.internal.LongCompanionObject;
 
+/* loaded from: classes.dex */
 public final class ObservableTimeoutTimed<T> extends AbstractObservableWithUpstream<T, T> {
     final ObservableSource<? extends T> other;
     final Scheduler scheduler;
     final long timeout;
     final TimeUnit unit;
 
+    /* loaded from: classes.dex */
     interface TimeoutSupport {
         void onTimeout(long j);
     }
 
-    public ObservableTimeoutTimed(Observable<T> source, long timeout2, TimeUnit unit2, Scheduler scheduler2, ObservableSource<? extends T> other2) {
+    public ObservableTimeoutTimed(Observable<T> source, long timeout, TimeUnit unit, Scheduler scheduler, ObservableSource<? extends T> other) {
         super(source);
-        this.timeout = timeout2;
-        this.unit = unit2;
-        this.scheduler = scheduler2;
-        this.other = other2;
+        this.timeout = timeout;
+        this.unit = unit;
+        this.scheduler = scheduler;
+        this.other = other;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Observer<? super T> observer) {
+    @Override // io.reactivex.Observable
+    protected void subscribeActual(Observer<? super T> observer) {
         if (this.other == null) {
-            TimeoutObserver timeoutObserver = new TimeoutObserver(observer, this.timeout, this.unit, this.scheduler.createWorker());
-            observer.onSubscribe(timeoutObserver);
-            timeoutObserver.startTimeout(0);
-            this.source.subscribe(timeoutObserver);
+            TimeoutObserver<T> parent = new TimeoutObserver<>(observer, this.timeout, this.unit, this.scheduler.createWorker());
+            observer.onSubscribe(parent);
+            parent.startTimeout(0L);
+            this.source.subscribe(parent);
             return;
         }
-        TimeoutFallbackObserver timeoutFallbackObserver = new TimeoutFallbackObserver(observer, this.timeout, this.unit, this.scheduler.createWorker(), this.other);
-        observer.onSubscribe(timeoutFallbackObserver);
-        timeoutFallbackObserver.startTimeout(0);
-        this.source.subscribe(timeoutFallbackObserver);
+        TimeoutFallbackObserver<T> parent2 = new TimeoutFallbackObserver<>(observer, this.timeout, this.unit, this.scheduler.createWorker(), this.other);
+        observer.onSubscribe(parent2);
+        parent2.startTimeout(0L);
+        this.source.subscribe(parent2);
     }
 
+    /* loaded from: classes.dex */
     static final class TimeoutObserver<T> extends AtomicLong implements Observer<T>, Disposable, TimeoutSupport {
         private static final long serialVersionUID = 3764492702657003550L;
         final Observer<? super T> downstream;
-        final SequentialDisposable task = new SequentialDisposable();
         final long timeout;
         final TimeUnit unit;
-        final AtomicReference<Disposable> upstream = new AtomicReference<>();
         final Scheduler.Worker worker;
+        final SequentialDisposable task = new SequentialDisposable();
+        final AtomicReference<Disposable> upstream = new AtomicReference<>();
 
-        TimeoutObserver(Observer<? super T> actual, long timeout2, TimeUnit unit2, Scheduler.Worker worker2) {
+        TimeoutObserver(Observer<? super T> actual, long timeout, TimeUnit unit, Scheduler.Worker worker) {
             this.downstream = actual;
-            this.timeout = timeout2;
-            this.unit = unit2;
-            this.worker = worker2;
+            this.timeout = timeout;
+            this.unit = unit;
+            this.worker = worker;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             DisposableHelper.setOnce(this.upstream, d);
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             long idx = get();
-            if (idx != LongCompanionObject.MAX_VALUE && compareAndSet(idx, idx + 1)) {
-                ((Disposable) this.task.get()).dispose();
-                this.downstream.onNext(t);
-                startTimeout(1 + idx);
+            if (idx == LongCompanionObject.MAX_VALUE || !compareAndSet(idx, idx + 1)) {
+                return;
             }
+            this.task.get().dispose();
+            this.downstream.onNext(t);
+            startTimeout(1 + idx);
         }
 
-        /* access modifiers changed from: package-private */
-        public void startTimeout(long nextIndex) {
+        void startTimeout(long nextIndex) {
             this.task.replace(this.worker.schedule(new TimeoutTask(nextIndex, this), this.timeout, this.unit));
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             if (getAndSet(LongCompanionObject.MAX_VALUE) != LongCompanionObject.MAX_VALUE) {
                 this.task.dispose();
@@ -92,6 +98,7 @@ public final class ObservableTimeoutTimed<T> extends AbstractObservableWithUpstr
             RxJavaPlugins.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             if (getAndSet(LongCompanionObject.MAX_VALUE) != LongCompanionObject.MAX_VALUE) {
                 this.task.dispose();
@@ -100,6 +107,7 @@ public final class ObservableTimeoutTimed<T> extends AbstractObservableWithUpstr
             }
         }
 
+        @Override // io.reactivex.internal.operators.observable.ObservableTimeoutTimed.TimeoutSupport
         public void onTimeout(long idx) {
             if (compareAndSet(idx, LongCompanionObject.MAX_VALUE)) {
                 DisposableHelper.dispose(this.upstream);
@@ -108,67 +116,75 @@ public final class ObservableTimeoutTimed<T> extends AbstractObservableWithUpstr
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             DisposableHelper.dispose(this.upstream);
             this.worker.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return DisposableHelper.isDisposed(this.upstream.get());
         }
     }
 
+    /* loaded from: classes.dex */
     static final class TimeoutTask implements Runnable {
         final long idx;
         final TimeoutSupport parent;
 
-        TimeoutTask(long idx2, TimeoutSupport parent2) {
-            this.idx = idx2;
-            this.parent = parent2;
+        TimeoutTask(long idx, TimeoutSupport parent) {
+            this.idx = idx;
+            this.parent = parent;
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             this.parent.onTimeout(this.idx);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class TimeoutFallbackObserver<T> extends AtomicReference<Disposable> implements Observer<T>, Disposable, TimeoutSupport {
         private static final long serialVersionUID = 3764492702657003550L;
         final Observer<? super T> downstream;
         ObservableSource<? extends T> fallback;
-        final AtomicLong index = new AtomicLong();
-        final SequentialDisposable task = new SequentialDisposable();
         final long timeout;
         final TimeUnit unit;
-        final AtomicReference<Disposable> upstream = new AtomicReference<>();
         final Scheduler.Worker worker;
+        final SequentialDisposable task = new SequentialDisposable();
+        final AtomicLong index = new AtomicLong();
+        final AtomicReference<Disposable> upstream = new AtomicReference<>();
 
-        TimeoutFallbackObserver(Observer<? super T> actual, long timeout2, TimeUnit unit2, Scheduler.Worker worker2, ObservableSource<? extends T> fallback2) {
+        TimeoutFallbackObserver(Observer<? super T> actual, long timeout, TimeUnit unit, Scheduler.Worker worker, ObservableSource<? extends T> fallback) {
             this.downstream = actual;
-            this.timeout = timeout2;
-            this.unit = unit2;
-            this.worker = worker2;
-            this.fallback = fallback2;
+            this.timeout = timeout;
+            this.unit = unit;
+            this.worker = worker;
+            this.fallback = fallback;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             DisposableHelper.setOnce(this.upstream, d);
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             long idx = this.index.get();
-            if (idx != LongCompanionObject.MAX_VALUE && this.index.compareAndSet(idx, idx + 1)) {
-                ((Disposable) this.task.get()).dispose();
-                this.downstream.onNext(t);
-                startTimeout(1 + idx);
+            if (idx == LongCompanionObject.MAX_VALUE || !this.index.compareAndSet(idx, idx + 1)) {
+                return;
             }
+            this.task.get().dispose();
+            this.downstream.onNext(t);
+            startTimeout(1 + idx);
         }
 
-        /* access modifiers changed from: package-private */
-        public void startTimeout(long nextIndex) {
+        void startTimeout(long nextIndex) {
             this.task.replace(this.worker.schedule(new TimeoutTask(nextIndex, this), this.timeout, this.unit));
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             if (this.index.getAndSet(LongCompanionObject.MAX_VALUE) != LongCompanionObject.MAX_VALUE) {
                 this.task.dispose();
@@ -179,6 +195,7 @@ public final class ObservableTimeoutTimed<T> extends AbstractObservableWithUpstr
             RxJavaPlugins.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             if (this.index.getAndSet(LongCompanionObject.MAX_VALUE) != LongCompanionObject.MAX_VALUE) {
                 this.task.dispose();
@@ -187,6 +204,7 @@ public final class ObservableTimeoutTimed<T> extends AbstractObservableWithUpstr
             }
         }
 
+        @Override // io.reactivex.internal.operators.observable.ObservableTimeoutTimed.TimeoutSupport
         public void onTimeout(long idx) {
             if (this.index.compareAndSet(idx, LongCompanionObject.MAX_VALUE)) {
                 DisposableHelper.dispose(this.upstream);
@@ -197,38 +215,45 @@ public final class ObservableTimeoutTimed<T> extends AbstractObservableWithUpstr
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             DisposableHelper.dispose(this.upstream);
             DisposableHelper.dispose(this);
             this.worker.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return DisposableHelper.isDisposed((Disposable) get());
+            return DisposableHelper.isDisposed(get());
         }
     }
 
+    /* loaded from: classes.dex */
     static final class FallbackObserver<T> implements Observer<T> {
         final AtomicReference<Disposable> arbiter;
         final Observer<? super T> downstream;
 
-        FallbackObserver(Observer<? super T> actual, AtomicReference<Disposable> arbiter2) {
+        FallbackObserver(Observer<? super T> actual, AtomicReference<Disposable> arbiter) {
             this.downstream = actual;
-            this.arbiter = arbiter2;
+            this.arbiter = arbiter;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             DisposableHelper.replace(this.arbiter, d);
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             this.downstream.onNext(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             this.downstream.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             this.downstream.onComplete();
         }

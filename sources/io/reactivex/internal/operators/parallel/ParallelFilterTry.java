@@ -1,7 +1,10 @@
 package io.reactivex.internal.operators.parallel;
 
+import io.reactivex.exceptions.CompositeException;
+import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Predicate;
+import io.reactivex.internal.functions.ObjectHelper;
 import io.reactivex.internal.fuseable.ConditionalSubscriber;
 import io.reactivex.internal.subscriptions.SubscriptionHelper;
 import io.reactivex.parallel.ParallelFailureHandling;
@@ -10,63 +13,72 @@ import io.reactivex.plugins.RxJavaPlugins;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class ParallelFilterTry<T> extends ParallelFlowable<T> {
     final BiFunction<? super Long, ? super Throwable, ParallelFailureHandling> errorHandler;
     final Predicate<? super T> predicate;
     final ParallelFlowable<T> source;
 
-    public ParallelFilterTry(ParallelFlowable<T> source2, Predicate<? super T> predicate2, BiFunction<? super Long, ? super Throwable, ParallelFailureHandling> errorHandler2) {
-        this.source = source2;
-        this.predicate = predicate2;
-        this.errorHandler = errorHandler2;
+    public ParallelFilterTry(ParallelFlowable<T> source, Predicate<? super T> predicate, BiFunction<? super Long, ? super Throwable, ParallelFailureHandling> errorHandler) {
+        this.source = source;
+        this.predicate = predicate;
+        this.errorHandler = errorHandler;
     }
 
+    @Override // io.reactivex.parallel.ParallelFlowable
     public void subscribe(Subscriber<? super T>[] subscribers) {
-        if (validate(subscribers)) {
-            int n = subscribers.length;
-            Subscriber<? super T>[] parents = new Subscriber[n];
-            for (int i = 0; i < n; i++) {
-                ConditionalSubscriber conditionalSubscriber = subscribers[i];
-                if (conditionalSubscriber instanceof ConditionalSubscriber) {
-                    parents[i] = new ParallelFilterConditionalSubscriber<>(conditionalSubscriber, this.predicate, this.errorHandler);
-                } else {
-                    parents[i] = new ParallelFilterSubscriber<>(conditionalSubscriber, this.predicate, this.errorHandler);
-                }
-            }
-            this.source.subscribe(parents);
+        if (!validate(subscribers)) {
+            return;
         }
+        int n = subscribers.length;
+        Subscriber<? super T>[] parents = new Subscriber[n];
+        for (int i = 0; i < n; i++) {
+            Subscriber<? super T> a = subscribers[i];
+            if (a instanceof ConditionalSubscriber) {
+                parents[i] = new ParallelFilterConditionalSubscriber((ConditionalSubscriber) a, this.predicate, this.errorHandler);
+            } else {
+                parents[i] = new ParallelFilterSubscriber(a, this.predicate, this.errorHandler);
+            }
+        }
+        this.source.subscribe(parents);
     }
 
+    @Override // io.reactivex.parallel.ParallelFlowable
     public int parallelism() {
         return this.source.parallelism();
     }
 
+    /* loaded from: classes.dex */
     static abstract class BaseFilterSubscriber<T> implements ConditionalSubscriber<T>, Subscription {
         boolean done;
         final BiFunction<? super Long, ? super Throwable, ParallelFailureHandling> errorHandler;
         final Predicate<? super T> predicate;
         Subscription upstream;
 
-        BaseFilterSubscriber(Predicate<? super T> predicate2, BiFunction<? super Long, ? super Throwable, ParallelFailureHandling> errorHandler2) {
-            this.predicate = predicate2;
-            this.errorHandler = errorHandler2;
+        BaseFilterSubscriber(Predicate<? super T> predicate, BiFunction<? super Long, ? super Throwable, ParallelFailureHandling> errorHandler) {
+            this.predicate = predicate;
+            this.errorHandler = errorHandler;
         }
 
+        @Override // org.reactivestreams.Subscription
         public final void request(long n) {
             this.upstream.request(n);
         }
 
+        @Override // org.reactivestreams.Subscription
         public final void cancel() {
             this.upstream.cancel();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public final void onNext(T t) {
             if (!tryOnNext(t) && !this.done) {
-                this.upstream.request(1);
+                this.upstream.request(1L);
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ParallelFilterSubscriber<T> extends BaseFilterSubscriber<T> {
         final Subscriber<? super T> downstream;
 
@@ -75,6 +87,7 @@ public final class ParallelFilterTry<T> extends ParallelFlowable<T> {
             this.downstream = actual;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -82,78 +95,51 @@ public final class ParallelFilterTry<T> extends ParallelFlowable<T> {
             }
         }
 
-        /* JADX WARNING: Removed duplicated region for block: B:3:0x0007 A[LOOP:0: B:3:0x0007->B:15:0x003c, LOOP_START, PHI: r2 
-          PHI: (r2v1 'retries' long) = (r2v0 'retries' long), (r2v2 'retries' long) binds: [B:2:0x0005, B:15:0x003c] A[DONT_GENERATE, DONT_INLINE]] */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public boolean tryOnNext(T r9) {
-            /*
-                r8 = this;
-                boolean r0 = r8.done
-                r1 = 0
-                if (r0 != 0) goto L_0x0066
-                r2 = 0
-            L_0x0007:
-                r0 = 1
-                io.reactivex.functions.Predicate r4 = r8.predicate     // Catch:{ all -> 0x0018 }
-                boolean r4 = r4.test(r9)     // Catch:{ all -> 0x0018 }
-                if (r4 == 0) goto L_0x0017
-                org.reactivestreams.Subscriber<? super T> r1 = r8.downstream
-                r1.onNext(r9)
-                return r0
-            L_0x0017:
-                return r1
-            L_0x0018:
-                r4 = move-exception
-                io.reactivex.exceptions.Exceptions.throwIfFatal(r4)
-                io.reactivex.functions.BiFunction r5 = r8.errorHandler     // Catch:{ all -> 0x004f }
-                r6 = 1
-                long r6 = r6 + r2
-                r2 = r6
-                java.lang.Long r6 = java.lang.Long.valueOf(r6)     // Catch:{ all -> 0x004f }
-                java.lang.Object r5 = r5.apply(r6, r4)     // Catch:{ all -> 0x004f }
-                java.lang.String r6 = "The errorHandler returned a null item"
-                java.lang.Object r5 = io.reactivex.internal.functions.ObjectHelper.requireNonNull(r5, (java.lang.String) r6)     // Catch:{ all -> 0x004f }
-                io.reactivex.parallel.ParallelFailureHandling r5 = (io.reactivex.parallel.ParallelFailureHandling) r5     // Catch:{ all -> 0x004f }
-                r0 = r5
-                int[] r5 = io.reactivex.internal.operators.parallel.ParallelFilterTry.AnonymousClass1.$SwitchMap$io$reactivex$parallel$ParallelFailureHandling
-                int r6 = r0.ordinal()
-                r5 = r5[r6]
-                switch(r5) {
-                    case 1: goto L_0x004e;
-                    case 2: goto L_0x004d;
-                    case 3: goto L_0x0046;
-                    default: goto L_0x003f;
+        @Override // io.reactivex.internal.fuseable.ConditionalSubscriber
+        public boolean tryOnNext(T t) {
+            if (this.done) {
+                return false;
+            }
+            long retries = 0;
+            while (true) {
+                try {
+                    boolean b = this.predicate.test(t);
+                    if (b) {
+                        this.downstream.onNext(t);
+                        return true;
+                    }
+                    return false;
+                } catch (Throwable ex) {
+                    Exceptions.throwIfFatal(ex);
+                    try {
+                        long j = 1 + retries;
+                        retries = j;
+                        ParallelFailureHandling h = (ParallelFailureHandling) ObjectHelper.requireNonNull(this.errorHandler.apply(Long.valueOf(j), ex), "The errorHandler returned a null item");
+                        switch (C18841.$SwitchMap$io$reactivex$parallel$ParallelFailureHandling[h.ordinal()]) {
+                            case 1:
+                                break;
+                            case 2:
+                                return false;
+                            case 3:
+                                cancel();
+                                onComplete();
+                                return false;
+                            default:
+                                cancel();
+                                onError(ex);
+                                return false;
+                        }
+                    } catch (Throwable exc) {
+                        Exceptions.throwIfFatal(exc);
+                        cancel();
+                        onError(new CompositeException(ex, exc));
+                        return false;
+                    }
                 }
-            L_0x003f:
-                r8.cancel()
-                r8.onError(r4)
-                return r1
-            L_0x0046:
-                r8.cancel()
-                r8.onComplete()
-                return r1
-            L_0x004d:
-                return r1
-            L_0x004e:
-                goto L_0x0007
-            L_0x004f:
-                r5 = move-exception
-                io.reactivex.exceptions.Exceptions.throwIfFatal(r5)
-                r8.cancel()
-                io.reactivex.exceptions.CompositeException r6 = new io.reactivex.exceptions.CompositeException
-                r7 = 2
-                java.lang.Throwable[] r7 = new java.lang.Throwable[r7]
-                r7[r1] = r4
-                r7[r0] = r5
-                r6.<init>((java.lang.Throwable[]) r7)
-                r8.onError(r6)
-                return r1
-            L_0x0066:
-                return r1
-            */
-            throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.operators.parallel.ParallelFilterTry.ParallelFilterSubscriber.tryOnNext(java.lang.Object):boolean");
+            }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -163,6 +149,7 @@ public final class ParallelFilterTry<T> extends ParallelFlowable<T> {
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             if (!this.done) {
                 this.done = true;
@@ -171,8 +158,9 @@ public final class ParallelFilterTry<T> extends ParallelFlowable<T> {
         }
     }
 
-    /* renamed from: io.reactivex.internal.operators.parallel.ParallelFilterTry$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
+    /* renamed from: io.reactivex.internal.operators.parallel.ParallelFilterTry$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C18841 {
         static final /* synthetic */ int[] $SwitchMap$io$reactivex$parallel$ParallelFailureHandling;
 
         static {
@@ -193,6 +181,7 @@ public final class ParallelFilterTry<T> extends ParallelFlowable<T> {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ParallelFilterConditionalSubscriber<T> extends BaseFilterSubscriber<T> {
         final ConditionalSubscriber<? super T> downstream;
 
@@ -201,6 +190,7 @@ public final class ParallelFilterTry<T> extends ParallelFlowable<T> {
             this.downstream = actual;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -208,79 +198,47 @@ public final class ParallelFilterTry<T> extends ParallelFlowable<T> {
             }
         }
 
-        /* JADX WARNING: Removed duplicated region for block: B:3:0x0007 A[LOOP:0: B:3:0x0007->B:15:0x003f, LOOP_START, PHI: r2 
-          PHI: (r2v1 'retries' long) = (r2v0 'retries' long), (r2v2 'retries' long) binds: [B:2:0x0005, B:15:0x003f] A[DONT_GENERATE, DONT_INLINE]] */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public boolean tryOnNext(T r9) {
-            /*
-                r8 = this;
-                boolean r0 = r8.done
-                r1 = 0
-                if (r0 != 0) goto L_0x0069
-                r2 = 0
-            L_0x0007:
-                r0 = 1
-                io.reactivex.functions.Predicate r4 = r8.predicate     // Catch:{ all -> 0x001b }
-                boolean r4 = r4.test(r9)     // Catch:{ all -> 0x001b }
-                if (r4 == 0) goto L_0x001a
-                io.reactivex.internal.fuseable.ConditionalSubscriber<? super T> r5 = r8.downstream
-                boolean r5 = r5.tryOnNext(r9)
-                if (r5 == 0) goto L_0x001a
-                r1 = r0
-            L_0x001a:
-                return r1
-            L_0x001b:
-                r4 = move-exception
-                io.reactivex.exceptions.Exceptions.throwIfFatal(r4)
-                io.reactivex.functions.BiFunction r5 = r8.errorHandler     // Catch:{ all -> 0x0052 }
-                r6 = 1
-                long r6 = r6 + r2
-                r2 = r6
-                java.lang.Long r6 = java.lang.Long.valueOf(r6)     // Catch:{ all -> 0x0052 }
-                java.lang.Object r5 = r5.apply(r6, r4)     // Catch:{ all -> 0x0052 }
-                java.lang.String r6 = "The errorHandler returned a null item"
-                java.lang.Object r5 = io.reactivex.internal.functions.ObjectHelper.requireNonNull(r5, (java.lang.String) r6)     // Catch:{ all -> 0x0052 }
-                io.reactivex.parallel.ParallelFailureHandling r5 = (io.reactivex.parallel.ParallelFailureHandling) r5     // Catch:{ all -> 0x0052 }
-                r0 = r5
-                int[] r5 = io.reactivex.internal.operators.parallel.ParallelFilterTry.AnonymousClass1.$SwitchMap$io$reactivex$parallel$ParallelFailureHandling
-                int r6 = r0.ordinal()
-                r5 = r5[r6]
-                switch(r5) {
-                    case 1: goto L_0x0051;
-                    case 2: goto L_0x0050;
-                    case 3: goto L_0x0049;
-                    default: goto L_0x0042;
+        @Override // io.reactivex.internal.fuseable.ConditionalSubscriber
+        public boolean tryOnNext(T t) {
+            if (this.done) {
+                return false;
+            }
+            long retries = 0;
+            while (true) {
+                try {
+                    boolean b = this.predicate.test(t);
+                    return b && this.downstream.tryOnNext(t);
+                } catch (Throwable ex) {
+                    Exceptions.throwIfFatal(ex);
+                    try {
+                        long j = 1 + retries;
+                        retries = j;
+                        ParallelFailureHandling h = (ParallelFailureHandling) ObjectHelper.requireNonNull(this.errorHandler.apply(Long.valueOf(j), ex), "The errorHandler returned a null item");
+                        switch (C18841.$SwitchMap$io$reactivex$parallel$ParallelFailureHandling[h.ordinal()]) {
+                            case 1:
+                                break;
+                            case 2:
+                                return false;
+                            case 3:
+                                cancel();
+                                onComplete();
+                                return false;
+                            default:
+                                cancel();
+                                onError(ex);
+                                return false;
+                        }
+                    } catch (Throwable exc) {
+                        Exceptions.throwIfFatal(exc);
+                        cancel();
+                        onError(new CompositeException(ex, exc));
+                        return false;
+                    }
                 }
-            L_0x0042:
-                r8.cancel()
-                r8.onError(r4)
-                return r1
-            L_0x0049:
-                r8.cancel()
-                r8.onComplete()
-                return r1
-            L_0x0050:
-                return r1
-            L_0x0051:
-                goto L_0x0007
-            L_0x0052:
-                r5 = move-exception
-                io.reactivex.exceptions.Exceptions.throwIfFatal(r5)
-                r8.cancel()
-                io.reactivex.exceptions.CompositeException r6 = new io.reactivex.exceptions.CompositeException
-                r7 = 2
-                java.lang.Throwable[] r7 = new java.lang.Throwable[r7]
-                r7[r1] = r4
-                r7[r0] = r5
-                r6.<init>((java.lang.Throwable[]) r7)
-                r8.onError(r6)
-                return r1
-            L_0x0069:
-                return r1
-            */
-            throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.operators.parallel.ParallelFilterTry.ParallelFilterConditionalSubscriber.tryOnNext(java.lang.Object):boolean");
+            }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -290,6 +248,7 @@ public final class ParallelFilterTry<T> extends ParallelFlowable<T> {
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             if (!this.done) {
                 this.done = true;

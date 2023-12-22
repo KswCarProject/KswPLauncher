@@ -5,6 +5,7 @@ import android.support.constraint.solver.state.State;
 import android.support.constraint.solver.widgets.Barrier;
 import android.support.constraint.solver.widgets.HelperWidget;
 
+/* loaded from: classes.dex */
 public class BarrierReference extends HelperReference {
     private Barrier mBarrierWidget;
     private State.Direction mDirection;
@@ -26,6 +27,7 @@ public class BarrierReference extends HelperReference {
         this.mMargin = value;
     }
 
+    @Override // android.support.constraint.solver.state.HelperReference
     public HelperWidget getHelperWidget() {
         if (this.mBarrierWidget == null) {
             this.mBarrierWidget = new Barrier();
@@ -33,10 +35,11 @@ public class BarrierReference extends HelperReference {
         return this.mBarrierWidget;
     }
 
+    @Override // android.support.constraint.solver.state.HelperReference
     public void apply() {
         getHelperWidget();
         int direction = 0;
-        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$state$State$Direction[this.mDirection.ordinal()]) {
+        switch (C01021.f27x83030585[this.mDirection.ordinal()]) {
             case 1:
             case 2:
                 direction = 0;
@@ -56,35 +59,38 @@ public class BarrierReference extends HelperReference {
         this.mBarrierWidget.setMargin(this.mMargin);
     }
 
-    /* renamed from: android.support.constraint.solver.state.helpers.BarrierReference$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
-        static final /* synthetic */ int[] $SwitchMap$android$support$constraint$solver$state$State$Direction;
+    /* renamed from: android.support.constraint.solver.state.helpers.BarrierReference$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C01021 {
+
+        /* renamed from: $SwitchMap$android$support$constraint$solver$state$State$Direction */
+        static final /* synthetic */ int[] f27x83030585;
 
         static {
             int[] iArr = new int[State.Direction.values().length];
-            $SwitchMap$android$support$constraint$solver$state$State$Direction = iArr;
+            f27x83030585 = iArr;
             try {
                 iArr[State.Direction.LEFT.ordinal()] = 1;
             } catch (NoSuchFieldError e) {
             }
             try {
-                $SwitchMap$android$support$constraint$solver$state$State$Direction[State.Direction.START.ordinal()] = 2;
+                f27x83030585[State.Direction.START.ordinal()] = 2;
             } catch (NoSuchFieldError e2) {
             }
             try {
-                $SwitchMap$android$support$constraint$solver$state$State$Direction[State.Direction.RIGHT.ordinal()] = 3;
+                f27x83030585[State.Direction.RIGHT.ordinal()] = 3;
             } catch (NoSuchFieldError e3) {
             }
             try {
-                $SwitchMap$android$support$constraint$solver$state$State$Direction[State.Direction.END.ordinal()] = 4;
+                f27x83030585[State.Direction.END.ordinal()] = 4;
             } catch (NoSuchFieldError e4) {
             }
             try {
-                $SwitchMap$android$support$constraint$solver$state$State$Direction[State.Direction.TOP.ordinal()] = 5;
+                f27x83030585[State.Direction.TOP.ordinal()] = 5;
             } catch (NoSuchFieldError e5) {
             }
             try {
-                $SwitchMap$android$support$constraint$solver$state$State$Direction[State.Direction.BOTTOM.ordinal()] = 6;
+                f27x83030585[State.Direction.BOTTOM.ordinal()] = 6;
             } catch (NoSuchFieldError e6) {
             }
         }

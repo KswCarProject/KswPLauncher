@@ -16,25 +16,27 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableOnBackpressureBuffer<T> extends AbstractFlowableWithUpstream<T, T> {
     final int bufferSize;
     final boolean delayError;
     final Action onOverflow;
     final boolean unbounded;
 
-    public FlowableOnBackpressureBuffer(Flowable<T> source, int bufferSize2, boolean unbounded2, boolean delayError2, Action onOverflow2) {
+    public FlowableOnBackpressureBuffer(Flowable<T> source, int bufferSize, boolean unbounded, boolean delayError, Action onOverflow) {
         super(source);
-        this.bufferSize = bufferSize2;
-        this.unbounded = unbounded2;
-        this.delayError = delayError2;
-        this.onOverflow = onOverflow2;
+        this.bufferSize = bufferSize;
+        this.unbounded = unbounded;
+        this.delayError = delayError;
+        this.onOverflow = onOverflow;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
-        this.source.subscribe(new BackpressureBufferSubscriber(s, this.bufferSize, this.unbounded, this.delayError, this.onOverflow));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
+        this.source.subscribe((FlowableSubscriber) new BackpressureBufferSubscriber(s, this.bufferSize, this.unbounded, this.delayError, this.onOverflow));
     }
 
+    /* loaded from: classes.dex */
     static final class BackpressureBufferSubscriber<T> extends BasicIntQueueSubscription<T> implements FlowableSubscriber<T> {
         private static final long serialVersionUID = -2514538129242366402L;
         volatile boolean cancelled;
@@ -48,11 +50,11 @@ public final class FlowableOnBackpressureBuffer<T> extends AbstractFlowableWithU
         final AtomicLong requested = new AtomicLong();
         Subscription upstream;
 
-        BackpressureBufferSubscriber(Subscriber<? super T> actual, int bufferSize, boolean unbounded, boolean delayError2, Action onOverflow2) {
+        BackpressureBufferSubscriber(Subscriber<? super T> actual, int bufferSize, boolean unbounded, boolean delayError, Action onOverflow) {
             SimplePlainQueue<T> q;
             this.downstream = actual;
-            this.onOverflow = onOverflow2;
-            this.delayError = delayError2;
+            this.onOverflow = onOverflow;
+            this.delayError = delayError;
             if (unbounded) {
                 q = new SpscLinkedArrayQueue<>(bufferSize);
             } else {
@@ -61,6 +63,7 @@ public final class FlowableOnBackpressureBuffer<T> extends AbstractFlowableWithU
             this.queue = q;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -69,6 +72,7 @@ public final class FlowableOnBackpressureBuffer<T> extends AbstractFlowableWithU
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             if (!this.queue.offer(t)) {
                 this.upstream.cancel();
@@ -87,6 +91,7 @@ public final class FlowableOnBackpressureBuffer<T> extends AbstractFlowableWithU
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             this.error = t;
             this.done = true;
@@ -97,6 +102,7 @@ public final class FlowableOnBackpressureBuffer<T> extends AbstractFlowableWithU
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.done = true;
             if (this.outputFused) {
@@ -106,6 +112,7 @@ public final class FlowableOnBackpressureBuffer<T> extends AbstractFlowableWithU
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             if (!this.outputFused && SubscriptionHelper.validate(n)) {
                 BackpressureHelper.add(this.requested, n);
@@ -113,6 +120,7 @@ public final class FlowableOnBackpressureBuffer<T> extends AbstractFlowableWithU
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             if (!this.cancelled) {
                 this.cancelled = true;
@@ -123,8 +131,7 @@ public final class FlowableOnBackpressureBuffer<T> extends AbstractFlowableWithU
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void drain() {
+        void drain() {
             if (getAndIncrement() == 0) {
                 int missed = 1;
                 SimplePlainQueue<T> q = this.queue;
@@ -134,83 +141,87 @@ public final class FlowableOnBackpressureBuffer<T> extends AbstractFlowableWithU
                     long e = 0;
                     while (e != r) {
                         boolean d = this.done;
-                        T v = q.poll();
-                        boolean empty = v == null;
-                        if (!checkTerminated(d, empty, a)) {
-                            if (empty) {
-                                break;
-                            }
-                            a.onNext(v);
-                            e++;
-                        } else {
+                        Object obj = (T) q.poll();
+                        boolean empty = obj == null;
+                        if (checkTerminated(d, empty, a)) {
+                            return;
+                        }
+                        if (empty) {
+                            break;
+                        }
+                        a.onNext(obj);
+                        e++;
+                    }
+                    if (e == r) {
+                        boolean d2 = this.done;
+                        if (checkTerminated(d2, q.isEmpty(), a)) {
                             return;
                         }
                     }
-                    if (e != r || !checkTerminated(this.done, q.isEmpty(), a)) {
-                        if (!(e == 0 || r == LongCompanionObject.MAX_VALUE)) {
-                            this.requested.addAndGet(-e);
-                        }
-                        missed = addAndGet(-missed);
-                        if (missed == 0) {
-                            return;
-                        }
-                    } else {
+                    if (e != 0 && r != LongCompanionObject.MAX_VALUE) {
+                        this.requested.addAndGet(-e);
+                    }
+                    missed = addAndGet(-missed);
+                    if (missed == 0) {
                         return;
                     }
                 }
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean checkTerminated(boolean d, boolean empty, Subscriber<? super T> a) {
+        boolean checkTerminated(boolean d, boolean empty, Subscriber<? super T> a) {
             if (this.cancelled) {
                 this.queue.clear();
                 return true;
-            } else if (!d) {
-                return false;
-            } else {
-                if (!this.delayError) {
-                    Throwable e = this.error;
-                    if (e != null) {
-                        this.queue.clear();
-                        a.onError(e);
-                        return true;
-                    } else if (!empty) {
-                        return false;
-                    } else {
-                        a.onComplete();
+            } else if (d) {
+                if (this.delayError) {
+                    if (empty) {
+                        Throwable e = this.error;
+                        if (e != null) {
+                            a.onError(e);
+                        } else {
+                            a.onComplete();
+                        }
                         return true;
                     }
-                } else if (!empty) {
                     return false;
-                } else {
-                    Throwable e2 = this.error;
-                    if (e2 != null) {
-                        a.onError(e2);
-                    } else {
-                        a.onComplete();
-                    }
-                    return true;
                 }
+                Throwable e2 = this.error;
+                if (e2 != null) {
+                    this.queue.clear();
+                    a.onError(e2);
+                    return true;
+                } else if (empty) {
+                    a.onComplete();
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
             }
         }
 
+        @Override // io.reactivex.internal.fuseable.QueueFuseable
         public int requestFusion(int mode) {
-            if ((mode & 2) == 0) {
-                return 0;
+            if ((mode & 2) != 0) {
+                this.outputFused = true;
+                return 2;
             }
-            this.outputFused = true;
-            return 2;
+            return 0;
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public T poll() throws Exception {
             return this.queue.poll();
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public void clear() {
             this.queue.clear();
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public boolean isEmpty() {
             return this.queue.isEmpty();
         }

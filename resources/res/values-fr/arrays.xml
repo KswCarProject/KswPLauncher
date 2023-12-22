@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <array name="all_months">
+        <item>Janvier</item>
+        <item>Février</item>
+        <item>mars</item>
+        <item>avril</item>
+        <item>Mai</item>
+        <item>juin</item>
+        <item>juillet</item>
+        <item>Août</item>
+        <item>septembre</item>
+        <item>octobre</item>
+        <item>novembre</item>
+        <item>Décembre</item>
+    </array>
     <array name="bc_home_netg6_als_6208_item_text_array">
         <item>Navigation</item>
         <item>Vidéo</item>

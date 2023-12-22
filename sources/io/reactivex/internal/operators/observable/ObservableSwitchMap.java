@@ -15,52 +15,56 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ObservableSwitchMap<T, R> extends AbstractObservableWithUpstream<T, R> {
     final int bufferSize;
     final boolean delayErrors;
     final Function<? super T, ? extends ObservableSource<? extends R>> mapper;
 
-    public ObservableSwitchMap(ObservableSource<T> source, Function<? super T, ? extends ObservableSource<? extends R>> mapper2, int bufferSize2, boolean delayErrors2) {
+    public ObservableSwitchMap(ObservableSource<T> source, Function<? super T, ? extends ObservableSource<? extends R>> mapper, int bufferSize, boolean delayErrors) {
         super(source);
-        this.mapper = mapper2;
-        this.bufferSize = bufferSize2;
-        this.delayErrors = delayErrors2;
+        this.mapper = mapper;
+        this.bufferSize = bufferSize;
+        this.delayErrors = delayErrors;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super R> t) {
-        if (!ObservableScalarXMap.tryScalarXMapSubscribe(this.source, t, this.mapper)) {
-            this.source.subscribe(new SwitchMapObserver(t, this.mapper, this.bufferSize, this.delayErrors));
+        if (ObservableScalarXMap.tryScalarXMapSubscribe(this.source, t, this.mapper)) {
+            return;
         }
+        this.source.subscribe(new SwitchMapObserver(t, this.mapper, this.bufferSize, this.delayErrors));
     }
 
+    /* loaded from: classes.dex */
     static final class SwitchMapObserver<T, R> extends AtomicInteger implements Observer<T>, Disposable {
         static final SwitchMapInnerObserver<Object, Object> CANCELLED;
         private static final long serialVersionUID = -3491074160481096299L;
-        final AtomicReference<SwitchMapInnerObserver<T, R>> active = new AtomicReference<>();
         final int bufferSize;
         volatile boolean cancelled;
         final boolean delayErrors;
         volatile boolean done;
         final Observer<? super R> downstream;
-        final AtomicThrowable errors;
         final Function<? super T, ? extends ObservableSource<? extends R>> mapper;
         volatile long unique;
         Disposable upstream;
+        final AtomicReference<SwitchMapInnerObserver<T, R>> active = new AtomicReference<>();
+        final AtomicThrowable errors = new AtomicThrowable();
 
         static {
-            SwitchMapInnerObserver<Object, Object> switchMapInnerObserver = new SwitchMapInnerObserver<>((SwitchMapObserver) null, -1, 1);
+            SwitchMapInnerObserver<Object, Object> switchMapInnerObserver = new SwitchMapInnerObserver<>(null, -1L, 1);
             CANCELLED = switchMapInnerObserver;
             switchMapInnerObserver.cancel();
         }
 
-        SwitchMapObserver(Observer<? super R> actual, Function<? super T, ? extends ObservableSource<? extends R>> mapper2, int bufferSize2, boolean delayErrors2) {
+        SwitchMapObserver(Observer<? super R> actual, Function<? super T, ? extends ObservableSource<? extends R>> mapper, int bufferSize, boolean delayErrors) {
             this.downstream = actual;
-            this.mapper = mapper2;
-            this.bufferSize = bufferSize2;
-            this.delayErrors = delayErrors2;
-            this.errors = new AtomicThrowable();
+            this.mapper = mapper;
+            this.bufferSize = bufferSize;
+            this.delayErrors = delayErrors;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -68,6 +72,7 @@ public final class ObservableSwitchMap<T, R> extends AbstractObservableWithUpstr
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             SwitchMapInnerObserver<T, R> inner;
             long c = this.unique + 1;
@@ -93,18 +98,20 @@ public final class ObservableSwitchMap<T, R> extends AbstractObservableWithUpstr
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
-            if (this.done || !this.errors.addThrowable(t)) {
-                RxJavaPlugins.onError(t);
+            if (!this.done && this.errors.addThrowable(t)) {
+                if (!this.delayErrors) {
+                    disposeInner();
+                }
+                this.done = true;
+                drain();
                 return;
             }
-            if (!this.delayErrors) {
-                disposeInner();
-            }
-            this.done = true;
-            drain();
+            RxJavaPlugins.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             if (!this.done) {
                 this.done = true;
@@ -112,6 +119,7 @@ public final class ObservableSwitchMap<T, R> extends AbstractObservableWithUpstr
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             if (!this.cancelled) {
                 this.cancelled = true;
@@ -120,131 +128,135 @@ public final class ObservableSwitchMap<T, R> extends AbstractObservableWithUpstr
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.cancelled;
         }
 
-        /* access modifiers changed from: package-private */
-        public void disposeInner() {
-            SwitchMapInnerObserver<T, R> a;
-            SwitchMapInnerObserver<T, R> a2 = this.active.get();
+        /* JADX WARN: Multi-variable type inference failed */
+        void disposeInner() {
+            SwitchMapInnerObserver<T, R> a = this.active.get();
             SwitchMapInnerObserver<Object, Object> switchMapInnerObserver = CANCELLED;
-            if (a2 != switchMapInnerObserver && (a = this.active.getAndSet(switchMapInnerObserver)) != switchMapInnerObserver && a != null) {
-                a.cancel();
-            }
-        }
-
-        /* access modifiers changed from: package-private */
-        public void drain() {
-            SimpleQueue<R> q;
-            boolean retry;
-            Throwable ex;
-            if (getAndIncrement() == 0) {
-                Observer<? super R> a = this.downstream;
-                AtomicReference<SwitchMapInnerObserver<T, R>> active2 = this.active;
-                boolean delayErrors2 = this.delayErrors;
-                int missing = 1;
-                while (!this.cancelled) {
-                    if (this.done) {
-                        boolean empty = active2.get() == null;
-                        if (delayErrors2) {
-                            if (empty) {
-                                Throwable ex2 = (Throwable) this.errors.get();
-                                if (ex2 != null) {
-                                    a.onError(ex2);
-                                    return;
-                                } else {
-                                    a.onComplete();
-                                    return;
-                                }
-                            }
-                        } else if (((Throwable) this.errors.get()) != null) {
-                            a.onError(this.errors.terminate());
-                            return;
-                        } else if (empty) {
-                            a.onComplete();
-                            return;
-                        }
-                    }
-                    SwitchMapInnerObserver<T, R> inner = active2.get();
-                    if (!(inner == null || (q = inner.queue) == null)) {
-                        if (inner.done) {
-                            boolean empty2 = q.isEmpty();
-                            if (delayErrors2) {
-                                if (empty2) {
-                                    active2.compareAndSet(inner, (Object) null);
-                                }
-                            } else if (((Throwable) this.errors.get()) != null) {
-                                a.onError(this.errors.terminate());
-                                return;
-                            } else if (empty2) {
-                                active2.compareAndSet(inner, (Object) null);
-                            }
-                        }
-                        boolean retry2 = false;
-                        while (!this.cancelled) {
-                            if (inner != active2.get()) {
-                                retry = true;
-                            } else if (delayErrors2 || ((Throwable) this.errors.get()) == null) {
-                                boolean d = inner.done;
-                                try {
-                                    ex = q.poll();
-                                } catch (Throwable ex3) {
-                                    Exceptions.throwIfFatal(ex3);
-                                    this.errors.addThrowable(ex3);
-                                    active2.compareAndSet(inner, (Object) null);
-                                    if (!delayErrors2) {
-                                        disposeInner();
-                                        this.upstream.dispose();
-                                        this.done = true;
-                                    } else {
-                                        inner.cancel();
-                                    }
-                                    retry2 = true;
-                                    ex = null;
-                                }
-                                boolean empty3 = ex == null;
-                                if (d && empty3) {
-                                    active2.compareAndSet(inner, (Object) null);
-                                    retry = true;
-                                } else if (empty3) {
-                                    retry = retry2;
-                                } else {
-                                    a.onNext(ex);
-                                }
-                            } else {
-                                a.onError(this.errors.terminate());
-                                return;
-                            }
-                            if (retry) {
-                                continue;
-                            }
-                        }
-                        return;
-                    }
-                    missing = addAndGet(-missing);
-                    if (missing == 0) {
-                        return;
-                    }
+            if (a != switchMapInnerObserver) {
+                SwitchMapInnerObserver<T, R> a2 = this.active.getAndSet(switchMapInnerObserver);
+                SwitchMapInnerObserver<T, R> a3 = a2;
+                if (a3 != switchMapInnerObserver && a3 != null) {
+                    a3.cancel();
                 }
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerError(SwitchMapInnerObserver<T, R> inner, Throwable ex) {
-            if (inner.index != this.unique || !this.errors.addThrowable(ex)) {
-                RxJavaPlugins.onError(ex);
+        void drain() {
+            SimpleQueue<R> q;
+            boolean retry;
+            R r;
+            if (getAndIncrement() != 0) {
                 return;
             }
-            if (!this.delayErrors) {
-                this.upstream.dispose();
-                this.done = true;
+            Observer<? super R> a = this.downstream;
+            AtomicReference<SwitchMapInnerObserver<T, R>> active = this.active;
+            boolean delayErrors = this.delayErrors;
+            int missing = 1;
+            while (!this.cancelled) {
+                if (this.done) {
+                    boolean empty = active.get() == null;
+                    if (delayErrors) {
+                        if (empty) {
+                            Throwable ex = this.errors.get();
+                            if (ex != null) {
+                                a.onError(ex);
+                                return;
+                            } else {
+                                a.onComplete();
+                                return;
+                            }
+                        }
+                    } else if (this.errors.get() != null) {
+                        a.onError(this.errors.terminate());
+                        return;
+                    } else if (empty) {
+                        a.onComplete();
+                        return;
+                    }
+                }
+                SwitchMapInnerObserver<T, R> inner = active.get();
+                if (inner != null && (q = inner.queue) != null) {
+                    if (inner.done) {
+                        boolean empty2 = q.isEmpty();
+                        if (delayErrors) {
+                            if (empty2) {
+                                active.compareAndSet(inner, null);
+                            }
+                        } else if (this.errors.get() != null) {
+                            a.onError(this.errors.terminate());
+                            return;
+                        } else if (empty2) {
+                            active.compareAndSet(inner, null);
+                        }
+                    }
+                    boolean retry2 = false;
+                    while (!this.cancelled) {
+                        if (inner != active.get()) {
+                            retry = true;
+                        } else if (!delayErrors && this.errors.get() != null) {
+                            a.onError(this.errors.terminate());
+                            return;
+                        } else {
+                            boolean d = inner.done;
+                            try {
+                                r = q.poll();
+                            } catch (Throwable ex2) {
+                                Exceptions.throwIfFatal(ex2);
+                                this.errors.addThrowable(ex2);
+                                active.compareAndSet(inner, null);
+                                if (!delayErrors) {
+                                    disposeInner();
+                                    this.upstream.dispose();
+                                    this.done = true;
+                                } else {
+                                    inner.cancel();
+                                }
+                                retry2 = true;
+                                r = (Object) null;
+                            }
+                            boolean empty3 = r == null;
+                            if (d && empty3) {
+                                active.compareAndSet(inner, null);
+                                retry = true;
+                            } else if (empty3) {
+                                retry = retry2;
+                            } else {
+                                a.onNext(r);
+                            }
+                        }
+                        if (retry) {
+                            continue;
+                        }
+                    }
+                    return;
+                }
+                missing = addAndGet(-missing);
+                if (missing == 0) {
+                    return;
+                }
             }
-            inner.done = true;
-            drain();
+        }
+
+        void innerError(SwitchMapInnerObserver<T, R> inner, Throwable ex) {
+            if (inner.index == this.unique && this.errors.addThrowable(ex)) {
+                if (!this.delayErrors) {
+                    this.upstream.dispose();
+                    this.done = true;
+                }
+                inner.done = true;
+                drain();
+                return;
+            }
+            RxJavaPlugins.onError(ex);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class SwitchMapInnerObserver<T, R> extends AtomicReference<Disposable> implements Observer<R> {
         private static final long serialVersionUID = 3837284832786408377L;
         final int bufferSize;
@@ -253,12 +265,13 @@ public final class ObservableSwitchMap<T, R> extends AbstractObservableWithUpstr
         final SwitchMapObserver<T, R> parent;
         volatile SimpleQueue<R> queue;
 
-        SwitchMapInnerObserver(SwitchMapObserver<T, R> parent2, long index2, int bufferSize2) {
-            this.parent = parent2;
-            this.index = index2;
-            this.bufferSize = bufferSize2;
+        SwitchMapInnerObserver(SwitchMapObserver<T, R> parent, long index, int bufferSize) {
+            this.parent = parent;
+            this.index = index;
+            this.bufferSize = bufferSize;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.setOnce(this, d)) {
                 if (d instanceof QueueDisposable) {
@@ -278,6 +291,7 @@ public final class ObservableSwitchMap<T, R> extends AbstractObservableWithUpstr
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(R t) {
             if (this.index == this.parent.unique) {
                 if (t != null) {
@@ -287,10 +301,12 @@ public final class ObservableSwitchMap<T, R> extends AbstractObservableWithUpstr
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             this.parent.innerError(this, t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             if (this.index == this.parent.unique) {
                 this.done = true;

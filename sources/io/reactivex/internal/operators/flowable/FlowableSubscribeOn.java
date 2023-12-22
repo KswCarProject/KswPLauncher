@@ -11,16 +11,18 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableSubscribeOn<T> extends AbstractFlowableWithUpstream<T, T> {
     final boolean nonScheduledRequests;
     final Scheduler scheduler;
 
-    public FlowableSubscribeOn(Flowable<T> source, Scheduler scheduler2, boolean nonScheduledRequests2) {
+    public FlowableSubscribeOn(Flowable<T> source, Scheduler scheduler, boolean nonScheduledRequests) {
         super(source);
-        this.scheduler = scheduler2;
-        this.nonScheduledRequests = nonScheduledRequests2;
+        this.scheduler = scheduler;
+        this.nonScheduledRequests = nonScheduledRequests;
     }
 
+    @Override // io.reactivex.Flowable
     public void subscribeActual(Subscriber<? super T> s) {
         Scheduler.Worker w = this.scheduler.createWorker();
         SubscribeOnSubscriber<T> sos = new SubscribeOnSubscriber<>(s, w, this.source, this.nonScheduledRequests);
@@ -28,22 +30,24 @@ public final class FlowableSubscribeOn<T> extends AbstractFlowableWithUpstream<T
         w.schedule(sos);
     }
 
+    /* loaded from: classes.dex */
     static final class SubscribeOnSubscriber<T> extends AtomicReference<Thread> implements FlowableSubscriber<T>, Subscription, Runnable {
         private static final long serialVersionUID = 8094547886072529208L;
         final Subscriber<? super T> downstream;
         final boolean nonScheduledRequests;
-        final AtomicLong requested = new AtomicLong();
         Publisher<T> source;
-        final AtomicReference<Subscription> upstream = new AtomicReference<>();
         final Scheduler.Worker worker;
+        final AtomicReference<Subscription> upstream = new AtomicReference<>();
+        final AtomicLong requested = new AtomicLong();
 
-        SubscribeOnSubscriber(Subscriber<? super T> actual, Scheduler.Worker worker2, Publisher<T> source2, boolean requestOn) {
+        SubscribeOnSubscriber(Subscriber<? super T> actual, Scheduler.Worker worker, Publisher<T> source, boolean requestOn) {
             this.downstream = actual;
-            this.worker = worker2;
-            this.source = source2;
+            this.worker = worker;
+            this.source = source;
             this.nonScheduledRequests = !requestOn;
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             lazySet(Thread.currentThread());
             Publisher<T> src = this.source;
@@ -51,29 +55,34 @@ public final class FlowableSubscribeOn<T> extends AbstractFlowableWithUpstream<T
             src.subscribe(this);
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.setOnce(this.upstream, s)) {
-                long r = this.requested.getAndSet(0);
+                long r = this.requested.getAndSet(0L);
                 if (r != 0) {
                     requestUpstream(r, s);
                 }
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             this.downstream.onNext(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             this.downstream.onError(t);
             this.worker.dispose();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.downstream.onComplete();
             this.worker.dispose();
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             if (SubscriptionHelper.validate(n)) {
                 Subscription s = this.upstream.get();
@@ -84,7 +93,7 @@ public final class FlowableSubscribeOn<T> extends AbstractFlowableWithUpstream<T
                 BackpressureHelper.add(this.requested, n);
                 Subscription s2 = this.upstream.get();
                 if (s2 != null) {
-                    long r = this.requested.getAndSet(0);
+                    long r = this.requested.getAndSet(0L);
                     if (r != 0) {
                         requestUpstream(r, s2);
                     }
@@ -92,8 +101,7 @@ public final class FlowableSubscribeOn<T> extends AbstractFlowableWithUpstream<T
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void requestUpstream(long n, Subscription s) {
+        void requestUpstream(long n, Subscription s) {
             if (this.nonScheduledRequests || Thread.currentThread() == get()) {
                 s.request(n);
             } else {
@@ -101,22 +109,27 @@ public final class FlowableSubscribeOn<T> extends AbstractFlowableWithUpstream<T
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             SubscriptionHelper.cancel(this.upstream);
             this.worker.dispose();
         }
 
+        /* loaded from: classes.dex */
         static final class Request implements Runnable {
-            final long n;
+
+            /* renamed from: n */
+            final long f302n;
             final Subscription upstream;
 
-            Request(Subscription s, long n2) {
+            Request(Subscription s, long n) {
                 this.upstream = s;
-                this.n = n2;
+                this.f302n = n;
             }
 
+            @Override // java.lang.Runnable
             public void run() {
-                this.upstream.request(this.n);
+                this.upstream.request(this.f302n);
             }
         }
     }

@@ -1,7 +1,9 @@
 package com.wits.ksw.launcher.model;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Intent;
 import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.os.Build;
 import android.os.Handler;
@@ -11,7 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import com.wits.ksw.BuildConfig;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bean.BcItem;
 import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.KswUtils;
@@ -24,20 +26,46 @@ import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import com.wits.pms.statuscontrol.WitsCommand;
 
+/* loaded from: classes9.dex */
 public class BcVieModel extends LauncherViewModel {
     public ObservableInt bcPagePosition = new ObservableInt();
-    public final CompoundButton.OnCheckedChangeListener chassisOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+    public ObservableBoolean isLeftArrowDisplay = new ObservableBoolean();
+    public ObservableBoolean isRightArrowDisplay = new ObservableBoolean();
+    public MutableLiveData<String> songInfo = new MutableLiveData<>();
+    public ObservableBoolean itemIconClassical = new ObservableBoolean();
+    public ObservableBoolean isYO = new ObservableBoolean();
+    public ObservableBoolean isEditState = new ObservableBoolean();
+    public ObservableField<String> selectCardName = new ObservableField<>();
+    private Handler uiHandler = new Handler(Looper.getMainLooper());
+    public final CompoundButton.OnCheckedChangeListener chassisOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.launcher.model.BcVieModel.5
+        @Override // android.widget.CompoundButton.OnCheckedChangeListener
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
             BcVieModel.this.benzData.highChassisSwitch = isChecked;
             WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, BcVieModel.this.benzData.getJson());
-            Log.i(LauncherViewModel.TAG, "onCheckedChanged: 底盘升降开关:" + BcVieModel.this.benzData.auxiliaryRadar);
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: \u5e95\u76d8\u5347\u964d\u5f00\u5173:" + BcVieModel.this.benzData.auxiliaryRadar);
         }
     };
-    public ObservableBoolean isLeftArrowDisplay = new ObservableBoolean();
-    public ObservableBoolean isRightArrowDisplay = new ObservableBoolean();
-    public ObservableBoolean itemIconClassical = new ObservableBoolean();
-    public final CompoundButton.OnCheckedChangeListener leftOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+    public final CompoundButton.OnCheckedChangeListener radarOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.launcher.model.BcVieModel.6
+        @Override // android.widget.CompoundButton.OnCheckedChangeListener
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
+            BcVieModel.this.benzData.auxiliaryRadar = isChecked;
+            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, BcVieModel.this.benzData.getJson());
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: \u8f85\u52a9\u96f7\u8fbe\u5f00\u5173:" + BcVieModel.this.benzData.auxiliaryRadar);
+        }
+    };
+    public final CompoundButton.OnCheckedChangeListener sportOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.launcher.model.BcVieModel.7
+        @Override // android.widget.CompoundButton.OnCheckedChangeListener
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
+            BcVieModel.this.benzData.airMaticStatus = isChecked ? 1 : 0;
+            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, BcVieModel.this.benzData.getJson());
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: \u8fd0\u52a8\u6a21\u5f0f\u5f00\u5173:" + BcVieModel.this.benzData.airMaticStatus);
+        }
+    };
+    public final CompoundButton.OnCheckedChangeListener leftOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.launcher.model.BcVieModel.8
+        @Override // android.widget.CompoundButton.OnCheckedChangeListener
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
             BcVieModel.this.controlBean.leftBrightnessAdjus.set(isChecked);
@@ -46,15 +74,8 @@ public class BcVieModel extends LauncherViewModel {
             }
         }
     };
-    public final CompoundButton.OnCheckedChangeListener radarOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
-            BcVieModel.this.benzData.auxiliaryRadar = isChecked;
-            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, BcVieModel.this.benzData.getJson());
-            Log.i(LauncherViewModel.TAG, "onCheckedChanged: 辅助雷达开关:" + BcVieModel.this.benzData.auxiliaryRadar);
-        }
-    };
-    public final CompoundButton.OnCheckedChangeListener rightOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+    public final CompoundButton.OnCheckedChangeListener rightOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.launcher.model.BcVieModel.9
+        @Override // android.widget.CompoundButton.OnCheckedChangeListener
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
             BcVieModel.this.controlBean.rightBrightnessAdjus.set(isChecked);
@@ -63,17 +84,8 @@ public class BcVieModel extends LauncherViewModel {
             }
         }
     };
-    public MutableLiveData<String> songInfo = new MutableLiveData<>();
-    public final CompoundButton.OnCheckedChangeListener sportOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
-            BcVieModel.this.benzData.airMaticStatus = isChecked;
-            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, BcVieModel.this.benzData.getJson());
-            Log.i(LauncherViewModel.TAG, "onCheckedChanged: 运动模式开关:" + BcVieModel.this.benzData.airMaticStatus);
-        }
-    };
-    private Handler uiHandler = new Handler(Looper.getMainLooper());
 
+    @Override // com.wits.ksw.launcher.model.LauncherViewModel
     public void initData() {
         super.initData();
         initControl();
@@ -129,8 +141,9 @@ public class BcVieModel extends LauncherViewModel {
         Log.i(TAG, "onItemClick: " + item.getId());
         addLastViewFocused(view);
         refreshLastViewFocused();
-        this.uiHandler.removeCallbacksAndMessages((Object) null);
-        this.uiHandler.postDelayed(new Runnable() {
+        this.uiHandler.removeCallbacksAndMessages(null);
+        this.uiHandler.postDelayed(new Runnable() { // from class: com.wits.ksw.launcher.model.BcVieModel.1
+            @Override // java.lang.Runnable
             public void run() {
                 switch (item.getId()) {
                     case 0:
@@ -155,19 +168,21 @@ public class BcVieModel extends LauncherViewModel {
                         BcVieModel.this.openApps(view);
                         return;
                     case 7:
-                        if (!Build.DISPLAY.contains("8937")) {
-                            BcVieModel bcVieModel = BcVieModel.this;
-                            bcVieModel.openApp(bcVieModel.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
-                            return;
-                        } else if (Settings.System.getInt(BcVieModel.this.context.getContentResolver(), "speed_play_switch", 1) == 2) {
+                        boolean flag = Build.DISPLAY.contains("8937");
+                        if (flag) {
+                            int speed_play_switch = Settings.System.getInt(BcVieModel.this.context.getContentResolver(), "speed_play_switch", 1);
+                            if (speed_play_switch == 2) {
+                                BcVieModel bcVieModel = BcVieModel.this;
+                                bcVieModel.openApp(bcVieModel.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+                                return;
+                            }
                             BcVieModel bcVieModel2 = BcVieModel.this;
                             bcVieModel2.openApp(bcVieModel2.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
                             return;
-                        } else {
-                            BcVieModel bcVieModel3 = BcVieModel.this;
-                            bcVieModel3.openApp(bcVieModel3.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
-                            return;
                         }
+                        BcVieModel bcVieModel3 = BcVieModel.this;
+                        bcVieModel3.openApp(bcVieModel3.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+                        return;
                     case 8:
                         BcVieModel.this.onItemClick(BuildConfig.APPLICATION_ID, "com.wits.ksw.launcher.view.DashboardActivity");
                         return;
@@ -178,13 +193,17 @@ public class BcVieModel extends LauncherViewModel {
                         return;
                 }
             }
-        }, 200);
+        }, 200L);
     }
 
     public void openPhoneLink2021(View view) {
-        if (!Build.DISPLAY.contains("8937")) {
+        boolean flag = Build.DISPLAY.contains("8937");
+        if (!flag) {
             openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
-        } else if (Settings.System.getInt(this.context.getContentResolver(), "speed_play_switch", 1) == 2) {
+            return;
+        }
+        int speed_play_switch = Settings.System.getInt(this.context.getContentResolver(), "speed_play_switch", 1);
+        if (speed_play_switch == 2) {
             openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
         } else {
             openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
@@ -195,8 +214,9 @@ public class BcVieModel extends LauncherViewModel {
         Log.i(TAG, "onMbux2021HomeItemClick: " + item.getId());
         addLastViewFocused(view);
         refreshLastViewFocused();
-        this.uiHandler.removeCallbacksAndMessages((Object) null);
-        this.uiHandler.postDelayed(new Runnable() {
+        this.uiHandler.removeCallbacksAndMessages(null);
+        this.uiHandler.postDelayed(new Runnable() { // from class: com.wits.ksw.launcher.model.BcVieModel.2
+            @Override // java.lang.Runnable
             public void run() {
                 switch (item.getId()) {
                     case 0:
@@ -218,19 +238,21 @@ public class BcVieModel extends LauncherViewModel {
                         BcVieModel.this.onItemClick(BuildConfig.APPLICATION_ID, "com.wits.ksw.settings.SettingsActivity");
                         return;
                     case 6:
-                        if (!Build.DISPLAY.contains("8937")) {
-                            BcVieModel bcVieModel = BcVieModel.this;
-                            bcVieModel.openApp(bcVieModel.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
-                            return;
-                        } else if (Settings.System.getInt(BcVieModel.this.context.getContentResolver(), "speed_play_switch", 1) == 2) {
+                        boolean flag = Build.DISPLAY.contains("8937");
+                        if (flag) {
+                            int speed_play_switch = Settings.System.getInt(BcVieModel.this.context.getContentResolver(), "speed_play_switch", 1);
+                            if (speed_play_switch == 2) {
+                                BcVieModel bcVieModel = BcVieModel.this;
+                                bcVieModel.openApp(bcVieModel.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+                                return;
+                            }
                             BcVieModel bcVieModel2 = BcVieModel.this;
                             bcVieModel2.openApp(bcVieModel2.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
                             return;
-                        } else {
-                            BcVieModel bcVieModel3 = BcVieModel.this;
-                            bcVieModel3.openApp(bcVieModel3.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
-                            return;
                         }
+                        BcVieModel bcVieModel3 = BcVieModel.this;
+                        bcVieModel3.openApp(bcVieModel3.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+                        return;
                     case 7:
                         BcVieModel.this.openApps(view);
                         return;
@@ -244,15 +266,16 @@ public class BcVieModel extends LauncherViewModel {
                         return;
                 }
             }
-        }, 200);
+        }, 200L);
     }
 
     public void onMbux2021HomeItemClick(final View view, final BenzMbux2021Bean item) {
         Log.i(TAG, "onMbux2021HomeItemClick: " + item.getId());
         addLastViewFocused(view);
         refreshLastViewFocused();
-        this.uiHandler.removeCallbacksAndMessages((Object) null);
-        this.uiHandler.postDelayed(new Runnable() {
+        this.uiHandler.removeCallbacksAndMessages(null);
+        this.uiHandler.postDelayed(new Runnable() { // from class: com.wits.ksw.launcher.model.BcVieModel.3
+            @Override // java.lang.Runnable
             public void run() {
                 switch (item.getId()) {
                     case 0:
@@ -274,19 +297,21 @@ public class BcVieModel extends LauncherViewModel {
                         BcVieModel.this.onItemClick(BuildConfig.APPLICATION_ID, "com.wits.ksw.settings.SettingsActivity");
                         return;
                     case 6:
-                        if (!Build.DISPLAY.contains("8937")) {
-                            BcVieModel bcVieModel = BcVieModel.this;
-                            bcVieModel.openApp(bcVieModel.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
-                            return;
-                        } else if (Settings.System.getInt(BcVieModel.this.context.getContentResolver(), "speed_play_switch", 1) == 2) {
+                        boolean flag = Build.DISPLAY.contains("8937");
+                        if (flag) {
+                            int speed_play_switch = Settings.System.getInt(BcVieModel.this.context.getContentResolver(), "speed_play_switch", 1);
+                            if (speed_play_switch == 2) {
+                                BcVieModel bcVieModel = BcVieModel.this;
+                                bcVieModel.openApp(bcVieModel.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+                                return;
+                            }
                             BcVieModel bcVieModel2 = BcVieModel.this;
                             bcVieModel2.openApp(bcVieModel2.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
                             return;
-                        } else {
-                            BcVieModel bcVieModel3 = BcVieModel.this;
-                            bcVieModel3.openApp(bcVieModel3.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
-                            return;
                         }
+                        BcVieModel bcVieModel3 = BcVieModel.this;
+                        bcVieModel3.openApp(bcVieModel3.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+                        return;
                     case 7:
                         BcVieModel.this.openApps(view);
                         return;
@@ -300,15 +325,16 @@ public class BcVieModel extends LauncherViewModel {
                         return;
                 }
             }
-        }, 200);
+        }, 200L);
     }
 
     public void onItemClick(final View view, final BcItem item) {
         Log.i(TAG, "onItemClick: " + item.getId());
         addLastViewFocused(view);
         refreshLastViewFocused();
-        this.uiHandler.removeCallbacksAndMessages((Object) null);
-        this.uiHandler.postDelayed(new Runnable() {
+        this.uiHandler.removeCallbacksAndMessages(null);
+        this.uiHandler.postDelayed(new Runnable() { // from class: com.wits.ksw.launcher.model.BcVieModel.4
+            @Override // java.lang.Runnable
             public void run() {
                 if (ClientManager.getInstance().isAls6208Client() || ClientManager.getInstance().isYC2306Client()) {
                     BcVieModel.this.openAls6208(view, item.getId());
@@ -316,11 +342,10 @@ public class BcVieModel extends LauncherViewModel {
                     BcVieModel.this.open(view, item.getId());
                 }
             }
-        }, 200);
+        }, 200L);
     }
 
-    /* access modifiers changed from: protected */
-    public void open(View view, int id) {
+    protected void open(View view, int id) {
         switch (id) {
             case 0:
                 openNaviApp();
@@ -341,17 +366,21 @@ public class BcVieModel extends LauncherViewModel {
                 openVideoMulti(view);
                 return;
             case 6:
-                openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.estrongs.android.pop"));
+                Intent esintent = this.context.getPackageManager().getLaunchIntentForPackage("com.estrongs.android.pop");
+                openApp(esintent);
                 return;
             case 7:
-                if (!Build.DISPLAY.contains("8937")) {
+                boolean flag = Build.DISPLAY.contains("8937");
+                if (!flag) {
                     openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
                     return;
-                } else if (Settings.System.getInt(this.context.getContentResolver(), "speed_play_switch", 1) == 2) {
-                    openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.suding.speedplay"));
+                }
+                int speed_play_switch = Settings.System.getInt(this.context.getContentResolver(), "speed_play_switch", 1);
+                if (speed_play_switch != 2) {
+                    openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
                     return;
                 } else {
-                    openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+                    openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.suding.speedplay"));
                     return;
                 }
             case 8:
@@ -365,7 +394,7 @@ public class BcVieModel extends LauncherViewModel {
         }
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void openAls6208(View view, int id) {
         switch (id) {
             case 0:
@@ -387,18 +416,22 @@ public class BcVieModel extends LauncherViewModel {
                 onItemClick(BuildConfig.APPLICATION_ID, "com.wits.ksw.launcher.view.DashboardActivity");
                 return;
             case 6:
-                if (!Build.DISPLAY.contains("8937")) {
-                    openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
-                    return;
-                } else if (Settings.System.getInt(this.context.getContentResolver(), "speed_play_switch", 1) == 2) {
-                    openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.suding.speedplay"));
-                    return;
-                } else {
+                boolean flag = Build.DISPLAY.contains("8937");
+                if (!flag) {
                     openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
                     return;
                 }
+                int speed_play_switch = Settings.System.getInt(this.context.getContentResolver(), "speed_play_switch", 1);
+                if (speed_play_switch != 2) {
+                    openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+                    return;
+                } else {
+                    openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.suding.speedplay"));
+                    return;
+                }
             case 7:
-                openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.estrongs.android.pop"));
+                Intent esintent = this.context.getPackageManager().getLaunchIntentForPackage("com.estrongs.android.pop");
+                openApp(esintent);
                 return;
             case 8:
                 openDvr(view);
@@ -411,6 +444,7 @@ public class BcVieModel extends LauncherViewModel {
         }
     }
 
+    @Override // com.wits.ksw.launcher.model.LauncherViewModel
     public void onControlClick(View view) {
         int benzpane = KswUtils.getBenzpaneVersion();
         Log.i(TAG, "onControlClick: benzpane = " + benzpane);
@@ -420,8 +454,7 @@ public class BcVieModel extends LauncherViewModel {
             } else {
                 Ntg6ControlView.getInstance().showBenzControl(this.context, this, view);
             }
-        } else if (benzpane != 2) {
-        } else {
+        } else if (benzpane == 2) {
             if (Ntg630ControlView.getInstance().isShowing()) {
                 Ntg630ControlView.getInstance().dismiss();
             } else {
@@ -430,20 +463,21 @@ public class BcVieModel extends LauncherViewModel {
         }
     }
 
+    @Override // com.wits.ksw.launcher.model.LauncherViewModel
     public void showBrightnessDialog(View view) {
         int benzpane = KswUtils.getBenzpaneVersion();
         if (benzpane == 1) {
-            if (view.getId() == R.id.brightnessBtn_left) {
+            if (view.getId() == C0899R.C0901id.brightnessBtn_left) {
                 Ntg6ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 1);
             }
-            if (view.getId() == R.id.brightnessBtn_right) {
+            if (view.getId() == C0899R.C0901id.brightnessBtn_right) {
                 Ntg6ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 2);
             }
         } else if (benzpane == 2) {
-            if (view.getId() == R.id.brightnessBtn_left) {
+            if (view.getId() == C0899R.C0901id.brightnessBtn_left) {
                 Ntg630ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 1);
             }
-            if (view.getId() == R.id.brightnessBtn_right) {
+            if (view.getId() == C0899R.C0901id.brightnessBtn_right) {
                 Ntg630ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 2);
             }
         }

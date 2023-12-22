@@ -8,17 +8,19 @@ import io.reactivex.internal.disposables.EmptyDisposable;
 import io.reactivex.internal.functions.ObjectHelper;
 import java.util.concurrent.Callable;
 
+/* loaded from: classes.dex */
 public final class CompletableDefer extends Completable {
     final Callable<? extends CompletableSource> completableSupplier;
 
-    public CompletableDefer(Callable<? extends CompletableSource> completableSupplier2) {
-        this.completableSupplier = completableSupplier2;
+    public CompletableDefer(Callable<? extends CompletableSource> completableSupplier) {
+        this.completableSupplier = completableSupplier;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         try {
-            ((CompletableSource) ObjectHelper.requireNonNull(this.completableSupplier.call(), "The completableSupplier returned a null CompletableSource")).subscribe(observer);
+            CompletableSource c = (CompletableSource) ObjectHelper.requireNonNull(this.completableSupplier.call(), "The completableSupplier returned a null CompletableSource");
+            c.subscribe(observer);
         } catch (Throwable e) {
             Exceptions.throwIfFatal(e);
             EmptyDisposable.error(e, observer);

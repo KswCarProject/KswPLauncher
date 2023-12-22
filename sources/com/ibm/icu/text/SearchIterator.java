@@ -2,6 +2,7 @@ package com.ibm.icu.text;
 
 import java.text.CharacterIterator;
 
+/* loaded from: classes.dex */
 public abstract class SearchIterator {
     public static final int DONE = -1;
     protected BreakIterator breakIterator;
@@ -9,6 +10,7 @@ public abstract class SearchIterator {
     Search search_ = new Search();
     protected CharacterIterator targetText;
 
+    /* loaded from: classes.dex */
     public enum ElementComparisonType {
         STANDARD_ELEMENT_COMPARISON,
         PATTERN_BASE_WEIGHT_IS_WILDCARD,
@@ -17,12 +19,11 @@ public abstract class SearchIterator {
 
     public abstract int getIndex();
 
-    /* access modifiers changed from: protected */
-    public abstract int handleNext(int i);
+    protected abstract int handleNext(int i);
 
-    /* access modifiers changed from: protected */
-    public abstract int handlePrevious(int i);
+    protected abstract int handlePrevious(int i);
 
+    /* loaded from: classes.dex */
     final class Search {
         ElementComparisonType elementComparisonType_;
         BreakIterator internalBreakIter_;
@@ -35,46 +36,38 @@ public abstract class SearchIterator {
         Search() {
         }
 
-        /* access modifiers changed from: package-private */
-        public CharacterIterator text() {
+        CharacterIterator text() {
             return SearchIterator.this.targetText;
         }
 
-        /* access modifiers changed from: package-private */
-        public void setTarget(CharacterIterator text) {
+        void setTarget(CharacterIterator text) {
             SearchIterator.this.targetText = text;
         }
 
-        /* access modifiers changed from: package-private */
-        public BreakIterator breakIter() {
+        BreakIterator breakIter() {
             return SearchIterator.this.breakIterator;
         }
 
-        /* access modifiers changed from: package-private */
-        public void setBreakIter(BreakIterator breakIter) {
+        void setBreakIter(BreakIterator breakIter) {
             SearchIterator.this.breakIterator = breakIter;
         }
 
-        /* access modifiers changed from: package-private */
-        public int matchedLength() {
+        int matchedLength() {
             return SearchIterator.this.matchLength;
         }
 
-        /* access modifiers changed from: package-private */
-        public void setMatchedLength(int matchedLength) {
+        void setMatchedLength(int matchedLength) {
             SearchIterator.this.matchLength = matchedLength;
         }
 
-        /* access modifiers changed from: package-private */
-        public int beginIndex() {
+        int beginIndex() {
             if (SearchIterator.this.targetText == null) {
                 return 0;
             }
             return SearchIterator.this.targetText.getBeginIndex();
         }
 
-        /* access modifiers changed from: package-private */
-        public int endIndex() {
+        int endIndex() {
             if (SearchIterator.this.targetText == null) {
                 return 0;
             }
@@ -137,19 +130,19 @@ public abstract class SearchIterator {
     }
 
     public String getMatchedText() {
-        if (this.search_.matchedLength() <= 0) {
-            return null;
+        if (this.search_.matchedLength() > 0) {
+            int limit = this.search_.matchedIndex_ + this.search_.matchedLength();
+            StringBuilder result = new StringBuilder(this.search_.matchedLength());
+            CharacterIterator it = this.search_.text();
+            it.setIndex(this.search_.matchedIndex_);
+            while (it.getIndex() < limit) {
+                result.append(it.current());
+                it.next();
+            }
+            it.setIndex(this.search_.matchedIndex_);
+            return result.toString();
         }
-        int limit = this.search_.matchedIndex_ + this.search_.matchedLength();
-        StringBuilder result = new StringBuilder(this.search_.matchedLength());
-        CharacterIterator it = this.search_.text();
-        it.setIndex(this.search_.matchedIndex_);
-        while (it.getIndex() < limit) {
-            result.append(it.current());
-            it.next();
-        }
-        it.setIndex(this.search_.matchedIndex_);
-        return result.toString();
+        return null;
     }
 
     public int next() {
@@ -202,13 +195,13 @@ public abstract class SearchIterator {
                 return -1;
             }
         }
-        if (matchindex == -1) {
-            return handlePrevious(index);
+        if (matchindex != -1) {
+            if (this.search_.isOverlap_) {
+                matchindex += this.search_.matchedLength() - 2;
+            }
+            return handlePrevious(matchindex);
         }
-        if (this.search_.isOverlap_) {
-            matchindex += this.search_.matchedLength() - 2;
-        }
-        return handlePrevious(matchindex);
+        return handlePrevious(index);
     }
 
     public boolean isOverlapping() {
@@ -265,14 +258,12 @@ public abstract class SearchIterator {
         this.search_.setMatchedLength(0);
     }
 
-    /* access modifiers changed from: protected */
-    public void setMatchLength(int length) {
+    protected void setMatchLength(int length) {
         this.search_.setMatchedLength(length);
     }
 
-    /* access modifiers changed from: protected */
     @Deprecated
-    public void setMatchNotFound() {
+    protected void setMatchNotFound() {
         this.search_.matchedIndex_ = -1;
         this.search_.setMatchedLength(0);
     }

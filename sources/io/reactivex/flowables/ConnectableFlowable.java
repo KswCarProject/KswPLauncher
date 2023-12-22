@@ -19,6 +19,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import java.util.concurrent.TimeUnit;
 
+/* loaded from: classes.dex */
 public abstract class ConnectableFlowable<T> extends Flowable<T> {
     public abstract void connect(Consumer<? super Disposable> consumer);
 
@@ -29,51 +30,51 @@ public abstract class ConnectableFlowable<T> extends Flowable<T> {
     }
 
     private ConnectableFlowable<T> onRefCount() {
-        if (!(this instanceof FlowablePublishClassic)) {
-            return this;
+        if (this instanceof FlowablePublishClassic) {
+            FlowablePublishClassic<T> fp = (FlowablePublishClassic) this;
+            return RxJavaPlugins.onAssembly((ConnectableFlowable) new FlowablePublishAlt(fp.publishSource(), fp.publishBufferSize()));
         }
-        FlowablePublishClassic<T> fp = (FlowablePublishClassic) this;
-        return RxJavaPlugins.onAssembly(new FlowablePublishAlt(fp.publishSource(), fp.publishBufferSize()));
+        return this;
     }
 
-    @CheckReturnValue
+    @SchedulerSupport(SchedulerSupport.NONE)
     @BackpressureSupport(BackpressureKind.PASS_THROUGH)
-    @SchedulerSupport("none")
+    @CheckReturnValue
     public Flowable<T> refCount() {
         return RxJavaPlugins.onAssembly(new FlowableRefCount(onRefCount()));
     }
 
-    @CheckReturnValue
+    @SchedulerSupport(SchedulerSupport.NONE)
     @BackpressureSupport(BackpressureKind.PASS_THROUGH)
-    @SchedulerSupport("none")
+    @CheckReturnValue
     public final Flowable<T> refCount(int subscriberCount) {
-        return refCount(subscriberCount, 0, TimeUnit.NANOSECONDS, Schedulers.trampoline());
+        return refCount(subscriberCount, 0L, TimeUnit.NANOSECONDS, Schedulers.trampoline());
     }
 
-    @CheckReturnValue
+    @SchedulerSupport(SchedulerSupport.COMPUTATION)
     @BackpressureSupport(BackpressureKind.PASS_THROUGH)
-    @SchedulerSupport("io.reactivex:computation")
+    @CheckReturnValue
     public final Flowable<T> refCount(long timeout, TimeUnit unit) {
         return refCount(1, timeout, unit, Schedulers.computation());
     }
 
-    @CheckReturnValue
+    @SchedulerSupport(SchedulerSupport.CUSTOM)
     @BackpressureSupport(BackpressureKind.PASS_THROUGH)
-    @SchedulerSupport("custom")
+    @CheckReturnValue
     public final Flowable<T> refCount(long timeout, TimeUnit unit, Scheduler scheduler) {
         return refCount(1, timeout, unit, scheduler);
     }
 
-    @CheckReturnValue
+    @SchedulerSupport(SchedulerSupport.COMPUTATION)
     @BackpressureSupport(BackpressureKind.PASS_THROUGH)
-    @SchedulerSupport("io.reactivex:computation")
+    @CheckReturnValue
     public final Flowable<T> refCount(int subscriberCount, long timeout, TimeUnit unit) {
         return refCount(subscriberCount, timeout, unit, Schedulers.computation());
     }
 
-    @CheckReturnValue
+    @SchedulerSupport(SchedulerSupport.CUSTOM)
     @BackpressureSupport(BackpressureKind.PASS_THROUGH)
-    @SchedulerSupport("custom")
+    @CheckReturnValue
     public final Flowable<T> refCount(int subscriberCount, long timeout, TimeUnit unit, Scheduler scheduler) {
         ObjectHelper.verifyPositive(subscriberCount, "subscriberCount");
         ObjectHelper.requireNonNull(unit, "unit is null");
@@ -90,10 +91,10 @@ public abstract class ConnectableFlowable<T> extends Flowable<T> {
     }
 
     public Flowable<T> autoConnect(int numberOfSubscribers, Consumer<? super Disposable> connection) {
-        if (numberOfSubscribers > 0) {
-            return RxJavaPlugins.onAssembly(new FlowableAutoConnect(this, numberOfSubscribers, connection));
+        if (numberOfSubscribers <= 0) {
+            connect(connection);
+            return RxJavaPlugins.onAssembly((ConnectableFlowable) this);
         }
-        connect(connection);
-        return RxJavaPlugins.onAssembly(this);
+        return RxJavaPlugins.onAssembly(new FlowableAutoConnect(this, numberOfSubscribers, connection));
     }
 }

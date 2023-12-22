@@ -4,6 +4,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.google.zxing.qrcode.decoder.Mode;
 import com.google.zxing.qrcode.decoder.Version;
 
+/* loaded from: classes.dex */
 public final class QRCode {
     public static final int NUM_MASK_PATTERNS = 8;
     private ErrorCorrectionLevel ecLevel;
@@ -33,9 +34,8 @@ public final class QRCode {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder(200);
-        StringBuilder result = sb;
-        sb.append("<<\n");
+        StringBuilder result = new StringBuilder(200);
+        result.append("<<\n");
         result.append(" mode: ");
         result.append(this.mode);
         result.append("\n ecLevel: ");
@@ -62,8 +62,8 @@ public final class QRCode {
         this.ecLevel = value;
     }
 
-    public void setVersion(Version version2) {
-        this.version = version2;
+    public void setVersion(Version version) {
+        this.version = version;
     }
 
     public void setMaskPattern(int value) {
@@ -74,7 +74,7 @@ public final class QRCode {
         this.matrix = value;
     }
 
-    public static boolean isValidMaskPattern(int maskPattern2) {
-        return maskPattern2 >= 0 && maskPattern2 < 8;
+    public static boolean isValidMaskPattern(int maskPattern) {
+        return maskPattern >= 0 && maskPattern < 8;
     }
 }

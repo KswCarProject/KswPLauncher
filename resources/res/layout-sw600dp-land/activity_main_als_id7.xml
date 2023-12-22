@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:tag="layout-sw600dp-land/activity_main_als_id7_0" android:focusable="false" android:focusableInTouchMode="false" android:clickable="false" android:layout_width="match_parent" android:layout_height="match_parent">
+    <android.support.constraint.Guideline android:orientation="vertical" android:id="@+id/guideline" android:focusable="false" android:focusableInTouchMode="false" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintGuide_begin="108dp"/>
+    <ImageView android:id="@+id/imageView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/als_id7_main_indicato_selector" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintHorizontal_bias="0.506" app:layout_constraintStart_toStartOf="@+id/guideline"/>
+    <ImageView android:id="@+id/imageView4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/als_id7_main_indicato_selector" android:layout_marginStart="8dp" app:layout_constraintBottom_toBottomOf="@+id/imageView1" app:layout_constraintStart_toEndOf="@+id/imageView1" app:layout_constraintTop_toTopOf="@+id/imageView1"/>
+    <ImageView android:id="@+id/imageView3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" android:src="@drawable/als_id7_main_indicato_selector" android:layout_marginEnd="8dp" app:layout_constraintBottom_toBottomOf="@+id/imageView1" app:layout_constraintEnd_toStartOf="@+id/imageView1" app:layout_constraintTop_toTopOf="@+id/imageView1" app:layout_constraintVertical_bias="0"/>
+    <android.support.p001v4.view.ViewPager android:id="@+id/viewPage" android:focusable="false" android:focusableInTouchMode="false" android:clickable="false" android:layout_width="0dp" android:layout_height="0dp" android:overScrollMode="never" android:layout_marginEnd="8dp" app:layout_constraintBottom_toTopOf="@+id/imageView1" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="@+id/guideline" app:layout_constraintTop_toTopOf="0"/>
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@+id/ll_left" android:background="@drawable/als_id7_main_l_bk" android:focusable="false" android:focusableInTouchMode="false" android:clickable="false" android:layout_width="116dp" android:layout_height="0dp" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintHeight_max="428dp" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+        <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="0dp" android:layout_marginBottom="0dp">
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@+id/btn_apps" android:background="@drawable/als_id7_left_item_sel_bg" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+                <ImageView android:layout_gravity="center_horizontal" android:layout_width="@dimen/width_main_item" android:layout_height="@dimen/width_main_item" android:src="@drawable/id7_main_app_n" android:scaleType="fitCenter"/>
+                <com.wits.ksw.launcher.view.MarqueeTextView android:text="@string/ksw_id7_apps" style="@style/style_pemp_menu_text"/>
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@+id/btn_settings" android:background="@drawable/als_id7_left_item_sel_bg" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+                <ImageView android:layout_gravity="center_horizontal" android:layout_width="37dp" android:layout_height="37dp" android:src="@drawable/id7_main_set_n" android:scaleType="fitCenter"/>
+                <com.wits.ksw.launcher.view.MarqueeTextView android:text="@string/ksw_id7_setting" style="@style/style_pemp_menu_text"/>
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@+id/btn_shut_1" android:background="@drawable/als_id7_left_item_sel_bg" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+                <ImageView android:layout_gravity="center_horizontal" android:tag="binding_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:scaleType="fitCenter"/>
+                <com.wits.ksw.launcher.view.MarqueeTextView android:tag="binding_2" style="@style/style_pemp_menu_text"/>
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@+id/btn_shut_2" android:background="@drawable/als_id7_left_item_sel_bg" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+                <ImageView android:layout_gravity="center_horizontal" android:tag="binding_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:scaleType="fitCenter"/>
+                <com.wits.ksw.launcher.view.MarqueeTextView android:tag="binding_4" style="@style/style_pemp_menu_text"/>
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@+id/btn_shut_3" android:background="@drawable/als_id7_left_item_sel_bg" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+                <ImageView android:layout_gravity="center_horizontal" android:tag="binding_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:scaleType="fitCenter"/>
+                <com.wits.ksw.launcher.view.MarqueeTextView android:tag="binding_6" style="@style/style_pemp_menu_text"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

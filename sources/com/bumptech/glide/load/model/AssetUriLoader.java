@@ -11,6 +11,7 @@ import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.signature.ObjectKey;
 import java.io.InputStream;
 
+/* loaded from: classes.dex */
 public class AssetUriLoader<Data> implements ModelLoader<Uri, Data> {
     private static final String ASSET_PATH_SEGMENT = "android_asset";
     private static final String ASSET_PREFIX = "file:///android_asset/";
@@ -18,61 +19,70 @@ public class AssetUriLoader<Data> implements ModelLoader<Uri, Data> {
     private final AssetManager assetManager;
     private final AssetFetcherFactory<Data> factory;
 
+    /* loaded from: classes.dex */
     public interface AssetFetcherFactory<Data> {
         DataFetcher<Data> buildFetcher(AssetManager assetManager, String str);
     }
 
-    public AssetUriLoader(AssetManager assetManager2, AssetFetcherFactory<Data> factory2) {
-        this.assetManager = assetManager2;
-        this.factory = factory2;
+    public AssetUriLoader(AssetManager assetManager, AssetFetcherFactory<Data> factory) {
+        this.assetManager = assetManager;
+        this.factory = factory;
     }
 
+    @Override // com.bumptech.glide.load.model.ModelLoader
     public ModelLoader.LoadData<Data> buildLoadData(Uri model, int width, int height, Options options) {
-        return new ModelLoader.LoadData<>(new ObjectKey(model), this.factory.buildFetcher(this.assetManager, model.toString().substring(ASSET_PREFIX_LENGTH)));
+        String assetPath = model.toString().substring(ASSET_PREFIX_LENGTH);
+        return new ModelLoader.LoadData<>(new ObjectKey(model), this.factory.buildFetcher(this.assetManager, assetPath));
     }
 
+    @Override // com.bumptech.glide.load.model.ModelLoader
     public boolean handles(Uri model) {
-        if (!"file".equals(model.getScheme()) || model.getPathSegments().isEmpty() || !ASSET_PATH_SEGMENT.equals(model.getPathSegments().get(0))) {
-            return false;
-        }
-        return true;
+        return "file".equals(model.getScheme()) && !model.getPathSegments().isEmpty() && ASSET_PATH_SEGMENT.equals(model.getPathSegments().get(0));
     }
 
+    /* loaded from: classes.dex */
     public static class StreamFactory implements ModelLoaderFactory<Uri, InputStream>, AssetFetcherFactory<InputStream> {
         private final AssetManager assetManager;
 
-        public StreamFactory(AssetManager assetManager2) {
-            this.assetManager = assetManager2;
+        public StreamFactory(AssetManager assetManager) {
+            this.assetManager = assetManager;
         }
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public ModelLoader<Uri, InputStream> build(MultiModelLoaderFactory multiFactory) {
             return new AssetUriLoader(this.assetManager, this);
         }
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public void teardown() {
         }
 
-        public DataFetcher<InputStream> buildFetcher(AssetManager assetManager2, String assetPath) {
-            return new StreamAssetPathFetcher(assetManager2, assetPath);
+        @Override // com.bumptech.glide.load.model.AssetUriLoader.AssetFetcherFactory
+        public DataFetcher<InputStream> buildFetcher(AssetManager assetManager, String assetPath) {
+            return new StreamAssetPathFetcher(assetManager, assetPath);
         }
     }
 
+    /* loaded from: classes.dex */
     public static class FileDescriptorFactory implements ModelLoaderFactory<Uri, ParcelFileDescriptor>, AssetFetcherFactory<ParcelFileDescriptor> {
         private final AssetManager assetManager;
 
-        public FileDescriptorFactory(AssetManager assetManager2) {
-            this.assetManager = assetManager2;
+        public FileDescriptorFactory(AssetManager assetManager) {
+            this.assetManager = assetManager;
         }
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public ModelLoader<Uri, ParcelFileDescriptor> build(MultiModelLoaderFactory multiFactory) {
             return new AssetUriLoader(this.assetManager, this);
         }
 
+        @Override // com.bumptech.glide.load.model.ModelLoaderFactory
         public void teardown() {
         }
 
-        public DataFetcher<ParcelFileDescriptor> buildFetcher(AssetManager assetManager2, String assetPath) {
-            return new FileDescriptorAssetPathFetcher(assetManager2, assetPath);
+        @Override // com.bumptech.glide.load.model.AssetUriLoader.AssetFetcherFactory
+        public DataFetcher<ParcelFileDescriptor> buildFetcher(AssetManager assetManager, String assetPath) {
+            return new FileDescriptorAssetPathFetcher(assetManager, assetPath);
         }
     }
 }

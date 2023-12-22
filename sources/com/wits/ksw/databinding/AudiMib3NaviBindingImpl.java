@@ -2,11 +2,14 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
+import android.support.p004v7.widget.AppCompatTextView;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 
+/* loaded from: classes7.dex */
 public class AudiMib3NaviBindingImpl extends AudiMib3NaviBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -16,10 +19,10 @@ public class AudiMib3NaviBindingImpl extends AudiMib3NaviBinding {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.title, 1);
-        sparseIntArray.put(R.id.title_divider, 2);
-        sparseIntArray.put(R.id.naviListView, 3);
-        sparseIntArray.put(R.id.v_divider, 4);
+        sparseIntArray.put(C0899R.C0901id.title, 1);
+        sparseIntArray.put(C0899R.C0901id.title_divider, 2);
+        sparseIntArray.put(C0899R.C0901id.naviListView, 3);
+        sparseIntArray.put(C0899R.C0901id.v_divider, 4);
     }
 
     public AudiMib3NaviBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -27,22 +30,24 @@ public class AudiMib3NaviBindingImpl extends AudiMib3NaviBinding {
     }
 
     private AudiMib3NaviBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[3], bindings[1], bindings[2], bindings[4]);
-        this.mDirtyFlags = -1;
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 0, (ListView) bindings[3], (AppCompatTextView) bindings[1], (View) bindings[2], (View) bindings[4]);
+        this.mDirtyFlags = -1L;
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
+        relativeLayout.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 1;
+            this.mDirtyFlags = 1L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -52,20 +57,21 @@ public class AudiMib3NaviBindingImpl extends AudiMib3NaviBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
         return true;
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         synchronized (this) {
-            long dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            long j = this.mDirtyFlags;
+            this.mDirtyFlags = 0L;
         }
     }
 }

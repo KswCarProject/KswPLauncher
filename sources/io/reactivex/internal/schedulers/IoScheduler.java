@@ -3,7 +3,6 @@ package io.reactivex.internal.schedulers;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.disposables.DisposableContainer;
 import io.reactivex.internal.disposables.EmptyDisposable;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -15,22 +14,23 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class IoScheduler extends Scheduler {
     static final RxThreadFactory EVICTOR_THREAD_FACTORY;
     private static final String EVICTOR_THREAD_NAME_PREFIX = "RxCachedWorkerPoolEvictor";
-    private static final long KEEP_ALIVE_TIME = Long.getLong(KEY_KEEP_ALIVE_TIME, 60).longValue();
     public static final long KEEP_ALIVE_TIME_DEFAULT = 60;
-    private static final TimeUnit KEEP_ALIVE_UNIT = TimeUnit.SECONDS;
     private static final String KEY_IO_PRIORITY = "rx2.io-priority";
-    private static final String KEY_KEEP_ALIVE_TIME = "rx2.io-keep-alive-time";
     private static final String KEY_SCHEDULED_RELEASE = "rx2.io-scheduled-release";
     static final CachedWorkerPool NONE;
     static final ThreadWorker SHUTDOWN_THREAD_WORKER;
-    static boolean USE_SCHEDULED_RELEASE = Boolean.getBoolean(KEY_SCHEDULED_RELEASE);
+    static boolean USE_SCHEDULED_RELEASE = false;
     static final RxThreadFactory WORKER_THREAD_FACTORY;
     private static final String WORKER_THREAD_NAME_PREFIX = "RxCachedThreadScheduler";
     final AtomicReference<CachedWorkerPool> pool;
     final ThreadFactory threadFactory;
+    private static final TimeUnit KEEP_ALIVE_UNIT = TimeUnit.SECONDS;
+    private static final String KEY_KEEP_ALIVE_TIME = "rx2.io-keep-alive-time";
+    private static final long KEEP_ALIVE_TIME = Long.getLong(KEY_KEEP_ALIVE_TIME, 60).longValue();
 
     static {
         ThreadWorker threadWorker = new ThreadWorker(new RxThreadFactory("RxCachedThreadSchedulerShutdown"));
@@ -40,11 +40,13 @@ public final class IoScheduler extends Scheduler {
         RxThreadFactory rxThreadFactory = new RxThreadFactory(WORKER_THREAD_NAME_PREFIX, priority);
         WORKER_THREAD_FACTORY = rxThreadFactory;
         EVICTOR_THREAD_FACTORY = new RxThreadFactory(EVICTOR_THREAD_NAME_PREFIX, priority);
-        CachedWorkerPool cachedWorkerPool = new CachedWorkerPool(0, (TimeUnit) null, rxThreadFactory);
+        USE_SCHEDULED_RELEASE = Boolean.getBoolean(KEY_SCHEDULED_RELEASE);
+        CachedWorkerPool cachedWorkerPool = new CachedWorkerPool(0L, null, rxThreadFactory);
         NONE = cachedWorkerPool;
         cachedWorkerPool.shutdown();
     }
 
+    /* loaded from: classes.dex */
     static final class CachedWorkerPool implements Runnable {
         final CompositeDisposable allWorkers;
         private final ScheduledExecutorService evictorService;
@@ -53,12 +55,12 @@ public final class IoScheduler extends Scheduler {
         private final long keepAliveTime;
         private final ThreadFactory threadFactory;
 
-        CachedWorkerPool(long keepAliveTime2, TimeUnit unit, ThreadFactory threadFactory2) {
-            long nanos = unit != null ? unit.toNanos(keepAliveTime2) : 0;
+        CachedWorkerPool(long keepAliveTime, TimeUnit unit, ThreadFactory threadFactory) {
+            long nanos = unit != null ? unit.toNanos(keepAliveTime) : 0L;
             this.keepAliveTime = nanos;
             this.expiringWorkerQueue = new ConcurrentLinkedQueue<>();
             this.allWorkers = new CompositeDisposable();
-            this.threadFactory = threadFactory2;
+            this.threadFactory = threadFactory;
             ScheduledExecutorService evictor = null;
             Future<?> task = null;
             if (unit != null) {
@@ -69,12 +71,12 @@ public final class IoScheduler extends Scheduler {
             this.evictorTask = task;
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             evictExpiredWorkers();
         }
 
-        /* access modifiers changed from: package-private */
-        public ThreadWorker get() {
+        ThreadWorker get() {
             if (this.allWorkers.isDisposed()) {
                 return IoScheduler.SHUTDOWN_THREAD_WORKER;
             }
@@ -89,36 +91,33 @@ public final class IoScheduler extends Scheduler {
             return w;
         }
 
-        /* access modifiers changed from: package-private */
-        public void release(ThreadWorker threadWorker) {
+        void release(ThreadWorker threadWorker) {
             threadWorker.setExpirationTime(now() + this.keepAliveTime);
             this.expiringWorkerQueue.offer(threadWorker);
         }
 
-        /* access modifiers changed from: package-private */
-        public void evictExpiredWorkers() {
+        void evictExpiredWorkers() {
             if (!this.expiringWorkerQueue.isEmpty()) {
                 long currentTimestamp = now();
                 Iterator<ThreadWorker> it = this.expiringWorkerQueue.iterator();
                 while (it.hasNext()) {
                     ThreadWorker threadWorker = it.next();
-                    if (threadWorker.getExpirationTime() > currentTimestamp) {
+                    if (threadWorker.getExpirationTime() <= currentTimestamp) {
+                        if (this.expiringWorkerQueue.remove(threadWorker)) {
+                            this.allWorkers.remove(threadWorker);
+                        }
+                    } else {
                         return;
-                    }
-                    if (this.expiringWorkerQueue.remove(threadWorker)) {
-                        this.allWorkers.remove(threadWorker);
                     }
                 }
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public long now() {
+        long now() {
             return System.nanoTime();
         }
 
-        /* access modifiers changed from: package-private */
-        public void shutdown() {
+        void shutdown() {
             this.allWorkers.dispose();
             Future<?> future = this.evictorTask;
             if (future != null) {
@@ -135,12 +134,13 @@ public final class IoScheduler extends Scheduler {
         this(WORKER_THREAD_FACTORY);
     }
 
-    public IoScheduler(ThreadFactory threadFactory2) {
-        this.threadFactory = threadFactory2;
+    public IoScheduler(ThreadFactory threadFactory) {
+        this.threadFactory = threadFactory;
         this.pool = new AtomicReference<>(NONE);
         start();
     }
 
+    @Override // io.reactivex.Scheduler
     public void start() {
         CachedWorkerPool update = new CachedWorkerPool(KEEP_ALIVE_TIME, KEEP_ALIVE_UNIT, this.threadFactory);
         if (!this.pool.compareAndSet(NONE, update)) {
@@ -148,6 +148,7 @@ public final class IoScheduler extends Scheduler {
         }
     }
 
+    @Override // io.reactivex.Scheduler
     public void shutdown() {
         CachedWorkerPool curr;
         CachedWorkerPool cachedWorkerPool;
@@ -161,6 +162,7 @@ public final class IoScheduler extends Scheduler {
         curr.shutdown();
     }
 
+    @Override // io.reactivex.Scheduler
     public Scheduler.Worker createWorker() {
         return new EventLoopWorker(this.pool.get());
     }
@@ -169,37 +171,41 @@ public final class IoScheduler extends Scheduler {
         return this.pool.get().allWorkers.size();
     }
 
+    /* loaded from: classes.dex */
     static final class EventLoopWorker extends Scheduler.Worker implements Runnable {
-        final AtomicBoolean once = new AtomicBoolean();
         private final CachedWorkerPool pool;
-        private final CompositeDisposable tasks;
         private final ThreadWorker threadWorker;
+        final AtomicBoolean once = new AtomicBoolean();
+        private final CompositeDisposable tasks = new CompositeDisposable();
 
-        EventLoopWorker(CachedWorkerPool pool2) {
-            this.pool = pool2;
-            this.tasks = new CompositeDisposable();
-            this.threadWorker = pool2.get();
+        EventLoopWorker(CachedWorkerPool pool) {
+            this.pool = pool;
+            this.threadWorker = pool.get();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             if (this.once.compareAndSet(false, true)) {
                 this.tasks.dispose();
                 if (IoScheduler.USE_SCHEDULED_RELEASE) {
-                    this.threadWorker.scheduleActual(this, 0, TimeUnit.NANOSECONDS, (DisposableContainer) null);
-                    return;
+                    this.threadWorker.scheduleActual(this, 0L, TimeUnit.NANOSECONDS, null);
+                } else {
+                    this.pool.release(this.threadWorker);
                 }
-                this.pool.release(this.threadWorker);
             }
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             this.pool.release(this.threadWorker);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.once.get();
         }
 
+        @Override // io.reactivex.Scheduler.Worker
         public Disposable schedule(Runnable action, long delayTime, TimeUnit unit) {
             if (this.tasks.isDisposed()) {
                 return EmptyDisposable.INSTANCE;
@@ -208,19 +214,21 @@ public final class IoScheduler extends Scheduler {
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ThreadWorker extends NewThreadWorker {
-        private long expirationTime = 0;
+        private long expirationTime;
 
         ThreadWorker(ThreadFactory threadFactory) {
             super(threadFactory);
+            this.expirationTime = 0L;
         }
 
         public long getExpirationTime() {
             return this.expirationTime;
         }
 
-        public void setExpirationTime(long expirationTime2) {
-            this.expirationTime = expirationTime2;
+        public void setExpirationTime(long expirationTime) {
+            this.expirationTime = expirationTime;
         }
     }
 }

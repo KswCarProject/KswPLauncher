@@ -8,10 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.view.CustomBmwImageView;
 
+/* loaded from: classes7.dex */
 public abstract class NaviSubView extends ViewDataBinding {
     @Bindable
     protected LauncherViewModel mNaviViewModel;
@@ -20,14 +21,14 @@ public abstract class NaviSubView extends ViewDataBinding {
     public final TextView textView2;
     public final TextView textView3;
 
-    public abstract void setNaviViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setNaviViewModel(LauncherViewModel NaviViewModel);
 
-    protected NaviSubView(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout naviConstraintLayout2, CustomBmwImageView naviImageView2, TextView textView22, TextView textView32) {
+    protected NaviSubView(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout naviConstraintLayout, CustomBmwImageView naviImageView, TextView textView2, TextView textView3) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.naviConstraintLayout = naviConstraintLayout2;
-        this.naviImageView = naviImageView2;
-        this.textView2 = textView22;
-        this.textView3 = textView32;
+        this.naviConstraintLayout = naviConstraintLayout;
+        this.naviImageView = naviImageView;
+        this.textView2 = textView2;
+        this.textView3 = textView3;
     }
 
     public LauncherViewModel getNaviViewModel() {
@@ -40,7 +41,7 @@ public abstract class NaviSubView extends ViewDataBinding {
 
     @Deprecated
     public static NaviSubView inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (NaviSubView) ViewDataBinding.inflateInternal(inflater, R.layout.id7_sub_navi_view, root, attachToRoot, component);
+        return (NaviSubView) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id7_sub_navi_view, root, attachToRoot, component);
     }
 
     public static NaviSubView inflate(LayoutInflater inflater) {
@@ -49,7 +50,7 @@ public abstract class NaviSubView extends ViewDataBinding {
 
     @Deprecated
     public static NaviSubView inflate(LayoutInflater inflater, Object component) {
-        return (NaviSubView) ViewDataBinding.inflateInternal(inflater, R.layout.id7_sub_navi_view, (ViewGroup) null, false, component);
+        return (NaviSubView) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.id7_sub_navi_view, null, false, component);
     }
 
     public static NaviSubView bind(View view) {
@@ -58,6 +59,6 @@ public abstract class NaviSubView extends ViewDataBinding {
 
     @Deprecated
     public static NaviSubView bind(View view, Object component) {
-        return (NaviSubView) bind(component, view, R.layout.id7_sub_navi_view);
+        return (NaviSubView) bind(component, view, C0899R.C0902layout.id7_sub_navi_view);
     }
 }

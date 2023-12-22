@@ -1,37 +1,39 @@
 package android.arch.persistence.room;
 
-import android.arch.persistence.db.SupportSQLiteStatement;
+import android.arch.persistence.p000db.SupportSQLiteStatement;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/* loaded from: classes.dex */
 public abstract class SharedSQLiteStatement {
     private final RoomDatabase mDatabase;
     private final AtomicBoolean mLock = new AtomicBoolean(false);
     private volatile SupportSQLiteStatement mStmt;
 
-    /* access modifiers changed from: protected */
-    public abstract String createQuery();
+    protected abstract String createQuery();
 
     public SharedSQLiteStatement(RoomDatabase database) {
         this.mDatabase = database;
     }
 
-    /* access modifiers changed from: protected */
-    public void assertNotMainThread() {
+    protected void assertNotMainThread() {
         this.mDatabase.assertNotMainThread();
     }
 
     private SupportSQLiteStatement createNewStatement() {
-        return this.mDatabase.compileStatement(createQuery());
+        String query = createQuery();
+        return this.mDatabase.compileStatement(query);
     }
 
     private SupportSQLiteStatement getStmt(boolean canUseCached) {
-        if (!canUseCached) {
-            return createNewStatement();
+        if (canUseCached) {
+            if (this.mStmt == null) {
+                this.mStmt = createNewStatement();
+            }
+            SupportSQLiteStatement stmt = this.mStmt;
+            return stmt;
         }
-        if (this.mStmt == null) {
-            this.mStmt = createNewStatement();
-        }
-        return this.mStmt;
+        SupportSQLiteStatement stmt2 = createNewStatement();
+        return stmt2;
     }
 
     public SupportSQLiteStatement acquire() {

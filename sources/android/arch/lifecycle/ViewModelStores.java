@@ -1,20 +1,23 @@
 package android.arch.lifecycle;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.p001v4.app.Fragment;
+import android.support.p001v4.app.FragmentActivity;
 
+/* loaded from: classes.dex */
 public class ViewModelStores {
     private ViewModelStores() {
     }
 
-    public static ViewModelStore of(FragmentActivity activity) {
+    /* renamed from: of */
+    public static ViewModelStore m56of(FragmentActivity activity) {
         if (activity instanceof ViewModelStoreOwner) {
             return activity.getViewModelStore();
         }
         return HolderFragment.holderFragmentFor(activity).getViewModelStore();
     }
 
-    public static ViewModelStore of(Fragment fragment) {
+    /* renamed from: of */
+    public static ViewModelStore m57of(Fragment fragment) {
         if (fragment instanceof ViewModelStoreOwner) {
             return fragment.getViewModelStore();
         }

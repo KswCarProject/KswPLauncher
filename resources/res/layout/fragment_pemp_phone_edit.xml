@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:tag="layout/fragment_pemp_phone_edit_0" style="@style/id8_edit_main_card_container_left_padding">
+    <LinearLayout android:orientation="vertical" android:id="@+id/layout" android:tag="binding_1" style="@style/id8_pemp_main_card_container_edit">
+        <TextView android:text="@string/ksw_id8_tel" style="@style/id8_pemp_main_card_title_edit"/>
+        <ImageView android:background="@drawable/id8_main_edit_icon_weather_line" style="@style/id8_pemp_main_card_divider"/>
+        <TextView android:id="@+id/tv_desc" android:tag="binding_2" style="@style/id8_pemp_main_card_desc_edit"/>
+        <TextView android:textSize="23sp" android:textColor="@color/id8_font_white" android:gravity="center" android:layout_gravity="center" android:tag="binding_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="190dp" android:includeFontPadding="false" style="@style/pemp_id8_text_shadow"/>
+        <TextView android:textSize="12sp" android:textColor="@color/id8_font_white" android:gravity="center" android:layout_gravity="center" android:tag="binding_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" style="@style/pemp_id8_text_shadow"/>
+    </LinearLayout>
+</RelativeLayout>

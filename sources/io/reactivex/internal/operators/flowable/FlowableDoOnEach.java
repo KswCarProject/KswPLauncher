@@ -1,6 +1,7 @@
 package io.reactivex.internal.operators.flowable;
 
 import io.reactivex.Flowable;
+import io.reactivex.FlowableSubscriber;
 import io.reactivex.exceptions.CompositeException;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Action;
@@ -8,61 +9,67 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.internal.fuseable.ConditionalSubscriber;
 import io.reactivex.internal.subscribers.BasicFuseableConditionalSubscriber;
 import io.reactivex.internal.subscribers.BasicFuseableSubscriber;
+import io.reactivex.internal.util.ExceptionHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 import org.reactivestreams.Subscriber;
 
+/* loaded from: classes.dex */
 public final class FlowableDoOnEach<T> extends AbstractFlowableWithUpstream<T, T> {
     final Action onAfterTerminate;
     final Action onComplete;
     final Consumer<? super Throwable> onError;
     final Consumer<? super T> onNext;
 
-    public FlowableDoOnEach(Flowable<T> source, Consumer<? super T> onNext2, Consumer<? super Throwable> onError2, Action onComplete2, Action onAfterTerminate2) {
+    public FlowableDoOnEach(Flowable<T> source, Consumer<? super T> onNext, Consumer<? super Throwable> onError, Action onComplete, Action onAfterTerminate) {
         super(source);
-        this.onNext = onNext2;
-        this.onError = onError2;
-        this.onComplete = onComplete2;
-        this.onAfterTerminate = onAfterTerminate2;
+        this.onNext = onNext;
+        this.onError = onError;
+        this.onComplete = onComplete;
+        this.onAfterTerminate = onAfterTerminate;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
         if (s instanceof ConditionalSubscriber) {
-            this.source.subscribe(new DoOnEachConditionalSubscriber((ConditionalSubscriber) s, this.onNext, this.onError, this.onComplete, this.onAfterTerminate));
-            return;
+            this.source.subscribe((FlowableSubscriber) new DoOnEachConditionalSubscriber((ConditionalSubscriber) s, this.onNext, this.onError, this.onComplete, this.onAfterTerminate));
+        } else {
+            this.source.subscribe((FlowableSubscriber) new DoOnEachSubscriber(s, this.onNext, this.onError, this.onComplete, this.onAfterTerminate));
         }
-        this.source.subscribe(new DoOnEachSubscriber(s, this.onNext, this.onError, this.onComplete, this.onAfterTerminate));
     }
 
+    /* loaded from: classes.dex */
     static final class DoOnEachSubscriber<T> extends BasicFuseableSubscriber<T, T> {
         final Action onAfterTerminate;
         final Action onComplete;
         final Consumer<? super Throwable> onError;
         final Consumer<? super T> onNext;
 
-        DoOnEachSubscriber(Subscriber<? super T> actual, Consumer<? super T> onNext2, Consumer<? super Throwable> onError2, Action onComplete2, Action onAfterTerminate2) {
+        DoOnEachSubscriber(Subscriber<? super T> actual, Consumer<? super T> onNext, Consumer<? super Throwable> onError, Action onComplete, Action onAfterTerminate) {
             super(actual);
-            this.onNext = onNext2;
-            this.onError = onError2;
-            this.onComplete = onComplete2;
-            this.onAfterTerminate = onAfterTerminate2;
+            this.onNext = onNext;
+            this.onError = onError;
+            this.onComplete = onComplete;
+            this.onAfterTerminate = onAfterTerminate;
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            if (!this.done) {
-                if (this.sourceMode != 0) {
-                    this.downstream.onNext(null);
-                    return;
-                }
-                try {
-                    this.onNext.accept(t);
-                    this.downstream.onNext(t);
-                } catch (Throwable e) {
-                    fail(e);
-                }
+            if (this.done) {
+                return;
+            }
+            if (this.sourceMode != 0) {
+                this.downstream.onNext(null);
+                return;
+            }
+            try {
+                this.onNext.accept(t);
+                this.downstream.onNext(t);
+            } catch (Throwable e) {
+                fail(e);
             }
         }
 
+        @Override // io.reactivex.internal.subscribers.BasicFuseableSubscriber, org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -88,78 +95,96 @@ public final class FlowableDoOnEach<T> extends AbstractFlowableWithUpstream<T, T
             }
         }
 
+        @Override // io.reactivex.internal.subscribers.BasicFuseableSubscriber, org.reactivestreams.Subscriber
         public void onComplete() {
-            if (!this.done) {
+            if (this.done) {
+                return;
+            }
+            try {
+                this.onComplete.run();
+                this.done = true;
+                this.downstream.onComplete();
                 try {
-                    this.onComplete.run();
-                    this.done = true;
-                    this.downstream.onComplete();
-                    try {
-                        this.onAfterTerminate.run();
-                    } catch (Throwable e) {
-                        Exceptions.throwIfFatal(e);
-                        RxJavaPlugins.onError(e);
-                    }
-                } catch (Throwable e2) {
-                    fail(e2);
+                    this.onAfterTerminate.run();
+                } catch (Throwable e) {
+                    Exceptions.throwIfFatal(e);
+                    RxJavaPlugins.onError(e);
                 }
+            } catch (Throwable e2) {
+                fail(e2);
             }
         }
 
+        @Override // io.reactivex.internal.fuseable.QueueFuseable
         public int requestFusion(int mode) {
             return transitiveBoundaryFusion(mode);
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public T poll() throws Exception {
             try {
-                T v = this.qs.poll();
+                T v = this.f345qs.poll();
                 if (v != null) {
                     try {
                         this.onNext.accept(v);
-                        this.onAfterTerminate.run();
-                    } catch (Throwable exc) {
-                        throw new CompositeException(ex, exc);
+                    } catch (Throwable ex) {
+                        try {
+                            Exceptions.throwIfFatal(ex);
+                            this.onError.accept(ex);
+                            throw ExceptionHelper.throwIfThrowable(ex);
+                        } finally {
+                            this.onAfterTerminate.run();
+                        }
                     }
                 } else if (this.sourceMode == 1) {
                     this.onComplete.run();
-                    this.onAfterTerminate.run();
                 }
                 return v;
-            } catch (Throwable exc2) {
-                throw new CompositeException(ex, exc2);
+            } catch (Throwable ex2) {
+                Exceptions.throwIfFatal(ex2);
+                try {
+                    this.onError.accept(ex2);
+                    throw ExceptionHelper.throwIfThrowable(ex2);
+                } catch (Throwable exc) {
+                    throw new CompositeException(ex2, exc);
+                }
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class DoOnEachConditionalSubscriber<T> extends BasicFuseableConditionalSubscriber<T, T> {
         final Action onAfterTerminate;
         final Action onComplete;
         final Consumer<? super Throwable> onError;
         final Consumer<? super T> onNext;
 
-        DoOnEachConditionalSubscriber(ConditionalSubscriber<? super T> actual, Consumer<? super T> onNext2, Consumer<? super Throwable> onError2, Action onComplete2, Action onAfterTerminate2) {
+        DoOnEachConditionalSubscriber(ConditionalSubscriber<? super T> actual, Consumer<? super T> onNext, Consumer<? super Throwable> onError, Action onComplete, Action onAfterTerminate) {
             super(actual);
-            this.onNext = onNext2;
-            this.onError = onError2;
-            this.onComplete = onComplete2;
-            this.onAfterTerminate = onAfterTerminate2;
+            this.onNext = onNext;
+            this.onError = onError;
+            this.onComplete = onComplete;
+            this.onAfterTerminate = onAfterTerminate;
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            if (!this.done) {
-                if (this.sourceMode != 0) {
-                    this.downstream.onNext(null);
-                    return;
-                }
-                try {
-                    this.onNext.accept(t);
-                    this.downstream.onNext(t);
-                } catch (Throwable e) {
-                    fail(e);
-                }
+            if (this.done) {
+                return;
+            }
+            if (this.sourceMode != 0) {
+                this.downstream.onNext(null);
+                return;
+            }
+            try {
+                this.onNext.accept(t);
+                this.downstream.onNext(t);
+            } catch (Throwable e) {
+                fail(e);
             }
         }
 
+        @Override // io.reactivex.internal.fuseable.ConditionalSubscriber
         public boolean tryOnNext(T t) {
             if (this.done) {
                 return false;
@@ -173,6 +198,7 @@ public final class FlowableDoOnEach<T> extends AbstractFlowableWithUpstream<T, T
             }
         }
 
+        @Override // io.reactivex.internal.subscribers.BasicFuseableConditionalSubscriber, org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -198,45 +224,59 @@ public final class FlowableDoOnEach<T> extends AbstractFlowableWithUpstream<T, T
             }
         }
 
+        @Override // io.reactivex.internal.subscribers.BasicFuseableConditionalSubscriber, org.reactivestreams.Subscriber
         public void onComplete() {
-            if (!this.done) {
+            if (this.done) {
+                return;
+            }
+            try {
+                this.onComplete.run();
+                this.done = true;
+                this.downstream.onComplete();
                 try {
-                    this.onComplete.run();
-                    this.done = true;
-                    this.downstream.onComplete();
-                    try {
-                        this.onAfterTerminate.run();
-                    } catch (Throwable e) {
-                        Exceptions.throwIfFatal(e);
-                        RxJavaPlugins.onError(e);
-                    }
-                } catch (Throwable e2) {
-                    fail(e2);
+                    this.onAfterTerminate.run();
+                } catch (Throwable e) {
+                    Exceptions.throwIfFatal(e);
+                    RxJavaPlugins.onError(e);
                 }
+            } catch (Throwable e2) {
+                fail(e2);
             }
         }
 
+        @Override // io.reactivex.internal.fuseable.QueueFuseable
         public int requestFusion(int mode) {
             return transitiveBoundaryFusion(mode);
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public T poll() throws Exception {
             try {
-                T v = this.qs.poll();
+                T v = this.f344qs.poll();
                 if (v != null) {
                     try {
                         this.onNext.accept(v);
-                        this.onAfterTerminate.run();
-                    } catch (Throwable exc) {
-                        throw new CompositeException(ex, exc);
+                    } catch (Throwable ex) {
+                        try {
+                            Exceptions.throwIfFatal(ex);
+                            this.onError.accept(ex);
+                            throw ExceptionHelper.throwIfThrowable(ex);
+                        } finally {
+                            this.onAfterTerminate.run();
+                        }
                     }
                 } else if (this.sourceMode == 1) {
                     this.onComplete.run();
-                    this.onAfterTerminate.run();
                 }
                 return v;
-            } catch (Throwable exc2) {
-                throw new CompositeException(ex, exc2);
+            } catch (Throwable ex2) {
+                Exceptions.throwIfFatal(ex2);
+                try {
+                    this.onError.accept(ex2);
+                    throw ExceptionHelper.throwIfThrowable(ex2);
+                } catch (Throwable exc) {
+                    throw new CompositeException(ex2, exc);
+                }
             }
         }
     }

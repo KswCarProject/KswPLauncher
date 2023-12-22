@@ -2,8 +2,8 @@ package com.wits.ksw.settings.romeo.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
+import android.support.p001v4.content.ContextCompat;
+import android.support.p004v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -11,34 +11,31 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.ksw.settings.id7.bean.FunctionBean;
 import java.util.List;
 
+/* loaded from: classes8.dex */
 public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
-    /* access modifiers changed from: private */
-    public static final String TAG = FunctionAdapter.class.getName();
+    private static final String TAG = FunctionAdapter.class.getName();
     private Context context;
-    /* access modifiers changed from: private */
-    public List<FunctionBean> data;
-    /* access modifiers changed from: private */
-    public int downPosition = -1;
-    /* access modifiers changed from: private */
-    public OnFunctionClickListener functionClickListener;
-    /* access modifiers changed from: private */
-    public boolean isFinish = false;
-    /* access modifiers changed from: private */
-    public OnItemBgChangeListener itemBgChangeListener;
+    private List<FunctionBean> data;
+    private OnFunctionClickListener functionClickListener;
+    private OnItemBgChangeListener itemBgChangeListener;
+    private boolean isFinish = false;
+    private int downPosition = -1;
 
+    /* loaded from: classes8.dex */
     public interface OnFunctionClickListener {
-        void functonClick(int i);
+        void functonClick(int pos);
     }
 
+    /* loaded from: classes8.dex */
     public interface OnItemBgChangeListener {
-        void onChangeItemSelect(int i, int i2, int i3);
+        void onChangeItemSelect(int top, int type, int position);
 
-        void onClearSelect(int i, int i2, int i3);
+        void onClearSelect(int top, int type, int position);
     }
 
     public void registOnFunctionClickListener(OnFunctionClickListener clickListener) {
@@ -49,16 +46,19 @@ public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.itemBgChangeListener = listener;
     }
 
-    public FunctionAdapter(Context context2, List<FunctionBean> appInfoList) {
-        this.context = context2;
+    public FunctionAdapter(Context context, List<FunctionBean> appInfoList) {
+        this.context = context;
         this.data = appInfoList;
         Log.i(TAG, "FunctionAdapter: ");
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.Adapter
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        return new ViewHolder(LayoutInflater.from(this.context).inflate(R.layout.romeo_list_settings_function, viewGroup, false));
+        ViewHolder holder = new ViewHolder(LayoutInflater.from(this.context).inflate(C0899R.C0902layout.romeo_list_settings_function, viewGroup, false));
+        return holder;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.Adapter
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (this.data.get(position).getIcon() != 0) {
             Drawable drawable = ContextCompat.getDrawable(this.context, this.data.get(position).getIcon());
@@ -66,13 +66,15 @@ public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
             holder.tv_functionItem.setImageDrawable(drawable);
         }
         this.data.get(position).isIscheck();
-        holder.tv_functionItem.setOnClickListener(new View.OnClickListener() {
+        holder.tv_functionItem.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.settings.romeo.adapter.FunctionAdapter.1
+            @Override // android.view.View.OnClickListener
             public void onClick(View v) {
                 Log.d(FunctionAdapter.TAG, "tv_functionItem onClick position=" + position);
                 OnFunctionClickListener unused = FunctionAdapter.this.functionClickListener;
             }
         });
-        holder.tv_functionItem.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        holder.tv_functionItem.setOnFocusChangeListener(new View.OnFocusChangeListener() { // from class: com.wits.ksw.settings.romeo.adapter.FunctionAdapter.2
+            @Override // android.view.View.OnFocusChangeListener
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     Log.d(FunctionAdapter.TAG, "onFocusChange " + position);
@@ -87,51 +89,48 @@ public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
                 }
             }
         });
-        holder.tv_functionItem.setOnTouchListener(new View.OnTouchListener() {
+        holder.tv_functionItem.setOnTouchListener(new View.OnTouchListener() { // from class: com.wits.ksw.settings.romeo.adapter.FunctionAdapter.3
+            @Override // android.view.View.OnTouchListener
             public boolean onTouch(View v, MotionEvent event) {
                 Log.d(FunctionAdapter.TAG, "onTouch " + position + " action " + event.getAction());
                 if (event.getAction() == 0) {
-                    if (FunctionAdapter.this.itemBgChangeListener == null) {
+                    if (FunctionAdapter.this.itemBgChangeListener != null) {
+                        FunctionAdapter.this.downPosition = position;
+                        FunctionAdapter.this.itemBgChangeListener.onChangeItemSelect(holder.itemView.getTop(), 2, position);
                         return false;
                     }
-                    int unused = FunctionAdapter.this.downPosition = position;
-                    FunctionAdapter.this.itemBgChangeListener.onChangeItemSelect(holder.itemView.getTop(), 2, position);
                     return false;
-                } else if (event.getAction() != 1 || FunctionAdapter.this.functionClickListener == null) {
+                } else if (event.getAction() == 1 && FunctionAdapter.this.functionClickListener != null) {
+                    FunctionAdapter.this.functionClickListener.functonClick(position);
                     return false;
                 } else {
-                    FunctionAdapter.this.functionClickListener.functonClick(position);
                     return false;
                 }
             }
         });
-        holder.tv_functionItem.setOnKeyListener(new View.OnKeyListener() {
+        holder.tv_functionItem.setOnKeyListener(new View.OnKeyListener() { // from class: com.wits.ksw.settings.romeo.adapter.FunctionAdapter.4
+            @Override // android.view.View.OnKeyListener
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 Log.i(FunctionAdapter.TAG, "onKey: position=" + position + " action=" + event.getAction() + " keyCode =" + keyCode + " isFinish=" + FunctionAdapter.this.isFinish);
                 if (event.getKeyCode() == 20) {
-                    if (FunctionAdapter.this.data.size() - 1 == position) {
-                        return true;
-                    }
-                    return false;
-                } else if (keyCode != 19) {
+                    return FunctionAdapter.this.data.size() - 1 == position;
+                } else if (keyCode == 19) {
+                    return position == 0;
+                } else {
                     if ((keyCode == 23 || keyCode == 66) && FunctionAdapter.this.functionClickListener != null) {
                         FunctionAdapter.this.functionClickListener.functonClick(position);
                     }
                     if (keyCode != 21) {
-                        boolean unused = FunctionAdapter.this.isFinish = false;
+                        FunctionAdapter.this.isFinish = false;
                     }
                     FunctionAdapter.this.onBackPressed(keyCode, event);
-                    return false;
-                } else if (position == 0) {
-                    return true;
-                } else {
                     return false;
                 }
             }
         });
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void onBackPressed(int keyCode, KeyEvent event) {
         if (event.getAction() == 1 && keyCode == 21) {
             if (this.isFinish) {
@@ -142,6 +141,7 @@ public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
         }
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.Adapter
     public int getItemCount() {
         List<FunctionBean> list = this.data;
         if (list == null) {
@@ -150,12 +150,13 @@ public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
         return list.size();
     }
 
+    /* loaded from: classes8.dex */
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView tv_functionItem;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.tv_functionItem = (ImageView) itemView.findViewById(R.id.tv_functionItem);
+            this.tv_functionItem = (ImageView) itemView.findViewById(C0899R.C0901id.tv_functionItem);
         }
     }
 }

@@ -4,24 +4,25 @@ import com.google.zxing.Result;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public final class BizcardResultParser extends AbstractDoCoMoResultParser {
+    @Override // com.google.zxing.client.result.ResultParser
     public AddressBookParsedResult parse(Result result) {
-        String massagedText = getMassagedText(result);
-        String rawText = massagedText;
-        if (!massagedText.startsWith("BIZCARD:")) {
-            return null;
+        String rawText = getMassagedText(result);
+        if (rawText.startsWith("BIZCARD:")) {
+            String firstName = matchSingleDoCoMoPrefixedField("N:", rawText, true);
+            String lastName = matchSingleDoCoMoPrefixedField("X:", rawText, true);
+            String fullName = buildName(firstName, lastName);
+            String title = matchSingleDoCoMoPrefixedField("T:", rawText, true);
+            String org2 = matchSingleDoCoMoPrefixedField("C:", rawText, true);
+            String[] addresses = matchDoCoMoPrefixedField("A:", rawText, true);
+            String phoneNumber1 = matchSingleDoCoMoPrefixedField("B:", rawText, true);
+            String phoneNumber2 = matchSingleDoCoMoPrefixedField("M:", rawText, true);
+            String phoneNumber3 = matchSingleDoCoMoPrefixedField("F:", rawText, true);
+            String email = matchSingleDoCoMoPrefixedField("E:", rawText, true);
+            return new AddressBookParsedResult(maybeWrap(fullName), null, null, buildPhoneNumbers(phoneNumber1, phoneNumber2, phoneNumber3), null, maybeWrap(email), null, null, null, addresses, null, org2, null, title, null, null);
         }
-        String fullName = buildName(matchSingleDoCoMoPrefixedField("N:", rawText, true), matchSingleDoCoMoPrefixedField("X:", rawText, true));
-        String matchSingleDoCoMoPrefixedField = matchSingleDoCoMoPrefixedField("C:", rawText, true);
-        String[] matchDoCoMoPrefixedField = matchDoCoMoPrefixedField("A:", rawText, true);
-        String phoneNumber1 = matchSingleDoCoMoPrefixedField("B:", rawText, true);
-        String phoneNumber2 = matchSingleDoCoMoPrefixedField("M:", rawText, true);
-        String phoneNumber3 = matchSingleDoCoMoPrefixedField("F:", rawText, true);
-        String email = matchSingleDoCoMoPrefixedField("E:", rawText, true);
-        String str = phoneNumber3;
-        String str2 = phoneNumber2;
-        String str3 = phoneNumber1;
-        return new AddressBookParsedResult(maybeWrap(fullName), (String[]) null, (String) null, buildPhoneNumbers(phoneNumber1, phoneNumber2, phoneNumber3), (String[]) null, maybeWrap(email), (String[]) null, (String) null, (String) null, matchDoCoMoPrefixedField, (String[]) null, matchSingleDoCoMoPrefixedField, (String) null, matchSingleDoCoMoPrefixedField("T:", rawText, true), (String[]) null, (String[]) null);
+        return null;
     }
 
     private static String[] buildPhoneNumbers(String number1, String number2, String number3) {
@@ -36,11 +37,10 @@ public final class BizcardResultParser extends AbstractDoCoMoResultParser {
             numbers.add(number3);
         }
         int size = numbers.size();
-        int size2 = size;
         if (size == 0) {
             return null;
         }
-        return (String[]) numbers.toArray(new String[size2]);
+        return (String[]) numbers.toArray(new String[size]);
     }
 
     private static String buildName(String firstName, String lastName) {

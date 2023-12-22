@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -23,7 +24,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.Settings;
+import android.support.p001v4.view.PointerIconCompat;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,14 +36,15 @@ import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 import com.ibm.icu.text.ArabicShaping;
 import com.txznet.weatherquery.TXZWeather;
 import com.txznet.weatherquery.WeatherQueryManager;
 import com.wits.ksw.BuildConfig;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.MainActivity;
-import com.wits.ksw.R;
 import com.wits.ksw.launcher.adpater.AppsGridAdapter;
 import com.wits.ksw.launcher.base.BaseViewModel;
 import com.wits.ksw.launcher.bean.CarInfo;
@@ -52,6 +56,8 @@ import com.wits.ksw.launcher.bmw_id8_ui.ID8GsEditActivity;
 import com.wits.ksw.launcher.bmw_id8_ui.ID8GsModusActivity;
 import com.wits.ksw.launcher.bmw_id8_ui.ID8LauncherConstants;
 import com.wits.ksw.launcher.bmw_id8_ui.ID8ModusActivity;
+import com.wits.ksw.launcher.bmw_id8_ui.ID8PempEditActivity;
+import com.wits.ksw.launcher.bmw_id8_ui.ID8PempModusActivity;
 import com.wits.ksw.launcher.bmw_id8_ui.listener.OnID8SkinChangeListener;
 import com.wits.ksw.launcher.utils.AppInfoUtils;
 import com.wits.ksw.launcher.utils.ClientManager;
@@ -62,8 +68,9 @@ import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.launcher.view.AppsActivity;
 import com.wits.ksw.launcher.view.Ntg630ControlView;
 import com.wits.ksw.launcher.view.Ntg6ControlView;
-import com.wits.ksw.launcher.view.ug.WiewFocusUtils;
-import com.wits.ksw.settings.TxzMessage;
+import com.wits.ksw.launcher.view.benzmbux2021new.util.BenzUtils;
+import com.wits.ksw.launcher.view.p006ug.WiewFocusUtils;
+import com.wits.ksw.settings.bmw_id8.activity.BmwId8PempSettingsMainActivity;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.IContentObserver;
 import com.wits.pms.statuscontrol.McuStatus;
@@ -79,80 +86,86 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import skin.support.content.res.SkinCompatResources;
 
+/* loaded from: classes9.dex */
 public class LauncherViewModel extends BaseViewModel {
+    public static final String ALS_KEY_SHORTCUT_CLS_1 = "ALS_KEY_SHORTCUT_CLS_1";
+    public static final String ALS_KEY_SHORTCUT_CLS_2 = "ALS_KEY_SHORTCUT_CLS_2";
+    public static final String ALS_KEY_SHORTCUT_PKG_1 = "ALS_KEY_SHORTCUT_PKG_1";
+    public static final String ALS_KEY_SHORTCUT_PKG_2 = "ALS_KEY_SHORTCUT_PKG_2";
     public static final String CLS_CHROME = "com.google.android.apps.chrome.Main";
     public static final int IMG_VIDEO_HEIGT = 52;
     public static final int IMG_VIDEO_WIDTH = 58;
-    public static final String KEY_SHORTCUT_CLS_1 = "KEY_SHORTCUT_CLS_1";
-    public static final String KEY_SHORTCUT_CLS_2 = "KEY_SHORTCUT_CLS_2";
-    public static final String KEY_SHORTCUT_CLS_3 = "KEY_SHORTCUT_CLS_3";
-    public static final String KEY_SHORTCUT_PKG_1 = "KEY_SHORTCUT_PKG_1";
-    public static final String KEY_SHORTCUT_PKG_2 = "KEY_SHORTCUT_PKG_2";
-    public static final String KEY_SHORTCUT_PKG_3 = "KEY_SHORTCUT_PKG_3";
-    private static final long LONG_CLICK_TIME = 1000;
-    /* access modifiers changed from: protected */
-    public static final String TAG = LauncherViewModel.class.getSimpleName();
+    private static final long LONG_CLICK_TIME = 500;
+    public static final String PEMP_KEY_SHORTCUT_CLS_1 = "PEMP_KEY_SHORTCUT_CLS_1";
+    public static final String PEMP_KEY_SHORTCUT_CLS_1_V2 = "PEMP_KEY_SHORTCUT_CLS_1_V2";
+    public static final String PEMP_KEY_SHORTCUT_CLS_2 = "PEMP_KEY_SHORTCUT_CLS_2";
+    public static final String PEMP_KEY_SHORTCUT_CLS_2_V2 = "PEMP_KEY_SHORTCUT_CLS_2_V2";
+    public static final String PEMP_KEY_SHORTCUT_CLS_3 = "PEMP_KEY_SHORTCUT_CLS_3";
+    public static final String PEMP_KEY_SHORTCUT_CLS_3_V2 = "PEMP_KEY_SHORTCUT_CLS_3_V2";
+    public static final String PEMP_KEY_SHORTCUT_PKG_1 = "PEMP_KEY_SHORTCUT_PKG_1";
+    public static final String PEMP_KEY_SHORTCUT_PKG_1_V2 = "PEMP_KEY_SHORTCUT_PKG_1_V2";
+    public static final String PEMP_KEY_SHORTCUT_PKG_2 = "PEMP_KEY_SHORTCUT_PKG_2";
+    public static final String PEMP_KEY_SHORTCUT_PKG_2_V2 = "PEMP_KEY_SHORTCUT_PKG_2_V2";
+    public static final String PEMP_KEY_SHORTCUT_PKG_3 = "PEMP_KEY_SHORTCUT_PKG_3";
+    public static final String PEMP_KEY_SHORTCUT_PKG_3_V2 = "PEMP_KEY_SHORTCUT_PKG_3_V2";
+    private static final String UNREAD_BROADCAST_ACTION = "com.wits.ksw.launcher.bubble.unread";
     public static final int WIDTH_IMG_BIG = 64;
     public static final int WIDTH_IMG_SMALL = 45;
-    private static HashMap<Integer, ObjectAnimator> animatorMaps = new HashMap<>();
-    public static ObservableField<Boolean> bThirdMusic = new ObservableField<>();
-    public static ObservableField<Boolean> bThirdVideo = new ObservableField<>();
-    public static CarInfo carInfo = McuImpl.getInstance().getCarInfo();
-    private static long mCurrentTime = 0;
-    public static MediaInfo mediaInfo = MediaImpl.getInstance().getMediaInfo();
-    public static ObservableField<Drawable> musicBG = new ObservableField<>();
-    public static ObservableField<Integer> screenHeight = new ObservableField<>();
-    public static ObservableField<String> screenPixels = new ObservableField<>();
-    public static ObservableField<Integer> screenWidth = new ObservableField<>();
-    public static ObservableField<Drawable> videoBG = new ObservableField<>();
     public static volatile View viewLastSel;
-    public static WeatherInfo weatherInfo = new WeatherInfo();
-    public static int width = 0;
-    public final ObservableBoolean acControl = new ObservableBoolean();
-    public List<View> alsID7UIViewList = new ArrayList();
     public McuStatus.BenzData benzData;
-    public ObservableField<String> btState = new ObservableField<>();
-    public View.OnFocusChangeListener carViewFocusChangeListener = new View.OnFocusChangeListener() {
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus && MainActivity.mainActivity != null) {
-                MainActivity.mainActivity.setCurrentItem(2);
-            }
-        }
-    };
-    public ControlBean controlBean = new ControlBean(this.context);
-    public ObservableField<Boolean> dashBoardMusicShow = new ObservableField<>();
-    public final ObservableField<String> day = new ObservableField<>();
     public int dialogHeight;
     public int dialogWidth;
     private BitmapDrawable efficientBitmapDrawable;
+    public View lastViewFocused;
+    public PopupWindow mAppsPopupWindow;
+    private boolean musicId;
+    private OnID8SkinChangeListener onID8SkinChangeListener;
+    private BitmapDrawable personalBitmapDrawable;
+    private BitmapDrawable sportBitmapDrawable;
+    private boolean videoId;
+    private Disposable weatherSubscribe;
+    protected static final String TAG = LauncherViewModel.class.getSimpleName();
+    public static MediaInfo mediaInfo = MediaImpl.getInstance().getMediaInfo();
+    public static CarInfo carInfo = McuImpl.getInstance().getCarInfo();
+    public static ObservableField<Boolean> bThirdMusic = new ObservableField<>();
+    public static ObservableField<Boolean> bThirdVideo = new ObservableField<>();
+    public static ObservableField<String> screenPixels = new ObservableField<>();
+    public static ObservableField<Integer> screenWidth = new ObservableField<>();
+    public static ObservableField<Integer> screenHeight = new ObservableField<>();
+    public static ObservableField<Drawable> videoBG = new ObservableField<>();
+    public static ObservableField<Drawable> musicBG = new ObservableField<>();
+    public static WeatherInfo weatherInfo = new WeatherInfo();
+    public static int width = 0;
+    public static Map<String, Integer> mBubbleUnreadCountMap = new HashMap();
+    private static long mCurrentTime = 0;
+    private static HashMap<Integer, ObjectAnimator> animatorMaps = new HashMap<>();
+    public final ObservableBoolean acControl = new ObservableBoolean();
+    public ObservableField<Boolean> dashBoardMusicShow = new ObservableField<>();
+    public final ObservableInt phoneConState = new ObservableInt();
+    public ObservableField<String> btState = new ObservableField<>();
+    public final ObservableField<String> month = new ObservableField<>();
+    public final ObservableField<String> day = new ObservableField<>();
+    public NaviInfo naviInfo = new NaviInfo();
     public final ObservableField<Boolean> hicar = new ObservableField<>();
-    public ObservableField<BitmapDrawable> id8ModusDrawable = new ObservableField<>();
-    public ObservableField<Integer> id8TextColor = new ObservableField<>();
+    public ObservableField<Drawable> shortCutIcon1 = new ObservableField<>();
+    public ObservableField<Drawable> shortCutIcon2 = new ObservableField<>();
+    public ObservableField<Drawable> shortCutIcon3 = new ObservableField<>();
+    public ObservableField<String> shortCutName1 = new ObservableField<>();
+    public ObservableField<String> shortCutName2 = new ObservableField<>();
+    public ObservableField<String> shortCutName3 = new ObservableField<>();
+    public ControlBean controlBean = new ControlBean(this.context);
     public ObservableField<Boolean> isChangeModusStatusID8 = new ObservableField<>();
-    public ObservableField<Boolean> isEfficientModus = new ObservableField<>();
     public ObservableField<Boolean> isPersonalModus = new ObservableField<>();
     public ObservableField<Boolean> isSportModus = new ObservableField<>();
-    public View.OnFocusChangeListener kswId7SetCardFocusChangeListener = new View.OnFocusChangeListener() {
-        public void onFocusChange(View v, boolean hasFocus) {
-            Log.i(LauncherViewModel.TAG, "onFocusChange: phoneViewFocusChangeListener hasFocus：" + hasFocus);
-            if (hasFocus && MainActivity.mainActivity != null) {
-                MainActivity.mainActivity.setCurrentItem(0);
-            }
-        }
-    };
-    public View.OnFocusChangeListener kswId7VideoCardFocusChangeListener = new View.OnFocusChangeListener() {
-        public void onFocusChange(View v, boolean hasFocus) {
-            Log.i(LauncherViewModel.TAG, "onFocusChange: kswId7VideoCardFocusChangeListener hasFocus：" + hasFocus);
-            if (hasFocus && MainActivity.mainActivity != null) {
-                MainActivity.mainActivity.setCurrentItem(1);
-            }
-        }
-    };
-    public View lastViewFocused;
-    public final CompoundButton.OnCheckedChangeListener leftOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+    public ObservableField<Boolean> isEfficientModus = new ObservableField<>();
+    public ObservableField<Integer> id8TextColor = new ObservableField<>();
+    public ObservableField<BitmapDrawable> id8ModusDrawable = new ObservableField<>();
+    public final CompoundButton.OnCheckedChangeListener leftOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.4
+        @Override // android.widget.CompoundButton.OnCheckedChangeListener
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
             LauncherViewModel.this.controlBean.leftBrightnessAdjus.set(isChecked);
@@ -161,10 +174,27 @@ public class LauncherViewModel extends BaseViewModel {
             }
         }
     };
-    public PopupWindow mAppsPopupWindow;
-    public final ObservableField<String> month = new ObservableField<>();
-    private boolean musicId;
-    public View.OnFocusChangeListener musicViewFocusChangeListener = new View.OnFocusChangeListener() {
+    public final CompoundButton.OnCheckedChangeListener rightOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.5
+        @Override // android.widget.CompoundButton.OnCheckedChangeListener
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
+            LauncherViewModel.this.controlBean.rightBrightnessAdjus.set(isChecked);
+            if (isChecked) {
+                Ntg6ControlView.getInstance().showBenzBrightnessControl(buttonView.getContext(), LauncherViewModel.this.benzData, LauncherViewModel.this);
+            }
+        }
+    };
+    public List<View> alsID7UIViewList = new ArrayList();
+    public View.OnFocusChangeListener carViewFocusChangeListener = new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.8
+        @Override // android.view.View.OnFocusChangeListener
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus && MainActivity.mainActivity != null) {
+                MainActivity.mainActivity.setCurrentItem(2);
+            }
+        }
+    };
+    public View.OnFocusChangeListener musicViewFocusChangeListener = new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.9
+        @Override // android.view.View.OnFocusChangeListener
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
                 Log.i(LauncherViewModel.TAG, "onFocusChange: musicViewFocusChangeListener");
@@ -174,66 +204,19 @@ public class LauncherViewModel extends BaseViewModel {
             }
         }
     };
-    public NaviInfo naviInfo = new NaviInfo();
-    private OnID8SkinChangeListener onID8SkinChangeListener;
-    protected BroadcastReceiver otherReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            if (NaviInfo.AUTONAVI_STANDARD_BROADCAST_SEND.equalsIgnoreCase(intent.getAction()) && LauncherViewModel.this.naviInfo.isGuideEnable()) {
-                LauncherViewModel.this.refreshNaviInfo(intent);
-            }
-        }
-    };
-    private BitmapDrawable personalBitmapDrawable;
-    public final ObservableInt phoneConState = new ObservableInt();
-    public View.OnFocusChangeListener phoneViewFocusChangeListener = new View.OnFocusChangeListener() {
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus && MainActivity.mainActivity != null) {
-                MainActivity.mainActivity.setCurrentItem(0);
-                Log.i(LauncherViewModel.TAG, "onFocusChange: phoneViewFocusChangeListener");
-            }
-        }
-    };
-    public View.OnFocusChangeListener phoneViewFocusChangeListenerV2 = new View.OnFocusChangeListener() {
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus && MainActivity.mainActivity != null) {
-                MainActivity.mainActivity.setCurrentItem(1);
-                Log.i(LauncherViewModel.TAG, "onFocusChange: phoneViewFocusChangeListener");
-            }
-        }
-    };
-    public final CompoundButton.OnCheckedChangeListener rightOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
-            LauncherViewModel.this.controlBean.rightBrightnessAdjus.set(isChecked);
-            if (isChecked) {
-                Ntg6ControlView.getInstance().showBenzBrightnessControl(buttonView.getContext(), LauncherViewModel.this.benzData, LauncherViewModel.this);
-            }
-        }
-    };
-    public ObservableField<Drawable> shortCutIcon1 = new ObservableField<>();
-    public ObservableField<Drawable> shortCutIcon2 = new ObservableField<>();
-    public ObservableField<Drawable> shortCutIcon3 = new ObservableField<>();
-    public ObservableField<String> shortCutName1 = new ObservableField<>();
-    public ObservableField<String> shortCutName2 = new ObservableField<>();
-    public ObservableField<String> shortCutName3 = new ObservableField<>();
-    private BitmapDrawable sportBitmapDrawable;
-    private BroadcastReceiver timeReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            LauncherViewModel.this.setMonthDay(new Date());
-        }
-    };
-    private boolean videoId;
-    public View.OnFocusChangeListener videoViewFocusChangeListener = new View.OnFocusChangeListener() {
+    public View.OnFocusChangeListener weatherViewFocusChangeListener = new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.10
+        @Override // android.view.View.OnFocusChangeListener
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
-                Log.i(LauncherViewModel.TAG, "onFocusChange: videoViewFocusChangeListener");
+                Log.i(LauncherViewModel.TAG, "onFocusChange: musicViewFocusChangeListener");
                 if (MainActivity.mainActivity != null) {
-                    MainActivity.mainActivity.setCurrentItem(1);
+                    MainActivity.mainActivity.setCurrentItem(0);
                 }
             }
         }
     };
-    public View.OnFocusChangeListener videoViewFocusChangeListenerv2 = new View.OnFocusChangeListener() {
+    public View.OnFocusChangeListener videoViewFocusChangeListenerv2 = new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.11
+        @Override // android.view.View.OnFocusChangeListener
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
                 Log.i(LauncherViewModel.TAG, "onFocusChange: videoViewFocusChangeListener");
@@ -243,14 +226,83 @@ public class LauncherViewModel extends BaseViewModel {
             }
         }
     };
-    private Disposable weatherSubscribe;
-    public View.OnFocusChangeListener weatherViewFocusChangeListener = new View.OnFocusChangeListener() {
+    public View.OnFocusChangeListener videoViewFocusChangeListener = new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.12
+        @Override // android.view.View.OnFocusChangeListener
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
-                Log.i(LauncherViewModel.TAG, "onFocusChange: musicViewFocusChangeListener");
+                Log.i(LauncherViewModel.TAG, "onFocusChange: videoViewFocusChangeListener");
                 if (MainActivity.mainActivity != null) {
-                    MainActivity.mainActivity.setCurrentItem(0);
+                    MainActivity.mainActivity.setCurrentItem(1);
                 }
+            }
+        }
+    };
+    public View.OnFocusChangeListener phoneViewFocusChangeListener = new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.13
+        @Override // android.view.View.OnFocusChangeListener
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus && MainActivity.mainActivity != null) {
+                MainActivity.mainActivity.setCurrentItem(0);
+                Log.i(LauncherViewModel.TAG, "onFocusChange: phoneViewFocusChangeListener");
+            }
+        }
+    };
+    public View.OnFocusChangeListener phoneViewFocusChangeListenerV2 = new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.14
+        @Override // android.view.View.OnFocusChangeListener
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus && MainActivity.mainActivity != null) {
+                MainActivity.mainActivity.setCurrentItem(1);
+                Log.i(LauncherViewModel.TAG, "onFocusChange: phoneViewFocusChangeListener");
+            }
+        }
+    };
+    private BroadcastReceiver timeReceiver = new BroadcastReceiver() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.18
+        @Override // android.content.BroadcastReceiver
+        public void onReceive(Context context, Intent intent) {
+            Date date = new Date();
+            LauncherViewModel.this.setMonthDay(date);
+        }
+    };
+    protected BroadcastReceiver bubbleUnreadReceiver = new BroadcastReceiver() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.19
+        @Override // android.content.BroadcastReceiver
+        public void onReceive(Context context, Intent intent) {
+            String packageName = intent.getStringExtra("packageName");
+            Integer unreadCount = Integer.valueOf(intent.getIntExtra("unreadCount", 0));
+            boolean containsKey = LauncherViewModel.mBubbleUnreadCountMap.containsKey(packageName);
+            LauncherViewModel.mBubbleUnreadCountMap.put(packageName, unreadCount);
+            Log.i(LauncherViewModel.TAG, "onReceive: packageName : " + packageName + " unreadCount : " + unreadCount + " containsKey : " + containsKey + ", mBubbleUnreadCountMap.size" + LauncherViewModel.mBubbleUnreadCountMap.size());
+        }
+    };
+    protected BroadcastReceiver otherReceiver = new BroadcastReceiver() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.20
+        @Override // android.content.BroadcastReceiver
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (NaviInfo.AUTONAVI_STANDARD_BROADCAST_SEND.equalsIgnoreCase(action)) {
+                if (LauncherViewModel.this.naviInfo.isGuideEnable()) {
+                    LauncherViewModel.this.refreshNaviInfo(intent);
+                }
+            } else if (TextUtils.equals(action, "android.intent.action.PACKAGE_REMOVED")) {
+                String packageName = intent.getDataString();
+                Log.i(LauncherViewModel.TAG, "onReceive: otherReceiver ACTION_PACKAGE_REMOVED packageName " + packageName);
+                BenzUtils.removeByPkg(packageName.split(":")[1]);
+                BenzUtils.saveSystemCardSeq();
+            }
+        }
+    };
+    public View.OnFocusChangeListener kswId7SetCardFocusChangeListener = new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.21
+        @Override // android.view.View.OnFocusChangeListener
+        public void onFocusChange(View v, boolean hasFocus) {
+            Log.i(LauncherViewModel.TAG, "onFocusChange: phoneViewFocusChangeListener hasFocus\uff1a" + hasFocus);
+            if (hasFocus && MainActivity.mainActivity != null) {
+                MainActivity.mainActivity.setCurrentItem(0);
+            }
+        }
+    };
+    public View.OnFocusChangeListener kswId7VideoCardFocusChangeListener = new View.OnFocusChangeListener() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.22
+        @Override // android.view.View.OnFocusChangeListener
+        public void onFocusChange(View v, boolean hasFocus) {
+            Log.i(LauncherViewModel.TAG, "onFocusChange: kswId7VideoCardFocusChangeListener hasFocus\uff1a" + hasFocus);
+            if (hasFocus && MainActivity.mainActivity != null) {
+                MainActivity.mainActivity.setCurrentItem(1);
             }
         }
     };
@@ -266,15 +318,15 @@ public class LauncherViewModel extends BaseViewModel {
     public void initThirdApps() {
         String clsMusic = Settings.System.getString(this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_CLS);
         String clsVideo = Settings.System.getString(this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_CLS);
-        if (TextUtils.isEmpty(clsMusic) || KeyConfig.CLS_LOCAL_MUSIC.equals(clsMusic)) {
-            bThirdMusic.set(false);
-        } else {
+        if (!TextUtils.isEmpty(clsMusic) && !KeyConfig.CLS_LOCAL_MUSIC.equals(clsMusic)) {
             bThirdMusic.set(true);
-        }
-        if (TextUtils.isEmpty(clsVideo) || KeyConfig.CLS_LOCAL_VIDEO.equals(clsVideo)) {
-            bThirdVideo.set(false);
         } else {
+            bThirdMusic.set(false);
+        }
+        if (!TextUtils.isEmpty(clsVideo) && !KeyConfig.CLS_LOCAL_VIDEO.equals(clsVideo)) {
             bThirdVideo.set(true);
+        } else {
+            bThirdVideo.set(false);
         }
     }
 
@@ -282,12 +334,13 @@ public class LauncherViewModel extends BaseViewModel {
         Log.i(TAG, "LauncherViewModel:");
     }
 
+    @Override // com.wits.ksw.launcher.base.BaseViewModel
     public void resumeViewModel() {
         Log.d(TAG, "resumeViewModel");
         refreshLastViewFocused();
         refreshLexus();
         if (UiThemeUtils.isALS_ID7_UI(this.context)) {
-            refreshMusicIconOrName();
+            refreshMusicIconOrName(ALS_KEY_SHORTCUT_PKG_1, ALS_KEY_SHORTCUT_CLS_1);
         }
     }
 
@@ -295,44 +348,35 @@ public class LauncherViewModel extends BaseViewModel {
         try {
             this.benzData = McuStatus.BenzData.getStatusFromJson(PowerManagerApp.getStatusString("benzData"));
             this.controlBean.chassis.set(this.benzData.highChassisSwitch);
-            boolean z = false;
             this.controlBean.sport.set(this.benzData.airMaticStatus == 1);
             this.controlBean.rdarAssistance.set(this.benzData.auxiliaryRadar);
             this.controlBean.passairbar.set(this.benzData.airBagSystem);
-            StringBuilder append = new StringBuilder().append("initData: 底盘开关：").append(this.benzData.highChassisSwitch).append(",运动模式：");
-            if (this.benzData.airMaticStatus == 1) {
-                z = true;
-            }
-            Log.i("控制面板", append.append(z).append(",雷达辅助开关：").append(this.benzData.auxiliaryRadar).append(" light1:").append(this.benzData.light1).append(" light2:").append(this.benzData.light2).append(" 安全气囊 ").append(this.benzData.airBagSystem).toString());
+            Log.i("\u63a7\u5236\u9762\u677f", "initData: \u5e95\u76d8\u5f00\u5173\uff1a" + this.benzData.highChassisSwitch + ",\u8fd0\u52a8\u6a21\u5f0f\uff1a" + (this.benzData.airMaticStatus == 1) + ",\u96f7\u8fbe\u8f85\u52a9\u5f00\u5173\uff1a" + this.benzData.auxiliaryRadar + " light1:" + this.benzData.light1 + " light2:" + this.benzData.light2 + " \u5b89\u5168\u6c14\u56ca " + this.benzData.airBagSystem);
         } catch (Exception e) {
             this.benzData = new McuStatus.BenzData();
         }
     }
 
     public void registerIContentObserver() {
-        PowerManagerApp.registerIContentObserver("benzData", new IContentObserver.Stub() {
+        PowerManagerApp.registerIContentObserver("benzData", new IContentObserver.Stub() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.1
+            @Override // com.wits.pms.IContentObserver
             public void onChange() throws RemoteException {
                 McuStatus.BenzData benzData = McuStatus.BenzData.getStatusFromJson(PowerManagerApp.getStatusString("benzData"));
                 Log.i(LauncherViewModel.TAG, "benzData onChange: " + benzData.getJson());
                 LauncherViewModel.this.controlBean.chassis.set(benzData.highChassisSwitch);
-                ObservableBoolean observableBoolean = LauncherViewModel.this.controlBean.sport;
-                boolean z = true;
-                if (benzData.airMaticStatus != 1) {
-                    z = false;
-                }
-                observableBoolean.set(z);
+                LauncherViewModel.this.controlBean.sport.set(benzData.airMaticStatus == 1);
                 LauncherViewModel.this.controlBean.rdarAssistance.set(benzData.auxiliaryRadar);
                 LauncherViewModel.this.controlBean.passairbar.set(benzData.airBagSystem);
             }
         });
     }
 
-    private void refreshMusicIconOrName() {
+    private void refreshMusicIconOrName(String keyshortcutpkg, String keyshortcutcls) {
         String pkg;
         String cls;
         try {
-            pkg = Settings.System.getString(this.context.getContentResolver(), KEY_SHORTCUT_PKG_1);
-            cls = Settings.System.getString(this.context.getContentResolver(), KEY_SHORTCUT_CLS_1);
+            pkg = Settings.System.getString(this.context.getContentResolver(), keyshortcutpkg);
+            cls = Settings.System.getString(this.context.getContentResolver(), keyshortcutcls);
         } catch (Exception e) {
             e.printStackTrace();
             pkg = null;
@@ -340,41 +384,33 @@ public class LauncherViewModel extends BaseViewModel {
         }
         if (cls != null && pkg != null) {
             if (cls.equals(CLS_CHROME)) {
-                this.shortCutIcon1.set(this.activity.getResources().getDrawable(R.drawable.id7_main_browser_n));
-                this.shortCutName1.set(this.context.getResources().getString(R.string.id7_browser));
+                this.shortCutIcon1.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_browser_n));
+                this.shortCutName1.set(this.context.getResources().getString(C0899R.string.id7_browser));
             } else if (cls.equals(KeyConfig.CLS_LOCAL_MUSIC)) {
-                this.shortCutIcon1.set(this.activity.getResources().getDrawable(R.drawable.als_sp_id7_main_left_icon_music));
-                this.shortCutName1.set(this.context.getResources().getString(R.string.ksw_id7_music));
+                this.shortCutIcon1.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.als_sp_id7_main_left_icon_music));
+                this.shortCutName1.set(this.context.getResources().getString(C0899R.string.ksw_id7_music));
             } else if (cls.equals(KeyConfig.CLS_LOCAL_VIDEO)) {
-                this.shortCutIcon1.set(this.activity.getResources().getDrawable(R.drawable.id7_main_video_n));
-                this.shortCutName1.set(this.context.getResources().getString(R.string.ksw_id7_hd_video));
+                this.shortCutIcon1.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_video_n));
+                this.shortCutName1.set(this.context.getResources().getString(C0899R.string.ksw_id7_hd_video));
             } else if (cls.equals("com.google.android.maps.MapsActivity")) {
-                this.shortCutIcon1.set(this.activity.getResources().getDrawable(R.drawable.als_sp_id7_main_left_icon_navi));
-                this.shortCutName1.set(this.activity.getResources().getString(R.string.ksw_id7_navi));
+                this.shortCutIcon1.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.als_sp_id7_main_left_icon_navi));
+                this.shortCutName1.set(this.activity.getResources().getString(C0899R.string.ksw_id7_navi));
             } else {
                 ResolveInfo info1 = AppInfoUtils.findAppByPkgAndCls(this.context, pkg, cls);
-                ObservableField<Drawable> observableField = this.shortCutIcon1;
-                Drawable loadIcon = info1.activityInfo.loadIcon(this.context.getPackageManager());
-                float f = 64.0f;
-                int dip2px = AppInfoUtils.dip2px(this.context, screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f);
-                Context context = this.context;
-                if (screenWidth.get().intValue() <= 1280) {
-                    f = 45.0f;
-                }
-                observableField.set(AppInfoUtils.zoomDrawable(loadIcon, dip2px, AppInfoUtils.dip2px(context, f)));
+                this.shortCutIcon1.set(AppInfoUtils.zoomDrawable(info1.activityInfo.loadIcon(this.context.getPackageManager()), AppInfoUtils.dip2px(this.context, screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f), AppInfoUtils.dip2px(this.context, screenWidth.get().intValue() <= 1280 ? 45.0f : 64.0f)));
                 this.shortCutName1.set((String) info1.activityInfo.loadLabel(this.context.getPackageManager()));
             }
         }
     }
 
     private void refreshLexus() {
-        if (!UiThemeUtils.isLEXUS_UI(this.context)) {
-            return;
-        }
-        if (Settings.System.getInt(this.context.getContentResolver(), KeyConfig.AC_CONTROL, 0) == 1) {
-            this.acControl.set(true);
-        } else {
-            this.acControl.set(false);
+        if (UiThemeUtils.isLEXUS_UI(this.context)) {
+            int openAcControl = Settings.System.getInt(this.context.getContentResolver(), KeyConfig.AC_CONTROL, 0);
+            if (openAcControl == 1) {
+                this.acControl.set(true);
+            } else {
+                this.acControl.set(false);
+            }
         }
     }
 
@@ -386,6 +422,7 @@ public class LauncherViewModel extends BaseViewModel {
         setMonthDay(new Date());
         registerTimeReceiver();
         registerOtherReceiver();
+        registerBubbleUnreadReceiver();
         registerBtContentObserver();
         MediaImpl.getInstance().initData();
         McuImpl.getInstance().init();
@@ -394,14 +431,23 @@ public class LauncherViewModel extends BaseViewModel {
             registerIContentObserver();
         }
         initThirdApps();
-        width = this.context.getResources().getDisplayMetrics().widthPixels;
+        DisplayMetrics dm = this.context.getResources().getDisplayMetrics();
+        width = dm.widthPixels;
     }
 
-    /* access modifiers changed from: private */
+    private void registerBubbleUnreadReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(UNREAD_BROADCAST_ACTION);
+        this.context.registerReceiver(this.bubbleUnreadReceiver, intentFilter);
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
     public void refreshWeather() {
         String str = TAG;
         Log.i(str, "TXZWeather loading: ");
-        Log.i(str, "TXZWeather language: " + Locale.getDefault().getLanguage());
+        Locale sysLanguage = Locale.getDefault();
+        String language = sysLanguage.getLanguage();
+        Log.i(str, "TXZWeather language: " + language);
         try {
             sendWeatherRequest();
         } catch (Exception e) {
@@ -410,7 +456,8 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     private void sendWeatherRequest() {
-        WeatherQueryManager.getInstance().sendWeatherRequest(this.context, new WeatherQueryManager.WeatherCallback() {
+        WeatherQueryManager.getInstance().sendWeatherRequest(this.context, new WeatherQueryManager.WeatherCallback() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.2
+            @Override // com.txznet.weatherquery.WeatherQueryManager.WeatherCallback
             public void onSuccess(TXZWeather result, Bundle texts) {
                 Log.i(LauncherViewModel.TAG, "TXZWeather onSuccess: " + result.toString());
                 String[] details = null;
@@ -424,14 +471,16 @@ public class LauncherViewModel extends BaseViewModel {
                 }
             }
 
+            @Override // com.txznet.weatherquery.WeatherQueryManager.WeatherCallback
             public void onFailed(int errorCode) {
                 Log.i(LauncherViewModel.TAG, "TXZWeather onFailed: " + errorCode);
-                if (errorCode != 6) {
-                    try {
-                        LauncherViewModel.weatherInfo.loadFailed(errorCode);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                if (errorCode == 6) {
+                    return;
+                }
+                try {
+                    LauncherViewModel.weatherInfo.loadFailed(errorCode);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -439,7 +488,8 @@ public class LauncherViewModel extends BaseViewModel {
 
     public void startWeatherLooper() {
         weatherInfo.loading();
-        this.weatherSubscribe = Observable.interval(0, 30, TimeUnit.MINUTES).subscribe(new Consumer<Long>() {
+        this.weatherSubscribe = Observable.interval(0L, 30L, TimeUnit.MINUTES).subscribe(new Consumer<Long>() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.3
+            @Override // io.reactivex.functions.Consumer
             public void accept(Long aLong) throws Exception {
                 LauncherViewModel.this.refreshWeather();
             }
@@ -453,7 +503,8 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     public void addWeatherSettingListener() {
-        WeatherQueryManager.getInstance().setUserSettingListener(this.activity, new WeatherQueryManager.UserSettingListener() {
+        WeatherQueryManager.getInstance().setUserSettingListener(this.activity, new WeatherQueryManager.UserSettingListener() { // from class: com.wits.ksw.launcher.model.-$$Lambda$LauncherViewModel$T6N_hhNQwPg7GJ7Iee6VVq-xKdg
+            @Override // com.txznet.weatherquery.WeatherQueryManager.UserSettingListener
             public final void noticeChange() {
                 LauncherViewModel.this.refreshWeather();
             }
@@ -487,32 +538,37 @@ public class LauncherViewModel extends BaseViewModel {
         } else if (KswUtils.getDvrType() == 2) {
             String usbPkg = KswUtils.getUsbDvrPkg();
             Log.i(TAG, "openDvr: usbPkg:" + usbPkg);
-            if (!TextUtils.isEmpty(usbPkg)) {
-                if (KeyConfig.CLS_LOCAL_MUSIC.equals(usbPkg)) {
-                    openApp(new Intent("com.wits.media.MUSIC"));
-                } else if (KeyConfig.CLS_LOCAL_VIDEO.equals(usbPkg)) {
-                    openApp(new Intent("com.wits.media.VIDEO"));
-                } else {
-                    openApp(this.context.getPackageManager().getLaunchIntentForPackage(usbPkg));
-                }
+            if (TextUtils.isEmpty(usbPkg)) {
+                return;
+            }
+            if (KeyConfig.CLS_LOCAL_MUSIC.equals(usbPkg)) {
+                openApp(new Intent("com.wits.media.MUSIC"));
+            } else if (KeyConfig.CLS_LOCAL_VIDEO.equals(usbPkg)) {
+                openApp(new Intent("com.wits.media.VIDEO"));
+            } else {
+                openApp(this.context.getPackageManager().getLaunchIntentForPackage(usbPkg));
             }
         }
     }
 
     public void openShouJiHuLian(View view) {
         addLastViewFocused(view);
-        if (!Build.DISPLAY.contains("8937")) {
+        boolean flag = Build.DISPLAY.contains("8937");
+        if (!flag) {
             openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
-        } else if (Settings.System.getInt(this.context.getContentResolver(), "speed_play_switch", 1) == 2) {
-            openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.suding.speedplay"));
+            return;
+        }
+        int speed_play_switch = Settings.System.getInt(this.context.getContentResolver(), "speed_play_switch", 1);
+        if (speed_play_switch != 2) {
+            openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
         } else {
-            openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+            openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.suding.speedplay"));
         }
     }
 
     public void openEq(View view) {
         addLastViewFocused(view);
-        openApp(new ComponentName("com.wits.csp.eq", "com.wits.csp.eq.view.MainActivity"));
+        openApp(new ComponentName(BenzUtils.EQ_PKG, "com.wits.csp.eq.view.MainActivity"));
     }
 
     public void openBrowser(View view) {
@@ -529,8 +585,7 @@ public class LauncherViewModel extends BaseViewModel {
             } else {
                 Ntg6ControlView.getInstance().showBenzControl(this.context, this, view);
             }
-        } else if (benzpane != 2) {
-        } else {
+        } else if (benzpane == 2) {
             if (Ntg630ControlView.getInstance().isShowing()) {
                 Ntg630ControlView.getInstance().dismiss();
             } else {
@@ -560,35 +615,35 @@ public class LauncherViewModel extends BaseViewModel {
     public void onAuxiliaryRadarClick(View view) {
         this.benzData.key3 = 0;
         this.benzData.pressButton(3);
-        Log.i(TAG, "onCheckedChanged_AUX: 辅助雷达开关:" + this.benzData.getJson());
+        Log.i(TAG, "onCheckedChanged_AUX: \u8f85\u52a9\u96f7\u8fbe\u5f00\u5173:" + this.benzData.getJson());
     }
 
     public void onSportClick(View view) {
         this.benzData.key3 = 0;
         this.benzData.pressButton(2);
-        Log.i(TAG, "onCheckedChanged_AIR: 辅助雷达开关:" + this.benzData.getJson());
+        Log.i(TAG, "onCheckedChanged_AIR: \u8f85\u52a9\u96f7\u8fbe\u5f00\u5173:" + this.benzData.getJson());
     }
 
     public void onHighChasssisClick(View view) {
         this.benzData.key3 = 0;
         this.benzData.pressButton(1);
-        Log.i(TAG, "onCheckedChanged: 底盘升降开关:" + this.benzData.getJson());
+        Log.i(TAG, "onCheckedChanged: \u5e95\u76d8\u5347\u964d\u5f00\u5173:" + this.benzData.getJson());
     }
 
     public void showBrightnessDialog(View view) {
         int benzpane = KswUtils.getBenzpaneVersion();
         if (benzpane == 1) {
-            if (view.getId() == R.id.brightnessBtn_left) {
+            if (view.getId() == C0899R.C0901id.brightnessBtn_left) {
                 Ntg6ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 1);
             }
-            if (view.getId() == R.id.brightnessBtn_right) {
+            if (view.getId() == C0899R.C0901id.brightnessBtn_right) {
                 Ntg6ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 2);
             }
         } else if (benzpane == 2) {
-            if (view.getId() == R.id.brightnessBtn_left) {
+            if (view.getId() == C0899R.C0901id.brightnessBtn_left) {
                 Ntg630ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 1);
             }
-            if (view.getId() == R.id.brightnessBtn_right) {
+            if (view.getId() == C0899R.C0901id.brightnessBtn_right) {
                 Ntg630ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 2);
             }
         }
@@ -630,7 +685,8 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     public void openLexusCar(View view) {
-        if (Settings.System.getInt(this.activity.getContentResolver(), KeyConfig.OEM_FM, 0) == 0) {
+        int toggle = Settings.System.getInt(this.activity.getContentResolver(), KeyConfig.OEM_FM, 0);
+        if (toggle == 0) {
             onSendCommand(1, WitsCommand.SystemCommand.CAR_MODE);
         } else {
             openApp(new ComponentName(BuildConfig.APPLICATION_ID, "com.wits.ksw.launcher.view.lexus.OEMFMActivity"));
@@ -639,6 +695,9 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     public void openSettings(View view) {
+        if (this.activity instanceof BmwId8PempSettingsMainActivity) {
+            return;
+        }
         openApp(new ComponentName(BuildConfig.APPLICATION_ID, "com.wits.ksw.settings.SettingsActivity"));
         addLastViewFocused(view);
     }
@@ -668,9 +727,9 @@ public class LauncherViewModel extends BaseViewModel {
         this.onID8SkinChangeListener = listener;
         String skinName = ID8LauncherConstants.loadCurrentSkin();
         Resources resources = this.context.getResources();
-        this.personalBitmapDrawable = new BitmapDrawable(resources, BitmapFactory.decodeResource(resources, R.drawable.id8_main_icon_modus_personal));
-        this.sportBitmapDrawable = new BitmapDrawable(resources, BitmapFactory.decodeResource(resources, R.drawable.id8_main_icon_modus_sport));
-        this.efficientBitmapDrawable = new BitmapDrawable(resources, BitmapFactory.decodeResource(resources, R.drawable.id8_main_icon_modus_efficient));
+        this.personalBitmapDrawable = new BitmapDrawable(resources, BitmapFactory.decodeResource(resources, C0899R.C0900drawable.id8_main_icon_modus_personal));
+        this.sportBitmapDrawable = new BitmapDrawable(resources, BitmapFactory.decodeResource(resources, C0899R.C0900drawable.id8_main_icon_modus_sport));
+        this.efficientBitmapDrawable = new BitmapDrawable(resources, BitmapFactory.decodeResource(resources, C0899R.C0900drawable.id8_main_icon_modus_efficient));
         if (skinName.equals(ID8LauncherConstants.ID8_SKIN_PERSONAL)) {
             displayPersonalModus();
         } else if (skinName.equals(ID8LauncherConstants.ID8_SKIN_SPORT)) {
@@ -685,9 +744,9 @@ public class LauncherViewModel extends BaseViewModel {
         this.id8ModusDrawable.set(this.personalBitmapDrawable);
         this.isSportModus.set(false);
         this.isEfficientModus.set(false);
-        this.onID8SkinChangeListener.onSkinChangeLeftBar(R.drawable.bmw_id8_main_left_btn_yellow);
+        this.onID8SkinChangeListener.onSkinChangeLeftBar(C0899R.C0900drawable.bmw_id8_main_left_btn_yellow);
         this.onID8SkinChangeListener.onSkinChangeCardBGSelector(ID8LauncherConstants.ID8_SKIN_PERSONAL);
-        this.onID8SkinChangeListener.onSkinChangeMusicAlbum(R.drawable.id8_main_icon_music_album_yellow);
+        this.onID8SkinChangeListener.onSkinChangeMusicAlbum(C0899R.C0900drawable.id8_main_icon_music_album_yellow);
     }
 
     private void displaySportModus() {
@@ -695,9 +754,9 @@ public class LauncherViewModel extends BaseViewModel {
         this.id8ModusDrawable.set(this.sportBitmapDrawable);
         this.isPersonalModus.set(false);
         this.isEfficientModus.set(false);
-        this.onID8SkinChangeListener.onSkinChangeLeftBar(R.drawable.bmw_id8_main_left_btn_red);
+        this.onID8SkinChangeListener.onSkinChangeLeftBar(C0899R.C0900drawable.bmw_id8_main_left_btn_red);
         this.onID8SkinChangeListener.onSkinChangeCardBGSelector(ID8LauncherConstants.ID8_SKIN_SPORT);
-        this.onID8SkinChangeListener.onSkinChangeMusicAlbum(R.drawable.id8_main_icon_music_album_red);
+        this.onID8SkinChangeListener.onSkinChangeMusicAlbum(C0899R.C0900drawable.id8_main_icon_music_album_red);
     }
 
     private void displayEfficientModus() {
@@ -705,30 +764,44 @@ public class LauncherViewModel extends BaseViewModel {
         this.id8ModusDrawable.set(this.efficientBitmapDrawable);
         this.isPersonalModus.set(false);
         this.isSportModus.set(false);
-        this.onID8SkinChangeListener.onSkinChangeLeftBar(R.drawable.bmw_id8_main_left_btn_blue);
+        this.onID8SkinChangeListener.onSkinChangeLeftBar(C0899R.C0900drawable.bmw_id8_main_left_btn_blue);
         this.onID8SkinChangeListener.onSkinChangeCardBGSelector(ID8LauncherConstants.ID8_SKIN_EFFICIENT);
-        this.onID8SkinChangeListener.onSkinChangeMusicAlbum(R.drawable.id8_main_icon_music_album_blue);
+        this.onID8SkinChangeListener.onSkinChangeMusicAlbum(C0899R.C0900drawable.id8_main_icon_music_album_blue);
     }
 
     public void enterChangeModus(View view) {
         Log.e(TAG, "enterChangeModus");
         Intent intent = new Intent(this.activity, ID8ModusActivity.class);
         this.isChangeModusStatusID8.set(true);
-        this.id8TextColor.set(Integer.valueOf(SkinCompatResources.getColor(this.context, R.color.id8_main_style_color)));
+        this.id8TextColor.set(Integer.valueOf(SkinCompatResources.getColor(this.context, C0899R.color.id8_main_style_color)));
         addLastViewFocused(view);
         this.activity.startActivity(intent);
     }
 
     public void enterGsChangeModus(View view) {
+        if (this.activity instanceof ID8GsModusActivity) {
+            return;
+        }
         Intent intent = new Intent(this.activity, ID8GsModusActivity.class);
-        this.id8TextColor.set(Integer.valueOf(SkinCompatResources.getColor(this.context, R.color.id8_main_style_color)));
+        this.id8TextColor.set(Integer.valueOf(SkinCompatResources.getColor(this.context, C0899R.color.id8_main_style_color)));
+        addLastViewFocused(view);
+        this.activity.startActivity(intent);
+    }
+
+    public void enterPempChangeModus(View view) {
+        if (this.activity instanceof ID8PempModusActivity) {
+            return;
+        }
+        Intent intent = new Intent(this.activity, ID8PempModusActivity.class);
+        this.id8TextColor.set(Integer.valueOf(SkinCompatResources.getColor(this.context, C0899R.color.id8_main_style_color)));
         addLastViewFocused(view);
         this.activity.startActivity(intent);
     }
 
     private void enterID8MainActivity() {
-        if (UiThemeUtils.isUI_GS_ID8(this.context) || UiThemeUtils.isBMW_ID8_UI(this.context)) {
-            this.activity.startActivity(new Intent(this.activity, MainActivity.class));
+        if (UiThemeUtils.isUI_GS_ID8(this.context) || UiThemeUtils.isBMW_ID8_UI(this.context) || UiThemeUtils.isUI_PEMP_ID8(this.context)) {
+            Intent intent = new Intent(this.activity, MainActivity.class);
+            this.activity.startActivity(intent);
         }
     }
 
@@ -737,7 +810,8 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     public void changeModusToPersonal(View view) {
-        if (ID8LauncherConstants.checkModusHasChanged(ID8LauncherConstants.ID8_SKIN_PERSONAL)) {
+        boolean hasChanged = ID8LauncherConstants.checkModusHasChanged(ID8LauncherConstants.ID8_SKIN_PERSONAL);
+        if (hasChanged) {
             displayPersonalModus();
             reloadSkinResources();
         }
@@ -746,7 +820,8 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     public void changeModusToSport(View view) {
-        if (ID8LauncherConstants.checkModusHasChanged(ID8LauncherConstants.ID8_SKIN_SPORT)) {
+        boolean hasChanged = ID8LauncherConstants.checkModusHasChanged(ID8LauncherConstants.ID8_SKIN_SPORT);
+        if (hasChanged) {
             displaySportModus();
             reloadSkinResources();
         }
@@ -755,7 +830,8 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     public void changeModusToEfficient(View view) {
-        if (ID8LauncherConstants.checkModusHasChanged(ID8LauncherConstants.ID8_SKIN_EFFICIENT)) {
+        boolean hasChanged = ID8LauncherConstants.checkModusHasChanged(ID8LauncherConstants.ID8_SKIN_EFFICIENT);
+        if (hasChanged) {
             displayEfficientModus();
             reloadSkinResources();
         }
@@ -772,11 +848,11 @@ public class LauncherViewModel extends BaseViewModel {
             String pkg = Settings.System.getString(this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_PKG);
             String cls = Settings.System.getString(this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_CLS);
             Log.i(TAG, "openMusic: pkg=" + pkg);
-            if (TextUtils.isEmpty(pkg) || TextUtils.isEmpty(cls) || KeyConfig.CLS_LOCAL_MUSIC.equals(cls)) {
-                openApp(new Intent("com.wits.media.MUSIC"));
-            } else if (KeyConfig.CLS_LOCAL_VIDEO.equals(cls)) {
-                openApp(new Intent("com.wits.media.VIDEO"));
-            } else {
+            if (!TextUtils.isEmpty(pkg) && !TextUtils.isEmpty(cls) && !KeyConfig.CLS_LOCAL_MUSIC.equals(cls)) {
+                if (KeyConfig.CLS_LOCAL_VIDEO.equals(cls)) {
+                    openApp(new Intent("com.wits.media.VIDEO"));
+                    return;
+                }
                 Intent intent = this.context.getPackageManager().getLaunchIntentForPackage(pkg);
                 if (intent == null) {
                     openApp(new Intent("com.wits.media.MUSIC"));
@@ -785,31 +861,34 @@ public class LauncherViewModel extends BaseViewModel {
                 openApp(intent);
                 try {
                     WitsCommand.sendCommand(1, WitsCommand.SystemCommand.OPEN_MODE, "13");
+                    return;
                 } catch (Exception e) {
                     e.printStackTrace();
+                    return;
                 }
             }
-        } else {
-            String pkg2 = Settings.System.getString(this.contentResolver, "defPlayApp");
-            Log.i(TAG, "openMusic: pkg=" + pkg2);
-            if (TextUtils.isEmpty(pkg2)) {
-                pkg2 = "com.wits.media.MUSIC";
-            }
-            if (pkg2.equals("com.wits.ksw.media")) {
-                openApp(new Intent("com.wits.media.MUSIC"));
-                return;
-            }
-            Intent intent2 = this.context.getPackageManager().getLaunchIntentForPackage(pkg2);
-            if (intent2 == null) {
-                openApp(new Intent("com.wits.media.MUSIC"));
-                return;
-            }
-            openApp(intent2);
-            try {
-                WitsCommand.sendCommand(1, WitsCommand.SystemCommand.OPEN_MODE, "13");
-            } catch (Exception e2) {
-                e2.printStackTrace();
-            }
+            openApp(new Intent("com.wits.media.MUSIC"));
+            return;
+        }
+        String pkg2 = Settings.System.getString(this.contentResolver, "defPlayApp");
+        Log.i(TAG, "openMusic: pkg=" + pkg2);
+        if (TextUtils.isEmpty(pkg2)) {
+            pkg2 = "com.wits.media.MUSIC";
+        }
+        if (pkg2.equals("com.wits.ksw.music")) {
+            openApp(new Intent("com.wits.media.MUSIC"));
+            return;
+        }
+        Intent intent2 = this.context.getPackageManager().getLaunchIntentForPackage(pkg2);
+        if (intent2 == null) {
+            openApp(new Intent("com.wits.media.MUSIC"));
+            return;
+        }
+        openApp(intent2);
+        try {
+            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.OPEN_MODE, "13");
+        } catch (Exception e2) {
+            e2.printStackTrace();
         }
     }
 
@@ -822,13 +901,16 @@ public class LauncherViewModel extends BaseViewModel {
         String pkg = Settings.System.getString(this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_PKG);
         String cls = Settings.System.getString(this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_CLS);
         addLastViewFocused(view);
-        if (TextUtils.isEmpty(pkg) || TextUtils.isEmpty(cls) || KeyConfig.CLS_LOCAL_MUSIC.equals(cls)) {
-            openMusic(view);
-        } else if (KeyConfig.CLS_LOCAL_VIDEO.equals(cls)) {
-            openVideo(view);
-        } else {
-            openAppByCls(new ComponentName(pkg, cls));
+        if (!TextUtils.isEmpty(pkg) && !TextUtils.isEmpty(cls) && !KeyConfig.CLS_LOCAL_MUSIC.equals(cls)) {
+            if (KeyConfig.CLS_LOCAL_VIDEO.equals(cls)) {
+                openVideo(view);
+                return;
+            }
+            ComponentName componentName = new ComponentName(pkg, cls);
+            openAppByCls(componentName);
+            return;
         }
+        openMusic(view);
     }
 
     public static boolean isContinuityClick() {
@@ -842,34 +924,80 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     public boolean isMediaServiceLived() {
-        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList) ((ActivityManager) this.context.getSystemService("activity")).getRunningServices(100);
+        ActivityManager myManager = (ActivityManager) this.context.getSystemService("activity");
+        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList) myManager.getRunningServices(100);
         for (int i = 0; i < runningService.size(); i++) {
-            if (runningService.get(i).service.getClassName().toString().equals("com.wits.ksw.media.MyService")) {
+            if (runningService.get(i).service.getClassName().toString().equals("com.wits.ksw.music.KswMusicService")) {
                 return true;
             }
         }
         return false;
     }
 
-    public void handleMusicOperator(final View view, final int subCommand, final int keyCode) {
+    public boolean isVideoServiceLived() {
+        ActivityManager myManager = (ActivityManager) this.context.getSystemService("activity");
+        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList) myManager.getRunningServices(100);
+        for (int i = 0; i < runningService.size(); i++) {
+            if (runningService.get(i).service.getClassName().toString().equals("com.wits.ksw.video.service.VideoService")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void handleMusicOperator(final View view, int subCommand, final int keyCode) {
         Log.e(TAG, "id8GsOpenPauseMusic: " + getLastMode());
         if (!isMediaServiceLived()) {
             Intent serviceIntent = new Intent();
-            serviceIntent.setComponent(new ComponentName("com.wits.ksw.media", "com.wits.ksw.media.MyService"));
-            serviceIntent.putExtra("mediaType", subCommand == 130 ? 11 : 12);
+            serviceIntent.setComponent(new ComponentName("com.wits.ksw.music", "com.wits.ksw.music.KswMusicService"));
+            serviceIntent.putExtra("mediaType", 11);
             this.context.startService(serviceIntent);
-            new Handler().postDelayed(new Runnable() {
+            new Handler().postDelayed(new Runnable() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.6
+                @Override // java.lang.Runnable
                 public void run() {
-                    LauncherViewModel.this.handleRealMusicOperator(view, subCommand, keyCode);
+                    LauncherViewModel.this.handleRealMusicOperator(view, keyCode);
                 }
-            }, 100);
+            }, 100L);
             return;
         }
-        handleRealMusicOperator(view, subCommand, keyCode);
+        handleRealMusicOperator(view, keyCode);
     }
 
-    /* access modifiers changed from: private */
-    public void handleRealMusicOperator(View view, int subCommand, int keyCode) {
+    /* JADX INFO: Access modifiers changed from: private */
+    public void handleRealMusicOperator(View view, int keyCode) {
+        if (!isContinuityClick()) {
+            setLastMode(1);
+            if (85 == keyCode) {
+                onSendCommand(2, 1000);
+            } else if (88 == keyCode) {
+                onSendCommand(2, 1001);
+            } else if (87 == keyCode) {
+                onSendCommand(2, 1002);
+            }
+        }
+        View parent = (View) view.getParent();
+        WiewFocusUtils.setViewRequestFocus(parent.findViewById(C0899R.C0901id.iv_mask));
+    }
+
+    public void handleVideoOperator(View view, int subCommand) {
+        Log.e(TAG, "id8GsOpenPauseVideo: " + getLastMode());
+        if (!isVideoServiceLived()) {
+            openVideo(null);
+            return;
+        }
+        if (!isContinuityClick()) {
+            if (getLastMode() == 2) {
+                onSendCommand(2, subCommand);
+            } else {
+                setLastMode(2);
+                onSendCommand(2, subCommand);
+            }
+        }
+        View parent = (View) view.getParent();
+        WiewFocusUtils.setViewRequestFocus(parent.findViewById(C0899R.C0901id.iv_mask));
+    }
+
+    private void handleRealMusicOperator(View view, int subCommand, int keyCode) {
         if (!isContinuityClick()) {
             if (subCommand == 130) {
                 if (getLastMode() == 1) {
@@ -887,7 +1015,8 @@ public class LauncherViewModel extends BaseViewModel {
                 }
             }
         }
-        WiewFocusUtils.setViewRequestFocus(((View) view.getParent()).findViewById(R.id.iv_mask));
+        View parent = (View) view.getParent();
+        WiewFocusUtils.setViewRequestFocus(parent.findViewById(C0899R.C0901id.iv_mask));
     }
 
     public void id8GsOpenPauseMusic(View view) {
@@ -923,23 +1052,24 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     public void id8GsOpenPauseVideo(View view) {
-        handleMusicOperator(view, 131, 85);
+        handleVideoOperator(view, PointerIconCompat.TYPE_HELP);
     }
 
     public void id8GsPreVideo(View view) {
         Log.e(TAG, "id8GsPreVideo: " + getLastMode());
-        handleMusicOperator(view, 131, 88);
+        handleVideoOperator(view, PointerIconCompat.TYPE_WAIT);
     }
 
     public void id8GsNextVideo(View view) {
         Log.e(TAG, "id8GsNextVideo: " + getLastMode());
-        handleMusicOperator(view, 131, 87);
+        handleVideoOperator(view, 1005);
     }
 
     public void startVideo(View view) {
         Log.w(TAG, "startVideo: ");
         try {
-            if (PowerManagerApp.getManager().getStatusBoolean("video_stop")) {
+            boolean isVideoStop = PowerManagerApp.getManager().getStatusBoolean("video_stop");
+            if (isVideoStop) {
                 openApp(new Intent("com.wits.media.VIDEO"));
             } else {
                 KswUtils.sendKeyDownUpSync(126);
@@ -953,7 +1083,8 @@ public class LauncherViewModel extends BaseViewModel {
     public void pauseVideo(View view) {
         Log.w(TAG, "pauseVideo: ");
         try {
-            if (PowerManagerApp.getManager().getStatusBoolean("video_stop")) {
+            boolean isVideoStop = PowerManagerApp.getManager().getStatusBoolean("video_stop");
+            if (isVideoStop) {
                 openApp(new Intent("com.wits.media.VIDEO"));
             } else {
                 KswUtils.sendKeyDownUpSync(127);
@@ -969,13 +1100,16 @@ public class LauncherViewModel extends BaseViewModel {
         String cls = Settings.System.getString(this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_CLS);
         Log.d("openVideoMulti", "cls = " + cls);
         addLastViewFocused(view);
-        if (TextUtils.isEmpty(pkg) || TextUtils.isEmpty(cls) || KeyConfig.CLS_LOCAL_VIDEO.equals(cls)) {
-            openVideo(view);
-        } else if (KeyConfig.CLS_LOCAL_MUSIC.equals(cls)) {
-            openMusic(view);
-        } else {
-            openAppByCls(new ComponentName(pkg, cls));
+        if (!TextUtils.isEmpty(pkg) && !TextUtils.isEmpty(cls) && !KeyConfig.CLS_LOCAL_VIDEO.equals(cls)) {
+            if (KeyConfig.CLS_LOCAL_MUSIC.equals(cls)) {
+                openMusic(view);
+                return;
+            }
+            ComponentName componentName = new ComponentName(pkg, cls);
+            openAppByCls(componentName);
+            return;
         }
+        openVideo(view);
     }
 
     public void openAppByCls(ComponentName component) {
@@ -987,7 +1121,7 @@ public class LauncherViewModel extends BaseViewModel {
             this.activity.startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this.context, this.context.getString(R.string.uninstall), 0).show();
+            Toast.makeText(this.context, this.context.getString(C0899R.string.uninstall), 0).show();
         }
     }
 
@@ -998,7 +1132,7 @@ public class LauncherViewModel extends BaseViewModel {
 
     public void sendMcuCommand() {
         try {
-            Log.d(TAG, "sendMcuCommand: 发送MCU发指令");
+            Log.d(TAG, "sendMcuCommand: \u53d1\u9001MCU\u53d1\u6307\u4ee4");
             WitsCommand.sendCommand(1, WitsCommand.SystemCommand.OPEN_MODE, "13");
         } catch (Exception e) {
             e.printStackTrace();
@@ -1006,14 +1140,14 @@ public class LauncherViewModel extends BaseViewModel {
         }
     }
 
-    public void openShortCutApp(View view, int index) {
+    public void openShortCutApp(View view, int index, String keyshortpkg, String keyshortcls) {
         Log.d("openShortCutApp", index + "   ");
-        String pkg1 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), KEY_SHORTCUT_PKG_1);
-        String cls1 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), KEY_SHORTCUT_CLS_1);
-        String pkg2 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), KEY_SHORTCUT_PKG_2);
-        String cls2 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), KEY_SHORTCUT_CLS_2);
-        String pkg3 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), KEY_SHORTCUT_PKG_3);
-        String cls3 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), KEY_SHORTCUT_CLS_3);
+        String pkg1 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), keyshortpkg);
+        String cls1 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), keyshortcls);
+        String pkg2 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), keyshortpkg);
+        String cls2 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), keyshortcls);
+        String pkg3 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), keyshortpkg);
+        String cls3 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), keyshortcls);
         switch (index) {
             case 1:
                 if (!TextUtils.isEmpty(pkg1) && !TextUtils.isEmpty(cls1)) {
@@ -1025,7 +1159,8 @@ public class LauncherViewModel extends BaseViewModel {
                         openVideo(view);
                         return;
                     } else {
-                        openAppByCls(new ComponentName(pkg1, cls1));
+                        ComponentName componentName1 = new ComponentName(pkg1, cls1);
+                        openAppByCls(componentName1);
                         sendMcuCommand();
                         return;
                     }
@@ -1047,7 +1182,8 @@ public class LauncherViewModel extends BaseViewModel {
                         openVideo(view);
                         return;
                     } else {
-                        openAppByCls(new ComponentName(pkg2, cls2));
+                        ComponentName componentName2 = new ComponentName(pkg2, cls2);
+                        openAppByCls(componentName2);
                         sendMcuCommand();
                         return;
                     }
@@ -1059,135 +1195,125 @@ public class LauncherViewModel extends BaseViewModel {
                     return;
                 }
             case 3:
-                if (TextUtils.isEmpty(pkg3) || TextUtils.isEmpty(cls3)) {
-                    openVideo(view);
-                    return;
+                if (!TextUtils.isEmpty(pkg3) && !TextUtils.isEmpty(cls3)) {
+                    Log.d("openShortCutApp3", pkg3 + "   " + cls3);
+                    if (KeyConfig.CLS_LOCAL_MUSIC.equals(cls3)) {
+                        openMusic(view);
+                        return;
+                    } else if (KeyConfig.CLS_LOCAL_VIDEO.equals(cls3)) {
+                        openVideo(view);
+                        return;
+                    } else {
+                        ComponentName componentName3 = new ComponentName(pkg3, cls3);
+                        openAppByCls(componentName3);
+                        sendMcuCommand();
+                        return;
+                    }
                 }
-                Log.d("openShortCutApp3", pkg3 + "   " + cls3);
-                if (KeyConfig.CLS_LOCAL_MUSIC.equals(cls3)) {
-                    openMusic(view);
-                    return;
-                } else if (KeyConfig.CLS_LOCAL_VIDEO.equals(cls3)) {
-                    openVideo(view);
-                    return;
-                } else {
-                    openAppByCls(new ComponentName(pkg3, cls3));
-                    sendMcuCommand();
-                    return;
-                }
+                openVideo(view);
+                return;
             default:
                 return;
         }
     }
 
-    public void refreshShortCutInfo() {
+    public void refreshShortCutInfo(String keyshortpkg1, String keyshortcls1, String keyshortpkg2, String keyshortcls2, String keyshortpkg3, String keyshortcls3) {
         String cls3;
-        String pkg1 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), KEY_SHORTCUT_PKG_1);
-        String cls1 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), KEY_SHORTCUT_CLS_1);
-        String pkg2 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), KEY_SHORTCUT_PKG_2);
-        String cls2 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), KEY_SHORTCUT_CLS_2);
-        String pkg3 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), KEY_SHORTCUT_PKG_3);
-        String cls32 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), KEY_SHORTCUT_CLS_3);
+        String pkg1 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), keyshortpkg1);
+        String cls1 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), keyshortcls1);
+        String pkg2 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), keyshortpkg2);
+        String cls2 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), keyshortcls2);
+        String pkg3 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), keyshortpkg3);
+        String cls32 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), keyshortcls3);
         if (TextUtils.isEmpty(pkg1) || TextUtils.isEmpty(cls1)) {
-            String str = cls1;
             cls3 = cls32;
         } else {
             Log.e("refreshShortCutInfo", "pk1 = " + pkg1 + " cls1 = " + cls1);
             if (cls1.equals(CLS_CHROME)) {
-                ResolveInfo info1 = AppInfoUtils.findAppByPkgAndCls(this.activity, pkg1, cls1);
-                this.shortCutIcon1.set(this.activity.getResources().getDrawable(R.drawable.id7_main_browser_n));
-                this.shortCutName1.set((String) info1.activityInfo.loadLabel(this.activity.getPackageManager()));
-                String str2 = pkg1;
-                String str3 = cls1;
+                AppInfoUtils.findAppByPkgAndCls(this.activity, pkg1, cls1);
+                this.shortCutIcon1.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_browser_n));
+                this.shortCutName1.set(this.activity.getResources().getString(C0899R.string.id6_browser));
                 cls3 = cls32;
             } else if (cls1.equals(KeyConfig.CLS_LOCAL_MUSIC)) {
                 if (UiThemeUtils.isALS_ID7_UI(this.activity)) {
-                    this.shortCutIcon1.set(this.activity.getResources().getDrawable(R.drawable.als_sp_id7_main_left_icon_music));
+                    this.shortCutIcon1.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.als_sp_id7_main_left_icon_music));
                 } else {
-                    this.shortCutIcon1.set(this.activity.getResources().getDrawable(R.drawable.id7_main_music_n));
+                    this.shortCutIcon1.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_music_n));
                 }
-                this.shortCutName1.set(this.activity.getResources().getString(R.string.ksw_id7_music));
-                String str4 = pkg1;
-                String str5 = cls1;
+                this.shortCutName1.set(this.activity.getResources().getString(C0899R.string.ksw_id7_music));
                 cls3 = cls32;
             } else if (cls1.equals(KeyConfig.CLS_LOCAL_VIDEO)) {
-                this.shortCutIcon1.set(this.activity.getResources().getDrawable(R.drawable.id7_main_video_n));
-                this.shortCutName1.set(this.activity.getResources().getString(R.string.ksw_id7_hd_video));
-                String str6 = pkg1;
-                String str7 = cls1;
+                this.shortCutIcon1.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_video_n));
+                this.shortCutName1.set(this.activity.getResources().getString(C0899R.string.ksw_id7_hd_video));
                 cls3 = cls32;
             } else if (cls1.equals("com.google.android.maps.MapsActivity")) {
-                this.shortCutIcon1.set(this.activity.getResources().getDrawable(R.drawable.als_sp_id7_main_left_icon_navi));
-                this.shortCutName1.set(this.activity.getResources().getString(R.string.ksw_id7_navi));
-                String str8 = pkg1;
-                String str9 = cls1;
+                this.shortCutIcon1.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.als_sp_id7_main_left_icon_navi));
+                this.shortCutName1.set(this.activity.getResources().getString(C0899R.string.ksw_id7_navi));
                 cls3 = cls32;
             } else {
-                ResolveInfo info12 = AppInfoUtils.findAppByPkgAndCls(this.activity, pkg1, cls1);
-                String str10 = pkg1;
-                String str11 = cls1;
+                ResolveInfo info1 = AppInfoUtils.findAppByPkgAndCls(this.activity, pkg1, cls1);
                 cls3 = cls32;
-                this.shortCutIcon1.set(AppInfoUtils.zoomDrawable(info12.activityInfo.loadIcon(this.activity.getPackageManager()), AppInfoUtils.dip2px(this.activity, screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f), AppInfoUtils.dip2px(this.activity, screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f)));
-                this.shortCutName1.set((String) info12.activityInfo.loadLabel(this.activity.getPackageManager()));
+                this.shortCutIcon1.set(AppInfoUtils.zoomDrawable(info1.activityInfo.loadIcon(this.activity.getPackageManager()), AppInfoUtils.dip2px(this.activity, screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f), AppInfoUtils.dip2px(this.activity, screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f)));
+                this.shortCutName1.set((String) info1.activityInfo.loadLabel(this.activity.getPackageManager()));
             }
         }
         if (!TextUtils.isEmpty(pkg2) && !TextUtils.isEmpty(cls2)) {
             Log.e("refreshShortCutInfo", "pk2 = " + pkg2 + " cls2 = " + cls2);
             if (cls2.equals(CLS_CHROME)) {
-                ResolveInfo info2 = AppInfoUtils.findAppByPkgAndCls(this.activity, pkg2, cls2);
-                this.shortCutIcon2.set(this.activity.getResources().getDrawable(R.drawable.id7_main_browser_n));
-                this.shortCutName2.set((String) info2.activityInfo.loadLabel(this.activity.getPackageManager()));
+                AppInfoUtils.findAppByPkgAndCls(this.activity, pkg2, cls2);
+                this.shortCutIcon2.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_browser_n));
+                this.shortCutName2.set(this.activity.getResources().getString(C0899R.string.id6_browser));
             } else if (cls2.equals(KeyConfig.CLS_LOCAL_MUSIC)) {
                 if (UiThemeUtils.isALS_ID7_UI(this.activity)) {
-                    this.shortCutIcon2.set(this.activity.getResources().getDrawable(R.drawable.als_sp_id7_main_left_icon_music));
+                    this.shortCutIcon2.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.als_sp_id7_main_left_icon_music));
                 } else {
-                    this.shortCutIcon2.set(this.activity.getResources().getDrawable(R.drawable.id7_main_music_n));
+                    this.shortCutIcon2.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_music_n));
                 }
-                this.shortCutName2.set(this.activity.getResources().getString(R.string.ksw_id7_music));
+                this.shortCutName2.set(this.activity.getResources().getString(C0899R.string.ksw_id7_music));
             } else if (cls2.equals(KeyConfig.CLS_LOCAL_VIDEO)) {
-                this.shortCutIcon2.set(this.activity.getResources().getDrawable(R.drawable.id7_main_video_n));
-                this.shortCutName2.set(this.activity.getResources().getString(R.string.ksw_id7_hd_video));
+                this.shortCutIcon2.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_video_n));
+                this.shortCutName2.set(this.activity.getResources().getString(C0899R.string.ksw_id7_hd_video));
             } else if (cls2.equals("com.google.android.maps.MapsActivity")) {
-                this.shortCutIcon2.set(this.activity.getResources().getDrawable(R.drawable.als_sp_id7_main_left_icon_navi));
-                this.shortCutName2.set(this.activity.getResources().getString(R.string.ksw_id7_navi));
+                this.shortCutIcon2.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.als_sp_id7_main_left_icon_navi));
+                this.shortCutName2.set(this.activity.getResources().getString(C0899R.string.ksw_id7_navi));
             } else {
-                ResolveInfo info22 = AppInfoUtils.findAppByPkgAndCls(this.activity, pkg2, cls2);
-                this.shortCutIcon2.set(AppInfoUtils.zoomDrawable(info22.activityInfo.loadIcon(this.activity.getPackageManager()), AppInfoUtils.dip2px(this.activity, screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f), AppInfoUtils.dip2px(this.activity, screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f)));
-                this.shortCutName2.set((String) info22.activityInfo.loadLabel(this.activity.getPackageManager()));
+                ResolveInfo info2 = AppInfoUtils.findAppByPkgAndCls(this.activity, pkg2, cls2);
+                this.shortCutIcon2.set(AppInfoUtils.zoomDrawable(info2.activityInfo.loadIcon(this.activity.getPackageManager()), AppInfoUtils.dip2px(this.activity, screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f), AppInfoUtils.dip2px(this.activity, screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f)));
+                this.shortCutName2.set((String) info2.activityInfo.loadLabel(this.activity.getPackageManager()));
             }
         }
-        if (TextUtils.isEmpty(pkg3) || TextUtils.isEmpty(cls3)) {
-            return;
-        }
-        String cls33 = cls3;
-        Log.e("refreshShortCutInfo", "pk3 = " + pkg3 + " cls3 = " + cls33);
-        if (cls33.equals(CLS_CHROME)) {
-            ResolveInfo info3 = AppInfoUtils.findAppByPkgAndCls(this.activity, pkg3, cls33);
-            this.shortCutIcon3.set(this.activity.getResources().getDrawable(R.drawable.id7_main_browser_n));
-            this.shortCutName3.set((String) info3.activityInfo.loadLabel(this.activity.getPackageManager()));
-        } else if (cls33.equals(KeyConfig.CLS_LOCAL_MUSIC)) {
-            this.shortCutIcon3.set(this.activity.getResources().getDrawable(R.drawable.id7_main_music_n));
-            this.shortCutName3.set(this.activity.getResources().getString(R.string.ksw_id7_music));
-        } else if (cls33.equals(KeyConfig.CLS_LOCAL_VIDEO)) {
-            this.shortCutIcon3.set(this.activity.getResources().getDrawable(R.drawable.id7_main_video_n));
-            this.shortCutName3.set(this.activity.getResources().getString(R.string.ksw_id7_hd_video));
-        } else if (cls33.equals("com.google.android.maps.MapsActivity")) {
-            this.shortCutIcon3.set(this.activity.getResources().getDrawable(R.drawable.als_sp_id7_main_left_icon_navi));
-            this.shortCutName3.set(this.activity.getResources().getString(R.string.ksw_id7_navi));
-        } else {
-            ResolveInfo info32 = AppInfoUtils.findAppByPkgAndCls(this.activity, pkg3, cls33);
-            this.shortCutIcon3.set(AppInfoUtils.zoomDrawable(info32.activityInfo.loadIcon(this.activity.getPackageManager()), AppInfoUtils.dip2px(this.activity, screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f), AppInfoUtils.dip2px(this.activity, screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f)));
-            this.shortCutName3.set((String) info32.activityInfo.loadLabel(this.activity.getPackageManager()));
+        if (!TextUtils.isEmpty(pkg3) && !TextUtils.isEmpty(cls3)) {
+            String cls33 = cls3;
+            Log.e("refreshShortCutInfo", "pk3 = " + pkg3 + " cls3 = " + cls33);
+            if (cls33.equals(CLS_CHROME)) {
+                AppInfoUtils.findAppByPkgAndCls(this.activity, pkg3, cls33);
+                this.shortCutIcon3.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_browser_n));
+                this.shortCutName3.set(this.activity.getResources().getString(C0899R.string.id6_browser));
+            } else if (cls33.equals(KeyConfig.CLS_LOCAL_MUSIC)) {
+                this.shortCutIcon3.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_music_n));
+                this.shortCutName3.set(this.activity.getResources().getString(C0899R.string.ksw_id7_music));
+            } else if (cls33.equals(KeyConfig.CLS_LOCAL_VIDEO)) {
+                this.shortCutIcon3.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_video_n));
+                this.shortCutName3.set(this.activity.getResources().getString(C0899R.string.ksw_id7_hd_video));
+            } else if (cls33.equals("com.google.android.maps.MapsActivity")) {
+                this.shortCutIcon3.set(this.activity.getResources().getDrawable(C0899R.C0900drawable.als_sp_id7_main_left_icon_navi));
+                this.shortCutName3.set(this.activity.getResources().getString(C0899R.string.ksw_id7_navi));
+            } else {
+                ResolveInfo info3 = AppInfoUtils.findAppByPkgAndCls(this.activity, pkg3, cls33);
+                this.shortCutIcon3.set(AppInfoUtils.zoomDrawable(info3.activityInfo.loadIcon(this.activity.getPackageManager()), AppInfoUtils.dip2px(this.activity, screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f), AppInfoUtils.dip2px(this.activity, screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f)));
+                this.shortCutName3.set((String) info3.activityInfo.loadLabel(this.activity.getPackageManager()));
+            }
         }
     }
 
-    public void initPopWinowGridApps(View view, final int indexMenu) {
+    public void initPopWinowGridApps(View view, final int indexMenu, final String keyshortpkg, final String keyshortcls) {
         List<LexusLsAppSelBean> list;
         if (this.mAppsPopupWindow != null) {
             this.mAppsPopupWindow = null;
         }
-        View layout = ((LayoutInflater) this.context.getSystemService("layout_inflater")).inflate(R.layout.pemp_id7_pop_layout, (ViewGroup) null);
-        GridView gridView = (GridView) layout.findViewById(R.id.gridView);
+        LayoutInflater inflater = (LayoutInflater) this.context.getSystemService("layout_inflater");
+        View layout = inflater.inflate(C0899R.C0902layout.pemp_id7_pop_layout, (ViewGroup) null);
+        GridView gridView = (GridView) layout.findViewById(C0899R.C0901id.gridView);
         this.dialogWidth = ScreenUtil.dip2px(480.0f);
         Log.i(TAG, "diwidth =" + this.dialogWidth);
         this.dialogHeight = ScreenUtil.dip2px(400.0f);
@@ -1201,65 +1327,175 @@ public class LauncherViewModel extends BaseViewModel {
         } else {
             list = AppInfoUtils.findAllAppsByExclude(AppInfoUtils.ATYS_DISMISS_DESK, 0, this.context);
         }
-        gridView.setAdapter(new AppsGridAdapter(list, this.activity, R.layout.dialog_grid_app_item));
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        gridView.setAdapter((ListAdapter) new AppsGridAdapter(list, this.activity, C0899R.C0902layout.dialog_grid_app_item));
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() { // from class: com.wits.ksw.launcher.model.LauncherViewModel.7
+            @Override // android.widget.AdapterView.OnItemClickListener
+            public void onItemClick(AdapterView<?> parent, View view2, int position, long id) {
+                Object obj;
+                Object obj2;
                 LexusLsAppSelBean bean = (LexusLsAppSelBean) parent.getItemAtPosition(position);
                 Log.d(LauncherViewModel.TAG, "appinfo =" + bean.toString());
                 int i = indexMenu;
                 if (i == 1) {
-                    Settings.System.putString(LauncherViewModel.this.contentResolver, LauncherViewModel.KEY_SHORTCUT_PKG_1, bean.getAppPkg());
-                    Settings.System.putString(LauncherViewModel.this.contentResolver, LauncherViewModel.KEY_SHORTCUT_CLS_1, bean.getAppMainAty());
+                    if (UiThemeUtils.isALS_ID7_UI(LauncherViewModel.this.context)) {
+                        String appPkg = bean.getAppPkg();
+                        ContentResolver contentResolver = LauncherViewModel.this.context.getContentResolver();
+                        obj2 = LauncherViewModel.CLS_CHROME;
+                        if (!appPkg.equals(Settings.System.getString(contentResolver, LauncherViewModel.ALS_KEY_SHORTCUT_PKG_2)) && !bean.getAppMainAty().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.ALS_KEY_SHORTCUT_CLS_2))) {
+                            if (Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.ALS_KEY_SHORTCUT_CLS_2) == null && Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.ALS_KEY_SHORTCUT_PKG_2) == null && bean.getAppMainAty().equals("com.google.android.maps.MapsActivity")) {
+                                return;
+                            }
+                        } else {
+                            return;
+                        }
+                    } else {
+                        obj2 = LauncherViewModel.CLS_CHROME;
+                    }
+                    if (UiThemeUtils.isID7_ALS(LauncherViewModel.this.context)) {
+                        if (!bean.getAppPkg().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_2)) && !bean.getAppPkg().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_3)) && !bean.getAppMainAty().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_2)) && !bean.getAppMainAty().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_3))) {
+                            if (Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_2) != null || Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_2) != null || !bean.getAppMainAty().equals(KeyConfig.CLS_LOCAL_MUSIC)) {
+                                if (Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_3) == null && Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_3) == null && bean.getAppMainAty().equals(KeyConfig.CLS_LOCAL_VIDEO)) {
+                                    return;
+                                }
+                            } else {
+                                return;
+                            }
+                        } else {
+                            return;
+                        }
+                    }
+                    if (UiThemeUtils.isID7_ALS_V2(LauncherViewModel.this.context)) {
+                        if (!bean.getAppPkg().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_2_V2)) && !bean.getAppPkg().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_3_V2)) && !bean.getAppMainAty().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_2_V2)) && !bean.getAppMainAty().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_3_V2))) {
+                            if (Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_2_V2) != null || Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_2_V2) != null || !bean.getAppMainAty().equals(KeyConfig.CLS_LOCAL_MUSIC)) {
+                                if (Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_3_V2) == null && Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_3_V2) == null && bean.getAppMainAty().equals(KeyConfig.CLS_LOCAL_VIDEO)) {
+                                    return;
+                                }
+                            } else {
+                                return;
+                            }
+                        } else {
+                            return;
+                        }
+                    }
+                    Settings.System.putString(LauncherViewModel.this.contentResolver, keyshortpkg, bean.getAppPkg());
+                    Settings.System.putString(LauncherViewModel.this.contentResolver, keyshortcls, bean.getAppMainAty());
                     LauncherViewModel.this.shortCutName1.set(bean.getAppName());
-                    if (bean.getAppMainAty().equals(LauncherViewModel.CLS_CHROME)) {
-                        LauncherViewModel.this.shortCutIcon1.set(LauncherViewModel.this.activity.getResources().getDrawable(R.drawable.id7_main_browser_n));
+                    if (bean.getAppMainAty().equals(obj2)) {
+                        LauncherViewModel.this.shortCutIcon1.set(LauncherViewModel.this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_browser_n));
+                        LauncherViewModel.this.shortCutName1.set(LauncherViewModel.this.activity.getResources().getString(C0899R.string.id6_browser));
                     } else if (bean.getAppMainAty().equals(KeyConfig.CLS_LOCAL_MUSIC)) {
                         if (UiThemeUtils.isALS_ID7_UI(LauncherViewModel.this.activity)) {
-                            LauncherViewModel.this.shortCutIcon1.set(LauncherViewModel.this.activity.getResources().getDrawable(R.drawable.als_sp_id7_main_left_icon_music));
+                            LauncherViewModel.this.shortCutIcon1.set(LauncherViewModel.this.activity.getResources().getDrawable(C0899R.C0900drawable.als_sp_id7_main_left_icon_music));
                         } else {
-                            LauncherViewModel.this.shortCutIcon1.set(LauncherViewModel.this.activity.getResources().getDrawable(R.drawable.id7_main_music_n));
+                            LauncherViewModel.this.shortCutIcon1.set(LauncherViewModel.this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_music_n));
                         }
                     } else if (bean.getAppMainAty().equals(KeyConfig.CLS_LOCAL_VIDEO)) {
-                        LauncherViewModel.this.shortCutIcon1.set(LauncherViewModel.this.activity.getResources().getDrawable(R.drawable.id7_main_video_n));
+                        LauncherViewModel.this.shortCutIcon1.set(LauncherViewModel.this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_video_n));
                     } else if (bean.getAppMainAty().equals("com.google.android.maps.MapsActivity")) {
-                        LauncherViewModel.this.shortCutIcon1.set(LauncherViewModel.this.activity.getResources().getDrawable(R.drawable.als_sp_id7_main_left_icon_navi));
-                        LauncherViewModel.this.shortCutName1.set(LauncherViewModel.this.activity.getResources().getString(R.string.ksw_id7_navi));
+                        LauncherViewModel.this.shortCutIcon1.set(LauncherViewModel.this.activity.getResources().getDrawable(C0899R.C0900drawable.als_sp_id7_main_left_icon_navi));
+                        LauncherViewModel.this.shortCutName1.set(LauncherViewModel.this.activity.getResources().getString(C0899R.string.ksw_id7_navi));
                     } else {
                         LauncherViewModel.this.shortCutIcon1.set(AppInfoUtils.zoomDrawable(bean.getAppIcon(), AppInfoUtils.dip2px(LauncherViewModel.this.activity, LauncherViewModel.screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f), AppInfoUtils.dip2px(LauncherViewModel.this.activity, LauncherViewModel.screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f)));
                     }
                 } else if (i == 2) {
-                    Settings.System.putString(LauncherViewModel.this.contentResolver, LauncherViewModel.KEY_SHORTCUT_PKG_2, bean.getAppPkg());
-                    Settings.System.putString(LauncherViewModel.this.contentResolver, LauncherViewModel.KEY_SHORTCUT_CLS_2, bean.getAppMainAty());
+                    if (UiThemeUtils.isALS_ID7_UI(LauncherViewModel.this.context)) {
+                        obj = "com.google.android.maps.MapsActivity";
+                        if (!bean.getAppPkg().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.ALS_KEY_SHORTCUT_PKG_1)) && !bean.getAppMainAty().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.ALS_KEY_SHORTCUT_CLS_1))) {
+                            if (Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.ALS_KEY_SHORTCUT_CLS_1) == null && Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.ALS_KEY_SHORTCUT_PKG_1) == null && bean.getAppMainAty().equals(KeyConfig.CLS_LOCAL_MUSIC)) {
+                                return;
+                            }
+                        } else {
+                            return;
+                        }
+                    } else {
+                        obj = "com.google.android.maps.MapsActivity";
+                    }
+                    if (UiThemeUtils.isID7_ALS(LauncherViewModel.this.context)) {
+                        if (!bean.getAppPkg().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_1)) && !bean.getAppPkg().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_3)) && !bean.getAppMainAty().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_1)) && !bean.getAppMainAty().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_3))) {
+                            if (Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_1) != null || Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_1) != null || !bean.getAppMainAty().equals(LauncherViewModel.CLS_CHROME)) {
+                                if (Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_3) == null && Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_3) == null && bean.getAppMainAty().equals(KeyConfig.CLS_LOCAL_VIDEO)) {
+                                    return;
+                                }
+                            } else {
+                                return;
+                            }
+                        } else {
+                            return;
+                        }
+                    }
+                    if (UiThemeUtils.isID7_ALS_V2(LauncherViewModel.this.context)) {
+                        if (!bean.getAppPkg().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_1_V2)) && !bean.getAppPkg().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_3_V2)) && !bean.getAppMainAty().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_1_V2)) && !bean.getAppMainAty().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_3_V2))) {
+                            if (Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_1_V2) != null || Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_1_V2) != null || !bean.getAppMainAty().equals(LauncherViewModel.CLS_CHROME)) {
+                                if (Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_3_V2) == null && Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_3_V2) == null && bean.getAppMainAty().equals(KeyConfig.CLS_LOCAL_VIDEO)) {
+                                    return;
+                                }
+                            } else {
+                                return;
+                            }
+                        } else {
+                            return;
+                        }
+                    }
+                    Settings.System.putString(LauncherViewModel.this.contentResolver, keyshortpkg, bean.getAppPkg());
+                    Settings.System.putString(LauncherViewModel.this.contentResolver, keyshortcls, bean.getAppMainAty());
                     LauncherViewModel.this.shortCutName2.set(bean.getAppName());
                     if (bean.getAppMainAty().equals(LauncherViewModel.CLS_CHROME)) {
-                        LauncherViewModel.this.shortCutIcon2.set(LauncherViewModel.this.activity.getResources().getDrawable(R.drawable.id7_main_browser_n));
+                        LauncherViewModel.this.shortCutIcon2.set(LauncherViewModel.this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_browser_n));
+                        LauncherViewModel.this.shortCutName2.set(LauncherViewModel.this.activity.getResources().getString(C0899R.string.id6_browser));
                     } else if (bean.getAppMainAty().equals(KeyConfig.CLS_LOCAL_MUSIC)) {
                         if (UiThemeUtils.isALS_ID7_UI(LauncherViewModel.this.activity)) {
-                            LauncherViewModel.this.shortCutIcon2.set(LauncherViewModel.this.activity.getResources().getDrawable(R.drawable.als_sp_id7_main_left_icon_music));
+                            LauncherViewModel.this.shortCutIcon2.set(LauncherViewModel.this.activity.getResources().getDrawable(C0899R.C0900drawable.als_sp_id7_main_left_icon_music));
                         } else {
-                            LauncherViewModel.this.shortCutIcon2.set(LauncherViewModel.this.activity.getResources().getDrawable(R.drawable.id7_main_music_n));
+                            LauncherViewModel.this.shortCutIcon2.set(LauncherViewModel.this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_music_n));
                         }
                     } else if (bean.getAppMainAty().equals(KeyConfig.CLS_LOCAL_VIDEO)) {
-                        LauncherViewModel.this.shortCutIcon2.set(LauncherViewModel.this.activity.getResources().getDrawable(R.drawable.id7_main_video_n));
-                    } else if (bean.getAppMainAty().equals("com.google.android.maps.MapsActivity")) {
-                        LauncherViewModel.this.shortCutIcon2.set(LauncherViewModel.this.activity.getResources().getDrawable(R.drawable.als_sp_id7_main_left_icon_navi));
-                        LauncherViewModel.this.shortCutName2.set(LauncherViewModel.this.activity.getResources().getString(R.string.ksw_id7_navi));
+                        LauncherViewModel.this.shortCutIcon2.set(LauncherViewModel.this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_video_n));
+                    } else if (bean.getAppMainAty().equals(obj)) {
+                        LauncherViewModel.this.shortCutIcon2.set(LauncherViewModel.this.activity.getResources().getDrawable(C0899R.C0900drawable.als_sp_id7_main_left_icon_navi));
+                        LauncherViewModel.this.shortCutName2.set(LauncherViewModel.this.activity.getResources().getString(C0899R.string.ksw_id7_navi));
                     } else {
                         LauncherViewModel.this.shortCutIcon2.set(AppInfoUtils.zoomDrawable(bean.getAppIcon(), AppInfoUtils.dip2px(LauncherViewModel.this.activity, LauncherViewModel.screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f), AppInfoUtils.dip2px(LauncherViewModel.this.activity, LauncherViewModel.screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f)));
                     }
                 } else if (i == 3) {
-                    Settings.System.putString(LauncherViewModel.this.contentResolver, LauncherViewModel.KEY_SHORTCUT_PKG_3, bean.getAppPkg());
-                    Settings.System.putString(LauncherViewModel.this.contentResolver, LauncherViewModel.KEY_SHORTCUT_CLS_3, bean.getAppMainAty());
+                    if (UiThemeUtils.isID7_ALS(LauncherViewModel.this.context)) {
+                        if (!bean.getAppPkg().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_1)) && !bean.getAppPkg().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_2)) && !bean.getAppMainAty().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_1)) && !bean.getAppMainAty().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_2))) {
+                            if (Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_1) != null || Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_1) != null || !bean.getAppMainAty().equals(LauncherViewModel.CLS_CHROME)) {
+                                if (Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_2) == null && Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_2) == null && bean.getAppMainAty().equals(KeyConfig.CLS_LOCAL_MUSIC)) {
+                                    return;
+                                }
+                            } else {
+                                return;
+                            }
+                        } else {
+                            return;
+                        }
+                    }
+                    if (UiThemeUtils.isID7_ALS_V2(LauncherViewModel.this.context)) {
+                        if (!bean.getAppPkg().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_1_V2)) && !bean.getAppPkg().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_2_V2)) && !bean.getAppMainAty().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_1_V2)) && !bean.getAppMainAty().equals(Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_2_V2))) {
+                            if (Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_1_V2) != null || Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_1_V2) != null || !bean.getAppMainAty().equals(LauncherViewModel.CLS_CHROME)) {
+                                if (Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_CLS_2_V2) == null && Settings.System.getString(LauncherViewModel.this.context.getContentResolver(), LauncherViewModel.PEMP_KEY_SHORTCUT_PKG_2_V2) == null && bean.getAppMainAty().equals(KeyConfig.CLS_LOCAL_MUSIC)) {
+                                    return;
+                                }
+                            } else {
+                                return;
+                            }
+                        } else {
+                            return;
+                        }
+                    }
+                    Settings.System.putString(LauncherViewModel.this.contentResolver, keyshortpkg, bean.getAppPkg());
+                    Settings.System.putString(LauncherViewModel.this.contentResolver, keyshortcls, bean.getAppMainAty());
                     LauncherViewModel.this.shortCutName3.set(bean.getAppName());
                     if (bean.getAppMainAty().equals(LauncherViewModel.CLS_CHROME)) {
-                        LauncherViewModel.this.shortCutIcon3.set(LauncherViewModel.this.activity.getResources().getDrawable(R.drawable.id7_main_browser_n));
+                        LauncherViewModel.this.shortCutIcon3.set(LauncherViewModel.this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_browser_n));
+                        LauncherViewModel.this.shortCutName3.set(LauncherViewModel.this.activity.getResources().getString(C0899R.string.id6_browser));
                     } else if (bean.getAppMainAty().equals(KeyConfig.CLS_LOCAL_MUSIC)) {
-                        LauncherViewModel.this.shortCutIcon3.set(LauncherViewModel.this.activity.getResources().getDrawable(R.drawable.id7_main_music_n));
+                        LauncherViewModel.this.shortCutIcon3.set(LauncherViewModel.this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_music_n));
                     } else if (bean.getAppMainAty().equals(KeyConfig.CLS_LOCAL_VIDEO)) {
-                        LauncherViewModel.this.shortCutIcon3.set(LauncherViewModel.this.activity.getResources().getDrawable(R.drawable.id7_main_video_n));
+                        LauncherViewModel.this.shortCutIcon3.set(LauncherViewModel.this.activity.getResources().getDrawable(C0899R.C0900drawable.id7_main_video_n));
                     } else if (bean.getAppMainAty().equals("com.google.android.maps.MapsActivity")) {
-                        LauncherViewModel.this.shortCutIcon3.set(LauncherViewModel.this.activity.getResources().getDrawable(R.drawable.als_sp_id7_main_left_icon_navi));
-                        LauncherViewModel.this.shortCutName3.set(LauncherViewModel.this.activity.getResources().getString(R.string.ksw_id7_navi));
+                        LauncherViewModel.this.shortCutIcon3.set(LauncherViewModel.this.activity.getResources().getDrawable(C0899R.C0900drawable.als_sp_id7_main_left_icon_navi));
+                        LauncherViewModel.this.shortCutName3.set(LauncherViewModel.this.activity.getResources().getString(C0899R.string.ksw_id7_navi));
                     } else {
                         LauncherViewModel.this.shortCutIcon3.set(AppInfoUtils.zoomDrawable(bean.getAppIcon(), AppInfoUtils.dip2px(LauncherViewModel.this.activity, LauncherViewModel.screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f), AppInfoUtils.dip2px(LauncherViewModel.this.activity, LauncherViewModel.screenWidth.get().intValue() > 1280 ? 64.0f : 45.0f)));
                     }
@@ -1280,7 +1516,7 @@ public class LauncherViewModel extends BaseViewModel {
     private void showPopWindow(View view) {
         int height = view.getHeight();
         int width2 = view.getWidth();
-        Log.i(TAG, String.format("width = %s ;height= %s;", new Object[]{Integer.valueOf(width2), Integer.valueOf(height)}));
+        Log.i(TAG, String.format("width = %s ;height= %s;", Integer.valueOf(width2), Integer.valueOf(height)));
         this.mAppsPopupWindow.showAtLocation(view, 19, 180, -60);
     }
 
@@ -1289,10 +1525,10 @@ public class LauncherViewModel extends BaseViewModel {
         openApp(new ComponentName(BuildConfig.APPLICATION_ID, "com.wits.ksw.launcher.view.DashboardActivity"));
     }
 
-    public void onSendCommand(int command, int subCommand) {
+    public void onSendCommand(final int command, final int subCommand) {
         Log.i(TAG, "onSendCommand: command:" + command + " subCommand:" + subCommand);
         try {
-            WitsCommand.sendCommand(command, subCommand, (String) null);
+            WitsCommand.sendCommand(command, subCommand, null);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, "onSendCommand: " + e.getMessage());
@@ -1312,20 +1548,20 @@ public class LauncherViewModel extends BaseViewModel {
     private void openWeatherApp() {
         Log.i(TAG, "openWeatherApp: ");
         Intent intent = new Intent();
-        intent.setComponent(new ComponentName("com.txznet.weather", "com.txznet.weather.MainActivity"));
+        intent.setComponent(new ComponentName(BenzUtils.WEATHER_PKG, "com.txznet.weather.MainActivity"));
         intent.setFlags(268435488);
         openApp(intent);
     }
 
     public void openNaviApp() {
         String naiPackge = Settings.System.getString(this.contentResolver, KeyConfig.NAVI_DEFUAL);
-        boolean isVersion12 = Build.VERSION.RELEASE.contains("12");
+        boolean isVersion12 = Build.VERSION.RELEASE.contains("12") || Build.VERSION.RELEASE.contains("13");
         String str = TAG;
         Log.w(str, "isVersion12 :" + isVersion12);
-        if (!isVersion12 || !AppInfoUtils.isContainFreedomMap(naiPackge) || !UiThemeUtils.isUI_GS_ID8(this.activity)) {
-            openMapApp(this.context.getPackageManager().getLaunchIntentForPackage(naiPackge));
-        } else {
+        if (isVersion12 && AppInfoUtils.isContainFreedomMap(naiPackge) && UiThemeUtils.isUI_GS_ID8(this.activity)) {
             launchApp(naiPackge, 1);
+        } else {
+            openMapApp(this.context.getPackageManager().getLaunchIntentForPackage(naiPackge));
         }
         Log.i(str, "openNaviApp: " + naiPackge);
     }
@@ -1357,6 +1593,10 @@ public class LauncherViewModel extends BaseViewModel {
         Log.e(TAG, "addLastViewFocused: view:" + view);
     }
 
+    public View getLastViewFocused() {
+        return this.lastViewFocused;
+    }
+
     private void setSelected(View view) {
         View view2 = this.lastViewFocused;
         if (view2 != null) {
@@ -1385,7 +1625,7 @@ public class LauncherViewModel extends BaseViewModel {
                     this.alsID7UIViewList.get(i).setSelected(false);
                 }
             }
-            Log.d(TAG, "setClearViewState: alsID7UIViewList的长度" + this.alsID7UIViewList.size());
+            Log.d(TAG, "setClearViewState: alsID7UIViewList\u7684\u957f\u5ea6" + this.alsID7UIViewList.size());
         }
     }
 
@@ -1393,37 +1633,37 @@ public class LauncherViewModel extends BaseViewModel {
         if (UiThemeUtils.isALS_ID7_UI(this.context)) {
             View view = this.lastViewFocused;
             if (view != null && !view.isSelected() && MainActivity.alsId7UiMainBinding != null) {
-                if (this.lastViewFocused.getId() == MainActivity.alsId7UiMainBinding.menuButton1.getId() || this.lastViewFocused.getId() == MainActivity.alsId7UiMainBinding.menuButton2.getId() || this.lastViewFocused.getId() == MainActivity.alsId7UiMainBinding.menuButton3.getId() || this.lastViewFocused.getId() == MainActivity.alsId7UiMainBinding.menuButton4.getId() || this.lastViewFocused.getId() == MainActivity.alsId7UiMainBinding.menuButton5.getId()) {
-                    String str = TAG;
-                    Log.d(str, "refreshLastViewFocused: 不等于null哦！else");
+                if (this.lastViewFocused.getId() != MainActivity.alsId7UiMainBinding.menuButton1.getId() && this.lastViewFocused.getId() != MainActivity.alsId7UiMainBinding.menuButton2.getId() && this.lastViewFocused.getId() != MainActivity.alsId7UiMainBinding.menuButton3.getId() && this.lastViewFocused.getId() != MainActivity.alsId7UiMainBinding.menuButton4.getId() && this.lastViewFocused.getId() != MainActivity.alsId7UiMainBinding.menuButton5.getId()) {
+                    Log.d(TAG, "refreshLastViewFocused: \u4e0d\u7b49\u4e8enull\u54e6\uff01");
+                    MainActivity.alsId7UiMainBinding.menuButton1.clearFocus();
+                    MainActivity.alsId7UiMainBinding.menuButton2.clearFocus();
+                    MainActivity.alsId7UiMainBinding.menuButton3.clearFocus();
+                    MainActivity.alsId7UiMainBinding.menuButton4.clearFocus();
+                    MainActivity.alsId7UiMainBinding.menuButton5.clearFocus();
                     setClearViewState();
-                    this.lastViewFocused.setFocusableInTouchMode(true);
-                    this.lastViewFocused.requestFocus();
-                    this.lastViewFocused.setFocusableInTouchMode(false);
-                    Log.i(str, "refreshLastViewFocused: lastViewFocused=" + this.lastViewFocused.getId());
+                    this.lastViewFocused.setSelected(true);
                     return;
                 }
-                Log.d(TAG, "refreshLastViewFocused: 不等于null哦！");
-                MainActivity.alsId7UiMainBinding.menuButton1.clearFocus();
-                MainActivity.alsId7UiMainBinding.menuButton2.clearFocus();
-                MainActivity.alsId7UiMainBinding.menuButton3.clearFocus();
-                MainActivity.alsId7UiMainBinding.menuButton4.clearFocus();
-                MainActivity.alsId7UiMainBinding.menuButton5.clearFocus();
+                String str = TAG;
+                Log.d(str, "refreshLastViewFocused: \u4e0d\u7b49\u4e8enull\u54e6\uff01else");
                 setClearViewState();
-                this.lastViewFocused.setSelected(true);
+                this.lastViewFocused.setFocusableInTouchMode(true);
+                this.lastViewFocused.requestFocus();
+                this.lastViewFocused.setFocusableInTouchMode(false);
+                Log.i(str, "refreshLastViewFocused: lastViewFocused=" + this.lastViewFocused.getId());
                 return;
             }
             return;
         }
         View view2 = this.lastViewFocused;
-        if (view2 == null || view2.isSelected()) {
-            Log.i(TAG, "refreshLastViewFocused: lastViewFocused null  ");
+        if (view2 != null && !view2.isSelected()) {
+            this.lastViewFocused.setFocusableInTouchMode(true);
+            this.lastViewFocused.requestFocus();
+            this.lastViewFocused.setFocusableInTouchMode(false);
+            Log.i(TAG, "refreshLastViewFocused: lastViewFocused=" + this.lastViewFocused.getId());
             return;
         }
-        this.lastViewFocused.setFocusableInTouchMode(true);
-        this.lastViewFocused.requestFocus();
-        this.lastViewFocused.setFocusableInTouchMode(false);
-        Log.i(TAG, "refreshLastViewFocused: lastViewFocused=" + this.lastViewFocused.getId());
+        Log.i(TAG, "refreshLastViewFocused: lastViewFocused null  ");
     }
 
     public void refreshLastSel() {
@@ -1452,14 +1692,23 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     private void registerBtContentObserver() {
-        this.contentResolver.registerContentObserver(Settings.System.getUriFor(KeyConfig.Android_Bt_Switch), false, new ContentObserver(new Handler()) {
+        this.contentResolver.registerContentObserver(Settings.System.getUriFor(KeyConfig.Android_Bt_Switch), false, new ContentObserver(new Handler()) { // from class: com.wits.ksw.launcher.model.LauncherViewModel.15
+            @Override // android.database.ContentObserver
             public void onChange(boolean selfChange, Uri uri) {
                 LauncherViewModel.this.setBtState();
             }
         });
-        this.contentResolver.registerContentObserver(Settings.System.getUriFor("ksw_bluetooth"), false, new ContentObserver(new Handler()) {
+        this.contentResolver.registerContentObserver(Settings.System.getUriFor("btSwitch"), false, new ContentObserver(new Handler()) { // from class: com.wits.ksw.launcher.model.LauncherViewModel.16
+            @Override // android.database.ContentObserver
             public void onChange(boolean selfChange, Uri uri) {
-                LauncherViewModel.this.setPhoneConState(Settings.System.getInt(LauncherViewModel.this.contentResolver, "ksw_bluetooth", 0));
+                LauncherViewModel.this.setBtState();
+            }
+        });
+        this.contentResolver.registerContentObserver(Settings.System.getUriFor("ksw_bluetooth"), false, new ContentObserver(new Handler()) { // from class: com.wits.ksw.launcher.model.LauncherViewModel.17
+            @Override // android.database.ContentObserver
+            public void onChange(boolean selfChange, Uri uri) {
+                int bluetooth = Settings.System.getInt(LauncherViewModel.this.contentResolver, "ksw_bluetooth", 0);
+                LauncherViewModel.this.setPhoneConState(bluetooth);
                 LauncherViewModel.this.setBtState();
             }
         });
@@ -1478,6 +1727,8 @@ public class LauncherViewModel extends BaseViewModel {
     private void registerOtherReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(NaviInfo.AUTONAVI_STANDARD_BROADCAST_SEND);
+        intentFilter.addAction("android.intent.action.PACKAGE_REMOVED");
+        intentFilter.addDataScheme("package");
         this.context.registerReceiver(this.otherReceiver, intentFilter);
     }
 
@@ -1486,28 +1737,26 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     public void setBtState() {
-        String btOff = Settings.System.getString(this.contentResolver, KeyConfig.Android_Bt_Switch);
-        String str = TAG;
-        Log.d(str, "setBtState:android_Bt_Switch===" + btOff);
-        if (TextUtils.equals(btOff, TxzMessage.TXZ_DISMISS)) {
-            this.btState.set(this.context.getString(R.string.bt_text_bt_closed));
-            return;
-        }
+        int btOff = Settings.System.getInt(this.contentResolver, KeyConfig.Android_Bt_Switch, 1);
+        int btSwitch = Settings.System.getInt(this.contentResolver, "btSwitch", 1);
         int state = Settings.System.getInt(this.contentResolver, "ksw_bluetooth", 0);
-        Log.d(str, "setBtState:ksw_bluetooth===" + state);
-        if (state == 1) {
-            this.btState.set(this.context.getString(R.string.ksw_id7_connected_phone));
+        Log.d(TAG, "setBtState:android_Bt_Switch==" + btOff + " ksw_bluetooth==" + state + " btSwitch==" + btSwitch);
+        if (btOff == 0 || btSwitch == 0) {
+            this.btState.set(this.context.getString(C0899R.string.bt_text_bt_closed));
+        } else if (state == 1) {
+            this.btState.set(this.context.getString(C0899R.string.ksw_id7_connected_phone));
         } else {
-            this.btState.set(this.context.getString(R.string.ksw_id7_not_connected_phone));
+            this.btState.set(this.context.getString(C0899R.string.ksw_id7_not_connected_phone));
         }
     }
 
     public void setMonthDay(Date date) {
-        String month2 = KswUtils.formatMonth(date);
-        String day2 = KswUtils.formatDay(date);
-        this.month.set(month2);
-        this.day.set(day2);
-        Log.i(TAG, "setMonthDay: times:-------------->>>" + new SimpleDateFormat(KswUtils.is24Hour() ? "yyyy/MM/dd hh:mm:ss" : "yyyy/M/d h:m:s").format(date));
+        String month = KswUtils.formatMonth(date);
+        String day = KswUtils.formatDay(date);
+        this.month.set(month);
+        this.day.set(day);
+        String times = new SimpleDateFormat(KswUtils.is24Hour() ? "yyyy/MM/dd hh:mm:ss" : "yyyy/M/d h:m:s").format(date);
+        Log.i(TAG, "setMonthDay: times:-------------->>>" + times);
     }
 
     public void refreshNaviInfo(Intent intent) {
@@ -1538,8 +1787,7 @@ public class LauncherViewModel extends BaseViewModel {
                 }
                 this.naviInfo.showGuideView.set(0);
             }
-        } else if (iKey_type != 10019) {
-        } else {
+        } else if (iKey_type == 10019) {
             if (iExtra_state == 2 || iExtra_state == 9 || iExtra_state == 12) {
                 this.naviInfo.showGuideView.set(8);
             }
@@ -1548,7 +1796,8 @@ public class LauncherViewModel extends BaseViewModel {
 
     public void btnMusicPrev() {
         try {
-            if (PowerManagerApp.getStatusInt("lastMode") == 1) {
+            int lastMode = PowerManagerApp.getStatusInt("lastMode");
+            if (lastMode == 1) {
                 KswUtils.sendKeyDownUpSync(88);
             }
         } catch (RemoteException e) {
@@ -1558,7 +1807,8 @@ public class LauncherViewModel extends BaseViewModel {
 
     public void btnMusicPlayPause() {
         try {
-            if (PowerManagerApp.getStatusInt("lastMode") == 1) {
+            int lastMode = PowerManagerApp.getStatusInt("lastMode");
+            if (lastMode == 1) {
                 KswUtils.sendKeyDownUpSync(85);
             }
         } catch (RemoteException e) {
@@ -1568,7 +1818,8 @@ public class LauncherViewModel extends BaseViewModel {
 
     public void btnMusicNext() {
         try {
-            if (PowerManagerApp.getStatusInt("lastMode") == 1) {
+            int lastMode = PowerManagerApp.getStatusInt("lastMode");
+            if (lastMode == 1) {
                 KswUtils.sendKeyDownUpSync(87);
             }
         } catch (RemoteException e) {
@@ -1576,23 +1827,30 @@ public class LauncherViewModel extends BaseViewModel {
         }
     }
 
+    public static void setPempId8SpeedRotation(ImageView imageView, int rota) {
+        Log.i(TAG, "setPempId8SpeedRotation: carInfo.unit.get()=" + carInfo.unit.get());
+        float rotaa = (float) (rota * 0.72d);
+        setSpeedRotationBet(imageView, rotaa);
+    }
+
     public static void setRotation(ImageView imageView, int rota) {
-        setSpeedRotationBet(imageView, (float) rota);
+        setSpeedRotationBet(imageView, rota);
     }
 
     public static void setSpeedRotation(ImageView imageView, int rota) {
         if (KswUtils.ismph()) {
-            setSpeedRotationBet(imageView, new BigDecimal((((double) rota) / 0.621d) * 0.968d).floatValue());
-        } else {
-            setSpeedRotationBet(imageView, (float) rota);
+            BigDecimal result = new BigDecimal((rota / 0.621d) * 0.968d);
+            setSpeedRotationBet(imageView, result.floatValue());
+            return;
         }
+        setSpeedRotationBet(imageView, rota);
     }
 
     public static void setSpeedRotationBet(ImageView imageView, float rota) {
         int delay = McuImpl.getInstance().carInfo.delay.get().intValue();
         ObjectAnimator objectAnimator = animatorMaps.get(Integer.valueOf(imageView.getId()));
         if (objectAnimator == null) {
-            objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{rota});
+            objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", rota);
             animatorMaps.put(Integer.valueOf(imageView.getId()), objectAnimator);
         }
         int duration = 150;
@@ -1607,8 +1865,8 @@ public class LauncherViewModel extends BaseViewModel {
             imageView.setRotation(rota);
             return;
         }
-        objectAnimator.setDuration((long) delay);
-        objectAnimator.setFloatValues(new float[]{rota});
+        objectAnimator.setDuration(delay);
+        objectAnimator.setFloatValues(rota);
         objectAnimator.start();
     }
 
@@ -1627,27 +1885,26 @@ public class LauncherViewModel extends BaseViewModel {
                 tmpSpeed = 160.0f;
             }
             base_angle = 15.0f;
-            base_offset = Math.round((float) Math.round((100.0f * tmpSpeed) / 20.0f));
+            base_offset = Math.round(Math.round((100.0f * tmpSpeed) / 20.0f));
         }
         int delay = McuImpl.getInstance().carInfo.delay.get().intValue();
         ObjectAnimator objectAnimator = animatorMaps.get(Integer.valueOf(imageView.getId()));
         if (objectAnimator == null) {
-            objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{tmpSpeed});
+            objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", tmpSpeed);
             animatorMaps.put(Integer.valueOf(imageView.getId()), objectAnimator);
         }
-        if (delay != 0 && delay <= 150) {
-            int i = delay;
+        if (delay != 0 && delay > 150) {
         }
         if (objectAnimator.isStarted()) {
             objectAnimator.cancel();
         }
-        float tmpSpeed2 = (float) Math.round((float) (Math.round(((float) base_offset) * base_angle) / 100));
+        float tmpSpeed2 = Math.round(Math.round(base_offset * base_angle) / 100);
         Log.d("liuhao", "setRotationBySpeed tmpSpeed 2 = " + tmpSpeed2);
         imageView.setRotation(0.2f + tmpSpeed2);
     }
 
-    /* access modifiers changed from: protected */
-    public void onCleared() {
+    @Override // com.wits.ksw.launcher.base.BaseViewModel, android.arch.lifecycle.ViewModel
+    protected void onCleared() {
         super.onCleared();
         Log.i(TAG, "onCleared: ");
         Disposable disposable = this.weatherSubscribe;
@@ -1658,12 +1915,20 @@ public class LauncherViewModel extends BaseViewModel {
 
     public void openID8Edit(View view) {
         Log.i(TAG, "openID8Edit: ");
-        openApp(new Intent(this.activity, ID8EditActivity.class));
+        Intent intent = new Intent(this.activity, ID8EditActivity.class);
+        openApp(intent);
     }
 
     public void openID8GsEdit(View view) {
         Log.i(TAG, "openID8GsEdit: ");
-        openApp(new Intent(this.activity, ID8GsEditActivity.class));
+        Intent intent = new Intent(this.activity, ID8GsEditActivity.class);
+        openApp(intent);
+    }
+
+    public void openID8PempEdit(View view) {
+        Log.i(TAG, "openID8PempEdit: ");
+        Intent intent = new Intent(this.activity, ID8PempEditActivity.class);
+        openApp(intent);
     }
 
     public void dashboardMusicLay(View view) {

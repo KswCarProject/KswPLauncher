@@ -13,6 +13,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicReference;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class BoundedSubscriber<T> extends AtomicReference<Subscription> implements FlowableSubscriber<T>, Subscription, Disposable, LambdaConsumerIntrospection {
     private static final long serialVersionUID = -7251123623727029452L;
     final int bufferSize;
@@ -23,15 +24,16 @@ public final class BoundedSubscriber<T> extends AtomicReference<Subscription> im
     final Consumer<? super T> onNext;
     final Consumer<? super Subscription> onSubscribe;
 
-    public BoundedSubscriber(Consumer<? super T> onNext2, Consumer<? super Throwable> onError2, Action onComplete2, Consumer<? super Subscription> onSubscribe2, int bufferSize2) {
-        this.onNext = onNext2;
-        this.onError = onError2;
-        this.onComplete = onComplete2;
-        this.onSubscribe = onSubscribe2;
-        this.bufferSize = bufferSize2;
-        this.limit = bufferSize2 - (bufferSize2 >> 2);
+    public BoundedSubscriber(Consumer<? super T> onNext, Consumer<? super Throwable> onError, Action onComplete, Consumer<? super Subscription> onSubscribe, int bufferSize) {
+        this.onNext = onNext;
+        this.onError = onError;
+        this.onComplete = onComplete;
+        this.onSubscribe = onSubscribe;
+        this.bufferSize = bufferSize;
+        this.limit = bufferSize - (bufferSize >> 2);
     }
 
+    @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
     public void onSubscribe(Subscription s) {
         if (SubscriptionHelper.setOnce(this, s)) {
             try {
@@ -44,6 +46,7 @@ public final class BoundedSubscriber<T> extends AtomicReference<Subscription> im
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onNext(T t) {
         if (!isDisposed()) {
             try {
@@ -51,32 +54,35 @@ public final class BoundedSubscriber<T> extends AtomicReference<Subscription> im
                 int c = this.consumed + 1;
                 if (c == this.limit) {
                     this.consumed = 0;
-                    ((Subscription) get()).request((long) this.limit);
-                    return;
+                    get().request(this.limit);
+                } else {
+                    this.consumed = c;
                 }
-                this.consumed = c;
             } catch (Throwable e) {
                 Exceptions.throwIfFatal(e);
-                ((Subscription) get()).cancel();
+                get().cancel();
                 onError(e);
             }
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onError(Throwable t) {
         if (get() != SubscriptionHelper.CANCELLED) {
             lazySet(SubscriptionHelper.CANCELLED);
             try {
                 this.onError.accept(t);
+                return;
             } catch (Throwable e) {
                 Exceptions.throwIfFatal(e);
                 RxJavaPlugins.onError(new CompositeException(t, e));
+                return;
             }
-        } else {
-            RxJavaPlugins.onError(t);
         }
+        RxJavaPlugins.onError(t);
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onComplete() {
         if (get() != SubscriptionHelper.CANCELLED) {
             lazySet(SubscriptionHelper.CANCELLED);
@@ -89,22 +95,27 @@ public final class BoundedSubscriber<T> extends AtomicReference<Subscription> im
         }
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public void dispose() {
         cancel();
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public boolean isDisposed() {
         return get() == SubscriptionHelper.CANCELLED;
     }
 
+    @Override // org.reactivestreams.Subscription
     public void request(long n) {
-        ((Subscription) get()).request(n);
+        get().request(n);
     }
 
+    @Override // org.reactivestreams.Subscription
     public void cancel() {
         SubscriptionHelper.cancel(this);
     }
 
+    @Override // io.reactivex.observers.LambdaConsumerIntrospection
     public boolean hasCustomOnError() {
         return this.onError != Functions.ON_ERROR_MISSING;
     }

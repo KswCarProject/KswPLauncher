@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class KswId7MainPage2Fragment extends ViewDataBinding {
     public final ImageView ivArrow;
     public final LinearLayout llCarCard;
@@ -23,17 +24,17 @@ public abstract class KswId7MainPage2Fragment extends ViewDataBinding {
     protected LauncherViewModel mCarViewModel;
     public final TextView tvVideo;
 
-    public abstract void setCarViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setCarViewModel(LauncherViewModel CarViewModel);
 
-    protected KswId7MainPage2Fragment(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivArrow2, LinearLayout llCarCard2, LinearLayout llComputerCard2, LinearLayout llFileCard2, LinearLayout llLinkCard2, LinearLayout llVideoCard2, TextView tvVideo2) {
+    protected KswId7MainPage2Fragment(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivArrow, LinearLayout llCarCard, LinearLayout llComputerCard, LinearLayout llFileCard, LinearLayout llLinkCard, LinearLayout llVideoCard, TextView tvVideo) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.ivArrow = ivArrow2;
-        this.llCarCard = llCarCard2;
-        this.llComputerCard = llComputerCard2;
-        this.llFileCard = llFileCard2;
-        this.llLinkCard = llLinkCard2;
-        this.llVideoCard = llVideoCard2;
-        this.tvVideo = tvVideo2;
+        this.ivArrow = ivArrow;
+        this.llCarCard = llCarCard;
+        this.llComputerCard = llComputerCard;
+        this.llFileCard = llFileCard;
+        this.llLinkCard = llLinkCard;
+        this.llVideoCard = llVideoCard;
+        this.tvVideo = tvVideo;
     }
 
     public LauncherViewModel getCarViewModel() {
@@ -46,7 +47,7 @@ public abstract class KswId7MainPage2Fragment extends ViewDataBinding {
 
     @Deprecated
     public static KswId7MainPage2Fragment inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (KswId7MainPage2Fragment) ViewDataBinding.inflateInternal(inflater, R.layout.ksw_id7_main_page2, root, attachToRoot, component);
+        return (KswId7MainPage2Fragment) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.ksw_id7_main_page2, root, attachToRoot, component);
     }
 
     public static KswId7MainPage2Fragment inflate(LayoutInflater inflater) {
@@ -55,7 +56,7 @@ public abstract class KswId7MainPage2Fragment extends ViewDataBinding {
 
     @Deprecated
     public static KswId7MainPage2Fragment inflate(LayoutInflater inflater, Object component) {
-        return (KswId7MainPage2Fragment) ViewDataBinding.inflateInternal(inflater, R.layout.ksw_id7_main_page2, (ViewGroup) null, false, component);
+        return (KswId7MainPage2Fragment) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.ksw_id7_main_page2, null, false, component);
     }
 
     public static KswId7MainPage2Fragment bind(View view) {
@@ -64,6 +65,6 @@ public abstract class KswId7MainPage2Fragment extends ViewDataBinding {
 
     @Deprecated
     public static KswId7MainPage2Fragment bind(View view, Object component) {
-        return (KswId7MainPage2Fragment) bind(component, view, R.layout.ksw_id7_main_page2);
+        return (KswId7MainPage2Fragment) bind(component, view, C0899R.C0902layout.ksw_id7_main_page2);
     }
 }

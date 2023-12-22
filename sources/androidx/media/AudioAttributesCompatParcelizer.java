@@ -1,8 +1,10 @@
 package androidx.media;
 
-import android.support.v4.media.AudioAttributesCompat;
+import android.support.p001v4.media.AudioAttributesCompat;
+import android.support.p001v4.media.AudioAttributesImpl;
 import androidx.versionedparcelable.VersionedParcel;
 
+/* loaded from: classes.dex */
 public final class AudioAttributesCompatParcelizer {
     public static AudioAttributesCompat read(VersionedParcel parcel) {
         AudioAttributesCompat obj = new AudioAttributesCompat();

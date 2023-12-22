@@ -10,19 +10,21 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableTake<T> extends AbstractFlowableWithUpstream<T, T> {
     final long limit;
 
-    public FlowableTake(Flowable<T> source, long limit2) {
+    public FlowableTake(Flowable<T> source, long limit) {
         super(source);
-        this.limit = limit2;
+        this.limit = limit;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
-        this.source.subscribe(new TakeSubscriber(s, this.limit));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
+        this.source.subscribe((FlowableSubscriber) new TakeSubscriber(s, this.limit));
     }
 
+    /* loaded from: classes.dex */
     static final class TakeSubscriber<T> extends AtomicBoolean implements FlowableSubscriber<T>, Subscription {
         private static final long serialVersionUID = -5636543848937116287L;
         boolean done;
@@ -31,12 +33,13 @@ public final class FlowableTake<T> extends AbstractFlowableWithUpstream<T, T> {
         long remaining;
         Subscription upstream;
 
-        TakeSubscriber(Subscriber<? super T> actual, long limit2) {
+        TakeSubscriber(Subscriber<? super T> actual, long limit) {
             this.downstream = actual;
-            this.limit = limit2;
-            this.remaining = limit2;
+            this.limit = limit;
+            this.remaining = limit;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -50,22 +53,25 @@ public final class FlowableTake<T> extends AbstractFlowableWithUpstream<T, T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            if (!this.done) {
-                long j = this.remaining;
-                long j2 = j - 1;
-                this.remaining = j2;
-                if (j > 0) {
-                    boolean stop = j2 == 0;
-                    this.downstream.onNext(t);
-                    if (stop) {
-                        this.upstream.cancel();
-                        onComplete();
-                    }
+            if (this.done) {
+                return;
+            }
+            long j = this.remaining;
+            long j2 = j - 1;
+            this.remaining = j2;
+            if (j > 0) {
+                boolean stop = j2 == 0;
+                this.downstream.onNext(t);
+                if (stop) {
+                    this.upstream.cancel();
+                    onComplete();
                 }
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (!this.done) {
                 this.done = true;
@@ -76,6 +82,7 @@ public final class FlowableTake<T> extends AbstractFlowableWithUpstream<T, T> {
             RxJavaPlugins.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             if (!this.done) {
                 this.done = true;
@@ -83,16 +90,19 @@ public final class FlowableTake<T> extends AbstractFlowableWithUpstream<T, T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
-            if (SubscriptionHelper.validate(n)) {
-                if (get() || !compareAndSet(false, true) || n < this.limit) {
-                    this.upstream.request(n);
-                } else {
-                    this.upstream.request(LongCompanionObject.MAX_VALUE);
-                }
+            if (!SubscriptionHelper.validate(n)) {
+                return;
+            }
+            if (!get() && compareAndSet(false, true) && n >= this.limit) {
+                this.upstream.request(LongCompanionObject.MAX_VALUE);
+            } else {
+                this.upstream.request(n);
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             this.upstream.cancel();
         }

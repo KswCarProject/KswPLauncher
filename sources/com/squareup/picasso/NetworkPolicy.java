@@ -1,5 +1,6 @@
 package com.squareup.picasso;
 
+/* loaded from: classes.dex */
 public enum NetworkPolicy {
     NO_CACHE(1),
     NO_STORE(2),
@@ -19,7 +20,7 @@ public enum NetworkPolicy {
         return (OFFLINE.index & networkPolicy) != 0;
     }
 
-    private NetworkPolicy(int index2) {
-        this.index = index2;
+    NetworkPolicy(int index) {
+        this.index = index;
     }
 }

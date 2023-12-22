@@ -15,9 +15,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bmw_id8_ui.ID8LauncherConstants;
 
+/* loaded from: classes15.dex */
 public class ID8ProgressBar extends View {
     private static final String TAG = "ID8ProgressBar";
     private Bitmap bgBitmap;
@@ -43,18 +44,20 @@ public class ID8ProgressBar extends View {
     private int value;
     private int width;
 
+    /* loaded from: classes15.dex */
     public interface OnTouchChangeListener {
-        void onStartTrackingTouch(ID8ProgressBar iD8ProgressBar);
+        void onStartTrackingTouch(ID8ProgressBar progressBar);
 
-        void onStopTrackingTouch(ID8ProgressBar iD8ProgressBar);
+        void onStopTrackingTouch(ID8ProgressBar progressBar);
     }
 
+    /* loaded from: classes15.dex */
     public interface OnValueChangeListener {
-        void onValueChange(ID8ProgressBar iD8ProgressBar, int i, float f);
+        void onValueChange(ID8ProgressBar progressBar, int value, float progress);
     }
 
     public ID8ProgressBar(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public ID8ProgressBar(Context context, AttributeSet attrs) {
@@ -63,24 +66,25 @@ public class ID8ProgressBar extends View {
 
     public ID8ProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.contentObserver = new ContentObserver(new Handler()) {
+        this.contentObserver = new ContentObserver(new Handler()) { // from class: com.wits.ksw.launcher.bmw_id8_ui.view.ID8ProgressBar.1
+            @Override // android.database.ContentObserver
             public void onChange(boolean selfChange, Uri uri) {
                 Log.d(ID8ProgressBar.TAG, "onChange: 11111111111");
                 ID8ProgressBar.this.configSkinResources();
                 ID8ProgressBar.this.invalidate();
             }
         };
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ID8ProgressBar);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, C0899R.styleable.ID8ProgressBar);
         this.max = typedArray.getInt(0, 100);
         this.value = typedArray.getInt(1, 80);
-        this.thumbBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.id8_settings_system_progress_bar_slider);
-        this.bgBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.id8_settings_system_progress_bar_n);
-        this.progressBitmapYellow = BitmapFactory.decodeResource(context.getResources(), R.drawable.id8_settings_system_progress_bar_y_d);
-        this.progressAngeBitmapYellow = BitmapFactory.decodeResource(context.getResources(), R.drawable.id8_settings_system_progress_bar2_y_d);
-        this.progressBitmapBlue = BitmapFactory.decodeResource(context.getResources(), R.drawable.id8_settings_system_progress_bar_b_d);
-        this.progressAngeBitmapBlue = BitmapFactory.decodeResource(context.getResources(), R.drawable.id8_settings_system_progress_bar2_b_d);
-        this.progressBitmapRed = BitmapFactory.decodeResource(context.getResources(), R.drawable.id8_settings_system_progress_bar_r_d);
-        this.progressAngeBitmapRed = BitmapFactory.decodeResource(context.getResources(), R.drawable.id8_settings_system_progress_bar2_r_d);
+        this.thumbBitmap = BitmapFactory.decodeResource(context.getResources(), C0899R.C0900drawable.id8_settings_system_progress_bar_slider);
+        this.bgBitmap = BitmapFactory.decodeResource(context.getResources(), C0899R.C0900drawable.id8_settings_system_progress_bar_n);
+        this.progressBitmapYellow = BitmapFactory.decodeResource(context.getResources(), C0899R.C0900drawable.id8_settings_system_progress_bar_y_d);
+        this.progressAngeBitmapYellow = BitmapFactory.decodeResource(context.getResources(), C0899R.C0900drawable.id8_settings_system_progress_bar2_y_d);
+        this.progressBitmapBlue = BitmapFactory.decodeResource(context.getResources(), C0899R.C0900drawable.id8_settings_system_progress_bar_b_d);
+        this.progressAngeBitmapBlue = BitmapFactory.decodeResource(context.getResources(), C0899R.C0900drawable.id8_settings_system_progress_bar2_b_d);
+        this.progressBitmapRed = BitmapFactory.decodeResource(context.getResources(), C0899R.C0900drawable.id8_settings_system_progress_bar_r_d);
+        this.progressAngeBitmapRed = BitmapFactory.decodeResource(context.getResources(), C0899R.C0900drawable.id8_settings_system_progress_bar2_r_d);
         configSkinResources();
         this.offsetX = this.thumbBitmap.getWidth();
         this.srcRect = new Rect(0, 0, this.progressBitmap.getWidth(), this.progressBitmap.getHeight());
@@ -91,7 +95,7 @@ public class ID8ProgressBar extends View {
         registerSkinObserver(context);
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public void configSkinResources() {
         String skinName = ID8LauncherConstants.loadCurrentSkin();
         Log.w(TAG, "ID8ProgressBar: " + skinName);
@@ -111,20 +115,21 @@ public class ID8ProgressBar extends View {
         context.getContentResolver().registerContentObserver(Settings.System.getUriFor(ID8LauncherConstants.ID8_SKIN), true, this.contentObserver);
     }
 
-    public void setMax(int max2) {
-        this.max = max2;
+    public void setMax(int max) {
+        this.max = max;
         invalidate();
     }
 
     public void setValue(int i) {
-        if (i <= this.max && i >= 0) {
-            this.value = i;
-            setProgressBySet(i);
+        if (i > this.max || i < 0) {
+            return;
         }
+        this.value = i;
+        setProgressBySet(i);
     }
 
-    private void setProgressBySet(int value2) {
-        float percent = ((float) value2) / ((float) this.max);
+    private void setProgressBySet(int value) {
+        float percent = value / this.max;
         if (percent < 0.0f) {
             percent = 0.0f;
         }
@@ -134,13 +139,13 @@ public class ID8ProgressBar extends View {
         this.progress = percent;
         OnValueChangeListener onValueChangeListener = this.mValueChangeListener;
         if (onValueChangeListener != null) {
-            onValueChangeListener.onValueChange(this, value2, percent);
+            onValueChangeListener.onValueChange(this, value, percent);
         }
         invalidate();
     }
 
     private void setProgressByDrag(float x) {
-        float percent = x / ((float) (this.width - this.offsetX));
+        float percent = x / (this.width - this.offsetX);
         if (percent < 0.0f) {
             percent = 0.0f;
         }
@@ -148,9 +153,9 @@ public class ID8ProgressBar extends View {
             percent = 1.0f;
         }
         int i = this.max;
-        int i2 = (int) (((float) i) * percent);
+        int i2 = (int) (i * percent);
         this.value = i2;
-        float percent2 = ((float) i2) / ((float) i);
+        float percent2 = i2 / i;
         this.progress = percent2;
         OnValueChangeListener onValueChangeListener = this.mValueChangeListener;
         if (onValueChangeListener != null) {
@@ -159,21 +164,21 @@ public class ID8ProgressBar extends View {
         invalidate();
     }
 
-    /* access modifiers changed from: protected */
-    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    @Override // android.view.View
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         this.width = this.bgBitmap.getWidth();
-        int height2 = this.bgBitmap.getHeight();
-        this.height = height2;
-        setMeasuredDimension(this.width, height2);
+        int height = this.bgBitmap.getHeight();
+        this.height = height;
+        setMeasuredDimension(this.width, height);
     }
 
-    /* access modifiers changed from: protected */
-    public void onDraw(Canvas canvas) {
+    @Override // android.view.View
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawBitmap(this.bgBitmap, 0.0f, 0.0f, this.bgPatin);
         float f = this.progress;
-        int currentPosition = (int) (((float) (this.width - this.offsetX)) * f);
+        int currentPosition = (int) ((this.width - this.offsetX) * f);
         if (f == 0.0f) {
             canvas.drawBitmap(this.thumbBitmap, 0.0f, 0.0f, this.bgPatin);
             return;
@@ -182,11 +187,12 @@ public class ID8ProgressBar extends View {
         this.dstRect = rect;
         canvas.drawBitmap(this.progressBitmap, this.srcRect, rect, this.bgPatin);
         if (this.progress != 0.0f) {
-            canvas.drawBitmap(this.progressAngeBitmap, (float) (currentPosition - 3), 0.0f, this.bgPatin);
+            canvas.drawBitmap(this.progressAngeBitmap, currentPosition - 3, 0.0f, this.bgPatin);
         }
-        canvas.drawBitmap(this.thumbBitmap, (float) currentPosition, 0.0f, this.bgPatin);
+        canvas.drawBitmap(this.thumbBitmap, currentPosition, 0.0f, this.bgPatin);
     }
 
+    @Override // android.view.View
     public boolean onTouchEvent(MotionEvent event) {
         float x;
         OnTouchChangeListener onTouchChangeListener;
@@ -198,20 +204,22 @@ public class ID8ProgressBar extends View {
             return true;
         }
         int i = this.offsetX;
-        if (x2 < ((float) i)) {
+        if (x2 < i) {
             x = 0.0f;
         } else {
-            x = x2 - ((float) i);
+            x = x2 - i;
         }
         Log.w(TAG, "onTouchEvent: x : " + x);
         setProgressByDrag(x);
         return true;
     }
 
+    @Override // android.view.View
     public boolean isClickable() {
         return true;
     }
 
+    @Override // android.view.View
     public boolean hasFocusable() {
         return true;
     }

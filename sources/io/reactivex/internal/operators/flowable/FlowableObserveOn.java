@@ -18,27 +18,30 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, T> {
     final boolean delayError;
     final int prefetch;
     final Scheduler scheduler;
 
-    public FlowableObserveOn(Flowable<T> source, Scheduler scheduler2, boolean delayError2, int prefetch2) {
+    public FlowableObserveOn(Flowable<T> source, Scheduler scheduler, boolean delayError, int prefetch) {
         super(source);
-        this.scheduler = scheduler2;
-        this.delayError = delayError2;
-        this.prefetch = prefetch2;
+        this.scheduler = scheduler;
+        this.delayError = delayError;
+        this.prefetch = prefetch;
     }
 
+    @Override // io.reactivex.Flowable
     public void subscribeActual(Subscriber<? super T> s) {
         Scheduler.Worker worker = this.scheduler.createWorker();
         if (s instanceof ConditionalSubscriber) {
-            this.source.subscribe(new ObserveOnConditionalSubscriber((ConditionalSubscriber) s, worker, this.delayError, this.prefetch));
+            this.source.subscribe((FlowableSubscriber) new ObserveOnConditionalSubscriber((ConditionalSubscriber) s, worker, this.delayError, this.prefetch));
         } else {
-            this.source.subscribe(new ObserveOnSubscriber(s, worker, this.delayError, this.prefetch));
+            this.source.subscribe((FlowableSubscriber) new ObserveOnSubscriber(s, worker, this.delayError, this.prefetch));
         }
     }
 
+    /* loaded from: classes.dex */
     static abstract class BaseObserveOnSubscriber<T> extends BasicIntQueueSubscription<T> implements FlowableSubscriber<T>, Runnable {
         private static final long serialVersionUID = -8241002408341274697L;
         volatile boolean cancelled;
@@ -55,37 +58,37 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
         Subscription upstream;
         final Scheduler.Worker worker;
 
-        /* access modifiers changed from: package-private */
-        public abstract void runAsync();
+        abstract void runAsync();
 
-        /* access modifiers changed from: package-private */
-        public abstract void runBackfused();
+        abstract void runBackfused();
 
-        /* access modifiers changed from: package-private */
-        public abstract void runSync();
+        abstract void runSync();
 
-        BaseObserveOnSubscriber(Scheduler.Worker worker2, boolean delayError2, int prefetch2) {
-            this.worker = worker2;
-            this.delayError = delayError2;
-            this.prefetch = prefetch2;
-            this.limit = prefetch2 - (prefetch2 >> 2);
+        BaseObserveOnSubscriber(Scheduler.Worker worker, boolean delayError, int prefetch) {
+            this.worker = worker;
+            this.delayError = delayError;
+            this.prefetch = prefetch;
+            this.limit = prefetch - (prefetch >> 2);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public final void onNext(T t) {
-            if (!this.done) {
-                if (this.sourceMode == 2) {
-                    trySchedule();
-                    return;
-                }
-                if (!this.queue.offer(t)) {
-                    this.upstream.cancel();
-                    this.error = new MissingBackpressureException("Queue is full?!");
-                    this.done = true;
-                }
-                trySchedule();
+            if (this.done) {
+                return;
             }
+            if (this.sourceMode == 2) {
+                trySchedule();
+                return;
+            }
+            if (!this.queue.offer(t)) {
+                this.upstream.cancel();
+                this.error = new MissingBackpressureException("Queue is full?!");
+                this.done = true;
+            }
+            trySchedule();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public final void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -96,6 +99,7 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
             trySchedule();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public final void onComplete() {
             if (!this.done) {
                 this.done = true;
@@ -103,6 +107,7 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public final void request(long n) {
             if (SubscriptionHelper.validate(n)) {
                 BackpressureHelper.add(this.requested, n);
@@ -110,24 +115,27 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public final void cancel() {
-            if (!this.cancelled) {
-                this.cancelled = true;
-                this.upstream.cancel();
-                this.worker.dispose();
-                if (!this.outputFused && getAndIncrement() == 0) {
-                    this.queue.clear();
-                }
+            if (this.cancelled) {
+                return;
+            }
+            this.cancelled = true;
+            this.upstream.cancel();
+            this.worker.dispose();
+            if (!this.outputFused && getAndIncrement() == 0) {
+                this.queue.clear();
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public final void trySchedule() {
-            if (getAndIncrement() == 0) {
-                this.worker.schedule(this);
+        final void trySchedule() {
+            if (getAndIncrement() != 0) {
+                return;
             }
+            this.worker.schedule(this);
         }
 
+        @Override // java.lang.Runnable
         public final void run() {
             if (this.outputFused) {
                 runBackfused();
@@ -138,63 +146,66 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public final boolean checkTerminated(boolean d, boolean empty, Subscriber<?> a) {
+        final boolean checkTerminated(boolean d, boolean empty, Subscriber<?> a) {
             if (this.cancelled) {
                 clear();
                 return true;
-            } else if (!d) {
-                return false;
-            } else {
-                if (!this.delayError) {
-                    Throwable e = this.error;
-                    if (e != null) {
+            } else if (d) {
+                if (this.delayError) {
+                    if (empty) {
                         this.cancelled = true;
-                        clear();
-                        a.onError(e);
-                        this.worker.dispose();
-                        return true;
-                    } else if (!empty) {
-                        return false;
-                    } else {
-                        this.cancelled = true;
-                        a.onComplete();
+                        Throwable e = this.error;
+                        if (e != null) {
+                            a.onError(e);
+                        } else {
+                            a.onComplete();
+                        }
                         this.worker.dispose();
                         return true;
                     }
-                } else if (!empty) {
                     return false;
-                } else {
+                }
+                Throwable e2 = this.error;
+                if (e2 != null) {
                     this.cancelled = true;
-                    Throwable e2 = this.error;
-                    if (e2 != null) {
-                        a.onError(e2);
-                    } else {
-                        a.onComplete();
-                    }
+                    clear();
+                    a.onError(e2);
                     this.worker.dispose();
                     return true;
+                } else if (empty) {
+                    this.cancelled = true;
+                    a.onComplete();
+                    this.worker.dispose();
+                    return true;
+                } else {
+                    return false;
                 }
+            } else {
+                return false;
             }
         }
 
+        @Override // io.reactivex.internal.fuseable.QueueFuseable
         public final int requestFusion(int requestedMode) {
-            if ((requestedMode & 2) == 0) {
-                return 0;
+            if ((requestedMode & 2) != 0) {
+                this.outputFused = true;
+                return 2;
             }
-            this.outputFused = true;
-            return 2;
+            return 0;
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public final void clear() {
             this.queue.clear();
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public final boolean isEmpty() {
             return this.queue.isEmpty();
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ObserveOnSubscriber<T> extends BaseObserveOnSubscriber<T> implements FlowableSubscriber<T> {
         private static final long serialVersionUID = -4547113800637756442L;
         final Subscriber<? super T> downstream;
@@ -204,6 +215,7 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
             this.downstream = actual;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -220,18 +232,18 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
                         this.sourceMode = 2;
                         this.queue = f;
                         this.downstream.onSubscribe(this);
-                        s.request((long) this.prefetch);
+                        s.request(this.prefetch);
                         return;
                     }
                 }
                 this.queue = new SpscArrayQueue(this.prefetch);
                 this.downstream.onSubscribe(this);
-                s.request((long) this.prefetch);
+                s.request(this.prefetch);
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void runSync() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableObserveOn.BaseObserveOnSubscriber
+        void runSync() {
             int missed = 1;
             Subscriber<? super T> a = this.downstream;
             SimpleQueue<T> q = this.queue;
@@ -240,19 +252,18 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
                 long r = this.requested.get();
                 while (e != r) {
                     try {
-                        T v = q.poll();
-                        if (!this.cancelled) {
-                            if (v == null) {
-                                this.cancelled = true;
-                                a.onComplete();
-                                this.worker.dispose();
-                                return;
-                            }
-                            a.onNext(v);
-                            e++;
-                        } else {
+                        Object obj = (T) q.poll();
+                        if (this.cancelled) {
                             return;
                         }
+                        if (obj == null) {
+                            this.cancelled = true;
+                            a.onComplete();
+                            this.worker.dispose();
+                            return;
+                        }
+                        a.onNext(obj);
+                        e++;
                     } catch (Throwable ex) {
                         Exceptions.throwIfFatal(ex);
                         this.cancelled = true;
@@ -262,31 +273,30 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
                         return;
                     }
                 }
-                if (!this.cancelled) {
-                    if (q.isEmpty()) {
-                        this.cancelled = true;
-                        a.onComplete();
-                        this.worker.dispose();
+                if (this.cancelled) {
+                    return;
+                }
+                if (q.isEmpty()) {
+                    this.cancelled = true;
+                    a.onComplete();
+                    this.worker.dispose();
+                    return;
+                }
+                int w = get();
+                if (missed == w) {
+                    this.produced = e;
+                    missed = addAndGet(-missed);
+                    if (missed == 0) {
                         return;
                     }
-                    int w = get();
-                    if (missed == w) {
-                        this.produced = e;
-                        missed = addAndGet(-missed);
-                        if (missed == 0) {
-                            return;
-                        }
-                    } else {
-                        missed = w;
-                    }
                 } else {
-                    return;
+                    missed = w;
                 }
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void runAsync() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableObserveOn.BaseObserveOnSubscriber
+        void runAsync() {
             int missed = 1;
             Subscriber<? super T> a = this.downstream;
             SimpleQueue<T> q = this.queue;
@@ -295,27 +305,23 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
                 long r = this.requested.get();
                 while (e != r) {
                     boolean d = this.done;
-                    boolean empty = true;
                     try {
-                        T v = q.poll();
-                        if (v != null) {
-                            empty = false;
-                        }
-                        if (!checkTerminated(d, empty, a)) {
-                            if (empty) {
-                                break;
-                            }
-                            a.onNext(v);
-                            e++;
-                            if (e == ((long) this.limit)) {
-                                if (r != LongCompanionObject.MAX_VALUE) {
-                                    r = this.requested.addAndGet(-e);
-                                }
-                                this.upstream.request(e);
-                                e = 0;
-                            }
-                        } else {
+                        Object obj = (T) q.poll();
+                        boolean empty = obj == null;
+                        if (checkTerminated(d, empty, a)) {
                             return;
+                        }
+                        if (empty) {
+                            break;
+                        }
+                        a.onNext(obj);
+                        e++;
+                        if (e == this.limit) {
+                            if (r != LongCompanionObject.MAX_VALUE) {
+                                r = this.requested.addAndGet(-e);
+                            }
+                            this.upstream.request(e);
+                            e = 0;
                         }
                     } catch (Throwable ex) {
                         Exceptions.throwIfFatal(ex);
@@ -327,25 +333,24 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
                         return;
                     }
                 }
-                if (e != r || !checkTerminated(this.done, q.isEmpty(), a)) {
-                    int w = get();
-                    if (missed == w) {
-                        this.produced = e;
-                        missed = addAndGet(-missed);
-                        if (missed == 0) {
-                            return;
-                        }
-                    } else {
-                        missed = w;
+                if (e == r && checkTerminated(this.done, q.isEmpty(), a)) {
+                    return;
+                }
+                int w = get();
+                if (missed == w) {
+                    this.produced = e;
+                    missed = addAndGet(-missed);
+                    if (missed == 0) {
+                        return;
                     }
                 } else {
-                    return;
+                    missed = w;
                 }
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void runBackfused() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableObserveOn.BaseObserveOnSubscriber
+        void runBackfused() {
             int missed = 1;
             while (!this.cancelled) {
                 boolean d = this.done;
@@ -368,12 +373,13 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
             }
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public T poll() throws Exception {
             T v = this.queue.poll();
-            if (!(v == null || this.sourceMode == 1)) {
+            if (v != null && this.sourceMode != 1) {
                 long p = this.produced + 1;
-                if (p == ((long) this.limit)) {
-                    this.produced = 0;
+                if (p == this.limit) {
+                    this.produced = 0L;
                     this.upstream.request(p);
                 } else {
                     this.produced = p;
@@ -383,6 +389,7 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ObserveOnConditionalSubscriber<T> extends BaseObserveOnSubscriber<T> {
         private static final long serialVersionUID = 644624475404284533L;
         long consumed;
@@ -393,6 +400,7 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
             this.downstream = actual;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -409,18 +417,18 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
                         this.sourceMode = 2;
                         this.queue = f;
                         this.downstream.onSubscribe(this);
-                        s.request((long) this.prefetch);
+                        s.request(this.prefetch);
                         return;
                     }
                 }
                 this.queue = new SpscArrayQueue(this.prefetch);
                 this.downstream.onSubscribe(this);
-                s.request((long) this.prefetch);
+                s.request(this.prefetch);
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void runSync() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableObserveOn.BaseObserveOnSubscriber
+        void runSync() {
             int missed = 1;
             ConditionalSubscriber<? super T> a = this.downstream;
             SimpleQueue<T> q = this.queue;
@@ -429,18 +437,17 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
                 long r = this.requested.get();
                 while (e != r) {
                     try {
-                        T v = q.poll();
-                        if (!this.cancelled) {
-                            if (v == null) {
-                                this.cancelled = true;
-                                a.onComplete();
-                                this.worker.dispose();
-                                return;
-                            } else if (a.tryOnNext(v)) {
-                                e++;
-                            }
-                        } else {
+                        Object obj = (T) q.poll();
+                        if (this.cancelled) {
                             return;
+                        }
+                        if (obj == null) {
+                            this.cancelled = true;
+                            a.onComplete();
+                            this.worker.dispose();
+                            return;
+                        } else if (a.tryOnNext(obj)) {
+                            e++;
                         }
                     } catch (Throwable ex) {
                         Exceptions.throwIfFatal(ex);
@@ -451,31 +458,30 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
                         return;
                     }
                 }
-                if (!this.cancelled) {
-                    if (q.isEmpty()) {
-                        this.cancelled = true;
-                        a.onComplete();
-                        this.worker.dispose();
+                if (this.cancelled) {
+                    return;
+                }
+                if (q.isEmpty()) {
+                    this.cancelled = true;
+                    a.onComplete();
+                    this.worker.dispose();
+                    return;
+                }
+                int w = get();
+                if (missed == w) {
+                    this.produced = e;
+                    missed = addAndGet(-missed);
+                    if (missed == 0) {
                         return;
                     }
-                    int w = get();
-                    if (missed == w) {
-                        this.produced = e;
-                        missed = addAndGet(-missed);
-                        if (missed == 0) {
-                            return;
-                        }
-                    } else {
-                        missed = w;
-                    }
                 } else {
-                    return;
+                    missed = w;
                 }
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void runAsync() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableObserveOn.BaseObserveOnSubscriber
+        void runAsync() {
             int missed = 1;
             ConditionalSubscriber<? super T> a = this.downstream;
             SimpleQueue<T> q = this.queue;
@@ -485,26 +491,22 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
                 long r = this.requested.get();
                 while (emitted != r) {
                     boolean d = this.done;
-                    boolean empty = true;
                     try {
-                        T v = q.poll();
-                        if (v != null) {
-                            empty = false;
-                        }
-                        if (!checkTerminated(d, empty, a)) {
-                            if (empty) {
-                                break;
-                            }
-                            if (a.tryOnNext(v)) {
-                                emitted++;
-                            }
-                            polled++;
-                            if (polled == ((long) this.limit)) {
-                                this.upstream.request(polled);
-                                polled = 0;
-                            }
-                        } else {
+                        Object obj = (T) q.poll();
+                        boolean empty = obj == null;
+                        if (checkTerminated(d, empty, a)) {
                             return;
+                        }
+                        if (empty) {
+                            break;
+                        }
+                        if (a.tryOnNext(obj)) {
+                            emitted++;
+                        }
+                        polled++;
+                        if (polled == this.limit) {
+                            this.upstream.request(polled);
+                            polled = 0;
                         }
                     } catch (Throwable ex) {
                         Exceptions.throwIfFatal(ex);
@@ -516,26 +518,25 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
                         return;
                     }
                 }
-                if (emitted != r || !checkTerminated(this.done, q.isEmpty(), a)) {
-                    int w = get();
-                    if (missed == w) {
-                        this.produced = emitted;
-                        this.consumed = polled;
-                        missed = addAndGet(-missed);
-                        if (missed == 0) {
-                            return;
-                        }
-                    } else {
-                        missed = w;
+                if (emitted == r && checkTerminated(this.done, q.isEmpty(), a)) {
+                    return;
+                }
+                int w = get();
+                if (missed == w) {
+                    this.produced = emitted;
+                    this.consumed = polled;
+                    missed = addAndGet(-missed);
+                    if (missed == 0) {
+                        return;
                     }
                 } else {
-                    return;
+                    missed = w;
                 }
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void runBackfused() {
+        @Override // io.reactivex.internal.operators.flowable.FlowableObserveOn.BaseObserveOnSubscriber
+        void runBackfused() {
             int missed = 1;
             while (!this.cancelled) {
                 boolean d = this.done;
@@ -558,12 +559,13 @@ public final class FlowableObserveOn<T> extends AbstractFlowableWithUpstream<T, 
             }
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public T poll() throws Exception {
             T v = this.queue.poll();
-            if (!(v == null || this.sourceMode == 1)) {
+            if (v != null && this.sourceMode != 1) {
                 long p = this.consumed + 1;
-                if (p == ((long) this.limit)) {
-                    this.consumed = 0;
+                if (p == this.limit) {
+                    this.consumed = 0L;
                     this.upstream.request(p);
                 } else {
                     this.consumed = p;

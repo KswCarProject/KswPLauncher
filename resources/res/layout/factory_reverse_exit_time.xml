@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
     <RadioGroup android:id="@+id/reverse_exit_time_radiogroup" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="30dp" android:checkedButton="@+id/rdb_funbt2">
         <com.wits.ksw.settings.utlis_view.RtlRadioButton android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/reverse_exit_time_agreement" android:layout_width="match_parent" android:layout_height="wrap_content" android:button="@drawable/rad_btn_sel" android:text="@string/reverse_exit_time_agreement"/>
         <com.wits.ksw.settings.utlis_view.RtlRadioButton android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/boot_record_mode_custom" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="30dp" android:button="@drawable/rad_btn_sel" android:text="@string/reverse_exit_time_custom"/>

@@ -5,9 +5,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
+/* loaded from: classes10.dex */
 public class ToastUtils {
-    /* access modifiers changed from: private */
-    public static Toast mToast;
+    private static Toast mToast;
     private static Handler sMainThreadHandler;
 
     public static Handler getMainThreadHandler() {
@@ -26,7 +26,8 @@ public class ToastUtils {
         if (toast != null) {
             toast.cancel();
         }
-        getMainThreadHandler().post(new Runnable() {
+        getMainThreadHandler().post(new Runnable() { // from class: com.wits.ksw.settings.utlis_view.ToastUtils.1
+            @Override // java.lang.Runnable
             public void run() {
                 Toast unused = ToastUtils.mToast = Toast.makeText(context.getApplicationContext(), message, duration);
                 ToastUtils.mToast.show();
@@ -34,11 +35,11 @@ public class ToastUtils {
         });
     }
 
-    public static void showToastLong(Context context, String message) {
+    public static void showToastLong(final Context context, final String message) {
         showToast(context, message, 1);
     }
 
-    public static void showToastShort(Context context, String message) {
+    public static void showToastShort(final Context context, final String message) {
         showToast(context, message, 0);
     }
 }

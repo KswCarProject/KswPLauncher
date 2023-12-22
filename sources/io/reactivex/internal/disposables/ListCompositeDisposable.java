@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public final class ListCompositeDisposable implements Disposable, DisposableContainer {
     volatile boolean disposed;
     List<Disposable> resources;
@@ -16,41 +17,46 @@ public final class ListCompositeDisposable implements Disposable, DisposableCont
     public ListCompositeDisposable() {
     }
 
-    public ListCompositeDisposable(Disposable... resources2) {
-        ObjectHelper.requireNonNull(resources2, "resources is null");
+    public ListCompositeDisposable(Disposable... resources) {
+        ObjectHelper.requireNonNull(resources, "resources is null");
         this.resources = new LinkedList();
-        for (Disposable d : resources2) {
+        for (Disposable d : resources) {
             ObjectHelper.requireNonNull(d, "Disposable item is null");
             this.resources.add(d);
         }
     }
 
-    public ListCompositeDisposable(Iterable<? extends Disposable> resources2) {
-        ObjectHelper.requireNonNull(resources2, "resources is null");
+    public ListCompositeDisposable(Iterable<? extends Disposable> resources) {
+        ObjectHelper.requireNonNull(resources, "resources is null");
         this.resources = new LinkedList();
-        for (Disposable d : resources2) {
+        for (Disposable d : resources) {
             ObjectHelper.requireNonNull(d, "Disposable item is null");
             this.resources.add(d);
         }
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public void dispose() {
-        if (!this.disposed) {
-            synchronized (this) {
-                if (!this.disposed) {
-                    this.disposed = true;
-                    List<Disposable> set = this.resources;
-                    this.resources = null;
-                    dispose(set);
-                }
+        if (this.disposed) {
+            return;
+        }
+        synchronized (this) {
+            if (this.disposed) {
+                return;
             }
+            this.disposed = true;
+            List<Disposable> set = this.resources;
+            this.resources = null;
+            dispose(set);
         }
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public boolean isDisposed() {
         return this.disposed;
     }
 
+    @Override // io.reactivex.internal.disposables.DisposableContainer
     public boolean add(Disposable d) {
         ObjectHelper.requireNonNull(d, "d is null");
         if (!this.disposed) {
@@ -58,7 +64,7 @@ public final class ListCompositeDisposable implements Disposable, DisposableCont
                 if (!this.disposed) {
                     List<Disposable> set = this.resources;
                     if (set == null) {
-                        set = new LinkedList<>();
+                        set = new LinkedList();
                         this.resources = set;
                     }
                     set.add(d);
@@ -77,7 +83,7 @@ public final class ListCompositeDisposable implements Disposable, DisposableCont
                 if (!this.disposed) {
                     List<Disposable> set = this.resources;
                     if (set == null) {
-                        set = new LinkedList<>();
+                        set = new LinkedList();
                         this.resources = set;
                     }
                     for (Disposable d : ds) {
@@ -94,88 +100,68 @@ public final class ListCompositeDisposable implements Disposable, DisposableCont
         return false;
     }
 
+    @Override // io.reactivex.internal.disposables.DisposableContainer
     public boolean remove(Disposable d) {
-        if (!delete(d)) {
-            return false;
+        if (delete(d)) {
+            d.dispose();
+            return true;
         }
-        d.dispose();
-        return true;
+        return false;
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:17:0x0021, code lost:
-        return false;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public boolean delete(io.reactivex.disposables.Disposable r4) {
-        /*
-            r3 = this;
-            java.lang.String r0 = "Disposable item is null"
-            io.reactivex.internal.functions.ObjectHelper.requireNonNull(r4, (java.lang.String) r0)
-            boolean r0 = r3.disposed
-            r1 = 0
-            if (r0 == 0) goto L_0x000b
-            return r1
-        L_0x000b:
-            monitor-enter(r3)
-            boolean r0 = r3.disposed     // Catch:{ all -> 0x0022 }
-            if (r0 == 0) goto L_0x0012
-            monitor-exit(r3)     // Catch:{ all -> 0x0022 }
-            return r1
-        L_0x0012:
-            java.util.List<io.reactivex.disposables.Disposable> r0 = r3.resources     // Catch:{ all -> 0x0022 }
-            if (r0 == 0) goto L_0x0020
-            boolean r2 = r0.remove(r4)     // Catch:{ all -> 0x0022 }
-            if (r2 != 0) goto L_0x001d
-            goto L_0x0020
-        L_0x001d:
-            monitor-exit(r3)     // Catch:{ all -> 0x0022 }
-            r0 = 1
-            return r0
-        L_0x0020:
-            monitor-exit(r3)     // Catch:{ all -> 0x0022 }
-            return r1
-        L_0x0022:
-            r0 = move-exception
-            monitor-exit(r3)     // Catch:{ all -> 0x0022 }
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.disposables.ListCompositeDisposable.delete(io.reactivex.disposables.Disposable):boolean");
+    @Override // io.reactivex.internal.disposables.DisposableContainer
+    public boolean delete(Disposable d) {
+        ObjectHelper.requireNonNull(d, "Disposable item is null");
+        if (this.disposed) {
+            return false;
+        }
+        synchronized (this) {
+            if (this.disposed) {
+                return false;
+            }
+            List<Disposable> set = this.resources;
+            if (set != null && set.remove(d)) {
+                return true;
+            }
+            return false;
+        }
     }
 
     public void clear() {
-        if (!this.disposed) {
-            synchronized (this) {
-                if (!this.disposed) {
-                    List<Disposable> set = this.resources;
-                    this.resources = null;
-                    dispose(set);
-                }
+        if (this.disposed) {
+            return;
+        }
+        synchronized (this) {
+            if (this.disposed) {
+                return;
             }
+            List<Disposable> set = this.resources;
+            this.resources = null;
+            dispose(set);
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void dispose(List<Disposable> set) {
-        if (set != null) {
-            List<Throwable> errors = null;
-            for (Disposable o : set) {
-                try {
-                    o.dispose();
-                } catch (Throwable ex) {
-                    Exceptions.throwIfFatal(ex);
-                    if (errors == null) {
-                        errors = new ArrayList<>();
-                    }
-                    errors.add(ex);
+    void dispose(List<Disposable> set) {
+        if (set == null) {
+            return;
+        }
+        List<Throwable> errors = null;
+        for (Disposable o : set) {
+            try {
+                o.dispose();
+            } catch (Throwable ex) {
+                Exceptions.throwIfFatal(ex);
+                if (errors == null) {
+                    errors = new ArrayList<>();
                 }
+                errors.add(ex);
             }
-            if (errors == null) {
-                return;
-            }
+        }
+        if (errors != null) {
             if (errors.size() == 1) {
                 throw ExceptionHelper.wrapOrThrow(errors.get(0));
             }
-            throw new CompositeException((Iterable<? extends Throwable>) errors);
+            throw new CompositeException(errors);
         }
     }
 }

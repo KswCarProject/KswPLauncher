@@ -3,7 +3,7 @@ package android.support.constraint.motion;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.RectF;
-import android.support.constraint.R;
+import android.support.constraint.C0088R;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseIntArray;
@@ -13,67 +13,64 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/* loaded from: classes.dex */
 public class KeyTrigger extends Key {
     public static final int KEY_TYPE = 5;
     static final String NAME = "KeyTrigger";
     private static final String TAG = "KeyTrigger";
-    RectF mCollisionRect = new RectF();
-    /* access modifiers changed from: private */
-    public String mCross = null;
-    private int mCurveFit = -1;
     private Method mFireCross;
-    private boolean mFireCrossReset = true;
     private float mFireLastPos;
     private Method mFireNegativeCross;
-    private boolean mFireNegativeReset = true;
     private Method mFirePositiveCross;
-    private boolean mFirePositiveReset = true;
-    /* access modifiers changed from: private */
-    public float mFireThreshold = Float.NaN;
-    /* access modifiers changed from: private */
-    public String mNegativeCross = null;
-    /* access modifiers changed from: private */
-    public String mPositiveCross = null;
-    /* access modifiers changed from: private */
-    public boolean mPostLayout = false;
-    RectF mTargetRect = new RectF();
-    /* access modifiers changed from: private */
-    public int mTriggerCollisionId = UNSET;
+    private int mCurveFit = -1;
+    private String mCross = null;
+    private int mTriggerReceiver = UNSET;
+    private String mNegativeCross = null;
+    private String mPositiveCross = null;
+    private int mTriggerID = UNSET;
+    private int mTriggerCollisionId = UNSET;
     private View mTriggerCollisionView = null;
-    /* access modifiers changed from: private */
-    public int mTriggerID = UNSET;
-    /* access modifiers changed from: private */
-    public int mTriggerReceiver = UNSET;
     float mTriggerSlack = 0.1f;
+    private boolean mFireCrossReset = true;
+    private boolean mFireNegativeReset = true;
+    private boolean mFirePositiveReset = true;
+    private float mFireThreshold = Float.NaN;
+    private boolean mPostLayout = false;
+    RectF mCollisionRect = new RectF();
+    RectF mTargetRect = new RectF();
 
     public KeyTrigger() {
         this.mType = 5;
-        this.mCustomConstraints = new HashMap();
+        this.mCustomConstraints = new HashMap<>();
     }
 
+    @Override // android.support.constraint.motion.Key
     public void load(Context context, AttributeSet attrs) {
-        Loader.read(this, context.obtainStyledAttributes(attrs, R.styleable.KeyTrigger), context);
+        TypedArray a = context.obtainStyledAttributes(attrs, C0088R.styleable.KeyTrigger);
+        Loader.read(this, a, context);
     }
 
-    /* access modifiers changed from: package-private */
-    public int getCurveFit() {
+    int getCurveFit() {
         return this.mCurveFit;
     }
 
-    public void getAttributeNames(HashSet<String> hashSet) {
+    @Override // android.support.constraint.motion.Key
+    public void getAttributeNames(HashSet<String> attributes) {
     }
 
-    public void addValues(HashMap<String, SplineSet> hashMap) {
+    @Override // android.support.constraint.motion.Key
+    public void addValues(HashMap<String, SplineSet> splines) {
     }
 
+    @Override // android.support.constraint.motion.Key
     public void setValue(String tag, Object value) {
     }
 
     private void setUpRect(RectF rect, View child, boolean postLayout) {
-        rect.top = (float) child.getTop();
-        rect.bottom = (float) child.getBottom();
-        rect.left = (float) child.getLeft();
-        rect.right = (float) child.getRight();
+        rect.top = child.getTop();
+        rect.bottom = child.getBottom();
+        rect.left = child.getLeft();
+        rect.right = child.getRight();
         if (postLayout) {
             child.getMatrix().mapRect(rect);
         }
@@ -89,7 +86,8 @@ public class KeyTrigger extends Key {
             }
             setUpRect(this.mCollisionRect, this.mTriggerCollisionView, this.mPostLayout);
             setUpRect(this.mTargetRect, child, this.mPostLayout);
-            if (this.mCollisionRect.intersect(this.mTargetRect)) {
+            boolean in = this.mCollisionRect.intersect(this.mTargetRect);
+            if (in) {
                 if (this.mFireCrossReset) {
                     fireCross = true;
                     this.mFireCrossReset = false;
@@ -113,7 +111,8 @@ public class KeyTrigger extends Key {
         } else {
             if (this.mFireCrossReset) {
                 float f = this.mFireThreshold;
-                if ((pos - f) * (this.mFireLastPos - f) < 0.0f) {
+                float lastOffset = this.mFireLastPos - f;
+                if ((pos - f) * lastOffset < 0.0f) {
                     fireCross = true;
                     this.mFireCrossReset = false;
                 }
@@ -123,7 +122,8 @@ public class KeyTrigger extends Key {
             if (this.mFireNegativeReset) {
                 float f2 = this.mFireThreshold;
                 float offset = pos - f2;
-                if (offset * (this.mFireLastPos - f2) < 0.0f && offset < 0.0f) {
+                float lastOffset2 = this.mFireLastPos - f2;
+                if (offset * lastOffset2 < 0.0f && offset < 0.0f) {
                     fireNegative = true;
                     this.mFireNegativeReset = false;
                 }
@@ -133,7 +133,8 @@ public class KeyTrigger extends Key {
             if (this.mFirePositiveReset) {
                 float f3 = this.mFireThreshold;
                 float offset2 = pos - f3;
-                if (offset2 * (this.mFireLastPos - f3) < 0.0f && offset2 > 0.0f) {
+                float lastOffset3 = this.mFireLastPos - f3;
+                if (offset2 * lastOffset3 < 0.0f && offset2 > 0.0f) {
                     firePositive = true;
                     this.mFirePositiveReset = false;
                 }
@@ -190,6 +191,7 @@ public class KeyTrigger extends Key {
         }
     }
 
+    /* loaded from: classes.dex */
     private static class Loader {
         private static final int COLLISION = 9;
         private static final int CROSS = 4;
@@ -209,16 +211,16 @@ public class KeyTrigger extends Key {
         static {
             SparseIntArray sparseIntArray = new SparseIntArray();
             mAttrMap = sparseIntArray;
-            sparseIntArray.append(R.styleable.KeyTrigger_framePosition, 8);
-            mAttrMap.append(R.styleable.KeyTrigger_onCross, 4);
-            mAttrMap.append(R.styleable.KeyTrigger_onNegativeCross, 1);
-            mAttrMap.append(R.styleable.KeyTrigger_onPositiveCross, 2);
-            mAttrMap.append(R.styleable.KeyTrigger_motionTarget, 7);
-            mAttrMap.append(R.styleable.KeyTrigger_triggerId, 6);
-            mAttrMap.append(R.styleable.KeyTrigger_triggerSlack, 5);
-            mAttrMap.append(R.styleable.KeyTrigger_motion_triggerOnCollision, 9);
-            mAttrMap.append(R.styleable.KeyTrigger_motion_postLayoutCollision, 10);
-            mAttrMap.append(R.styleable.KeyTrigger_triggerReceiver, 11);
+            sparseIntArray.append(C0088R.styleable.KeyTrigger_framePosition, 8);
+            mAttrMap.append(C0088R.styleable.KeyTrigger_onCross, 4);
+            mAttrMap.append(C0088R.styleable.KeyTrigger_onNegativeCross, 1);
+            mAttrMap.append(C0088R.styleable.KeyTrigger_onPositiveCross, 2);
+            mAttrMap.append(C0088R.styleable.KeyTrigger_motionTarget, 7);
+            mAttrMap.append(C0088R.styleable.KeyTrigger_triggerId, 6);
+            mAttrMap.append(C0088R.styleable.KeyTrigger_triggerSlack, 5);
+            mAttrMap.append(C0088R.styleable.KeyTrigger_motion_triggerOnCollision, 9);
+            mAttrMap.append(C0088R.styleable.KeyTrigger_motion_postLayoutCollision, 10);
+            mAttrMap.append(C0088R.styleable.KeyTrigger_triggerReceiver, 11);
         }
 
         public static void read(KeyTrigger c, TypedArray a, Context context) {
@@ -227,50 +229,45 @@ public class KeyTrigger extends Key {
                 int attr = a.getIndex(i);
                 switch (mAttrMap.get(attr)) {
                     case 1:
-                        String unused = c.mNegativeCross = a.getString(attr);
+                        c.mNegativeCross = a.getString(attr);
                         continue;
                     case 2:
-                        String unused2 = c.mPositiveCross = a.getString(attr);
+                        c.mPositiveCross = a.getString(attr);
                         continue;
                     case 4:
-                        String unused3 = c.mCross = a.getString(attr);
+                        c.mCross = a.getString(attr);
                         continue;
                     case 5:
                         c.mTriggerSlack = a.getFloat(attr, c.mTriggerSlack);
                         continue;
                     case 6:
-                        int unused4 = c.mTriggerID = a.getResourceId(attr, c.mTriggerID);
+                        c.mTriggerID = a.getResourceId(attr, c.mTriggerID);
                         continue;
                     case 7:
-                        if (!MotionLayout.IS_IN_EDIT_MODE) {
-                            if (a.peekValue(attr).type != 3) {
-                                c.mTargetId = a.getResourceId(attr, c.mTargetId);
-                                break;
-                            } else {
-                                c.mTargetString = a.getString(attr);
-                                break;
-                            }
-                        } else {
+                        if (MotionLayout.IS_IN_EDIT_MODE) {
                             c.mTargetId = a.getResourceId(attr, c.mTargetId);
                             if (c.mTargetId == -1) {
                                 c.mTargetString = a.getString(attr);
-                                break;
                             } else {
                                 continue;
                             }
+                        } else if (a.peekValue(attr).type == 3) {
+                            c.mTargetString = a.getString(attr);
+                        } else {
+                            c.mTargetId = a.getResourceId(attr, c.mTargetId);
                         }
                     case 8:
                         c.mFramePosition = a.getInteger(attr, c.mFramePosition);
-                        float unused5 = c.mFireThreshold = (((float) c.mFramePosition) + 0.5f) / 100.0f;
+                        c.mFireThreshold = (c.mFramePosition + 0.5f) / 100.0f;
                         continue;
                     case 9:
-                        int unused6 = c.mTriggerCollisionId = a.getResourceId(attr, c.mTriggerCollisionId);
+                        c.mTriggerCollisionId = a.getResourceId(attr, c.mTriggerCollisionId);
                         continue;
                     case 10:
-                        boolean unused7 = c.mPostLayout = a.getBoolean(attr, c.mPostLayout);
+                        c.mPostLayout = a.getBoolean(attr, c.mPostLayout);
                         continue;
                     case 11:
-                        int unused8 = c.mTriggerReceiver = a.getResourceId(attr, c.mTriggerReceiver);
+                        c.mTriggerReceiver = a.getResourceId(attr, c.mTriggerReceiver);
                         break;
                 }
                 Log.e("KeyTrigger", "unused attribute 0x" + Integer.toHexString(attr) + "   " + mAttrMap.get(attr));

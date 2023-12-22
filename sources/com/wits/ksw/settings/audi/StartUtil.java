@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import com.wits.ksw.settings.id7.FactoryActivity;
 
+/* loaded from: classes13.dex */
 public class StartUtil {
     public static final String TYPE_SEL = "TYPE_SEL";
     public static final String VALUE_MUSIC = "VALUE_MUSIC";
@@ -89,7 +90,8 @@ public class StartUtil {
     }
 
     public static void SettingsActivity(Activity activity) {
-        activity.startActivity(new Intent("android.settings.SETTINGS"));
+        Intent intent = new Intent("android.settings.SETTINGS");
+        activity.startActivity(intent);
     }
 
     public static void FactoryActivity(Context activity) {

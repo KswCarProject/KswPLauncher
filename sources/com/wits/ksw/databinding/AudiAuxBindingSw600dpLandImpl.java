@@ -1,18 +1,20 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.SeekBarBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
+import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi.vm.AudiSystemViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi.p007vm.AudiSystemViewModel;
 
+/* loaded from: classes7.dex */
 public class AudiAuxBindingSw600dpLandImpl extends AudiAuxBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -23,9 +25,9 @@ public class AudiAuxBindingSw600dpLandImpl extends AudiAuxBinding {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.hzMediaLinearLayout, 5);
-        sparseIntArray.put(R.id.audio_seekbar_title, 6);
-        sparseIntArray.put(R.id.hzCallLinearLayout, 7);
+        sparseIntArray.put(C0899R.C0901id.hzMediaLinearLayout, 5);
+        sparseIntArray.put(C0899R.C0901id.audio_seekbar_title, 6);
+        sparseIntArray.put(C0899R.C0901id.hzCallLinearLayout, 7);
     }
 
     public AudiAuxBindingSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
@@ -33,28 +35,30 @@ public class AudiAuxBindingSw600dpLandImpl extends AudiAuxBinding {
     }
 
     private AudiAuxBindingSw600dpLandImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 2, bindings[1], bindings[2], bindings[6], bindings[7], bindings[5], bindings[0]);
-        this.mDirtyFlags = -1;
-        this.audioSeekbar.setTag((Object) null);
-        this.audioSeekbarRightText.setTag((Object) null);
-        this.linearLayout4.setTag((Object) null);
-        SeekBar seekBar = bindings[3];
+        super(bindingComponent, root, 2, (SeekBar) bindings[1], (TextView) bindings[2], (TextView) bindings[6], (LinearLayout) bindings[7], (LinearLayout) bindings[5], (ConstraintLayout) bindings[0]);
+        this.mDirtyFlags = -1L;
+        this.audioSeekbar.setTag(null);
+        this.audioSeekbarRightText.setTag(null);
+        this.linearLayout4.setTag(null);
+        SeekBar seekBar = (SeekBar) bindings[3];
         this.mboundView3 = seekBar;
-        seekBar.setTag((Object) null);
-        TextView textView = bindings[4];
+        seekBar.setTag(null);
+        TextView textView = (TextView) bindings[4];
         this.mboundView4 = textView;
-        textView.setTag((Object) null);
+        textView.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 8;
+            this.mDirtyFlags = 8L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -64,14 +68,16 @@ public class AudiAuxBindingSw600dpLandImpl extends AudiAuxBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((AudiSystemViewModel) variable);
+            return true;
         }
-        setVm((AudiSystemViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AudiAuxBinding
     public void setVm(AudiSystemViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -81,8 +87,8 @@ public class AudiAuxBindingSw600dpLandImpl extends AudiAuxBinding {
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmAux2Progress((ObservableInt) object, fieldId);
@@ -94,31 +100,31 @@ public class AudiAuxBindingSw600dpLandImpl extends AudiAuxBinding {
     }
 
     private boolean onChangeVmAux2Progress(ObservableInt VmAux2Progress, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeVmAux1Progress(ObservableInt VmAux1Progress, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         ObservableInt vmAux2Progress = null;
         int vmAux2ProgressGet = 0;
@@ -134,7 +140,7 @@ public class AudiAuxBindingSw600dpLandImpl extends AudiAuxBinding {
                 if (vm != null) {
                     vmAux2Progress = vm.aux2Progress;
                 }
-                updateRegistration(0, (Observable) vmAux2Progress);
+                updateRegistration(0, vmAux2Progress);
                 if (vmAux2Progress != null) {
                     vmAux2ProgressGet = vmAux2Progress.get();
                 }
@@ -144,13 +150,13 @@ public class AudiAuxBindingSw600dpLandImpl extends AudiAuxBinding {
                 if (vm != null) {
                     vmAux1Progress = vm.aux1Progress;
                 }
-                updateRegistration(1, (Observable) vmAux1Progress);
+                updateRegistration(1, vmAux1Progress);
                 if (vmAux1Progress != null) {
                     vmAux1ProgressGet = vmAux1Progress.get();
                 }
                 stringValueOfVmAux1Progress = String.valueOf(vmAux1ProgressGet);
             }
-            if (!((dirtyFlags & 12) == 0 || vm == null)) {
+            if ((dirtyFlags & 12) != 0 && vm != null) {
                 vmAux1ChangeListener = vm.aux1ChangeListener;
                 vmAux2ChangeListener = vm.aux2ChangeListener;
             }

@@ -1,5 +1,6 @@
 package com.wits.ksw.settings.als_id7_ui_set.interfaces;
 
+/* loaded from: classes4.dex */
 public interface AlsID7UiIUpdateTwoLayout {
-    void updateTwoLayout(int i, int i2);
+    void updateTwoLayout(int type, int shwoIndex);
 }

@@ -3,6 +3,7 @@ package io.reactivex.internal.disposables;
 import io.reactivex.disposables.Disposable;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class SequentialDisposable extends AtomicReference<Disposable> implements Disposable {
     private static final long serialVersionUID = -754898800686245608L;
 
@@ -21,11 +22,13 @@ public final class SequentialDisposable extends AtomicReference<Disposable> impl
         return DisposableHelper.replace(this, next);
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public void dispose() {
         DisposableHelper.dispose(this);
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public boolean isDisposed() {
-        return DisposableHelper.isDisposed((Disposable) get());
+        return DisposableHelper.isDisposed(get());
     }
 }

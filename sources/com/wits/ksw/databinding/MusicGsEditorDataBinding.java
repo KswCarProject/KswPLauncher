@@ -8,10 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bmw_id8_ui.view.RoundAngleImageView;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class MusicGsEditorDataBinding extends ViewDataBinding {
     public final ImageView gsId8IconEditBg;
     public final ImageView id8GsMusicEdit;
@@ -25,19 +26,19 @@ public abstract class MusicGsEditorDataBinding extends ViewDataBinding {
     public final TextView tvStrTime;
     public final TextView tvTotalTime;
 
-    public abstract void setMediaViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setMediaViewModel(LauncherViewModel MediaViewModel);
 
-    protected MusicGsEditorDataBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView gsId8IconEditBg2, ImageView id8GsMusicEdit2, RoundAngleImageView ivMusicAlbum2, ImageView musicId8GsNext2, ImageView musicId8GsPlayPause2, ImageView musicId8GsPrev2, TextView tvSongTitle2, TextView tvStrTime2, TextView tvTotalTime2) {
+    protected MusicGsEditorDataBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView gsId8IconEditBg, ImageView id8GsMusicEdit, RoundAngleImageView ivMusicAlbum, ImageView musicId8GsNext, ImageView musicId8GsPlayPause, ImageView musicId8GsPrev, TextView tvSongTitle, TextView tvStrTime, TextView tvTotalTime) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.gsId8IconEditBg = gsId8IconEditBg2;
-        this.id8GsMusicEdit = id8GsMusicEdit2;
-        this.ivMusicAlbum = ivMusicAlbum2;
-        this.musicId8GsNext = musicId8GsNext2;
-        this.musicId8GsPlayPause = musicId8GsPlayPause2;
-        this.musicId8GsPrev = musicId8GsPrev2;
-        this.tvSongTitle = tvSongTitle2;
-        this.tvStrTime = tvStrTime2;
-        this.tvTotalTime = tvTotalTime2;
+        this.gsId8IconEditBg = gsId8IconEditBg;
+        this.id8GsMusicEdit = id8GsMusicEdit;
+        this.ivMusicAlbum = ivMusicAlbum;
+        this.musicId8GsNext = musicId8GsNext;
+        this.musicId8GsPlayPause = musicId8GsPlayPause;
+        this.musicId8GsPrev = musicId8GsPrev;
+        this.tvSongTitle = tvSongTitle;
+        this.tvStrTime = tvStrTime;
+        this.tvTotalTime = tvTotalTime;
     }
 
     public LauncherViewModel getMediaViewModel() {
@@ -50,7 +51,7 @@ public abstract class MusicGsEditorDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static MusicGsEditorDataBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (MusicGsEditorDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_gs_music_edit, root, attachToRoot, component);
+        return (MusicGsEditorDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_gs_music_edit, root, attachToRoot, component);
     }
 
     public static MusicGsEditorDataBinding inflate(LayoutInflater inflater) {
@@ -59,7 +60,7 @@ public abstract class MusicGsEditorDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static MusicGsEditorDataBinding inflate(LayoutInflater inflater, Object component) {
-        return (MusicGsEditorDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_gs_music_edit, (ViewGroup) null, false, component);
+        return (MusicGsEditorDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_gs_music_edit, null, false, component);
     }
 
     public static MusicGsEditorDataBinding bind(View view) {
@@ -68,6 +69,6 @@ public abstract class MusicGsEditorDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static MusicGsEditorDataBinding bind(View view, Object component) {
-        return (MusicGsEditorDataBinding) bind(component, view, R.layout.fragment_gs_music_edit);
+        return (MusicGsEditorDataBinding) bind(component, view, C0899R.C0902layout.fragment_gs_music_edit);
     }
 }

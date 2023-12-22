@@ -9,40 +9,45 @@ import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Predicate;
 import io.reactivex.internal.disposables.DisposableHelper;
 
+/* loaded from: classes.dex */
 public final class MaybeFilterSingle<T> extends Maybe<T> {
     final Predicate<? super T> predicate;
     final SingleSource<T> source;
 
-    public MaybeFilterSingle(SingleSource<T> source2, Predicate<? super T> predicate2) {
-        this.source = source2;
-        this.predicate = predicate2;
+    public MaybeFilterSingle(SingleSource<T> source, Predicate<? super T> predicate) {
+        this.source = source;
+        this.predicate = predicate;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super T> observer) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super T> observer) {
         this.source.subscribe(new FilterMaybeObserver(observer, this.predicate));
     }
 
+    /* loaded from: classes.dex */
     static final class FilterMaybeObserver<T> implements SingleObserver<T>, Disposable {
         final MaybeObserver<? super T> downstream;
         final Predicate<? super T> predicate;
         Disposable upstream;
 
-        FilterMaybeObserver(MaybeObserver<? super T> actual, Predicate<? super T> predicate2) {
+        FilterMaybeObserver(MaybeObserver<? super T> actual, Predicate<? super T> predicate) {
             this.downstream = actual;
-            this.predicate = predicate2;
+            this.predicate = predicate;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             Disposable d = this.upstream;
             this.upstream = DisposableHelper.DISPOSED;
             d.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -50,9 +55,11 @@ public final class MaybeFilterSingle<T> extends Maybe<T> {
             }
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSuccess(T value) {
             try {
-                if (this.predicate.test(value)) {
+                boolean b = this.predicate.test(value);
+                if (b) {
                     this.downstream.onSuccess(value);
                 } else {
                     this.downstream.onComplete();
@@ -63,6 +70,7 @@ public final class MaybeFilterSingle<T> extends Maybe<T> {
             }
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
             this.downstream.onError(e);
         }

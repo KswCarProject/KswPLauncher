@@ -4,6 +4,7 @@ import com.ibm.icu.impl.CaseMapImpl;
 import com.ibm.icu.impl.UCaseProps;
 import java.util.Locale;
 
+/* loaded from: classes.dex */
 public abstract class CaseMap {
     @Deprecated
     protected int internalOptions;
@@ -14,7 +15,7 @@ public abstract class CaseMap {
         this.internalOptions = opt;
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public static int getCaseLocale(Locale locale) {
         if (locale == null) {
             locale = Locale.getDefault();
@@ -38,15 +39,16 @@ public abstract class CaseMap {
         return Fold.DEFAULT;
     }
 
+    /* loaded from: classes.dex */
     public static final class Lower extends CaseMap {
-        /* access modifiers changed from: private */
-        public static final Lower DEFAULT = new Lower(0);
+        private static final Lower DEFAULT = new Lower(0);
         private static final Lower OMIT_UNCHANGED = new Lower(16384);
 
         private Lower(int opt) {
             super(opt);
         }
 
+        @Override // com.ibm.icu.text.CaseMap
         public Lower omitUnchangedText() {
             return OMIT_UNCHANGED;
         }
@@ -56,19 +58,20 @@ public abstract class CaseMap {
         }
 
         public <A extends Appendable> A apply(Locale locale, CharSequence src, A dest, Edits edits) {
-            return CaseMapImpl.toLower(CaseMap.getCaseLocale(locale), this.internalOptions, src, dest, edits);
+            return (A) CaseMapImpl.toLower(CaseMap.getCaseLocale(locale), this.internalOptions, src, dest, edits);
         }
     }
 
+    /* loaded from: classes.dex */
     public static final class Upper extends CaseMap {
-        /* access modifiers changed from: private */
-        public static final Upper DEFAULT = new Upper(0);
+        private static final Upper DEFAULT = new Upper(0);
         private static final Upper OMIT_UNCHANGED = new Upper(16384);
 
         private Upper(int opt) {
             super(opt);
         }
 
+        @Override // com.ibm.icu.text.CaseMap
         public Upper omitUnchangedText() {
             return OMIT_UNCHANGED;
         }
@@ -78,13 +81,13 @@ public abstract class CaseMap {
         }
 
         public <A extends Appendable> A apply(Locale locale, CharSequence src, A dest, Edits edits) {
-            return CaseMapImpl.toUpper(CaseMap.getCaseLocale(locale), this.internalOptions, src, dest, edits);
+            return (A) CaseMapImpl.toUpper(CaseMap.getCaseLocale(locale), this.internalOptions, src, dest, edits);
         }
     }
 
+    /* loaded from: classes.dex */
     public static final class Title extends CaseMap {
-        /* access modifiers changed from: private */
-        public static final Title DEFAULT = new Title(0);
+        private static final Title DEFAULT = new Title(0);
         private static final Title OMIT_UNCHANGED = new Title(16384);
 
         private Title(int opt) {
@@ -99,6 +102,7 @@ public abstract class CaseMap {
             return new Title(CaseMapImpl.addTitleIteratorOption(this.internalOptions, 64));
         }
 
+        @Override // com.ibm.icu.text.CaseMap
         public Title omitUnchangedText() {
             if (this.internalOptions == 0 || this.internalOptions == 16384) {
                 return OMIT_UNCHANGED;
@@ -133,21 +137,22 @@ public abstract class CaseMap {
             }
             BreakIterator iter2 = CaseMapImpl.getTitleBreakIterator(locale, this.internalOptions, iter);
             iter2.setText(src);
-            return CaseMapImpl.toTitle(CaseMap.getCaseLocale(locale), this.internalOptions, iter2, src, dest, edits);
+            return (A) CaseMapImpl.toTitle(CaseMap.getCaseLocale(locale), this.internalOptions, iter2, src, dest, edits);
         }
     }
 
+    /* loaded from: classes.dex */
     public static final class Fold extends CaseMap {
-        /* access modifiers changed from: private */
-        public static final Fold DEFAULT = new Fold(0);
-        private static final Fold OMIT_UNCHANGED = new Fold(16384);
+        private static final Fold DEFAULT = new Fold(0);
         private static final Fold TURKIC = new Fold(1);
+        private static final Fold OMIT_UNCHANGED = new Fold(16384);
         private static final Fold TURKIC_OMIT_UNCHANGED = new Fold(16385);
 
         private Fold(int opt) {
             super(opt);
         }
 
+        @Override // com.ibm.icu.text.CaseMap
         public Fold omitUnchangedText() {
             return (this.internalOptions & 1) == 0 ? OMIT_UNCHANGED : TURKIC_OMIT_UNCHANGED;
         }
@@ -161,7 +166,7 @@ public abstract class CaseMap {
         }
 
         public <A extends Appendable> A apply(CharSequence src, A dest, Edits edits) {
-            return CaseMapImpl.fold(this.internalOptions, src, dest, edits);
+            return (A) CaseMapImpl.fold(this.internalOptions, src, dest, edits);
         }
     }
 }

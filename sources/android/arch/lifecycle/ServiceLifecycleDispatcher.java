@@ -3,6 +3,7 @@ package android.arch.lifecycle;
 import android.arch.lifecycle.Lifecycle;
 import android.os.Handler;
 
+/* loaded from: classes.dex */
 public class ServiceLifecycleDispatcher {
     private final Handler mHandler = new Handler();
     private DispatchRunnable mLastDispatchRunnable;
@@ -43,6 +44,7 @@ public class ServiceLifecycleDispatcher {
         return this.mRegistry;
     }
 
+    /* loaded from: classes.dex */
     static class DispatchRunnable implements Runnable {
         final Lifecycle.Event mEvent;
         private final LifecycleRegistry mRegistry;
@@ -53,6 +55,7 @@ public class ServiceLifecycleDispatcher {
             this.mEvent = event;
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             if (!this.mWasExecuted) {
                 this.mRegistry.handleLifecycleEvent(this.mEvent);

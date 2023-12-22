@@ -1,10 +1,14 @@
 package com.wits.ksw.settings.utlis_view;
 
+import java.lang.reflect.Method;
+
+/* loaded from: classes10.dex */
 public class SystemProperties {
     public static void set(String key, String val) {
         try {
             Class<?> systemProperties = Class.forName("android.os.SystemProperties");
-            systemProperties.getMethod("set", new Class[]{String.class, String.class}).invoke(systemProperties, new Object[]{key, val});
+            Method set = systemProperties.getMethod("set", String.class, String.class);
+            set.invoke(systemProperties, key, val);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -13,7 +17,8 @@ public class SystemProperties {
     public static String get(String key) {
         try {
             Class<?> systemProperties = Class.forName("android.os.SystemProperties");
-            return (String) systemProperties.getMethod("get", new Class[]{String.class}).invoke(systemProperties, new Object[]{key});
+            Method set = systemProperties.getMethod("get", String.class);
+            return (String) set.invoke(systemProperties, key);
         } catch (Exception e) {
             e.printStackTrace();
             return "";

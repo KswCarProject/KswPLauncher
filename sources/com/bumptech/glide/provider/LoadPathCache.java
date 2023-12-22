@@ -1,17 +1,16 @@
 package com.bumptech.glide.provider;
 
-import android.support.v4.util.ArrayMap;
-import android.support.v4.util.Pools;
+import android.support.p001v4.util.ArrayMap;
 import com.bumptech.glide.load.engine.DecodePath;
 import com.bumptech.glide.load.engine.LoadPath;
 import com.bumptech.glide.load.resource.transcode.UnitTranscoder;
 import com.bumptech.glide.util.MultiClassKey;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public class LoadPathCache {
-    private static final LoadPath<?, ?, ?> NO_PATHS_SIGNAL = new LoadPath(Object.class, Object.class, Object.class, Collections.singletonList(new DecodePath(Object.class, Object.class, Object.class, Collections.emptyList(), new UnitTranscoder(), (Pools.Pool<List<Throwable>>) null)), (Pools.Pool<List<Throwable>>) null);
+    private static final LoadPath<?, ?, ?> NO_PATHS_SIGNAL = new LoadPath<>(Object.class, Object.class, Object.class, Collections.singletonList(new DecodePath(Object.class, Object.class, Object.class, Collections.emptyList(), new UnitTranscoder(), null)), null);
     private final ArrayMap<MultiClassKey, LoadPath<?, ?, ?>> cache = new ArrayMap<>();
     private final AtomicReference<MultiClassKey> keyRef = new AtomicReference<>();
 
@@ -20,13 +19,13 @@ public class LoadPathCache {
     }
 
     public <Data, TResource, Transcode> LoadPath<Data, TResource, Transcode> get(Class<Data> dataClass, Class<TResource> resourceClass, Class<Transcode> transcodeClass) {
-        LoadPath<?, ?, ?> result;
+        LoadPath<Data, TResource, Transcode> loadPath;
         MultiClassKey key = getKey(dataClass, resourceClass, transcodeClass);
         synchronized (this.cache) {
-            result = this.cache.get(key);
+            loadPath = (LoadPath<Data, TResource, Transcode>) this.cache.get(key);
         }
         this.keyRef.set(key);
-        return result;
+        return loadPath;
     }
 
     public void put(Class<?> dataClass, Class<?> resourceClass, Class<?> transcodeClass, LoadPath<?, ?, ?> loadPath) {
@@ -36,7 +35,7 @@ public class LoadPathCache {
     }
 
     private MultiClassKey getKey(Class<?> dataClass, Class<?> resourceClass, Class<?> transcodeClass) {
-        MultiClassKey key = this.keyRef.getAndSet((Object) null);
+        MultiClassKey key = this.keyRef.getAndSet(null);
         if (key == null) {
             key = new MultiClassKey();
         }

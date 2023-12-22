@@ -1,6 +1,6 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.v4.util.Pools;
+import android.support.p001v4.util.Pools;
 import android.util.Log;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.ResourceDecoder;
@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public class DecodePath<DataType, ResourceType, Transcode> {
     private static final String TAG = "DecodePath";
     private final Class<DataType> dataClass;
@@ -19,20 +20,23 @@ public class DecodePath<DataType, ResourceType, Transcode> {
     private final Pools.Pool<List<Throwable>> listPool;
     private final ResourceTranscoder<ResourceType, Transcode> transcoder;
 
+    /* loaded from: classes.dex */
     interface DecodeCallback<ResourceType> {
         Resource<ResourceType> onResourceDecoded(Resource<ResourceType> resource);
     }
 
-    public DecodePath(Class<DataType> dataClass2, Class<ResourceType> resourceClass, Class<Transcode> transcodeClass, List<? extends ResourceDecoder<DataType, ResourceType>> decoders2, ResourceTranscoder<ResourceType, Transcode> transcoder2, Pools.Pool<List<Throwable>> listPool2) {
-        this.dataClass = dataClass2;
-        this.decoders = decoders2;
-        this.transcoder = transcoder2;
-        this.listPool = listPool2;
-        this.failureMessage = "Failed DecodePath{" + dataClass2.getSimpleName() + "->" + resourceClass.getSimpleName() + "->" + transcodeClass.getSimpleName() + "}";
+    public DecodePath(Class<DataType> dataClass, Class<ResourceType> resourceClass, Class<Transcode> transcodeClass, List<? extends ResourceDecoder<DataType, ResourceType>> decoders, ResourceTranscoder<ResourceType, Transcode> transcoder, Pools.Pool<List<Throwable>> listPool) {
+        this.dataClass = dataClass;
+        this.decoders = decoders;
+        this.transcoder = transcoder;
+        this.listPool = listPool;
+        this.failureMessage = "Failed DecodePath{" + dataClass.getSimpleName() + "->" + resourceClass.getSimpleName() + "->" + transcodeClass.getSimpleName() + "}";
     }
 
     public Resource<Transcode> decode(DataRewinder<DataType> rewinder, int width, int height, Options options, DecodeCallback<ResourceType> callback) throws GlideException {
-        return this.transcoder.transcode(callback.onResourceDecoded(decodeResource(rewinder, width, height, options)), options);
+        Resource<ResourceType> decoded = decodeResource(rewinder, width, height, options);
+        Resource<ResourceType> transformed = callback.onResourceDecoded(decoded);
+        return this.transcoder.transcode(transformed, options);
     }
 
     private Resource<ResourceType> decodeResource(DataRewinder<DataType> rewinder, int width, int height, Options options) throws GlideException {
@@ -48,10 +52,12 @@ public class DecodePath<DataType, ResourceType, Transcode> {
         Resource<ResourceType> result = null;
         int size = this.decoders.size();
         for (int i = 0; i < size; i++) {
-            ResourceDecoder<DataType, ResourceType> decoder = (ResourceDecoder) this.decoders.get(i);
+            ResourceDecoder<DataType, ResourceType> decoder = this.decoders.get(i);
             try {
-                if (decoder.handles(rewinder.rewindAndGet(), options)) {
-                    result = decoder.decode(rewinder.rewindAndGet(), width, height, options);
+                DataType data = rewinder.rewindAndGet();
+                if (decoder.handles(data, options)) {
+                    DataType data2 = rewinder.rewindAndGet();
+                    result = decoder.decode(data2, width, height, options);
                 }
             } catch (IOException | OutOfMemoryError | RuntimeException e) {
                 if (Log.isLoggable(TAG, 2)) {
@@ -63,10 +69,10 @@ public class DecodePath<DataType, ResourceType, Transcode> {
                 break;
             }
         }
-        if (result != null) {
-            return result;
+        if (result == null) {
+            throw new GlideException(this.failureMessage, new ArrayList(exceptions));
         }
-        throw new GlideException(this.failureMessage, (List<Throwable>) new ArrayList(exceptions));
+        return result;
     }
 
     public String toString() {

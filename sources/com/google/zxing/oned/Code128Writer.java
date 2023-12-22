@@ -4,10 +4,12 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.ibm.icu.text.SCSU;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class Code128Writer extends OneDimensionalCodeWriter {
     private static final int CODE_CODE_A = 101;
     private static final int CODE_CODE_B = 100;
@@ -21,11 +23,12 @@ public final class Code128Writer extends OneDimensionalCodeWriter {
     private static final int CODE_START_B = 104;
     private static final int CODE_START_C = 105;
     private static final int CODE_STOP = 106;
-    private static final char ESCAPE_FNC_1 = 'ñ';
-    private static final char ESCAPE_FNC_2 = 'ò';
-    private static final char ESCAPE_FNC_3 = 'ó';
-    private static final char ESCAPE_FNC_4 = 'ô';
+    private static final char ESCAPE_FNC_1 = '\u00f1';
+    private static final char ESCAPE_FNC_2 = '\u00f2';
+    private static final char ESCAPE_FNC_3 = '\u00f3';
+    private static final char ESCAPE_FNC_4 = '\u00f4';
 
+    /* loaded from: classes.dex */
     private enum CType {
         UNCODABLE,
         ONE_DIGIT,
@@ -33,33 +36,31 @@ public final class Code128Writer extends OneDimensionalCodeWriter {
         FNC_1
     }
 
+    @Override // com.google.zxing.oned.OneDimensionalCodeWriter, com.google.zxing.Writer
     public BitMatrix encode(String contents, BarcodeFormat format, int width, int height, Map<EncodeHintType, ?> hints) throws WriterException {
-        if (format == BarcodeFormat.CODE_128) {
-            return super.encode(contents, format, width, height, hints);
+        if (format != BarcodeFormat.CODE_128) {
+            throw new IllegalArgumentException("Can only encode CODE_128, but got ".concat(String.valueOf(format)));
         }
-        throw new IllegalArgumentException("Can only encode CODE_128, but got ".concat(String.valueOf(format)));
+        return super.encode(contents, format, width, height, hints);
     }
 
+    @Override // com.google.zxing.oned.OneDimensionalCodeWriter
     public boolean[] encode(String contents) {
         int patternIndex;
-        int patternIndex2;
-        String str = contents;
         int length = contents.length();
-        int length2 = length;
-        if (length <= 0 || length2 > 80) {
-            throw new IllegalArgumentException("Contents length should be between 1 and 80 characters, but got ".concat(String.valueOf(length2)));
+        if (length <= 0 || length > 80) {
+            throw new IllegalArgumentException("Contents length should be between 1 and 80 characters, but got ".concat(String.valueOf(length)));
         }
-        for (int i = 0; i < length2; i++) {
-            char charAt = str.charAt(i);
-            char c = charAt;
-            switch (charAt) {
-                case SCSU.UDEFINEX /*241*/:
-                case SCSU.URESERVED /*242*/:
-                case 243:
-                case 244:
+        for (int i = 0; i < length; i++) {
+            char c = contents.charAt(i);
+            switch (c) {
+                case SCSU.UDEFINEX /* 241 */:
+                case SCSU.URESERVED /* 242 */:
+                case '\u00f3':
+                case '\u00f4':
                     break;
                 default:
-                    if (c <= 127) {
+                    if (c <= '\u007f') {
                         break;
                     } else {
                         throw new IllegalArgumentException("Bad character in input: ".concat(String.valueOf(c)));
@@ -71,43 +72,43 @@ public final class Code128Writer extends OneDimensionalCodeWriter {
         int checkWeight = 1;
         int codeSet = 0;
         int position = 0;
-        while (position < length2) {
-            int chooseCode = chooseCode(str, position, codeSet);
-            int newCodeSet = chooseCode;
-            if (chooseCode == codeSet) {
-                switch (str.charAt(position)) {
-                    case SCSU.UDEFINEX /*241*/:
+        while (position < length) {
+            int newCodeSet = chooseCode(contents, position, codeSet);
+            if (newCodeSet == codeSet) {
+                switch (contents.charAt(position)) {
+                    case SCSU.UDEFINEX /* 241 */:
                         patternIndex = 102;
                         break;
-                    case SCSU.URESERVED /*242*/:
+                    case SCSU.URESERVED /* 242 */:
                         patternIndex = 97;
                         break;
-                    case 243:
+                    case '\u00f3':
                         patternIndex = 96;
                         break;
-                    case 244:
-                        if (codeSet != 101) {
-                            patternIndex = 100;
+                    case '\u00f4':
+                        if (codeSet == 101) {
+                            patternIndex = 101;
                             break;
                         } else {
-                            patternIndex = 101;
+                            patternIndex = 100;
                             break;
                         }
                     default:
                         switch (codeSet) {
                             case 100:
-                                patternIndex = str.charAt(position) - 32;
+                                int patternIndex2 = contents.charAt(position);
+                                patternIndex = patternIndex2 - 32;
                                 break;
                             case 101:
-                                int charAt2 = str.charAt(position) - ' ';
-                                patternIndex = charAt2;
-                                if (charAt2 < 0) {
+                                int charAt = contents.charAt(position) - ' ';
+                                patternIndex = charAt;
+                                if (charAt < 0) {
                                     patternIndex += 96;
                                     break;
                                 }
                                 break;
                             default:
-                                patternIndex = Integer.parseInt(str.substring(position, position + 2));
+                                patternIndex = Integer.parseInt(contents.substring(position, position + 2));
                                 position++;
                                 break;
                         }
@@ -117,17 +118,17 @@ public final class Code128Writer extends OneDimensionalCodeWriter {
                 if (codeSet == 0) {
                     switch (newCodeSet) {
                         case 100:
-                            patternIndex2 = 104;
+                            patternIndex = 104;
                             break;
                         case 101:
-                            patternIndex2 = 103;
+                            patternIndex = 103;
                             break;
                         default:
-                            patternIndex2 = 105;
+                            patternIndex = 105;
                             break;
                     }
                 } else {
-                    patternIndex2 = newCodeSet;
+                    patternIndex = newCodeSet;
                 }
                 codeSet = newCodeSet;
             }
@@ -140,8 +141,8 @@ public final class Code128Writer extends OneDimensionalCodeWriter {
         patterns.add(Code128Reader.CODE_PATTERNS[checkSum % 103]);
         patterns.add(Code128Reader.CODE_PATTERNS[106]);
         int codeWidth = 0;
-        for (int[] next : patterns) {
-            for (int width : r9.next()) {
+        for (int[] iArr : patterns) {
+            for (int width : iArr) {
                 codeWidth += width;
             }
         }
@@ -158,80 +159,58 @@ public final class Code128Writer extends OneDimensionalCodeWriter {
         if (start >= last) {
             return CType.UNCODABLE;
         }
-        char charAt = value.charAt(start);
-        char c = charAt;
-        if (charAt == 241) {
-            return CType.FNC_1;
+        char c = value.charAt(start);
+        if (c != '\u00f1') {
+            if (c < '0' || c > '9') {
+                return CType.UNCODABLE;
+            }
+            if (start + 1 >= last) {
+                return CType.ONE_DIGIT;
+            }
+            char c2 = value.charAt(start + 1);
+            if (c2 < '0' || c2 > '9') {
+                return CType.ONE_DIGIT;
+            }
+            return CType.TWO_DIGITS;
         }
-        if (c < '0' || c > '9') {
-            return CType.UNCODABLE;
-        }
-        if (start + 1 >= last) {
-            return CType.ONE_DIGIT;
-        }
-        char charAt2 = value.charAt(start + 1);
-        char c2 = charAt2;
-        if (charAt2 < '0' || c2 > '9') {
-            return CType.ONE_DIGIT;
-        }
-        return CType.TWO_DIGITS;
+        return CType.FNC_1;
     }
 
     private static int chooseCode(CharSequence value, int start, int oldCode) {
         CType lookahead;
+        CType lookahead2;
+        char c;
         CType findCType = findCType(value, start);
-        CType lookahead2 = findCType;
+        CType lookahead3 = findCType;
         if (findCType == CType.ONE_DIGIT) {
             return 100;
         }
-        if (lookahead2 == CType.UNCODABLE) {
-            if (start < value.length()) {
-                char charAt = value.charAt(start);
-                char c = charAt;
-                if (charAt < ' ' || (oldCode == 101 && c < '`')) {
-                    return 101;
-                }
-            }
-            return 100;
+        if (lookahead3 == CType.UNCODABLE) {
+            return (start >= value.length() || ((c = value.charAt(start)) >= ' ' && (oldCode != 101 || c >= '`'))) ? 100 : 101;
         } else if (oldCode == 99) {
             return 99;
         } else {
-            if (oldCode != 100) {
-                if (lookahead2 == CType.FNC_1) {
-                    lookahead2 = findCType(value, start + 1);
-                }
-                if (lookahead2 == CType.TWO_DIGITS) {
-                    return 99;
-                }
-                return 100;
-            } else if (lookahead2 == CType.FNC_1) {
-                return 100;
-            } else {
-                CType findCType2 = findCType(value, start + 2);
-                CType lookahead3 = findCType2;
-                if (findCType2 == CType.UNCODABLE || lookahead3 == CType.ONE_DIGIT) {
+            if (oldCode == 100) {
+                if (lookahead3 == CType.FNC_1 || (lookahead = findCType(value, start + 2)) == CType.UNCODABLE || lookahead == CType.ONE_DIGIT) {
                     return 100;
                 }
-                if (lookahead3 != CType.FNC_1) {
-                    int index = start + 4;
-                    while (true) {
-                        CType findCType3 = findCType(value, index);
-                        lookahead = findCType3;
-                        if (findCType3 != CType.TWO_DIGITS) {
-                            break;
-                        }
-                        index += 2;
-                    }
-                    if (lookahead == CType.ONE_DIGIT) {
-                        return 100;
-                    }
-                    return 99;
-                } else if (findCType(value, start + 3) == CType.TWO_DIGITS) {
-                    return 99;
-                } else {
-                    return 100;
+                if (lookahead == CType.FNC_1) {
+                    return findCType(value, start + 3) == CType.TWO_DIGITS ? 99 : 100;
                 }
+                int index = start + 4;
+                while (true) {
+                    lookahead2 = findCType(value, index);
+                    if (lookahead2 != CType.TWO_DIGITS) {
+                        break;
+                    }
+                    index += 2;
+                }
+                return lookahead2 == CType.ONE_DIGIT ? 100 : 99;
             }
+            if (lookahead3 == CType.FNC_1) {
+                lookahead3 = findCType(value, start + 1);
+            }
+            return lookahead3 == CType.TWO_DIGITS ? 99 : 100;
         }
     }
 }

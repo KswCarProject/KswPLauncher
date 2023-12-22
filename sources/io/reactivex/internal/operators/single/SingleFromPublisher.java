@@ -11,18 +11,20 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class SingleFromPublisher<T> extends Single<T> {
     final Publisher<? extends T> publisher;
 
-    public SingleFromPublisher(Publisher<? extends T> publisher2) {
-        this.publisher = publisher2;
+    public SingleFromPublisher(Publisher<? extends T> publisher) {
+        this.publisher = publisher;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         this.publisher.subscribe(new ToSingleObserver(observer));
     }
 
+    /* loaded from: classes.dex */
     static final class ToSingleObserver<T> implements FlowableSubscriber<T>, Disposable {
         volatile boolean disposed;
         boolean done;
@@ -30,10 +32,11 @@ public final class SingleFromPublisher<T> extends Single<T> {
         Subscription upstream;
         T value;
 
-        ToSingleObserver(SingleObserver<? super T> downstream2) {
-            this.downstream = downstream2;
+        ToSingleObserver(SingleObserver<? super T> downstream) {
+            this.downstream = downstream;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -42,19 +45,22 @@ public final class SingleFromPublisher<T> extends Single<T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            if (!this.done) {
-                if (this.value != null) {
-                    this.upstream.cancel();
-                    this.done = true;
-                    this.value = null;
-                    this.downstream.onError(new IndexOutOfBoundsException("Too many elements in the Publisher"));
-                    return;
-                }
-                this.value = t;
+            if (this.done) {
+                return;
             }
+            if (this.value != null) {
+                this.upstream.cancel();
+                this.done = true;
+                this.value = null;
+                this.downstream.onError(new IndexOutOfBoundsException("Too many elements in the Publisher"));
+                return;
+            }
+            this.value = t;
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -65,23 +71,27 @@ public final class SingleFromPublisher<T> extends Single<T> {
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                T v = this.value;
-                this.value = null;
-                if (v == null) {
-                    this.downstream.onError(new NoSuchElementException("The source Publisher is empty"));
-                } else {
-                    this.downstream.onSuccess(v);
-                }
+            if (this.done) {
+                return;
+            }
+            this.done = true;
+            T v = this.value;
+            this.value = null;
+            if (v == null) {
+                this.downstream.onError(new NoSuchElementException("The source Publisher is empty"));
+            } else {
+                this.downstream.onSuccess(v);
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.disposed;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.disposed = true;
             this.upstream.cancel();

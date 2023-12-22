@@ -1,12 +1,13 @@
 package android.arch.persistence.room;
 
-import android.arch.persistence.db.SupportSQLiteProgram;
-import android.arch.persistence.db.SupportSQLiteQuery;
+import android.arch.persistence.p000db.SupportSQLiteProgram;
+import android.arch.persistence.p000db.SupportSQLiteQuery;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
+/* loaded from: classes.dex */
 public class RoomSQLiteQuery implements SupportSQLiteQuery, SupportSQLiteProgram {
     private static final int BLOB = 5;
     static final int DESIRED_POOL_SIZE = 10;
@@ -27,37 +28,38 @@ public class RoomSQLiteQuery implements SupportSQLiteQuery, SupportSQLiteProgram
 
     public static RoomSQLiteQuery copyFrom(SupportSQLiteQuery supportSQLiteQuery) {
         RoomSQLiteQuery query = acquire(supportSQLiteQuery.getSql(), supportSQLiteQuery.getArgCount());
-        supportSQLiteQuery.bindTo(new SupportSQLiteProgram(query) {
-            final /* synthetic */ RoomSQLiteQuery val$query;
-
-            {
-                this.val$query = r1;
-            }
-
+        supportSQLiteQuery.bindTo(new SupportSQLiteProgram() { // from class: android.arch.persistence.room.RoomSQLiteQuery.1
+            @Override // android.arch.persistence.p000db.SupportSQLiteProgram
             public void bindNull(int index) {
-                this.val$query.bindNull(index);
+                RoomSQLiteQuery.this.bindNull(index);
             }
 
+            @Override // android.arch.persistence.p000db.SupportSQLiteProgram
             public void bindLong(int index, long value) {
-                this.val$query.bindLong(index, value);
+                RoomSQLiteQuery.this.bindLong(index, value);
             }
 
+            @Override // android.arch.persistence.p000db.SupportSQLiteProgram
             public void bindDouble(int index, double value) {
-                this.val$query.bindDouble(index, value);
+                RoomSQLiteQuery.this.bindDouble(index, value);
             }
 
+            @Override // android.arch.persistence.p000db.SupportSQLiteProgram
             public void bindString(int index, String value) {
-                this.val$query.bindString(index, value);
+                RoomSQLiteQuery.this.bindString(index, value);
             }
 
+            @Override // android.arch.persistence.p000db.SupportSQLiteProgram
             public void bindBlob(int index, byte[] value) {
-                this.val$query.bindBlob(index, value);
+                RoomSQLiteQuery.this.bindBlob(index, value);
             }
 
+            @Override // android.arch.persistence.p000db.SupportSQLiteProgram
             public void clearBindings() {
-                this.val$query.clearBindings();
+                RoomSQLiteQuery.this.clearBindings();
             }
 
+            @Override // java.io.Closeable, java.lang.AutoCloseable
             public void close() {
             }
         });
@@ -87,11 +89,10 @@ public class RoomSQLiteQuery implements SupportSQLiteQuery, SupportSQLiteProgram
         this.mLongBindings = new long[limit];
         this.mDoubleBindings = new double[limit];
         this.mStringBindings = new String[limit];
-        this.mBlobBindings = new byte[limit][];
+        this.mBlobBindings = new byte[limit];
     }
 
-    /* access modifiers changed from: package-private */
-    public void init(String query, int argCount) {
+    void init(String query, int argCount) {
         this.mQuery = query;
         this.mArgCount = argCount;
     }
@@ -122,14 +123,17 @@ public class RoomSQLiteQuery implements SupportSQLiteQuery, SupportSQLiteProgram
         }
     }
 
+    @Override // android.arch.persistence.p000db.SupportSQLiteQuery
     public String getSql() {
         return this.mQuery;
     }
 
+    @Override // android.arch.persistence.p000db.SupportSQLiteQuery
     public int getArgCount() {
         return this.mArgCount;
     }
 
+    @Override // android.arch.persistence.p000db.SupportSQLiteQuery
     public void bindTo(SupportSQLiteProgram program) {
         for (int index = 1; index <= this.mArgCount; index++) {
             switch (this.mBindingTypes[index]) {
@@ -152,30 +156,36 @@ public class RoomSQLiteQuery implements SupportSQLiteQuery, SupportSQLiteProgram
         }
     }
 
+    @Override // android.arch.persistence.p000db.SupportSQLiteProgram
     public void bindNull(int index) {
         this.mBindingTypes[index] = 1;
     }
 
+    @Override // android.arch.persistence.p000db.SupportSQLiteProgram
     public void bindLong(int index, long value) {
         this.mBindingTypes[index] = 2;
         this.mLongBindings[index] = value;
     }
 
+    @Override // android.arch.persistence.p000db.SupportSQLiteProgram
     public void bindDouble(int index, double value) {
         this.mBindingTypes[index] = 3;
         this.mDoubleBindings[index] = value;
     }
 
+    @Override // android.arch.persistence.p000db.SupportSQLiteProgram
     public void bindString(int index, String value) {
         this.mBindingTypes[index] = 4;
         this.mStringBindings[index] = value;
     }
 
+    @Override // android.arch.persistence.p000db.SupportSQLiteProgram
     public void bindBlob(int index, byte[] value) {
         this.mBindingTypes[index] = 5;
         this.mBlobBindings[index] = value;
     }
 
+    @Override // java.io.Closeable, java.lang.AutoCloseable
     public void close() {
     }
 
@@ -188,6 +198,7 @@ public class RoomSQLiteQuery implements SupportSQLiteQuery, SupportSQLiteProgram
         System.arraycopy(other.mDoubleBindings, 0, this.mDoubleBindings, 0, argCount);
     }
 
+    @Override // android.arch.persistence.p000db.SupportSQLiteProgram
     public void clearBindings() {
         Arrays.fill(this.mBindingTypes, 1);
         Arrays.fill(this.mStringBindings, (Object) null);

@@ -11,12 +11,13 @@ import java.io.StringReader;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/* loaded from: classes.dex */
 public final class JsonStreamParser implements Iterator<JsonElement> {
     private final Object lock;
     private final JsonReader parser;
 
     public JsonStreamParser(String json) {
-        this((Reader) new StringReader(json));
+        this(new StringReader(json));
     }
 
     public JsonStreamParser(Reader reader) {
@@ -26,31 +27,40 @@ public final class JsonStreamParser implements Iterator<JsonElement> {
         this.lock = new Object();
     }
 
+    /* JADX WARN: Can't rename method to resolve collision */
+    @Override // java.util.Iterator
     public JsonElement next() throws JsonParseException {
-        if (hasNext()) {
-            try {
-                return Streams.parse(this.parser);
-            } catch (StackOverflowError e) {
-                throw new JsonParseException("Failed parsing JSON source to Json", e);
-            } catch (OutOfMemoryError e2) {
-                throw new JsonParseException("Failed parsing JSON source to Json", e2);
-            } catch (JsonParseException e3) {
-                throw (e3.getCause() instanceof EOFException ? new NoSuchElementException() : e3);
-            }
-        } else {
+        if (!hasNext()) {
             throw new NoSuchElementException();
+        }
+        try {
+            return Streams.parse(this.parser);
+        } catch (JsonParseException e) {
+            if (e.getCause() instanceof EOFException) {
+                throw new NoSuchElementException();
+            }
+            throw e;
+        } catch (OutOfMemoryError e2) {
+            throw new JsonParseException("Failed parsing JSON source to Json", e2);
+        } catch (StackOverflowError e3) {
+            throw new JsonParseException("Failed parsing JSON source to Json", e3);
         }
     }
 
+    @Override // java.util.Iterator
     public boolean hasNext() {
         boolean z;
         synchronized (this.lock) {
             try {
-                z = this.parser.peek() != JsonToken.END_DOCUMENT;
-            } catch (MalformedJsonException e) {
-                throw new JsonSyntaxException((Throwable) e);
-            } catch (IOException e2) {
-                throw new JsonIOException((Throwable) e2);
+                try {
+                    try {
+                        z = this.parser.peek() != JsonToken.END_DOCUMENT;
+                    } catch (MalformedJsonException e) {
+                        throw new JsonSyntaxException(e);
+                    }
+                } catch (IOException e2) {
+                    throw new JsonIOException(e2);
+                }
             } catch (Throwable th) {
                 throw th;
             }
@@ -58,6 +68,7 @@ public final class JsonStreamParser implements Iterator<JsonElement> {
         return z;
     }
 
+    @Override // java.util.Iterator
     public void remove() {
         throw new UnsupportedOperationException();
     }

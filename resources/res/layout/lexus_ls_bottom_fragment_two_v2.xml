@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="horizontal" android:id="@+id/lexus_ls_ll_bottom_frag_two" android:tag="layout/lexus_ls_bottom_fragment_two_v2_0" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="40dp" android:layout_marginRight="40dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="horizontal" android:id="@+id/lexus_ls_ll_bottom_frag_two" android:tag="layout/lexus_ls_bottom_fragment_two_v2_0" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="40dp" android:layout_marginRight="40dp">
     <RelativeLayout android:orientation="vertical" style="@style/lexusLsBottomIvStyle">
         <ImageView android:id="@+id/iv_lexus_ls_dvr" android:nextFocusUp="@+id/iv_lexus_ls_air" android:nextFocusDown="@+id/iv_lexus_ls_dashboard" android:src="@drawable/lexus_ls_bottom_sel_dvr" style="@style/lexusLsBottomIvStyle"/>
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/function_text8" style="@style/lexusLsBottomTxStyle"/>

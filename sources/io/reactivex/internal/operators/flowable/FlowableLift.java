@@ -6,22 +6,23 @@ import io.reactivex.exceptions.Exceptions;
 import io.reactivex.plugins.RxJavaPlugins;
 import org.reactivestreams.Subscriber;
 
+/* loaded from: classes.dex */
 public final class FlowableLift<R, T> extends AbstractFlowableWithUpstream<T, R> {
     final FlowableOperator<? extends R, ? super T> operator;
 
-    public FlowableLift(Flowable<T> source, FlowableOperator<? extends R, ? super T> operator2) {
+    public FlowableLift(Flowable<T> source, FlowableOperator<? extends R, ? super T> operator) {
         super(source);
-        this.operator = operator2;
+        this.operator = operator;
     }
 
+    @Override // io.reactivex.Flowable
     public void subscribeActual(Subscriber<? super R> s) {
         try {
             Subscriber<? super Object> apply = this.operator.apply(s);
-            if (apply != null) {
-                this.source.subscribe(apply);
-                return;
+            if (apply == null) {
+                throw new NullPointerException("Operator " + this.operator + " returned a null Subscriber");
             }
-            throw new NullPointerException("Operator " + this.operator + " returned a null Subscriber");
+            this.source.subscribe(apply);
         } catch (NullPointerException e) {
             throw e;
         } catch (Throwable e2) {

@@ -46,6 +46,8 @@
     <string name="bc_apps_btn_text">更多應用</string>
     <string name="benz_gs_home_navi">導航</string>
     <string name="benz_mbux_2021_bg_sel_tip">背景色</string>
+    <string name="benz_mbux_2021_card_add_fail">應用已無法添加</string>
+    <string name="benz_mbux_2021_card_add_success">應用已添加成功</string>
     <string name="benz_mbux_2021_img_sel_tip">圖標風格</string>
     <string name="benz_mbux_2021_style_classical_tip">經典</string>
     <string name="benz_mbux_2021_style_modern_tip">現代</string>
@@ -166,6 +168,7 @@
     <string name="function_text7">同行者語言助手</string>
     <string name="function_text8">行車記錄儀</string>
     <string name="function_text9">關閉</string>
+    <string name="global_weather_title">全球天氣APP</string>
     <string name="gs_application">應用程式</string>
     <string name="gs_application_mess">安卓應用抽屜</string>
     <string name="gs_browser_mess">AVINUSA.com</string>
@@ -261,8 +264,12 @@
     <string name="langover_bt">藍牙通訊</string>
     <string name="lb_password_error">密碼錯誤!</string>
     <string name="mcu_file_corrupted">升級檔已損壞!</string>
+    <string name="mic_control">MIC外置內置切換開關</string>
+    <string name="mic_external">外置</string>
+    <string name="mic_internal">内置</string>
     <string name="mic_text">MIC增益</string>
     <string name="music_app_sel">選擇音樂App</string>
+    <string name="music_player">音樂播放器</string>
     <string name="navigete_slogan">實时為您導航</string>
     <string name="ntg6_dvr_toast">無設備!</string>
     <string name="oem_fm">原車FM</string>
@@ -270,7 +277,10 @@
     <string name="oil_size">油量: %s</string>
     <string name="on">開啟</string>
     <string name="open_application">打開更多應用</string>
+    <string name="original_radar_reverse">原車雷達顯示反向</string>
     <string name="phone_link_txt">手機互聯</string>
+    <string name="radar_normal">正常</string>
+    <string name="radar_reverse">反向</string>
     <string name="raw_car_text1">全屏顯示</string>
     <string name="raw_car_text2">當前選擇:</string>
     <string name="reverse_exit_time_agreement">根據原車協定退出</string>
@@ -347,6 +357,8 @@
     <string name="text_logo_two">第2頁</string>
     <string name="text_ram">RAM: %s</string>
     <string name="touch_continuous_send">觸摸數據連續發送</string>
+    <string name="tv_id8_brake">剎車</string>
+    <string name="tv_id8_seat_belt">安全帶</string>
     <string name="txz_oil_text">同行者油量告警設定</string>
     <string name="txz_speed_text">同行者速度告警設定</string>
     <string name="txz_temp_text">同行者環境溫度告警設定</string>

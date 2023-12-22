@@ -2,13 +2,14 @@ package com.google.zxing.oned.rss.expanded.decoders;
 
 import com.google.zxing.common.BitArray;
 
+/* loaded from: classes.dex */
 final class AI01320xDecoder extends AI013x0xDecoder {
     AI01320xDecoder(BitArray information) {
         super(information);
     }
 
-    /* access modifiers changed from: protected */
-    public void addWeightCode(StringBuilder buf, int weight) {
+    @Override // com.google.zxing.oned.rss.expanded.decoders.AI01weightDecoder
+    protected void addWeightCode(StringBuilder buf, int weight) {
         if (weight < 10000) {
             buf.append("(3202)");
         } else {
@@ -16,8 +17,8 @@ final class AI01320xDecoder extends AI013x0xDecoder {
         }
     }
 
-    /* access modifiers changed from: protected */
-    public int checkWeight(int weight) {
+    @Override // com.google.zxing.oned.rss.expanded.decoders.AI01weightDecoder
+    protected int checkWeight(int weight) {
         if (weight < 10000) {
             return weight;
         }

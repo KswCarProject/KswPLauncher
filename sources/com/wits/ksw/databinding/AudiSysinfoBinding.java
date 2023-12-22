@@ -7,10 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi.vm.AudiSettingViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi.p007vm.AudiSettingViewModel;
 import com.wits.ksw.settings.audi.widget.AudiConstraintLayout;
 
+/* loaded from: classes7.dex */
 public abstract class AudiSysinfoBinding extends ViewDataBinding {
     public final AudiConstraintLayout audiSysInfParentPanel;
     public final TextView audiSysInfoAppVer;
@@ -24,19 +25,19 @@ public abstract class AudiSysinfoBinding extends ViewDataBinding {
     @Bindable
     protected AudiSettingViewModel mVm;
 
-    public abstract void setVm(AudiSettingViewModel audiSettingViewModel);
+    public abstract void setVm(AudiSettingViewModel vm);
 
-    protected AudiSysinfoBinding(Object _bindingComponent, View _root, int _localFieldCount, AudiConstraintLayout audiSysInfParentPanel2, TextView audiSysInfoAppVer2, TextView audiSysInfoMcuVer2, TextView audiSysInfoSysVer2, TextView audioSysInfoFlash2, TextView audioSysInfoMcuUpdata2, TextView audioSysInfoRam2, TextView audioSysInfoRestoreFactory2, TextView audioSysInfoUpDateFactory2) {
+    protected AudiSysinfoBinding(Object _bindingComponent, View _root, int _localFieldCount, AudiConstraintLayout audiSysInfParentPanel, TextView audiSysInfoAppVer, TextView audiSysInfoMcuVer, TextView audiSysInfoSysVer, TextView audioSysInfoFlash, TextView audioSysInfoMcuUpdata, TextView audioSysInfoRam, TextView audioSysInfoRestoreFactory, TextView audioSysInfoUpDateFactory) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.audiSysInfParentPanel = audiSysInfParentPanel2;
-        this.audiSysInfoAppVer = audiSysInfoAppVer2;
-        this.audiSysInfoMcuVer = audiSysInfoMcuVer2;
-        this.audiSysInfoSysVer = audiSysInfoSysVer2;
-        this.audioSysInfoFlash = audioSysInfoFlash2;
-        this.audioSysInfoMcuUpdata = audioSysInfoMcuUpdata2;
-        this.audioSysInfoRam = audioSysInfoRam2;
-        this.audioSysInfoRestoreFactory = audioSysInfoRestoreFactory2;
-        this.audioSysInfoUpDateFactory = audioSysInfoUpDateFactory2;
+        this.audiSysInfParentPanel = audiSysInfParentPanel;
+        this.audiSysInfoAppVer = audiSysInfoAppVer;
+        this.audiSysInfoMcuVer = audiSysInfoMcuVer;
+        this.audiSysInfoSysVer = audiSysInfoSysVer;
+        this.audioSysInfoFlash = audioSysInfoFlash;
+        this.audioSysInfoMcuUpdata = audioSysInfoMcuUpdata;
+        this.audioSysInfoRam = audioSysInfoRam;
+        this.audioSysInfoRestoreFactory = audioSysInfoRestoreFactory;
+        this.audioSysInfoUpDateFactory = audioSysInfoUpDateFactory;
     }
 
     public AudiSettingViewModel getVm() {
@@ -49,7 +50,7 @@ public abstract class AudiSysinfoBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiSysinfoBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AudiSysinfoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_sysinfo, root, attachToRoot, component);
+        return (AudiSysinfoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_sysinfo, root, attachToRoot, component);
     }
 
     public static AudiSysinfoBinding inflate(LayoutInflater inflater) {
@@ -58,7 +59,7 @@ public abstract class AudiSysinfoBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiSysinfoBinding inflate(LayoutInflater inflater, Object component) {
-        return (AudiSysinfoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_sysinfo, (ViewGroup) null, false, component);
+        return (AudiSysinfoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_sysinfo, null, false, component);
     }
 
     public static AudiSysinfoBinding bind(View view) {
@@ -67,6 +68,6 @@ public abstract class AudiSysinfoBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiSysinfoBinding bind(View view, Object component) {
-        return (AudiSysinfoBinding) bind(component, view, R.layout.audi_sysinfo);
+        return (AudiSysinfoBinding) bind(component, view, C0899R.C0902layout.audi_sysinfo);
     }
 }

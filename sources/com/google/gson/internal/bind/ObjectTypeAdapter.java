@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class ObjectTypeAdapter extends TypeAdapter<Object> {
-    public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() {
+    public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() { // from class: com.google.gson.internal.bind.ObjectTypeAdapter.1
+        @Override // com.google.gson.TypeAdapterFactory
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
             if (type.getRawType() == Object.class) {
                 return new ObjectTypeAdapter(gson);
@@ -24,12 +26,13 @@ public final class ObjectTypeAdapter extends TypeAdapter<Object> {
     };
     private final Gson gson;
 
-    ObjectTypeAdapter(Gson gson2) {
-        this.gson = gson2;
+    ObjectTypeAdapter(Gson gson) {
+        this.gson = gson;
     }
 
-    /* renamed from: com.google.gson.internal.bind.ObjectTypeAdapter$2  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass2 {
+    /* renamed from: com.google.gson.internal.bind.ObjectTypeAdapter$2 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C06262 {
         static final /* synthetic */ int[] $SwitchMap$com$google$gson$stream$JsonToken;
 
         static {
@@ -62,8 +65,10 @@ public final class ObjectTypeAdapter extends TypeAdapter<Object> {
         }
     }
 
+    @Override // com.google.gson.TypeAdapter
     public Object read(JsonReader in) throws IOException {
-        switch (AnonymousClass2.$SwitchMap$com$google$gson$stream$JsonToken[in.peek().ordinal()]) {
+        JsonToken token = in.peek();
+        switch (C06262.$SwitchMap$com$google$gson$stream$JsonToken[token.ordinal()]) {
             case 1:
                 List<Object> list = new ArrayList<>();
                 in.beginArray();
@@ -94,6 +99,7 @@ public final class ObjectTypeAdapter extends TypeAdapter<Object> {
         }
     }
 
+    @Override // com.google.gson.TypeAdapter
     public void write(JsonWriter out, Object value) throws IOException {
         if (value == null) {
             out.nullValue();

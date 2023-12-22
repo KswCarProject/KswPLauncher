@@ -1,23 +1,24 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ViewBindingAdapter;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.p001v4.media.session.PlaybackStateCompat;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public class ModusDataBindingImpl extends ModusDataBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback305;
+    private final View.OnClickListener mCallback439;
     private long mDirtyFlags;
     private final ImageView mboundView1;
     private final TextView mboundView3;
@@ -29,34 +30,36 @@ public class ModusDataBindingImpl extends ModusDataBinding implements OnClickLis
     }
 
     private ModusDataBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 4, bindings[2], bindings[0]);
-        this.mDirtyFlags = -1;
-        this.ivMask.setTag((Object) null);
-        this.llContainer.setTag((Object) null);
-        ImageView imageView = bindings[1];
+        super(bindingComponent, root, 4, (ImageView) bindings[2], (RelativeLayout) bindings[0]);
+        this.mDirtyFlags = -1L;
+        this.ivMask.setTag(null);
+        this.llContainer.setTag(null);
+        ImageView imageView = (ImageView) bindings[1];
         this.mboundView1 = imageView;
-        imageView.setTag((Object) null);
-        TextView textView = bindings[3];
+        imageView.setTag(null);
+        TextView textView = (TextView) bindings[3];
         this.mboundView3 = textView;
-        textView.setTag((Object) null);
-        TextView textView2 = bindings[4];
+        textView.setTag(null);
+        TextView textView2 = (TextView) bindings[4];
         this.mboundView4 = textView2;
-        textView2.setTag((Object) null);
-        TextView textView3 = bindings[5];
+        textView2.setTag(null);
+        TextView textView3 = (TextView) bindings[5];
         this.mboundView5 = textView3;
-        textView3.setTag((Object) null);
+        textView3.setTag(null);
         setRootTag(root);
-        this.mCallback305 = new OnClickListener(this, 1);
+        this.mCallback439 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 32;
+            this.mDirtyFlags = 32L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -66,14 +69,16 @@ public class ModusDataBindingImpl extends ModusDataBinding implements OnClickLis
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (11 != variableId) {
-            return false;
+        if (11 == variableId) {
+            setModusViewModel((LauncherViewModel) variable);
+            return true;
         }
-        setModusViewModel((LauncherViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.ModusDataBinding
     public void setModusViewModel(LauncherViewModel ModusViewModel) {
         this.mModusViewModel = ModusViewModel;
         synchronized (this) {
@@ -83,8 +88,8 @@ public class ModusDataBindingImpl extends ModusDataBinding implements OnClickLis
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeModusViewModelIsEfficientModus((ObservableField) object, fieldId);
@@ -99,54 +104,54 @@ public class ModusDataBindingImpl extends ModusDataBinding implements OnClickLis
         }
     }
 
-    private boolean onChangeModusViewModelIsEfficientModus(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeModusViewModelIsEfficientModus(ObservableField<Boolean> ModusViewModelIsEfficientModus, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeModusViewModelIsPersonalModus(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeModusViewModelIsPersonalModus(ObservableField<Boolean> ModusViewModelIsPersonalModus, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeModusViewModelId8ModusDrawable(ObservableField<BitmapDrawable> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeModusViewModelId8ModusDrawable(ObservableField<BitmapDrawable> ModusViewModelId8ModusDrawable, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeModusViewModelIsSportModus(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeModusViewModelIsSportModus(ObservableField<Boolean> ModusViewModelIsSportModus, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         int modusViewModelIsEfficientModusViewVISIBLEViewGONE;
         Boolean modusViewModelIsEfficientModusGet;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         int modusViewModelIsPersonalModusViewVISIBLEViewGONE = 0;
         ObservableField<Boolean> modusViewModelIsEfficientModus = null;
@@ -159,17 +164,20 @@ public class ModusDataBindingImpl extends ModusDataBinding implements OnClickLis
         LauncherViewModel modusViewModel = this.mModusViewModel;
         Boolean modusViewModelIsSportModusGet = null;
         int modusViewModelIsEfficientModusViewVISIBLEViewGONE2 = 0;
-        if ((dirtyFlags & 63) != 0) {
-            int i = 8;
-            if ((dirtyFlags & 49) != 0) {
+        if ((dirtyFlags & 63) == 0) {
+            modusViewModelIsEfficientModusViewVISIBLEViewGONE = 0;
+        } else {
+            if ((dirtyFlags & 49) == 0) {
+                modusViewModelIsEfficientModusGet = null;
+            } else {
                 if (modusViewModel != null) {
                     modusViewModelIsEfficientModus = modusViewModel.isEfficientModus;
                 }
-                updateRegistration(0, (Observable) modusViewModelIsEfficientModus);
-                if (modusViewModelIsEfficientModus != null) {
-                    modusViewModelIsEfficientModusGet = modusViewModelIsEfficientModus.get();
-                } else {
+                updateRegistration(0, modusViewModelIsEfficientModus);
+                if (modusViewModelIsEfficientModus == null) {
                     modusViewModelIsEfficientModusGet = null;
+                } else {
+                    modusViewModelIsEfficientModusGet = modusViewModelIsEfficientModus.get();
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxModusViewModelIsEfficientModusGet = ViewDataBinding.safeUnbox(modusViewModelIsEfficientModusGet);
                 if ((dirtyFlags & 49) != 0) {
@@ -180,16 +188,15 @@ public class ModusDataBindingImpl extends ModusDataBinding implements OnClickLis
                     }
                 }
                 modusViewModelIsEfficientModusViewVISIBLEViewGONE2 = androidDatabindingViewDataBindingSafeUnboxModusViewModelIsEfficientModusGet ? 0 : 8;
-            } else {
-                modusViewModelIsEfficientModusGet = null;
             }
             if ((dirtyFlags & 50) != 0) {
                 if (modusViewModel != null) {
                     modusViewModelIsPersonalModus = modusViewModel.isPersonalModus;
                 }
-                updateRegistration(1, (Observable) modusViewModelIsPersonalModus);
+                updateRegistration(1, modusViewModelIsPersonalModus);
                 if (modusViewModelIsPersonalModus != null) {
-                    modusViewModelIsPersonalModusGet = modusViewModelIsPersonalModus.get();
+                    Boolean modusViewModelIsPersonalModusGet2 = modusViewModelIsPersonalModus.get();
+                    modusViewModelIsPersonalModusGet = modusViewModelIsPersonalModusGet2;
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxModusViewModelIsPersonalModusGet = ViewDataBinding.safeUnbox(modusViewModelIsPersonalModusGet);
                 if ((dirtyFlags & 50) != 0) {
@@ -205,16 +212,18 @@ public class ModusDataBindingImpl extends ModusDataBinding implements OnClickLis
                 if (modusViewModel != null) {
                     modusViewModelId8ModusDrawable = modusViewModel.id8ModusDrawable;
                 }
-                updateRegistration(2, (Observable) modusViewModelId8ModusDrawable);
+                updateRegistration(2, modusViewModelId8ModusDrawable);
                 if (modusViewModelId8ModusDrawable != null) {
                     modusViewModelId8ModusDrawableGet = modusViewModelId8ModusDrawable.get();
                 }
             }
-            if ((dirtyFlags & 56) != 0) {
+            if ((dirtyFlags & 56) == 0) {
+                modusViewModelIsEfficientModusViewVISIBLEViewGONE = modusViewModelIsEfficientModusViewVISIBLEViewGONE2;
+            } else {
                 if (modusViewModel != null) {
                     modusViewModelIsSportModus = modusViewModel.isSportModus;
                 }
-                updateRegistration(3, (Observable) modusViewModelIsSportModus);
+                updateRegistration(3, modusViewModelIsSportModus);
                 if (modusViewModelIsSportModus != null) {
                     modusViewModelIsSportModusGet = modusViewModelIsSportModus.get();
                 }
@@ -226,25 +235,12 @@ public class ModusDataBindingImpl extends ModusDataBinding implements OnClickLis
                         dirtyFlags |= 256;
                     }
                 }
-                if (androidDatabindingViewDataBindingSafeUnboxModusViewModelIsSportModusGet) {
-                    i = 0;
-                }
-                modusViewModelIsSportModusViewVISIBLEViewGONE = i;
+                modusViewModelIsSportModusViewVISIBLEViewGONE = androidDatabindingViewDataBindingSafeUnboxModusViewModelIsSportModusGet ? 0 : 8;
                 modusViewModelIsEfficientModusViewVISIBLEViewGONE = modusViewModelIsEfficientModusViewVISIBLEViewGONE2;
-                Boolean bool = modusViewModelIsEfficientModusGet;
-            } else {
-                modusViewModelIsEfficientModusViewVISIBLEViewGONE = modusViewModelIsEfficientModusViewVISIBLEViewGONE2;
-                Boolean bool2 = modusViewModelIsEfficientModusGet;
             }
-        } else {
-            modusViewModelIsEfficientModusViewVISIBLEViewGONE = 0;
         }
         if ((dirtyFlags & 32) != 0) {
-            LauncherViewModel launcherViewModel = modusViewModel;
-            Boolean bool3 = modusViewModelIsSportModusGet;
-            this.ivMask.setOnClickListener(this.mCallback305);
-        } else {
-            Boolean bool4 = modusViewModelIsSportModusGet;
+            this.ivMask.setOnClickListener(this.mCallback439);
         }
         if ((dirtyFlags & 52) != 0) {
             ViewBindingAdapter.setBackground(this.mboundView1, modusViewModelId8ModusDrawableGet);
@@ -260,9 +256,11 @@ public class ModusDataBindingImpl extends ModusDataBinding implements OnClickLis
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
         LauncherViewModel modusViewModel = this.mModusViewModel;
-        if (modusViewModel != null) {
+        boolean modusViewModelJavaLangObjectNull = modusViewModel != null;
+        if (modusViewModelJavaLangObjectNull) {
             modusViewModel.enterChangeModus(callbackArg_0);
         }
     }

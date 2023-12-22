@@ -2,7 +2,6 @@ package com.wits.ksw.databinding;
 
 import android.content.Context;
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableFloat;
@@ -11,28 +10,31 @@ import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.content.res.AppCompatResources;
+import android.support.constraint.ConstraintLayout;
+import android.support.p001v4.media.session.PlaybackStateCompat;
+import android.support.p004v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.generated.callback.OnClickListener;
-import com.wits.ksw.launcher.bean.CarInfo;
 import com.wits.ksw.launcher.model.DashboardViewModel;
 import com.wits.ksw.launcher.view.ID7SpeedImageView;
 
+/* loaded from: classes7.dex */
 public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback167;
-    private final View.OnClickListener mCallback168;
-    private final View.OnClickListener mCallback169;
-    private final View.OnClickListener mCallback170;
-    private final View.OnClickListener mCallback171;
-    private final View.OnClickListener mCallback172;
-    private final View.OnClickListener mCallback173;
+    private final View.OnClickListener mCallback251;
+    private final View.OnClickListener mCallback252;
+    private final View.OnClickListener mCallback253;
+    private final View.OnClickListener mCallback254;
+    private final View.OnClickListener mCallback255;
+    private final View.OnClickListener mCallback256;
+    private final View.OnClickListener mCallback257;
     private long mDirtyFlags;
     private final ID7SpeedImageView mboundView1;
     private final TextView mboundView17;
@@ -47,8 +49,8 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.alsRadioGroup, 25);
-        sparseIntArray.put(R.id.time, 26);
+        sparseIntArray.put(C0899R.C0901id.alsRadioGroup, 25);
+        sparseIntArray.put(C0899R.C0901id.time, 26);
     }
 
     public SevenDasoardBindSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
@@ -56,62 +58,63 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
     }
 
     private SevenDasoardBindSw600dpLandImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 15, bindings[16], bindings[25], bindings[15], bindings[8], bindings[13], bindings[9], bindings[10], bindings[11], bindings[12], bindings[0], bindings[14], bindings[4], bindings[2], bindings[5], bindings[24], bindings[26], bindings[6], bindings[7]);
-        this.mDirtyFlags = -1;
-        this.alsMenu.setTag((Object) null);
-        this.batteryImageView.setTag((Object) null);
-        this.carImageView.setTag((Object) null);
-        this.dorrBackImageView.setTag((Object) null);
-        this.dorrLeftFlImageView.setTag((Object) null);
-        this.dorrLeftFrImageView.setTag((Object) null);
-        this.dorrLeftRlImageView.setTag((Object) null);
-        this.imageView19.setTag((Object) null);
-        this.linearLayout2.setTag((Object) null);
-        ID7SpeedImageView iD7SpeedImageView = bindings[1];
+        super(bindingComponent, root, 15, (ConstraintLayout) bindings[16], (LinearLayout) bindings[25], (ID7SpeedImageView) bindings[15], (ImageView) bindings[8], (ImageView) bindings[13], (ImageView) bindings[9], (ImageView) bindings[10], (ImageView) bindings[11], (ImageView) bindings[12], (ConstraintLayout) bindings[0], (ID7SpeedImageView) bindings[14], (TextView) bindings[4], (ID7SpeedImageView) bindings[2], (ID7SpeedImageView) bindings[5], (TextView) bindings[24], (TextClock) bindings[26], (ImageView) bindings[6], (TextView) bindings[7]);
+        this.mDirtyFlags = -1L;
+        this.alsMenu.setTag(null);
+        this.batteryImageView.setTag(null);
+        this.carImageView.setTag(null);
+        this.dorrBackImageView.setTag(null);
+        this.dorrLeftFlImageView.setTag(null);
+        this.dorrLeftFrImageView.setTag(null);
+        this.dorrLeftRlImageView.setTag(null);
+        this.imageView19.setTag(null);
+        this.linearLayout2.setTag(null);
+        ID7SpeedImageView iD7SpeedImageView = (ID7SpeedImageView) bindings[1];
         this.mboundView1 = iD7SpeedImageView;
-        iD7SpeedImageView.setTag((Object) null);
-        TextView textView = bindings[17];
+        iD7SpeedImageView.setTag(null);
+        TextView textView = (TextView) bindings[17];
         this.mboundView17 = textView;
-        textView.setTag((Object) null);
-        TextView textView2 = bindings[18];
+        textView.setTag(null);
+        TextView textView2 = (TextView) bindings[18];
         this.mboundView18 = textView2;
-        textView2.setTag((Object) null);
-        TextView textView3 = bindings[19];
+        textView2.setTag(null);
+        TextView textView3 = (TextView) bindings[19];
         this.mboundView19 = textView3;
-        textView3.setTag((Object) null);
-        TextView textView4 = bindings[20];
+        textView3.setTag(null);
+        TextView textView4 = (TextView) bindings[20];
         this.mboundView20 = textView4;
-        textView4.setTag((Object) null);
-        TextView textView5 = bindings[21];
+        textView4.setTag(null);
+        TextView textView5 = (TextView) bindings[21];
         this.mboundView21 = textView5;
-        textView5.setTag((Object) null);
-        TextView textView6 = bindings[22];
+        textView5.setTag(null);
+        TextView textView6 = (TextView) bindings[22];
         this.mboundView22 = textView6;
-        textView6.setTag((Object) null);
-        TextView textView7 = bindings[23];
+        textView6.setTag(null);
+        TextView textView7 = (TextView) bindings[23];
         this.mboundView23 = textView7;
-        textView7.setTag((Object) null);
-        ImageView imageView = bindings[3];
+        textView7.setTag(null);
+        ImageView imageView = (ImageView) bindings[3];
         this.mboundView3 = imageView;
-        imageView.setTag((Object) null);
-        this.oilImageView.setTag((Object) null);
-        this.speedPointerTextView.setTag((Object) null);
-        this.speedometerImageView.setTag((Object) null);
-        this.tachometerImageView.setTag((Object) null);
-        this.textView18.setTag((Object) null);
-        this.zspeedPointerImageView.setTag((Object) null);
-        this.zspeedPointerTextView.setTag((Object) null);
+        imageView.setTag(null);
+        this.oilImageView.setTag(null);
+        this.speedPointerTextView.setTag(null);
+        this.speedometerImageView.setTag(null);
+        this.tachometerImageView.setTag(null);
+        this.textView18.setTag(null);
+        this.zspeedPointerImageView.setTag(null);
+        this.zspeedPointerTextView.setTag(null);
         setRootTag(root);
-        this.mCallback168 = new OnClickListener(this, 2);
-        this.mCallback172 = new OnClickListener(this, 6);
-        this.mCallback169 = new OnClickListener(this, 3);
-        this.mCallback173 = new OnClickListener(this, 7);
-        this.mCallback170 = new OnClickListener(this, 4);
-        this.mCallback167 = new OnClickListener(this, 1);
-        this.mCallback171 = new OnClickListener(this, 5);
+        this.mCallback257 = new OnClickListener(this, 7);
+        this.mCallback255 = new OnClickListener(this, 5);
+        this.mCallback256 = new OnClickListener(this, 6);
+        this.mCallback253 = new OnClickListener(this, 3);
+        this.mCallback254 = new OnClickListener(this, 4);
+        this.mCallback251 = new OnClickListener(this, 1);
+        this.mCallback252 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
             this.mDirtyFlags = PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH;
@@ -119,6 +122,7 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -128,14 +132,16 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (25 != variableId) {
-            return false;
+        if (25 == variableId) {
+            setViewModel((DashboardViewModel) variable);
+            return true;
         }
-        setViewModel((DashboardViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.SevenDasoardBind
     public void setViewModel(DashboardViewModel ViewModel) {
         this.mViewModel = ViewModel;
         synchronized (this) {
@@ -145,8 +151,8 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeViewModelShowSevenMenu((ObservableBoolean) object, fieldId);
@@ -184,187 +190,187 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
     }
 
     private boolean onChangeViewModelShowSevenMenu(ObservableBoolean ViewModelShowSevenMenu, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelCarInfoSevenmode(ObservableInt ViewModelCarInfoSevenmode, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelCarInfoCarImage(ObservableBoolean ViewModelCarInfoCarImage, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeViewModelCarInfoFrDoorState(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelCarInfoFrDoorState(ObservableField<Boolean> ViewModelCarInfoFrDoorState, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeViewModelCarInfoRrDoorState(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelCarInfoRrDoorState(ObservableField<Boolean> ViewModelCarInfoRrDoorState, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 16;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 16;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeViewModelCarInfoTempStr(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelCarInfoTempStr(ObservableField<String> ViewModelCarInfoTempStr, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 32;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 32;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelCarInfoUnit(ObservableInt ViewModelCarInfoUnit, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 64;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 64;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeViewModelCarInfoSeatBeltpValue(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelCarInfoSeatBeltpValue(ObservableField<Boolean> ViewModelCarInfoSeatBeltpValue, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 128;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 128;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelCarInfoTurnSpeed(ObservableInt ViewModelCarInfoTurnSpeed, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 256;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 256;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeViewModelCarInfoRlDoorState(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelCarInfoRlDoorState(ObservableField<Boolean> ViewModelCarInfoRlDoorState, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 512;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 512;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelCarInfoTurnSpeedAnge(ObservableFloat ViewModelCarInfoTurnSpeedAnge, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeViewModelCarInfoFlDoorState(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelCarInfoFlDoorState(ObservableField<Boolean> ViewModelCarInfoFlDoorState, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
-        }
-        return true;
+        return false;
     }
 
     private boolean onChangeViewModelCarInfoSpeed(ObservableInt ViewModelCarInfoSpeed, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeViewModelCarInfoBDoorState(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelCarInfoBDoorState(ObservableField<Boolean> ViewModelCarInfoBDoorState, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeViewModelCarInfoBrakeValue(ObservableField<Boolean> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeViewModelCarInfoBrakeValue(ObservableField<Boolean> ViewModelCarInfoBrakeValue, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
-        String stringValueOfViewModelCarInfoTurnSpeed;
-        Drawable viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel;
-        String viewModelCarInfoTempStrGet;
-        int viewModelCarInfoBrakeValueViewVISIBLEViewGONE;
         ObservableBoolean viewModelShowSevenMenu;
-        int viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE;
-        int viewModelCarInfoBrakeValueViewVISIBLEViewGONE2;
-        int viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE;
+        Drawable viewModelCarInfoSevenmodeInt5MboundView22AndroidDrawableSevenColorCheckboxSelMboundView22AndroidDrawableSevenColorCheckboxN;
+        Drawable viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN;
         int viewModelCarInfoSevenmodeGet;
+        Drawable viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN;
+        int viewModelCarInfoBrakeValueViewVISIBLEViewGONE;
+        String viewModelCarInfoTempStrGet;
+        Drawable viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel;
+        String stringValueOfViewModelCarInfoTurnSpeed;
+        int viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE;
+        Drawable viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN;
+        int viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE;
+        int viewModelCarInfoBrakeValueViewVISIBLEViewGONE2;
+        int viewModelCarInfoSevenmodeGet2;
+        Drawable viewModelCarInfoSevenmodeInt1MboundView18AndroidDrawableSevenColorCheckboxSelMboundView18AndroidDrawableSevenColorCheckboxN;
         String stringValueOfViewModelCarInfoSpeed;
+        int viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE;
         float viewModelCarInfoTurnSpeedAngeGet;
+        Drawable viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN;
+        int viewModelCarInfoUnitGet;
         int viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE;
         int viewModelShowSevenMenuViewVISIBLEViewGONE;
-        int viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE;
-        int viewModelCarInfoUnitGet;
-        Drawable viewModelCarInfoSevenmodeInt1MboundView18AndroidDrawableSevenColorCheckboxSelMboundView18AndroidDrawableSevenColorCheckboxN;
-        Drawable viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN;
-        Drawable viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN;
-        Drawable viewModelCarInfoSevenmodeInt5MboundView22AndroidDrawableSevenColorCheckboxSelMboundView22AndroidDrawableSevenColorCheckboxN;
-        Drawable viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN;
-        Drawable viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN;
-        int viewModelCarInfoSevenmodeGet2;
         int viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE;
-        ObservableBoolean viewModelShowSevenMenu2;
         int viewModelShowSevenMenuViewVISIBLEViewGONE2;
+        ObservableBoolean viewModelShowSevenMenu2;
         int viewModelCarInfoSevenmodeGet3;
+        int viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE2;
         int viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE2;
         int viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE;
-        int viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE2;
         String stringValueOfViewModelCarInfoSpeed2;
         int viewModelCarInfoBrakeValueViewVISIBLEViewGONE3;
         Drawable viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel2;
@@ -395,7 +401,7 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
         Drawable viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN3;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         Drawable viewModelCarInfoSevenmodeInt6MboundView23AndroidDrawableSevenColorCheckboxSelMboundView23AndroidDrawableSevenColorCheckboxN2 = null;
         ObservableInt viewModelCarInfoSevenmode = null;
@@ -405,7 +411,7 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
         ObservableBoolean viewModelCarInfoCarImage = null;
         Boolean viewModelCarInfoRlDoorStateGet = null;
         Drawable viewModelCarInfoSevenmodeInt5MboundView22AndroidDrawableSevenColorCheckboxSelMboundView22AndroidDrawableSevenColorCheckboxN2 = null;
-        int viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE3 = 0;
+        int viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE2 = 0;
         String stringValueOfViewModelCarInfoSpeed3 = null;
         Drawable viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN2 = null;
         Drawable viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN2 = null;
@@ -426,24 +432,51 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
         String viewModelCarInfoTempStrGet3 = null;
         Drawable viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel3 = null;
         Boolean viewModelCarInfoBrakeValueGet = null;
-        int viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE2 = 0;
+        int viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE3 = 0;
         String stringValueOfViewModelCarInfoTurnSpeed2 = null;
         int viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE3 = 0;
         Drawable viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN4 = null;
         DashboardViewModel viewModel = this.mViewModel;
         Drawable viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN5 = null;
         float viewModelCarInfoTurnSpeedAngeGet2 = 0.0f;
-        if ((dirtyFlags & 98302) != 0) {
-            CarInfo viewModelCarInfo = DashboardViewModel.carInfo;
-            if ((dirtyFlags & 65538) != 0) {
+        if ((dirtyFlags & 98302) == 0) {
+            viewModelShowSevenMenu = null;
+            viewModelCarInfoSevenmodeInt5MboundView22AndroidDrawableSevenColorCheckboxSelMboundView22AndroidDrawableSevenColorCheckboxN = null;
+            viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN = null;
+            viewModelCarInfoSevenmodeGet = 0;
+            viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN = null;
+            viewModelCarInfoBrakeValueViewVISIBLEViewGONE = 0;
+            viewModelCarInfoTempStrGet = null;
+            viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel = null;
+            stringValueOfViewModelCarInfoTurnSpeed = null;
+            viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE = 0;
+            viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN = null;
+            viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE = 0;
+            viewModelCarInfoBrakeValueViewVISIBLEViewGONE2 = 0;
+            viewModelCarInfoSevenmodeGet2 = 0;
+            viewModelCarInfoSevenmodeInt1MboundView18AndroidDrawableSevenColorCheckboxSelMboundView18AndroidDrawableSevenColorCheckboxN = null;
+            stringValueOfViewModelCarInfoSpeed = null;
+            viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE = 0;
+            viewModelCarInfoTurnSpeedAngeGet = 0.0f;
+            viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN = null;
+            viewModelCarInfoUnitGet = 0;
+            viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE = 0;
+            viewModelShowSevenMenuViewVISIBLEViewGONE = 0;
+        } else {
+            com.wits.ksw.launcher.bean.CarInfo viewModelCarInfo = DashboardViewModel.carInfo;
+            if ((dirtyFlags & 65538) == 0) {
+                viewModelShowSevenMenu = null;
+                androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet = false;
+            } else {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoSevenmode = viewModelCarInfo.sevenmode;
                 }
-                updateRegistration(1, (Observable) viewModelCarInfoSevenmode);
-                if (viewModelCarInfoSevenmode != null) {
-                    viewModelCarInfoSevenmodeGet4 = viewModelCarInfoSevenmode.get();
-                } else {
+                updateRegistration(1, viewModelCarInfoSevenmode);
+                if (viewModelCarInfoSevenmode == null) {
                     viewModelCarInfoSevenmodeGet4 = 0;
+                } else {
+                    int viewModelCarInfoSevenmodeGet6 = viewModelCarInfoSevenmode.get();
+                    viewModelCarInfoSevenmodeGet4 = viewModelCarInfoSevenmodeGet6;
                 }
                 boolean viewModelCarInfoSevenmodeInt4 = viewModelCarInfoSevenmodeGet4 == 4;
                 boolean viewModelCarInfoSevenmodeInt62 = viewModelCarInfoSevenmodeGet4 == 6;
@@ -505,82 +538,73 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
                     }
                 }
                 long dirtyFlags2 = dirtyFlags;
-                int i2 = R.drawable.seven_color_checkbox_sel;
+                int i2 = C0899R.C0900drawable.seven_color_checkbox_sel;
                 Context context = this.mboundView21.getContext();
                 if (!viewModelCarInfoSevenmodeInt4) {
-                    i2 = R.drawable.seven_color_checkbox_n;
+                    i2 = C0899R.C0900drawable.seven_color_checkbox_n;
                 }
                 Drawable viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN3 = AppCompatResources.getDrawable(context, i2);
                 if (viewModelCarInfoSevenmodeInt62) {
                     viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN2 = viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN3;
-                    drawable = AppCompatResources.getDrawable(this.mboundView23.getContext(), R.drawable.seven_color_checkbox_sel);
+                    drawable = AppCompatResources.getDrawable(this.mboundView23.getContext(), C0899R.C0900drawable.seven_color_checkbox_sel);
                 } else {
                     viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN2 = viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN3;
-                    drawable = AppCompatResources.getDrawable(this.mboundView23.getContext(), R.drawable.seven_color_checkbox_n);
+                    drawable = AppCompatResources.getDrawable(this.mboundView23.getContext(), C0899R.C0900drawable.seven_color_checkbox_n);
                 }
                 Drawable viewModelCarInfoSevenmodeInt6MboundView23AndroidDrawableSevenColorCheckboxSelMboundView23AndroidDrawableSevenColorCheckboxN3 = drawable;
                 if (viewModelCarInfoSevenmodeInt1) {
                     viewModelCarInfoSevenmodeInt6MboundView23AndroidDrawableSevenColorCheckboxSelMboundView23AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt6MboundView23AndroidDrawableSevenColorCheckboxSelMboundView23AndroidDrawableSevenColorCheckboxN3;
-                    drawable2 = AppCompatResources.getDrawable(this.mboundView18.getContext(), R.drawable.seven_color_checkbox_sel);
+                    drawable2 = AppCompatResources.getDrawable(this.mboundView18.getContext(), C0899R.C0900drawable.seven_color_checkbox_sel);
                 } else {
                     viewModelCarInfoSevenmodeInt6MboundView23AndroidDrawableSevenColorCheckboxSelMboundView23AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt6MboundView23AndroidDrawableSevenColorCheckboxSelMboundView23AndroidDrawableSevenColorCheckboxN3;
-                    drawable2 = AppCompatResources.getDrawable(this.mboundView18.getContext(), R.drawable.seven_color_checkbox_n);
+                    drawable2 = AppCompatResources.getDrawable(this.mboundView18.getContext(), C0899R.C0900drawable.seven_color_checkbox_n);
                 }
                 Drawable viewModelCarInfoSevenmodeInt1MboundView18AndroidDrawableSevenColorCheckboxSelMboundView18AndroidDrawableSevenColorCheckboxN3 = drawable2;
                 if (viewModelCarInfoSevenmodeInt0) {
                     viewModelCarInfoSevenmodeInt1MboundView18AndroidDrawableSevenColorCheckboxSelMboundView18AndroidDrawableSevenColorCheckboxN2 = viewModelCarInfoSevenmodeInt1MboundView18AndroidDrawableSevenColorCheckboxSelMboundView18AndroidDrawableSevenColorCheckboxN3;
-                    drawable3 = AppCompatResources.getDrawable(this.mboundView17.getContext(), R.drawable.seven_color_checkbox_sel);
+                    drawable3 = AppCompatResources.getDrawable(this.mboundView17.getContext(), C0899R.C0900drawable.seven_color_checkbox_sel);
                 } else {
                     viewModelCarInfoSevenmodeInt1MboundView18AndroidDrawableSevenColorCheckboxSelMboundView18AndroidDrawableSevenColorCheckboxN2 = viewModelCarInfoSevenmodeInt1MboundView18AndroidDrawableSevenColorCheckboxSelMboundView18AndroidDrawableSevenColorCheckboxN3;
-                    drawable3 = AppCompatResources.getDrawable(this.mboundView17.getContext(), R.drawable.seven_color_checkbox_n);
+                    drawable3 = AppCompatResources.getDrawable(this.mboundView17.getContext(), C0899R.C0900drawable.seven_color_checkbox_n);
                 }
                 Drawable viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN3 = drawable3;
                 if (viewModelCarInfoSevenmodeInt3) {
                     viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN2 = viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN3;
-                    drawable4 = AppCompatResources.getDrawable(this.mboundView20.getContext(), R.drawable.seven_color_checkbox_sel);
+                    drawable4 = AppCompatResources.getDrawable(this.mboundView20.getContext(), C0899R.C0900drawable.seven_color_checkbox_sel);
                 } else {
                     viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN2 = viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN3;
-                    drawable4 = AppCompatResources.getDrawable(this.mboundView20.getContext(), R.drawable.seven_color_checkbox_n);
+                    drawable4 = AppCompatResources.getDrawable(this.mboundView20.getContext(), C0899R.C0900drawable.seven_color_checkbox_n);
                 }
                 Drawable viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN3 = drawable4;
                 if (viewModelCarInfoSevenmodeInt2) {
                     viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN2 = viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN3;
-                    drawable5 = AppCompatResources.getDrawable(this.mboundView19.getContext(), R.drawable.seven_color_checkbox_sel);
+                    drawable5 = AppCompatResources.getDrawable(this.mboundView19.getContext(), C0899R.C0900drawable.seven_color_checkbox_sel);
                 } else {
                     viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN2 = viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN3;
-                    drawable5 = AppCompatResources.getDrawable(this.mboundView19.getContext(), R.drawable.seven_color_checkbox_n);
+                    drawable5 = AppCompatResources.getDrawable(this.mboundView19.getContext(), C0899R.C0900drawable.seven_color_checkbox_n);
                 }
                 Drawable viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN6 = drawable5;
                 if (viewModelCarInfoSevenmodeInt5) {
                     viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN2 = viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN6;
-                    viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN3 = AppCompatResources.getDrawable(this.mboundView22.getContext(), R.drawable.seven_color_checkbox_sel);
+                    viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN3 = AppCompatResources.getDrawable(this.mboundView22.getContext(), C0899R.C0900drawable.seven_color_checkbox_sel);
                 } else {
                     viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN2 = viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN6;
-                    viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN3 = AppCompatResources.getDrawable(this.mboundView22.getContext(), R.drawable.seven_color_checkbox_n);
+                    viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN3 = AppCompatResources.getDrawable(this.mboundView22.getContext(), C0899R.C0900drawable.seven_color_checkbox_n);
                 }
                 viewModelCarInfoSevenmodeInt5MboundView22AndroidDrawableSevenColorCheckboxSelMboundView22AndroidDrawableSevenColorCheckboxN2 = viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN3;
-                boolean z = viewModelCarInfoSevenmodeInt1;
-                boolean z2 = viewModelCarInfoSevenmodeInt0;
                 dirtyFlags = dirtyFlags2;
                 viewModelCarInfoSevenmodeInt6MboundView23AndroidDrawableSevenColorCheckboxSelMboundView23AndroidDrawableSevenColorCheckboxN2 = viewModelCarInfoSevenmodeInt6MboundView23AndroidDrawableSevenColorCheckboxSelMboundView23AndroidDrawableSevenColorCheckboxN;
                 viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN5 = viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN2;
                 viewModelCarInfoSevenmodeGet5 = viewModelCarInfoSevenmodeGet4;
-                boolean z3 = viewModelCarInfoSevenmodeInt3;
-                boolean z4 = viewModelCarInfoSevenmodeInt2;
-                boolean viewModelCarInfoSevenmodeInt02 = viewModelCarInfoSevenmodeInt62;
                 viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN4 = viewModelCarInfoSevenmodeInt1MboundView18AndroidDrawableSevenColorCheckboxSelMboundView18AndroidDrawableSevenColorCheckboxN2;
                 viewModelCarInfoSevenmodeInt6 = viewModelCarInfoSevenmodeInt4;
-                boolean z5 = viewModelCarInfoSevenmodeInt5;
                 viewModelCarInfoSevenmode = viewModelCarInfoSevenmode2;
-            } else {
-                viewModelShowSevenMenu = null;
-                androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet = false;
             }
             if ((dirtyFlags & 65540) != 0) {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoCarImage = viewModelCarInfo.carImage;
                 }
-                updateRegistration(2, (Observable) viewModelCarInfoCarImage);
+                updateRegistration(2, viewModelCarInfoCarImage);
                 if (viewModelCarInfoCarImage != null) {
                     viewModelCarInfoCarImageGet = viewModelCarInfoCarImage.get();
                 }
@@ -594,14 +618,15 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
                 viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE2 = viewModelCarInfoCarImageGet ? 0 : 4;
             }
             if ((dirtyFlags & 65544) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoFrDoorState = viewModelCarInfo.frDoorState;
-                } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoFrDoorState = null;
+                } else {
+                    viewModelCarInfoFrDoorState = viewModelCarInfo.frDoorState;
                 }
-                updateRegistration(3, (Observable) viewModelCarInfoFrDoorState);
+                updateRegistration(3, viewModelCarInfoFrDoorState);
                 if (viewModelCarInfoFrDoorState != null) {
-                    viewModelCarInfoFrDoorStateGet = viewModelCarInfoFrDoorState.get();
+                    Boolean viewModelCarInfoFrDoorStateGet2 = viewModelCarInfoFrDoorState.get();
+                    viewModelCarInfoFrDoorStateGet = viewModelCarInfoFrDoorStateGet2;
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoFrDoorStateGet = ViewDataBinding.safeUnbox(viewModelCarInfoFrDoorStateGet);
                 if ((dirtyFlags & 65544) != 0) {
@@ -611,19 +636,18 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
                         dirtyFlags |= 35184372088832L;
                     }
                 }
-                ObservableField<Boolean> observableField = viewModelCarInfoFrDoorState;
-                boolean z6 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoFrDoorStateGet;
                 viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE3 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoFrDoorStateGet ? 0 : 4;
             }
             if ((dirtyFlags & 65552) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoRrDoorState = viewModelCarInfo.rrDoorState;
-                } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoRrDoorState = null;
+                } else {
+                    viewModelCarInfoRrDoorState = viewModelCarInfo.rrDoorState;
                 }
-                updateRegistration(4, (Observable) viewModelCarInfoRrDoorState);
+                updateRegistration(4, viewModelCarInfoRrDoorState);
                 if (viewModelCarInfoRrDoorState != null) {
-                    viewModelCarInfoRrDoorStateGet = viewModelCarInfoRrDoorState.get();
+                    Boolean viewModelCarInfoRrDoorStateGet2 = viewModelCarInfoRrDoorState.get();
+                    viewModelCarInfoRrDoorStateGet = viewModelCarInfoRrDoorStateGet2;
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRrDoorStateGet = ViewDataBinding.safeUnbox(viewModelCarInfoRrDoorStateGet);
                 if ((dirtyFlags & 65552) != 0) {
@@ -633,38 +657,30 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
                         dirtyFlags |= 33554432;
                     }
                 }
-                ObservableField<Boolean> observableField2 = viewModelCarInfoRrDoorState;
-                boolean z7 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRrDoorStateGet;
-                viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE3 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRrDoorStateGet ? 0 : 4;
+                viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE2 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRrDoorStateGet ? 0 : 4;
             }
             if ((dirtyFlags & 65568) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoTempStr = viewModelCarInfo.tempStr;
-                } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoTempStr = null;
-                }
-                updateRegistration(5, (Observable) viewModelCarInfoTempStr);
-                if (viewModelCarInfoTempStr != null) {
-                    ObservableField<String> observableField3 = viewModelCarInfoTempStr;
-                    viewModelCarInfoTempStrGet3 = viewModelCarInfoTempStr.get();
                 } else {
-                    ObservableField<String> observableField4 = viewModelCarInfoTempStr;
+                    viewModelCarInfoTempStr = viewModelCarInfo.tempStr;
+                }
+                updateRegistration(5, viewModelCarInfoTempStr);
+                if (viewModelCarInfoTempStr != null) {
+                    viewModelCarInfoTempStrGet3 = viewModelCarInfoTempStr.get();
                 }
             }
             if ((dirtyFlags & 65600) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoUnit = viewModelCarInfo.unit;
-                } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoUnit = null;
+                } else {
+                    viewModelCarInfoUnit = viewModelCarInfo.unit;
                 }
-                updateRegistration(6, (Observable) viewModelCarInfoUnit);
+                updateRegistration(6, viewModelCarInfoUnit);
                 if (viewModelCarInfoUnit != null) {
                     viewModelCarInfoUnitGet2 = viewModelCarInfoUnit.get();
                 }
-                boolean viewModelCarInfoUnitInt1 = true;
-                if (viewModelCarInfoUnitGet2 != 1) {
-                    viewModelCarInfoUnitInt1 = false;
-                }
+                boolean viewModelCarInfoUnitInt1 = viewModelCarInfoUnitGet2 == 1;
                 if ((dirtyFlags & 65600) != 0) {
                     if (viewModelCarInfoUnitInt1) {
                         dirtyFlags |= 4398046511104L;
@@ -672,19 +688,18 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
                         dirtyFlags |= 2199023255552L;
                     }
                 }
-                ObservableInt observableInt = viewModelCarInfoUnit;
-                viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel3 = viewModelCarInfoUnitInt1 ? AppCompatResources.getDrawable(this.speedometerImageView.getContext(), R.drawable.seven_color_speed_mp_wtach_level) : AppCompatResources.getDrawable(this.speedometerImageView.getContext(), R.drawable.seven_color_speed_km_wtach_level);
-                boolean z8 = viewModelCarInfoUnitInt1;
+                viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel3 = viewModelCarInfoUnitInt1 ? AppCompatResources.getDrawable(this.speedometerImageView.getContext(), C0899R.C0900drawable.seven_color_speed_mp_wtach_level) : AppCompatResources.getDrawable(this.speedometerImageView.getContext(), C0899R.C0900drawable.seven_color_speed_km_wtach_level);
             }
             if ((dirtyFlags & 65664) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoSeatBeltpValue = viewModelCarInfo.seatBeltpValue;
-                } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoSeatBeltpValue = null;
+                } else {
+                    viewModelCarInfoSeatBeltpValue = viewModelCarInfo.seatBeltpValue;
                 }
-                updateRegistration(7, (Observable) viewModelCarInfoSeatBeltpValue);
+                updateRegistration(7, viewModelCarInfoSeatBeltpValue);
                 if (viewModelCarInfoSeatBeltpValue != null) {
-                    viewModelCarInfoSeatBeltpValueGet = viewModelCarInfoSeatBeltpValue.get();
+                    Boolean viewModelCarInfoSeatBeltpValueGet2 = viewModelCarInfoSeatBeltpValue.get();
+                    viewModelCarInfoSeatBeltpValueGet = viewModelCarInfoSeatBeltpValueGet2;
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoSeatBeltpValueGet = ViewDataBinding.safeUnbox(viewModelCarInfoSeatBeltpValueGet);
                 if ((dirtyFlags & 65664) != 0) {
@@ -694,35 +709,33 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
                         dirtyFlags |= 34359738368L;
                     }
                 }
-                ObservableField<Boolean> observableField5 = viewModelCarInfoSeatBeltpValue;
-                boolean z9 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoSeatBeltpValueGet;
                 viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE2 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoSeatBeltpValueGet ? 8 : 0;
             }
-            if ((65792 & dirtyFlags) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoTurnSpeed = viewModelCarInfo.turnSpeed;
-                } else {
+            if ((65792 & dirtyFlags) == 0) {
+                i = 8;
+            } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoTurnSpeed = null;
+                } else {
+                    viewModelCarInfoTurnSpeed = viewModelCarInfo.turnSpeed;
                 }
                 i = 8;
-                updateRegistration(8, (Observable) viewModelCarInfoTurnSpeed);
+                updateRegistration(8, viewModelCarInfoTurnSpeed);
                 if (viewModelCarInfoTurnSpeed != null) {
                     viewModelCarInfoTurnSpeedGet = viewModelCarInfoTurnSpeed.get();
                 }
-                ObservableInt observableInt2 = viewModelCarInfoTurnSpeed;
                 stringValueOfViewModelCarInfoTurnSpeed2 = String.valueOf(viewModelCarInfoTurnSpeedGet);
-            } else {
-                i = 8;
             }
             if ((dirtyFlags & 66048) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoRlDoorState = viewModelCarInfo.rlDoorState;
-                } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoRlDoorState = null;
+                } else {
+                    viewModelCarInfoRlDoorState = viewModelCarInfo.rlDoorState;
                 }
-                updateRegistration(9, (Observable) viewModelCarInfoRlDoorState);
+                updateRegistration(9, viewModelCarInfoRlDoorState);
                 if (viewModelCarInfoRlDoorState != null) {
-                    viewModelCarInfoRlDoorStateGet = viewModelCarInfoRlDoorState.get();
+                    Boolean viewModelCarInfoRlDoorStateGet2 = viewModelCarInfoRlDoorState.get();
+                    viewModelCarInfoRlDoorStateGet = viewModelCarInfoRlDoorStateGet2;
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRlDoorStateGet = ViewDataBinding.safeUnbox(viewModelCarInfoRlDoorStateGet);
                 if ((dirtyFlags & 66048) != 0) {
@@ -732,33 +745,29 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
                         dirtyFlags |= 2147483648L;
                     }
                 }
-                ObservableField<Boolean> observableField6 = viewModelCarInfoRlDoorState;
-                boolean z10 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRlDoorStateGet;
                 viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE2 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRlDoorStateGet ? 0 : 4;
             }
             if ((66560 & dirtyFlags) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoTurnSpeedAnge = viewModelCarInfo.turnSpeedAnge;
-                } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoTurnSpeedAnge = null;
-                }
-                updateRegistration(10, (Observable) viewModelCarInfoTurnSpeedAnge);
-                if (viewModelCarInfoTurnSpeedAnge != null) {
-                    ObservableFloat observableFloat = viewModelCarInfoTurnSpeedAnge;
-                    viewModelCarInfoTurnSpeedAngeGet2 = viewModelCarInfoTurnSpeedAnge.get();
                 } else {
-                    ObservableFloat observableFloat2 = viewModelCarInfoTurnSpeedAnge;
+                    viewModelCarInfoTurnSpeedAnge = viewModelCarInfo.turnSpeedAnge;
+                }
+                updateRegistration(10, viewModelCarInfoTurnSpeedAnge);
+                if (viewModelCarInfoTurnSpeedAnge != null) {
+                    viewModelCarInfoTurnSpeedAngeGet2 = viewModelCarInfoTurnSpeedAnge.get();
                 }
             }
             if ((dirtyFlags & 67584) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoFlDoorState = viewModelCarInfo.flDoorState;
-                } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoFlDoorState = null;
+                } else {
+                    viewModelCarInfoFlDoorState = viewModelCarInfo.flDoorState;
                 }
-                updateRegistration(11, (Observable) viewModelCarInfoFlDoorState);
+                updateRegistration(11, viewModelCarInfoFlDoorState);
                 if (viewModelCarInfoFlDoorState != null) {
-                    viewModelCarInfoFlDoorStateGet = viewModelCarInfoFlDoorState.get();
+                    Boolean viewModelCarInfoFlDoorStateGet2 = viewModelCarInfoFlDoorState.get();
+                    viewModelCarInfoFlDoorStateGet = viewModelCarInfoFlDoorStateGet2;
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoFlDoorStateGet = ViewDataBinding.safeUnbox(viewModelCarInfoFlDoorStateGet);
                 if ((dirtyFlags & 67584) != 0) {
@@ -768,32 +777,32 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
                         dirtyFlags |= 8796093022208L;
                     }
                 }
-                ObservableField<Boolean> observableField7 = viewModelCarInfoFlDoorState;
-                boolean z11 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoFlDoorStateGet;
-                viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE2 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoFlDoorStateGet ? 0 : 4;
+                viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE3 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoFlDoorStateGet ? 0 : 4;
             }
             if ((69632 & dirtyFlags) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoSpeed = viewModelCarInfo.speed;
-                } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoSpeed = null;
+                } else {
+                    viewModelCarInfoSpeed = viewModelCarInfo.speed;
                 }
-                updateRegistration(12, (Observable) viewModelCarInfoSpeed);
+                updateRegistration(12, viewModelCarInfoSpeed);
                 if (viewModelCarInfoSpeed != null) {
                     viewModelCarInfoSpeedGet = viewModelCarInfoSpeed.get();
                 }
-                ObservableInt observableInt3 = viewModelCarInfoSpeed;
                 stringValueOfViewModelCarInfoSpeed3 = String.valueOf(viewModelCarInfoSpeedGet);
             }
-            if ((dirtyFlags & 73728) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoBDoorState = viewModelCarInfo.bDoorState;
-                } else {
+            if ((dirtyFlags & 73728) == 0) {
+                viewModelCarInfoBDoorState = null;
+            } else {
+                if (viewModelCarInfo == null) {
                     viewModelCarInfoBDoorState = null;
+                } else {
+                    viewModelCarInfoBDoorState = viewModelCarInfo.bDoorState;
                 }
-                updateRegistration(13, (Observable) viewModelCarInfoBDoorState);
+                updateRegistration(13, viewModelCarInfoBDoorState);
                 if (viewModelCarInfoBDoorState != null) {
-                    viewModelCarInfoBDoorStateGet = viewModelCarInfoBDoorState.get();
+                    Boolean viewModelCarInfoBDoorStateGet2 = viewModelCarInfoBDoorState.get();
+                    viewModelCarInfoBDoorStateGet = viewModelCarInfoBDoorStateGet2;
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBDoorStateGet = ViewDataBinding.safeUnbox(viewModelCarInfoBDoorStateGet);
                 if ((dirtyFlags & 73728) != 0) {
@@ -803,122 +812,81 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
                         dirtyFlags |= PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE_ENABLED;
                     }
                 }
-                boolean z12 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBDoorStateGet;
                 viewModelCarInfoBDoorStateViewVISIBLEViewINVISIBLE = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBDoorStateGet ? 0 : 4;
-            } else {
-                viewModelCarInfoBDoorState = null;
             }
-            if ((dirtyFlags & 81920) != 0) {
-                if (viewModelCarInfo != null) {
-                    viewModelCarInfoBrakeValue = viewModelCarInfo.brakeValue;
-                } else {
-                    viewModelCarInfoBrakeValue = null;
-                }
-                updateRegistration(14, (Observable) viewModelCarInfoBrakeValue);
-                if (viewModelCarInfoBrakeValue != null) {
-                    viewModelCarInfoBrakeValueGet = viewModelCarInfoBrakeValue.get();
-                }
-                int androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet2 = ViewDataBinding.safeUnbox(viewModelCarInfoBrakeValueGet);
-                if ((dirtyFlags & 81920) != 0) {
-                    if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet2 == true) {
-                        dirtyFlags |= 1099511627776L;
-                    } else {
-                        dirtyFlags |= 549755813888L;
-                    }
-                }
-                CarInfo carInfo = viewModelCarInfo;
-                ObservableField<Boolean> observableField8 = viewModelCarInfoBrakeValue;
-                viewModelCarInfoSevenmodeInt5MboundView22AndroidDrawableSevenColorCheckboxSelMboundView22AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt5MboundView22AndroidDrawableSevenColorCheckboxSelMboundView22AndroidDrawableSevenColorCheckboxN2;
-                viewModelCarInfoSevenmodeGet2 = viewModelCarInfoSevenmodeGet5;
-                viewModelCarInfoBrakeValueViewVISIBLEViewGONE = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet2 != 0 ? 0 : i;
-                viewModelCarInfoTempStrGet = viewModelCarInfoTempStrGet3;
-                viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel = viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel3;
-                stringValueOfViewModelCarInfoTurnSpeed = stringValueOfViewModelCarInfoTurnSpeed2;
-                viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE3;
-                viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN5;
-                ObservableField<Boolean> observableField9 = viewModelCarInfoBDoorState;
-                viewModelCarInfoBrakeValueViewVISIBLEViewGONE2 = viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE2;
-                viewModelCarInfoSevenmodeGet = viewModelCarInfoSpeedGet;
-                viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN2;
-                ObservableBoolean observableBoolean = viewModelCarInfoCarImage;
-                viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE3;
-                stringValueOfViewModelCarInfoSpeed = stringValueOfViewModelCarInfoSpeed3;
-                viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE = viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE2;
-                viewModelCarInfoTurnSpeedAngeGet = viewModelCarInfoTurnSpeedAngeGet2;
-                int viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE4 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet2;
-                ObservableInt observableInt4 = viewModelCarInfoSevenmode;
-                viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN2;
-                viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN2;
-                boolean z13 = viewModelCarInfoSevenmodeInt6;
-                int i3 = viewModelCarInfoUnitGet2;
-                viewModelCarInfoUnitGet = viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE2;
-                viewModelCarInfoSevenmodeInt1MboundView18AndroidDrawableSevenColorCheckboxSelMboundView18AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN4;
-                viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE = 0;
-                viewModelShowSevenMenuViewVISIBLEViewGONE = viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE2;
-            } else {
-                CarInfo carInfo2 = viewModelCarInfo;
+            if ((dirtyFlags & 81920) == 0) {
                 viewModelCarInfoSevenmodeInt5MboundView22AndroidDrawableSevenColorCheckboxSelMboundView22AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt5MboundView22AndroidDrawableSevenColorCheckboxSelMboundView22AndroidDrawableSevenColorCheckboxN2;
                 viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN2;
-                viewModelCarInfoSevenmodeGet2 = viewModelCarInfoSevenmodeGet5;
+                viewModelCarInfoSevenmodeGet = viewModelCarInfoSevenmodeGet5;
                 viewModelCarInfoBrakeValueViewVISIBLEViewGONE = 0;
                 viewModelCarInfoTempStrGet = viewModelCarInfoTempStrGet3;
                 viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel = viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel3;
                 stringValueOfViewModelCarInfoTurnSpeed = stringValueOfViewModelCarInfoTurnSpeed2;
                 viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE3;
                 viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN5;
-                ObservableField<Boolean> observableField10 = viewModelCarInfoBDoorState;
-                boolean z14 = viewModelCarInfoSevenmodeInt6;
                 viewModelCarInfoBrakeValueViewVISIBLEViewGONE2 = viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE2;
-                viewModelCarInfoSevenmodeGet = viewModelCarInfoSpeedGet;
+                viewModelCarInfoSevenmodeGet2 = viewModelCarInfoSpeedGet;
                 viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN2;
                 viewModelCarInfoSevenmodeInt1MboundView18AndroidDrawableSevenColorCheckboxSelMboundView18AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN4;
-                ObservableBoolean observableBoolean2 = viewModelCarInfoCarImage;
-                viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE3;
+                viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE2;
                 stringValueOfViewModelCarInfoSpeed = stringValueOfViewModelCarInfoSpeed3;
                 viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE = viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE2;
                 viewModelCarInfoTurnSpeedAngeGet = viewModelCarInfoTurnSpeedAngeGet2;
-                int viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE5 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet;
-                ObservableInt observableInt5 = viewModelCarInfoSevenmode;
                 viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN2;
-                int i4 = viewModelCarInfoUnitGet2;
                 viewModelCarInfoUnitGet = viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE2;
                 viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE = 0;
-                viewModelShowSevenMenuViewVISIBLEViewGONE = viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE2;
+                viewModelShowSevenMenuViewVISIBLEViewGONE = viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE3;
+            } else {
+                if (viewModelCarInfo == null) {
+                    viewModelCarInfoBrakeValue = null;
+                } else {
+                    viewModelCarInfoBrakeValue = viewModelCarInfo.brakeValue;
+                }
+                updateRegistration(14, viewModelCarInfoBrakeValue);
+                if (viewModelCarInfoBrakeValue != null) {
+                    viewModelCarInfoBrakeValueGet = viewModelCarInfoBrakeValue.get();
+                }
+                boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet2 = ViewDataBinding.safeUnbox(viewModelCarInfoBrakeValueGet);
+                if ((dirtyFlags & 81920) != 0) {
+                    if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet2) {
+                        dirtyFlags |= 1099511627776L;
+                    } else {
+                        dirtyFlags |= 549755813888L;
+                    }
+                }
+                int viewModelCarInfoBrakeValueViewVISIBLEViewGONE4 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet2 ? 0 : i;
+                viewModelCarInfoSevenmodeInt5MboundView22AndroidDrawableSevenColorCheckboxSelMboundView22AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt5MboundView22AndroidDrawableSevenColorCheckboxSelMboundView22AndroidDrawableSevenColorCheckboxN2;
+                viewModelCarInfoSevenmodeGet = viewModelCarInfoSevenmodeGet5;
+                viewModelCarInfoBrakeValueViewVISIBLEViewGONE = viewModelCarInfoBrakeValueViewVISIBLEViewGONE4;
+                viewModelCarInfoTempStrGet = viewModelCarInfoTempStrGet3;
+                viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel = viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel3;
+                stringValueOfViewModelCarInfoTurnSpeed = stringValueOfViewModelCarInfoTurnSpeed2;
+                viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE3;
+                viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN5;
+                viewModelCarInfoBrakeValueViewVISIBLEViewGONE2 = viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE2;
+                viewModelCarInfoSevenmodeGet2 = viewModelCarInfoSpeedGet;
+                viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN2;
+                viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE2;
+                stringValueOfViewModelCarInfoSpeed = stringValueOfViewModelCarInfoSpeed3;
+                viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE = viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE2;
+                viewModelCarInfoTurnSpeedAngeGet = viewModelCarInfoTurnSpeedAngeGet2;
+                viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN2;
+                viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN2;
+                viewModelCarInfoUnitGet = viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE2;
+                viewModelCarInfoSevenmodeInt1MboundView18AndroidDrawableSevenColorCheckboxSelMboundView18AndroidDrawableSevenColorCheckboxN = viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN4;
+                viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE = 0;
+                viewModelShowSevenMenuViewVISIBLEViewGONE = viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE3;
             }
-        } else {
-            viewModelShowSevenMenu = null;
-            viewModelCarInfoSevenmodeInt5MboundView22AndroidDrawableSevenColorCheckboxSelMboundView22AndroidDrawableSevenColorCheckboxN = null;
-            viewModelCarInfoSevenmodeInt3MboundView20AndroidDrawableSevenColorCheckboxSelMboundView20AndroidDrawableSevenColorCheckboxN = null;
-            viewModelCarInfoSevenmodeGet2 = 0;
-            viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN = null;
-            viewModelCarInfoBrakeValueViewVISIBLEViewGONE = 0;
-            viewModelCarInfoTempStrGet = null;
-            viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel = null;
-            stringValueOfViewModelCarInfoTurnSpeed = null;
-            viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE = 0;
-            viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN = null;
-            viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE = 0;
-            viewModelCarInfoBrakeValueViewVISIBLEViewGONE2 = 0;
-            viewModelCarInfoSevenmodeGet = 0;
-            viewModelCarInfoSevenmodeInt1MboundView18AndroidDrawableSevenColorCheckboxSelMboundView18AndroidDrawableSevenColorCheckboxN = null;
-            stringValueOfViewModelCarInfoSpeed = null;
-            viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE = 0;
-            viewModelCarInfoTurnSpeedAngeGet = 0.0f;
-            viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN = null;
-            viewModelCarInfoUnitGet = 0;
-            viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE = 0;
-            viewModelShowSevenMenuViewVISIBLEViewGONE = 0;
         }
         if ((dirtyFlags & 98305) != 0) {
-            if (viewModel != null) {
-                viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE = viewModelShowSevenMenuViewVISIBLEViewGONE;
-                viewModelShowSevenMenu2 = viewModel.showSevenMenu;
-            } else {
+            if (viewModel == null) {
                 viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE = viewModelShowSevenMenuViewVISIBLEViewGONE;
                 viewModelShowSevenMenu2 = viewModelShowSevenMenu;
+            } else {
+                viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE = viewModelShowSevenMenuViewVISIBLEViewGONE;
+                viewModelShowSevenMenu2 = viewModel.showSevenMenu;
             }
-            DashboardViewModel dashboardViewModel = viewModel;
-            updateRegistration(0, (Observable) viewModelShowSevenMenu2);
+            updateRegistration(0, viewModelShowSevenMenu2);
             if (viewModelShowSevenMenu2 != null) {
                 viewModelShowSevenMenuGet = viewModelShowSevenMenu2.get();
             }
@@ -936,16 +904,15 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
             viewModelShowSevenMenu2 = viewModelShowSevenMenu;
         }
         if ((dirtyFlags & 98305) != 0) {
-            ObservableBoolean observableBoolean3 = viewModelShowSevenMenu2;
             this.alsMenu.setVisibility(viewModelShowSevenMenuViewVISIBLEViewGONE2);
         }
         if ((dirtyFlags & 65664) != 0) {
             this.batteryImageView.setVisibility(viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE);
         }
         if ((dirtyFlags & 65538) != 0) {
-            this.batteryImageView.setImageLevel(viewModelCarInfoSevenmodeGet2);
-            this.carImageView.setImageLevel(viewModelCarInfoSevenmodeGet2);
-            this.mboundView1.setImageLevel(viewModelCarInfoSevenmodeGet2);
+            this.batteryImageView.setImageLevel(viewModelCarInfoSevenmodeGet);
+            this.carImageView.setImageLevel(viewModelCarInfoSevenmodeGet);
+            this.mboundView1.setImageLevel(viewModelCarInfoSevenmodeGet);
             TextViewBindingAdapter.setDrawableLeft(this.mboundView17, viewModelCarInfoSevenmodeInt0MboundView17AndroidDrawableSevenColorCheckboxSelMboundView17AndroidDrawableSevenColorCheckboxN);
             TextViewBindingAdapter.setDrawableLeft(this.mboundView18, viewModelCarInfoSevenmodeInt1MboundView18AndroidDrawableSevenColorCheckboxSelMboundView18AndroidDrawableSevenColorCheckboxN);
             TextViewBindingAdapter.setDrawableLeft(this.mboundView19, viewModelCarInfoSevenmodeInt2MboundView19AndroidDrawableSevenColorCheckboxSelMboundView19AndroidDrawableSevenColorCheckboxN);
@@ -953,9 +920,9 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
             TextViewBindingAdapter.setDrawableLeft(this.mboundView21, viewModelCarInfoSevenmodeInt4MboundView21AndroidDrawableSevenColorCheckboxSelMboundView21AndroidDrawableSevenColorCheckboxN);
             TextViewBindingAdapter.setDrawableLeft(this.mboundView22, viewModelCarInfoSevenmodeInt5MboundView22AndroidDrawableSevenColorCheckboxSelMboundView22AndroidDrawableSevenColorCheckboxN);
             TextViewBindingAdapter.setDrawableLeft(this.mboundView23, viewModelCarInfoSevenmodeInt6MboundView23AndroidDrawableSevenColorCheckboxSelMboundView23AndroidDrawableSevenColorCheckboxN2);
-            this.oilImageView.setImageLevel(viewModelCarInfoSevenmodeGet2);
-            this.speedometerImageView.setImageLevel(viewModelCarInfoSevenmodeGet2);
-            this.tachometerImageView.setImageLevel(viewModelCarInfoSevenmodeGet2);
+            this.oilImageView.setImageLevel(viewModelCarInfoSevenmodeGet);
+            this.speedometerImageView.setImageLevel(viewModelCarInfoSevenmodeGet);
+            this.tachometerImageView.setImageLevel(viewModelCarInfoSevenmodeGet);
         }
         if ((dirtyFlags & 65540) != 0) {
             this.carImageView.setVisibility(viewModelCarInfoUnitGet);
@@ -964,98 +931,78 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
             this.dorrBackImageView.setVisibility(viewModelCarInfoBDoorStateViewVISIBLEViewINVISIBLE);
         }
         if ((dirtyFlags & 67584) != 0) {
-            int i5 = viewModelCarInfoSevenmodeGet2;
             viewModelCarInfoSevenmodeGet3 = viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE;
             this.dorrLeftFlImageView.setVisibility(viewModelCarInfoSevenmodeGet3);
         } else {
             viewModelCarInfoSevenmodeGet3 = viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE;
         }
         if ((dirtyFlags & 65544) != 0) {
-            int i6 = viewModelCarInfoSevenmodeGet3;
-            viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE2 = viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE;
-            this.dorrLeftFrImageView.setVisibility(viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE2);
+            viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE2 = viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE;
+            this.dorrLeftFrImageView.setVisibility(viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE2);
         } else {
-            int viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE3 = viewModelCarInfoSevenmodeGet3;
-            viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE2 = viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE;
+            viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE2 = viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE;
         }
         if ((dirtyFlags & 66048) != 0) {
-            int i7 = viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE2;
-            viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoBrakeValueViewVISIBLEViewGONE2;
-            this.dorrLeftRlImageView.setVisibility(viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE);
+            viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE2 = viewModelCarInfoBrakeValueViewVISIBLEViewGONE2;
+            this.dorrLeftRlImageView.setVisibility(viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE2);
         } else {
-            viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoBrakeValueViewVISIBLEViewGONE2;
+            viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE2 = viewModelCarInfoBrakeValueViewVISIBLEViewGONE2;
         }
         if ((dirtyFlags & 65552) != 0) {
-            int i8 = viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE;
-            viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE2 = viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE;
-            this.imageView19.setVisibility(viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE2);
+            viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE;
+            this.imageView19.setVisibility(viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE);
         } else {
-            viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE2 = viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE;
+            viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE;
         }
         if ((dirtyFlags & PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH) != 0) {
-            int i9 = viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE2;
-            this.mboundView17.setOnClickListener(this.mCallback167);
-            this.mboundView18.setOnClickListener(this.mCallback168);
-            this.mboundView19.setOnClickListener(this.mCallback169);
-            this.mboundView20.setOnClickListener(this.mCallback170);
-            this.mboundView21.setOnClickListener(this.mCallback171);
-            this.mboundView22.setOnClickListener(this.mCallback172);
-            this.mboundView23.setOnClickListener(this.mCallback173);
+            this.mboundView17.setOnClickListener(this.mCallback251);
+            this.mboundView18.setOnClickListener(this.mCallback252);
+            this.mboundView19.setOnClickListener(this.mCallback253);
+            this.mboundView20.setOnClickListener(this.mCallback254);
+            this.mboundView21.setOnClickListener(this.mCallback255);
+            this.mboundView22.setOnClickListener(this.mCallback256);
+            this.mboundView23.setOnClickListener(this.mCallback257);
         }
         if ((dirtyFlags & 69632) != 0) {
-            DashboardViewModel.setSevenSpeedRotation(this.mboundView3, viewModelCarInfoSevenmodeGet);
-            int i10 = viewModelShowSevenMenuViewVISIBLEViewGONE2;
+            DashboardViewModel.setSevenSpeedRotation(this.mboundView3, viewModelCarInfoSevenmodeGet2);
             stringValueOfViewModelCarInfoSpeed2 = stringValueOfViewModelCarInfoSpeed;
             TextViewBindingAdapter.setText(this.speedPointerTextView, stringValueOfViewModelCarInfoSpeed2);
         } else {
-            int viewModelCarInfoSpeedGet2 = viewModelCarInfoSevenmodeGet;
-            int viewModelCarInfoSpeedGet3 = viewModelShowSevenMenuViewVISIBLEViewGONE2;
             stringValueOfViewModelCarInfoSpeed2 = stringValueOfViewModelCarInfoSpeed;
         }
         if ((dirtyFlags & 81920) != 0) {
-            String str = stringValueOfViewModelCarInfoSpeed2;
             viewModelCarInfoBrakeValueViewVISIBLEViewGONE3 = viewModelCarInfoBrakeValueViewVISIBLEViewGONE;
             this.oilImageView.setVisibility(viewModelCarInfoBrakeValueViewVISIBLEViewGONE3);
         } else {
             viewModelCarInfoBrakeValueViewVISIBLEViewGONE3 = viewModelCarInfoBrakeValueViewVISIBLEViewGONE;
         }
         if ((dirtyFlags & 65600) != 0) {
-            int i11 = viewModelCarInfoBrakeValueViewVISIBLEViewGONE3;
             viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel2 = viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel;
             ImageViewBindingAdapter.setImageDrawable(this.speedometerImageView, viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel2);
         } else {
             viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel2 = viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel;
         }
         if ((dirtyFlags & 65568) != 0) {
-            Drawable drawable6 = viewModelCarInfoUnitInt1SpeedometerImageViewAndroidDrawableSevenColorSpeedMpWtachLevelSpeedometerImageViewAndroidDrawableSevenColorSpeedKmWtachLevel2;
             viewModelCarInfoTempStrGet2 = viewModelCarInfoTempStrGet;
             TextViewBindingAdapter.setText(this.textView18, viewModelCarInfoTempStrGet2);
         } else {
             viewModelCarInfoTempStrGet2 = viewModelCarInfoTempStrGet;
         }
         if ((dirtyFlags & 66560) != 0) {
-            String str2 = viewModelCarInfoTempStrGet2;
             DashboardViewModel.setALSRotation(this.zspeedPointerImageView, viewModelCarInfoTurnSpeedAngeGet);
-        } else {
-            float f = viewModelCarInfoTurnSpeedAngeGet;
         }
         if ((dirtyFlags & 65792) != 0) {
-            long j = dirtyFlags;
             TextViewBindingAdapter.setText(this.zspeedPointerTextView, stringValueOfViewModelCarInfoTurnSpeed);
-            return;
         }
-        String str3 = stringValueOfViewModelCarInfoTurnSpeed;
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean viewModelJavaLangObjectNull = true;
-        boolean viewModelJavaLangObjectNull2 = false;
+        boolean viewModelJavaLangObjectNull;
         switch (sourceId) {
             case 1:
                 DashboardViewModel viewModel = this.mViewModel;
-                if (viewModel == null) {
-                    viewModelJavaLangObjectNull = false;
-                }
+                viewModelJavaLangObjectNull = viewModel != null;
                 if (viewModelJavaLangObjectNull) {
                     viewModel.onSevenModeClick(0);
                     return;
@@ -1064,18 +1011,13 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
             case 2:
                 DashboardViewModel viewModel2 = this.mViewModel;
                 if (viewModel2 != null) {
-                    viewModelJavaLangObjectNull2 = true;
-                }
-                if (viewModelJavaLangObjectNull2) {
                     viewModel2.onSevenModeClick(1);
                     return;
                 }
                 return;
             case 3:
                 DashboardViewModel viewModel3 = this.mViewModel;
-                if (viewModel3 == null) {
-                    viewModelJavaLangObjectNull = false;
-                }
+                viewModelJavaLangObjectNull = viewModel3 != null;
                 if (viewModelJavaLangObjectNull) {
                     viewModel3.onSevenModeClick(2);
                     return;
@@ -1083,9 +1025,7 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
                 return;
             case 4:
                 DashboardViewModel viewModel4 = this.mViewModel;
-                if (viewModel4 == null) {
-                    viewModelJavaLangObjectNull = false;
-                }
+                viewModelJavaLangObjectNull = viewModel4 != null;
                 if (viewModelJavaLangObjectNull) {
                     viewModel4.onSevenModeClick(3);
                     return;
@@ -1093,9 +1033,7 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
                 return;
             case 5:
                 DashboardViewModel viewModel5 = this.mViewModel;
-                if (viewModel5 == null) {
-                    viewModelJavaLangObjectNull = false;
-                }
+                viewModelJavaLangObjectNull = viewModel5 != null;
                 if (viewModelJavaLangObjectNull) {
                     viewModel5.onSevenModeClick(4);
                     return;
@@ -1103,9 +1041,7 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
                 return;
             case 6:
                 DashboardViewModel viewModel6 = this.mViewModel;
-                if (viewModel6 == null) {
-                    viewModelJavaLangObjectNull = false;
-                }
+                viewModelJavaLangObjectNull = viewModel6 != null;
                 if (viewModelJavaLangObjectNull) {
                     viewModel6.onSevenModeClick(5);
                     return;
@@ -1113,9 +1049,7 @@ public class SevenDasoardBindSw600dpLandImpl extends SevenDasoardBind implements
                 return;
             case 7:
                 DashboardViewModel viewModel7 = this.mViewModel;
-                if (viewModel7 == null) {
-                    viewModelJavaLangObjectNull = false;
-                }
+                viewModelJavaLangObjectNull = viewModel7 != null;
                 if (viewModelJavaLangObjectNull) {
                     viewModel7.onSevenModeClick(6);
                     return;

@@ -15,15 +15,18 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class FutureObserver<T> extends CountDownLatch implements Observer<T>, Future<T>, Disposable {
     Throwable error;
-    final AtomicReference<Disposable> upstream = new AtomicReference<>();
+    final AtomicReference<Disposable> upstream;
     T value;
 
     public FutureObserver() {
         super(1);
+        this.upstream = new AtomicReference<>();
     }
 
+    @Override // java.util.concurrent.Future
     public boolean cancel(boolean mayInterruptIfRunning) {
         Disposable a;
         do {
@@ -39,29 +42,33 @@ public final class FutureObserver<T> extends CountDownLatch implements Observer<
         return true;
     }
 
+    @Override // java.util.concurrent.Future
     public boolean isCancelled() {
         return DisposableHelper.isDisposed(this.upstream.get());
     }
 
+    @Override // java.util.concurrent.Future
     public boolean isDone() {
         return getCount() == 0;
     }
 
+    @Override // java.util.concurrent.Future
     public T get() throws InterruptedException, ExecutionException {
         if (getCount() != 0) {
             BlockingHelper.verifyNonBlocking();
             await();
         }
-        if (!isCancelled()) {
-            Throwable ex = this.error;
-            if (ex == null) {
-                return this.value;
-            }
+        if (isCancelled()) {
+            throw new CancellationException();
+        }
+        Throwable ex = this.error;
+        if (ex != null) {
             throw new ExecutionException(ex);
         }
-        throw new CancellationException();
+        return this.value;
     }
 
+    @Override // java.util.concurrent.Future
     public T get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
         if (getCount() != 0) {
             BlockingHelper.verifyNonBlocking();
@@ -69,20 +76,22 @@ public final class FutureObserver<T> extends CountDownLatch implements Observer<
                 throw new TimeoutException(ExceptionHelper.timeoutMessage(timeout, unit));
             }
         }
-        if (!isCancelled()) {
-            Throwable ex = this.error;
-            if (ex == null) {
-                return this.value;
-            }
+        if (isCancelled()) {
+            throw new CancellationException();
+        }
+        Throwable ex = this.error;
+        if (ex != null) {
             throw new ExecutionException(ex);
         }
-        throw new CancellationException();
+        return this.value;
     }
 
+    @Override // io.reactivex.Observer
     public void onSubscribe(Disposable d) {
         DisposableHelper.setOnce(this.upstream, d);
     }
 
+    @Override // io.reactivex.Observer
     public void onNext(T t) {
         if (this.value != null) {
             this.upstream.get().dispose();
@@ -92,6 +101,7 @@ public final class FutureObserver<T> extends CountDownLatch implements Observer<
         this.value = t;
     }
 
+    @Override // io.reactivex.Observer
     public void onError(Throwable t) {
         Disposable a;
         if (this.error == null) {
@@ -109,6 +119,7 @@ public final class FutureObserver<T> extends CountDownLatch implements Observer<
         RxJavaPlugins.onError(t);
     }
 
+    @Override // io.reactivex.Observer
     public void onComplete() {
         Disposable a;
         if (this.value == null) {
@@ -124,9 +135,11 @@ public final class FutureObserver<T> extends CountDownLatch implements Observer<
         countDown();
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public void dispose() {
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public boolean isDisposed() {
         return isDone();
     }

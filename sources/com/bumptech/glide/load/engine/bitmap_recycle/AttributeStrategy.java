@@ -3,33 +3,42 @@ package com.bumptech.glide.load.engine.bitmap_recycle;
 import android.graphics.Bitmap;
 import com.bumptech.glide.util.Util;
 
+/* loaded from: classes.dex */
 class AttributeStrategy implements LruPoolStrategy {
-    private final GroupedLinkedMap<Key, Bitmap> groupedMap = new GroupedLinkedMap<>();
     private final KeyPool keyPool = new KeyPool();
+    private final GroupedLinkedMap<Key, Bitmap> groupedMap = new GroupedLinkedMap<>();
 
     AttributeStrategy() {
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public void put(Bitmap bitmap) {
-        this.groupedMap.put(this.keyPool.get(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig()), bitmap);
+        Key key = this.keyPool.get(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
+        this.groupedMap.put(key, bitmap);
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public Bitmap get(int width, int height, Bitmap.Config config) {
-        return this.groupedMap.get(this.keyPool.get(width, height, config));
+        Key key = this.keyPool.get(width, height, config);
+        return this.groupedMap.get(key);
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public Bitmap removeLast() {
         return this.groupedMap.removeLast();
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public String logBitmap(Bitmap bitmap) {
         return getBitmapString(bitmap);
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public String logBitmap(int width, int height, Bitmap.Config config) {
         return getBitmapString(width, height, config);
     }
 
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy
     public int getSize(Bitmap bitmap) {
         return Util.getBitmapByteSize(bitmap);
     }
@@ -46,60 +55,62 @@ class AttributeStrategy implements LruPoolStrategy {
         return "[" + width + "x" + height + "], " + config;
     }
 
+    /* loaded from: classes.dex */
     static class KeyPool extends BaseKeyPool<Key> {
         KeyPool() {
         }
 
-        /* access modifiers changed from: package-private */
-        public Key get(int width, int height, Bitmap.Config config) {
-            Key result = (Key) get();
+        Key get(int width, int height, Bitmap.Config config) {
+            Key result = get();
             result.init(width, height, config);
             return result;
         }
 
-        /* access modifiers changed from: protected */
+        /* JADX INFO: Access modifiers changed from: protected */
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // com.bumptech.glide.load.engine.bitmap_recycle.BaseKeyPool
         public Key create() {
             return new Key(this);
         }
     }
 
+    /* loaded from: classes.dex */
     static class Key implements Poolable {
         private Bitmap.Config config;
         private int height;
         private final KeyPool pool;
         private int width;
 
-        public Key(KeyPool pool2) {
-            this.pool = pool2;
+        public Key(KeyPool pool) {
+            this.pool = pool;
         }
 
-        public void init(int width2, int height2, Bitmap.Config config2) {
-            this.width = width2;
-            this.height = height2;
-            this.config = config2;
+        public void init(int width, int height, Bitmap.Config config) {
+            this.width = width;
+            this.height = height;
+            this.config = config;
         }
 
         public boolean equals(Object o) {
-            if (!(o instanceof Key)) {
-                return false;
-            }
-            Key other = (Key) o;
-            if (this.width == other.width && this.height == other.height && this.config == other.config) {
-                return true;
+            if (o instanceof Key) {
+                Key other = (Key) o;
+                return this.width == other.width && this.height == other.height && this.config == other.config;
             }
             return false;
         }
 
         public int hashCode() {
-            int result = ((this.width * 31) + this.height) * 31;
-            Bitmap.Config config2 = this.config;
-            return result + (config2 != null ? config2.hashCode() : 0);
+            int result = this.width;
+            int result2 = ((result * 31) + this.height) * 31;
+            Bitmap.Config config = this.config;
+            return result2 + (config != null ? config.hashCode() : 0);
         }
 
         public String toString() {
             return AttributeStrategy.getBitmapString(this.width, this.height, this.config);
         }
 
+        @Override // com.bumptech.glide.load.engine.bitmap_recycle.Poolable
         public void offer() {
             this.pool.offer(this);
         }

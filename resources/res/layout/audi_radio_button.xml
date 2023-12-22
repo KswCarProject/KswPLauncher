@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:layout_width="match_parent" android:layout_height="58dp">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="58dp">
     <TextView android:id="@+id/audioRadioButtonTextView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView" android:layout_alignParentLeft="true" android:layout_centerVertical="true" android:layout_marginStart="90dp" android:layout_marginEnd="16dp" style="@style/audi_set_default_text"/>
     <CheckBox android:id="@+id/audioRadioButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:button="@drawable/audi_radio_button_icon" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:layout_marginEnd="64dp"/>
 </RelativeLayout>

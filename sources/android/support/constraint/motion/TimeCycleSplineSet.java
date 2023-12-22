@@ -3,6 +3,7 @@ package android.support.constraint.motion;
 import android.os.Build;
 import android.support.constraint.ConstraintAttribute;
 import android.support.constraint.motion.utils.CurveFit;
+import android.support.p001v4.app.NotificationCompat;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
@@ -11,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 
+/* loaded from: classes.dex */
 public abstract class TimeCycleSplineSet {
     private static final int CURVE_OFFSET = 2;
     private static final int CURVE_PERIOD = 1;
@@ -18,15 +20,15 @@ public abstract class TimeCycleSplineSet {
     private static final String TAG = "SplineSet";
     private static float VAL_2PI = 6.2831855f;
     private int count;
-    float last_cycle = Float.NaN;
     long last_time;
+    protected CurveFit mCurveFit;
+    private String mType;
+    protected int mWaveShape = 0;
+    protected int[] mTimePoints = new int[10];
+    protected float[][] mValues = (float[][]) Array.newInstance(float.class, 10, 3);
     private float[] mCache = new float[3];
     protected boolean mContinue = false;
-    protected CurveFit mCurveFit;
-    protected int[] mTimePoints = new int[10];
-    private String mType;
-    protected float[][] mValues = ((float[][]) Array.newInstance(float.class, new int[]{10, 3}));
-    protected int mWaveShape = 0;
+    float last_cycle = Float.NaN;
 
     public abstract boolean setProperty(View view, float f, long j, KeyCache keyCache);
 
@@ -44,10 +46,7 @@ public abstract class TimeCycleSplineSet {
     }
 
     public float get(float pos, long time, View view, KeyCache cache) {
-        long j = time;
-        View view2 = view;
-        KeyCache keyCache = cache;
-        this.mCurveFit.getPos((double) pos, this.mCache);
+        this.mCurveFit.getPos(pos, this.mCache);
         float[] fArr = this.mCache;
         boolean z = true;
         float period = fArr[1];
@@ -56,18 +55,21 @@ public abstract class TimeCycleSplineSet {
             return fArr[2];
         }
         if (Float.isNaN(this.last_cycle)) {
-            float floatValue = keyCache.getFloatValue(view2, this.mType, 0);
+            float floatValue = cache.getFloatValue(view, this.mType, 0);
             this.last_cycle = floatValue;
             if (Float.isNaN(floatValue)) {
                 this.last_cycle = 0.0f;
             }
         }
-        float f = (float) ((((double) this.last_cycle) + ((((double) (j - this.last_time)) * 1.0E-9d) * ((double) period))) % 1.0d);
+        long delta_time = time - this.last_time;
+        float f = (float) ((this.last_cycle + ((delta_time * 1.0E-9d) * period)) % 1.0d);
         this.last_cycle = f;
-        keyCache.setFloatValue(view2, this.mType, 0, f);
-        this.last_time = j;
+        cache.setFloatValue(view, this.mType, 0, f);
+        this.last_time = time;
         float v = this.mCache[0];
-        float value = (v * calcWave(this.last_cycle)) + this.mCache[2];
+        float wave = calcWave(this.last_cycle);
+        float offset = this.mCache[2];
+        float value = (v * wave) + offset;
         if (v == 0.0f && period == 0.0f) {
             z = false;
         }
@@ -75,25 +77,23 @@ public abstract class TimeCycleSplineSet {
         return value;
     }
 
-    /* access modifiers changed from: protected */
-    public float calcWave(float period) {
-        float p = period;
+    protected float calcWave(float period) {
         switch (this.mWaveShape) {
             case 1:
-                return Math.signum(VAL_2PI * p);
+                return Math.signum(VAL_2PI * period);
             case 2:
-                return 1.0f - Math.abs(p);
+                return 1.0f - Math.abs(period);
             case 3:
-                return (((p * 2.0f) + 1.0f) % 2.0f) - 1.0f;
+                return (((period * 2.0f) + 1.0f) % 2.0f) - 1.0f;
             case 4:
-                return 1.0f - (((p * 2.0f) + 1.0f) % 2.0f);
+                return 1.0f - (((period * 2.0f) + 1.0f) % 2.0f);
             case 5:
-                return (float) Math.cos((double) (VAL_2PI * p));
+                return (float) Math.cos(VAL_2PI * period);
             case 6:
-                float x = 1.0f - Math.abs(((p * 4.0f) % 4.0f) - 2.0f);
+                float x = 1.0f - Math.abs(((period * 4.0f) % 4.0f) - 2.0f);
                 return 1.0f - (x * x);
             default:
-                return (float) Math.sin((double) (VAL_2PI * p));
+                return (float) Math.sin(VAL_2PI * period);
         }
     }
 
@@ -105,177 +105,144 @@ public abstract class TimeCycleSplineSet {
         return new CustomSet(str, attrList);
     }
 
-    /* JADX WARNING: Can't fix incorrect switch cases order */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    static android.support.constraint.motion.TimeCycleSplineSet makeSpline(java.lang.String r1, long r2) {
-        /*
-            int r0 = r1.hashCode()
-            switch(r0) {
-                case -1249320806: goto L_0x0081;
-                case -1249320805: goto L_0x0077;
-                case -1225497657: goto L_0x006b;
-                case -1225497656: goto L_0x005f;
-                case -1225497655: goto L_0x0053;
-                case -1001078227: goto L_0x0048;
-                case -908189618: goto L_0x003e;
-                case -908189617: goto L_0x0034;
-                case -40300674: goto L_0x002a;
-                case -4379043: goto L_0x0020;
-                case 37232917: goto L_0x0014;
-                case 92909918: goto L_0x0009;
-                default: goto L_0x0007;
-            }
-        L_0x0007:
-            goto L_0x008b
-        L_0x0009:
-            java.lang.String r0 = "alpha"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 0
-            goto L_0x008c
-        L_0x0014:
-            java.lang.String r0 = "transitionPathRotate"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 5
-            goto L_0x008c
-        L_0x0020:
-            java.lang.String r0 = "elevation"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 1
-            goto L_0x008c
-        L_0x002a:
-            java.lang.String r0 = "rotation"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 2
-            goto L_0x008c
-        L_0x0034:
-            java.lang.String r0 = "scaleY"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 7
-            goto L_0x008c
-        L_0x003e:
-            java.lang.String r0 = "scaleX"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 6
-            goto L_0x008c
-        L_0x0048:
-            java.lang.String r0 = "progress"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 11
-            goto L_0x008c
-        L_0x0053:
-            java.lang.String r0 = "translationZ"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 10
-            goto L_0x008c
-        L_0x005f:
-            java.lang.String r0 = "translationY"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 9
-            goto L_0x008c
-        L_0x006b:
-            java.lang.String r0 = "translationX"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 8
-            goto L_0x008c
-        L_0x0077:
-            java.lang.String r0 = "rotationY"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 4
-            goto L_0x008c
-        L_0x0081:
-            java.lang.String r0 = "rotationX"
-            boolean r0 = r1.equals(r0)
-            if (r0 == 0) goto L_0x0007
-            r0 = 3
-            goto L_0x008c
-        L_0x008b:
-            r0 = -1
-        L_0x008c:
-            switch(r0) {
-                case 0: goto L_0x00d3;
-                case 1: goto L_0x00cd;
-                case 2: goto L_0x00c7;
-                case 3: goto L_0x00c1;
-                case 4: goto L_0x00bb;
-                case 5: goto L_0x00b5;
-                case 6: goto L_0x00af;
-                case 7: goto L_0x00a9;
-                case 8: goto L_0x00a3;
-                case 9: goto L_0x009d;
-                case 10: goto L_0x0097;
-                case 11: goto L_0x0091;
-                default: goto L_0x008f;
-            }
-        L_0x008f:
-            r0 = 0
-            return r0
-        L_0x0091:
-            android.support.constraint.motion.TimeCycleSplineSet$ProgressSet r0 = new android.support.constraint.motion.TimeCycleSplineSet$ProgressSet
-            r0.<init>()
-            goto L_0x00d9
-        L_0x0097:
-            android.support.constraint.motion.TimeCycleSplineSet$TranslationZset r0 = new android.support.constraint.motion.TimeCycleSplineSet$TranslationZset
-            r0.<init>()
-            goto L_0x00d9
-        L_0x009d:
-            android.support.constraint.motion.TimeCycleSplineSet$TranslationYset r0 = new android.support.constraint.motion.TimeCycleSplineSet$TranslationYset
-            r0.<init>()
-            goto L_0x00d9
-        L_0x00a3:
-            android.support.constraint.motion.TimeCycleSplineSet$TranslationXset r0 = new android.support.constraint.motion.TimeCycleSplineSet$TranslationXset
-            r0.<init>()
-            goto L_0x00d9
-        L_0x00a9:
-            android.support.constraint.motion.TimeCycleSplineSet$ScaleYset r0 = new android.support.constraint.motion.TimeCycleSplineSet$ScaleYset
-            r0.<init>()
-            goto L_0x00d9
-        L_0x00af:
-            android.support.constraint.motion.TimeCycleSplineSet$ScaleXset r0 = new android.support.constraint.motion.TimeCycleSplineSet$ScaleXset
-            r0.<init>()
-            goto L_0x00d9
-        L_0x00b5:
-            android.support.constraint.motion.TimeCycleSplineSet$PathRotate r0 = new android.support.constraint.motion.TimeCycleSplineSet$PathRotate
-            r0.<init>()
-            goto L_0x00d9
-        L_0x00bb:
-            android.support.constraint.motion.TimeCycleSplineSet$RotationYset r0 = new android.support.constraint.motion.TimeCycleSplineSet$RotationYset
-            r0.<init>()
-            goto L_0x00d9
-        L_0x00c1:
-            android.support.constraint.motion.TimeCycleSplineSet$RotationXset r0 = new android.support.constraint.motion.TimeCycleSplineSet$RotationXset
-            r0.<init>()
-            goto L_0x00d9
-        L_0x00c7:
-            android.support.constraint.motion.TimeCycleSplineSet$RotationSet r0 = new android.support.constraint.motion.TimeCycleSplineSet$RotationSet
-            r0.<init>()
-            goto L_0x00d9
-        L_0x00cd:
-            android.support.constraint.motion.TimeCycleSplineSet$ElevationSet r0 = new android.support.constraint.motion.TimeCycleSplineSet$ElevationSet
-            r0.<init>()
-            goto L_0x00d9
-        L_0x00d3:
-            android.support.constraint.motion.TimeCycleSplineSet$AlphaSet r0 = new android.support.constraint.motion.TimeCycleSplineSet$AlphaSet
-            r0.<init>()
-        L_0x00d9:
-            r0.setStartTime(r2)
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.support.constraint.motion.TimeCycleSplineSet.makeSpline(java.lang.String, long):android.support.constraint.motion.TimeCycleSplineSet");
+    /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
+    static TimeCycleSplineSet makeSpline(String str, long currentTime) {
+        char c;
+        TimeCycleSplineSet timeCycle;
+        switch (str.hashCode()) {
+            case -1249320806:
+                if (str.equals("rotationX")) {
+                    c = 3;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1249320805:
+                if (str.equals("rotationY")) {
+                    c = 4;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1225497657:
+                if (str.equals("translationX")) {
+                    c = '\b';
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1225497656:
+                if (str.equals("translationY")) {
+                    c = '\t';
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1225497655:
+                if (str.equals("translationZ")) {
+                    c = '\n';
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -1001078227:
+                if (str.equals(NotificationCompat.CATEGORY_PROGRESS)) {
+                    c = 11;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -908189618:
+                if (str.equals("scaleX")) {
+                    c = 6;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -908189617:
+                if (str.equals("scaleY")) {
+                    c = 7;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -40300674:
+                if (str.equals("rotation")) {
+                    c = 2;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case -4379043:
+                if (str.equals("elevation")) {
+                    c = 1;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 37232917:
+                if (str.equals("transitionPathRotate")) {
+                    c = 5;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            case 92909918:
+                if (str.equals("alpha")) {
+                    c = 0;
+                    break;
+                }
+                c = '\uffff';
+                break;
+            default:
+                c = '\uffff';
+                break;
+        }
+        switch (c) {
+            case 0:
+                timeCycle = new AlphaSet();
+                break;
+            case 1:
+                timeCycle = new ElevationSet();
+                break;
+            case 2:
+                timeCycle = new RotationSet();
+                break;
+            case 3:
+                timeCycle = new RotationXset();
+                break;
+            case 4:
+                timeCycle = new RotationYset();
+                break;
+            case 5:
+                timeCycle = new PathRotate();
+                break;
+            case 6:
+                timeCycle = new ScaleXset();
+                break;
+            case 7:
+                timeCycle = new ScaleYset();
+                break;
+            case '\b':
+                timeCycle = new TranslationXset();
+                break;
+            case '\t':
+                timeCycle = new TranslationYset();
+                break;
+            case '\n':
+                timeCycle = new TranslationZset();
+                break;
+            case 11:
+                timeCycle = new ProgressSet();
+                break;
+            default:
+                return null;
+        }
+        timeCycle.setStartTime(currentTime);
+        return timeCycle;
     }
 
-    /* access modifiers changed from: protected */
-    public void setStartTime(long currentTime) {
+    protected void setStartTime(long currentTime) {
         this.last_time = currentTime;
     }
 
@@ -292,54 +259,53 @@ public abstract class TimeCycleSplineSet {
     }
 
     public void setup(int curveType) {
-        int i = this.count;
-        if (i == 0) {
+        int i;
+        int i2 = this.count;
+        if (i2 == 0) {
             Log.e(TAG, "Error no points added to " + this.mType);
             return;
         }
-        Sort.doubleQuickSort(this.mTimePoints, this.mValues, 0, i - 1);
+        Sort.doubleQuickSort(this.mTimePoints, this.mValues, 0, i2 - 1);
         int unique = 0;
-        int i2 = 1;
+        int i3 = 1;
         while (true) {
             int[] iArr = this.mTimePoints;
-            if (i2 >= iArr.length) {
+            if (i3 >= iArr.length) {
                 break;
             }
-            if (iArr[i2] != iArr[i2 - 1]) {
+            if (iArr[i3] != iArr[i3 - 1]) {
                 unique++;
             }
-            i2++;
+            i3++;
         }
         if (unique == 0) {
             unique = 1;
         }
         double[] time = new double[unique];
-        int[] iArr2 = new int[2];
-        iArr2[1] = 3;
-        iArr2[0] = unique;
-        double[][] values = (double[][]) Array.newInstance(double.class, iArr2);
+        double[][] values = (double[][]) Array.newInstance(double.class, unique, 3);
         int k = 0;
-        for (int i3 = 0; i3 < this.count; i3++) {
-            if (i3 > 0) {
-                int[] iArr3 = this.mTimePoints;
-                if (iArr3[i3] == iArr3[i3 - 1]) {
-                }
+        while (i < this.count) {
+            if (i > 0) {
+                int[] iArr2 = this.mTimePoints;
+                i = iArr2[i] == iArr2[i + (-1)] ? i + 1 : 0;
             }
-            time[k] = ((double) this.mTimePoints[i3]) * 0.01d;
+            time[k] = this.mTimePoints[i] * 0.01d;
             double[] dArr = values[k];
             float[][] fArr = this.mValues;
-            dArr[0] = (double) fArr[i3][0];
-            values[k][1] = (double) fArr[i3][1];
-            values[k][2] = (double) fArr[i3][2];
+            dArr[0] = fArr[i][0];
+            values[k][1] = fArr[i][1];
+            values[k][2] = fArr[i][2];
             k++;
         }
         this.mCurveFit = CurveFit.get(curveType, time, values);
     }
 
+    /* loaded from: classes.dex */
     static class ElevationSet extends TimeCycleSplineSet {
         ElevationSet() {
         }
 
+        @Override // android.support.constraint.motion.TimeCycleSplineSet
         public boolean setProperty(View view, float t, long time, KeyCache cache) {
             if (Build.VERSION.SDK_INT >= 21) {
                 view.setElevation(get(t, time, view, cache));
@@ -348,50 +314,60 @@ public abstract class TimeCycleSplineSet {
         }
     }
 
+    /* loaded from: classes.dex */
     static class AlphaSet extends TimeCycleSplineSet {
         AlphaSet() {
         }
 
+        @Override // android.support.constraint.motion.TimeCycleSplineSet
         public boolean setProperty(View view, float t, long time, KeyCache cache) {
             view.setAlpha(get(t, time, view, cache));
             return this.mContinue;
         }
     }
 
+    /* loaded from: classes.dex */
     static class RotationSet extends TimeCycleSplineSet {
         RotationSet() {
         }
 
+        @Override // android.support.constraint.motion.TimeCycleSplineSet
         public boolean setProperty(View view, float t, long time, KeyCache cache) {
             view.setRotation(get(t, time, view, cache));
             return this.mContinue;
         }
     }
 
+    /* loaded from: classes.dex */
     static class RotationXset extends TimeCycleSplineSet {
         RotationXset() {
         }
 
+        @Override // android.support.constraint.motion.TimeCycleSplineSet
         public boolean setProperty(View view, float t, long time, KeyCache cache) {
             view.setRotationX(get(t, time, view, cache));
             return this.mContinue;
         }
     }
 
+    /* loaded from: classes.dex */
     static class RotationYset extends TimeCycleSplineSet {
         RotationYset() {
         }
 
+        @Override // android.support.constraint.motion.TimeCycleSplineSet
         public boolean setProperty(View view, float t, long time, KeyCache cache) {
             view.setRotationY(get(t, time, view, cache));
             return this.mContinue;
         }
     }
 
+    /* loaded from: classes.dex */
     static class PathRotate extends TimeCycleSplineSet {
         PathRotate() {
         }
 
+        @Override // android.support.constraint.motion.TimeCycleSplineSet
         public boolean setProperty(View view, float t, long time, KeyCache cache) {
             return this.mContinue;
         }
@@ -402,50 +378,60 @@ public abstract class TimeCycleSplineSet {
         }
     }
 
+    /* loaded from: classes.dex */
     static class ScaleXset extends TimeCycleSplineSet {
         ScaleXset() {
         }
 
+        @Override // android.support.constraint.motion.TimeCycleSplineSet
         public boolean setProperty(View view, float t, long time, KeyCache cache) {
             view.setScaleX(get(t, time, view, cache));
             return this.mContinue;
         }
     }
 
+    /* loaded from: classes.dex */
     static class ScaleYset extends TimeCycleSplineSet {
         ScaleYset() {
         }
 
+        @Override // android.support.constraint.motion.TimeCycleSplineSet
         public boolean setProperty(View view, float t, long time, KeyCache cache) {
             view.setScaleY(get(t, time, view, cache));
             return this.mContinue;
         }
     }
 
+    /* loaded from: classes.dex */
     static class TranslationXset extends TimeCycleSplineSet {
         TranslationXset() {
         }
 
+        @Override // android.support.constraint.motion.TimeCycleSplineSet
         public boolean setProperty(View view, float t, long time, KeyCache cache) {
             view.setTranslationX(get(t, time, view, cache));
             return this.mContinue;
         }
     }
 
+    /* loaded from: classes.dex */
     static class TranslationYset extends TimeCycleSplineSet {
         TranslationYset() {
         }
 
+        @Override // android.support.constraint.motion.TimeCycleSplineSet
         public boolean setProperty(View view, float t, long time, KeyCache cache) {
             view.setTranslationY(get(t, time, view, cache));
             return this.mContinue;
         }
     }
 
+    /* loaded from: classes.dex */
     static class TranslationZset extends TimeCycleSplineSet {
         TranslationZset() {
         }
 
+        @Override // android.support.constraint.motion.TimeCycleSplineSet
         public boolean setProperty(View view, float t, long time, KeyCache cache) {
             if (Build.VERSION.SDK_INT >= 21) {
                 view.setTranslationZ(get(t, time, view, cache));
@@ -454,6 +440,7 @@ public abstract class TimeCycleSplineSet {
         }
     }
 
+    /* loaded from: classes.dex */
     static class CustomSet extends TimeCycleSplineSet {
         String mAttributeName;
         float[] mCache;
@@ -466,36 +453,35 @@ public abstract class TimeCycleSplineSet {
             this.mConstraintAttributeList = attrList;
         }
 
+        @Override // android.support.constraint.motion.TimeCycleSplineSet
         public void setup(int curveType) {
             int size = this.mConstraintAttributeList.size();
             int dimensionality = this.mConstraintAttributeList.valueAt(0).noOfInterpValues();
             double[] time = new double[size];
-            this.mTempValues = new float[(dimensionality + 2)];
+            this.mTempValues = new float[dimensionality + 2];
             this.mCache = new float[dimensionality];
-            int[] iArr = new int[2];
-            iArr[1] = dimensionality + 2;
-            iArr[0] = size;
-            double[][] values = (double[][]) Array.newInstance(double.class, iArr);
+            double[][] values = (double[][]) Array.newInstance(double.class, size, dimensionality + 2);
             for (int i = 0; i < size; i++) {
                 int key = this.mConstraintAttributeList.keyAt(i);
+                ConstraintAttribute ca = this.mConstraintAttributeList.valueAt(i);
                 float[] waveProp = this.mWaveProperties.valueAt(i);
-                time[i] = ((double) key) * 0.01d;
-                this.mConstraintAttributeList.valueAt(i).getValuesToInterpolate(this.mTempValues);
+                time[i] = key * 0.01d;
+                ca.getValuesToInterpolate(this.mTempValues);
                 int k = 0;
                 while (true) {
                     float[] fArr = this.mTempValues;
-                    if (k >= fArr.length) {
-                        break;
+                    if (k < fArr.length) {
+                        values[i][k] = fArr[k];
+                        k++;
                     }
-                    values[i][k] = (double) fArr[k];
-                    k++;
                 }
-                values[i][dimensionality] = (double) waveProp[0];
-                values[i][dimensionality + 1] = (double) waveProp[1];
+                values[i][dimensionality] = waveProp[0];
+                values[i][dimensionality + 1] = waveProp[1];
             }
             this.mCurveFit = CurveFit.get(curveType, time, values);
         }
 
+        @Override // android.support.constraint.motion.TimeCycleSplineSet
         public void setPoint(int position, float value, float period, int shape, float offset) {
             throw new RuntimeException("don't call for custom attribute call setPoint(pos, ConstraintAttribute,...)");
         }
@@ -506,14 +492,15 @@ public abstract class TimeCycleSplineSet {
             this.mWaveShape = Math.max(this.mWaveShape, shape);
         }
 
+        @Override // android.support.constraint.motion.TimeCycleSplineSet
         public boolean setProperty(View view, float t, long time, KeyCache cache) {
-            long j = time;
-            this.mCurveFit.getPos((double) t, this.mTempValues);
+            this.mCurveFit.getPos(t, this.mTempValues);
             float[] fArr = this.mTempValues;
             float period = fArr[fArr.length - 2];
             float offset = fArr[fArr.length - 1];
-            this.last_cycle = (float) ((((double) this.last_cycle) + ((((double) (j - this.last_time)) * 1.0E-9d) * ((double) period))) % 1.0d);
-            this.last_time = j;
+            long delta_time = time - this.last_time;
+            this.last_cycle = (float) ((this.last_cycle + ((delta_time * 1.0E-9d) * period)) % 1.0d);
+            this.last_time = time;
             float wave = calcWave(this.last_cycle);
             this.mContinue = false;
             for (int i = 0; i < this.mCache.length; i++) {
@@ -528,29 +515,31 @@ public abstract class TimeCycleSplineSet {
         }
     }
 
+    /* loaded from: classes.dex */
     static class ProgressSet extends TimeCycleSplineSet {
         boolean mNoMethod = false;
 
         ProgressSet() {
         }
 
+        @Override // android.support.constraint.motion.TimeCycleSplineSet
         public boolean setProperty(View view, float t, long time, KeyCache cache) {
             Method method;
-            View view2 = view;
-            if (view2 instanceof MotionLayout) {
-                ((MotionLayout) view2).setProgress(get(t, time, view, cache));
+            if (view instanceof MotionLayout) {
+                ((MotionLayout) view).setProgress(get(t, time, view, cache));
             } else if (this.mNoMethod) {
                 return false;
             } else {
                 try {
-                    method = view.getClass().getMethod("setProgress", new Class[]{Float.TYPE});
+                    Method method2 = view.getClass().getMethod("setProgress", Float.TYPE);
+                    method = method2;
                 } catch (NoSuchMethodException e) {
                     this.mNoMethod = true;
                     method = null;
                 }
                 if (method != null) {
                     try {
-                        method.invoke(view, new Object[]{Float.valueOf(get(t, time, view, cache))});
+                        method.invoke(view, Float.valueOf(get(t, time, view, cache)));
                     } catch (IllegalAccessException e2) {
                         Log.e(TimeCycleSplineSet.TAG, "unable to setProgress", e2);
                     } catch (InvocationTargetException e3) {
@@ -562,12 +551,13 @@ public abstract class TimeCycleSplineSet {
         }
     }
 
+    /* loaded from: classes.dex */
     private static class Sort {
         private Sort() {
         }
 
         static void doubleQuickSort(int[] key, float[][] value, int low, int hi) {
-            int[] stack = new int[(key.length + 10)];
+            int[] stack = new int[key.length + 10];
             int count = 0 + 1;
             stack[0] = hi;
             int count2 = count + 1;

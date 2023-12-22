@@ -5,12 +5,15 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 
+/* loaded from: classes.dex */
 public class AdapterViewBindingAdapter {
 
+    /* loaded from: classes.dex */
     public interface OnItemSelected {
         void onItemSelected(AdapterView<?> adapterView, View view, int i, long j);
     }
 
+    /* loaded from: classes.dex */
     public interface OnNothingSelected {
         void onNothingSelected(AdapterView<?> adapterView);
     }
@@ -40,12 +43,13 @@ public class AdapterViewBindingAdapter {
 
     public static void setOnItemSelectedListener(AdapterView view, OnItemSelected selected, OnNothingSelected nothingSelected, InverseBindingListener attrChanged) {
         if (selected == null && nothingSelected == null && attrChanged == null) {
-            view.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) null);
+            view.setOnItemSelectedListener(null);
         } else {
             view.setOnItemSelectedListener(new OnItemSelectedComponentListener(selected, nothingSelected, attrChanged));
         }
     }
 
+    /* loaded from: classes.dex */
     public static class OnItemSelectedComponentListener implements AdapterView.OnItemSelectedListener {
         private final InverseBindingListener mAttrChanged;
         private final OnNothingSelected mNothingSelected;
@@ -57,6 +61,7 @@ public class AdapterViewBindingAdapter {
             this.mAttrChanged = attrChanged;
         }
 
+        @Override // android.widget.AdapterView.OnItemSelectedListener
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             OnItemSelected onItemSelected = this.mSelected;
             if (onItemSelected != null) {
@@ -68,6 +73,7 @@ public class AdapterViewBindingAdapter {
             }
         }
 
+        @Override // android.widget.AdapterView.OnItemSelectedListener
         public void onNothingSelected(AdapterView<?> parent) {
             OnNothingSelected onNothingSelected = this.mNothingSelected;
             if (onNothingSelected != null) {

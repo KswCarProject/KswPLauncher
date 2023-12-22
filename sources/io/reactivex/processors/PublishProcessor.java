@@ -12,11 +12,12 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class PublishProcessor<T> extends FlowableProcessor<T> {
-    static final PublishSubscription[] EMPTY = new PublishSubscription[0];
-    static final PublishSubscription[] TERMINATED = new PublishSubscription[0];
     Throwable error;
     final AtomicReference<PublishSubscription<T>[]> subscribers = new AtomicReference<>(EMPTY);
+    static final PublishSubscription[] TERMINATED = new PublishSubscription[0];
+    static final PublishSubscription[] EMPTY = new PublishSubscription[0];
 
     @CheckReturnValue
     public static <T> PublishProcessor<T> create() {
@@ -26,77 +27,78 @@ public final class PublishProcessor<T> extends FlowableProcessor<T> {
     PublishProcessor() {
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> t) {
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> t) {
         PublishSubscription<T> ps = new PublishSubscription<>(t, this);
         t.onSubscribe(ps);
-        if (!add(ps)) {
-            Throwable ex = this.error;
-            if (ex != null) {
-                t.onError(ex);
-            } else {
-                t.onComplete();
+        if (add(ps)) {
+            if (ps.isCancelled()) {
+                remove(ps);
+                return;
             }
-        } else if (ps.isCancelled()) {
-            remove(ps);
+            return;
+        }
+        Throwable ex = this.error;
+        if (ex != null) {
+            t.onError(ex);
+        } else {
+            t.onComplete();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean add(PublishSubscription<T> ps) {
+    boolean add(PublishSubscription<T> ps) {
         PublishSubscription<T>[] a;
         PublishSubscription<T>[] b;
         do {
-            a = (PublishSubscription[]) this.subscribers.get();
+            a = this.subscribers.get();
             if (a == TERMINATED) {
                 return false;
             }
             int n = a.length;
-            b = new PublishSubscription[(n + 1)];
+            b = new PublishSubscription[n + 1];
             System.arraycopy(a, 0, b, 0, n);
             b[n] = ps;
         } while (!this.subscribers.compareAndSet(a, b));
         return true;
     }
 
-    /* access modifiers changed from: package-private */
-    public void remove(PublishSubscription<T> ps) {
+    /* JADX WARN: Multi-variable type inference failed */
+    void remove(PublishSubscription<T> ps) {
         PublishSubscription<T>[] a;
         PublishSubscription<T>[] b;
         do {
-            a = (PublishSubscription[]) this.subscribers.get();
-            if (a != TERMINATED && a != EMPTY) {
-                int n = a.length;
-                int j = -1;
-                int i = 0;
-                while (true) {
-                    if (i >= n) {
-                        break;
-                    } else if (a[i] == ps) {
-                        j = i;
-                        break;
-                    } else {
-                        i++;
-                    }
-                }
-                if (j >= 0) {
-                    if (n == 1) {
-                        b = EMPTY;
-                    } else {
-                        PublishSubscription<T>[] b2 = new PublishSubscription[(n - 1)];
-                        System.arraycopy(a, 0, b2, 0, j);
-                        System.arraycopy(a, j + 1, b2, j, (n - j) - 1);
-                        b = b2;
-                    }
-                } else {
-                    return;
-                }
-            } else {
+            a = this.subscribers.get();
+            if (a == TERMINATED || a == EMPTY) {
                 return;
+            }
+            int n = a.length;
+            int j = -1;
+            int i = 0;
+            while (true) {
+                if (i >= n) {
+                    break;
+                } else if (a[i] != ps) {
+                    i++;
+                } else {
+                    j = i;
+                    break;
+                }
+            }
+            if (j < 0) {
+                return;
+            }
+            if (n == 1) {
+                b = EMPTY;
+            } else {
+                PublishSubscription<T>[] b2 = new PublishSubscription[n - 1];
+                System.arraycopy(a, 0, b2, 0, j);
+                System.arraycopy(a, j + 1, b2, j, (n - j) - 1);
+                b = b2;
             }
         } while (!this.subscribers.compareAndSet(a, b));
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onSubscribe(Subscription s) {
         if (this.subscribers.get() == TERMINATED) {
             s.cancel();
@@ -105,14 +107,18 @@ public final class PublishProcessor<T> extends FlowableProcessor<T> {
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onNext(T t) {
+        PublishSubscription<T>[] publishSubscriptionArr;
         ObjectHelper.requireNonNull(t, "onNext called with null. Null values are generally not allowed in 2.x operators and sources.");
-        for (PublishSubscription<T> s : (PublishSubscription[]) this.subscribers.get()) {
+        for (PublishSubscription<T> s : this.subscribers.get()) {
             s.onNext(t);
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onError(Throwable t) {
+        PublishSubscription<T>[] andSet;
         ObjectHelper.requireNonNull(t, "onError called with null. Null values are generally not allowed in 2.x operators and sources.");
         PublishSubscription<T>[] publishSubscriptionArr = this.subscribers.get();
         PublishSubscription<T>[] publishSubscriptionArr2 = TERMINATED;
@@ -121,18 +127,21 @@ public final class PublishProcessor<T> extends FlowableProcessor<T> {
             return;
         }
         this.error = t;
-        for (PublishSubscription<T> s : (PublishSubscription[]) this.subscribers.getAndSet(publishSubscriptionArr2)) {
+        for (PublishSubscription<T> s : this.subscribers.getAndSet(publishSubscriptionArr2)) {
             s.onError(t);
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onComplete() {
+        PublishSubscription<T>[] andSet;
         PublishSubscription<T>[] publishSubscriptionArr = this.subscribers.get();
         PublishSubscription<T>[] publishSubscriptionArr2 = TERMINATED;
-        if (publishSubscriptionArr != publishSubscriptionArr2) {
-            for (PublishSubscription<T> s : (PublishSubscription[]) this.subscribers.getAndSet(publishSubscriptionArr2)) {
-                s.onComplete();
-            }
+        if (publishSubscriptionArr == publishSubscriptionArr2) {
+            return;
+        }
+        for (PublishSubscription<T> s : this.subscribers.getAndSet(publishSubscriptionArr2)) {
+            s.onComplete();
         }
     }
 
@@ -141,7 +150,7 @@ public final class PublishProcessor<T> extends FlowableProcessor<T> {
             onError(new NullPointerException("onNext called with null. Null values are generally not allowed in 2.x operators and sources."));
             return true;
         }
-        PublishSubscription<T>[] array = (PublishSubscription[]) this.subscribers.get();
+        PublishSubscription<T>[] array = this.subscribers.get();
         for (PublishSubscription<T> s : array) {
             if (s.isFull()) {
                 return false;
@@ -153,10 +162,12 @@ public final class PublishProcessor<T> extends FlowableProcessor<T> {
         return true;
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public boolean hasSubscribers() {
-        return ((PublishSubscription[]) this.subscribers.get()).length != 0;
+        return this.subscribers.get().length != 0;
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public Throwable getThrowable() {
         if (this.subscribers.get() == TERMINATED) {
             return this.error;
@@ -164,35 +175,39 @@ public final class PublishProcessor<T> extends FlowableProcessor<T> {
         return null;
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public boolean hasThrowable() {
         return this.subscribers.get() == TERMINATED && this.error != null;
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public boolean hasComplete() {
         return this.subscribers.get() == TERMINATED && this.error == null;
     }
 
+    /* loaded from: classes.dex */
     static final class PublishSubscription<T> extends AtomicLong implements Subscription {
         private static final long serialVersionUID = 3562861878281475070L;
         final Subscriber<? super T> downstream;
         final PublishProcessor<T> parent;
 
-        PublishSubscription(Subscriber<? super T> actual, PublishProcessor<T> parent2) {
+        PublishSubscription(Subscriber<? super T> actual, PublishProcessor<T> parent) {
             this.downstream = actual;
-            this.parent = parent2;
+            this.parent = parent;
         }
 
         public void onNext(T t) {
             long r = get();
-            if (r != Long.MIN_VALUE) {
-                if (r != 0) {
-                    this.downstream.onNext(t);
-                    BackpressureHelper.producedCancel(this, 1);
-                    return;
-                }
-                cancel();
-                this.downstream.onError(new MissingBackpressureException("Could not emit value due to lack of requests"));
+            if (r == Long.MIN_VALUE) {
+                return;
             }
+            if (r != 0) {
+                this.downstream.onNext(t);
+                BackpressureHelper.producedCancel(this, 1L);
+                return;
+            }
+            cancel();
+            this.downstream.onError(new MissingBackpressureException("Could not emit value due to lack of requests"));
         }
 
         public void onError(Throwable t) {
@@ -209,12 +224,14 @@ public final class PublishProcessor<T> extends FlowableProcessor<T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             if (SubscriptionHelper.validate(n)) {
                 BackpressureHelper.addCancel(this, n);
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             if (getAndSet(Long.MIN_VALUE) != Long.MIN_VALUE) {
                 this.parent.remove(this);
@@ -225,8 +242,7 @@ public final class PublishProcessor<T> extends FlowableProcessor<T> {
             return get() == Long.MIN_VALUE;
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean isFull() {
+        boolean isFull() {
             return get() == 0;
         }
     }

@@ -3,6 +3,7 @@ package com.wits.ksw.launcher.view.benzgs;
 import android.content.Context;
 import android.provider.Settings;
 
+/* loaded from: classes5.dex */
 public class BenzConfig {
     public static final String INDEX = "index";
 

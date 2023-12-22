@@ -9,10 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView;
 
+/* loaded from: classes7.dex */
 public abstract class AudiMib3TyOneBinding extends ViewDataBinding {
     public final TextView btContent;
     public final LinearLayout btContentLl;
@@ -43,37 +44,36 @@ public abstract class AudiMib3TyOneBinding extends ViewDataBinding {
     public final ImageView videoIv;
     public final TextView videoTv;
 
-    public abstract void setViewModel(BcVieModel bcVieModel);
+    public abstract void setViewModel(BcVieModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected AudiMib3TyOneBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView btContent2, LinearLayout btContentLl2, BenzMbuxItemView btItemview2, ImageView btIv2, TextView btTv2, LinearLayout fragmentOneLl2, TextView musicContent2, LinearLayout musicContentLl2, BenzMbuxItemView musicItemview2, ImageView musicIv2, TextView musicTv2, TextView naviContent2, LinearLayout naviContentLl2, BenzMbuxItemView naviItemview2, ImageView naviIv2, TextView naviTv2, TextView phonelinkContent2, LinearLayout phonelinkContentLl2, BenzMbuxItemView phonelinkItemview2, ImageView phonelinkIv2, TextView phonelinkTv2, TextView videoContent2, LinearLayout videoContentLl2, BenzMbuxItemView videoItemview2, ImageView videoIv2, TextView videoTv2) {
+    protected AudiMib3TyOneBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView btContent, LinearLayout btContentLl, BenzMbuxItemView btItemview, ImageView btIv, TextView btTv, LinearLayout fragmentOneLl, TextView musicContent, LinearLayout musicContentLl, BenzMbuxItemView musicItemview, ImageView musicIv, TextView musicTv, TextView naviContent, LinearLayout naviContentLl, BenzMbuxItemView naviItemview, ImageView naviIv, TextView naviTv, TextView phonelinkContent, LinearLayout phonelinkContentLl, BenzMbuxItemView phonelinkItemview, ImageView phonelinkIv, TextView phonelinkTv, TextView videoContent, LinearLayout videoContentLl, BenzMbuxItemView videoItemview, ImageView videoIv, TextView videoTv) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.btContent = btContent2;
-        this.btContentLl = btContentLl2;
-        this.btItemview = btItemview2;
-        this.btIv = btIv2;
-        this.btTv = btTv2;
-        this.fragmentOneLl = fragmentOneLl2;
-        this.musicContent = musicContent2;
-        this.musicContentLl = musicContentLl2;
-        this.musicItemview = musicItemview2;
-        this.musicIv = musicIv2;
-        this.musicTv = musicTv2;
-        this.naviContent = naviContent2;
-        this.naviContentLl = naviContentLl2;
-        this.naviItemview = naviItemview2;
-        this.naviIv = naviIv2;
-        this.naviTv = naviTv2;
-        this.phonelinkContent = phonelinkContent2;
-        this.phonelinkContentLl = phonelinkContentLl2;
-        this.phonelinkItemview = phonelinkItemview2;
-        this.phonelinkIv = phonelinkIv2;
-        this.phonelinkTv = phonelinkTv2;
-        this.videoContent = videoContent2;
-        this.videoContentLl = videoContentLl2;
-        this.videoItemview = videoItemview2;
-        this.videoIv = videoIv2;
-        this.videoTv = videoTv2;
+        this.btContent = btContent;
+        this.btContentLl = btContentLl;
+        this.btItemview = btItemview;
+        this.btIv = btIv;
+        this.btTv = btTv;
+        this.fragmentOneLl = fragmentOneLl;
+        this.musicContent = musicContent;
+        this.musicContentLl = musicContentLl;
+        this.musicItemview = musicItemview;
+        this.musicIv = musicIv;
+        this.musicTv = musicTv;
+        this.naviContent = naviContent;
+        this.naviContentLl = naviContentLl;
+        this.naviItemview = naviItemview;
+        this.naviIv = naviIv;
+        this.naviTv = naviTv;
+        this.phonelinkContent = phonelinkContent;
+        this.phonelinkContentLl = phonelinkContentLl;
+        this.phonelinkItemview = phonelinkItemview;
+        this.phonelinkIv = phonelinkIv;
+        this.phonelinkTv = phonelinkTv;
+        this.videoContent = videoContent;
+        this.videoContentLl = videoContentLl;
+        this.videoItemview = videoItemview;
+        this.videoIv = videoIv;
+        this.videoTv = videoTv;
     }
 
     public BcVieModel getViewModel() {
@@ -86,7 +86,7 @@ public abstract class AudiMib3TyOneBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3TyOneBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AudiMib3TyOneBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_audi_mib3_ty_one, root, attachToRoot, component);
+        return (AudiMib3TyOneBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_audi_mib3_ty_one, root, attachToRoot, component);
     }
 
     public static AudiMib3TyOneBinding inflate(LayoutInflater inflater) {
@@ -95,7 +95,7 @@ public abstract class AudiMib3TyOneBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3TyOneBinding inflate(LayoutInflater inflater, Object component) {
-        return (AudiMib3TyOneBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_audi_mib3_ty_one, (ViewGroup) null, false, component);
+        return (AudiMib3TyOneBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_audi_mib3_ty_one, null, false, component);
     }
 
     public static AudiMib3TyOneBinding bind(View view) {
@@ -104,6 +104,6 @@ public abstract class AudiMib3TyOneBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3TyOneBinding bind(View view, Object component) {
-        return (AudiMib3TyOneBinding) bind(component, view, R.layout.fragment_audi_mib3_ty_one);
+        return (AudiMib3TyOneBinding) bind(component, view, C0899R.C0902layout.fragment_audi_mib3_ty_one);
     }
 }

@@ -4,9 +4,11 @@ import android.databinding.ObservableList;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/* loaded from: classes.dex */
 public class ObservableArrayList<T> extends ArrayList<T> implements ObservableList<T> {
     private transient ListChangeRegistry mListeners = new ListChangeRegistry();
 
+    @Override // android.databinding.ObservableList
     public void addOnListChangedCallback(ObservableList.OnListChangedCallback listener) {
         if (this.mListeners == null) {
             this.mListeners = new ListChangeRegistry();
@@ -14,6 +16,7 @@ public class ObservableArrayList<T> extends ArrayList<T> implements ObservableLi
         this.mListeners.add(listener);
     }
 
+    @Override // android.databinding.ObservableList
     public void removeOnListChangedCallback(ObservableList.OnListChangedCallback listener) {
         ListChangeRegistry listChangeRegistry = this.mListeners;
         if (listChangeRegistry != null) {
@@ -21,17 +24,21 @@ public class ObservableArrayList<T> extends ArrayList<T> implements ObservableLi
         }
     }
 
+    @Override // java.util.ArrayList, java.util.AbstractList, java.util.AbstractCollection, java.util.Collection, java.util.List
     public boolean add(T object) {
         super.add(object);
         notifyAdd(size() - 1, 1);
         return true;
     }
 
+    @Override // java.util.ArrayList, java.util.AbstractList, java.util.List
     public void add(int index, T object) {
         super.add(index, object);
         notifyAdd(index, 1);
     }
 
+    /* JADX WARN: Multi-variable type inference failed */
+    @Override // java.util.ArrayList, java.util.AbstractCollection, java.util.Collection, java.util.List
     public boolean addAll(Collection<? extends T> collection) {
         int oldSize = size();
         boolean added = super.addAll(collection);
@@ -41,6 +48,8 @@ public class ObservableArrayList<T> extends ArrayList<T> implements ObservableLi
         return added;
     }
 
+    /* JADX WARN: Multi-variable type inference failed */
+    @Override // java.util.ArrayList, java.util.AbstractList, java.util.List
     public boolean addAll(int index, Collection<? extends T> collection) {
         boolean added = super.addAll(index, collection);
         if (added) {
@@ -49,6 +58,7 @@ public class ObservableArrayList<T> extends ArrayList<T> implements ObservableLi
         return added;
     }
 
+    @Override // java.util.ArrayList, java.util.AbstractList, java.util.AbstractCollection, java.util.Collection, java.util.List
     public void clear() {
         int oldSize = size();
         super.clear();
@@ -57,23 +67,26 @@ public class ObservableArrayList<T> extends ArrayList<T> implements ObservableLi
         }
     }
 
+    @Override // java.util.ArrayList, java.util.AbstractList, java.util.List
     public T remove(int index) {
-        T val = super.remove(index);
+        T val = (T) super.remove(index);
         notifyRemove(index, 1);
         return val;
     }
 
+    @Override // java.util.ArrayList, java.util.AbstractCollection, java.util.Collection, java.util.List
     public boolean remove(Object object) {
         int index = indexOf(object);
-        if (index < 0) {
-            return false;
+        if (index >= 0) {
+            remove(index);
+            return true;
         }
-        remove(index);
-        return true;
+        return false;
     }
 
+    @Override // java.util.ArrayList, java.util.AbstractList, java.util.List
     public T set(int index, T object) {
-        T val = super.set(index, object);
+        T val = (T) super.set(index, object);
         ListChangeRegistry listChangeRegistry = this.mListeners;
         if (listChangeRegistry != null) {
             listChangeRegistry.notifyChanged(this, index, 1);
@@ -81,8 +94,8 @@ public class ObservableArrayList<T> extends ArrayList<T> implements ObservableLi
         return val;
     }
 
-    /* access modifiers changed from: protected */
-    public void removeRange(int fromIndex, int toIndex) {
+    @Override // java.util.ArrayList, java.util.AbstractList
+    protected void removeRange(int fromIndex, int toIndex) {
         super.removeRange(fromIndex, toIndex);
         notifyRemove(fromIndex, toIndex - fromIndex);
     }

@@ -3,6 +3,7 @@ package com.ibm.icu.text;
 import com.ibm.icu.impl.Utility;
 import java.util.Comparator;
 
+/* loaded from: classes.dex */
 public final class UTF16 {
     public static final int CODEPOINT_MAX_VALUE = 1114111;
     public static final int CODEPOINT_MIN_VALUE = 0;
@@ -31,7 +32,7 @@ public final class UTF16 {
 
     public static int charAt(String source, int offset16) {
         char single = source.charAt(offset16);
-        if (single < 55296) {
+        if (single < '\ud800') {
             return single;
         }
         return _charAt(source, offset16, single);
@@ -40,17 +41,17 @@ public final class UTF16 {
     private static int _charAt(String source, int offset16, char single) {
         char lead;
         char trail;
-        if (single > 57343) {
+        if (single > '\udfff') {
             return single;
         }
-        if (single <= 56319) {
+        if (single <= '\udbff') {
             int offset162 = offset16 + 1;
-            if (source.length() != offset162 && (trail = source.charAt(offset162)) >= 56320 && trail <= 57343) {
+            if (source.length() != offset162 && (trail = source.charAt(offset162)) >= '\udc00' && trail <= '\udfff') {
                 return Character.toCodePoint(single, trail);
             }
         } else {
             int offset163 = offset16 - 1;
-            if (offset163 >= 0 && (lead = source.charAt(offset163)) >= 55296 && lead <= 56319) {
+            if (offset163 >= 0 && (lead = source.charAt(offset163)) >= '\ud800' && lead <= '\udbff') {
                 return Character.toCodePoint(lead, single);
             }
         }
@@ -59,7 +60,7 @@ public final class UTF16 {
 
     public static int charAt(CharSequence source, int offset16) {
         char single = source.charAt(offset16);
-        if (single < 55296) {
+        if (single < '\ud800') {
             return single;
         }
         return _charAt(source, offset16, single);
@@ -68,17 +69,17 @@ public final class UTF16 {
     private static int _charAt(CharSequence source, int offset16, char single) {
         char lead;
         char trail;
-        if (single > 57343) {
+        if (single > '\udfff') {
             return single;
         }
-        if (single <= 56319) {
+        if (single <= '\udbff') {
             int offset162 = offset16 + 1;
-            if (source.length() != offset162 && (trail = source.charAt(offset162)) >= 56320 && trail <= 57343) {
+            if (source.length() != offset162 && (trail = source.charAt(offset162)) >= '\udc00' && trail <= '\udfff') {
                 return Character.toCodePoint(single, trail);
             }
         } else {
             int offset163 = offset16 - 1;
-            if (offset163 >= 0 && (lead = source.charAt(offset163)) >= 55296 && lead <= 56319) {
+            if (offset163 >= 0 && (lead = source.charAt(offset163)) >= '\ud800' && lead <= '\udbff') {
                 return Character.toCodePoint(lead, single);
             }
         }
@@ -93,7 +94,7 @@ public final class UTF16 {
         if (!isSurrogate(single)) {
             return single;
         }
-        if (single <= 56319) {
+        if (single <= '\udbff') {
             int offset162 = offset16 + 1;
             if (source.length() != offset162) {
                 char trail = source.charAt(offset162);
@@ -122,7 +123,7 @@ public final class UTF16 {
         if (!isSurrogate(single)) {
             return single;
         }
-        if (single <= 56319) {
+        if (single <= '\udbff') {
             int offset163 = offset162 + 1;
             if (offset163 >= limit) {
                 return single;
@@ -150,7 +151,7 @@ public final class UTF16 {
         if (!isSurrogate(single)) {
             return single;
         }
-        if (single <= 56319) {
+        if (single <= '\udbff') {
             int offset162 = offset16 + 1;
             if (source.length() != offset162) {
                 char trail = source.charAt(offset162);
@@ -179,40 +180,40 @@ public final class UTF16 {
 
     public static int bounds(String source, int offset16) {
         char ch = source.charAt(offset16);
-        if (!isSurrogate(ch)) {
-            return 1;
-        }
-        if (isLeadSurrogate(ch)) {
-            int offset162 = offset16 + 1;
-            if (offset162 >= source.length() || !isTrailSurrogate(source.charAt(offset162))) {
+        if (isSurrogate(ch)) {
+            if (isLeadSurrogate(ch)) {
+                int offset162 = offset16 + 1;
+                if (offset162 < source.length() && isTrailSurrogate(source.charAt(offset162))) {
+                    return 2;
+                }
                 return 1;
             }
-            return 2;
-        }
-        int offset163 = offset16 - 1;
-        if (offset163 < 0 || !isLeadSurrogate(source.charAt(offset163))) {
+            int offset163 = offset16 - 1;
+            if (offset163 >= 0 && isLeadSurrogate(source.charAt(offset163))) {
+                return 5;
+            }
             return 1;
         }
-        return 5;
+        return 1;
     }
 
     public static int bounds(StringBuffer source, int offset16) {
         char ch = source.charAt(offset16);
-        if (!isSurrogate(ch)) {
-            return 1;
-        }
-        if (isLeadSurrogate(ch)) {
-            int offset162 = offset16 + 1;
-            if (offset162 >= source.length() || !isTrailSurrogate(source.charAt(offset162))) {
+        if (isSurrogate(ch)) {
+            if (isLeadSurrogate(ch)) {
+                int offset162 = offset16 + 1;
+                if (offset162 < source.length() && isTrailSurrogate(source.charAt(offset162))) {
+                    return 2;
+                }
                 return 1;
             }
-            return 2;
-        }
-        int offset163 = offset16 - 1;
-        if (offset163 < 0 || !isLeadSurrogate(source.charAt(offset163))) {
+            int offset163 = offset16 - 1;
+            if (offset163 >= 0 && isLeadSurrogate(source.charAt(offset163))) {
+                return 5;
+            }
             return 1;
         }
-        return 5;
+        return 1;
     }
 
     public static int bounds(char[] source, int start, int limit, int offset16) {
@@ -221,40 +222,40 @@ public final class UTF16 {
             throw new ArrayIndexOutOfBoundsException(offset162);
         }
         char ch = source[offset162];
-        if (!isSurrogate(ch)) {
-            return 1;
-        }
-        if (isLeadSurrogate(ch)) {
-            int offset163 = offset162 + 1;
-            if (offset163 >= limit || !isTrailSurrogate(source[offset163])) {
+        if (isSurrogate(ch)) {
+            if (isLeadSurrogate(ch)) {
+                int offset163 = offset162 + 1;
+                if (offset163 < limit && isTrailSurrogate(source[offset163])) {
+                    return 2;
+                }
                 return 1;
             }
-            return 2;
-        }
-        int offset164 = offset162 - 1;
-        if (offset164 < start || !isLeadSurrogate(source[offset164])) {
+            int offset164 = offset162 - 1;
+            if (offset164 >= start && isLeadSurrogate(source[offset164])) {
+                return 5;
+            }
             return 1;
         }
-        return 5;
+        return 1;
     }
 
     public static boolean isSurrogate(char char16) {
-        return (char16 & 63488) == 55296;
+        return (char16 & '\uf800') == 55296;
     }
 
     public static boolean isTrailSurrogate(char char16) {
-        return (char16 & 64512) == 56320;
+        return (char16 & '\ufc00') == 56320;
     }
 
     public static boolean isLeadSurrogate(char char16) {
-        return (char16 & 64512) == 55296;
+        return (char16 & '\ufc00') == 55296;
     }
 
     public static char getLeadSurrogate(int char32) {
         if (char32 >= 65536) {
             return (char) ((char32 >> 10) + LEAD_SURROGATE_OFFSET_);
         }
-        return 0;
+        return (char) 0;
     }
 
     public static char getTrailSurrogate(int char32) {
@@ -265,10 +266,10 @@ public final class UTF16 {
     }
 
     public static String valueOf(int char32) {
-        if (char32 >= 0 && char32 <= 1114111) {
-            return toString(char32);
+        if (char32 < 0 || char32 > 1114111) {
+            throw new IllegalArgumentException("Illegal codepoint");
         }
-        throw new IllegalArgumentException("Illegal codepoint");
+        return toString(char32);
     }
 
     public static String valueOf(String source, int offset16) {
@@ -312,16 +313,17 @@ public final class UTF16 {
             throw new StringIndexOutOfBoundsException(offset32);
         }
         while (result < size && count > 0) {
-            if (isLeadSurrogate(source.charAt(result)) && result + 1 < size && isTrailSurrogate(source.charAt(result + 1))) {
+            char ch = source.charAt(result);
+            if (isLeadSurrogate(ch) && result + 1 < size && isTrailSurrogate(source.charAt(result + 1))) {
                 result++;
             }
             count--;
             result++;
         }
-        if (count == 0) {
-            return result;
+        if (count != 0) {
+            throw new StringIndexOutOfBoundsException(offset32);
         }
-        throw new StringIndexOutOfBoundsException(offset32);
+        return result;
     }
 
     public static int findOffsetFromCodePoint(StringBuffer source, int offset32) {
@@ -332,35 +334,37 @@ public final class UTF16 {
             throw new StringIndexOutOfBoundsException(offset32);
         }
         while (result < size && count > 0) {
-            if (isLeadSurrogate(source.charAt(result)) && result + 1 < size && isTrailSurrogate(source.charAt(result + 1))) {
+            char ch = source.charAt(result);
+            if (isLeadSurrogate(ch) && result + 1 < size && isTrailSurrogate(source.charAt(result + 1))) {
                 result++;
             }
             count--;
             result++;
         }
-        if (count == 0) {
-            return result;
+        if (count != 0) {
+            throw new StringIndexOutOfBoundsException(offset32);
         }
-        throw new StringIndexOutOfBoundsException(offset32);
+        return result;
     }
 
     public static int findOffsetFromCodePoint(char[] source, int start, int limit, int offset32) {
         int result = start;
         int count = offset32;
-        if (offset32 <= limit - start) {
-            while (result < limit && count > 0) {
-                if (isLeadSurrogate(source[result]) && result + 1 < limit && isTrailSurrogate(source[result + 1])) {
-                    result++;
-                }
-                count--;
-                result++;
-            }
-            if (count == 0) {
-                return result - start;
-            }
+        if (offset32 > limit - start) {
             throw new ArrayIndexOutOfBoundsException(offset32);
         }
-        throw new ArrayIndexOutOfBoundsException(offset32);
+        while (result < limit && count > 0) {
+            char ch = source[result];
+            if (isLeadSurrogate(ch) && result + 1 < limit && isTrailSurrogate(source[result + 1])) {
+                result++;
+            }
+            count--;
+            result++;
+        }
+        if (count != 0) {
+            throw new ArrayIndexOutOfBoundsException(offset32);
+        }
+        return result - start;
     }
 
     public static int findCodePointOffset(String source, int offset16) {
@@ -371,14 +375,18 @@ public final class UTF16 {
         boolean hadLeadSurrogate = false;
         for (int i = 0; i < offset16; i++) {
             char ch = source.charAt(i);
-            if (!hadLeadSurrogate || !isTrailSurrogate(ch)) {
+            if (hadLeadSurrogate && isTrailSurrogate(ch)) {
+                hadLeadSurrogate = false;
+            } else {
                 hadLeadSurrogate = isLeadSurrogate(ch);
                 result++;
-            } else {
-                hadLeadSurrogate = false;
             }
         }
-        if (offset16 != source.length() && hadLeadSurrogate && isTrailSurrogate(source.charAt(offset16))) {
+        int i2 = source.length();
+        if (offset16 == i2) {
+            return result;
+        }
+        if (hadLeadSurrogate && isTrailSurrogate(source.charAt(offset16))) {
             return result - 1;
         }
         return result;
@@ -392,14 +400,18 @@ public final class UTF16 {
         boolean hadLeadSurrogate = false;
         for (int i = 0; i < offset16; i++) {
             char ch = source.charAt(i);
-            if (!hadLeadSurrogate || !isTrailSurrogate(ch)) {
+            if (hadLeadSurrogate && isTrailSurrogate(ch)) {
+                hadLeadSurrogate = false;
+            } else {
                 hadLeadSurrogate = isLeadSurrogate(ch);
                 result++;
-            } else {
-                hadLeadSurrogate = false;
             }
         }
-        if (offset16 != source.length() && hadLeadSurrogate && isTrailSurrogate(source.charAt(offset16))) {
+        int i2 = source.length();
+        if (offset16 == i2) {
+            return result;
+        }
+        if (hadLeadSurrogate && isTrailSurrogate(source.charAt(offset16))) {
             return result - 1;
         }
         return result;
@@ -407,24 +419,27 @@ public final class UTF16 {
 
     public static int findCodePointOffset(char[] source, int start, int limit, int offset16) {
         int offset162 = offset16 + start;
-        if (offset162 <= limit) {
-            int result = 0;
-            boolean hadLeadSurrogate = false;
-            for (int i = start; i < offset162; i++) {
-                char ch = source[i];
-                if (!hadLeadSurrogate || !isTrailSurrogate(ch)) {
-                    hadLeadSurrogate = isLeadSurrogate(ch);
-                    result++;
-                } else {
-                    hadLeadSurrogate = false;
-                }
+        if (offset162 > limit) {
+            throw new StringIndexOutOfBoundsException(offset162);
+        }
+        int result = 0;
+        boolean hadLeadSurrogate = false;
+        for (int i = start; i < offset162; i++) {
+            char ch = source[i];
+            if (hadLeadSurrogate && isTrailSurrogate(ch)) {
+                hadLeadSurrogate = false;
+            } else {
+                hadLeadSurrogate = isLeadSurrogate(ch);
+                result++;
             }
-            if (offset162 != limit && hadLeadSurrogate && isTrailSurrogate(source[offset162])) {
-                return result - 1;
-            }
+        }
+        if (offset162 == limit) {
             return result;
         }
-        throw new StringIndexOutOfBoundsException(offset162);
+        if (hadLeadSurrogate && isTrailSurrogate(source[offset162])) {
+            return result - 1;
+        }
+        return result;
     }
 
     public static StringBuffer append(StringBuffer target, int char32) {
@@ -447,16 +462,17 @@ public final class UTF16 {
     public static int append(char[] target, int limit, int char32) {
         if (char32 < 0 || char32 > 1114111) {
             throw new IllegalArgumentException("Illegal codepoint");
-        } else if (char32 >= 65536) {
+        }
+        if (char32 >= 65536) {
             int limit2 = limit + 1;
             target[limit] = getLeadSurrogate(char32);
             int limit3 = limit2 + 1;
             target[limit2] = getTrailSurrogate(char32);
             return limit3;
-        } else {
-            target[limit] = (char) char32;
-            return limit + 1;
         }
+        int limit4 = limit + 1;
+        target[limit] = (char) char32;
+        return limit4;
     }
 
     public static int countCodePoint(String source) {
@@ -495,44 +511,42 @@ public final class UTF16 {
     }
 
     public static int setCharAt(char[] target, int limit, int offset16, int char32) {
-        if (offset16 < limit) {
-            int count = 1;
-            char single = target[offset16];
-            if (isSurrogate(single)) {
-                if (isLeadSurrogate(single) && target.length > offset16 + 1 && isTrailSurrogate(target[offset16 + 1])) {
-                    count = 1 + 1;
-                } else if (isTrailSurrogate(single) && offset16 > 0 && isLeadSurrogate(target[offset16 - 1])) {
-                    offset16--;
-                    count = 1 + 1;
-                }
-            }
-            String str = valueOf(char32);
-            int result = limit;
-            int strlength = str.length();
-            target[offset16] = str.charAt(0);
-            if (count != strlength) {
-                System.arraycopy(target, offset16 + count, target, offset16 + strlength, limit - (offset16 + count));
-                if (count < strlength) {
-                    target[offset16 + 1] = str.charAt(1);
-                    int result2 = result + 1;
-                    if (result2 >= target.length) {
-                        return result2;
-                    }
-                    target[result2] = 0;
-                    return result2;
-                }
-                int result3 = result - 1;
-                target[result3] = 0;
-                return result3;
-            } else if (count != 2) {
-                return result;
-            } else {
-                target[offset16 + 1] = str.charAt(1);
-                return result;
-            }
-        } else {
+        if (offset16 >= limit) {
             throw new ArrayIndexOutOfBoundsException(offset16);
         }
+        int count = 1;
+        char single = target[offset16];
+        if (isSurrogate(single)) {
+            if (isLeadSurrogate(single) && target.length > offset16 + 1 && isTrailSurrogate(target[offset16 + 1])) {
+                count = 1 + 1;
+            } else if (isTrailSurrogate(single) && offset16 > 0 && isLeadSurrogate(target[offset16 - 1])) {
+                offset16--;
+                count = 1 + 1;
+            }
+        }
+        String str = valueOf(char32);
+        int strlength = str.length();
+        target[offset16] = str.charAt(0);
+        if (count == strlength) {
+            if (count != 2) {
+                return limit;
+            }
+            target[offset16 + 1] = str.charAt(1);
+            return limit;
+        }
+        System.arraycopy(target, offset16 + count, target, offset16 + strlength, limit - (offset16 + count));
+        if (count < strlength) {
+            target[offset16 + 1] = str.charAt(1);
+            int result = limit + 1;
+            if (result < target.length) {
+                target[result] = 0;
+                return result;
+            }
+            return result;
+        }
+        int result2 = limit - 1;
+        target[result2] = 0;
+        return result2;
     }
 
     public static int moveCodePointOffset(String source, int offset16, int shift32) {
@@ -543,37 +557,38 @@ public final class UTF16 {
             throw new StringIndexOutOfBoundsException(offset16);
         }
         if (shift32 > 0) {
-            if (shift32 + offset16 <= size) {
-                count = shift32;
-                while (result < size && count > 0) {
-                    if (isLeadSurrogate(source.charAt(result)) && result + 1 < size && isTrailSurrogate(source.charAt(result + 1))) {
-                        result++;
-                    }
-                    count--;
-                    result++;
-                }
-            } else {
+            if (shift32 + offset16 > size) {
                 throw new StringIndexOutOfBoundsException(offset16);
             }
-        } else if (offset16 + shift32 >= 0) {
-            int count2 = -shift32;
+            count = shift32;
+            while (result < size && count > 0) {
+                char ch = source.charAt(result);
+                if (isLeadSurrogate(ch) && result + 1 < size && isTrailSurrogate(source.charAt(result + 1))) {
+                    result++;
+                }
+                count--;
+                result++;
+            }
+        } else if (offset16 + shift32 < 0) {
+            throw new StringIndexOutOfBoundsException(offset16);
+        } else {
+            count = -shift32;
             while (count > 0) {
                 result--;
                 if (result < 0) {
                     break;
                 }
-                if (isTrailSurrogate(source.charAt(result)) && result > 0 && isLeadSurrogate(source.charAt(result - 1))) {
+                char ch2 = source.charAt(result);
+                if (isTrailSurrogate(ch2) && result > 0 && isLeadSurrogate(source.charAt(result - 1))) {
                     result--;
                 }
-                count2 = count - 1;
+                count--;
             }
-        } else {
-            throw new StringIndexOutOfBoundsException(offset16);
         }
-        if (count == 0) {
-            return result;
+        if (count != 0) {
+            throw new StringIndexOutOfBoundsException(shift32);
         }
-        throw new StringIndexOutOfBoundsException(shift32);
+        return result;
     }
 
     public static int moveCodePointOffset(StringBuffer source, int offset16, int shift32) {
@@ -584,37 +599,38 @@ public final class UTF16 {
             throw new StringIndexOutOfBoundsException(offset16);
         }
         if (shift32 > 0) {
-            if (shift32 + offset16 <= size) {
-                count = shift32;
-                while (result < size && count > 0) {
-                    if (isLeadSurrogate(source.charAt(result)) && result + 1 < size && isTrailSurrogate(source.charAt(result + 1))) {
-                        result++;
-                    }
-                    count--;
-                    result++;
-                }
-            } else {
+            if (shift32 + offset16 > size) {
                 throw new StringIndexOutOfBoundsException(offset16);
             }
-        } else if (offset16 + shift32 >= 0) {
-            int count2 = -shift32;
+            count = shift32;
+            while (result < size && count > 0) {
+                char ch = source.charAt(result);
+                if (isLeadSurrogate(ch) && result + 1 < size && isTrailSurrogate(source.charAt(result + 1))) {
+                    result++;
+                }
+                count--;
+                result++;
+            }
+        } else if (offset16 + shift32 < 0) {
+            throw new StringIndexOutOfBoundsException(offset16);
+        } else {
+            count = -shift32;
             while (count > 0) {
                 result--;
                 if (result < 0) {
                     break;
                 }
-                if (isTrailSurrogate(source.charAt(result)) && result > 0 && isLeadSurrogate(source.charAt(result - 1))) {
+                char ch2 = source.charAt(result);
+                if (isTrailSurrogate(ch2) && result > 0 && isLeadSurrogate(source.charAt(result - 1))) {
                     result--;
                 }
-                count2 = count - 1;
+                count--;
             }
-        } else {
-            throw new StringIndexOutOfBoundsException(offset16);
         }
-        if (count == 0) {
-            return result;
+        if (count != 0) {
+            throw new StringIndexOutOfBoundsException(shift32);
         }
-        throw new StringIndexOutOfBoundsException(shift32);
+        return result;
     }
 
     public static int moveCodePointOffset(char[] source, int start, int limit, int offset16, int shift32) {
@@ -623,44 +639,46 @@ public final class UTF16 {
         int result = offset16 + start;
         if (start < 0 || limit < start) {
             throw new StringIndexOutOfBoundsException(start);
-        } else if (limit > size) {
+        }
+        if (limit > size) {
             throw new StringIndexOutOfBoundsException(limit);
-        } else if (offset16 < 0 || result > limit) {
+        }
+        if (offset16 < 0 || result > limit) {
             throw new StringIndexOutOfBoundsException(offset16);
-        } else {
-            if (shift32 > 0) {
-                if (shift32 + result <= size) {
-                    count = shift32;
-                    while (result < limit && count > 0) {
-                        if (isLeadSurrogate(source[result]) && result + 1 < limit && isTrailSurrogate(source[result + 1])) {
-                            result++;
-                        }
-                        count--;
-                        result++;
-                    }
-                } else {
-                    throw new StringIndexOutOfBoundsException(result);
-                }
-            } else if (result + shift32 >= start) {
-                int count2 = -shift32;
-                while (count > 0) {
-                    result--;
-                    if (result < start) {
-                        break;
-                    }
-                    if (isTrailSurrogate(source[result]) && result > start && isLeadSurrogate(source[result - 1])) {
-                        result--;
-                    }
-                    count2 = count - 1;
-                }
-            } else {
+        }
+        if (shift32 > 0) {
+            if (shift32 + result > size) {
                 throw new StringIndexOutOfBoundsException(result);
             }
-            if (count == 0) {
-                return result - start;
+            count = shift32;
+            while (result < limit && count > 0) {
+                char ch = source[result];
+                if (isLeadSurrogate(ch) && result + 1 < limit && isTrailSurrogate(source[result + 1])) {
+                    result++;
+                }
+                count--;
+                result++;
             }
+        } else if (result + shift32 < start) {
+            throw new StringIndexOutOfBoundsException(result);
+        } else {
+            count = -shift32;
+            while (count > 0) {
+                result--;
+                if (result < start) {
+                    break;
+                }
+                char ch2 = source[result];
+                if (isTrailSurrogate(ch2) && result > start && isLeadSurrogate(source[result - 1])) {
+                    result--;
+                }
+                count--;
+            }
+        }
+        if (count != 0) {
             throw new StringIndexOutOfBoundsException(shift32);
         }
+        return result - start;
     }
 
     public static StringBuffer insert(StringBuffer target, int offset16, int char32) {
@@ -678,15 +696,15 @@ public final class UTF16 {
             offset16++;
         }
         int size = str.length();
-        if (limit + size <= target.length) {
-            System.arraycopy(target, offset16, target, offset16 + size, limit - offset16);
-            target[offset16] = str.charAt(0);
-            if (size == 2) {
-                target[offset16 + 1] = str.charAt(1);
-            }
-            return limit + size;
+        if (limit + size > target.length) {
+            throw new ArrayIndexOutOfBoundsException(offset16 + size);
         }
-        throw new ArrayIndexOutOfBoundsException(offset16 + size);
+        System.arraycopy(target, offset16, target, offset16 + size, limit - offset16);
+        target[offset16] = str.charAt(0);
+        if (size == 2) {
+            target[offset16 + 1] = str.charAt(1);
+        }
+        return limit + size;
     }
 
     public static StringBuffer delete(StringBuffer target, int offset16) {
@@ -723,12 +741,11 @@ public final class UTF16 {
     public static int indexOf(String source, int char32) {
         if (char32 < 0 || char32 > 1114111) {
             throw new IllegalArgumentException("Argument char32 is not a valid codepoint");
-        } else if (char32 < 55296 || (char32 > 57343 && char32 < 65536)) {
+        }
+        if (char32 < 55296 || (char32 > 57343 && char32 < 65536)) {
             return source.indexOf((char) char32);
-        } else {
-            if (char32 >= 65536) {
-                return source.indexOf(toString(char32));
-            }
+        }
+        if (char32 < 65536) {
             int result = source.indexOf((char) char32);
             if (result >= 0) {
                 if (isLeadSurrogate((char) char32) && result < source.length() - 1 && isTrailSurrogate(source.charAt(result + 1))) {
@@ -740,6 +757,8 @@ public final class UTF16 {
             }
             return result;
         }
+        String char32str = toString(char32);
+        return source.indexOf(char32str);
     }
 
     public static int indexOf(String source, String str) {
@@ -763,12 +782,11 @@ public final class UTF16 {
     public static int indexOf(String source, int char32, int fromIndex) {
         if (char32 < 0 || char32 > 1114111) {
             throw new IllegalArgumentException("Argument char32 is not a valid codepoint");
-        } else if (char32 < 55296 || (char32 > 57343 && char32 < 65536)) {
+        }
+        if (char32 < 55296 || (char32 > 57343 && char32 < 65536)) {
             return source.indexOf((char) char32, fromIndex);
-        } else {
-            if (char32 >= 65536) {
-                return source.indexOf(toString(char32), fromIndex);
-            }
+        }
+        if (char32 < 65536) {
             int result = source.indexOf((char) char32, fromIndex);
             if (result >= 0) {
                 if (isLeadSurrogate((char) char32) && result < source.length() - 1 && isTrailSurrogate(source.charAt(result + 1))) {
@@ -780,6 +798,8 @@ public final class UTF16 {
             }
             return result;
         }
+        String char32str = toString(char32);
+        return source.indexOf(char32str, fromIndex);
     }
 
     public static int indexOf(String source, String str, int fromIndex) {
@@ -803,12 +823,11 @@ public final class UTF16 {
     public static int lastIndexOf(String source, int char32) {
         if (char32 < 0 || char32 > 1114111) {
             throw new IllegalArgumentException("Argument char32 is not a valid codepoint");
-        } else if (char32 < 55296 || (char32 > 57343 && char32 < 65536)) {
+        }
+        if (char32 < 55296 || (char32 > 57343 && char32 < 65536)) {
             return source.lastIndexOf((char) char32);
-        } else {
-            if (char32 >= 65536) {
-                return source.lastIndexOf(toString(char32));
-            }
+        }
+        if (char32 < 65536) {
             int result = source.lastIndexOf((char) char32);
             if (result >= 0) {
                 if (isLeadSurrogate((char) char32) && result < source.length() - 1 && isTrailSurrogate(source.charAt(result + 1))) {
@@ -820,6 +839,8 @@ public final class UTF16 {
             }
             return result;
         }
+        String char32str = toString(char32);
+        return source.lastIndexOf(char32str);
     }
 
     public static int lastIndexOf(String source, String str) {
@@ -842,12 +863,11 @@ public final class UTF16 {
     public static int lastIndexOf(String source, int char32, int fromIndex) {
         if (char32 < 0 || char32 > 1114111) {
             throw new IllegalArgumentException("Argument char32 is not a valid codepoint");
-        } else if (char32 < 55296 || (char32 > 57343 && char32 < 65536)) {
+        }
+        if (char32 < 55296 || (char32 > 57343 && char32 < 65536)) {
             return source.lastIndexOf((char) char32, fromIndex);
-        } else {
-            if (char32 >= 65536) {
-                return source.lastIndexOf(toString(char32), fromIndex);
-            }
+        }
+        if (char32 < 65536) {
             int result = source.lastIndexOf((char) char32, fromIndex);
             if (result >= 0) {
                 if (isLeadSurrogate((char) char32) && result < source.length() - 1 && isTrailSurrogate(source.charAt(result + 1))) {
@@ -859,6 +879,8 @@ public final class UTF16 {
             }
             return result;
         }
+        String char32str = toString(char32);
+        return source.lastIndexOf(char32str, fromIndex);
     }
 
     public static int lastIndexOf(String source, String str, int fromIndex) {
@@ -881,29 +903,30 @@ public final class UTF16 {
     public static String replace(String source, int oldChar32, int newChar32) {
         if (oldChar32 <= 0 || oldChar32 > 1114111) {
             throw new IllegalArgumentException("Argument oldChar32 is not a valid codepoint");
-        } else if (newChar32 <= 0 || newChar32 > 1114111) {
-            throw new IllegalArgumentException("Argument newChar32 is not a valid codepoint");
-        } else {
-            int index = indexOf(source, oldChar32);
-            if (index == -1) {
-                return source;
-            }
-            String newChar32Str = toString(newChar32);
-            int oldChar32Size = 1;
-            int newChar32Size = newChar32Str.length();
-            StringBuffer result = new StringBuffer(source);
-            int resultIndex = index;
-            if (oldChar32 >= 65536) {
-                oldChar32Size = 2;
-            }
-            while (index != -1) {
-                result.replace(resultIndex, resultIndex + oldChar32Size, newChar32Str);
-                int lastEndIndex = index + oldChar32Size;
-                index = indexOf(source, oldChar32, lastEndIndex);
-                resultIndex += (newChar32Size + index) - lastEndIndex;
-            }
-            return result.toString();
         }
+        if (newChar32 <= 0 || newChar32 > 1114111) {
+            throw new IllegalArgumentException("Argument newChar32 is not a valid codepoint");
+        }
+        int index = indexOf(source, oldChar32);
+        if (index == -1) {
+            return source;
+        }
+        String newChar32Str = toString(newChar32);
+        int oldChar32Size = 1;
+        int newChar32Size = newChar32Str.length();
+        StringBuffer result = new StringBuffer(source);
+        int resultIndex = index;
+        if (oldChar32 >= 65536) {
+            oldChar32Size = 2;
+        }
+        while (index != -1) {
+            int endResultIndex = resultIndex + oldChar32Size;
+            result.replace(resultIndex, endResultIndex, newChar32Str);
+            int lastEndIndex = index + oldChar32Size;
+            index = indexOf(source, oldChar32, lastEndIndex);
+            resultIndex += (newChar32Size + index) - lastEndIndex;
+        }
+        return result.toString();
     }
 
     public static String replace(String source, String oldStr, String newStr) {
@@ -916,7 +939,8 @@ public final class UTF16 {
         StringBuffer result = new StringBuffer(source);
         int resultIndex = index;
         while (index != -1) {
-            result.replace(resultIndex, resultIndex + oldStrSize, newStr);
+            int endResultIndex = resultIndex + oldStrSize;
+            result.replace(resultIndex, endResultIndex, newStr);
             int lastEndIndex = index + oldStrSize;
             index = indexOf(source, oldStr, lastEndIndex);
             resultIndex += (newStrSize + index) - lastEndIndex;
@@ -930,20 +954,21 @@ public final class UTF16 {
         int i = length;
         while (true) {
             int i2 = i - 1;
-            if (i <= 0) {
+            if (i > 0) {
+                char ch = source.charAt(i2);
+                if (isTrailSurrogate(ch) && i2 > 0) {
+                    char ch2 = source.charAt(i2 - 1);
+                    if (isLeadSurrogate(ch2)) {
+                        result.append(ch2);
+                        result.append(ch);
+                        i = i2 - 1;
+                    }
+                }
+                result.append(ch);
+                i = i2;
+            } else {
                 return result;
             }
-            char ch = source.charAt(i2);
-            if (isTrailSurrogate(ch) && i2 > 0) {
-                char ch2 = source.charAt(i2 - 1);
-                if (isLeadSurrogate(ch2)) {
-                    result.append(ch2);
-                    result.append(ch);
-                    i = i2 - 1;
-                }
-            }
-            result.append(ch);
-            i = i2;
         }
     }
 
@@ -985,12 +1010,11 @@ public final class UTF16 {
         int length = limit - start;
         if (length < 0 || start < 0 || limit < 0) {
             throw new IndexOutOfBoundsException("Start and limit indexes should be non-negative and start <= limit");
-        } else if (number < 0) {
+        }
+        if (number < 0) {
             return true;
-        } else {
-            if (source == null) {
-                return false;
-            }
+        }
+        if (source != null) {
             if (((length + 1) >> 1) > number) {
                 return true;
             }
@@ -1015,6 +1039,7 @@ public final class UTF16 {
             }
             return false;
         }
+        return false;
     }
 
     public static boolean hasMoreCodePointsThan(StringBuffer source, int number) {
@@ -1052,38 +1077,42 @@ public final class UTF16 {
     }
 
     public static String newString(int[] codePoints, int offset, int count) {
-        if (count >= 0) {
-            char[] chars = new char[count];
-            int w = 0;
-            int e = offset + count;
-            for (int r = offset; r < e; r++) {
-                int cp = codePoints[r];
-                if (cp < 0 || cp > 1114111) {
-                    throw new IllegalArgumentException();
-                }
+        if (count < 0) {
+            throw new IllegalArgumentException();
+        }
+        char[] chars = new char[count];
+        int w = 0;
+        int e = offset + count;
+        for (int r = offset; r < e; r++) {
+            int cp = codePoints[r];
+            if (cp >= 0 && cp <= 1114111) {
                 while (true) {
-                    if (cp >= 65536) {
+                    if (cp < 65536) {
+                        try {
+                            chars[w] = (char) cp;
+                            w++;
+                            break;
+                        } catch (IndexOutOfBoundsException e2) {
+                            int newlen = (int) Math.ceil((codePoints.length * (w + 2)) / ((r - offset) + 1));
+                            char[] temp = new char[newlen];
+                            System.arraycopy(chars, 0, temp, 0, w);
+                            chars = temp;
+                        }
+                    } else {
                         chars[w] = (char) ((cp >> 10) + LEAD_SURROGATE_OFFSET_);
                         chars[w + 1] = (char) ((cp & 1023) + 56320);
                         w += 2;
                         break;
                     }
-                    try {
-                        chars[w] = (char) cp;
-                        w++;
-                        break;
-                    } catch (IndexOutOfBoundsException e2) {
-                        char[] temp = new char[((int) Math.ceil((((double) codePoints.length) * ((double) (w + 2))) / ((double) ((r - offset) + 1))))];
-                        System.arraycopy(chars, 0, temp, 0, w);
-                        chars = temp;
-                    }
                 }
+            } else {
+                throw new IllegalArgumentException();
             }
-            return new String(chars, 0, w);
         }
-        throw new IllegalArgumentException();
+        return new String(chars, 0, w);
     }
 
+    /* loaded from: classes.dex */
     public static final class StringComparator implements Comparator<String> {
         private static final int CODE_POINT_COMPARE_SURROGATE_OFFSET_ = 10240;
         public static final int FOLD_CASE_DEFAULT = 0;
@@ -1133,6 +1162,7 @@ public final class UTF16 {
             return this.m_foldCase_;
         }
 
+        @Override // java.util.Comparator
         public int compare(String a, String b) {
             if (Utility.sameObjects(a, b)) {
                 return 0;
@@ -1179,12 +1209,12 @@ public final class UTF16 {
                 return result;
             }
             boolean codepointcompare = this.m_codePointCompare_ == 32768;
-            if (c1 >= 55296 && c2 >= 55296 && codepointcompare) {
-                if ((c1 > 56319 || index + 1 == length1 || !UTF16.isTrailSurrogate(s1.charAt(index + 1))) && (!UTF16.isTrailSurrogate(c1) || index == 0 || !UTF16.isLeadSurrogate(s1.charAt(index - 1)))) {
-                    c1 = (char) (c1 - 10240);
+            if (c1 >= '\ud800' && c2 >= '\ud800' && codepointcompare) {
+                if ((c1 > '\udbff' || index + 1 == length1 || !UTF16.isTrailSurrogate(s1.charAt(index + 1))) && (!UTF16.isTrailSurrogate(c1) || index == 0 || !UTF16.isLeadSurrogate(s1.charAt(index - 1)))) {
+                    c1 = (char) (c1 - '\u2800');
                 }
-                if ((c2 > 56319 || index + 1 == length2 || !UTF16.isTrailSurrogate(s2.charAt(index + 1))) && (!UTF16.isTrailSurrogate(c2) || index == 0 || !UTF16.isLeadSurrogate(s2.charAt(index - 1)))) {
-                    c2 = (char) (c2 - 10240);
+                if ((c2 > '\udbff' || index + 1 == length2 || !UTF16.isTrailSurrogate(s2.charAt(index + 1))) && (!UTF16.isTrailSurrogate(c2) || index == 0 || !UTF16.isLeadSurrogate(s2.charAt(index - 1)))) {
+                    c2 = (char) (c2 - '\u2800');
                 }
             }
             return c1 - c2;
@@ -1199,10 +1229,10 @@ public final class UTF16 {
         if (s.length() == 1) {
             return s.charAt(0);
         }
-        if (s.length() <= 2 && (cp = Character.codePointAt(s, 0)) > 65535) {
-            return cp;
+        if (s.length() > 2 || (cp = Character.codePointAt(s, 0)) <= 65535) {
+            return -1;
         }
-        return -1;
+        return cp;
     }
 
     public static int compareCodePoint(int codePoint, CharSequence s) {
@@ -1210,14 +1240,12 @@ public final class UTF16 {
         if (s == null || (strLen = s.length()) == 0) {
             return 1;
         }
-        int diff = codePoint - Character.codePointAt(s, 0);
+        int second = Character.codePointAt(s, 0);
+        int diff = codePoint - second;
         if (diff != 0) {
             return diff;
         }
-        if (strLen == Character.charCount(codePoint)) {
-            return 0;
-        }
-        return -1;
+        return strLen == Character.charCount(codePoint) ? 0 : -1;
     }
 
     private static String toString(int ch) {

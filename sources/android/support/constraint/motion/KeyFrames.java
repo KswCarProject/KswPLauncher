@@ -14,6 +14,7 @@ import java.util.Set;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+/* loaded from: classes.dex */
 public class KeyFrames {
     private static final String TAG = "KeyFrames";
     public static final int UNSET = -1;
@@ -36,7 +37,7 @@ public class KeyFrames {
 
     private void addKey(Key key) {
         if (!this.mFramesMap.containsKey(Integer.valueOf(key.mTargetId))) {
-            this.mFramesMap.put(Integer.valueOf(key.mTargetId), new ArrayList());
+            this.mFramesMap.put(Integer.valueOf(key.mTargetId), new ArrayList<>());
         }
         this.mFramesMap.get(Integer.valueOf(key.mTargetId)).add(key);
     }
@@ -47,18 +48,11 @@ public class KeyFrames {
             int eventType = parser.getEventType();
             while (eventType != 1) {
                 switch (eventType) {
-                    case 0:
-                        break;
                     case 2:
                         String tagName = parser.getName();
-                        if (!sKeyMakers.containsKey(tagName)) {
-                            if (!(!tagName.equalsIgnoreCase("CustomAttribute") || key == null || key.mCustomConstraints == null)) {
-                                ConstraintAttribute.parse(context, parser, key.mCustomConstraints);
-                                break;
-                            }
-                        } else {
+                        if (sKeyMakers.containsKey(tagName)) {
                             try {
-                                key = (Key) sKeyMakers.get(tagName).newInstance(new Object[0]);
+                                key = sKeyMakers.get(tagName).newInstance(new Object[0]);
                                 key.load(context, Xml.asAttributeSet(parser));
                                 addKey(key);
                                 break;
@@ -66,7 +60,11 @@ public class KeyFrames {
                                 Log.e(TAG, "unable to create ", e);
                                 break;
                             }
+                        } else if (tagName.equalsIgnoreCase("CustomAttribute") && key != null && key.mCustomConstraints != null) {
+                            ConstraintAttribute.parse(context, parser, key.mCustomConstraints);
+                            break;
                         }
+                        break;
                     case 3:
                         if ("KeyFrameSet".equals(parser.getName())) {
                             return;
@@ -75,9 +73,9 @@ public class KeyFrames {
                 }
                 eventType = parser.next();
             }
-        } catch (XmlPullParserException e2) {
+        } catch (IOException e2) {
             e2.printStackTrace();
-        } catch (IOException e3) {
+        } catch (XmlPullParserException e3) {
             e3.printStackTrace();
         }
     }
@@ -92,7 +90,8 @@ public class KeyFrames {
             Iterator<Key> it = list2.iterator();
             while (it.hasNext()) {
                 Key key = it.next();
-                if (key.matches(((ConstraintLayout.LayoutParams) motionController.mView.getLayoutParams()).constraintTag)) {
+                String tag = ((ConstraintLayout.LayoutParams) motionController.mView.getLayoutParams()).constraintTag;
+                if (key.matches(tag)) {
                     motionController.addKey(key);
                 }
             }

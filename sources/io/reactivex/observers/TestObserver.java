@@ -11,9 +11,12 @@ import io.reactivex.internal.fuseable.QueueDisposable;
 import io.reactivex.internal.util.ExceptionHelper;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public class TestObserver<T> extends BaseTestConsumer<T, TestObserver<T>> implements Observer<T>, Disposable, MaybeObserver<T>, SingleObserver<T>, CompletableObserver {
     private final Observer<? super T> downstream;
-    private QueueDisposable<T> qd;
+
+    /* renamed from: qd */
+    private QueueDisposable<T> f365qd;
     private final AtomicReference<Disposable> upstream;
 
     public static <T> TestObserver<T> create() {
@@ -28,16 +31,17 @@ public class TestObserver<T> extends BaseTestConsumer<T, TestObserver<T>> implem
         this(EmptyObserver.INSTANCE);
     }
 
-    public TestObserver(Observer<? super T> downstream2) {
+    public TestObserver(Observer<? super T> downstream) {
         this.upstream = new AtomicReference<>();
-        this.downstream = downstream2;
+        this.downstream = downstream;
     }
 
+    @Override // io.reactivex.Observer
     public void onSubscribe(Disposable d) {
         this.lastThread = Thread.currentThread();
         if (d == null) {
             this.errors.add(new NullPointerException("onSubscribe received a null Subscription"));
-        } else if (!this.upstream.compareAndSet((Object) null, d)) {
+        } else if (!this.upstream.compareAndSet(null, d)) {
             d.dispose();
             if (this.upstream.get() != DisposableHelper.DISPOSED) {
                 this.errors.add(new IllegalStateException("onSubscribe received multiple subscriptions: " + d));
@@ -45,7 +49,7 @@ public class TestObserver<T> extends BaseTestConsumer<T, TestObserver<T>> implem
         } else {
             if (this.initialFusionMode != 0 && (d instanceof QueueDisposable)) {
                 QueueDisposable<T> queueDisposable = (QueueDisposable) d;
-                this.qd = queueDisposable;
+                this.f365qd = queueDisposable;
                 int m = queueDisposable.requestFusion(this.initialFusionMode);
                 this.establishedFusionMode = m;
                 if (m == 1) {
@@ -53,9 +57,8 @@ public class TestObserver<T> extends BaseTestConsumer<T, TestObserver<T>> implem
                     this.lastThread = Thread.currentThread();
                     while (true) {
                         try {
-                            T poll = this.qd.poll();
-                            T t = poll;
-                            if (poll != null) {
+                            T t = this.f365qd.poll();
+                            if (t != null) {
                                 this.values.add(t);
                             } else {
                                 this.completions++;
@@ -73,6 +76,7 @@ public class TestObserver<T> extends BaseTestConsumer<T, TestObserver<T>> implem
         }
     }
 
+    @Override // io.reactivex.Observer
     public void onNext(T t) {
         if (!this.checkSubscriptionOnce) {
             this.checkSubscriptionOnce = true;
@@ -81,31 +85,31 @@ public class TestObserver<T> extends BaseTestConsumer<T, TestObserver<T>> implem
             }
         }
         this.lastThread = Thread.currentThread();
-        if (this.establishedFusionMode == 2) {
-            while (true) {
-                try {
-                    T poll = this.qd.poll();
-                    T t2 = poll;
-                    if (poll != null) {
-                        this.values.add(t2);
-                    } else {
-                        return;
-                    }
-                } catch (Throwable ex) {
-                    this.errors.add(ex);
-                    this.qd.dispose();
-                    return;
-                }
-            }
-        } else {
+        if (this.establishedFusionMode != 2) {
             this.values.add(t);
             if (t == null) {
                 this.errors.add(new NullPointerException("onNext received a null value"));
             }
             this.downstream.onNext(t);
+            return;
+        }
+        while (true) {
+            try {
+                T t2 = this.f365qd.poll();
+                if (t2 != null) {
+                    this.values.add(t2);
+                } else {
+                    return;
+                }
+            } catch (Throwable ex) {
+                this.errors.add(ex);
+                this.f365qd.dispose();
+                return;
+            }
         }
     }
 
+    @Override // io.reactivex.Observer
     public void onError(Throwable t) {
         if (!this.checkSubscriptionOnce) {
             this.checkSubscriptionOnce = true;
@@ -126,6 +130,7 @@ public class TestObserver<T> extends BaseTestConsumer<T, TestObserver<T>> implem
         }
     }
 
+    @Override // io.reactivex.Observer
     public void onComplete() {
         if (!this.checkSubscriptionOnce) {
             this.checkSubscriptionOnce = true;
@@ -150,10 +155,12 @@ public class TestObserver<T> extends BaseTestConsumer<T, TestObserver<T>> implem
         dispose();
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public final void dispose() {
         DisposableHelper.dispose(this.upstream);
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public final boolean isDisposed() {
         return DisposableHelper.isDisposed(this.upstream.get());
     }
@@ -162,21 +169,23 @@ public class TestObserver<T> extends BaseTestConsumer<T, TestObserver<T>> implem
         return this.upstream.get() != null;
     }
 
+    @Override // io.reactivex.observers.BaseTestConsumer
     public final TestObserver<T> assertSubscribed() {
-        if (this.upstream.get() != null) {
-            return this;
+        if (this.upstream.get() == null) {
+            throw fail("Not subscribed!");
         }
-        throw fail("Not subscribed!");
+        return this;
     }
 
+    @Override // io.reactivex.observers.BaseTestConsumer
     public final TestObserver<T> assertNotSubscribed() {
         if (this.upstream.get() != null) {
             throw fail("Subscribed!");
-        } else if (this.errors.isEmpty()) {
-            return this;
-        } else {
+        }
+        if (!this.errors.isEmpty()) {
             throw fail("Not subscribed but errors found");
         }
+        return this;
     }
 
     public final TestObserver<T> assertOf(Consumer<? super TestObserver<T>> check) {
@@ -188,22 +197,20 @@ public class TestObserver<T> extends BaseTestConsumer<T, TestObserver<T>> implem
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public final TestObserver<T> setInitialFusionMode(int mode) {
+    final TestObserver<T> setInitialFusionMode(int mode) {
         this.initialFusionMode = mode;
         return this;
     }
 
-    /* access modifiers changed from: package-private */
-    public final TestObserver<T> assertFusionMode(int mode) {
+    final TestObserver<T> assertFusionMode(int mode) {
         int m = this.establishedFusionMode;
-        if (m == mode) {
-            return this;
+        if (m != mode) {
+            if (this.f365qd != null) {
+                throw new AssertionError("Fusion mode different. Expected: " + fusionModeToString(mode) + ", actual: " + fusionModeToString(m));
+            }
+            throw fail("Upstream is not fuseable");
         }
-        if (this.qd != null) {
-            throw new AssertionError("Fusion mode different. Expected: " + fusionModeToString(mode) + ", actual: " + fusionModeToString(m));
-        }
-        throw fail("Upstream is not fuseable");
+        return this;
     }
 
     static String fusionModeToString(int mode) {
@@ -219,39 +226,43 @@ public class TestObserver<T> extends BaseTestConsumer<T, TestObserver<T>> implem
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public final TestObserver<T> assertFuseable() {
-        if (this.qd != null) {
-            return this;
+    final TestObserver<T> assertFuseable() {
+        if (this.f365qd == null) {
+            throw new AssertionError("Upstream is not fuseable.");
         }
-        throw new AssertionError("Upstream is not fuseable.");
+        return this;
     }
 
-    /* access modifiers changed from: package-private */
-    public final TestObserver<T> assertNotFuseable() {
-        if (this.qd == null) {
-            return this;
+    final TestObserver<T> assertNotFuseable() {
+        if (this.f365qd != null) {
+            throw new AssertionError("Upstream is fuseable.");
         }
-        throw new AssertionError("Upstream is fuseable.");
+        return this;
     }
 
+    @Override // io.reactivex.MaybeObserver
     public void onSuccess(T value) {
         onNext(value);
         onComplete();
     }
 
+    /* loaded from: classes.dex */
     enum EmptyObserver implements Observer<Object> {
         INSTANCE;
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(Object t) {
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
         }
     }

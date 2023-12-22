@@ -3,25 +3,24 @@ package com.wits.ksw.settings.audi_mib3;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.databinding.AudiMib3EqCustomViewBinding;
-import com.wits.ksw.settings.audi_mib3.vm.AudiMib3EQViewModel;
+import com.wits.ksw.settings.audi_mib3.p008vm.AudiMib3EQViewModel;
 
+/* loaded from: classes15.dex */
 public class AudiMib3EqCustomActivity extends AudiMib3SubActivity {
     private AudiMib3EqCustomViewBinding binding;
     private AudiMib3EQViewModel viewModel;
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override // com.wits.ksw.settings.audi_mib3.AudiMib3SubActivity, com.wits.ksw.settings.BaseActivity, android.support.p004v7.app.AppCompatActivity, android.support.p001v4.app.FragmentActivity, android.support.p001v4.app.ComponentActivity, android.app.Activity
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.binding = (AudiMib3EqCustomViewBinding) DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.audi_mib3_eq_custom_view, (ViewGroup) null, false);
+        this.binding = (AudiMib3EqCustomViewBinding) DataBindingUtil.inflate(LayoutInflater.from(this), C0899R.C0902layout.audi_mib3_eq_custom_view, null, false);
         this.contentLayout.addView(this.binding.getRoot(), -1, -1);
-        AudiMib3EQViewModel audiMib3EQViewModel = (AudiMib3EQViewModel) ViewModelProviders.of((FragmentActivity) this).get(AudiMib3EQViewModel.class);
+        AudiMib3EQViewModel audiMib3EQViewModel = (AudiMib3EQViewModel) ViewModelProviders.m59of(this).get(AudiMib3EQViewModel.class);
         this.viewModel = audiMib3EQViewModel;
         this.binding.setVm(audiMib3EQViewModel);
-        this.tv_title_set.setText(getResources().getString(R.string.audi_set_eq_user));
+        this.tv_title_set.setText(getResources().getString(C0899R.string.audi_set_eq_user));
     }
 }

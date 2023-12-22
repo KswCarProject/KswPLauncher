@@ -19,20 +19,23 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
-import android.support.v4.content.res.ComplexColorCompat;
-import android.support.v4.content.res.TypedArrayUtils;
-import android.support.v4.graphics.PathParser;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.util.ArrayMap;
-import android.support.v4.view.ViewCompat;
+import android.support.p001v4.content.res.ComplexColorCompat;
+import android.support.p001v4.content.res.ResourcesCompat;
+import android.support.p001v4.content.res.TypedArrayUtils;
+import android.support.p001v4.graphics.PathParser;
+import android.support.p001v4.graphics.drawable.DrawableCompat;
+import android.support.p001v4.util.ArrayMap;
+import android.support.p001v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Xml;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+/* loaded from: classes.dex */
 public class VectorDrawableCompat extends VectorDrawableCommon {
     private static final boolean DBG_VECTOR_DRAWABLE = false;
     static final PorterDuff.Mode DEFAULT_TINT_MODE = PorterDuff.Mode.SRC_IN;
@@ -58,66 +61,82 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
     private final Matrix mTmpMatrix;
     private VectorDrawableCompatState mVectorState;
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ void applyTheme(Resources.Theme theme) {
         super.applyTheme(theme);
     }
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ void clearColorFilter() {
         super.clearColorFilter();
     }
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ ColorFilter getColorFilter() {
         return super.getColorFilter();
     }
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ Drawable getCurrent() {
         return super.getCurrent();
     }
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ int getMinimumHeight() {
         return super.getMinimumHeight();
     }
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ int getMinimumWidth() {
         return super.getMinimumWidth();
     }
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ boolean getPadding(Rect rect) {
         return super.getPadding(rect);
     }
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ int[] getState() {
         return super.getState();
     }
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ Region getTransparentRegion() {
         return super.getTransparentRegion();
     }
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ void jumpToCurrentState() {
         super.jumpToCurrentState();
     }
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ void setChangingConfigurations(int i) {
         super.setChangingConfigurations(i);
     }
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ void setColorFilter(int i, PorterDuff.Mode mode) {
         super.setColorFilter(i, mode);
     }
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ void setFilterBitmap(boolean z) {
         super.setFilterBitmap(z);
     }
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ void setHotspot(float f, float f2) {
         super.setHotspot(f, f2);
     }
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ void setHotspotBounds(int i, int i2, int i3, int i4) {
         super.setHotspotBounds(i, i2, i3, i4);
     }
 
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
     public /* bridge */ /* synthetic */ boolean setState(int[] iArr) {
         return super.setState(iArr);
     }
@@ -139,6 +158,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         this.mTintFilter = updateTintFilter(this.mTintFilter, state.mTint, state.mTintMode);
     }
 
+    @Override // android.graphics.drawable.Drawable
     public Drawable mutate() {
         if (this.mDelegateDrawable != null) {
             this.mDelegateDrawable.mutate();
@@ -151,11 +171,11 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         return this;
     }
 
-    /* access modifiers changed from: package-private */
-    public Object getTargetByName(String name) {
+    Object getTargetByName(String name) {
         return this.mVectorState.mVPathRenderer.mVGTargetsMap.get(name);
     }
 
+    @Override // android.graphics.drawable.Drawable
     public Drawable.ConstantState getConstantState() {
         if (this.mDelegateDrawable != null && Build.VERSION.SDK_INT >= 24) {
             return new VectorDrawableDelegateState(this.mDelegateDrawable.getConstantState());
@@ -164,50 +184,55 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         return this.mVectorState;
     }
 
+    @Override // android.graphics.drawable.Drawable
     public void draw(Canvas canvas) {
         if (this.mDelegateDrawable != null) {
             this.mDelegateDrawable.draw(canvas);
             return;
         }
         copyBounds(this.mTmpBounds);
-        if (this.mTmpBounds.width() > 0 && this.mTmpBounds.height() > 0) {
-            ColorFilter colorFilter = this.mColorFilter;
-            if (colorFilter == null) {
-                colorFilter = this.mTintFilter;
-            }
-            canvas.getMatrix(this.mTmpMatrix);
-            this.mTmpMatrix.getValues(this.mTmpFloats);
-            float canvasScaleX = Math.abs(this.mTmpFloats[0]);
-            float canvasScaleY = Math.abs(this.mTmpFloats[4]);
-            float canvasSkewX = Math.abs(this.mTmpFloats[1]);
-            float canvasSkewY = Math.abs(this.mTmpFloats[3]);
-            if (!(canvasSkewX == 0.0f && canvasSkewY == 0.0f)) {
-                canvasScaleX = 1.0f;
-                canvasScaleY = 1.0f;
-            }
-            int scaledWidth = Math.min(2048, (int) (((float) this.mTmpBounds.width()) * canvasScaleX));
-            int scaledHeight = Math.min(2048, (int) (((float) this.mTmpBounds.height()) * canvasScaleY));
-            if (scaledWidth > 0 && scaledHeight > 0) {
-                int saveCount = canvas.save();
-                canvas.translate((float) this.mTmpBounds.left, (float) this.mTmpBounds.top);
-                if (needMirroring()) {
-                    canvas.translate((float) this.mTmpBounds.width(), 0.0f);
-                    canvas.scale(-1.0f, 1.0f);
-                }
-                this.mTmpBounds.offsetTo(0, 0);
-                this.mVectorState.createCachedBitmapIfNeeded(scaledWidth, scaledHeight);
-                if (!this.mAllowCaching) {
-                    this.mVectorState.updateCachedBitmap(scaledWidth, scaledHeight);
-                } else if (!this.mVectorState.canReuseCache()) {
-                    this.mVectorState.updateCachedBitmap(scaledWidth, scaledHeight);
-                    this.mVectorState.updateCacheStates();
-                }
-                this.mVectorState.drawCachedBitmapWithRootAlpha(canvas, colorFilter, this.mTmpBounds);
-                canvas.restoreToCount(saveCount);
-            }
+        if (this.mTmpBounds.width() <= 0 || this.mTmpBounds.height() <= 0) {
+            return;
         }
+        ColorFilter colorFilter = this.mColorFilter;
+        if (colorFilter == null) {
+            colorFilter = this.mTintFilter;
+        }
+        canvas.getMatrix(this.mTmpMatrix);
+        this.mTmpMatrix.getValues(this.mTmpFloats);
+        float canvasScaleX = Math.abs(this.mTmpFloats[0]);
+        float canvasScaleY = Math.abs(this.mTmpFloats[4]);
+        float canvasSkewX = Math.abs(this.mTmpFloats[1]);
+        float canvasSkewY = Math.abs(this.mTmpFloats[3]);
+        if (canvasSkewX != 0.0f || canvasSkewY != 0.0f) {
+            canvasScaleX = 1.0f;
+            canvasScaleY = 1.0f;
+        }
+        int scaledWidth = Math.min(2048, (int) (this.mTmpBounds.width() * canvasScaleX));
+        int scaledHeight = Math.min(2048, (int) (this.mTmpBounds.height() * canvasScaleY));
+        if (scaledWidth <= 0 || scaledHeight <= 0) {
+            return;
+        }
+        int saveCount = canvas.save();
+        canvas.translate(this.mTmpBounds.left, this.mTmpBounds.top);
+        boolean needMirroring = needMirroring();
+        if (needMirroring) {
+            canvas.translate(this.mTmpBounds.width(), 0.0f);
+            canvas.scale(-1.0f, 1.0f);
+        }
+        this.mTmpBounds.offsetTo(0, 0);
+        this.mVectorState.createCachedBitmapIfNeeded(scaledWidth, scaledHeight);
+        if (!this.mAllowCaching) {
+            this.mVectorState.updateCachedBitmap(scaledWidth, scaledHeight);
+        } else if (!this.mVectorState.canReuseCache()) {
+            this.mVectorState.updateCachedBitmap(scaledWidth, scaledHeight);
+            this.mVectorState.updateCacheStates();
+        }
+        this.mVectorState.drawCachedBitmapWithRootAlpha(canvas, colorFilter, this.mTmpBounds);
+        canvas.restoreToCount(saveCount);
     }
 
+    @Override // android.graphics.drawable.Drawable
     public int getAlpha() {
         if (this.mDelegateDrawable != null) {
             return DrawableCompat.getAlpha(this.mDelegateDrawable);
@@ -215,6 +240,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         return this.mVectorState.mVPathRenderer.getRootAlpha();
     }
 
+    @Override // android.graphics.drawable.Drawable
     public void setAlpha(int alpha) {
         if (this.mDelegateDrawable != null) {
             this.mDelegateDrawable.setAlpha(alpha);
@@ -224,6 +250,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
+    @Override // android.graphics.drawable.Drawable
     public void setColorFilter(ColorFilter colorFilter) {
         if (this.mDelegateDrawable != null) {
             this.mDelegateDrawable.setColorFilter(colorFilter);
@@ -233,14 +260,15 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         invalidateSelf();
     }
 
-    /* access modifiers changed from: package-private */
-    public PorterDuffColorFilter updateTintFilter(PorterDuffColorFilter tintFilter, ColorStateList tint, PorterDuff.Mode tintMode) {
+    PorterDuffColorFilter updateTintFilter(PorterDuffColorFilter tintFilter, ColorStateList tint, PorterDuff.Mode tintMode) {
         if (tint == null || tintMode == null) {
             return null;
         }
-        return new PorterDuffColorFilter(tint.getColorForState(getState(), 0), tintMode);
+        int color = tint.getColorForState(getState(), 0);
+        return new PorterDuffColorFilter(color, tintMode);
     }
 
+    @Override // android.graphics.drawable.Drawable, android.support.p001v4.graphics.drawable.TintAwareDrawable
     public void setTint(int tint) {
         if (this.mDelegateDrawable != null) {
             DrawableCompat.setTint(this.mDelegateDrawable, tint);
@@ -249,6 +277,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
+    @Override // android.graphics.drawable.Drawable, android.support.p001v4.graphics.drawable.TintAwareDrawable
     public void setTintList(ColorStateList tint) {
         if (this.mDelegateDrawable != null) {
             DrawableCompat.setTintList(this.mDelegateDrawable, tint);
@@ -262,6 +291,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
+    @Override // android.graphics.drawable.Drawable, android.support.p001v4.graphics.drawable.TintAwareDrawable
     public void setTintMode(PorterDuff.Mode tintMode) {
         if (this.mDelegateDrawable != null) {
             DrawableCompat.setTintMode(this.mDelegateDrawable, tintMode);
@@ -275,63 +305,35 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:6:0x0011, code lost:
-        r0 = r1.mVectorState;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
+    @Override // android.graphics.drawable.Drawable
     public boolean isStateful() {
-        /*
-            r1 = this;
-            android.graphics.drawable.Drawable r0 = r1.mDelegateDrawable
-            if (r0 == 0) goto L_0x000b
-            android.graphics.drawable.Drawable r0 = r1.mDelegateDrawable
-            boolean r0 = r0.isStateful()
-            return r0
-        L_0x000b:
-            boolean r0 = super.isStateful()
-            if (r0 != 0) goto L_0x002e
-            android.support.graphics.drawable.VectorDrawableCompat$VectorDrawableCompatState r0 = r1.mVectorState
-            if (r0 == 0) goto L_0x002c
-            boolean r0 = r0.isStateful()
-            if (r0 != 0) goto L_0x002e
-            android.support.graphics.drawable.VectorDrawableCompat$VectorDrawableCompatState r0 = r1.mVectorState
-            android.content.res.ColorStateList r0 = r0.mTint
-            if (r0 == 0) goto L_0x002c
-            android.support.graphics.drawable.VectorDrawableCompat$VectorDrawableCompatState r0 = r1.mVectorState
-            android.content.res.ColorStateList r0 = r0.mTint
-            boolean r0 = r0.isStateful()
-            if (r0 == 0) goto L_0x002c
-            goto L_0x002e
-        L_0x002c:
-            r0 = 0
-            goto L_0x002f
-        L_0x002e:
-            r0 = 1
-        L_0x002f:
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.support.graphics.drawable.VectorDrawableCompat.isStateful():boolean");
+        VectorDrawableCompatState vectorDrawableCompatState;
+        if (this.mDelegateDrawable != null) {
+            return this.mDelegateDrawable.isStateful();
+        }
+        return super.isStateful() || ((vectorDrawableCompatState = this.mVectorState) != null && (vectorDrawableCompatState.isStateful() || (this.mVectorState.mTint != null && this.mVectorState.mTint.isStateful())));
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onStateChange(int[] stateSet) {
+    @Override // android.graphics.drawable.Drawable
+    protected boolean onStateChange(int[] stateSet) {
         if (this.mDelegateDrawable != null) {
             return this.mDelegateDrawable.setState(stateSet);
         }
         boolean changed = false;
         VectorDrawableCompatState state = this.mVectorState;
-        if (!(state.mTint == null || state.mTintMode == null)) {
+        if (state.mTint != null && state.mTintMode != null) {
             this.mTintFilter = updateTintFilter(this.mTintFilter, state.mTint, state.mTintMode);
             invalidateSelf();
             changed = true;
         }
-        if (!state.isStateful() || !state.onStateChanged(stateSet)) {
-            return changed;
+        if (state.isStateful() && state.onStateChanged(stateSet)) {
+            invalidateSelf();
+            return true;
         }
-        invalidateSelf();
-        return true;
+        return changed;
     }
 
+    @Override // android.graphics.drawable.Drawable
     public int getOpacity() {
         if (this.mDelegateDrawable != null) {
             return this.mDelegateDrawable.getOpacity();
@@ -339,6 +341,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         return -3;
     }
 
+    @Override // android.graphics.drawable.Drawable
     public int getIntrinsicWidth() {
         if (this.mDelegateDrawable != null) {
             return this.mDelegateDrawable.getIntrinsicWidth();
@@ -346,6 +349,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         return (int) this.mVectorState.mVPathRenderer.mBaseWidth;
     }
 
+    @Override // android.graphics.drawable.Drawable
     public int getIntrinsicHeight() {
         if (this.mDelegateDrawable != null) {
             return this.mDelegateDrawable.getIntrinsicHeight();
@@ -353,14 +357,16 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         return (int) this.mVectorState.mVPathRenderer.mBaseHeight;
     }
 
+    @Override // android.graphics.drawable.Drawable
     public boolean canApplyTheme() {
-        if (this.mDelegateDrawable == null) {
+        if (this.mDelegateDrawable != null) {
+            DrawableCompat.canApplyTheme(this.mDelegateDrawable);
             return false;
         }
-        DrawableCompat.canApplyTheme(this.mDelegateDrawable);
         return false;
     }
 
+    @Override // android.graphics.drawable.Drawable
     public boolean isAutoMirrored() {
         if (this.mDelegateDrawable != null) {
             return DrawableCompat.isAutoMirrored(this.mDelegateDrawable);
@@ -368,6 +374,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         return this.mVectorState.mAutoMirrored;
     }
 
+    @Override // android.graphics.drawable.Drawable
     public void setAutoMirrored(boolean mirrored) {
         if (this.mDelegateDrawable != null) {
             DrawableCompat.setAutoMirrored(this.mDelegateDrawable, mirrored);
@@ -383,61 +390,41 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
         float intrinsicWidth = this.mVectorState.mVPathRenderer.mBaseWidth;
         float intrinsicHeight = this.mVectorState.mVPathRenderer.mBaseHeight;
-        return Math.min(this.mVectorState.mVPathRenderer.mViewportWidth / intrinsicWidth, this.mVectorState.mVPathRenderer.mViewportHeight / intrinsicHeight);
+        float viewportWidth = this.mVectorState.mVPathRenderer.mViewportWidth;
+        float viewportHeight = this.mVectorState.mVPathRenderer.mViewportHeight;
+        float scaleX = viewportWidth / intrinsicWidth;
+        float scaleY = viewportHeight / intrinsicHeight;
+        return Math.min(scaleX, scaleY);
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:12:0x0039 A[Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }] */
-    /* JADX WARNING: Removed duplicated region for block: B:14:0x003e A[Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }] */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public static android.support.graphics.drawable.VectorDrawableCompat create(android.content.res.Resources r7, int r8, android.content.res.Resources.Theme r9) {
-        /*
-            java.lang.String r0 = "parser error"
-            java.lang.String r1 = "VectorDrawableCompat"
-            int r2 = android.os.Build.VERSION.SDK_INT
-            r3 = 24
-            if (r2 < r3) goto L_0x0023
-            android.support.graphics.drawable.VectorDrawableCompat r0 = new android.support.graphics.drawable.VectorDrawableCompat
-            r0.<init>()
-            android.graphics.drawable.Drawable r1 = android.support.v4.content.res.ResourcesCompat.getDrawable(r7, r8, r9)
-            r0.mDelegateDrawable = r1
-            android.support.graphics.drawable.VectorDrawableCompat$VectorDrawableDelegateState r1 = new android.support.graphics.drawable.VectorDrawableCompat$VectorDrawableDelegateState
-            android.graphics.drawable.Drawable r2 = r0.mDelegateDrawable
-            android.graphics.drawable.Drawable$ConstantState r2 = r2.getConstantState()
-            r1.<init>(r2)
-            r0.mCachedConstantStateDelegate = r1
-            return r0
-        L_0x0023:
-            android.content.res.XmlResourceParser r2 = r7.getXml(r8)     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }
-            android.util.AttributeSet r3 = android.util.Xml.asAttributeSet(r2)     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }
-        L_0x002b:
-            int r4 = r2.next()     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }
-            r5 = r4
-            r6 = 2
-            if (r4 == r6) goto L_0x0037
-            r4 = 1
-            if (r5 == r4) goto L_0x0037
-            goto L_0x002b
-        L_0x0037:
-            if (r5 != r6) goto L_0x003e
-            android.support.graphics.drawable.VectorDrawableCompat r0 = createFromXmlInner(r7, r2, r3, r9)     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }
-            return r0
-        L_0x003e:
-            org.xmlpull.v1.XmlPullParserException r4 = new org.xmlpull.v1.XmlPullParserException     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }
-            java.lang.String r6 = "No start tag found"
-            r4.<init>(r6)     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }
-            throw r4     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }
-        L_0x0046:
-            r2 = move-exception
-            android.util.Log.e(r1, r0, r2)
-            goto L_0x0050
-        L_0x004b:
-            r2 = move-exception
-            android.util.Log.e(r1, r0, r2)
-        L_0x0050:
-            r0 = 0
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.support.graphics.drawable.VectorDrawableCompat.create(android.content.res.Resources, int, android.content.res.Resources$Theme):android.support.graphics.drawable.VectorDrawableCompat");
+    public static VectorDrawableCompat create(Resources res, int resId, Resources.Theme theme) {
+        int type;
+        if (Build.VERSION.SDK_INT >= 24) {
+            VectorDrawableCompat drawable = new VectorDrawableCompat();
+            drawable.mDelegateDrawable = ResourcesCompat.getDrawable(res, resId, theme);
+            drawable.mCachedConstantStateDelegate = new VectorDrawableDelegateState(drawable.mDelegateDrawable.getConstantState());
+            return drawable;
+        }
+        try {
+            XmlPullParser parser = res.getXml(resId);
+            AttributeSet attrs = Xml.asAttributeSet(parser);
+            while (true) {
+                type = parser.next();
+                if (type == 2 || type == 1) {
+                    break;
+                }
+            }
+            if (type != 2) {
+                throw new XmlPullParserException("No start tag found");
+            }
+            return createFromXmlInner(res, parser, attrs, theme);
+        } catch (IOException e) {
+            Log.e(LOGTAG, "parser error", e);
+            return null;
+        } catch (XmlPullParserException e2) {
+            Log.e(LOGTAG, "parser error", e2);
+            return null;
+        }
     }
 
     public static VectorDrawableCompat createFromXmlInner(Resources r, XmlPullParser parser, AttributeSet attrs, Resources.Theme theme) throws XmlPullParserException, IOException {
@@ -447,24 +434,28 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
     }
 
     static int applyAlpha(int color, float alpha) {
-        return (color & ViewCompat.MEASURED_SIZE_MASK) | (((int) (((float) Color.alpha(color)) * alpha)) << 24);
+        int alphaBytes = Color.alpha(color);
+        return (color & ViewCompat.MEASURED_SIZE_MASK) | (((int) (alphaBytes * alpha)) << 24);
     }
 
+    @Override // android.graphics.drawable.Drawable
     public void inflate(Resources res, XmlPullParser parser, AttributeSet attrs) throws XmlPullParserException, IOException {
         if (this.mDelegateDrawable != null) {
             this.mDelegateDrawable.inflate(res, parser, attrs);
         } else {
-            inflate(res, parser, attrs, (Resources.Theme) null);
+            inflate(res, parser, attrs, null);
         }
     }
 
+    @Override // android.graphics.drawable.Drawable
     public void inflate(Resources res, XmlPullParser parser, AttributeSet attrs, Resources.Theme theme) throws XmlPullParserException, IOException {
         if (this.mDelegateDrawable != null) {
             DrawableCompat.inflate(this.mDelegateDrawable, res, parser, attrs, theme);
             return;
         }
         VectorDrawableCompatState state = this.mVectorState;
-        state.mVPathRenderer = new VPathRenderer();
+        VPathRenderer pathRenderer = new VPathRenderer();
+        state.mVPathRenderer = pathRenderer;
         TypedArray a = TypedArrayUtils.obtainAttributes(res, theme, attrs, AndroidResources.STYLEABLE_VECTOR_DRAWABLE_TYPE_ARRAY);
         updateStateFromTypedArray(a, parser);
         a.recycle();
@@ -496,7 +487,8 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
     private void updateStateFromTypedArray(TypedArray a, XmlPullParser parser) throws XmlPullParserException {
         VectorDrawableCompatState state = this.mVectorState;
         VPathRenderer pathRenderer = state.mVPathRenderer;
-        state.mTintMode = parseTintModeCompat(TypedArrayUtils.getNamedInt(a, parser, "tintMode", 6, -1), PorterDuff.Mode.SRC_IN);
+        int mode = TypedArrayUtils.getNamedInt(a, parser, "tintMode", 6, -1);
+        state.mTintMode = parseTintModeCompat(mode, PorterDuff.Mode.SRC_IN);
         ColorStateList tint = a.getColorStateList(1);
         if (tint != null) {
             state.mTint = tint;
@@ -506,31 +498,28 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         pathRenderer.mViewportHeight = TypedArrayUtils.getNamedFloat(a, parser, "viewportHeight", 8, pathRenderer.mViewportHeight);
         if (pathRenderer.mViewportWidth <= 0.0f) {
             throw new XmlPullParserException(a.getPositionDescription() + "<vector> tag requires viewportWidth > 0");
-        } else if (pathRenderer.mViewportHeight > 0.0f) {
-            pathRenderer.mBaseWidth = a.getDimension(3, pathRenderer.mBaseWidth);
-            pathRenderer.mBaseHeight = a.getDimension(2, pathRenderer.mBaseHeight);
-            if (pathRenderer.mBaseWidth <= 0.0f) {
-                throw new XmlPullParserException(a.getPositionDescription() + "<vector> tag requires width > 0");
-            } else if (pathRenderer.mBaseHeight > 0.0f) {
-                pathRenderer.setAlpha(TypedArrayUtils.getNamedFloat(a, parser, "alpha", 4, pathRenderer.getAlpha()));
-                String name = a.getString(0);
-                if (name != null) {
-                    pathRenderer.mRootName = name;
-                    pathRenderer.mVGTargetsMap.put(name, pathRenderer);
-                }
-            } else {
-                throw new XmlPullParserException(a.getPositionDescription() + "<vector> tag requires height > 0");
-            }
-        } else {
+        }
+        if (pathRenderer.mViewportHeight <= 0.0f) {
             throw new XmlPullParserException(a.getPositionDescription() + "<vector> tag requires viewportHeight > 0");
+        }
+        pathRenderer.mBaseWidth = a.getDimension(3, pathRenderer.mBaseWidth);
+        pathRenderer.mBaseHeight = a.getDimension(2, pathRenderer.mBaseHeight);
+        if (pathRenderer.mBaseWidth <= 0.0f) {
+            throw new XmlPullParserException(a.getPositionDescription() + "<vector> tag requires width > 0");
+        }
+        if (pathRenderer.mBaseHeight <= 0.0f) {
+            throw new XmlPullParserException(a.getPositionDescription() + "<vector> tag requires height > 0");
+        }
+        float alphaInFloat = TypedArrayUtils.getNamedFloat(a, parser, "alpha", 4, pathRenderer.getAlpha());
+        pathRenderer.setAlpha(alphaInFloat);
+        String name = a.getString(0);
+        if (name != null) {
+            pathRenderer.mRootName = name;
+            pathRenderer.mVGTargetsMap.put(name, pathRenderer);
         }
     }
 
     private void inflateInternal(Resources res, XmlPullParser parser, AttributeSet attrs, Resources.Theme theme) throws XmlPullParserException, IOException {
-        Resources resources = res;
-        XmlPullParser xmlPullParser = parser;
-        AttributeSet attributeSet = attrs;
-        Resources.Theme theme2 = theme;
         VectorDrawableCompatState state = this.mVectorState;
         VPathRenderer pathRenderer = state.mVPathRenderer;
         boolean noPathTag = true;
@@ -544,7 +533,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
                 VGroup currentGroup = groupStack.peek();
                 if (SHAPE_PATH.equals(tagName)) {
                     VFullPath path = new VFullPath();
-                    path.inflate(resources, attributeSet, theme2, xmlPullParser);
+                    path.inflate(res, attrs, theme, parser);
                     currentGroup.mChildren.add(path);
                     if (path.getPathName() != null) {
                         pathRenderer.mVGTargetsMap.put(path.getPathName(), path);
@@ -553,7 +542,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
                     state.mChangingConfigurations |= path.mChangingConfigurations;
                 } else if (SHAPE_CLIP_PATH.equals(tagName)) {
                     VClipPath path2 = new VClipPath();
-                    path2.inflate(resources, attributeSet, theme2, xmlPullParser);
+                    path2.inflate(res, attrs, theme, parser);
                     currentGroup.mChildren.add(path2);
                     if (path2.getPathName() != null) {
                         pathRenderer.mVGTargetsMap.put(path2.getPathName(), path2);
@@ -561,7 +550,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
                     state.mChangingConfigurations |= path2.mChangingConfigurations;
                 } else if (SHAPE_GROUP.equals(tagName)) {
                     VGroup newChildGroup = new VGroup();
-                    newChildGroup.inflate(resources, attributeSet, theme2, xmlPullParser);
+                    newChildGroup.inflate(res, attrs, theme, parser);
                     currentGroup.mChildren.add(newChildGroup);
                     groupStack.push(newChildGroup);
                     if (newChildGroup.getGroupName() != null) {
@@ -596,25 +585,22 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void setAllowCaching(boolean allowCaching) {
+    void setAllowCaching(boolean allowCaching) {
         this.mAllowCaching = allowCaching;
     }
 
     private boolean needMirroring() {
-        if (Build.VERSION.SDK_INT < 17 || !isAutoMirrored() || DrawableCompat.getLayoutDirection(this) != 1) {
-            return false;
-        }
-        return true;
+        return Build.VERSION.SDK_INT >= 17 && isAutoMirrored() && DrawableCompat.getLayoutDirection(this) == 1;
     }
 
-    /* access modifiers changed from: protected */
-    public void onBoundsChange(Rect bounds) {
+    @Override // android.support.graphics.drawable.VectorDrawableCommon, android.graphics.drawable.Drawable
+    protected void onBoundsChange(Rect bounds) {
         if (this.mDelegateDrawable != null) {
             this.mDelegateDrawable.setBounds(bounds);
         }
     }
 
+    @Override // android.graphics.drawable.Drawable
     public int getChangingConfigurations() {
         if (this.mDelegateDrawable != null) {
             return this.mDelegateDrawable.getChangingConfigurations();
@@ -622,6 +608,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         return super.getChangingConfigurations() | this.mVectorState.getChangingConfigurations();
     }
 
+    @Override // android.graphics.drawable.Drawable
     public void invalidateSelf() {
         if (this.mDelegateDrawable != null) {
             this.mDelegateDrawable.invalidateSelf();
@@ -630,6 +617,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
+    @Override // android.graphics.drawable.Drawable
     public void scheduleSelf(Runnable what, long when) {
         if (this.mDelegateDrawable != null) {
             this.mDelegateDrawable.scheduleSelf(what, when);
@@ -638,6 +626,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
+    @Override // android.graphics.drawable.Drawable
     public boolean setVisible(boolean visible, boolean restart) {
         if (this.mDelegateDrawable != null) {
             return this.mDelegateDrawable.setVisible(visible, restart);
@@ -645,6 +634,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         return super.setVisible(visible, restart);
     }
 
+    @Override // android.graphics.drawable.Drawable
     public void unscheduleSelf(Runnable what) {
         if (this.mDelegateDrawable != null) {
             this.mDelegateDrawable.unscheduleSelf(what);
@@ -653,6 +643,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
+    /* loaded from: classes.dex */
     private static class VectorDrawableDelegateState extends Drawable.ConstantState {
         private final Drawable.ConstantState mDelegateState;
 
@@ -660,33 +651,39 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
             this.mDelegateState = state;
         }
 
+        @Override // android.graphics.drawable.Drawable.ConstantState
         public Drawable newDrawable() {
             VectorDrawableCompat drawableCompat = new VectorDrawableCompat();
             drawableCompat.mDelegateDrawable = (VectorDrawable) this.mDelegateState.newDrawable();
             return drawableCompat;
         }
 
+        @Override // android.graphics.drawable.Drawable.ConstantState
         public Drawable newDrawable(Resources res) {
             VectorDrawableCompat drawableCompat = new VectorDrawableCompat();
             drawableCompat.mDelegateDrawable = (VectorDrawable) this.mDelegateState.newDrawable(res);
             return drawableCompat;
         }
 
+        @Override // android.graphics.drawable.Drawable.ConstantState
         public Drawable newDrawable(Resources res, Resources.Theme theme) {
             VectorDrawableCompat drawableCompat = new VectorDrawableCompat();
             drawableCompat.mDelegateDrawable = (VectorDrawable) this.mDelegateState.newDrawable(res, theme);
             return drawableCompat;
         }
 
+        @Override // android.graphics.drawable.Drawable.ConstantState
         public boolean canApplyTheme() {
             return this.mDelegateState.canApplyTheme();
         }
 
+        @Override // android.graphics.drawable.Drawable.ConstantState
         public int getChangingConfigurations() {
             return this.mDelegateState.getChangingConfigurations();
         }
     }
 
+    /* loaded from: classes.dex */
     private static class VectorDrawableCompatState extends Drawable.ConstantState {
         boolean mAutoMirrored;
         boolean mCacheDirty;
@@ -721,7 +718,8 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
 
         public void drawCachedBitmapWithRootAlpha(Canvas canvas, ColorFilter filter, Rect originalBounds) {
-            canvas.drawBitmap(this.mCachedBitmap, (Rect) null, originalBounds, getPaint(filter));
+            Paint p = getPaint(filter);
+            canvas.drawBitmap(this.mCachedBitmap, (Rect) null, originalBounds, p);
         }
 
         public boolean hasTranslucentRoot() {
@@ -744,7 +742,8 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
 
         public void updateCachedBitmap(int width, int height) {
             this.mCachedBitmap.eraseColor(0);
-            this.mVPathRenderer.draw(new Canvas(this.mCachedBitmap), width, height, (ColorFilter) null);
+            Canvas tmpCanvas = new Canvas(this.mCachedBitmap);
+            this.mVPathRenderer.draw(tmpCanvas, width, height, null);
         }
 
         public void createCachedBitmapIfNeeded(int width, int height) {
@@ -782,14 +781,17 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
             this.mVPathRenderer = new VPathRenderer();
         }
 
+        @Override // android.graphics.drawable.Drawable.ConstantState
         public Drawable newDrawable() {
             return new VectorDrawableCompat(this);
         }
 
+        @Override // android.graphics.drawable.Drawable.ConstantState
         public Drawable newDrawable(Resources res) {
             return new VectorDrawableCompat(this);
         }
 
+        @Override // android.graphics.drawable.Drawable.ConstantState
         public int getChangingConfigurations() {
             return this.mChangingConfigurations;
         }
@@ -805,6 +807,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
+    /* loaded from: classes.dex */
     private static class VPathRenderer {
         private static final Matrix IDENTITY_MATRIX = new Matrix();
         float mBaseHeight;
@@ -852,7 +855,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
 
         public float getAlpha() {
-            return ((float) getRootAlpha()) / 255.0f;
+            return getRootAlpha() / 255.0f;
         }
 
         public VPathRenderer(VPathRenderer copy) {
@@ -884,16 +887,17 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
 
         private void drawGroupTree(VGroup currentGroup, Matrix currentMatrix, Canvas canvas, int w, int h, ColorFilter filter) {
-            VGroup vGroup = currentGroup;
-            vGroup.mStackedMatrix.set(currentMatrix);
-            vGroup.mStackedMatrix.preConcat(vGroup.mLocalMatrix);
+            currentGroup.mStackedMatrix.set(currentMatrix);
+            currentGroup.mStackedMatrix.preConcat(currentGroup.mLocalMatrix);
             canvas.save();
-            for (int i = 0; i < vGroup.mChildren.size(); i++) {
-                VObject child = vGroup.mChildren.get(i);
+            for (int i = 0; i < currentGroup.mChildren.size(); i++) {
+                VObject child = currentGroup.mChildren.get(i);
                 if (child instanceof VGroup) {
-                    drawGroupTree((VGroup) child, vGroup.mStackedMatrix, canvas, w, h, filter);
+                    VGroup childGroup = (VGroup) child;
+                    drawGroupTree(childGroup, currentGroup.mStackedMatrix, canvas, w, h, filter);
                 } else if (child instanceof VPath) {
-                    drawPath(currentGroup, (VPath) child, canvas, w, h, filter);
+                    VPath childPath = (VPath) child;
+                    drawPath(currentGroup, childPath, canvas, w, h, filter);
                 }
             }
             canvas.restore();
@@ -905,100 +909,94 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
 
         private void drawPath(VGroup vGroup, VPath vPath, Canvas canvas, int w, int h, ColorFilter filter) {
             float len;
-            VPath vPath2 = vPath;
-            Canvas canvas2 = canvas;
-            ColorFilter colorFilter = filter;
-            float scaleX = ((float) w) / this.mViewportWidth;
-            float scaleY = ((float) h) / this.mViewportHeight;
+            float scaleX = w / this.mViewportWidth;
+            float scaleY = h / this.mViewportHeight;
             float minScale = Math.min(scaleX, scaleY);
             Matrix groupStackedMatrix = vGroup.mStackedMatrix;
             this.mFinalPathMatrix.set(groupStackedMatrix);
             this.mFinalPathMatrix.postScale(scaleX, scaleY);
             float matrixScale = getMatrixScale(groupStackedMatrix);
-            if (matrixScale != 0.0f) {
-                vPath2.toPath(this.mPath);
-                Path path = this.mPath;
-                this.mRenderPath.reset();
-                if (vPath.isClipPath()) {
-                    this.mRenderPath.addPath(path, this.mFinalPathMatrix);
-                    canvas2.clipPath(this.mRenderPath);
-                    float f = scaleX;
-                    return;
-                }
-                VFullPath fullPath = (VFullPath) vPath2;
-                if (fullPath.mTrimPathStart == 0.0f && fullPath.mTrimPathEnd == 1.0f) {
-                    float f2 = scaleX;
-                } else {
-                    float start = (fullPath.mTrimPathStart + fullPath.mTrimPathOffset) % 1.0f;
-                    float end = (fullPath.mTrimPathEnd + fullPath.mTrimPathOffset) % 1.0f;
-                    if (this.mPathMeasure == null) {
-                        this.mPathMeasure = new PathMeasure();
-                    }
-                    float f3 = scaleX;
-                    this.mPathMeasure.setPath(this.mPath, false);
-                    float len2 = this.mPathMeasure.getLength();
-                    float start2 = start * len2;
-                    float end2 = end * len2;
-                    path.reset();
-                    if (start2 > end2) {
-                        this.mPathMeasure.getSegment(start2, len2, path, true);
-                        float f4 = len2;
-                        len = 0.0f;
-                        this.mPathMeasure.getSegment(0.0f, end2, path, true);
-                    } else {
-                        len = 0.0f;
-                        this.mPathMeasure.getSegment(start2, end2, path, true);
-                    }
-                    path.rLineTo(len, len);
-                }
+            if (matrixScale == 0.0f) {
+                return;
+            }
+            vPath.toPath(this.mPath);
+            Path path = this.mPath;
+            this.mRenderPath.reset();
+            if (vPath.isClipPath()) {
                 this.mRenderPath.addPath(path, this.mFinalPathMatrix);
-                if (fullPath.mFillColor.willDraw()) {
-                    ComplexColorCompat fill = fullPath.mFillColor;
-                    if (this.mFillPaint == null) {
-                        Paint paint = new Paint(1);
-                        this.mFillPaint = paint;
-                        paint.setStyle(Paint.Style.FILL);
-                    }
-                    Paint fillPaint = this.mFillPaint;
-                    if (fill.isGradient()) {
-                        Shader shader = fill.getShader();
-                        shader.setLocalMatrix(this.mFinalPathMatrix);
-                        fillPaint.setShader(shader);
-                        fillPaint.setAlpha(Math.round(fullPath.mFillAlpha * 255.0f));
-                    } else {
-                        fillPaint.setColor(VectorDrawableCompat.applyAlpha(fill.getColor(), fullPath.mFillAlpha));
-                    }
-                    fillPaint.setColorFilter(colorFilter);
-                    this.mRenderPath.setFillType(fullPath.mFillRule == 0 ? Path.FillType.WINDING : Path.FillType.EVEN_ODD);
-                    canvas2.drawPath(this.mRenderPath, fillPaint);
+                canvas.clipPath(this.mRenderPath);
+                return;
+            }
+            VFullPath fullPath = (VFullPath) vPath;
+            if (fullPath.mTrimPathStart != 0.0f || fullPath.mTrimPathEnd != 1.0f) {
+                float start = (fullPath.mTrimPathStart + fullPath.mTrimPathOffset) % 1.0f;
+                float end = (fullPath.mTrimPathEnd + fullPath.mTrimPathOffset) % 1.0f;
+                if (this.mPathMeasure == null) {
+                    this.mPathMeasure = new PathMeasure();
                 }
-                if (fullPath.mStrokeColor.willDraw()) {
-                    ComplexColorCompat strokeColor = fullPath.mStrokeColor;
-                    if (this.mStrokePaint == null) {
-                        Paint paint2 = new Paint(1);
-                        this.mStrokePaint = paint2;
-                        paint2.setStyle(Paint.Style.STROKE);
-                    }
-                    Paint strokePaint = this.mStrokePaint;
-                    if (fullPath.mStrokeLineJoin != null) {
-                        strokePaint.setStrokeJoin(fullPath.mStrokeLineJoin);
-                    }
-                    if (fullPath.mStrokeLineCap != null) {
-                        strokePaint.setStrokeCap(fullPath.mStrokeLineCap);
-                    }
-                    strokePaint.setStrokeMiter(fullPath.mStrokeMiterlimit);
-                    if (strokeColor.isGradient()) {
-                        Shader shader2 = strokeColor.getShader();
-                        shader2.setLocalMatrix(this.mFinalPathMatrix);
-                        strokePaint.setShader(shader2);
-                        strokePaint.setAlpha(Math.round(fullPath.mStrokeAlpha * 255.0f));
-                    } else {
-                        strokePaint.setColor(VectorDrawableCompat.applyAlpha(strokeColor.getColor(), fullPath.mStrokeAlpha));
-                    }
-                    strokePaint.setColorFilter(colorFilter);
-                    strokePaint.setStrokeWidth(fullPath.mStrokeWidth * minScale * matrixScale);
-                    canvas2.drawPath(this.mRenderPath, strokePaint);
+                this.mPathMeasure.setPath(this.mPath, false);
+                float len2 = this.mPathMeasure.getLength();
+                float start2 = start * len2;
+                float end2 = end * len2;
+                path.reset();
+                if (start2 <= end2) {
+                    len = 0.0f;
+                    this.mPathMeasure.getSegment(start2, end2, path, true);
+                } else {
+                    this.mPathMeasure.getSegment(start2, len2, path, true);
+                    len = 0.0f;
+                    this.mPathMeasure.getSegment(0.0f, end2, path, true);
                 }
+                path.rLineTo(len, len);
+            }
+            this.mRenderPath.addPath(path, this.mFinalPathMatrix);
+            if (fullPath.mFillColor.willDraw()) {
+                ComplexColorCompat fill = fullPath.mFillColor;
+                if (this.mFillPaint == null) {
+                    Paint paint = new Paint(1);
+                    this.mFillPaint = paint;
+                    paint.setStyle(Paint.Style.FILL);
+                }
+                Paint fillPaint = this.mFillPaint;
+                if (fill.isGradient()) {
+                    Shader shader = fill.getShader();
+                    shader.setLocalMatrix(this.mFinalPathMatrix);
+                    fillPaint.setShader(shader);
+                    fillPaint.setAlpha(Math.round(fullPath.mFillAlpha * 255.0f));
+                } else {
+                    fillPaint.setColor(VectorDrawableCompat.applyAlpha(fill.getColor(), fullPath.mFillAlpha));
+                }
+                fillPaint.setColorFilter(filter);
+                this.mRenderPath.setFillType(fullPath.mFillRule == 0 ? Path.FillType.WINDING : Path.FillType.EVEN_ODD);
+                canvas.drawPath(this.mRenderPath, fillPaint);
+            }
+            if (fullPath.mStrokeColor.willDraw()) {
+                ComplexColorCompat strokeColor = fullPath.mStrokeColor;
+                if (this.mStrokePaint == null) {
+                    Paint paint2 = new Paint(1);
+                    this.mStrokePaint = paint2;
+                    paint2.setStyle(Paint.Style.STROKE);
+                }
+                Paint strokePaint = this.mStrokePaint;
+                if (fullPath.mStrokeLineJoin != null) {
+                    strokePaint.setStrokeJoin(fullPath.mStrokeLineJoin);
+                }
+                if (fullPath.mStrokeLineCap != null) {
+                    strokePaint.setStrokeCap(fullPath.mStrokeLineCap);
+                }
+                strokePaint.setStrokeMiter(fullPath.mStrokeMiterlimit);
+                if (strokeColor.isGradient()) {
+                    Shader shader2 = strokeColor.getShader();
+                    shader2.setLocalMatrix(this.mFinalPathMatrix);
+                    strokePaint.setShader(shader2);
+                    strokePaint.setAlpha(Math.round(fullPath.mStrokeAlpha * 255.0f));
+                } else {
+                    strokePaint.setColor(VectorDrawableCompat.applyAlpha(strokeColor.getColor(), fullPath.mStrokeAlpha));
+                }
+                strokePaint.setColorFilter(filter);
+                float finalStrokeScale = minScale * matrixScale;
+                strokePaint.setStrokeWidth(fullPath.mStrokeWidth * finalStrokeScale);
+                canvas.drawPath(this.mRenderPath, strokePaint);
             }
         }
 
@@ -1009,12 +1007,15 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         private float getMatrixScale(Matrix groupStackedMatrix) {
             float[] unitVectors = {0.0f, 1.0f, 1.0f, 0.0f};
             groupStackedMatrix.mapVectors(unitVectors);
+            float scaleX = (float) Math.hypot(unitVectors[0], unitVectors[1]);
+            float scaleY = (float) Math.hypot(unitVectors[2], unitVectors[3]);
             float crossProduct = cross(unitVectors[0], unitVectors[1], unitVectors[2], unitVectors[3]);
-            float maxScale = Math.max((float) Math.hypot((double) unitVectors[0], (double) unitVectors[1]), (float) Math.hypot((double) unitVectors[2], (double) unitVectors[3]));
-            if (maxScale > 0.0f) {
-                return Math.abs(crossProduct) / maxScale;
+            float maxScale = Math.max(scaleX, scaleY);
+            if (maxScale <= 0.0f) {
+                return 0.0f;
             }
-            return 0.0f;
+            float matrixScale = Math.abs(crossProduct) / maxScale;
+            return matrixScale;
         }
 
         public boolean isStateful() {
@@ -1029,6 +1030,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
+    /* loaded from: classes.dex */
     private static abstract class VObject {
         private VObject() {
         }
@@ -1042,6 +1044,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
+    /* loaded from: classes.dex */
     private static class VGroup extends VObject {
         int mChangingConfigurations;
         final ArrayList<VObject> mChildren;
@@ -1089,14 +1092,15 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
             matrix.set(copy.mLocalMatrix);
             ArrayList<VObject> children = copy.mChildren;
             for (int i = 0; i < children.size(); i++) {
-                VObject vObject = children.get(i);
-                if (vObject instanceof VGroup) {
-                    this.mChildren.add(new VGroup((VGroup) vObject, targetsMap));
+                Object copyChild = children.get(i);
+                if (copyChild instanceof VGroup) {
+                    VGroup copyGroup = (VGroup) copyChild;
+                    this.mChildren.add(new VGroup(copyGroup, targetsMap));
                 } else {
-                    if (vObject instanceof VFullPath) {
-                        newPath = new VFullPath((VFullPath) vObject);
-                    } else if (vObject instanceof VClipPath) {
-                        newPath = new VClipPath((VClipPath) vObject);
+                    if (copyChild instanceof VFullPath) {
+                        newPath = new VFullPath((VFullPath) copyChild);
+                    } else if (copyChild instanceof VClipPath) {
+                        newPath = new VClipPath((VClipPath) copyChild);
                     } else {
                         throw new IllegalStateException("Unknown object in the tree!");
                     }
@@ -1238,6 +1242,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
             }
         }
 
+        @Override // android.support.graphics.drawable.VectorDrawableCompat.VObject
         public boolean isStateful() {
             for (int i = 0; i < this.mChildren.size(); i++) {
                 if (this.mChildren.get(i).isStateful()) {
@@ -1247,6 +1252,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
             return false;
         }
 
+        @Override // android.support.graphics.drawable.VectorDrawableCompat.VObject
         public boolean onStateChanged(int[] stateSet) {
             boolean changed = false;
             for (int i = 0; i < this.mChildren.size(); i++) {
@@ -1256,13 +1262,15 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
+    /* loaded from: classes.dex */
     private static abstract class VPath extends VObject {
         int mChangingConfigurations;
-        protected PathParser.PathDataNode[] mNodes = null;
+        protected PathParser.PathDataNode[] mNodes;
         String mPathName;
 
         public VPath() {
             super();
+            this.mNodes = null;
         }
 
         public void printVPath(int level) {
@@ -1287,6 +1295,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
 
         public VPath(VPath copy) {
             super();
+            this.mNodes = null;
             this.mPathName = copy.mPathName;
             this.mChangingConfigurations = copy.mChangingConfigurations;
             this.mNodes = PathParser.deepCopyNodes(copy.mNodes);
@@ -1328,6 +1337,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
+    /* loaded from: classes.dex */
     private static class VClipPath extends VPath {
         public VClipPath() {
         }
@@ -1337,11 +1347,13 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
 
         public void inflate(Resources r, AttributeSet attrs, Resources.Theme theme, XmlPullParser parser) {
-            if (TypedArrayUtils.hasAttribute(parser, "pathData")) {
-                TypedArray a = TypedArrayUtils.obtainAttributes(r, theme, attrs, AndroidResources.STYLEABLE_VECTOR_DRAWABLE_CLIP_PATH);
-                updateStateFromTypedArray(a);
-                a.recycle();
+            boolean hasPathData = TypedArrayUtils.hasAttribute(parser, "pathData");
+            if (!hasPathData) {
+                return;
             }
+            TypedArray a = TypedArrayUtils.obtainAttributes(r, theme, attrs, AndroidResources.STYLEABLE_VECTOR_DRAWABLE_CLIP_PATH);
+            updateStateFromTypedArray(a);
+            a.recycle();
         }
 
         private void updateStateFromTypedArray(TypedArray a) {
@@ -1355,32 +1367,54 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
             }
         }
 
+        @Override // android.support.graphics.drawable.VectorDrawableCompat.VPath
         public boolean isClipPath() {
             return true;
         }
     }
 
+    /* loaded from: classes.dex */
     private static class VFullPath extends VPath {
         private static final int FILL_TYPE_WINDING = 0;
-        float mFillAlpha = 1.0f;
+        float mFillAlpha;
         ComplexColorCompat mFillColor;
-        int mFillRule = 0;
-        float mStrokeAlpha = 1.0f;
+        int mFillRule;
+        float mStrokeAlpha;
         ComplexColorCompat mStrokeColor;
-        Paint.Cap mStrokeLineCap = Paint.Cap.BUTT;
-        Paint.Join mStrokeLineJoin = Paint.Join.MITER;
-        float mStrokeMiterlimit = 4.0f;
-        float mStrokeWidth = 0.0f;
+        Paint.Cap mStrokeLineCap;
+        Paint.Join mStrokeLineJoin;
+        float mStrokeMiterlimit;
+        float mStrokeWidth;
         private int[] mThemeAttrs;
-        float mTrimPathEnd = 1.0f;
-        float mTrimPathOffset = 0.0f;
-        float mTrimPathStart = 0.0f;
+        float mTrimPathEnd;
+        float mTrimPathOffset;
+        float mTrimPathStart;
 
         public VFullPath() {
+            this.mStrokeWidth = 0.0f;
+            this.mStrokeAlpha = 1.0f;
+            this.mFillRule = 0;
+            this.mFillAlpha = 1.0f;
+            this.mTrimPathStart = 0.0f;
+            this.mTrimPathEnd = 1.0f;
+            this.mTrimPathOffset = 0.0f;
+            this.mStrokeLineCap = Paint.Cap.BUTT;
+            this.mStrokeLineJoin = Paint.Join.MITER;
+            this.mStrokeMiterlimit = 4.0f;
         }
 
         public VFullPath(VFullPath copy) {
             super(copy);
+            this.mStrokeWidth = 0.0f;
+            this.mStrokeAlpha = 1.0f;
+            this.mFillRule = 0;
+            this.mFillAlpha = 1.0f;
+            this.mTrimPathStart = 0.0f;
+            this.mTrimPathEnd = 1.0f;
+            this.mTrimPathOffset = 0.0f;
+            this.mStrokeLineCap = Paint.Cap.BUTT;
+            this.mStrokeLineJoin = Paint.Join.MITER;
+            this.mStrokeMiterlimit = 4.0f;
             this.mThemeAttrs = copy.mThemeAttrs;
             this.mStrokeColor = copy.mStrokeColor;
             this.mStrokeWidth = copy.mStrokeWidth;
@@ -1422,6 +1456,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
             }
         }
 
+        @Override // android.support.graphics.drawable.VectorDrawableCompat.VPath
         public boolean canApplyTheme() {
             return this.mThemeAttrs != null;
         }
@@ -1434,120 +1469,112 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
 
         private void updateStateFromTypedArray(TypedArray a, XmlPullParser parser, Resources.Theme theme) {
             this.mThemeAttrs = null;
-            if (TypedArrayUtils.hasAttribute(parser, "pathData")) {
-                String pathName = a.getString(0);
-                if (pathName != null) {
-                    this.mPathName = pathName;
-                }
-                String pathData = a.getString(2);
-                if (pathData != null) {
-                    this.mNodes = PathParser.createNodesFromPathData(pathData);
-                }
-                this.mFillColor = TypedArrayUtils.getNamedComplexColor(a, parser, theme, "fillColor", 1, 0);
-                this.mFillAlpha = TypedArrayUtils.getNamedFloat(a, parser, "fillAlpha", 12, this.mFillAlpha);
-                this.mStrokeLineCap = getStrokeLineCap(TypedArrayUtils.getNamedInt(a, parser, "strokeLineCap", 8, -1), this.mStrokeLineCap);
-                this.mStrokeLineJoin = getStrokeLineJoin(TypedArrayUtils.getNamedInt(a, parser, "strokeLineJoin", 9, -1), this.mStrokeLineJoin);
-                this.mStrokeMiterlimit = TypedArrayUtils.getNamedFloat(a, parser, "strokeMiterLimit", 10, this.mStrokeMiterlimit);
-                this.mStrokeColor = TypedArrayUtils.getNamedComplexColor(a, parser, theme, "strokeColor", 3, 0);
-                this.mStrokeAlpha = TypedArrayUtils.getNamedFloat(a, parser, "strokeAlpha", 11, this.mStrokeAlpha);
-                this.mStrokeWidth = TypedArrayUtils.getNamedFloat(a, parser, "strokeWidth", 4, this.mStrokeWidth);
-                this.mTrimPathEnd = TypedArrayUtils.getNamedFloat(a, parser, "trimPathEnd", 6, this.mTrimPathEnd);
-                this.mTrimPathOffset = TypedArrayUtils.getNamedFloat(a, parser, "trimPathOffset", 7, this.mTrimPathOffset);
-                this.mTrimPathStart = TypedArrayUtils.getNamedFloat(a, parser, "trimPathStart", 5, this.mTrimPathStart);
-                this.mFillRule = TypedArrayUtils.getNamedInt(a, parser, "fillType", 13, this.mFillRule);
+            boolean hasPathData = TypedArrayUtils.hasAttribute(parser, "pathData");
+            if (!hasPathData) {
+                return;
             }
+            String pathName = a.getString(0);
+            if (pathName != null) {
+                this.mPathName = pathName;
+            }
+            String pathData = a.getString(2);
+            if (pathData != null) {
+                this.mNodes = PathParser.createNodesFromPathData(pathData);
+            }
+            this.mFillColor = TypedArrayUtils.getNamedComplexColor(a, parser, theme, "fillColor", 1, 0);
+            this.mFillAlpha = TypedArrayUtils.getNamedFloat(a, parser, "fillAlpha", 12, this.mFillAlpha);
+            int lineCap = TypedArrayUtils.getNamedInt(a, parser, "strokeLineCap", 8, -1);
+            this.mStrokeLineCap = getStrokeLineCap(lineCap, this.mStrokeLineCap);
+            int lineJoin = TypedArrayUtils.getNamedInt(a, parser, "strokeLineJoin", 9, -1);
+            this.mStrokeLineJoin = getStrokeLineJoin(lineJoin, this.mStrokeLineJoin);
+            this.mStrokeMiterlimit = TypedArrayUtils.getNamedFloat(a, parser, "strokeMiterLimit", 10, this.mStrokeMiterlimit);
+            this.mStrokeColor = TypedArrayUtils.getNamedComplexColor(a, parser, theme, "strokeColor", 3, 0);
+            this.mStrokeAlpha = TypedArrayUtils.getNamedFloat(a, parser, "strokeAlpha", 11, this.mStrokeAlpha);
+            this.mStrokeWidth = TypedArrayUtils.getNamedFloat(a, parser, "strokeWidth", 4, this.mStrokeWidth);
+            this.mTrimPathEnd = TypedArrayUtils.getNamedFloat(a, parser, "trimPathEnd", 6, this.mTrimPathEnd);
+            this.mTrimPathOffset = TypedArrayUtils.getNamedFloat(a, parser, "trimPathOffset", 7, this.mTrimPathOffset);
+            this.mTrimPathStart = TypedArrayUtils.getNamedFloat(a, parser, "trimPathStart", 5, this.mTrimPathStart);
+            this.mFillRule = TypedArrayUtils.getNamedInt(a, parser, "fillType", 13, this.mFillRule);
         }
 
+        @Override // android.support.graphics.drawable.VectorDrawableCompat.VObject
         public boolean isStateful() {
             return this.mFillColor.isStateful() || this.mStrokeColor.isStateful();
         }
 
+        @Override // android.support.graphics.drawable.VectorDrawableCompat.VObject
         public boolean onStateChanged(int[] stateSet) {
-            return this.mFillColor.onStateChanged(stateSet) | this.mStrokeColor.onStateChanged(stateSet);
+            boolean changed = this.mFillColor.onStateChanged(stateSet);
+            return changed | this.mStrokeColor.onStateChanged(stateSet);
         }
 
+        @Override // android.support.graphics.drawable.VectorDrawableCompat.VPath
         public void applyTheme(Resources.Theme t) {
-            if (this.mThemeAttrs != null) {
+            if (this.mThemeAttrs == null) {
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public int getStrokeColor() {
+        int getStrokeColor() {
             return this.mStrokeColor.getColor();
         }
 
-        /* access modifiers changed from: package-private */
-        public void setStrokeColor(int strokeColor) {
+        void setStrokeColor(int strokeColor) {
             this.mStrokeColor.setColor(strokeColor);
         }
 
-        /* access modifiers changed from: package-private */
-        public float getStrokeWidth() {
+        float getStrokeWidth() {
             return this.mStrokeWidth;
         }
 
-        /* access modifiers changed from: package-private */
-        public void setStrokeWidth(float strokeWidth) {
+        void setStrokeWidth(float strokeWidth) {
             this.mStrokeWidth = strokeWidth;
         }
 
-        /* access modifiers changed from: package-private */
-        public float getStrokeAlpha() {
+        float getStrokeAlpha() {
             return this.mStrokeAlpha;
         }
 
-        /* access modifiers changed from: package-private */
-        public void setStrokeAlpha(float strokeAlpha) {
+        void setStrokeAlpha(float strokeAlpha) {
             this.mStrokeAlpha = strokeAlpha;
         }
 
-        /* access modifiers changed from: package-private */
-        public int getFillColor() {
+        int getFillColor() {
             return this.mFillColor.getColor();
         }
 
-        /* access modifiers changed from: package-private */
-        public void setFillColor(int fillColor) {
+        void setFillColor(int fillColor) {
             this.mFillColor.setColor(fillColor);
         }
 
-        /* access modifiers changed from: package-private */
-        public float getFillAlpha() {
+        float getFillAlpha() {
             return this.mFillAlpha;
         }
 
-        /* access modifiers changed from: package-private */
-        public void setFillAlpha(float fillAlpha) {
+        void setFillAlpha(float fillAlpha) {
             this.mFillAlpha = fillAlpha;
         }
 
-        /* access modifiers changed from: package-private */
-        public float getTrimPathStart() {
+        float getTrimPathStart() {
             return this.mTrimPathStart;
         }
 
-        /* access modifiers changed from: package-private */
-        public void setTrimPathStart(float trimPathStart) {
+        void setTrimPathStart(float trimPathStart) {
             this.mTrimPathStart = trimPathStart;
         }
 
-        /* access modifiers changed from: package-private */
-        public float getTrimPathEnd() {
+        float getTrimPathEnd() {
             return this.mTrimPathEnd;
         }
 
-        /* access modifiers changed from: package-private */
-        public void setTrimPathEnd(float trimPathEnd) {
+        void setTrimPathEnd(float trimPathEnd) {
             this.mTrimPathEnd = trimPathEnd;
         }
 
-        /* access modifiers changed from: package-private */
-        public float getTrimPathOffset() {
+        float getTrimPathOffset() {
             return this.mTrimPathOffset;
         }
 
-        /* access modifiers changed from: package-private */
-        public void setTrimPathOffset(float trimPathOffset) {
+        void setTrimPathOffset(float trimPathOffset) {
             this.mTrimPathOffset = trimPathOffset;
         }
     }

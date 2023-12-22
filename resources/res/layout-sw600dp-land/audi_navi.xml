@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/linearLayout4" android:tag="layout-sw600dp-land/audi_navi_0" android:layout_width="match_parent" android:layout_height="match_parent">
+    <ListView android:id="@+id/naviListView" android:layout_width="match_parent" android:layout_height="match_parent" android:listSelector="@drawable/audi_set_item_selector" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="0"/>
+</android.support.constraint.ConstraintLayout>

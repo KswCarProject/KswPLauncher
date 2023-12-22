@@ -3,6 +3,7 @@ package android.support.constraint.solver;
 import java.util.Arrays;
 import java.util.HashSet;
 
+/* loaded from: classes.dex */
 public class SolverVariable {
     private static final boolean INTERNAL_DEBUG = false;
     static final int MAX_STRENGTH = 9;
@@ -16,26 +17,29 @@ public class SolverVariable {
     public static final int STRENGTH_MEDIUM = 2;
     public static final int STRENGTH_NONE = 0;
     private static final boolean VAR_USE_HASH = false;
-    private static int uniqueConstantId = 1;
-    private static int uniqueErrorId = 1;
-    private static int uniqueId = 1;
-    private static int uniqueSlackId = 1;
-    private static int uniqueUnrestrictedId = 1;
     public float computedValue;
-    int definitionId = -1;
-    float[] goalStrengthVector = new float[9];
-    public int id = -1;
+    int definitionId;
+    float[] goalStrengthVector;
+
+    /* renamed from: id */
+    public int f25id;
     public boolean inGoal;
-    HashSet<ArrayRow> inRows = null;
-    public boolean isFinalValue = false;
-    ArrayRow[] mClientEquations = new ArrayRow[16];
-    int mClientEquationsCount = 0;
+    HashSet<ArrayRow> inRows;
+    public boolean isFinalValue;
+    ArrayRow[] mClientEquations;
+    int mClientEquationsCount;
     private String mName;
     Type mType;
-    public int strength = 0;
-    float[] strengthVector = new float[9];
-    public int usageInRowCount = 0;
+    public int strength;
+    float[] strengthVector;
+    public int usageInRowCount;
+    private static int uniqueSlackId = 1;
+    private static int uniqueErrorId = 1;
+    private static int uniqueUnrestrictedId = 1;
+    private static int uniqueConstantId = 1;
+    private static int uniqueId = 1;
 
+    /* loaded from: classes.dex */
     public enum Type {
         UNRESTRICTED,
         CONSTANT,
@@ -52,7 +56,7 @@ public class SolverVariable {
         if (prefix != null) {
             return prefix + uniqueErrorId;
         }
-        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$SolverVariable$Type[type.ordinal()]) {
+        switch (C00991.$SwitchMap$android$support$constraint$solver$SolverVariable$Type[type.ordinal()]) {
             case 1:
                 StringBuilder append = new StringBuilder().append("U");
                 int i = uniqueUnrestrictedId + 1;
@@ -83,8 +87,9 @@ public class SolverVariable {
         }
     }
 
-    /* renamed from: android.support.constraint.solver.SolverVariable$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
+    /* renamed from: android.support.constraint.solver.SolverVariable$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C00991 {
         static final /* synthetic */ int[] $SwitchMap$android$support$constraint$solver$SolverVariable$Type;
 
         static {
@@ -114,23 +119,41 @@ public class SolverVariable {
     }
 
     public SolverVariable(String name, Type type) {
+        this.f25id = -1;
+        this.definitionId = -1;
+        this.strength = 0;
+        this.isFinalValue = false;
+        this.strengthVector = new float[9];
+        this.goalStrengthVector = new float[9];
+        this.mClientEquations = new ArrayRow[16];
+        this.mClientEquationsCount = 0;
+        this.usageInRowCount = 0;
+        this.inRows = null;
         this.mName = name;
         this.mType = type;
     }
 
     public SolverVariable(Type type, String prefix) {
+        this.f25id = -1;
+        this.definitionId = -1;
+        this.strength = 0;
+        this.isFinalValue = false;
+        this.strengthVector = new float[9];
+        this.goalStrengthVector = new float[9];
+        this.mClientEquations = new ArrayRow[16];
+        this.mClientEquationsCount = 0;
+        this.usageInRowCount = 0;
+        this.inRows = null;
         this.mType = type;
     }
 
-    /* access modifiers changed from: package-private */
-    public void clearStrengths() {
+    void clearStrengths() {
         for (int i = 0; i < 9; i++) {
             this.strengthVector[i] = 0.0f;
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public String strengthsToString() {
+    String strengthsToString() {
         String representation = this + "[";
         boolean negative = false;
         boolean empty = true;
@@ -164,7 +187,13 @@ public class SolverVariable {
         int i = 0;
         while (true) {
             int i2 = this.mClientEquationsCount;
-            if (i >= i2) {
+            if (i < i2) {
+                if (this.mClientEquations[i] != row) {
+                    i++;
+                } else {
+                    return;
+                }
+            } else {
                 ArrayRow[] arrayRowArr = this.mClientEquations;
                 if (i2 >= arrayRowArr.length) {
                     this.mClientEquations = (ArrayRow[]) Arrays.copyOf(arrayRowArr, arrayRowArr.length * 2);
@@ -173,10 +202,6 @@ public class SolverVariable {
                 int i3 = this.mClientEquationsCount;
                 arrayRowArr2[i3] = row;
                 this.mClientEquationsCount = i3 + 1;
-                return;
-            } else if (this.mClientEquations[i] != row) {
-                i++;
-            } else {
                 return;
             }
         }
@@ -190,7 +215,8 @@ public class SolverVariable {
                     ArrayRow[] arrayRowArr = this.mClientEquations;
                     arrayRowArr[j] = arrayRowArr[j + 1];
                 }
-                this.mClientEquationsCount--;
+                int j2 = this.mClientEquationsCount;
+                this.mClientEquationsCount = j2 - 1;
                 return;
             }
         }
@@ -218,7 +244,7 @@ public class SolverVariable {
         this.mName = null;
         this.mType = Type.UNKNOWN;
         this.strength = 0;
-        this.id = -1;
+        this.f25id = -1;
         this.definitionId = -1;
         this.computedValue = 0.0f;
         this.isFinalValue = false;
@@ -246,8 +272,10 @@ public class SolverVariable {
 
     public String toString() {
         if (this.mName != null) {
-            return "" + this.mName;
+            String result = "" + this.mName;
+            return result;
         }
-        return "" + this.id;
+        String result2 = "" + this.f25id;
+        return result2;
     }
 }

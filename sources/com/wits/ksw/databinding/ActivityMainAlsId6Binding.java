@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityMainAlsId6Binding extends ViewDataBinding {
     public final LinearLayout appLl;
     public final LinearLayout dashbroadLl;
@@ -28,22 +29,22 @@ public abstract class ActivityMainAlsId6Binding extends ViewDataBinding {
     public final SeekBar seekBar;
     public final LinearLayout videoLl;
 
-    public abstract void setViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setViewModel(LauncherViewModel viewModel);
 
-    protected ActivityMainAlsId6Binding(Object _bindingComponent, View _root, int _localFieldCount, LinearLayout appLl2, LinearLayout dashbroadLl2, LinearLayout musicLl2, LinearLayout naviLl2, LinearLayout phoneLl2, ImageView pointerImageView2, View sView2, ImageView seatBeltBtn2, ImageView seatBtn2, LinearLayout seatLl2, SeekBar seekBar2, LinearLayout videoLl2) {
+    protected ActivityMainAlsId6Binding(Object _bindingComponent, View _root, int _localFieldCount, LinearLayout appLl, LinearLayout dashbroadLl, LinearLayout musicLl, LinearLayout naviLl, LinearLayout phoneLl, ImageView pointerImageView, View sView, ImageView seatBeltBtn, ImageView seatBtn, LinearLayout seatLl, SeekBar seekBar, LinearLayout videoLl) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.appLl = appLl2;
-        this.dashbroadLl = dashbroadLl2;
-        this.musicLl = musicLl2;
-        this.naviLl = naviLl2;
-        this.phoneLl = phoneLl2;
-        this.pointerImageView = pointerImageView2;
-        this.sView = sView2;
-        this.seatBeltBtn = seatBeltBtn2;
-        this.seatBtn = seatBtn2;
-        this.seatLl = seatLl2;
-        this.seekBar = seekBar2;
-        this.videoLl = videoLl2;
+        this.appLl = appLl;
+        this.dashbroadLl = dashbroadLl;
+        this.musicLl = musicLl;
+        this.naviLl = naviLl;
+        this.phoneLl = phoneLl;
+        this.pointerImageView = pointerImageView;
+        this.sView = sView;
+        this.seatBeltBtn = seatBeltBtn;
+        this.seatBtn = seatBtn;
+        this.seatLl = seatLl;
+        this.seekBar = seekBar;
+        this.videoLl = videoLl;
     }
 
     public LauncherViewModel getViewModel() {
@@ -56,7 +57,7 @@ public abstract class ActivityMainAlsId6Binding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainAlsId6Binding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityMainAlsId6Binding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_als_id6, root, attachToRoot, component);
+        return (ActivityMainAlsId6Binding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_als_id6, root, attachToRoot, component);
     }
 
     public static ActivityMainAlsId6Binding inflate(LayoutInflater inflater) {
@@ -65,7 +66,7 @@ public abstract class ActivityMainAlsId6Binding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainAlsId6Binding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityMainAlsId6Binding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_als_id6, (ViewGroup) null, false, component);
+        return (ActivityMainAlsId6Binding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_main_als_id6, null, false, component);
     }
 
     public static ActivityMainAlsId6Binding bind(View view) {
@@ -74,6 +75,6 @@ public abstract class ActivityMainAlsId6Binding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityMainAlsId6Binding bind(View view, Object component) {
-        return (ActivityMainAlsId6Binding) bind(component, view, R.layout.activity_main_als_id6);
+        return (ActivityMainAlsId6Binding) bind(component, view, C0899R.C0902layout.activity_main_als_id6);
     }
 }

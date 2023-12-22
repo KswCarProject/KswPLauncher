@@ -4,6 +4,7 @@ import android.os.RemoteException;
 import com.google.gson.Gson;
 import com.wits.pms.statuscontrol.McuStatus;
 
+/* loaded from: classes.dex */
 public class WitsCommand {
     public static final int BT_TYPE = 3;
     public static final int CAN_TYPE = 4;
@@ -17,6 +18,7 @@ public class WitsCommand {
     private String jsonArg;
     private int subCommand;
 
+    /* loaded from: classes.dex */
     public static final class BtSubCommand {
         public static final int AUTO_CONN = 106;
         public static final int CLOSE_BT = 105;
@@ -36,6 +38,7 @@ public class WitsCommand {
         public static final int VOICE_TO_SYSTEM = 111;
     }
 
+    /* loaded from: classes.dex */
     public static final class CanSubCommand {
         public static final int ARM_TO_MCU_MESSAGE = 107;
         public static final int CLOSE_PANORAMIC = 106;
@@ -47,6 +50,7 @@ public class WitsCommand {
         public static final int OPEN_PANORAMIC = 101;
     }
 
+    /* loaded from: classes.dex */
     public static final class DVDCommand {
         public static final int ARM_TO_MCU_MESSAGE = 102;
         public static final int DVD_ANDIO = 123;
@@ -72,6 +76,7 @@ public class WitsCommand {
         public static final int UPDATE_EXIST_STATUS = 104;
     }
 
+    /* loaded from: classes.dex */
     public static final class FmControlCommand {
         public static final int AF_CONTROL = 111;
         public static final int FREQ_CONTROL = 101;
@@ -85,6 +90,7 @@ public class WitsCommand {
         public static final int TP_OPEN = 106;
     }
 
+    /* loaded from: classes.dex */
     public static final class KeyControlCommand {
         public static final int ENTER_LEARN_TP_KEY = 103;
         public static final int EXIT_LEARN_TP_KEY = 104;
@@ -99,6 +105,7 @@ public class WitsCommand {
         public static final int LEARN_TP_KEY_SAVE = 108;
     }
 
+    /* loaded from: classes.dex */
     public static final class MediaSubCommand {
         public static final int CLOSE_MUSIC = 106;
         public static final int CLOSE_PIP = 118;
@@ -129,6 +136,7 @@ public class WitsCommand {
         public static final int VIDEO_RANDOM = 128;
     }
 
+    /* loaded from: classes.dex */
     public static final class SystemCommand {
         public static final int ACCEPT_PHONE = 116;
         public static final int AIRCON_CONTROL = 612;
@@ -208,71 +216,69 @@ public class WitsCommand {
         return this.command;
     }
 
-    public void setCommand(int command2) {
-        this.command = command2;
+    public void setCommand(int command) {
+        this.command = command;
     }
 
     public int getSubCommand() {
         return this.subCommand;
     }
 
-    public void setSubCommand(int subCommand2) {
-        this.subCommand = subCommand2;
+    public void setSubCommand(int subCommand) {
+        this.subCommand = subCommand;
     }
 
     public String getJsonArg() {
         return this.jsonArg;
     }
 
-    public void setJsonArg(String jsonArg2) {
-        this.jsonArg = jsonArg2;
+    public void setJsonArg(String jsonArg) {
+        this.jsonArg = jsonArg;
     }
 
-    public static WitsCommand getWitsCommandFormJson(String jsonArg2) {
-        return (WitsCommand) new Gson().fromJson(jsonArg2, WitsCommand.class);
+    public static WitsCommand getWitsCommandFormJson(String jsonArg) {
+        return (WitsCommand) new Gson().fromJson(jsonArg, (Class<Object>) WitsCommand.class);
     }
 
-    public WitsCommand(int command2, int subCommand2, String jsonArg2) {
-        this.command = command2;
-        this.subCommand = subCommand2;
-        this.jsonArg = jsonArg2;
+    public WitsCommand(int command, int subCommand, String jsonArg) {
+        this.command = command;
+        this.subCommand = subCommand;
+        this.jsonArg = jsonArg;
     }
 
-    public WitsCommand(int command2, int subCommand2) {
-        this.command = command2;
-        this.subCommand = subCommand2;
+    public WitsCommand(int command, int subCommand) {
+        this.command = command;
+        this.subCommand = subCommand;
     }
 
-    public static void sendCommand(int command2, int subCommand2, String arg) {
+    public static void sendCommand(int command, int subCommand, String arg) {
         try {
-            PowerManagerApp.getManager().sendCommand(new Gson().toJson((Object) new WitsCommand(command2, subCommand2, arg)));
+            PowerManagerApp.getManager().sendCommand(new Gson().toJson(new WitsCommand(command, subCommand, arg)));
         } catch (RemoteException var4) {
             var4.printStackTrace();
         }
     }
 
-    public static void sendCommandDelay(int command2, int subCommand2, String arg, long delayTime) {
-        final long j = delayTime;
-        final int i = command2;
-        final int i2 = subCommand2;
-        final String str = arg;
-        new Thread() {
+    /* JADX WARN: Type inference failed for: r6v0, types: [com.wits.pms.statuscontrol.WitsCommand$1] */
+    public static void sendCommandDelay(final int command, final int subCommand, final String arg, final long delayTime) {
+        new Thread() { // from class: com.wits.pms.statuscontrol.WitsCommand.1
+            @Override // java.lang.Thread, java.lang.Runnable
             public void run() {
                 try {
-                    Thread.sleep(j);
+                    Thread.sleep(delayTime);
                 } catch (InterruptedException e) {
                 }
                 try {
-                    PowerManagerApp.getManager().sendCommand(new Gson().toJson((Object) new WitsCommand(i, i2, str)));
+                    PowerManagerApp.getManager().sendCommand(new Gson().toJson(new WitsCommand(command, subCommand, arg)));
                 } catch (RemoteException e2) {
                 }
             }
         }.start();
     }
 
-    public static boolean sendCommandWithBack(int command2, int subCommand2, String arg) {
+    public static boolean sendCommandWithBack(int command, int subCommand, String arg) {
         try {
-            PowerManagerApp.getManager().sendCommand(new Gson().toJson((Object) new WitsCommand(command2, subCommand2, arg)));
+            PowerManagerApp.getManager().sendCommand(new Gson().toJson(new WitsCommand(command, subCommand, arg)));
             return false;
         } catch (RemoteException var4) {
             var4.printStackTrace();
@@ -280,15 +286,15 @@ public class WitsCommand {
         }
     }
 
-    public static void sendCommand(int command2, int subCommand2) {
+    public static void sendCommand(int command, int subCommand) {
         try {
-            PowerManagerApp.getManager().sendCommand(new Gson().toJson((Object) new WitsCommand(command2, subCommand2, "")));
+            PowerManagerApp.getManager().sendCommand(new Gson().toJson(new WitsCommand(command, subCommand, "")));
         } catch (RemoteException var3) {
             var3.printStackTrace();
         }
     }
 
     public static void sendMcuCommand(McuStatus.KswMcuMsg mcuMsg) {
-        sendCommand(1, SystemCommand.KSW_MCU_MSG, new Gson().toJson((Object) mcuMsg));
+        sendCommand(1, SystemCommand.KSW_MCU_MSG, new Gson().toJson(mcuMsg));
     }
 }

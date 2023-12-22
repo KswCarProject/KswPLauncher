@@ -7,19 +7,21 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class MaybeObserveOn<T> extends AbstractMaybeWithUpstream<T, T> {
     final Scheduler scheduler;
 
-    public MaybeObserveOn(MaybeSource<T> source, Scheduler scheduler2) {
+    public MaybeObserveOn(MaybeSource<T> source, Scheduler scheduler) {
         super(source);
-        this.scheduler = scheduler2;
+        this.scheduler = scheduler;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super T> observer) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super T> observer) {
         this.source.subscribe(new ObserveOnMaybeObserver(observer, this.scheduler));
     }
 
+    /* loaded from: classes.dex */
     static final class ObserveOnMaybeObserver<T> extends AtomicReference<Disposable> implements MaybeObserver<T>, Disposable, Runnable {
         private static final long serialVersionUID = 8571289934935992137L;
         final MaybeObserver<? super T> downstream;
@@ -27,39 +29,46 @@ public final class MaybeObserveOn<T> extends AbstractMaybeWithUpstream<T, T> {
         final Scheduler scheduler;
         T value;
 
-        ObserveOnMaybeObserver(MaybeObserver<? super T> actual, Scheduler scheduler2) {
+        ObserveOnMaybeObserver(MaybeObserver<? super T> actual, Scheduler scheduler) {
             this.downstream = actual;
-            this.scheduler = scheduler2;
+            this.scheduler = scheduler;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             DisposableHelper.dispose(this);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return DisposableHelper.isDisposed((Disposable) get());
+            return DisposableHelper.isDisposed(get());
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.setOnce(this, d)) {
                 this.downstream.onSubscribe(this);
             }
         }
 
-        public void onSuccess(T value2) {
-            this.value = value2;
+        @Override // io.reactivex.MaybeObserver
+        public void onSuccess(T value) {
+            this.value = value;
             DisposableHelper.replace(this, this.scheduler.scheduleDirect(this));
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onError(Throwable e) {
             this.error = e;
             DisposableHelper.replace(this, this.scheduler.scheduleDirect(this));
         }
 
+        @Override // io.reactivex.MaybeObserver
         public void onComplete() {
             DisposableHelper.replace(this, this.scheduler.scheduleDirect(this));
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             Throwable ex = this.error;
             if (ex != null) {

@@ -2,12 +2,17 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
+import android.support.p004v7.widget.RecyclerView;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi_mib3.vm.AudiMib3SystemViewModel;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi_mib3.p008vm.AudiMib3SystemViewModel;
 
+/* loaded from: classes7.dex */
 public class AudiMbi3SelThirdClsImpl extends AudiMbi3SelThirdCls {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -17,39 +22,40 @@ public class AudiMbi3SelThirdClsImpl extends AudiMbi3SelThirdCls {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.title, 1);
-        sparseIntArray.put(R.id.iv_title, 2);
-        sparseIntArray.put(R.id.tv_title, 3);
-        sparseIntArray.put(R.id.title_divider, 4);
-        sparseIntArray.put(R.id.ll_selapp, 5);
-        sparseIntArray.put(R.id.listview_music, 6);
-        sparseIntArray.put(R.id.listview_video, 7);
-        sparseIntArray.put(R.id.v_divider, 8);
-        sparseIntArray.put(R.id.iv_show, 9);
+        sparseIntArray.put(C0899R.C0901id.title, 1);
+        sparseIntArray.put(C0899R.C0901id.iv_title, 2);
+        sparseIntArray.put(C0899R.C0901id.tv_title, 3);
+        sparseIntArray.put(C0899R.C0901id.title_divider, 4);
+        sparseIntArray.put(C0899R.C0901id.ll_selapp, 5);
+        sparseIntArray.put(C0899R.C0901id.listview_music, 6);
+        sparseIntArray.put(C0899R.C0901id.listview_video, 7);
+        sparseIntArray.put(C0899R.C0901id.v_divider, 8);
+        sparseIntArray.put(C0899R.C0901id.iv_show, 9);
     }
 
     public AudiMbi3SelThirdClsImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 10, sIncludes, sViewsWithIds));
     }
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private AudiMbi3SelThirdClsImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[9], bindings[2], bindings[6], bindings[7], bindings[5], bindings[1], bindings[4], bindings[3], bindings[8]);
-        this.mDirtyFlags = -1;
-        RelativeLayout relativeLayout = bindings[0];
+        super(bindingComponent, root, 0, (ImageView) bindings[9], (ImageView) bindings[2], (RecyclerView) bindings[6], (RecyclerView) bindings[7], (LinearLayout) bindings[5], (RelativeLayout) bindings[1], (View) bindings[4], (TextView) bindings[3], (View) bindings[8]);
+        this.mDirtyFlags = -1L;
+        RelativeLayout relativeLayout = (RelativeLayout) bindings[0];
         this.mboundView0 = relativeLayout;
-        relativeLayout.setTag((Object) null);
+        relativeLayout.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 2;
+            this.mDirtyFlags = 2L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -59,28 +65,30 @@ public class AudiMbi3SelThirdClsImpl extends AudiMbi3SelThirdCls {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((AudiMib3SystemViewModel) variable);
+            return true;
         }
-        setVm((AudiMib3SystemViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AudiMbi3SelThirdCls
     public void setVm(AudiMib3SystemViewModel Vm) {
         this.mVm = Vm;
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         synchronized (this) {
-            long dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            long j = this.mDirtyFlags;
+            this.mDirtyFlags = 0L;
         }
     }
 }

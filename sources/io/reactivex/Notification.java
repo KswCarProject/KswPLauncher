@@ -3,12 +3,13 @@ package io.reactivex;
 import io.reactivex.internal.functions.ObjectHelper;
 import io.reactivex.internal.util.NotificationLite;
 
+/* loaded from: classes.dex */
 public final class Notification<T> {
-    static final Notification<Object> COMPLETE = new Notification<>((Object) null);
+    static final Notification<Object> COMPLETE = new Notification<>(null);
     final Object value;
 
-    private Notification(Object value2) {
-        this.value = value2;
+    private Notification(Object value) {
+        this.value = value;
     }
 
     public boolean isOnComplete() {
@@ -21,15 +22,15 @@ public final class Notification<T> {
 
     public boolean isOnNext() {
         Object o = this.value;
-        return o != null && !NotificationLite.isError(o);
+        return (o == null || NotificationLite.isError(o)) ? false : true;
     }
 
     public T getValue() {
         Object o = this.value;
-        if (o == null || NotificationLite.isError(o)) {
-            return null;
+        if (o != null && !NotificationLite.isError(o)) {
+            return (T) this.value;
         }
-        return this.value;
+        return null;
     }
 
     public Throwable getError() {
@@ -42,7 +43,8 @@ public final class Notification<T> {
 
     public boolean equals(Object obj) {
         if (obj instanceof Notification) {
-            return ObjectHelper.equals(this.value, ((Notification) obj).value);
+            Notification<?> n = (Notification) obj;
+            return ObjectHelper.equals(this.value, n.value);
         }
         return false;
     }
@@ -66,9 +68,9 @@ public final class Notification<T> {
         return "OnNextNotification[" + this.value + "]";
     }
 
-    public static <T> Notification<T> createOnNext(T value2) {
-        ObjectHelper.requireNonNull(value2, "value is null");
-        return new Notification<>(value2);
+    public static <T> Notification<T> createOnNext(T value) {
+        ObjectHelper.requireNonNull(value, "value is null");
+        return new Notification<>(value);
     }
 
     public static <T> Notification<T> createOnError(Throwable error) {
@@ -77,6 +79,6 @@ public final class Notification<T> {
     }
 
     public static <T> Notification<T> createOnComplete() {
-        return COMPLETE;
+        return (Notification<T>) COMPLETE;
     }
 }

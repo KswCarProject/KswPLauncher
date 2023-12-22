@@ -4,26 +4,31 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.view.View;
 
+/* loaded from: classes10.dex */
 public class DragClickListener implements View.OnLongClickListener {
     private final int iconResId;
     private View itemView;
     private final String name;
     private final int nameResId;
 
-    public DragClickListener(View itemView2, String name2, int iconResId2, int nameResId2) {
-        this.itemView = itemView2;
-        this.name = name2;
-        this.iconResId = iconResId2;
-        this.nameResId = nameResId2;
+    public DragClickListener(View itemView, String name, int iconResId, int nameResId) {
+        this.itemView = itemView;
+        this.name = name;
+        this.iconResId = iconResId;
+        this.nameResId = nameResId;
     }
 
+    @Override // android.view.View.OnLongClickListener
     public boolean onLongClick(View v) {
         Intent intent = new Intent();
         intent.putExtra("name", this.name);
         intent.putExtra("iconRes", this.iconResId);
         intent.putExtra("nameRes", this.nameResId);
         ClipData.Item item = new ClipData.Item(intent);
-        this.itemView.startDragAndDrop(new ClipData(this.name, new String[]{"text/plain"}, item), new View.DragShadowBuilder(this.itemView), (Object) null, 256);
+        String[] mimeTypes = {"text/plain"};
+        ClipData dragData = new ClipData(this.name, mimeTypes, item);
+        View.DragShadowBuilder shadow = new View.DragShadowBuilder(this.itemView);
+        this.itemView.startDragAndDrop(dragData, shadow, null, 256);
         return false;
     }
 }

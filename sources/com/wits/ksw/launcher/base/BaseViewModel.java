@@ -9,36 +9,43 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Build;
+import android.os.Handler;
 import android.os.RemoteException;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
+import com.wits.ksw.BlackActivity;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.KswApplication;
-import com.wits.ksw.R;
+import com.wits.ksw.launcher.bean.AppInfo;
+import com.wits.ksw.launcher.model.AppsLoaderTask;
 import com.wits.ksw.launcher.utils.AppInfoUtils;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import com.wits.pms.statuscontrol.WitsCommand;
+import java.util.List;
 
-public abstract class BaseViewModel extends ViewModel {
+/* loaded from: classes14.dex */
+public abstract class BaseViewModel extends ViewModel implements AppsLoaderTask.AppsLoaderTaskListener {
     private static final String TAG = BaseViewModel.class.getSimpleName();
-    /* access modifiers changed from: protected */
-    public Activity activity;
-    /* access modifiers changed from: protected */
-    public ContentResolver contentResolver;
-    /* access modifiers changed from: protected */
-    public Context context;
+    protected Activity activity;
+    protected ContentResolver contentResolver;
+    protected Context context;
     protected PackageManager mPackageManager;
     protected String unknow;
+    public AppsLoaderTask appsLoaderTask = AppsLoaderTask.getInstance();
+    private boolean igoFree = false;
+    private boolean igoToFull = false;
 
     public abstract void resumeViewModel();
 
     public BaseViewModel() {
         Log.i(TAG, "BaseViewModel: ");
-        Context context2 = KswApplication.appContext;
-        this.context = context2;
+        Context context = KswApplication.appContext;
+        this.context = context;
         if (this.unknow == null) {
-            this.unknow = context2.getString(17039374);
+            this.unknow = context.getString(17039374);
         }
         if (this.contentResolver == null) {
             this.contentResolver = this.context.getContentResolver();
@@ -46,14 +53,14 @@ public abstract class BaseViewModel extends ViewModel {
         if (this.mPackageManager == null) {
             this.mPackageManager = this.context.getPackageManager();
         }
+        this.appsLoaderTask.setLoaderTaskListener(this);
     }
 
-    public void setActivity(Activity activity2) {
-        this.activity = activity2;
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
 
-    /* access modifiers changed from: protected */
-    public void openApp(ComponentName component) {
+    protected void openApp(ComponentName component) {
         try {
             Intent intent = new Intent();
             intent.setComponent(component);
@@ -61,33 +68,81 @@ public abstract class BaseViewModel extends ViewModel {
             Log.i(TAG, "openApp: " + component.toString());
         } catch (Exception e) {
             e.printStackTrace();
-            Context context2 = this.context;
-            Toast.makeText(context2, context2.getString(R.string.uninstall), 0).show();
+            Context context = this.context;
+            Toast.makeText(context, context.getString(C0899R.string.uninstall), 0).show();
         }
     }
 
     public void openAppTask(ComponentName component) {
-        boolean isVersion12 = Build.VERSION.RELEASE.contains("12");
+        boolean isVersion12 = Build.VERSION.RELEASE.contains("12") || Build.VERSION.RELEASE.contains("13");
         String str = TAG;
         Log.w(str, "isVersion12 :" + isVersion12);
-        if (!isVersion12 || !AppInfoUtils.isContainFreedomMap(component.getPackageName())) {
-            try {
-                Intent intent = new Intent();
-                intent.setComponent(component);
-                intent.setFlags(268435456);
-                this.activity.startActivity(intent);
-                Log.i(str, "openApp: " + component.toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-                Context context2 = this.context;
-                Toast.makeText(context2, context2.getString(R.string.uninstall), 0).show();
-            }
-        } else {
+        if (component.getPackageName().contains("com.locnall.KimGiSa")) {
+            this.context.getPackageManager().setApplicationEnabledSetting("com.google.android.gms", 3, 0);
+            this.context.getPackageManager().setApplicationEnabledSetting("com.google.android.gms", 0, 0);
+        }
+        if (isVersion12 && AppInfoUtils.isContainFreedomMap(component.getPackageName()) && UiThemeUtils.isUI_GS_ID8(this.activity)) {
             launchApp(component.getPackageName(), 1);
+            return;
+        }
+        try {
+            Intent intent = new Intent();
+            intent.setComponent(component);
+            intent.setFlags(268435456);
+            this.activity.startActivity(intent);
+            Log.i(str, "openApp: " + component.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Context context = this.context;
+            Toast.makeText(context, context.getString(C0899R.string.uninstall), 0).show();
         }
     }
 
     public void launchApp(String packageName, int windowsMode) {
+        if (packageName.contains("com.nng.igo.primong.palestine")) {
+            handleIgoNavi(packageName, windowsMode);
+        } else {
+            launchAppByWindowMode(packageName, windowsMode);
+        }
+    }
+
+    private void handleIgoNavi(final String packageName, final int windowsMode) {
+        if (windowsMode == 5) {
+            new Handler().postDelayed(new Runnable() { // from class: com.wits.ksw.launcher.base.BaseViewModel.1
+                @Override // java.lang.Runnable
+                public void run() {
+                    BaseViewModel.this.igoFree = true;
+                    BaseViewModel.this.igoToFull = false;
+                    BaseViewModel.this.launchAppByWindowMode(packageName, windowsMode);
+                    new Handler().postDelayed(new Runnable() { // from class: com.wits.ksw.launcher.base.BaseViewModel.1.1
+                        @Override // java.lang.Runnable
+                        public void run() {
+                            BaseViewModel.this.igoFree = false;
+                            if (BaseViewModel.this.igoToFull) {
+                                BaseViewModel.this.gotoFullByBlack(packageName, 1);
+                            }
+                        }
+                    }, 2000L);
+                }
+            }, 200L);
+        } else if (this.igoFree) {
+            this.igoToFull = true;
+        } else {
+            this.igoToFull = false;
+            gotoFullByBlack(packageName, windowsMode);
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void gotoFullByBlack(String packageName, int windowsMode) {
+        if (windowsMode == 1) {
+            this.activity.startActivity(new Intent(this.activity, BlackActivity.class));
+        }
+        launchAppByWindowMode(packageName, windowsMode);
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void launchAppByWindowMode(String packageName, int windowsMode) {
         WitsCommand.sendCommand(20, 100, packageName + "," + windowsMode);
     }
 
@@ -108,8 +163,8 @@ public abstract class BaseViewModel extends ViewModel {
             Log.i(TAG, "openApp: " + intent.toString());
         } catch (Exception e) {
             e.printStackTrace();
-            Context context2 = this.context;
-            Toast.makeText(context2, context2.getString(R.string.uninstall), 0).show();
+            Context context = this.context;
+            Toast.makeText(context, context.getString(C0899R.string.uninstall), 0).show();
         }
     }
 
@@ -127,23 +182,39 @@ public abstract class BaseViewModel extends ViewModel {
                         this.activity.startActivity(this.context.getPackageManager().getLaunchIntentForPackage("com.autonavi.amapauto"));
                     } catch (Exception exception) {
                         exception.printStackTrace();
-                        Context context2 = this.context;
-                        Toast.makeText(context2, context2.getString(R.string.uninstall), 0).show();
+                        Context context = this.context;
+                        Toast.makeText(context, context.getString(C0899R.string.uninstall), 0).show();
                     }
                 } else {
-                    Context context3 = this.context;
-                    Toast.makeText(context3, context3.getString(R.string.uninstall), 0).show();
+                    Context context2 = this.context;
+                    Toast.makeText(context2, context2.getString(C0899R.string.uninstall), 0).show();
                 }
             } catch (RemoteException e1) {
                 e1.printStackTrace();
-                Context context4 = this.context;
-                Toast.makeText(context4, context4.getString(R.string.uninstall), 0).show();
+                Context context3 = this.context;
+                Toast.makeText(context3, context3.getString(C0899R.string.uninstall), 0).show();
             }
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void onCleared() {
+    @Override // com.wits.ksw.launcher.model.AppsLoaderTask.AppsLoaderTaskListener
+    public void allAppsLoaded(List<AppInfo> appInfos) {
+    }
+
+    @Override // com.wits.ksw.launcher.model.AppsLoaderTask.AppsLoaderTaskListener
+    public void updateShortcuts(List<AppInfo> shortcuts) {
+    }
+
+    @Override // com.wits.ksw.launcher.model.AppsLoaderTask.AppsLoaderTaskListener
+    public void shortcutsLoaded(List<AppInfo> shortcuts) {
+    }
+
+    @Override // com.wits.ksw.launcher.model.AppsLoaderTask.AppsLoaderTaskListener
+    public void dialogAppsListLoaded(List<AppInfo> dialoglist) {
+    }
+
+    @Override // android.arch.lifecycle.ViewModel
+    protected void onCleared() {
         super.onCleared();
         Log.i(TAG, "onCleared: ");
     }

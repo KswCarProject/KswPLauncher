@@ -3,6 +3,7 @@ package com.google.zxing;
 import com.google.zxing.common.BitArray;
 import com.google.zxing.common.BitMatrix;
 
+/* loaded from: classes.dex */
 public abstract class Binarizer {
     private final LuminanceSource source;
 
@@ -12,8 +13,8 @@ public abstract class Binarizer {
 
     public abstract BitArray getBlackRow(int i, BitArray bitArray) throws NotFoundException;
 
-    protected Binarizer(LuminanceSource source2) {
-        this.source = source2;
+    protected Binarizer(LuminanceSource source) {
+        this.source = source;
     }
 
     public final LuminanceSource getLuminanceSource() {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+/* loaded from: classes.dex */
 public class StringUtil {
     public static final String[] EMPTY_STRING_ARRAY = new String[0];
 
@@ -28,8 +29,9 @@ public class StringUtil {
         List<Integer> result = new ArrayList<>();
         StringTokenizer tokenizer = new StringTokenizer(input, ",");
         while (tokenizer.hasMoreElements()) {
+            String item = tokenizer.nextToken();
             try {
-                result.add(Integer.valueOf(Integer.parseInt(tokenizer.nextToken())));
+                result.add(Integer.valueOf(Integer.parseInt(item)));
             } catch (NumberFormatException ex) {
                 Log.e("ROOM", "Malformed integer list", ex);
             }

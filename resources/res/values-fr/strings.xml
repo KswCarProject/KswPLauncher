@@ -244,10 +244,17 @@
     <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Erreur!</string>
     <string name="mcu_file_corrupted">Upgrade file corrupted!</string>
+    <string name="mic_control">Interrupteur à bascule MIC externe intégré</string>
+    <string name="mic_external">Externe</string>
+    <string name="mic_internal">Intégré</string>
     <string name="mic_text">MIC Gagner</string>
     <string name="music_app_sel">App de musique</string>
+    <string name="music_player">Lecteur de musique</string>
     <string name="ntg6_dvr_toast">Pas de dispositif!</string>
     <string name="oil_size">huile: %s</string>
+    <string name="original_radar_reverse">Inversion de l\'affichage radar d\'origine</string>
+    <string name="radar_normal">Normal</string>
+    <string name="radar_reverse">Inverse</string>
     <string name="raw_car_text1">Affichage en plein écran</string>
     <string name="raw_car_text2">Sélection actuelle:</string>
     <string name="reverse_exit_time_agreement">Retrait conformément à l\'accord initial sur les véhicules</string>
@@ -324,6 +331,8 @@
     <string name="text_logo_two">P2</string>
     <string name="text_ram">RAM: %s</string>
     <string name="touch_continuous_send">Données tactiles envoyées en continu</string>
+    <string name="tv_id8_brake">Frein</string>
+    <string name="tv_id8_seat_belt">Ceinture de sécurité</string>
     <string name="txz_oil_text">Réglage de l\'alarme de quantité d\'huile du même voyageur</string>
     <string name="txz_speed_text">Réglage de l\'alarme de vitesse du même voyageur</string>
     <string name="txz_temp_text">Réglage de l\'alarme de température ambiante du même voyageur</string>

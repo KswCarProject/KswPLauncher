@@ -3,6 +3,7 @@ package android.databinding.adapters;
 import android.databinding.InverseBindingListener;
 import android.widget.NumberPicker;
 
+/* loaded from: classes.dex */
 public class NumberPickerBindingAdapter {
     public static void setValue(NumberPicker view, int value) {
         if (view.getValue() != value) {
@@ -14,7 +15,8 @@ public class NumberPickerBindingAdapter {
         if (attrChange == null) {
             view.setOnValueChangedListener(listener);
         } else {
-            view.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            view.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() { // from class: android.databinding.adapters.NumberPickerBindingAdapter.1
+                @Override // android.widget.NumberPicker.OnValueChangeListener
                 public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                     NumberPicker.OnValueChangeListener onValueChangeListener = listener;
                     if (onValueChangeListener != null) {

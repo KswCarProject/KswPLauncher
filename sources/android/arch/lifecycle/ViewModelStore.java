@@ -2,19 +2,18 @@ package android.arch.lifecycle;
 
 import java.util.HashMap;
 
+/* loaded from: classes.dex */
 public class ViewModelStore {
     private final HashMap<String, ViewModel> mMap = new HashMap<>();
 
-    /* access modifiers changed from: package-private */
-    public final void put(String key, ViewModel viewModel) {
+    final void put(String key, ViewModel viewModel) {
         ViewModel oldViewModel = this.mMap.put(key, viewModel);
         if (oldViewModel != null) {
             oldViewModel.onCleared();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public final ViewModel get(String key) {
+    final ViewModel get(String key) {
         return this.mMap.get(key);
     }
 

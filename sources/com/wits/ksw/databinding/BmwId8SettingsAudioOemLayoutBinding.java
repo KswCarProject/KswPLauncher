@@ -8,10 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bmw_id8_ui.view.ID8ProgressBar;
-import com.wits.ksw.settings.bmw_id8.vm.BmwId8SettingsViewModel;
+import com.wits.ksw.settings.bmw_id8.p009vm.BmwId8SettingsViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class BmwId8SettingsAudioOemLayoutBinding extends ViewDataBinding {
     public final RelativeLayout bmwId8SettingsAudioOemLay;
     public final ImageButton bmwId8SettingsNaviAddBtn;
@@ -23,17 +24,17 @@ public abstract class BmwId8SettingsAudioOemLayoutBinding extends ViewDataBindin
     @Bindable
     protected BmwId8SettingsViewModel mViewModel;
 
-    public abstract void setViewModel(BmwId8SettingsViewModel bmwId8SettingsViewModel);
+    public abstract void setViewModel(BmwId8SettingsViewModel viewModel);
 
-    protected BmwId8SettingsAudioOemLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout bmwId8SettingsAudioOemLay2, ImageButton bmwId8SettingsNaviAddBtn2, ID8ProgressBar bmwId8SettingsNaviSeekbar2, ImageButton bmwId8SettingsNaviSubBtn2, ImageButton bmwId8SettingsOemCallAddBtn2, ID8ProgressBar bmwId8SettingsOemCallSeekbar2, ImageButton bmwId8SettingsOemCallSubBtn2) {
+    protected BmwId8SettingsAudioOemLayoutBinding(Object _bindingComponent, View _root, int _localFieldCount, RelativeLayout bmwId8SettingsAudioOemLay, ImageButton bmwId8SettingsNaviAddBtn, ID8ProgressBar bmwId8SettingsNaviSeekbar, ImageButton bmwId8SettingsNaviSubBtn, ImageButton bmwId8SettingsOemCallAddBtn, ID8ProgressBar bmwId8SettingsOemCallSeekbar, ImageButton bmwId8SettingsOemCallSubBtn) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.bmwId8SettingsAudioOemLay = bmwId8SettingsAudioOemLay2;
-        this.bmwId8SettingsNaviAddBtn = bmwId8SettingsNaviAddBtn2;
-        this.bmwId8SettingsNaviSeekbar = bmwId8SettingsNaviSeekbar2;
-        this.bmwId8SettingsNaviSubBtn = bmwId8SettingsNaviSubBtn2;
-        this.bmwId8SettingsOemCallAddBtn = bmwId8SettingsOemCallAddBtn2;
-        this.bmwId8SettingsOemCallSeekbar = bmwId8SettingsOemCallSeekbar2;
-        this.bmwId8SettingsOemCallSubBtn = bmwId8SettingsOemCallSubBtn2;
+        this.bmwId8SettingsAudioOemLay = bmwId8SettingsAudioOemLay;
+        this.bmwId8SettingsNaviAddBtn = bmwId8SettingsNaviAddBtn;
+        this.bmwId8SettingsNaviSeekbar = bmwId8SettingsNaviSeekbar;
+        this.bmwId8SettingsNaviSubBtn = bmwId8SettingsNaviSubBtn;
+        this.bmwId8SettingsOemCallAddBtn = bmwId8SettingsOemCallAddBtn;
+        this.bmwId8SettingsOemCallSeekbar = bmwId8SettingsOemCallSeekbar;
+        this.bmwId8SettingsOemCallSubBtn = bmwId8SettingsOemCallSubBtn;
     }
 
     public BmwId8SettingsViewModel getViewModel() {
@@ -46,7 +47,7 @@ public abstract class BmwId8SettingsAudioOemLayoutBinding extends ViewDataBindin
 
     @Deprecated
     public static BmwId8SettingsAudioOemLayoutBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (BmwId8SettingsAudioOemLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_audio_oem_layout, root, attachToRoot, component);
+        return (BmwId8SettingsAudioOemLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_audio_oem_layout, root, attachToRoot, component);
     }
 
     public static BmwId8SettingsAudioOemLayoutBinding inflate(LayoutInflater inflater) {
@@ -55,7 +56,7 @@ public abstract class BmwId8SettingsAudioOemLayoutBinding extends ViewDataBindin
 
     @Deprecated
     public static BmwId8SettingsAudioOemLayoutBinding inflate(LayoutInflater inflater, Object component) {
-        return (BmwId8SettingsAudioOemLayoutBinding) ViewDataBinding.inflateInternal(inflater, R.layout.bmw_id8_settings_audio_oem_layout, (ViewGroup) null, false, component);
+        return (BmwId8SettingsAudioOemLayoutBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.bmw_id8_settings_audio_oem_layout, null, false, component);
     }
 
     public static BmwId8SettingsAudioOemLayoutBinding bind(View view) {
@@ -64,6 +65,6 @@ public abstract class BmwId8SettingsAudioOemLayoutBinding extends ViewDataBindin
 
     @Deprecated
     public static BmwId8SettingsAudioOemLayoutBinding bind(View view, Object component) {
-        return (BmwId8SettingsAudioOemLayoutBinding) bind(component, view, R.layout.bmw_id8_settings_audio_oem_layout);
+        return (BmwId8SettingsAudioOemLayoutBinding) bind(component, view, C0899R.C0902layout.bmw_id8_settings_audio_oem_layout);
     }
 }

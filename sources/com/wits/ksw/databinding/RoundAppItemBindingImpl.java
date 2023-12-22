@@ -5,10 +5,14 @@ import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.graphics.drawable.Drawable;
+import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import com.wits.ksw.launcher.bean.AppInfo;
 
+/* loaded from: classes7.dex */
 public class RoundAppItemBindingImpl extends RoundAppItemBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
@@ -19,22 +23,24 @@ public class RoundAppItemBindingImpl extends RoundAppItemBinding {
     }
 
     private RoundAppItemBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[0], bindings[1], bindings[2]);
-        this.mDirtyFlags = -1;
-        this.BcItemConstraintLayout.setTag((Object) null);
-        this.nameImageView.setTag((Object) null);
-        this.textView.setTag((Object) null);
+        super(bindingComponent, root, 0, (ConstraintLayout) bindings[0], (ImageView) bindings[1], (TextView) bindings[2]);
+        this.mDirtyFlags = -1L;
+        this.BcItemConstraintLayout.setTag(null);
+        this.nameImageView.setTag(null);
+        this.textView.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 2;
+            this.mDirtyFlags = 2L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -44,14 +50,16 @@ public class RoundAppItemBindingImpl extends RoundAppItemBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (20 != variableId) {
-            return false;
+        if (20 == variableId) {
+            setListItem((AppInfo) variable);
+            return true;
         }
-        setListItem((AppInfo) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.RoundAppItemBinding
     public void setListItem(AppInfo ListItem) {
         this.mListItem = ListItem;
         synchronized (this) {
@@ -61,22 +69,22 @@ public class RoundAppItemBindingImpl extends RoundAppItemBinding {
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         AppInfo listItem = this.mListItem;
         Drawable listItemAppIcon = null;
         String listItemAppLable = null;
-        if (!((dirtyFlags & 3) == 0 || listItem == null)) {
+        if ((dirtyFlags & 3) != 0 && listItem != null) {
             listItemAppIcon = listItem.getAppIcon();
             listItemAppLable = listItem.getAppLable();
         }

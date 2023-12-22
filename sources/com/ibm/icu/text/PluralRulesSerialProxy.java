@@ -3,6 +3,7 @@ package com.ibm.icu.text;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 
+/* loaded from: classes.dex */
 class PluralRulesSerialProxy implements Serializable {
     private static final long serialVersionUID = 42;
     private final String data;

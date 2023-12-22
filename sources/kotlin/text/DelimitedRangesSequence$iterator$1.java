@@ -3,27 +3,35 @@ package kotlin.text;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import kotlin.Metadata;
-import kotlin.jvm.internal.markers.KMappedMarker;
+import kotlin.Tuples;
+import kotlin.jvm.functions.Function2;
+import kotlin.jvm.internal.markers.KMarkers;
 import kotlin.ranges.IntRange;
 import kotlin.ranges.RangesKt;
 
-@Metadata(d1 = {"\u0000%\n\u0000\n\u0002\u0010(\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0013\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u000b\n\u0002\b\u0002*\u0001\u0000\b\n\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001J\b\u0010\u0017\u001a\u00020\u0018H\u0002J\t\u0010\u0019\u001a\u00020\u001aH\u0002J\t\u0010\u001b\u001a\u00020\u0002H\u0002R\u001a\u0010\u0003\u001a\u00020\u0004X\u000e¢\u0006\u000e\n\u0000\u001a\u0004\b\u0005\u0010\u0006\"\u0004\b\u0007\u0010\bR\u001a\u0010\t\u001a\u00020\u0004X\u000e¢\u0006\u000e\n\u0000\u001a\u0004\b\n\u0010\u0006\"\u0004\b\u000b\u0010\bR\u001c\u0010\f\u001a\u0004\u0018\u00010\u0002X\u000e¢\u0006\u000e\n\u0000\u001a\u0004\b\r\u0010\u000e\"\u0004\b\u000f\u0010\u0010R\u001a\u0010\u0011\u001a\u00020\u0004X\u000e¢\u0006\u000e\n\u0000\u001a\u0004\b\u0012\u0010\u0006\"\u0004\b\u0013\u0010\bR\u001a\u0010\u0014\u001a\u00020\u0004X\u000e¢\u0006\u000e\n\u0000\u001a\u0004\b\u0015\u0010\u0006\"\u0004\b\u0016\u0010\b¨\u0006\u001c"}, d2 = {"kotlin/text/DelimitedRangesSequence$iterator$1", "", "Lkotlin/ranges/IntRange;", "counter", "", "getCounter", "()I", "setCounter", "(I)V", "currentStartIndex", "getCurrentStartIndex", "setCurrentStartIndex", "nextItem", "getNextItem", "()Lkotlin/ranges/IntRange;", "setNextItem", "(Lkotlin/ranges/IntRange;)V", "nextSearchIndex", "getNextSearchIndex", "setNextSearchIndex", "nextState", "getNextState", "setNextState", "calcNext", "", "hasNext", "", "next", "kotlin-stdlib"}, k = 1, mv = {1, 6, 0}, xi = 48)
 /* compiled from: Strings.kt */
-public final class DelimitedRangesSequence$iterator$1 implements Iterator<IntRange>, KMappedMarker {
+@Metadata(m25d1 = {"\u0000%\n\u0000\n\u0002\u0010(\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0013\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u000b\n\u0002\b\u0002*\u0001\u0000\b\n\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001J\b\u0010\u0017\u001a\u00020\u0018H\u0002J\t\u0010\u0019\u001a\u00020\u001aH\u0096\u0002J\t\u0010\u001b\u001a\u00020\u0002H\u0096\u0002R\u001a\u0010\u0003\u001a\u00020\u0004X\u0086\u000e\u00a2\u0006\u000e\n\u0000\u001a\u0004\b\u0005\u0010\u0006\"\u0004\b\u0007\u0010\bR\u001a\u0010\t\u001a\u00020\u0004X\u0086\u000e\u00a2\u0006\u000e\n\u0000\u001a\u0004\b\n\u0010\u0006\"\u0004\b\u000b\u0010\bR\u001c\u0010\f\u001a\u0004\u0018\u00010\u0002X\u0086\u000e\u00a2\u0006\u000e\n\u0000\u001a\u0004\b\r\u0010\u000e\"\u0004\b\u000f\u0010\u0010R\u001a\u0010\u0011\u001a\u00020\u0004X\u0086\u000e\u00a2\u0006\u000e\n\u0000\u001a\u0004\b\u0012\u0010\u0006\"\u0004\b\u0013\u0010\bR\u001a\u0010\u0014\u001a\u00020\u0004X\u0086\u000e\u00a2\u0006\u000e\n\u0000\u001a\u0004\b\u0015\u0010\u0006\"\u0004\b\u0016\u0010\b\u00a8\u0006\u001c"}, m24d2 = {"kotlin/text/DelimitedRangesSequence$iterator$1", "", "Lkotlin/ranges/IntRange;", "counter", "", "getCounter", "()I", "setCounter", "(I)V", "currentStartIndex", "getCurrentStartIndex", "setCurrentStartIndex", "nextItem", "getNextItem", "()Lkotlin/ranges/IntRange;", "setNextItem", "(Lkotlin/ranges/IntRange;)V", "nextSearchIndex", "getNextSearchIndex", "setNextSearchIndex", "nextState", "getNextState", "setNextState", "calcNext", "", "hasNext", "", "next", "kotlin-stdlib"}, m23k = 1, m22mv = {1, 6, 0}, m20xi = 48)
+/* loaded from: classes.dex */
+public final class DelimitedRangesSequence$iterator$1 implements Iterator<IntRange>, KMarkers {
     private int counter;
     private int currentStartIndex;
     private IntRange nextItem;
     private int nextSearchIndex;
     private int nextState = -1;
-    final /* synthetic */ DelimitedRangesSequence this$0;
+    final /* synthetic */ Strings this$0;
 
+    @Override // java.util.Iterator
     public void remove() {
         throw new UnsupportedOperationException("Operation is not supported for read-only collection");
     }
 
-    DelimitedRangesSequence$iterator$1(DelimitedRangesSequence $receiver) {
+    DelimitedRangesSequence$iterator$1(Strings $receiver) {
+        int i;
+        CharSequence charSequence;
         this.this$0 = $receiver;
-        int coerceIn = RangesKt.coerceIn($receiver.startIndex, 0, $receiver.input.length());
+        i = $receiver.startIndex;
+        charSequence = $receiver.input;
+        int coerceIn = RangesKt.coerceIn(i, 0, charSequence.length());
         this.currentStartIndex = coerceIn;
         this.nextSearchIndex = coerceIn;
     }
@@ -68,108 +76,78 @@ public final class DelimitedRangesSequence$iterator$1 implements Iterator<IntRan
         this.counter = i;
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:6:0x0021, code lost:
-        if (r0 < r6.this$0.limit) goto L_0x0023;
+    /* JADX WARN: Code restructure failed: missing block: B:8:0x0021, code lost:
+        if (r0 < r4) goto L13;
      */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
     private final void calcNext() {
-        /*
-            r6 = this;
-            int r0 = r6.nextSearchIndex
-            r1 = 0
-            if (r0 >= 0) goto L_0x000c
-            r6.nextState = r1
-            r0 = 0
-            r6.nextItem = r0
-            goto L_0x009f
-        L_0x000c:
-            kotlin.text.DelimitedRangesSequence r0 = r6.this$0
-            int r0 = r0.limit
-            r2 = -1
-            r3 = 1
-            if (r0 <= 0) goto L_0x0023
-            int r0 = r6.counter
-            int r0 = r0 + r3
-            r6.counter = r0
-            kotlin.text.DelimitedRangesSequence r4 = r6.this$0
-            int r4 = r4.limit
-            if (r0 >= r4) goto L_0x0031
-        L_0x0023:
-            int r0 = r6.nextSearchIndex
-            kotlin.text.DelimitedRangesSequence r4 = r6.this$0
-            java.lang.CharSequence r4 = r4.input
-            int r4 = r4.length()
-            if (r0 <= r4) goto L_0x0047
-        L_0x0031:
-            kotlin.ranges.IntRange r0 = new kotlin.ranges.IntRange
-            int r1 = r6.currentStartIndex
-            kotlin.text.DelimitedRangesSequence r4 = r6.this$0
-            java.lang.CharSequence r4 = r4.input
-            int r4 = kotlin.text.StringsKt.getLastIndex(r4)
-            r0.<init>(r1, r4)
-            r6.nextItem = r0
-            r6.nextSearchIndex = r2
-            goto L_0x009d
-        L_0x0047:
-            kotlin.text.DelimitedRangesSequence r0 = r6.this$0
-            kotlin.jvm.functions.Function2 r0 = r0.getNextMatch
-            kotlin.text.DelimitedRangesSequence r4 = r6.this$0
-            java.lang.CharSequence r4 = r4.input
-            int r5 = r6.nextSearchIndex
-            java.lang.Integer r5 = java.lang.Integer.valueOf(r5)
-            java.lang.Object r0 = r0.invoke(r4, r5)
-            kotlin.Pair r0 = (kotlin.Pair) r0
-            if (r0 != 0) goto L_0x0077
-            kotlin.ranges.IntRange r1 = new kotlin.ranges.IntRange
-            int r4 = r6.currentStartIndex
-            kotlin.text.DelimitedRangesSequence r5 = r6.this$0
-            java.lang.CharSequence r5 = r5.input
-            int r5 = kotlin.text.StringsKt.getLastIndex(r5)
-            r1.<init>(r4, r5)
-            r6.nextItem = r1
-            r6.nextSearchIndex = r2
-            goto L_0x009d
-        L_0x0077:
-            java.lang.Object r2 = r0.component1()
-            java.lang.Number r2 = (java.lang.Number) r2
-            int r2 = r2.intValue()
-            java.lang.Object r4 = r0.component2()
-            java.lang.Number r4 = (java.lang.Number) r4
-            int r4 = r4.intValue()
-            int r5 = r6.currentStartIndex
-            kotlin.ranges.IntRange r5 = kotlin.ranges.RangesKt.until((int) r5, (int) r2)
-            r6.nextItem = r5
-            int r5 = r2 + r4
-            r6.currentStartIndex = r5
-            if (r4 != 0) goto L_0x009a
-            r1 = r3
-        L_0x009a:
-            int r5 = r5 + r1
-            r6.nextSearchIndex = r5
-        L_0x009d:
-            r6.nextState = r3
-        L_0x009f:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlin.text.DelimitedRangesSequence$iterator$1.calcNext():void");
+        int i;
+        CharSequence charSequence;
+        Function2 function2;
+        CharSequence charSequence2;
+        CharSequence charSequence3;
+        CharSequence charSequence4;
+        int i2;
+        if (this.nextSearchIndex >= 0) {
+            i = this.this$0.limit;
+            if (i > 0) {
+                int i3 = this.counter + 1;
+                this.counter = i3;
+                i2 = this.this$0.limit;
+            }
+            int i4 = this.nextSearchIndex;
+            charSequence = this.this$0.input;
+            if (i4 <= charSequence.length()) {
+                function2 = this.this$0.getNextMatch;
+                charSequence2 = this.this$0.input;
+                Tuples match = (Tuples) function2.invoke(charSequence2, Integer.valueOf(this.nextSearchIndex));
+                if (match == null) {
+                    int i5 = this.currentStartIndex;
+                    charSequence3 = this.this$0.input;
+                    this.nextItem = new IntRange(i5, StringsKt.getLastIndex(charSequence3));
+                    this.nextSearchIndex = -1;
+                } else {
+                    int index = ((Number) match.component1()).intValue();
+                    int length = ((Number) match.component2()).intValue();
+                    this.nextItem = RangesKt.until(this.currentStartIndex, index);
+                    int i6 = index + length;
+                    this.currentStartIndex = i6;
+                    this.nextSearchIndex = i6 + (length == 0 ? 1 : 0);
+                }
+                this.nextState = 1;
+                return;
+            }
+            int i7 = this.currentStartIndex;
+            charSequence4 = this.this$0.input;
+            this.nextItem = new IntRange(i7, StringsKt.getLastIndex(charSequence4));
+            this.nextSearchIndex = -1;
+            this.nextState = 1;
+            return;
+        }
+        this.nextState = 0;
+        this.nextItem = null;
     }
 
+    @Override // java.util.Iterator
     public IntRange next() {
         if (this.nextState == -1) {
             calcNext();
         }
-        if (this.nextState != 0) {
-            IntRange result = this.nextItem;
-            if (result != null) {
-                this.nextItem = null;
-                this.nextState = -1;
-                return result;
-            }
+        if (this.nextState == 0) {
+            throw new NoSuchElementException();
+        }
+        IntRange result = this.nextItem;
+        if (result == null) {
             throw new NullPointerException("null cannot be cast to non-null type kotlin.ranges.IntRange");
         }
-        throw new NoSuchElementException();
+        this.nextItem = null;
+        this.nextState = -1;
+        return result;
     }
 
+    @Override // java.util.Iterator
     public boolean hasNext() {
         if (this.nextState == -1) {
             calcNext();

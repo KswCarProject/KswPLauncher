@@ -19,22 +19,25 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.text.TextUtils;
 import android.util.Log;
+import com.wits.ksw.MainActivity;
 import com.wits.ksw.launcher.bean.MediaInfo;
 import com.wits.ksw.launcher.utils.BitmapUtil;
 import com.wits.ksw.launcher.utils.KswUtils;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.launcher.view.lexusls.drag.LOGE;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import com.wits.pms.statuscontrol.VideoStatus;
 
+/* loaded from: classes9.dex */
 public class MediaImpl {
     private static final String TAG = MediaImpl.class.getName();
     private static volatile MediaImpl singleton;
-    private MediaInfo mediaInfo = new MediaInfo();
-    public MutableLiveData<MediaInfo> mediaInfoMutableLiveData = new MutableLiveData<>();
     private MediaMetadataRetriever metadataRetriever;
     private String musicPath;
-    private Handler uiHandler = new Handler(Looper.getMainLooper());
     private String videoPath;
+    private MediaInfo mediaInfo = new MediaInfo();
+    public MutableLiveData<MediaInfo> mediaInfoMutableLiveData = new MutableLiveData<>();
+    private Handler uiHandler = new Handler(Looper.getMainLooper());
 
     public static MediaImpl getInstance() {
         if (singleton == null) {
@@ -52,7 +55,8 @@ public class MediaImpl {
             String path = getMusicPathcString();
             int postion = getMusicPostion();
             boolean isPlay = getMusicPlayState();
-            Log.d(TAG, "initDAta isplay =" + isPlay + " isstop =" + isMusicStop());
+            boolean isStop = isMusicStop();
+            Log.d(TAG, "initDAta isplay =" + isPlay + " isstop =" + isStop);
             if (!TextUtils.equals(path, this.musicPath)) {
                 handleMediaPlaySeekbarAndCurrentime(postion);
                 handleMediaInfo(path);
@@ -89,20 +93,20 @@ public class MediaImpl {
     }
 
     public void handleMediaPlayState(boolean play, boolean stop) {
-        MediaInfo mediaInfo2 = getInstance().getMediaInfo();
+        MediaInfo mediaInfo = getInstance().getMediaInfo();
         if (stop) {
-            mediaInfo2.setMusicPlay(stop);
+            mediaInfo.setMusicPlay(stop);
         } else {
-            mediaInfo2.setMusicPlay(play);
+            mediaInfo.setMusicPlay(play);
         }
     }
 
     private void updataNull() {
         this.mediaInfo.setMaxProgress(0);
-        this.mediaInfo.setMusicName((String) null);
-        this.mediaInfo.setMusicAlbum((String) null);
-        this.mediaInfo.setMusicAtist((String) null);
-        this.mediaInfo.setPic((BitmapDrawable) null);
+        this.mediaInfo.setMusicName(null);
+        this.mediaInfo.setMusicAlbum(null);
+        this.mediaInfo.setMusicAtist(null);
+        this.mediaInfo.setPic(null);
         this.mediaInfo.setCurrentTime("0:00");
         this.mediaInfo.setTotalTime("0:00");
         this.mediaInfo.setMusicPlay(false);
@@ -134,137 +138,170 @@ public class MediaImpl {
         return this.metadataRetriever;
     }
 
-    public void setMediaInfo(MediaInfo mediaInfo2) {
-        this.mediaInfo = mediaInfo2;
-        this.mediaInfoMutableLiveData.setValue(mediaInfo2);
+    public void setMediaInfo(MediaInfo mediaInfo) {
+        this.mediaInfo = mediaInfo;
+        this.mediaInfoMutableLiveData.setValue(mediaInfo);
     }
 
     public MediaInfo getMediaInfo() {
         return this.mediaInfo;
     }
 
+    /* JADX WARN: Removed duplicated region for block: B:44:0x0127 A[Catch: Exception -> 0x0180, TryCatch #0 {Exception -> 0x0180, blocks: (B:6:0x000b, B:8:0x0029, B:10:0x0032, B:12:0x004e, B:13:0x005a, B:15:0x0073, B:16:0x0078, B:18:0x0087, B:20:0x00a9, B:22:0x00b1, B:24:0x00b9, B:26:0x00c1, B:29:0x00ca, B:31:0x00cf, B:40:0x0114, B:42:0x0121, B:44:0x0127, B:46:0x0140, B:45:0x0131, B:32:0x00e6, B:34:0x00ee, B:36:0x00fd, B:38:0x0103, B:39:0x010c, B:35:0x00f2, B:41:0x011e, B:19:0x00a4), top: B:51:0x000b }] */
+    /* JADX WARN: Removed duplicated region for block: B:45:0x0131 A[Catch: Exception -> 0x0180, TryCatch #0 {Exception -> 0x0180, blocks: (B:6:0x000b, B:8:0x0029, B:10:0x0032, B:12:0x004e, B:13:0x005a, B:15:0x0073, B:16:0x0078, B:18:0x0087, B:20:0x00a9, B:22:0x00b1, B:24:0x00b9, B:26:0x00c1, B:29:0x00ca, B:31:0x00cf, B:40:0x0114, B:42:0x0121, B:44:0x0127, B:46:0x0140, B:45:0x0131, B:32:0x00e6, B:34:0x00ee, B:36:0x00fd, B:38:0x0103, B:39:0x010c, B:35:0x00f2, B:41:0x011e, B:19:0x00a4), top: B:51:0x000b }] */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
     public void handleMediaInfo(String path) {
-        if (!path.equals(this.musicPath)) {
-            this.musicPath = path;
-            try {
-                String str = TAG;
-                Log.i(str, "handleMediaInfo: path:" + path);
-                MediaMetadataRetriever metadataRetriever2 = initMediaMetadataRetriever(path);
-                if (metadataRetriever2 == null) {
-                    Log.i(str, "handleMediaInfo: initMediaMetadataRetriever null");
-                    updataNull();
-                    return;
-                }
-                BitmapDrawable icon = null;
-                String title = metadataRetriever2.extractMetadata(7);
-                String album = metadataRetriever2.extractMetadata(1);
-                String artist = metadataRetriever2.extractMetadata(2);
-                String duration = metadataRetriever2.extractMetadata(9);
-                byte[] pictur = metadataRetriever2.getEmbeddedPicture();
-                if (pictur != null) {
-                    icon = new BitmapDrawable(BitmapFactory.decodeByteArray(pictur, 0, pictur.length));
-                }
-                final MediaInfo mediaInfo2 = getInstance().getMediaInfo();
-                mediaInfo2.setMaxProgress(Integer.valueOf(duration).intValue());
-                if (TextUtils.isEmpty(title)) {
-                    title = KswUtils.splitPathMusicName(path);
-                }
-                mediaInfo2.setMusicName(title);
-                mediaInfo2.setMusicAlbum(album);
-                mediaInfo2.setMusicAtist(artist);
-                if (!TextUtils.isEmpty(artist)) {
-                    mediaInfo2.songInfo.set(title + " - " + artist);
-                } else {
-                    mediaInfo2.songInfo.set(title);
-                }
-                mediaInfo2.setPic(icon);
+        if (path.equals(this.musicPath)) {
+            return;
+        }
+        this.musicPath = path;
+        try {
+            String str = TAG;
+            Log.i(str, "handleMediaInfo: path:" + path);
+            MediaMetadataRetriever metadataRetriever = initMediaMetadataRetriever(path);
+            if (metadataRetriever == null) {
+                Log.i(str, "handleMediaInfo: initMediaMetadataRetriever null");
+                updataNull();
+                return;
+            }
+            BitmapDrawable icon = null;
+            String title = metadataRetriever.extractMetadata(7);
+            String album = metadataRetriever.extractMetadata(1);
+            String artist = metadataRetriever.extractMetadata(2);
+            String duration = metadataRetriever.extractMetadata(9);
+            byte[] pictur = metadataRetriever.getEmbeddedPicture();
+            if (pictur != null) {
+                icon = new BitmapDrawable(BitmapFactory.decodeByteArray(pictur, 0, pictur.length));
+            }
+            final MediaInfo mediaInfo = getInstance().getMediaInfo();
+            mediaInfo.setMaxProgress(Integer.valueOf(duration).intValue());
+            if (TextUtils.isEmpty(title)) {
+                title = KswUtils.splitPathMusicName(path);
+            }
+            mediaInfo.setMusicName(title);
+            mediaInfo.setMusicAlbum(album);
+            mediaInfo.setMusicAtist(artist);
+            if (!TextUtils.isEmpty(artist)) {
+                mediaInfo.songInfo.set(title + " - " + artist);
+            } else {
+                mediaInfo.songInfo.set(title);
+            }
+            if (!UiThemeUtils.isUI_MBUX_2021_KSW_1024(MainActivity.mainActivity) && !UiThemeUtils.isUI_MBUX_2021_KSW_1024_V2(MainActivity.mainActivity) && !UiThemeUtils.isBenz_MBUX_2021_KSW(MainActivity.mainActivity) && !UiThemeUtils.isBenz_MBUX_2021_KSW_V2(MainActivity.mainActivity)) {
+                mediaInfo.setPic(icon);
                 if (icon == null) {
-                    LOGE.D("liuhaoMedia ____________________aaa BitmapUtil.isBenzMbux2021()&&icon==null__________________________________");
-                    mediaInfo2.setPicBg((BitmapDrawable) BitmapUtil.getDefaultMBUX2021BG_OTHER());
-                    mediaInfo2.setPicZoom((BitmapDrawable) null);
+                    LOGE.m44D("liuhaoMedia ____________________aaa BitmapUtil.isBenzMbux2021()&&icon==null__________________________________");
+                    BitmapDrawable icon2 = (BitmapDrawable) BitmapUtil.getDefaultMBUX2021BG_OTHER();
+                    mediaInfo.setPicBg(icon2);
+                    mediaInfo.setPicZoom(null);
+                    mediaInfo.setPic(null);
                 } else {
-                    mediaInfo2.setPicZoom((BitmapDrawable) zoomDrawable(icon, 100, 100));
+                    if (UiThemeUtils.isBenz_MBUX_2021(MainActivity.mainActivity)) {
+                        mediaInfo.setPicZoom(icon);
+                    } else {
+                        mediaInfo.setPicZoom((BitmapDrawable) zoomDrawable(icon, 100, 100));
+                    }
                     Bitmap bmp = BitmapUtil.drawableToBitmap(icon);
                     if (bmp == null) {
                         bmp = BitmapUtil.drawableToBitmap(BitmapUtil.getDefaultMBUX2021BG_OTHER());
                     }
-                    mediaInfo2.setPicBg(new BitmapDrawable(bmp));
+                    mediaInfo.setPicBg(new BitmapDrawable(bmp));
                 }
-                mediaInfo2.setPageIndex(mediaInfo2.pageIndex.get());
-                if (TextUtils.isEmpty(duration)) {
-                    mediaInfo2.setTotalTime(KswUtils.formatMusicPlayTime(0));
+                mediaInfo.setPageIndex(mediaInfo.pageIndex.get());
+                if (!TextUtils.isEmpty(duration)) {
+                    mediaInfo.setTotalTime(KswUtils.formatMusicPlayTime(0L));
                 } else {
-                    mediaInfo2.setTotalTime(KswUtils.formatMusicPlayTime(Long.valueOf(duration).longValue()));
+                    mediaInfo.setTotalTime(KswUtils.formatMusicPlayTime(Long.valueOf(duration).longValue()));
                 }
-                this.uiHandler.post(new Runnable() {
+                this.uiHandler.post(new Runnable() { // from class: com.wits.ksw.launcher.model.MediaImpl.1
+                    @Override // java.lang.Runnable
                     public void run() {
-                        MediaImpl.this.mediaInfoMutableLiveData.setValue(mediaInfo2);
+                        MediaImpl.this.mediaInfoMutableLiveData.setValue(mediaInfo);
                     }
                 });
                 Log.i(str, "handleMediaInfo: title:" + title + " album:" + album + " artist:" + artist + " totalTime:" + duration);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(TAG, "onChange:" + e.getMessage());
             }
+            mediaInfo.setPicZoom(icon);
+            if (!TextUtils.isEmpty(duration)) {
+            }
+            this.uiHandler.post(new Runnable() { // from class: com.wits.ksw.launcher.model.MediaImpl.1
+                @Override // java.lang.Runnable
+                public void run() {
+                    MediaImpl.this.mediaInfoMutableLiveData.setValue(mediaInfo);
+                }
+            });
+            Log.i(str, "handleMediaInfo: title:" + title + " album:" + album + " artist:" + artist + " totalTime:" + duration);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG, "onChange:" + e.getMessage());
         }
     }
 
     public void handleVideoInfoSetPlayStatus(VideoStatus videoStatus, String path) {
-        if (videoStatus != null) {
-            Log.w(TAG, "handleVideoInfoSetPlayStatus:" + videoStatus.getTotalTime());
-            MediaInfo mediaInfo2 = getInstance().getMediaInfo();
-            mediaInfo2.setVideoPlay(videoStatus.isPlay());
-            mediaInfo2.setMaxProgressVideo(videoStatus.getTotalTime());
-            mediaInfo2.setProgressVideo(videoStatus.getPosition());
-            String title = KswUtils.splitPathMusicName(path);
-            mediaInfo2.setVideoName(title);
-            Log.d("TAG", "VideoTitle:" + title);
-            if (videoStatus.getTotalTime() <= 0) {
-                mediaInfo2.progressPercentVideo.set(0);
-            } else {
-                mediaInfo2.progressPercentVideo.set(Math.round(100.0f * ((((float) videoStatus.getPosition()) * 1.0f) / ((float) videoStatus.getTotalTime()))));
-            }
-            mediaInfo2.setTotalTimeVideo(KswUtils.formatMusicPlayTime((long) videoStatus.getTotalTime()));
-            mediaInfo2.setCurrentTimeVideo(KswUtils.formatMusicPlayTime((long) videoStatus.getPosition()));
+        if (videoStatus == null) {
+            return;
         }
+        Log.w(TAG, "handleVideoInfoSetPlayStatus:" + videoStatus.getTotalTime());
+        MediaInfo mediaInfo = getInstance().getMediaInfo();
+        mediaInfo.setVideoPlay(videoStatus.isPlay());
+        mediaInfo.setMaxProgressVideo(videoStatus.getTotalTime());
+        mediaInfo.setProgressVideo(videoStatus.getPosition());
+        String title = KswUtils.splitPathMusicName(path);
+        mediaInfo.setVideoName(title);
+        Log.d("TAG", "VideoTitle:" + title);
+        if (videoStatus.getTotalTime() <= 0) {
+            mediaInfo.progressPercentVideo.set(0);
+        } else {
+            float percent = (videoStatus.getPosition() * 1.0f) / videoStatus.getTotalTime();
+            mediaInfo.progressPercentVideo.set(Math.round(100.0f * percent));
+        }
+        mediaInfo.setTotalTimeVideo(KswUtils.formatMusicPlayTime(videoStatus.getTotalTime()));
+        mediaInfo.setCurrentTimeVideo(KswUtils.formatMusicPlayTime(videoStatus.getPosition()));
     }
 
     public void handleMediaPlaySeekbarAndCurrentime(int currentTime) {
         try {
-            MediaInfo mediaInfo2 = getInstance().getMediaInfo();
-            mediaInfo2.setProgress(currentTime);
-            mediaInfo2.setCurrentTime(KswUtils.formatMusicPlayTime((long) currentTime));
-            setProgressPercent(mediaInfo2);
-            mediaInfo2.setRemainTime("-" + KswUtils.formatMusicPlayTimeRemain(currentTime, mediaInfo2.maxProgress.get()));
+            MediaInfo mediaInfo = getInstance().getMediaInfo();
+            mediaInfo.setProgress(currentTime);
+            mediaInfo.setCurrentTime(KswUtils.formatMusicPlayTime(currentTime));
+            setProgressPercent(mediaInfo);
+            mediaInfo.setRemainTime("-" + KswUtils.formatMusicPlayTimeRemain(currentTime, mediaInfo.maxProgress.get()));
             String hightLrcRow = PowerManagerApp.getManager().getStatusString("LrcRow_HighLightContent");
-            mediaInfo2.setHightLrcRow(hightLrcRow);
+            mediaInfo.setHightLrcRow(hightLrcRow);
             Log.e("lixin_test", "handleMediaPlaySeekbarAndCurrentime: hightLrcRow " + hightLrcRow);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void setProgressPercent(MediaInfo mediaInfo2) {
-        if (mediaInfo2 != null) {
-            if (mediaInfo2.maxProgress.get() <= 0) {
-                mediaInfo2.progressPercent.set(0);
-                return;
-            }
-            mediaInfo2.progressPercent.set(Math.round(100.0f * ((((float) mediaInfo2.progress.get()) * 1.0f) / ((float) mediaInfo2.maxProgress.get()))));
+    private void setProgressPercent(MediaInfo mediaInfo) {
+        if (mediaInfo == null) {
+            return;
         }
+        if (mediaInfo.maxProgress.get() <= 0) {
+            mediaInfo.progressPercent.set(0);
+            return;
+        }
+        float percent = (mediaInfo.progress.get() * 1.0f) / mediaInfo.maxProgress.get();
+        mediaInfo.progressPercent.set(Math.round(100.0f * percent));
     }
 
     public static Bitmap zoomImage(Bitmap bgimage, double newWidth, double newHeight) {
-        float width = (float) bgimage.getWidth();
-        float height = (float) bgimage.getHeight();
+        float width = bgimage.getWidth();
+        float height = bgimage.getHeight();
         Matrix matrix = new Matrix();
-        matrix.postScale(((float) newWidth) / width, ((float) newHeight) / height);
-        return Bitmap.createBitmap(bgimage, 0, 0, (int) width, (int) height, matrix, true);
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width, (int) height, matrix, true);
+        return bitmap;
     }
 
     public static Bitmap getShapeBitmap(Bitmap bitmap) {
         Bitmap bmp = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        new ColorMatrix().set(new float[]{1.0f, 0.0f, 0.0f, 0.0f, 20.0f, 0.0f, 1.0f, 0.0f, 0.0f, 20.0f, 0.0f, 0.0f, 1.0f, 0.0f, 20.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f});
+        ColorMatrix cMatrix = new ColorMatrix();
+        cMatrix.set(new float[]{1.0f, 0.0f, 0.0f, 0.0f, 20.0f, 0.0f, 1.0f, 0.0f, 0.0f, 20.0f, 0.0f, 0.0f, 1.0f, 0.0f, 20.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f});
         return bmp;
     }
 
@@ -273,19 +310,17 @@ public class MediaImpl {
         int height = drawable.getIntrinsicHeight();
         Bitmap oldbmp = drawableToBitmap(drawable);
         Matrix matrix = new Matrix();
-        matrix.postScale(((float) w) / ((float) width), ((float) h) / ((float) height));
-        return new BitmapDrawable((Resources) null, Bitmap.createBitmap(oldbmp, 0, 0, width, height, matrix, true));
+        float scaleWidth = w / width;
+        float scaleHeight = h / height;
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap newbmp = Bitmap.createBitmap(oldbmp, 0, 0, width, height, matrix, true);
+        return new BitmapDrawable((Resources) null, newbmp);
     }
 
     private Bitmap drawableToBitmap(Drawable drawable) {
-        Bitmap.Config config;
         int width = drawable.getIntrinsicWidth();
         int height = drawable.getIntrinsicHeight();
-        if (drawable.getOpacity() != -1) {
-            config = Bitmap.Config.ARGB_8888;
-        } else {
-            config = Bitmap.Config.RGB_565;
-        }
+        Bitmap.Config config = drawable.getOpacity() != -1 ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;
         Bitmap bitmap = Bitmap.createBitmap(width, height, config);
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, width, height);

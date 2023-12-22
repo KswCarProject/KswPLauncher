@@ -2,6 +2,7 @@ package com.ibm.icu.text;
 
 import java.text.CharacterIterator;
 
+/* loaded from: classes.dex */
 abstract class DictionaryMatcher {
     public abstract int getType();
 
@@ -11,6 +12,6 @@ abstract class DictionaryMatcher {
     }
 
     public int matches(CharacterIterator text, int maxLength, int[] lengths, int[] count, int limit) {
-        return matches(text, maxLength, lengths, count, limit, (int[]) null);
+        return matches(text, maxLength, lengths, count, limit, null);
     }
 }

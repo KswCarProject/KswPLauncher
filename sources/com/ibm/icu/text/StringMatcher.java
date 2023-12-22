@@ -3,6 +3,7 @@ package com.ibm.icu.text;
 import com.ibm.icu.impl.Utility;
 import com.ibm.icu.text.RuleBasedTransliterator;
 
+/* loaded from: classes.dex */
 class StringMatcher implements UnicodeMatcher, UnicodeReplacer {
     private final RuleBasedTransliterator.Data data;
     private int matchLimit;
@@ -22,21 +23,23 @@ class StringMatcher implements UnicodeMatcher, UnicodeReplacer {
         this(theString.substring(start, limit), segmentNum, theData);
     }
 
+    @Override // com.ibm.icu.text.UnicodeMatcher
     public int matches(Replaceable text, int[] offset, int limit, boolean incremental) {
         int[] cursor = {offset[0]};
         if (limit < cursor[0]) {
             for (int i = this.pattern.length() - 1; i >= 0; i--) {
                 char keyChar = this.pattern.charAt(i);
                 UnicodeMatcher subm = this.data.lookupMatcher(keyChar);
-                if (subm != null) {
+                if (subm == null) {
+                    if (cursor[0] <= limit || keyChar != text.charAt(cursor[0])) {
+                        return 0;
+                    }
+                    cursor[0] = cursor[0] - 1;
+                } else {
                     int m = subm.matches(text, cursor, limit, incremental);
                     if (m != 2) {
                         return m;
                     }
-                } else if (cursor[0] <= limit || keyChar != text.charAt(cursor[0])) {
-                    return 0;
-                } else {
-                    cursor[0] = cursor[0] - 1;
                 }
             }
             if (this.matchStart < 0) {
@@ -50,15 +53,16 @@ class StringMatcher implements UnicodeMatcher, UnicodeReplacer {
                 }
                 char keyChar2 = this.pattern.charAt(i2);
                 UnicodeMatcher subm2 = this.data.lookupMatcher(keyChar2);
-                if (subm2 != null) {
+                if (subm2 == null) {
+                    if (cursor[0] >= limit || keyChar2 != text.charAt(cursor[0])) {
+                        return 0;
+                    }
+                    cursor[0] = cursor[0] + 1;
+                } else {
                     int m2 = subm2.matches(text, cursor, limit, incremental);
                     if (m2 != 2) {
                         return m2;
                     }
-                } else if (cursor[0] >= limit || keyChar2 != text.charAt(cursor[0])) {
-                    return 0;
-                } else {
-                    cursor[0] = cursor[0] + 1;
                 }
             }
             this.matchStart = offset[0];
@@ -68,6 +72,7 @@ class StringMatcher implements UnicodeMatcher, UnicodeReplacer {
         return 2;
     }
 
+    @Override // com.ibm.icu.text.UnicodeMatcher
     public String toPattern(boolean escapeUnprintable) {
         StringBuffer result = new StringBuffer();
         StringBuffer quoteBuf = new StringBuffer();
@@ -83,28 +88,25 @@ class StringMatcher implements UnicodeMatcher, UnicodeReplacer {
                 Utility.appendToRule(result, m.toPattern(escapeUnprintable), true, escapeUnprintable, quoteBuf);
             }
         }
-        if (this.segmentNumber > 0) {
+        int i2 = this.segmentNumber;
+        if (i2 > 0) {
             result.append(')');
         }
         Utility.appendToRule(result, -1, true, escapeUnprintable, quoteBuf);
         return result.toString();
     }
 
+    @Override // com.ibm.icu.text.UnicodeMatcher
     public boolean matchesIndexValue(int v) {
         if (this.pattern.length() == 0) {
             return true;
         }
         int c = UTF16.charAt(this.pattern, 0);
         UnicodeMatcher m = this.data.lookupMatcher(c);
-        if (m != null) {
-            return m.matchesIndexValue(v);
-        }
-        if ((c & 255) == v) {
-            return true;
-        }
-        return false;
+        return m == null ? (c & 255) == v : m.matchesIndexValue(v);
     }
 
+    @Override // com.ibm.icu.text.UnicodeMatcher
     public void addMatchSetTo(UnicodeSet toUnionTo) {
         int i = 0;
         while (i < this.pattern.length()) {
@@ -119,19 +121,20 @@ class StringMatcher implements UnicodeMatcher, UnicodeReplacer {
         }
     }
 
+    @Override // com.ibm.icu.text.UnicodeReplacer
     public int replace(Replaceable text, int start, int limit, int[] cursor) {
         int i;
         int outLen = 0;
-        int dest = limit;
         int i2 = this.matchStart;
         if (i2 >= 0 && i2 != (i = this.matchLimit)) {
-            text.copy(i2, i, dest);
+            text.copy(i2, i, limit);
             outLen = this.matchLimit - this.matchStart;
         }
         text.replace(start, limit, "");
         return outLen;
     }
 
+    @Override // com.ibm.icu.text.UnicodeReplacer
     public String toReplacerPattern(boolean escapeUnprintable) {
         StringBuffer rule = new StringBuffer("$");
         Utility.appendNumber(rule, this.segmentNumber, 10, 1);
@@ -143,6 +146,7 @@ class StringMatcher implements UnicodeMatcher, UnicodeReplacer {
         this.matchStart = -1;
     }
 
+    @Override // com.ibm.icu.text.UnicodeReplacer
     public void addReplacementSetTo(UnicodeSet toUnionTo) {
     }
 }

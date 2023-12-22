@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="center" android:focusable="false" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <TextView android:textSize="30sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_showPwd" android:background="@drawable/lexus_settings_bk" android:layout_width="match_parent" android:layout_height="59dp" android:lines="1" android:maxLength="16"/>
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp">
+            <ImageView android:id="@+id/img_btn1" android:nextFocusUp="@+id/img_btn1" android:layout_width="153dp" android:layout_height="wrap_content" android:src="@drawable/lexus_btn_1"/>
+            <ImageView android:id="@+id/img_btn2" android:layout_width="153dp" android:layout_height="wrap_content" android:src="@drawable/lexus_btn_2"/>
+            <ImageView android:id="@+id/img_btn3" android:layout_width="153dp" android:layout_height="wrap_content" android:src="@drawable/lexus_btn_3"/>
+            <ImageView android:id="@+id/img_del" android:layout_width="153dp" android:layout_height="wrap_content" android:src="@drawable/lexus_btn_del"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp">
+            <ImageView android:id="@+id/img_btn4" android:layout_width="153dp" android:layout_height="wrap_content" android:src="@drawable/lexus_btn_4"/>
+            <ImageView android:id="@+id/img_btn5" android:layout_width="153dp" android:layout_height="wrap_content" android:src="@drawable/lexus_btn_5"/>
+            <ImageView android:id="@+id/img_btn6" android:layout_width="153dp" android:layout_height="wrap_content" android:src="@drawable/lexus_btn_6"/>
+            <ImageView android:id="@+id/img_btn0" android:layout_width="153dp" android:layout_height="wrap_content" android:src="@drawable/lexus_btn_0"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp">
+            <ImageView android:id="@+id/img_btn7" android:nextFocusDown="@+id/img_btn7" android:layout_width="153dp" android:layout_height="wrap_content" android:src="@drawable/lexus_btn_7"/>
+            <ImageView android:id="@+id/img_btn8" android:layout_width="153dp" android:layout_height="wrap_content" android:src="@drawable/lexus_btn_8"/>
+            <ImageView android:id="@+id/img_btn9" android:layout_width="153dp" android:layout_height="wrap_content" android:src="@drawable/lexus_btn_9"/>
+            <ImageView android:id="@+id/img_enter" android:layout_width="153dp" android:layout_height="wrap_content" android:src="@drawable/lexus_btn_enter"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

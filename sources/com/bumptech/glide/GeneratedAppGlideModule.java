@@ -4,15 +4,14 @@ import com.bumptech.glide.manager.RequestManagerRetriever;
 import com.bumptech.glide.module.AppGlideModule;
 import java.util.Set;
 
+/* loaded from: classes.dex */
 abstract class GeneratedAppGlideModule extends AppGlideModule {
-    /* access modifiers changed from: package-private */
-    public abstract Set<Class<?>> getExcludedModuleClasses();
+    abstract Set<Class<?>> getExcludedModuleClasses();
 
     GeneratedAppGlideModule() {
     }
 
-    /* access modifiers changed from: package-private */
-    public RequestManagerRetriever.RequestManagerFactory getRequestManagerFactory() {
+    RequestManagerRetriever.RequestManagerFactory getRequestManagerFactory() {
         return null;
     }
 }

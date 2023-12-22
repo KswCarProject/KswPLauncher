@@ -4,6 +4,7 @@ import io.reactivex.disposables.Disposable;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class ArrayCompositeSubscription extends AtomicReferenceArray<Subscription> implements Disposable {
     private static final long serialVersionUID = 2746389416410565408L;
 
@@ -14,49 +15,55 @@ public final class ArrayCompositeSubscription extends AtomicReferenceArray<Subsc
     public boolean setResource(int index, Subscription resource) {
         Subscription o;
         do {
-            o = (Subscription) get(index);
+            o = get(index);
             if (o == SubscriptionHelper.CANCELLED) {
-                if (resource == null) {
+                if (resource != null) {
+                    resource.cancel();
                     return false;
                 }
-                resource.cancel();
                 return false;
             }
         } while (!compareAndSet(index, o, resource));
-        if (o == null) {
+        if (o != null) {
+            o.cancel();
             return true;
         }
-        o.cancel();
         return true;
     }
 
     public Subscription replaceResource(int index, Subscription resource) {
         Subscription o;
         do {
-            o = (Subscription) get(index);
+            o = get(index);
             if (o == SubscriptionHelper.CANCELLED) {
-                if (resource == null) {
+                if (resource != null) {
+                    resource.cancel();
                     return null;
                 }
-                resource.cancel();
                 return null;
             }
         } while (!compareAndSet(index, o, resource));
         return o;
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public void dispose() {
-        Subscription o;
         if (get(0) != SubscriptionHelper.CANCELLED) {
             int s = length();
             for (int i = 0; i < s; i++) {
-                if (!(((Subscription) get(i)) == SubscriptionHelper.CANCELLED || (o = (Subscription) getAndSet(i, SubscriptionHelper.CANCELLED)) == SubscriptionHelper.CANCELLED || o == null)) {
-                    o.cancel();
+                Subscription o = get(i);
+                if (o != SubscriptionHelper.CANCELLED) {
+                    Subscription o2 = getAndSet(i, SubscriptionHelper.CANCELLED);
+                    Subscription o3 = o2;
+                    if (o3 != SubscriptionHelper.CANCELLED && o3 != null) {
+                        o3.cancel();
+                    }
                 }
             }
         }
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public boolean isDisposed() {
         return get(0) == SubscriptionHelper.CANCELLED;
     }

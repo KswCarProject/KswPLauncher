@@ -21,6 +21,7 @@ import skin.support.utils.ImageUtils;
 import skin.support.utils.SkinPreference;
 import skin.support.utils.Slog;
 
+/* loaded from: classes.dex */
 public class SkinCompatUserThemeManager {
     private static SkinCompatUserThemeManager INSTANCE = new SkinCompatUserThemeManager();
     private static final String KEY_DRAWABLE_NAME = "drawableName";
@@ -29,14 +30,14 @@ public class SkinCompatUserThemeManager {
     private static final String KEY_TYPE_COLOR = "color";
     private static final String KEY_TYPE_DRAWABLE = "drawable";
     private static final String TAG = "SkinCompatUserThemeManager";
+    private boolean mColorEmpty;
+    private boolean mDrawableEmpty;
+    private final HashMap<String, ColorState> mColorNameStateMap = new HashMap<>();
     private final Object mColorCacheLock = new Object();
     private final WeakHashMap<Integer, WeakReference<ColorStateList>> mColorCaches = new WeakHashMap<>();
-    private boolean mColorEmpty;
-    private final HashMap<String, ColorState> mColorNameStateMap = new HashMap<>();
+    private final HashMap<String, String> mDrawablePathAndAngleMap = new HashMap<>();
     private final Object mDrawableCacheLock = new Object();
     private final WeakHashMap<Integer, WeakReference<Drawable>> mDrawableCaches = new WeakHashMap<>();
-    private boolean mDrawableEmpty;
-    private final HashMap<String, String> mDrawablePathAndAngleMap = new HashMap<>();
 
     private SkinCompatUserThemeManager() {
         try {
@@ -45,7 +46,7 @@ public class SkinCompatUserThemeManager {
             this.mColorNameStateMap.clear();
             this.mDrawablePathAndAngleMap.clear();
             if (Slog.DEBUG) {
-                Slog.i(TAG, "startLoadFromSharedPreferences error: " + e);
+                Slog.m2i(TAG, "startLoadFromSharedPreferences error: " + e);
             }
         }
     }
@@ -55,7 +56,7 @@ public class SkinCompatUserThemeManager {
         if (!TextUtils.isEmpty(colors)) {
             JSONArray jsonArray = new JSONArray(colors);
             if (Slog.DEBUG) {
-                Slog.i(TAG, "startLoadFromSharedPreferences: " + jsonArray.toString());
+                Slog.m2i(TAG, "startLoadFromSharedPreferences: " + jsonArray.toString());
             }
             int count = jsonArray.length();
             for (int i = 0; i < count; i++) {
@@ -94,14 +95,15 @@ public class SkinCompatUserThemeManager {
             }
         }
         for (String drawableName : this.mDrawablePathAndAngleMap.keySet()) {
+            JSONObject object = new JSONObject();
             try {
-                jsonArray.put(new JSONObject().putOpt(KEY_TYPE, KEY_TYPE_DRAWABLE).putOpt(KEY_DRAWABLE_NAME, drawableName).putOpt(KEY_DRAWABLE_PATH_AND_ANGLE, this.mDrawablePathAndAngleMap.get(drawableName)));
+                jsonArray.put(object.putOpt(KEY_TYPE, KEY_TYPE_DRAWABLE).putOpt(KEY_DRAWABLE_NAME, drawableName).putOpt(KEY_DRAWABLE_PATH_AND_ANGLE, this.mDrawablePathAndAngleMap.get(drawableName)));
             } catch (JSONException e2) {
                 e2.printStackTrace();
             }
         }
         if (Slog.DEBUG) {
-            Slog.i(TAG, "Apply user theme: " + jsonArray.toString());
+            Slog.m2i(TAG, "Apply user theme: " + jsonArray.toString());
         }
         SkinPreference.getInstance().setUserTheme(jsonArray.toString()).commitEditor();
         SkinCompatManager.getInstance().notifyUpdateSkin();
@@ -122,13 +124,14 @@ public class SkinCompatUserThemeManager {
     }
 
     public void addColorState(int colorRes, String colorDefault) {
-        if (ColorState.checkColorValid("colorDefault", colorDefault)) {
-            String entry = getEntryName(colorRes, KEY_TYPE_COLOR);
-            if (!TextUtils.isEmpty(entry)) {
-                this.mColorNameStateMap.put(entry, new ColorState(entry, colorDefault));
-                removeColorInCache(colorRes);
-                this.mColorEmpty = false;
-            }
+        if (!ColorState.checkColorValid("colorDefault", colorDefault)) {
+            return;
+        }
+        String entry = getEntryName(colorRes, KEY_TYPE_COLOR);
+        if (!TextUtils.isEmpty(entry)) {
+            this.mColorNameStateMap.put(entry, new ColorState(entry, colorDefault));
+            removeColorInCache(colorRes);
+            this.mColorEmpty = false;
         }
     }
 
@@ -141,8 +144,7 @@ public class SkinCompatUserThemeManager {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void removeColorState(String colorName) {
+    void removeColorState(String colorName) {
         if (!TextUtils.isEmpty(colorName)) {
             this.mColorNameStateMap.remove(colorName);
             this.mColorEmpty = this.mColorNameStateMap.isEmpty();
@@ -166,7 +168,7 @@ public class SkinCompatUserThemeManager {
         ColorStateList colorStateList = getCachedColor(colorRes);
         if (colorStateList == null) {
             String entry = getEntryName(colorRes, KEY_TYPE_COLOR);
-            if (!(TextUtils.isEmpty(entry) || (state = this.mColorNameStateMap.get(entry)) == null || (colorStateList = state.parse()) == null)) {
+            if (!TextUtils.isEmpty(entry) && (state = this.mColorNameStateMap.get(entry)) != null && (colorStateList = state.parse()) != null) {
                 addColorToCache(colorRes, colorStateList);
             }
         }
@@ -174,24 +176,29 @@ public class SkinCompatUserThemeManager {
     }
 
     public void addDrawablePath(int drawableRes, String drawablePath) {
-        if (checkPathValid(drawablePath)) {
-            String entry = getEntryName(drawableRes, KEY_TYPE_DRAWABLE);
-            if (!TextUtils.isEmpty(entry)) {
-                this.mDrawablePathAndAngleMap.put(entry, drawablePath + ":" + String.valueOf(ImageUtils.getImageRotateAngle(drawablePath)));
-                removeDrawableInCache(drawableRes);
-                this.mDrawableEmpty = false;
-            }
+        if (!checkPathValid(drawablePath)) {
+            return;
+        }
+        String entry = getEntryName(drawableRes, KEY_TYPE_DRAWABLE);
+        if (!TextUtils.isEmpty(entry)) {
+            int angle = ImageUtils.getImageRotateAngle(drawablePath);
+            String drawablePathAndAngle = drawablePath + ":" + String.valueOf(angle);
+            this.mDrawablePathAndAngleMap.put(entry, drawablePathAndAngle);
+            removeDrawableInCache(drawableRes);
+            this.mDrawableEmpty = false;
         }
     }
 
     public void addDrawablePath(int drawableRes, String drawablePath, int angle) {
-        if (checkPathValid(drawablePath)) {
-            String entry = getEntryName(drawableRes, KEY_TYPE_DRAWABLE);
-            if (!TextUtils.isEmpty(entry)) {
-                this.mDrawablePathAndAngleMap.put(entry, drawablePath + ":" + String.valueOf(angle));
-                removeDrawableInCache(drawableRes);
-                this.mDrawableEmpty = false;
-            }
+        if (!checkPathValid(drawablePath)) {
+            return;
+        }
+        String entry = getEntryName(drawableRes, KEY_TYPE_DRAWABLE);
+        if (!TextUtils.isEmpty(entry)) {
+            String drawablePathAndAngle = drawablePath + ":" + String.valueOf(angle);
+            this.mDrawablePathAndAngleMap.put(entry, drawablePathAndAngle);
+            removeDrawableInCache(drawableRes);
+            this.mDrawableEmpty = false;
         }
     }
 
@@ -207,28 +214,28 @@ public class SkinCompatUserThemeManager {
     public String getDrawablePath(String drawableName) {
         String drawablePathAndAngle = this.mDrawablePathAndAngleMap.get(drawableName);
         if (!TextUtils.isEmpty(drawablePathAndAngle)) {
-            return drawablePathAndAngle.split(":")[0];
+            String[] splits = drawablePathAndAngle.split(":");
+            return splits[0];
         }
         return "";
     }
 
     public int getDrawableAngle(String drawableName) {
         String drawablePathAndAngle = this.mDrawablePathAndAngleMap.get(drawableName);
-        if (TextUtils.isEmpty(drawablePathAndAngle)) {
+        if (!TextUtils.isEmpty(drawablePathAndAngle)) {
+            String[] splits = drawablePathAndAngle.split(":");
+            if (splits.length == 2) {
+                return Integer.valueOf(splits[1]).intValue();
+            }
             return 0;
-        }
-        String[] splits = drawablePathAndAngle.split(":");
-        if (splits.length == 2) {
-            return Integer.valueOf(splits[1]).intValue();
         }
         return 0;
     }
 
     public Drawable getDrawable(int drawableRes) {
-        int i = drawableRes;
         Drawable drawable = getCachedDrawable(drawableRes);
         if (drawable == null) {
-            String entry = getEntryName(i, KEY_TYPE_DRAWABLE);
+            String entry = getEntryName(drawableRes, KEY_TYPE_DRAWABLE);
             if (!TextUtils.isEmpty(entry)) {
                 String drawablePathAndAngle = this.mDrawablePathAndAngleMap.get(entry);
                 if (!TextUtils.isEmpty(drawablePathAndAngle)) {
@@ -243,12 +250,12 @@ public class SkinCompatUserThemeManager {
                             drawable = Drawable.createFromPath(path);
                         } else {
                             Matrix m = new Matrix();
-                            m.postRotate((float) angle);
+                            m.postRotate(angle);
                             Bitmap bitmap = BitmapFactory.decodeFile(path);
                             drawable = new BitmapDrawable((Resources) null, Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true));
                         }
                         if (drawable != null) {
-                            addDrawableToCache(i, drawable);
+                            addDrawableToCache(drawableRes, drawable);
                         }
                     }
                 }
@@ -271,18 +278,15 @@ public class SkinCompatUserThemeManager {
         apply();
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isColorEmpty() {
+    boolean isColorEmpty() {
         return this.mColorEmpty;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isDrawableEmpty() {
+    boolean isDrawableEmpty() {
         return this.mDrawableEmpty;
     }
 
-    /* access modifiers changed from: package-private */
-    public void clearCaches() {
+    void clearCaches() {
         clearColorCaches();
         clearDrawableCaches();
     }
@@ -299,45 +303,24 @@ public class SkinCompatUserThemeManager {
         }
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:11:0x0025, code lost:
-        return null;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private android.content.res.ColorStateList getCachedColor(int r6) {
-        /*
-            r5 = this;
-            java.lang.Object r0 = r5.mColorCacheLock
-            monitor-enter(r0)
-            java.util.WeakHashMap<java.lang.Integer, java.lang.ref.WeakReference<android.content.res.ColorStateList>> r1 = r5.mColorCaches     // Catch:{ all -> 0x0027 }
-            java.lang.Integer r2 = java.lang.Integer.valueOf(r6)     // Catch:{ all -> 0x0027 }
-            java.lang.Object r1 = r1.get(r2)     // Catch:{ all -> 0x0027 }
-            java.lang.ref.WeakReference r1 = (java.lang.ref.WeakReference) r1     // Catch:{ all -> 0x0027 }
-            if (r1 == 0) goto L_0x0024
-            java.lang.Object r2 = r1.get()     // Catch:{ all -> 0x0027 }
-            android.content.res.ColorStateList r2 = (android.content.res.ColorStateList) r2     // Catch:{ all -> 0x0027 }
-            if (r2 == 0) goto L_0x001b
-            monitor-exit(r0)     // Catch:{ all -> 0x0027 }
-            return r2
-        L_0x001b:
-            java.util.WeakHashMap<java.lang.Integer, java.lang.ref.WeakReference<android.content.res.ColorStateList>> r3 = r5.mColorCaches     // Catch:{ all -> 0x0027 }
-            java.lang.Integer r4 = java.lang.Integer.valueOf(r6)     // Catch:{ all -> 0x0027 }
-            r3.remove(r4)     // Catch:{ all -> 0x0027 }
-        L_0x0024:
-            monitor-exit(r0)     // Catch:{ all -> 0x0027 }
-            r0 = 0
-            return r0
-        L_0x0027:
-            r1 = move-exception
-            monitor-exit(r0)     // Catch:{ all -> 0x0027 }
-            throw r1
-        */
-        throw new UnsupportedOperationException("Method not decompiled: skin.support.content.res.SkinCompatUserThemeManager.getCachedColor(int):android.content.res.ColorStateList");
+    private ColorStateList getCachedColor(int colorRes) {
+        synchronized (this.mColorCacheLock) {
+            WeakReference<ColorStateList> colorRef = this.mColorCaches.get(Integer.valueOf(colorRes));
+            if (colorRef != null) {
+                ColorStateList colorStateList = colorRef.get();
+                if (colorStateList != null) {
+                    return colorStateList;
+                }
+                this.mColorCaches.remove(Integer.valueOf(colorRes));
+            }
+            return null;
+        }
     }
 
     private void addColorToCache(int colorRes, ColorStateList colorStateList) {
         if (colorStateList != null) {
             synchronized (this.mColorCacheLock) {
-                this.mColorCaches.put(Integer.valueOf(colorRes), new WeakReference(colorStateList));
+                this.mColorCaches.put(Integer.valueOf(colorRes), new WeakReference<>(colorStateList));
             }
         }
     }
@@ -348,45 +331,24 @@ public class SkinCompatUserThemeManager {
         }
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:11:0x0025, code lost:
-        return null;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private android.graphics.drawable.Drawable getCachedDrawable(int r6) {
-        /*
-            r5 = this;
-            java.lang.Object r0 = r5.mDrawableCacheLock
-            monitor-enter(r0)
-            java.util.WeakHashMap<java.lang.Integer, java.lang.ref.WeakReference<android.graphics.drawable.Drawable>> r1 = r5.mDrawableCaches     // Catch:{ all -> 0x0027 }
-            java.lang.Integer r2 = java.lang.Integer.valueOf(r6)     // Catch:{ all -> 0x0027 }
-            java.lang.Object r1 = r1.get(r2)     // Catch:{ all -> 0x0027 }
-            java.lang.ref.WeakReference r1 = (java.lang.ref.WeakReference) r1     // Catch:{ all -> 0x0027 }
-            if (r1 == 0) goto L_0x0024
-            java.lang.Object r2 = r1.get()     // Catch:{ all -> 0x0027 }
-            android.graphics.drawable.Drawable r2 = (android.graphics.drawable.Drawable) r2     // Catch:{ all -> 0x0027 }
-            if (r2 == 0) goto L_0x001b
-            monitor-exit(r0)     // Catch:{ all -> 0x0027 }
-            return r2
-        L_0x001b:
-            java.util.WeakHashMap<java.lang.Integer, java.lang.ref.WeakReference<android.graphics.drawable.Drawable>> r3 = r5.mDrawableCaches     // Catch:{ all -> 0x0027 }
-            java.lang.Integer r4 = java.lang.Integer.valueOf(r6)     // Catch:{ all -> 0x0027 }
-            r3.remove(r4)     // Catch:{ all -> 0x0027 }
-        L_0x0024:
-            monitor-exit(r0)     // Catch:{ all -> 0x0027 }
-            r0 = 0
-            return r0
-        L_0x0027:
-            r1 = move-exception
-            monitor-exit(r0)     // Catch:{ all -> 0x0027 }
-            throw r1
-        */
-        throw new UnsupportedOperationException("Method not decompiled: skin.support.content.res.SkinCompatUserThemeManager.getCachedDrawable(int):android.graphics.drawable.Drawable");
+    private Drawable getCachedDrawable(int drawableRes) {
+        synchronized (this.mDrawableCacheLock) {
+            WeakReference<Drawable> drawableRef = this.mDrawableCaches.get(Integer.valueOf(drawableRes));
+            if (drawableRef != null) {
+                Drawable drawable = drawableRef.get();
+                if (drawable != null) {
+                    return drawable;
+                }
+                this.mDrawableCaches.remove(Integer.valueOf(drawableRes));
+            }
+            return null;
+        }
     }
 
     private void addDrawableToCache(int drawableRes, Drawable drawable) {
         if (drawable != null) {
             synchronized (this.mDrawableCacheLock) {
-                this.mDrawableCaches.put(Integer.valueOf(drawableRes), new WeakReference(drawable));
+                this.mDrawableCaches.put(Integer.valueOf(drawableRes), new WeakReference<>(drawable));
             }
         }
     }
@@ -399,7 +361,8 @@ public class SkinCompatUserThemeManager {
 
     private String getEntryName(int resId, String entryType) {
         Context context = SkinCompatManager.getInstance().getContext();
-        if (entryType.equalsIgnoreCase(context.getResources().getResourceTypeName(resId))) {
+        String type = context.getResources().getResourceTypeName(resId);
+        if (entryType.equalsIgnoreCase(type)) {
             return context.getResources().getResourceEntryName(resId);
         }
         return null;
@@ -408,7 +371,7 @@ public class SkinCompatUserThemeManager {
     private static boolean checkPathValid(String path) {
         boolean valid = !TextUtils.isEmpty(path) && new File(path).exists();
         if (Slog.DEBUG && !valid) {
-            Slog.i(TAG, "Invalid drawable path : " + path);
+            Slog.m2i(TAG, "Invalid drawable path : " + path);
         }
         return valid;
     }

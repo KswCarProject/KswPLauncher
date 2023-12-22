@@ -5,66 +5,62 @@ import io.reactivex.Observer;
 import io.reactivex.functions.Predicate;
 import io.reactivex.internal.observers.BasicFuseableObserver;
 
+/* loaded from: classes.dex */
 public final class ObservableFilter<T> extends AbstractObservableWithUpstream<T, T> {
     final Predicate<? super T> predicate;
 
-    public ObservableFilter(ObservableSource<T> source, Predicate<? super T> predicate2) {
+    public ObservableFilter(ObservableSource<T> source, Predicate<? super T> predicate) {
         super(source);
-        this.predicate = predicate2;
+        this.predicate = predicate;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super T> observer) {
         this.source.subscribe(new FilterObserver(observer, this.predicate));
     }
 
+    /* loaded from: classes.dex */
     static final class FilterObserver<T> extends BasicFuseableObserver<T, T> {
         final Predicate<? super T> filter;
 
-        FilterObserver(Observer<? super T> actual, Predicate<? super T> filter2) {
+        FilterObserver(Observer<? super T> actual, Predicate<? super T> filter) {
             super(actual);
-            this.filter = filter2;
+            this.filter = filter;
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             if (this.sourceMode == 0) {
                 try {
-                    if (this.filter.test(t)) {
+                    boolean b = this.filter.test(t);
+                    if (b) {
                         this.downstream.onNext(t);
+                        return;
                     }
+                    return;
                 } catch (Throwable e) {
                     fail(e);
+                    return;
                 }
-            } else {
-                this.downstream.onNext(null);
             }
+            this.downstream.onNext(null);
         }
 
+        @Override // io.reactivex.internal.fuseable.QueueFuseable
         public int requestFusion(int mode) {
             return transitiveBoundaryFusion(mode);
         }
 
-        /*  JADX ERROR: StackOverflow in pass: RegionMakerVisitor
-            jadx.core.utils.exceptions.JadxOverflowException: 
-            	at jadx.core.utils.ErrorsCounter.addError(ErrorsCounter.java:47)
-            	at jadx.core.utils.ErrorsCounter.methodError(ErrorsCounter.java:81)
-            */
-        public T poll() throws java.lang.Exception {
-            /*
-                r2 = this;
-            L_0x0000:
-                io.reactivex.internal.fuseable.QueueDisposable r0 = r2.qd
-                java.lang.Object r0 = r0.poll()
-                if (r0 == 0) goto L_0x0012
-                io.reactivex.functions.Predicate<? super T> r1 = r2.filter
-                boolean r1 = r1.test(r0)
-                if (r1 == 0) goto L_0x0011
-                goto L_0x0012
-            L_0x0011:
-                goto L_0x0000
-            L_0x0012:
-                return r0
-            */
-            throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.operators.observable.ObservableFilter.FilterObserver.poll():java.lang.Object");
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
+        public T poll() throws Exception {
+            T v;
+            do {
+                v = this.f264qd.poll();
+                if (v == null) {
+                    break;
+                }
+            } while (!this.filter.test(v));
+            return v;
         }
     }
 }

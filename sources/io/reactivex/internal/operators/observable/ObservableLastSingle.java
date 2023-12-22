@@ -8,40 +8,45 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 import java.util.NoSuchElementException;
 
+/* loaded from: classes.dex */
 public final class ObservableLastSingle<T> extends Single<T> {
     final T defaultItem;
     final ObservableSource<T> source;
 
-    public ObservableLastSingle(ObservableSource<T> source2, T defaultItem2) {
-        this.source = source2;
-        this.defaultItem = defaultItem2;
+    public ObservableLastSingle(ObservableSource<T> source, T defaultItem) {
+        this.source = source;
+        this.defaultItem = defaultItem;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         this.source.subscribe(new LastObserver(observer, this.defaultItem));
     }
 
+    /* loaded from: classes.dex */
     static final class LastObserver<T> implements Observer<T>, Disposable {
         final T defaultItem;
         final SingleObserver<? super T> downstream;
         T item;
         Disposable upstream;
 
-        LastObserver(SingleObserver<? super T> actual, T defaultItem2) {
+        LastObserver(SingleObserver<? super T> actual, T defaultItem) {
             this.downstream = actual;
-            this.defaultItem = defaultItem2;
+            this.defaultItem = defaultItem;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
             this.upstream = DisposableHelper.DISPOSED;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream == DisposableHelper.DISPOSED;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -49,16 +54,19 @@ public final class ObservableLastSingle<T> extends Single<T> {
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             this.item = t;
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             this.upstream = DisposableHelper.DISPOSED;
             this.item = null;
             this.downstream.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             this.upstream = DisposableHelper.DISPOSED;
             T v = this.item;

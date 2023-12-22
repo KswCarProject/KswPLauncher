@@ -10,40 +10,44 @@ import com.google.zxing.Result;
 import com.google.zxing.common.BitArray;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class UPCAReader extends UPCEANReader {
     private final UPCEANReader ean13Reader = new EAN13Reader();
 
+    @Override // com.google.zxing.oned.UPCEANReader
     public Result decodeRow(int rowNumber, BitArray row, int[] startGuardRange, Map<DecodeHintType, ?> hints) throws NotFoundException, FormatException, ChecksumException {
         return maybeReturnResult(this.ean13Reader.decodeRow(rowNumber, row, startGuardRange, hints));
     }
 
+    @Override // com.google.zxing.oned.UPCEANReader, com.google.zxing.oned.OneDReader
     public Result decodeRow(int rowNumber, BitArray row, Map<DecodeHintType, ?> hints) throws NotFoundException, FormatException, ChecksumException {
         return maybeReturnResult(this.ean13Reader.decodeRow(rowNumber, row, hints));
     }
 
+    @Override // com.google.zxing.oned.OneDReader, com.google.zxing.Reader
     public Result decode(BinaryBitmap image) throws NotFoundException, FormatException {
         return maybeReturnResult(this.ean13Reader.decode(image));
     }
 
+    @Override // com.google.zxing.oned.OneDReader, com.google.zxing.Reader
     public Result decode(BinaryBitmap image, Map<DecodeHintType, ?> hints) throws NotFoundException, FormatException {
         return maybeReturnResult(this.ean13Reader.decode(image, hints));
     }
 
-    /* access modifiers changed from: package-private */
-    public BarcodeFormat getBarcodeFormat() {
+    @Override // com.google.zxing.oned.UPCEANReader
+    BarcodeFormat getBarcodeFormat() {
         return BarcodeFormat.UPC_A;
     }
 
-    /* access modifiers changed from: protected */
-    public int decodeMiddle(BitArray row, int[] startRange, StringBuilder resultString) throws NotFoundException {
+    @Override // com.google.zxing.oned.UPCEANReader
+    protected int decodeMiddle(BitArray row, int[] startRange, StringBuilder resultString) throws NotFoundException {
         return this.ean13Reader.decodeMiddle(row, startRange, resultString);
     }
 
     private static Result maybeReturnResult(Result result) throws FormatException {
         String text = result.getText();
-        String text2 = text;
         if (text.charAt(0) == '0') {
-            Result upcaResult = new Result(text2.substring(1), (byte[]) null, result.getResultPoints(), BarcodeFormat.UPC_A);
+            Result upcaResult = new Result(text.substring(1), null, result.getResultPoints(), BarcodeFormat.UPC_A);
             if (result.getResultMetadata() != null) {
                 upcaResult.putAllMetadata(result.getResultMetadata());
             }

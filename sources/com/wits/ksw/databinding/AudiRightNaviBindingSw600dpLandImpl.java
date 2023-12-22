@@ -1,18 +1,21 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.base.BaseBindingModel;
 import com.wits.ksw.launcher.model.AudiViewModel;
 import com.wits.ksw.launcher.utils.NaviInfo;
 
+/* loaded from: classes7.dex */
 public class AudiRightNaviBindingSw600dpLandImpl extends AudiRightNaviBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
@@ -21,12 +24,12 @@ public class AudiRightNaviBindingSw600dpLandImpl extends AudiRightNaviBinding {
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.NaviAmapautoInfo, 6);
-        sparseIntArray.put(R.id.bg1, 7);
-        sparseIntArray.put(R.id.bg2, 8);
-        sparseIntArray.put(R.id.bg3, 9);
-        sparseIntArray.put(R.id.ImgRemainDis, 10);
-        sparseIntArray.put(R.id.ImgRemainTime, 11);
+        sparseIntArray.put(C0899R.C0901id.NaviAmapautoInfo, 6);
+        sparseIntArray.put(C0899R.C0901id.bg1, 7);
+        sparseIntArray.put(C0899R.C0901id.bg2, 8);
+        sparseIntArray.put(C0899R.C0901id.bg3, 9);
+        sparseIntArray.put(C0899R.C0901id.ImgRemainDis, 10);
+        sparseIntArray.put(C0899R.C0901id.ImgRemainTime, 11);
     }
 
     public AudiRightNaviBindingSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
@@ -34,25 +37,27 @@ public class AudiRightNaviBindingSw600dpLandImpl extends AudiRightNaviBinding {
     }
 
     private AudiRightNaviBindingSw600dpLandImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 6, bindings[1], bindings[10], bindings[11], bindings[0], bindings[6], bindings[3], bindings[4], bindings[5], bindings[2], bindings[7], bindings[8], bindings[9]);
-        this.mDirtyFlags = -1;
-        this.AmapautoIcon.setTag((Object) null);
-        this.KSWA4LRightShowNavi.setTag((Object) null);
-        this.TvNextRouadName.setTag((Object) null);
-        this.TvRouteRemainDis.setTag((Object) null);
-        this.TvRouteRemainTime.setTag((Object) null);
-        this.TvSegRemainDisInfor.setTag((Object) null);
+        super(bindingComponent, root, 6, (ImageView) bindings[1], (ImageView) bindings[10], (ImageView) bindings[11], (RelativeLayout) bindings[0], (RelativeLayout) bindings[6], (TextView) bindings[3], (TextView) bindings[4], (TextView) bindings[5], (TextView) bindings[2], (ImageView) bindings[7], (ImageView) bindings[8], (ImageView) bindings[9]);
+        this.mDirtyFlags = -1L;
+        this.AmapautoIcon.setTag(null);
+        this.KSWA4LRightShowNavi.setTag(null);
+        this.TvNextRouadName.setTag(null);
+        this.TvRouteRemainDis.setTag(null);
+        this.TvRouteRemainTime.setTag(null);
+        this.TvSegRemainDisInfor.setTag(null);
         setRootTag(root);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 128;
+            this.mDirtyFlags = 128L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -62,14 +67,16 @@ public class AudiRightNaviBindingSw600dpLandImpl extends AudiRightNaviBinding {
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((AudiViewModel) variable);
+            return true;
         }
-        setVm((AudiViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AudiRightNaviBinding
     public void setVm(AudiViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -79,8 +86,8 @@ public class AudiRightNaviBindingSw600dpLandImpl extends AudiRightNaviBinding {
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmNaviInfoShowGuideView((ObservableInt) object, fieldId);
@@ -100,75 +107,75 @@ public class AudiRightNaviBindingSw600dpLandImpl extends AudiRightNaviBinding {
     }
 
     private boolean onChangeVmNaviInfoShowGuideView(ObservableInt VmNaviInfoShowGuideView, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmNaviInfoRouteRemainDis(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmNaviInfoRouteRemainDis(ObservableField<String> VmNaviInfoRouteRemainDis, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 2;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 2;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmNaviInfoIcon(ObservableField<Integer> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmNaviInfoIcon(ObservableField<Integer> VmNaviInfoIcon, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 4;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 4;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmNaviInfoSegRemainDis(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmNaviInfoSegRemainDis(ObservableField<String> VmNaviInfoSegRemainDis, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 8;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 8;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmNaviInfoRouteRemainTime(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmNaviInfoRouteRemainTime(ObservableField<String> VmNaviInfoRouteRemainTime, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 16;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 16;
-        }
-        return true;
+        return false;
     }
 
-    private boolean onChangeVmNaviInfoNextRoadName(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmNaviInfoNextRoadName(ObservableField<String> VmNaviInfoNextRoadName, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 32;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 32;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
-        String vmNaviInfoRouteRemainTimeGet;
         int androidDatabindingViewDataBindingSafeUnboxVmNaviInfoIconGet;
+        String vmNaviInfoRouteRemainTimeGet;
         NaviInfo vmNaviInfo;
         ObservableField<String> vmNaviInfoNextRoadName;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         String vmNaviInfoSegRemainDisGet = null;
         AudiViewModel vm = this.mVm;
@@ -183,17 +190,20 @@ public class AudiRightNaviBindingSw600dpLandImpl extends AudiRightNaviBinding {
         String vmNaviInfoNextRoadNameGet = null;
         int androidDatabindingViewDataBindingSafeUnboxVmNaviInfoIconGet2 = 0;
         String vmNaviInfoRouteRemainTimeGet2 = null;
-        if ((dirtyFlags & 255) != 0) {
-            if (vm != null) {
-                vmNaviInfo = vm.naviInfo;
-            } else {
+        if ((dirtyFlags & 255) == 0) {
+            androidDatabindingViewDataBindingSafeUnboxVmNaviInfoIconGet = 0;
+            vmNaviInfoRouteRemainTimeGet = null;
+        } else {
+            if (vm == null) {
                 vmNaviInfo = null;
+            } else {
+                vmNaviInfo = vm.naviInfo;
             }
             if ((dirtyFlags & 193) != 0) {
                 if (vmNaviInfo != null) {
                     vmNaviInfoShowGuideView = vmNaviInfo.showGuideView;
                 }
-                updateRegistration(0, (Observable) vmNaviInfoShowGuideView);
+                updateRegistration(0, vmNaviInfoShowGuideView);
                 if (vmNaviInfoShowGuideView != null) {
                     vmNaviInfoShowGuideViewGet = vmNaviInfoShowGuideView.get();
                 }
@@ -202,7 +212,7 @@ public class AudiRightNaviBindingSw600dpLandImpl extends AudiRightNaviBinding {
                 if (vmNaviInfo != null) {
                     vmNaviInfoRouteRemainDis = vmNaviInfo.route_remain_dis;
                 }
-                updateRegistration(1, (Observable) vmNaviInfoRouteRemainDis);
+                updateRegistration(1, vmNaviInfoRouteRemainDis);
                 if (vmNaviInfoRouteRemainDis != null) {
                     vmNaviInfoRouteRemainDisGet = vmNaviInfoRouteRemainDis.get();
                 }
@@ -211,9 +221,10 @@ public class AudiRightNaviBindingSw600dpLandImpl extends AudiRightNaviBinding {
                 if (vmNaviInfo != null) {
                     vmNaviInfoIcon = vmNaviInfo.icon;
                 }
-                updateRegistration(2, (Observable) vmNaviInfoIcon);
+                updateRegistration(2, vmNaviInfoIcon);
                 if (vmNaviInfoIcon != null) {
-                    vmNaviInfoIconGet = vmNaviInfoIcon.get();
+                    Integer vmNaviInfoIconGet2 = vmNaviInfoIcon.get();
+                    vmNaviInfoIconGet = vmNaviInfoIconGet2;
                 }
                 androidDatabindingViewDataBindingSafeUnboxVmNaviInfoIconGet2 = ViewDataBinding.safeUnbox(vmNaviInfoIconGet);
             }
@@ -221,7 +232,7 @@ public class AudiRightNaviBindingSw600dpLandImpl extends AudiRightNaviBinding {
                 if (vmNaviInfo != null) {
                     vmNaviInfoSegRemainDis = vmNaviInfo.seg_remain_dis;
                 }
-                updateRegistration(3, (Observable) vmNaviInfoSegRemainDis);
+                updateRegistration(3, vmNaviInfoSegRemainDis);
                 if (vmNaviInfoSegRemainDis != null) {
                     vmNaviInfoSegRemainDisGet = vmNaviInfoSegRemainDis.get();
                 }
@@ -230,44 +241,35 @@ public class AudiRightNaviBindingSw600dpLandImpl extends AudiRightNaviBinding {
                 if (vmNaviInfo != null) {
                     vmNaviInfoRouteRemainTime = vmNaviInfo.route_remain_time;
                 }
-                updateRegistration(4, (Observable) vmNaviInfoRouteRemainTime);
+                updateRegistration(4, vmNaviInfoRouteRemainTime);
                 if (vmNaviInfoRouteRemainTime != null) {
                     vmNaviInfoRouteRemainTimeGet2 = vmNaviInfoRouteRemainTime.get();
                 }
             }
             if ((dirtyFlags & 224) != 0) {
-                if (vmNaviInfo != null) {
-                    vmNaviInfoNextRoadName = vmNaviInfo.next_road_name;
-                } else {
+                if (vmNaviInfo == null) {
                     vmNaviInfoNextRoadName = null;
+                } else {
+                    vmNaviInfoNextRoadName = vmNaviInfo.next_road_name;
                 }
                 String vmNaviInfoSegRemainDisGet2 = vmNaviInfoSegRemainDisGet;
-                updateRegistration(5, (Observable) vmNaviInfoNextRoadName);
+                updateRegistration(5, vmNaviInfoNextRoadName);
                 if (vmNaviInfoNextRoadName != null) {
                     vmNaviInfoNextRoadNameGet = vmNaviInfoNextRoadName.get();
-                    ObservableField<String> observableField = vmNaviInfoNextRoadName;
                     vmNaviInfoRouteRemainTimeGet = vmNaviInfoRouteRemainTimeGet2;
                     vmNaviInfoSegRemainDisGet = vmNaviInfoSegRemainDisGet2;
-                    NaviInfo naviInfo = vmNaviInfo;
                     androidDatabindingViewDataBindingSafeUnboxVmNaviInfoIconGet = androidDatabindingViewDataBindingSafeUnboxVmNaviInfoIconGet2;
                 } else {
-                    ObservableField<String> observableField2 = vmNaviInfoNextRoadName;
                     vmNaviInfoRouteRemainTimeGet = vmNaviInfoRouteRemainTimeGet2;
                     vmNaviInfoSegRemainDisGet = vmNaviInfoSegRemainDisGet2;
-                    NaviInfo naviInfo2 = vmNaviInfo;
                     androidDatabindingViewDataBindingSafeUnboxVmNaviInfoIconGet = androidDatabindingViewDataBindingSafeUnboxVmNaviInfoIconGet2;
                 }
             } else {
                 vmNaviInfoRouteRemainTimeGet = vmNaviInfoRouteRemainTimeGet2;
-                NaviInfo naviInfo3 = vmNaviInfo;
                 androidDatabindingViewDataBindingSafeUnboxVmNaviInfoIconGet = androidDatabindingViewDataBindingSafeUnboxVmNaviInfoIconGet2;
             }
-        } else {
-            androidDatabindingViewDataBindingSafeUnboxVmNaviInfoIconGet = 0;
-            vmNaviInfoRouteRemainTimeGet = null;
         }
         if ((dirtyFlags & 196) != 0) {
-            AudiViewModel audiViewModel = vm;
             BaseBindingModel.srcImage(this.AmapautoIcon, androidDatabindingViewDataBindingSafeUnboxVmNaviInfoIconGet);
         }
         if ((dirtyFlags & 193) != 0) {

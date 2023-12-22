@@ -6,6 +6,7 @@ import io.reactivex.internal.functions.ObjectHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public enum DisposableHelper implements Disposable {
     DISPOSED;
 
@@ -18,31 +19,31 @@ public enum DisposableHelper implements Disposable {
         do {
             current = field.get();
             if (current == DISPOSED) {
-                if (d == null) {
+                if (d != null) {
+                    d.dispose();
                     return false;
                 }
-                d.dispose();
                 return false;
             }
         } while (!field.compareAndSet(current, d));
-        if (current == null) {
+        if (current != null) {
+            current.dispose();
             return true;
         }
-        current.dispose();
         return true;
     }
 
     public static boolean setOnce(AtomicReference<Disposable> field, Disposable d) {
         ObjectHelper.requireNonNull(d, "d is null");
-        if (field.compareAndSet((Object) null, d)) {
-            return true;
-        }
-        d.dispose();
-        if (field.get() == DISPOSED) {
+        if (!field.compareAndSet(null, d)) {
+            d.dispose();
+            if (field.get() != DISPOSED) {
+                reportDisposableSet();
+                return false;
+            }
             return false;
         }
-        reportDisposableSet();
-        return false;
+        return true;
     }
 
     public static boolean replace(AtomicReference<Disposable> field, Disposable d) {
@@ -50,10 +51,10 @@ public enum DisposableHelper implements Disposable {
         do {
             current = field.get();
             if (current == DISPOSED) {
-                if (d == null) {
+                if (d != null) {
+                    d.dispose();
                     return false;
                 }
-                d.dispose();
                 return false;
             }
         } while (!field.compareAndSet(current, d));
@@ -61,29 +62,33 @@ public enum DisposableHelper implements Disposable {
     }
 
     public static boolean dispose(AtomicReference<Disposable> field) {
-        Disposable current;
-        Disposable current2 = field.get();
+        Disposable current = field.get();
         Disposable d = DISPOSED;
-        if (current2 == d || (current = field.getAndSet(d)) == d) {
+        if (current != d) {
+            Disposable current2 = field.getAndSet(d);
+            Disposable current3 = current2;
+            if (current3 != d) {
+                if (current3 != null) {
+                    current3.dispose();
+                    return true;
+                }
+                return true;
+            }
             return false;
         }
-        if (current == null) {
-            return true;
-        }
-        current.dispose();
-        return true;
+        return false;
     }
 
     public static boolean validate(Disposable current, Disposable next) {
         if (next == null) {
             RxJavaPlugins.onError(new NullPointerException("next is null"));
             return false;
-        } else if (current == null) {
-            return true;
-        } else {
+        } else if (current != null) {
             next.dispose();
             reportDisposableSet();
             return false;
+        } else {
+            return true;
         }
     }
 
@@ -92,19 +97,21 @@ public enum DisposableHelper implements Disposable {
     }
 
     public static boolean trySet(AtomicReference<Disposable> field, Disposable d) {
-        if (field.compareAndSet((Object) null, d)) {
-            return true;
-        }
-        if (field.get() != DISPOSED) {
+        if (!field.compareAndSet(null, d)) {
+            if (field.get() == DISPOSED) {
+                d.dispose();
+                return false;
+            }
             return false;
         }
-        d.dispose();
-        return false;
+        return true;
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public void dispose() {
     }
 
+    @Override // io.reactivex.disposables.Disposable
     public boolean isDisposed() {
         return true;
     }

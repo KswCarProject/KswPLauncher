@@ -6,8 +6,8 @@ import com.ibm.icu.text.DictionaryBreakEngine;
 import com.wits.pms.statuscontrol.WitsCommand;
 import java.io.IOException;
 import java.text.CharacterIterator;
-import java.text.StringCharacterIterator;
 
+/* loaded from: classes.dex */
 class CjkBreakEngine extends DictionaryBreakEngine {
     private static final UnicodeSet fHanWordSet;
     private static final UnicodeSet fHangulWordSet;
@@ -32,10 +32,10 @@ class CjkBreakEngine extends DictionaryBreakEngine {
         unicodeSet2.applyPattern("[:Han:]");
         unicodeSet3.applyPattern("[[:Katakana:]\\uff9e\\uff9f]");
         unicodeSet4.applyPattern("[:Hiragana:]");
-        unicodeSet.freeze();
-        unicodeSet2.freeze();
-        unicodeSet3.freeze();
-        unicodeSet4.freeze();
+        unicodeSet.m87freeze();
+        unicodeSet2.m87freeze();
+        unicodeSet3.m87freeze();
+        unicodeSet4.m87freeze();
     }
 
     public CjkBreakEngine(boolean korean) throws IOException {
@@ -56,7 +56,8 @@ class CjkBreakEngine extends DictionaryBreakEngine {
 
     public boolean equals(Object obj) {
         if (obj instanceof CjkBreakEngine) {
-            return this.fSet.equals(((CjkBreakEngine) obj).fSet);
+            CjkBreakEngine other = (CjkBreakEngine) obj;
+            return this.fSet.equals(other.fSet);
         }
         return false;
     }
@@ -77,47 +78,47 @@ class CjkBreakEngine extends DictionaryBreakEngine {
         return (value >= 12449 && value <= 12542 && value != 12539) || (value >= 65382 && value <= 65439);
     }
 
+    @Override // com.ibm.icu.text.DictionaryBreakEngine
     public int divideUpDictionaryRange(CharacterIterator inText, int startPos, int endPos, DictionaryBreakEngine.DequeI foundBreaks) {
         CharacterIterator text;
-        int[] bestSnlp;
-        int[] prev;
-        String prenormstr;
         int[] values;
-        int[] lengths;
+        String prenormstr;
+        int[] prev;
         int i;
+        int[] bestSnlp;
         CharacterIterator text2;
+        int[] lengths;
         int newSnlp;
-        int i2 = startPos;
-        int i3 = endPos;
-        DictionaryBreakEngine.DequeI dequeI = foundBreaks;
-        if (i2 >= i3) {
+        if (startPos >= endPos) {
             return 0;
         }
         inText.setIndex(startPos);
-        int inputLength = i3 - i2;
-        int[] charPositions = new int[(inputLength + 1)];
+        int inputLength = endPos - startPos;
+        int[] charPositions = new int[inputLength + 1];
         StringBuffer s = new StringBuffer("");
         inText.setIndex(startPos);
-        while (inText.getIndex() < i3) {
+        while (inText.getIndex() < endPos) {
             s.append(inText.current());
             inText.next();
         }
         String prenormstr2 = s.toString();
+        boolean isNormalized = Normalizer.quickCheck(prenormstr2, Normalizer.NFKC) == Normalizer.YES || Normalizer.isNormalized(prenormstr2, Normalizer.NFKC, 0);
         int numCodePts = 0;
-        if (Normalizer.quickCheck(prenormstr2, Normalizer.NFKC) == Normalizer.YES || Normalizer.isNormalized(prenormstr2, Normalizer.NFKC, 0)) {
-            CharacterIterator stringCharacterIterator = new StringCharacterIterator(prenormstr2);
+        if (isNormalized) {
+            CharacterIterator stringCharacterIterator = new java.text.StringCharacterIterator(prenormstr2);
             int index = 0;
             charPositions[0] = 0;
             while (index < prenormstr2.length()) {
-                index += Character.charCount(prenormstr2.codePointAt(index));
+                int codepoint = prenormstr2.codePointAt(index);
+                index += Character.charCount(codepoint);
                 numCodePts++;
                 charPositions[numCodePts] = index;
             }
             text = stringCharacterIterator;
         } else {
             String normStr = Normalizer.normalize(prenormstr2, Normalizer.NFKC);
-            CharacterIterator text3 = new StringCharacterIterator(normStr);
-            charPositions = new int[(normStr.length() + 1)];
+            CharacterIterator stringCharacterIterator2 = new java.text.StringCharacterIterator(normStr);
+            charPositions = new int[normStr.length() + 1];
             Normalizer normalizer = new Normalizer(prenormstr2, Normalizer.NFKC, 0);
             int index2 = 0;
             charPositions[0] = 0;
@@ -127,16 +128,17 @@ class CjkBreakEngine extends DictionaryBreakEngine {
                 index2 = normalizer.getIndex();
                 charPositions[numCodePts] = index2;
             }
-            text = text3;
+            text = stringCharacterIterator2;
         }
-        int[] bestSnlp2 = new int[(numCodePts + 1)];
+        int[] bestSnlp2 = new int[numCodePts + 1];
         bestSnlp2[0] = 0;
-        for (int i4 = 1; i4 <= numCodePts; i4++) {
-            bestSnlp2[i4] = Integer.MAX_VALUE;
+        for (int i2 = 1; i2 <= numCodePts; i2++) {
+            bestSnlp2[i2] = Integer.MAX_VALUE;
         }
-        int[] prev2 = new int[(numCodePts + 1)];
-        for (int i5 = 0; i5 <= numCodePts; i5++) {
-            prev2[i5] = -1;
+        int i3 = numCodePts + 1;
+        int[] prev2 = new int[i3];
+        for (int i4 = 0; i4 <= numCodePts; i4++) {
+            prev2[i4] = -1;
         }
         int[] values2 = new int[numCodePts];
         int[] lengths2 = new int[numCodePts];
@@ -179,28 +181,29 @@ class CjkBreakEngine extends DictionaryBreakEngine {
                         prev[lengths2[j] + i] = i;
                     }
                 }
-                boolean is_katakana = isKatakana(CharacterIteration.current32(text2));
+                int j2 = CharacterIteration.current32(text2);
+                boolean is_katakana = isKatakana(j2);
                 if (is_prev_katakana || !is_katakana) {
                     lengths = lengths2;
                 } else {
-                    int j2 = i + 1;
+                    int j3 = i + 1;
                     CharacterIteration.next32(text2);
                     while (true) {
-                        if (j2 >= numCodePts) {
+                        if (j3 >= numCodePts) {
                             lengths = lengths2;
                             break;
                         }
                         lengths = lengths2;
-                        if (j2 - i >= 20 || !isKatakana(CharacterIteration.current32(text2))) {
+                        if (j3 - i >= 20 || !isKatakana(CharacterIteration.current32(text2))) {
                             break;
                         }
                         CharacterIteration.next32(text2);
-                        j2++;
+                        j3++;
                         lengths2 = lengths;
                     }
-                    if (j2 - i < 20 && (newSnlp = bestSnlp[i] + getKatakanaCost(j2 - i)) < bestSnlp[j2]) {
-                        bestSnlp[j2] = newSnlp;
-                        prev[j2] = i;
+                    if (j3 - i < 20 && (newSnlp = bestSnlp[i] + getKatakanaCost(j3 - i)) < bestSnlp[j3]) {
+                        bestSnlp[j3] = newSnlp;
+                        prev[j3] = i;
                     }
                 }
                 is_prev_katakana = is_katakana;
@@ -217,49 +220,38 @@ class CjkBreakEngine extends DictionaryBreakEngine {
             prev2 = prev;
             bestSnlp2 = bestSnlp;
         }
-        int i6 = inputLength;
-        StringBuffer stringBuffer = s;
-        String str = prenormstr2;
         int[] prev3 = prev2;
-        int i7 = count;
-        int[] iArr = values2;
-        CharacterIterator characterIterator = text;
-        int[] t_boundary = new int[(numCodePts + 1)];
+        int[] t_boundary = new int[numCodePts + 1];
         int numBreaks = 0;
         if (bestSnlp2[numCodePts] == Integer.MAX_VALUE) {
             t_boundary[0] = numCodePts;
             numBreaks = 0 + 1;
         } else {
-            boolean z = true;
-            for (int i8 = numCodePts; i8 > 0; i8 = prev3[i8]) {
-                t_boundary[numBreaks] = i8;
+            for (int i5 = numCodePts; i5 > 0; i5 = prev3[i5]) {
+                t_boundary[numBreaks] = i5;
                 numBreaks++;
             }
-            if (prev3[t_boundary[numBreaks - 1]] != 0) {
-                z = false;
-            }
-            Assert.assrt(z);
+            int i6 = numBreaks - 1;
+            Assert.assrt(prev3[t_boundary[i6]] == 0);
         }
-        if (foundBreaks.size() == 0 || foundBreaks.peek() < i2) {
+        if (foundBreaks.size() == 0 || foundBreaks.peek() < startPos) {
             t_boundary[numBreaks] = 0;
             numBreaks++;
         }
         int correctedNumBreaks = 0;
-        for (int i9 = numBreaks - 1; i9 >= 0; i9--) {
-            int pos = charPositions[t_boundary[i9]] + i2;
-            if (!dequeI.contains(pos) && pos != i2) {
-                dequeI.push(charPositions[t_boundary[i9]] + i2);
+        for (int i7 = numBreaks - 1; i7 >= 0; i7--) {
+            int pos = charPositions[t_boundary[i7]] + startPos;
+            if (!foundBreaks.contains(pos) && pos != startPos) {
+                foundBreaks.push(charPositions[t_boundary[i7]] + startPos);
                 correctedNumBreaks++;
             }
         }
-        if (foundBreaks.isEmpty() == 0 && foundBreaks.peek() == i3) {
+        if (!foundBreaks.isEmpty() && foundBreaks.peek() == endPos) {
             foundBreaks.pop();
             correctedNumBreaks--;
         }
         if (!foundBreaks.isEmpty()) {
             inText.setIndex(foundBreaks.peek());
-        } else {
-            CharacterIterator characterIterator2 = inText;
         }
         return correctedNumBreaks;
     }

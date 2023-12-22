@@ -6,14 +6,15 @@ import android.databinding.ViewDataBinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class ZlinkWeatherFragment extends ViewDataBinding {
     @Bindable
     protected AlsID7ViewModel mZlinkWeatherViewModel;
 
-    public abstract void setZlinkWeatherViewModel(AlsID7ViewModel alsID7ViewModel);
+    public abstract void setZlinkWeatherViewModel(AlsID7ViewModel ZlinkWeatherViewModel);
 
     protected ZlinkWeatherFragment(Object _bindingComponent, View _root, int _localFieldCount) {
         super(_bindingComponent, _root, _localFieldCount);
@@ -29,7 +30,7 @@ public abstract class ZlinkWeatherFragment extends ViewDataBinding {
 
     @Deprecated
     public static ZlinkWeatherFragment inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ZlinkWeatherFragment) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_fragment_zlink_weather, root, attachToRoot, component);
+        return (ZlinkWeatherFragment) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_fragment_zlink_weather, root, attachToRoot, component);
     }
 
     public static ZlinkWeatherFragment inflate(LayoutInflater inflater) {
@@ -38,7 +39,7 @@ public abstract class ZlinkWeatherFragment extends ViewDataBinding {
 
     @Deprecated
     public static ZlinkWeatherFragment inflate(LayoutInflater inflater, Object component) {
-        return (ZlinkWeatherFragment) ViewDataBinding.inflateInternal(inflater, R.layout.als_id7_fragment_zlink_weather, (ViewGroup) null, false, component);
+        return (ZlinkWeatherFragment) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.als_id7_fragment_zlink_weather, null, false, component);
     }
 
     public static ZlinkWeatherFragment bind(View view) {
@@ -47,6 +48,6 @@ public abstract class ZlinkWeatherFragment extends ViewDataBinding {
 
     @Deprecated
     public static ZlinkWeatherFragment bind(View view, Object component) {
-        return (ZlinkWeatherFragment) bind(component, view, R.layout.als_id7_fragment_zlink_weather);
+        return (ZlinkWeatherFragment) bind(component, view, C0899R.C0902layout.als_id7_fragment_zlink_weather);
     }
 }

@@ -13,6 +13,7 @@ import io.reactivex.internal.disposables.EmptyDisposable;
 import io.reactivex.internal.disposables.ResettableConnectable;
 import io.reactivex.internal.functions.ObjectHelper;
 import io.reactivex.internal.fuseable.HasUpstreamObservableSource;
+import io.reactivex.internal.util.ExceptionHelper;
 import io.reactivex.internal.util.NotificationLite;
 import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -25,6 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ObservableReplay<T> extends ConnectableObservable<T> implements HasUpstreamObservableSource<T>, ResettableConnectable {
     static final BufferSupplier DEFAULT_UNBOUNDED_FACTORY = new UnBoundedFactory();
     final BufferSupplier<T> bufferFactory;
@@ -32,10 +34,12 @@ public final class ObservableReplay<T> extends ConnectableObservable<T> implemen
     final ObservableSource<T> onSubscribe;
     final ObservableSource<T> source;
 
+    /* loaded from: classes.dex */
     interface BufferSupplier<T> {
         ReplayBuffer<T> call();
     }
 
+    /* loaded from: classes.dex */
     interface ReplayBuffer<T> {
         void complete();
 
@@ -51,109 +55,88 @@ public final class ObservableReplay<T> extends ConnectableObservable<T> implemen
     }
 
     public static <T> ConnectableObservable<T> observeOn(ConnectableObservable<T> co, Scheduler scheduler) {
-        return RxJavaPlugins.onAssembly(new Replay(co, co.observeOn(scheduler)));
+        Observable<T> observable = co.observeOn(scheduler);
+        return RxJavaPlugins.onAssembly((ConnectableObservable) new Replay(co, observable));
     }
 
-    public static <T> ConnectableObservable<T> createFrom(ObservableSource<? extends T> source2) {
-        return create(source2, DEFAULT_UNBOUNDED_FACTORY);
+    public static <T> ConnectableObservable<T> createFrom(ObservableSource<? extends T> source) {
+        return create(source, DEFAULT_UNBOUNDED_FACTORY);
     }
 
-    public static <T> ConnectableObservable<T> create(ObservableSource<T> source2, int bufferSize) {
+    public static <T> ConnectableObservable<T> create(ObservableSource<T> source, int bufferSize) {
         if (bufferSize == Integer.MAX_VALUE) {
-            return createFrom(source2);
+            return createFrom(source);
         }
-        return create(source2, new ReplayBufferSupplier(bufferSize));
+        return create(source, new ReplayBufferSupplier(bufferSize));
     }
 
-    public static <T> ConnectableObservable<T> create(ObservableSource<T> source2, long maxAge, TimeUnit unit, Scheduler scheduler) {
-        return create(source2, maxAge, unit, scheduler, Integer.MAX_VALUE);
+    public static <T> ConnectableObservable<T> create(ObservableSource<T> source, long maxAge, TimeUnit unit, Scheduler scheduler) {
+        return create(source, maxAge, unit, scheduler, Integer.MAX_VALUE);
     }
 
-    public static <T> ConnectableObservable<T> create(ObservableSource<T> source2, long maxAge, TimeUnit unit, Scheduler scheduler, int bufferSize) {
-        return create(source2, new ScheduledReplaySupplier(bufferSize, maxAge, unit, scheduler));
+    public static <T> ConnectableObservable<T> create(ObservableSource<T> source, long maxAge, TimeUnit unit, Scheduler scheduler, int bufferSize) {
+        return create(source, new ScheduledReplaySupplier(bufferSize, maxAge, unit, scheduler));
     }
 
-    static <T> ConnectableObservable<T> create(ObservableSource<T> source2, BufferSupplier<T> bufferFactory2) {
+    static <T> ConnectableObservable<T> create(ObservableSource<T> source, BufferSupplier<T> bufferFactory) {
         AtomicReference<ReplayObserver<T>> curr = new AtomicReference<>();
-        return RxJavaPlugins.onAssembly(new ObservableReplay(new ReplaySource<>(curr, bufferFactory2), source2, curr, bufferFactory2));
+        ObservableSource<T> onSubscribe = new ReplaySource<>(curr, bufferFactory);
+        return RxJavaPlugins.onAssembly((ConnectableObservable) new ObservableReplay(onSubscribe, source, curr, bufferFactory));
     }
 
-    private ObservableReplay(ObservableSource<T> onSubscribe2, ObservableSource<T> source2, AtomicReference<ReplayObserver<T>> current2, BufferSupplier<T> bufferFactory2) {
-        this.onSubscribe = onSubscribe2;
-        this.source = source2;
-        this.current = current2;
-        this.bufferFactory = bufferFactory2;
+    private ObservableReplay(ObservableSource<T> onSubscribe, ObservableSource<T> source, AtomicReference<ReplayObserver<T>> current, BufferSupplier<T> bufferFactory) {
+        this.onSubscribe = onSubscribe;
+        this.source = source;
+        this.current = current;
+        this.bufferFactory = bufferFactory;
     }
 
+    @Override // io.reactivex.internal.fuseable.HasUpstreamObservableSource
     public ObservableSource<T> source() {
         return this.source;
     }
 
+    @Override // io.reactivex.internal.disposables.ResettableConnectable
     public void resetIf(Disposable connectionObject) {
-        this.current.compareAndSet((ReplayObserver) connectionObject, (Object) null);
+        this.current.compareAndSet((ReplayObserver) connectionObject, null);
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Observer<? super T> observer) {
+    @Override // io.reactivex.Observable
+    protected void subscribeActual(Observer<? super T> observer) {
         this.onSubscribe.subscribe(observer);
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:0:0x0000 A[LOOP_START, MTH_ENTER_BLOCK] */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void connect(io.reactivex.functions.Consumer<? super io.reactivex.disposables.Disposable> r7) {
-        /*
-            r6 = this;
-        L_0x0000:
-            java.util.concurrent.atomic.AtomicReference<io.reactivex.internal.operators.observable.ObservableReplay$ReplayObserver<T>> r0 = r6.current
-            java.lang.Object r0 = r0.get()
-            io.reactivex.internal.operators.observable.ObservableReplay$ReplayObserver r0 = (io.reactivex.internal.operators.observable.ObservableReplay.ReplayObserver) r0
-            if (r0 == 0) goto L_0x0010
-            boolean r1 = r0.isDisposed()
-            if (r1 == 0) goto L_0x0025
-        L_0x0010:
-            io.reactivex.internal.operators.observable.ObservableReplay$BufferSupplier<T> r1 = r6.bufferFactory
-            io.reactivex.internal.operators.observable.ObservableReplay$ReplayBuffer r1 = r1.call()
-            io.reactivex.internal.operators.observable.ObservableReplay$ReplayObserver r2 = new io.reactivex.internal.operators.observable.ObservableReplay$ReplayObserver
-            r2.<init>(r1)
-            java.util.concurrent.atomic.AtomicReference<io.reactivex.internal.operators.observable.ObservableReplay$ReplayObserver<T>> r3 = r6.current
-            boolean r3 = r3.compareAndSet(r0, r2)
-            if (r3 != 0) goto L_0x0024
-            goto L_0x0000
-        L_0x0024:
-            r0 = r2
-        L_0x0025:
-            java.util.concurrent.atomic.AtomicBoolean r1 = r0.shouldConnect
-            boolean r1 = r1.get()
-            r2 = 1
-            r3 = 0
-            if (r1 != 0) goto L_0x0039
-            java.util.concurrent.atomic.AtomicBoolean r1 = r0.shouldConnect
-            boolean r1 = r1.compareAndSet(r3, r2)
-            if (r1 == 0) goto L_0x0039
-            r1 = r2
-            goto L_0x003a
-        L_0x0039:
-            r1 = r3
-        L_0x003a:
-            r7.accept(r0)     // Catch:{ all -> 0x0047 }
-            if (r1 == 0) goto L_0x0046
-            io.reactivex.ObservableSource<T> r2 = r6.source
-            r2.subscribe(r0)
-        L_0x0046:
-            return
-        L_0x0047:
-            r4 = move-exception
-            if (r1 == 0) goto L_0x004f
-            java.util.concurrent.atomic.AtomicBoolean r5 = r0.shouldConnect
-            r5.compareAndSet(r2, r3)
-        L_0x004f:
-            io.reactivex.exceptions.Exceptions.throwIfFatal(r4)
-            java.lang.RuntimeException r2 = io.reactivex.internal.util.ExceptionHelper.wrapOrThrow(r4)
-            throw r2
-        */
-        throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.operators.observable.ObservableReplay.connect(io.reactivex.functions.Consumer):void");
+    @Override // io.reactivex.observables.ConnectableObservable
+    public void connect(Consumer<? super Disposable> connection) {
+        ReplayObserver<T> ps;
+        while (true) {
+            ps = this.current.get();
+            if (ps != null && !ps.isDisposed()) {
+                break;
+            }
+            ReplayBuffer<T> buf = this.bufferFactory.call();
+            ReplayObserver<T> u = new ReplayObserver<>(buf);
+            if (this.current.compareAndSet(ps, u)) {
+                ps = u;
+                break;
+            }
+        }
+        boolean doConnect = !ps.shouldConnect.get() && ps.shouldConnect.compareAndSet(false, true);
+        try {
+            connection.accept(ps);
+            if (doConnect) {
+                this.source.subscribe(ps);
+            }
+        } catch (Throwable ex) {
+            if (doConnect) {
+                ps.shouldConnect.compareAndSet(true, false);
+            }
+            Exceptions.throwIfFatal(ex);
+            throw ExceptionHelper.wrapOrThrow(ex);
+        }
     }
 
+    /* loaded from: classes.dex */
     static final class ReplayObserver<T> extends AtomicReference<Disposable> implements Observer<T>, Disposable {
         static final InnerDisposable[] EMPTY = new InnerDisposable[0];
         static final InnerDisposable[] TERMINATED = new InnerDisposable[0];
@@ -163,21 +146,22 @@ public final class ObservableReplay<T> extends ConnectableObservable<T> implemen
         final AtomicReference<InnerDisposable[]> observers = new AtomicReference<>(EMPTY);
         final AtomicBoolean shouldConnect = new AtomicBoolean();
 
-        ReplayObserver(ReplayBuffer<T> buffer2) {
-            this.buffer = buffer2;
+        ReplayObserver(ReplayBuffer<T> buffer) {
+            this.buffer = buffer;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.observers.get() == TERMINATED;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.observers.set(TERMINATED);
             DisposableHelper.dispose(this);
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean add(InnerDisposable<T> producer) {
+        boolean add(InnerDisposable<T> producer) {
             InnerDisposable[] c;
             InnerDisposable[] u;
             do {
@@ -186,57 +170,56 @@ public final class ObservableReplay<T> extends ConnectableObservable<T> implemen
                     return false;
                 }
                 int len = c.length;
-                u = new InnerDisposable[(len + 1)];
+                u = new InnerDisposable[len + 1];
                 System.arraycopy(c, 0, u, 0, len);
                 u[len] = producer;
             } while (!this.observers.compareAndSet(c, u));
             return true;
         }
 
-        /* access modifiers changed from: package-private */
-        public void remove(InnerDisposable<T> producer) {
+        void remove(InnerDisposable<T> producer) {
             InnerDisposable[] c;
             InnerDisposable[] u;
             do {
                 c = this.observers.get();
                 int len = c.length;
-                if (len != 0) {
-                    int j = -1;
-                    int i = 0;
-                    while (true) {
-                        if (i >= len) {
-                            break;
-                        } else if (c[i].equals(producer)) {
-                            j = i;
-                            break;
-                        } else {
-                            i++;
-                        }
-                    }
-                    if (j >= 0) {
-                        if (len == 1) {
-                            u = EMPTY;
-                        } else {
-                            InnerDisposable[] u2 = new InnerDisposable[(len - 1)];
-                            System.arraycopy(c, 0, u2, 0, j);
-                            System.arraycopy(c, j + 1, u2, j, (len - j) - 1);
-                            u = u2;
-                        }
-                    } else {
-                        return;
-                    }
-                } else {
+                if (len == 0) {
                     return;
+                }
+                int j = -1;
+                int i = 0;
+                while (true) {
+                    if (i >= len) {
+                        break;
+                    } else if (!c[i].equals(producer)) {
+                        i++;
+                    } else {
+                        j = i;
+                        break;
+                    }
+                }
+                if (j < 0) {
+                    return;
+                }
+                if (len == 1) {
+                    u = EMPTY;
+                } else {
+                    InnerDisposable[] u2 = new InnerDisposable[len - 1];
+                    System.arraycopy(c, 0, u2, 0, j);
+                    System.arraycopy(c, j + 1, u2, j, (len - j) - 1);
+                    u = u2;
                 }
             } while (!this.observers.compareAndSet(c, u));
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable p) {
             if (DisposableHelper.setOnce(this, p)) {
                 replay();
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             if (!this.done) {
                 this.buffer.next(t);
@@ -244,6 +227,7 @@ public final class ObservableReplay<T> extends ConnectableObservable<T> implemen
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable e) {
             if (!this.done) {
                 this.done = true;
@@ -254,6 +238,7 @@ public final class ObservableReplay<T> extends ConnectableObservable<T> implemen
             RxJavaPlugins.onError(e);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             if (!this.done) {
                 this.done = true;
@@ -262,21 +247,22 @@ public final class ObservableReplay<T> extends ConnectableObservable<T> implemen
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void replay() {
-            for (InnerDisposable<T> rp : (InnerDisposable[]) this.observers.get()) {
+        void replay() {
+            InnerDisposable<T>[] a = this.observers.get();
+            for (InnerDisposable<T> rp : a) {
                 this.buffer.replay(rp);
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void replayFinal() {
-            for (InnerDisposable<T> rp : (InnerDisposable[]) this.observers.getAndSet(TERMINATED)) {
+        void replayFinal() {
+            InnerDisposable<T>[] a = this.observers.getAndSet(TERMINATED);
+            for (InnerDisposable<T> rp : a) {
                 this.buffer.replay(rp);
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class InnerDisposable<T> extends AtomicInteger implements Disposable {
         private static final long serialVersionUID = 2728361546769921047L;
         volatile boolean cancelled;
@@ -284,15 +270,17 @@ public final class ObservableReplay<T> extends ConnectableObservable<T> implemen
         Object index;
         final ReplayObserver<T> parent;
 
-        InnerDisposable(ReplayObserver<T> parent2, Observer<? super T> child2) {
-            this.parent = parent2;
-            this.child = child2;
+        InnerDisposable(ReplayObserver<T> parent, Observer<? super T> child) {
+            this.parent = parent;
+            this.child = child;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.cancelled;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             if (!this.cancelled) {
                 this.cancelled = true;
@@ -301,12 +289,12 @@ public final class ObservableReplay<T> extends ConnectableObservable<T> implemen
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public <U> U index() {
-            return this.index;
+        <U> U index() {
+            return (U) this.index;
         }
     }
 
+    /* loaded from: classes.dex */
     static final class UnboundedReplayBuffer<T> extends ArrayList<Object> implements ReplayBuffer<T> {
         private static final long serialVersionUID = 7063189396499112664L;
         volatile int size;
@@ -315,197 +303,192 @@ public final class ObservableReplay<T> extends ConnectableObservable<T> implemen
             super(capacityHint);
         }
 
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.ReplayBuffer
         public void next(T value) {
             add(NotificationLite.next(value));
             this.size++;
         }
 
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.ReplayBuffer
         public void error(Throwable e) {
             add(NotificationLite.error(e));
             this.size++;
         }
 
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.ReplayBuffer
         public void complete() {
             add(NotificationLite.complete());
             this.size++;
         }
 
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.ReplayBuffer
         public void replay(InnerDisposable<T> output) {
-            if (output.getAndIncrement() == 0) {
-                Observer<? super T> child = output.child;
-                int missed = 1;
-                while (!output.isDisposed()) {
-                    int sourceIndex = this.size;
-                    Integer destinationIndexObject = (Integer) output.index();
-                    int destinationIndex = destinationIndexObject != null ? destinationIndexObject.intValue() : 0;
-                    while (destinationIndex < sourceIndex) {
-                        if (!NotificationLite.accept(get(destinationIndex), child) && !output.isDisposed()) {
-                            destinationIndex++;
-                        } else {
-                            return;
-                        }
-                    }
-                    output.index = Integer.valueOf(destinationIndex);
-                    missed = output.addAndGet(-missed);
-                    if (missed == 0) {
+            if (output.getAndIncrement() != 0) {
+                return;
+            }
+            Observer<? super T> child = output.child;
+            int missed = 1;
+            while (!output.isDisposed()) {
+                int sourceIndex = this.size;
+                Integer destinationIndexObject = (Integer) output.index();
+                int destinationIndex = destinationIndexObject != null ? destinationIndexObject.intValue() : 0;
+                while (destinationIndex < sourceIndex) {
+                    Object o = get(destinationIndex);
+                    if (NotificationLite.accept(o, child) || output.isDisposed()) {
                         return;
                     }
+                    destinationIndex++;
+                }
+                output.index = Integer.valueOf(destinationIndex);
+                missed = output.addAndGet(-missed);
+                if (missed == 0) {
+                    return;
                 }
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class Node extends AtomicReference<Node> {
         private static final long serialVersionUID = 245354315435971818L;
         final Object value;
 
-        Node(Object value2) {
-            this.value = value2;
+        Node(Object value) {
+            this.value = value;
         }
     }
 
+    /* loaded from: classes.dex */
     static abstract class BoundedReplayBuffer<T> extends AtomicReference<Node> implements ReplayBuffer<T> {
         private static final long serialVersionUID = 2346567790059478686L;
         int size;
         Node tail;
 
-        /* access modifiers changed from: package-private */
-        public abstract void truncate();
+        abstract void truncate();
 
         BoundedReplayBuffer() {
-            Node n = new Node((Object) null);
+            Node n = new Node(null);
             this.tail = n;
             set(n);
         }
 
-        /* access modifiers changed from: package-private */
-        public final void addLast(Node n) {
+        final void addLast(Node n) {
             this.tail.set(n);
             this.tail = n;
             this.size++;
         }
 
-        /* access modifiers changed from: package-private */
-        public final void removeFirst() {
+        final void removeFirst() {
+            Node head = get();
+            Node next = head.get();
             this.size--;
-            setFirst((Node) ((Node) get()).get());
+            setFirst(next);
         }
 
-        /* access modifiers changed from: package-private */
-        public final void trimHead() {
-            Node head = (Node) get();
+        final void trimHead() {
+            Node head = get();
             if (head.value != null) {
-                Node n = new Node((Object) null);
+                Node n = new Node(null);
                 n.lazySet(head.get());
                 set(n);
             }
         }
 
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v2, resolved type: java.lang.Object} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v5, resolved type: io.reactivex.internal.operators.observable.ObservableReplay$Node} */
-        /* access modifiers changed from: package-private */
-        /* JADX WARNING: Multi-variable type inference failed */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public final void removeSome(int r3) {
-            /*
-                r2 = this;
-                java.lang.Object r0 = r2.get()
-                io.reactivex.internal.operators.observable.ObservableReplay$Node r0 = (io.reactivex.internal.operators.observable.ObservableReplay.Node) r0
-            L_0x0006:
-                if (r3 <= 0) goto L_0x0018
-                java.lang.Object r1 = r0.get()
-                r0 = r1
-                io.reactivex.internal.operators.observable.ObservableReplay$Node r0 = (io.reactivex.internal.operators.observable.ObservableReplay.Node) r0
-                int r3 = r3 + -1
-                int r1 = r2.size
-                int r1 = r1 + -1
-                r2.size = r1
-                goto L_0x0006
-            L_0x0018:
-                r2.setFirst(r0)
-                java.lang.Object r1 = r2.get()
-                r0 = r1
-                io.reactivex.internal.operators.observable.ObservableReplay$Node r0 = (io.reactivex.internal.operators.observable.ObservableReplay.Node) r0
-                java.lang.Object r1 = r0.get()
-                if (r1 != 0) goto L_0x002a
-                r2.tail = r0
-            L_0x002a:
-                return
-            */
-            throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.operators.observable.ObservableReplay.BoundedReplayBuffer.removeSome(int):void");
-        }
-
-        /* access modifiers changed from: package-private */
-        public final void setFirst(Node n) {
-            set(n);
-        }
-
-        public final void next(T value) {
-            addLast(new Node(enterTransform(NotificationLite.next(value))));
-            truncate();
-        }
-
-        public final void error(Throwable e) {
-            addLast(new Node(enterTransform(NotificationLite.error(e))));
-            truncateFinal();
-        }
-
-        public final void complete() {
-            addLast(new Node(enterTransform(NotificationLite.complete())));
-            truncateFinal();
-        }
-
-        public final void replay(InnerDisposable<T> output) {
-            if (output.getAndIncrement() == 0) {
-                int missed = 1;
-                do {
-                    Node node = (Node) output.index();
-                    if (node == null) {
-                        node = getHead();
-                        output.index = node;
-                    }
-                    while (!output.isDisposed()) {
-                        Node v = (Node) node.get();
-                        if (v == null) {
-                            output.index = node;
-                            missed = output.addAndGet(-missed);
-                        } else if (NotificationLite.accept(leaveTransform(v.value), output.child)) {
-                            output.index = null;
-                            return;
-                        } else {
-                            node = v;
-                        }
-                    }
-                    output.index = null;
-                    return;
-                } while (missed != 0);
+        final void removeSome(int n) {
+            Node head = get();
+            while (n > 0) {
+                head = head.get();
+                n--;
+                this.size--;
+            }
+            setFirst(head);
+            Node head2 = get();
+            Node head3 = head2;
+            if (head3.get() == null) {
+                this.tail = head3;
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public Object enterTransform(Object value) {
+        final void setFirst(Node n) {
+            set(n);
+        }
+
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.ReplayBuffer
+        public final void next(T value) {
+            Object o = enterTransform(NotificationLite.next(value));
+            Node n = new Node(o);
+            addLast(n);
+            truncate();
+        }
+
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.ReplayBuffer
+        public final void error(Throwable e) {
+            Object o = enterTransform(NotificationLite.error(e));
+            Node n = new Node(o);
+            addLast(n);
+            truncateFinal();
+        }
+
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.ReplayBuffer
+        public final void complete() {
+            Object o = enterTransform(NotificationLite.complete());
+            Node n = new Node(o);
+            addLast(n);
+            truncateFinal();
+        }
+
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.ReplayBuffer
+        public final void replay(InnerDisposable<T> output) {
+            if (output.getAndIncrement() != 0) {
+                return;
+            }
+            int missed = 1;
+            do {
+                Node node = (Node) output.index();
+                if (node == null) {
+                    node = getHead();
+                    output.index = node;
+                }
+                while (!output.isDisposed()) {
+                    Node v = node.get();
+                    if (v != null) {
+                        Object o = leaveTransform(v.value);
+                        if (NotificationLite.accept(o, output.child)) {
+                            output.index = null;
+                            return;
+                        }
+                        node = v;
+                    } else {
+                        output.index = node;
+                        missed = output.addAndGet(-missed);
+                    }
+                }
+                output.index = null;
+                return;
+            } while (missed != 0);
+        }
+
+        Object enterTransform(Object value) {
             return value;
         }
 
-        /* access modifiers changed from: package-private */
-        public Object leaveTransform(Object value) {
+        Object leaveTransform(Object value) {
             return value;
         }
 
-        /* access modifiers changed from: package-private */
-        public void truncateFinal() {
+        void truncateFinal() {
             trimHead();
         }
 
-        /* access modifiers changed from: package-private */
-        public final void collect(Collection<? super T> output) {
+        final void collect(Collection<? super T> output) {
             Node n = getHead();
             while (true) {
-                Node next = (Node) n.get();
+                Node next = n.get();
                 if (next != null) {
-                    Object v = leaveTransform(next.value);
+                    Object o = next.value;
+                    Object v = leaveTransform(o);
                     if (!NotificationLite.isComplete(v) && !NotificationLite.isError(v)) {
-                        output.add(NotificationLite.getValue(v));
+                        output.add((Object) NotificationLite.getValue(v));
                         n = next;
                     } else {
                         return;
@@ -516,38 +499,37 @@ public final class ObservableReplay<T> extends ConnectableObservable<T> implemen
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean hasError() {
+        boolean hasError() {
             return this.tail.value != null && NotificationLite.isError(leaveTransform(this.tail.value));
         }
 
-        /* access modifiers changed from: package-private */
-        public boolean hasCompleted() {
+        boolean hasCompleted() {
             return this.tail.value != null && NotificationLite.isComplete(leaveTransform(this.tail.value));
         }
 
-        /* access modifiers changed from: package-private */
-        public Node getHead() {
-            return (Node) get();
+        Node getHead() {
+            return get();
         }
     }
 
+    /* loaded from: classes.dex */
     static final class SizeBoundReplayBuffer<T> extends BoundedReplayBuffer<T> {
         private static final long serialVersionUID = -5898283885385201806L;
         final int limit;
 
-        SizeBoundReplayBuffer(int limit2) {
-            this.limit = limit2;
+        SizeBoundReplayBuffer(int limit) {
+            this.limit = limit;
         }
 
-        /* access modifiers changed from: package-private */
-        public void truncate() {
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.BoundedReplayBuffer
+        void truncate() {
             if (this.size > this.limit) {
                 removeFirst();
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class SizeAndTimeBoundReplayBuffer<T> extends BoundedReplayBuffer<T> {
         private static final long serialVersionUID = 3457957419649567404L;
         final int limit;
@@ -555,314 +537,224 @@ public final class ObservableReplay<T> extends ConnectableObservable<T> implemen
         final Scheduler scheduler;
         final TimeUnit unit;
 
-        SizeAndTimeBoundReplayBuffer(int limit2, long maxAge2, TimeUnit unit2, Scheduler scheduler2) {
-            this.scheduler = scheduler2;
-            this.limit = limit2;
-            this.maxAge = maxAge2;
-            this.unit = unit2;
+        SizeAndTimeBoundReplayBuffer(int limit, long maxAge, TimeUnit unit, Scheduler scheduler) {
+            this.scheduler = scheduler;
+            this.limit = limit;
+            this.maxAge = maxAge;
+            this.unit = unit;
         }
 
-        /* access modifiers changed from: package-private */
-        public Object enterTransform(Object value) {
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.BoundedReplayBuffer
+        Object enterTransform(Object value) {
             return new Timed(value, this.scheduler.now(this.unit), this.unit);
         }
 
-        /* access modifiers changed from: package-private */
-        public Object leaveTransform(Object value) {
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.BoundedReplayBuffer
+        Object leaveTransform(Object value) {
             return ((Timed) value).value();
         }
 
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r6v4, resolved type: java.lang.Object} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r3v4, resolved type: io.reactivex.internal.operators.observable.ObservableReplay$Node} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r5v6, resolved type: java.lang.Object} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r3v6, resolved type: io.reactivex.internal.operators.observable.ObservableReplay$Node} */
-        /* access modifiers changed from: package-private */
-        /* JADX WARNING: Multi-variable type inference failed */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public void truncate() {
-            /*
-                r10 = this;
-                io.reactivex.Scheduler r0 = r10.scheduler
-                java.util.concurrent.TimeUnit r1 = r10.unit
-                long r0 = r0.now(r1)
-                long r2 = r10.maxAge
-                long r0 = r0 - r2
-                java.lang.Object r2 = r10.get()
-                io.reactivex.internal.operators.observable.ObservableReplay$Node r2 = (io.reactivex.internal.operators.observable.ObservableReplay.Node) r2
-                java.lang.Object r3 = r2.get()
-                io.reactivex.internal.operators.observable.ObservableReplay$Node r3 = (io.reactivex.internal.operators.observable.ObservableReplay.Node) r3
-                r4 = 0
-            L_0x0018:
-                if (r3 == 0) goto L_0x0051
-                int r5 = r10.size
-                int r6 = r10.limit
-                r7 = 1
-                if (r5 <= r6) goto L_0x0035
-                int r5 = r10.size
-                if (r5 <= r7) goto L_0x0035
-                int r4 = r4 + 1
-                int r5 = r10.size
-                int r5 = r5 - r7
-                r10.size = r5
-                r2 = r3
-                java.lang.Object r5 = r3.get()
-                r3 = r5
-                io.reactivex.internal.operators.observable.ObservableReplay$Node r3 = (io.reactivex.internal.operators.observable.ObservableReplay.Node) r3
-                goto L_0x0018
-            L_0x0035:
-                java.lang.Object r5 = r3.value
-                io.reactivex.schedulers.Timed r5 = (io.reactivex.schedulers.Timed) r5
-                long r8 = r5.time()
-                int r6 = (r8 > r0 ? 1 : (r8 == r0 ? 0 : -1))
-                if (r6 > 0) goto L_0x0051
-                int r4 = r4 + 1
-                int r6 = r10.size
-                int r6 = r6 - r7
-                r10.size = r6
-                r2 = r3
-                java.lang.Object r6 = r3.get()
-                r3 = r6
-                io.reactivex.internal.operators.observable.ObservableReplay$Node r3 = (io.reactivex.internal.operators.observable.ObservableReplay.Node) r3
-                goto L_0x0018
-            L_0x0051:
-                if (r4 == 0) goto L_0x0056
-                r10.setFirst(r2)
-            L_0x0056:
-                return
-            */
-            throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.operators.observable.ObservableReplay.SizeAndTimeBoundReplayBuffer.truncate():void");
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.BoundedReplayBuffer
+        void truncate() {
+            long timeLimit = this.scheduler.now(this.unit) - this.maxAge;
+            Node prev = (Node) get();
+            Node next = prev.get();
+            int e = 0;
+            while (next != null) {
+                if (this.size > this.limit && this.size > 1) {
+                    e++;
+                    this.size--;
+                    prev = next;
+                    next = next.get();
+                } else {
+                    Timed<?> v = (Timed) next.value;
+                    if (v.time() > timeLimit) {
+                        break;
+                    }
+                    e++;
+                    this.size--;
+                    prev = next;
+                    next = next.get();
+                }
+            }
+            if (e != 0) {
+                setFirst(prev);
+            }
         }
 
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r6v1, resolved type: java.lang.Object} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r3v3, resolved type: io.reactivex.internal.operators.observable.ObservableReplay$Node} */
-        /* access modifiers changed from: package-private */
-        /* JADX WARNING: Multi-variable type inference failed */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public void truncateFinal() {
-            /*
-                r9 = this;
-                io.reactivex.Scheduler r0 = r9.scheduler
-                java.util.concurrent.TimeUnit r1 = r9.unit
-                long r0 = r0.now(r1)
-                long r2 = r9.maxAge
-                long r0 = r0 - r2
-                java.lang.Object r2 = r9.get()
-                io.reactivex.internal.operators.observable.ObservableReplay$Node r2 = (io.reactivex.internal.operators.observable.ObservableReplay.Node) r2
-                java.lang.Object r3 = r2.get()
-                io.reactivex.internal.operators.observable.ObservableReplay$Node r3 = (io.reactivex.internal.operators.observable.ObservableReplay.Node) r3
-                r4 = 0
-            L_0x0018:
-                if (r3 == 0) goto L_0x003b
-                int r5 = r9.size
-                r6 = 1
-                if (r5 <= r6) goto L_0x003b
-                java.lang.Object r5 = r3.value
-                io.reactivex.schedulers.Timed r5 = (io.reactivex.schedulers.Timed) r5
-                long r7 = r5.time()
-                int r7 = (r7 > r0 ? 1 : (r7 == r0 ? 0 : -1))
-                if (r7 > 0) goto L_0x003b
-                int r4 = r4 + 1
-                int r7 = r9.size
-                int r7 = r7 - r6
-                r9.size = r7
-                r2 = r3
-                java.lang.Object r6 = r3.get()
-                r3 = r6
-                io.reactivex.internal.operators.observable.ObservableReplay$Node r3 = (io.reactivex.internal.operators.observable.ObservableReplay.Node) r3
-                goto L_0x0018
-            L_0x003b:
-                if (r4 == 0) goto L_0x0040
-                r9.setFirst(r2)
-            L_0x0040:
-                return
-            */
-            throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.operators.observable.ObservableReplay.SizeAndTimeBoundReplayBuffer.truncateFinal():void");
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.BoundedReplayBuffer
+        void truncateFinal() {
+            long timeLimit = this.scheduler.now(this.unit) - this.maxAge;
+            Node prev = (Node) get();
+            int e = 0;
+            for (Node next = prev.get(); next != null && this.size > 1; next = next.get()) {
+                Timed<?> v = (Timed) next.value;
+                if (v.time() > timeLimit) {
+                    break;
+                }
+                e++;
+                this.size--;
+                prev = next;
+            }
+            if (e != 0) {
+                setFirst(prev);
+            }
         }
 
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r5v6, resolved type: java.lang.Object} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r3v3, resolved type: io.reactivex.internal.operators.observable.ObservableReplay$Node} */
-        /* access modifiers changed from: package-private */
-        /* JADX WARNING: Multi-variable type inference failed */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public io.reactivex.internal.operators.observable.ObservableReplay.Node getHead() {
-            /*
-                r7 = this;
-                io.reactivex.Scheduler r0 = r7.scheduler
-                java.util.concurrent.TimeUnit r1 = r7.unit
-                long r0 = r0.now(r1)
-                long r2 = r7.maxAge
-                long r0 = r0 - r2
-                java.lang.Object r2 = r7.get()
-                io.reactivex.internal.operators.observable.ObservableReplay$Node r2 = (io.reactivex.internal.operators.observable.ObservableReplay.Node) r2
-                java.lang.Object r3 = r2.get()
-                io.reactivex.internal.operators.observable.ObservableReplay$Node r3 = (io.reactivex.internal.operators.observable.ObservableReplay.Node) r3
-            L_0x0017:
-                if (r3 != 0) goto L_0x001a
-                goto L_0x0044
-            L_0x001a:
-                java.lang.Object r4 = r3.value
-                io.reactivex.schedulers.Timed r4 = (io.reactivex.schedulers.Timed) r4
-                java.lang.Object r5 = r4.value()
-                boolean r5 = io.reactivex.internal.util.NotificationLite.isComplete(r5)
-                if (r5 != 0) goto L_0x0044
-                java.lang.Object r5 = r4.value()
-                boolean r5 = io.reactivex.internal.util.NotificationLite.isError(r5)
-                if (r5 == 0) goto L_0x0033
-                goto L_0x0044
-            L_0x0033:
-                long r5 = r4.time()
-                int r5 = (r5 > r0 ? 1 : (r5 == r0 ? 0 : -1))
-                if (r5 > 0) goto L_0x0044
-                r2 = r3
-                java.lang.Object r5 = r3.get()
-                r3 = r5
-                io.reactivex.internal.operators.observable.ObservableReplay$Node r3 = (io.reactivex.internal.operators.observable.ObservableReplay.Node) r3
-                goto L_0x0017
-            L_0x0044:
-                return r2
-            */
-            throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.operators.observable.ObservableReplay.SizeAndTimeBoundReplayBuffer.getHead():io.reactivex.internal.operators.observable.ObservableReplay$Node");
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.BoundedReplayBuffer
+        Node getHead() {
+            long timeLimit = this.scheduler.now(this.unit) - this.maxAge;
+            Node prev = (Node) get();
+            for (Node next = prev.get(); next != null; next = next.get()) {
+                Timed<?> v = (Timed) next.value;
+                if (NotificationLite.isComplete(v.value()) || NotificationLite.isError(v.value()) || v.time() > timeLimit) {
+                    break;
+                }
+                prev = next;
+            }
+            return prev;
         }
     }
 
+    /* loaded from: classes.dex */
     static final class UnBoundedFactory implements BufferSupplier<Object> {
         UnBoundedFactory() {
         }
 
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.BufferSupplier
         public ReplayBuffer<Object> call() {
             return new UnboundedReplayBuffer(16);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class DisposeConsumer<R> implements Consumer<Disposable> {
         private final ObserverResourceWrapper<R> srw;
 
-        DisposeConsumer(ObserverResourceWrapper<R> srw2) {
-            this.srw = srw2;
+        DisposeConsumer(ObserverResourceWrapper<R> srw) {
+            this.srw = srw;
         }
 
+        @Override // io.reactivex.functions.Consumer
         public void accept(Disposable r) {
             this.srw.setResource(r);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ReplayBufferSupplier<T> implements BufferSupplier<T> {
         private final int bufferSize;
 
-        ReplayBufferSupplier(int bufferSize2) {
-            this.bufferSize = bufferSize2;
+        ReplayBufferSupplier(int bufferSize) {
+            this.bufferSize = bufferSize;
         }
 
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.BufferSupplier
         public ReplayBuffer<T> call() {
             return new SizeBoundReplayBuffer(this.bufferSize);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ScheduledReplaySupplier<T> implements BufferSupplier<T> {
         private final int bufferSize;
         private final long maxAge;
         private final Scheduler scheduler;
         private final TimeUnit unit;
 
-        ScheduledReplaySupplier(int bufferSize2, long maxAge2, TimeUnit unit2, Scheduler scheduler2) {
-            this.bufferSize = bufferSize2;
-            this.maxAge = maxAge2;
-            this.unit = unit2;
-            this.scheduler = scheduler2;
+        ScheduledReplaySupplier(int bufferSize, long maxAge, TimeUnit unit, Scheduler scheduler) {
+            this.bufferSize = bufferSize;
+            this.maxAge = maxAge;
+            this.unit = unit;
+            this.scheduler = scheduler;
         }
 
+        @Override // io.reactivex.internal.operators.observable.ObservableReplay.BufferSupplier
         public ReplayBuffer<T> call() {
             return new SizeAndTimeBoundReplayBuffer(this.bufferSize, this.maxAge, this.unit, this.scheduler);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ReplaySource<T> implements ObservableSource<T> {
         private final BufferSupplier<T> bufferFactory;
         private final AtomicReference<ReplayObserver<T>> curr;
 
-        ReplaySource(AtomicReference<ReplayObserver<T>> curr2, BufferSupplier<T> bufferFactory2) {
-            this.curr = curr2;
-            this.bufferFactory = bufferFactory2;
+        ReplaySource(AtomicReference<ReplayObserver<T>> curr, BufferSupplier<T> bufferFactory) {
+            this.curr = curr;
+            this.bufferFactory = bufferFactory;
         }
 
-        /* JADX WARNING: Removed duplicated region for block: B:0:0x0000 A[LOOP_START, MTH_ENTER_BLOCK] */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public void subscribe(io.reactivex.Observer<? super T> r6) {
-            /*
-                r5 = this;
-            L_0x0000:
-                java.util.concurrent.atomic.AtomicReference<io.reactivex.internal.operators.observable.ObservableReplay$ReplayObserver<T>> r0 = r5.curr
-                java.lang.Object r0 = r0.get()
-                io.reactivex.internal.operators.observable.ObservableReplay$ReplayObserver r0 = (io.reactivex.internal.operators.observable.ObservableReplay.ReplayObserver) r0
-                if (r0 != 0) goto L_0x0020
-                io.reactivex.internal.operators.observable.ObservableReplay$BufferSupplier<T> r1 = r5.bufferFactory
-                io.reactivex.internal.operators.observable.ObservableReplay$ReplayBuffer r1 = r1.call()
-                io.reactivex.internal.operators.observable.ObservableReplay$ReplayObserver r2 = new io.reactivex.internal.operators.observable.ObservableReplay$ReplayObserver
-                r2.<init>(r1)
-                java.util.concurrent.atomic.AtomicReference<io.reactivex.internal.operators.observable.ObservableReplay$ReplayObserver<T>> r3 = r5.curr
-                r4 = 0
-                boolean r3 = r3.compareAndSet(r4, r2)
-                if (r3 != 0) goto L_0x001f
-                goto L_0x0000
-            L_0x001f:
-                r0 = r2
-            L_0x0020:
-                io.reactivex.internal.operators.observable.ObservableReplay$InnerDisposable r1 = new io.reactivex.internal.operators.observable.ObservableReplay$InnerDisposable
-                r1.<init>(r0, r6)
-                r6.onSubscribe(r1)
-                r0.add(r1)
-                boolean r2 = r1.isDisposed()
-                if (r2 == 0) goto L_0x0035
-                r0.remove(r1)
-                return
-            L_0x0035:
-                io.reactivex.internal.operators.observable.ObservableReplay$ReplayBuffer<T> r2 = r0.buffer
-                r2.replay(r1)
-                return
-            */
-            throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.operators.observable.ObservableReplay.ReplaySource.subscribe(io.reactivex.Observer):void");
+        @Override // io.reactivex.ObservableSource
+        public void subscribe(Observer<? super T> child) {
+            ReplayObserver<T> r;
+            while (true) {
+                r = this.curr.get();
+                if (r != null) {
+                    break;
+                }
+                ReplayBuffer<T> buf = this.bufferFactory.call();
+                ReplayObserver<T> u = new ReplayObserver<>(buf);
+                if (this.curr.compareAndSet(null, u)) {
+                    r = u;
+                    break;
+                }
+            }
+            InnerDisposable<T> inner = new InnerDisposable<>(r, child);
+            child.onSubscribe(inner);
+            r.add(inner);
+            if (inner.isDisposed()) {
+                r.remove(inner);
+            } else {
+                r.buffer.replay(inner);
+            }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class MulticastReplay<R, U> extends Observable<R> {
         private final Callable<? extends ConnectableObservable<U>> connectableFactory;
         private final Function<? super Observable<U>, ? extends ObservableSource<R>> selector;
 
-        MulticastReplay(Callable<? extends ConnectableObservable<U>> connectableFactory2, Function<? super Observable<U>, ? extends ObservableSource<R>> selector2) {
-            this.connectableFactory = connectableFactory2;
-            this.selector = selector2;
+        MulticastReplay(Callable<? extends ConnectableObservable<U>> connectableFactory, Function<? super Observable<U>, ? extends ObservableSource<R>> selector) {
+            this.connectableFactory = connectableFactory;
+            this.selector = selector;
         }
 
-        /* access modifiers changed from: protected */
-        public void subscribeActual(Observer<? super R> child) {
+        @Override // io.reactivex.Observable
+        protected void subscribeActual(Observer<? super R> child) {
             try {
                 ConnectableObservable<U> co = (ConnectableObservable) ObjectHelper.requireNonNull(this.connectableFactory.call(), "The connectableFactory returned a null ConnectableObservable");
                 ObservableSource<R> observable = (ObservableSource) ObjectHelper.requireNonNull(this.selector.apply(co), "The selector returned a null ObservableSource");
                 ObserverResourceWrapper<R> srw = new ObserverResourceWrapper<>(child);
                 observable.subscribe(srw);
-                co.connect(new DisposeConsumer(srw));
+                co.connect(new DisposeConsumer<>(srw));
             } catch (Throwable e) {
                 Exceptions.throwIfFatal(e);
-                EmptyDisposable.error(e, (Observer<?>) child);
+                EmptyDisposable.error(e, child);
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class Replay<T> extends ConnectableObservable<T> {
-        private final ConnectableObservable<T> co;
+
+        /* renamed from: co */
+        private final ConnectableObservable<T> f323co;
         private final Observable<T> observable;
 
-        Replay(ConnectableObservable<T> co2, Observable<T> observable2) {
-            this.co = co2;
-            this.observable = observable2;
+        Replay(ConnectableObservable<T> co, Observable<T> observable) {
+            this.f323co = co;
+            this.observable = observable;
         }
 
+        @Override // io.reactivex.observables.ConnectableObservable
         public void connect(Consumer<? super Disposable> connection) {
-            this.co.connect(connection);
+            this.f323co.connect(connection);
         }
 
-        /* access modifiers changed from: protected */
-        public void subscribeActual(Observer<? super T> observer) {
+        @Override // io.reactivex.Observable
+        protected void subscribeActual(Observer<? super T> observer) {
             this.observable.subscribe(observer);
         }
     }

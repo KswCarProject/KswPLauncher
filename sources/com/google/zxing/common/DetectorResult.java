@@ -2,13 +2,14 @@ package com.google.zxing.common;
 
 import com.google.zxing.ResultPoint;
 
+/* loaded from: classes.dex */
 public class DetectorResult {
     private final BitMatrix bits;
     private final ResultPoint[] points;
 
-    public DetectorResult(BitMatrix bits2, ResultPoint[] points2) {
-        this.bits = bits2;
-        this.points = points2;
+    public DetectorResult(BitMatrix bits, ResultPoint[] points) {
+        this.bits = bits;
+        this.points = points;
     }
 
     public final BitMatrix getBits() {

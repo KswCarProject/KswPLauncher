@@ -1,21 +1,20 @@
 package com.google.zxing.oned.rss.expanded.decoders;
 
+/* loaded from: classes.dex */
 final class DecodedChar extends DecodedObject {
     static final char FNC1 = '$';
     private final char value;
 
-    DecodedChar(int newPosition, char value2) {
+    DecodedChar(int newPosition, char value) {
         super(newPosition);
-        this.value = value2;
+        this.value = value;
     }
 
-    /* access modifiers changed from: package-private */
-    public char getValue() {
+    char getValue() {
         return this.value;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isFNC1() {
+    boolean isFNC1() {
         return this.value == '$';
     }
 }

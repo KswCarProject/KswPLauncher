@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class MultiDetector extends Detector {
     private static final DetectorResult[] EMPTY_DETECTOR_RESULTS = new DetectorResult[0];
 
@@ -27,21 +28,20 @@ public final class MultiDetector extends Detector {
         } else {
             resultPointCallback = (ResultPointCallback) hints.get(DecodeHintType.NEED_RESULT_POINT_CALLBACK);
         }
-        FinderPatternInfo[] findMulti = new MultiFinderPatternFinder(image, resultPointCallback).findMulti(hints);
-        FinderPatternInfo[] infos = findMulti;
-        if (findMulti.length != 0) {
-            List<DetectorResult> result = new ArrayList<>();
-            for (FinderPatternInfo info : infos) {
-                try {
-                    result.add(processFinderPatternInfo(info));
-                } catch (ReaderException e) {
-                }
-            }
-            if (result.isEmpty()) {
-                return EMPTY_DETECTOR_RESULTS;
-            }
-            return (DetectorResult[]) result.toArray(new DetectorResult[result.size()]);
+        FinderPatternInfo[] infos = new MultiFinderPatternFinder(image, resultPointCallback).findMulti(hints);
+        if (infos.length == 0) {
+            throw NotFoundException.getNotFoundInstance();
         }
-        throw NotFoundException.getNotFoundInstance();
+        List<DetectorResult> result = new ArrayList<>();
+        for (FinderPatternInfo info : infos) {
+            try {
+                result.add(processFinderPatternInfo(info));
+            } catch (ReaderException e) {
+            }
+        }
+        if (result.isEmpty()) {
+            return EMPTY_DETECTOR_RESULTS;
+        }
+        return (DetectorResult[]) result.toArray(new DetectorResult[result.size()]);
     }
 }

@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+/* loaded from: classes.dex */
 public class StreamLocalUriFetcher extends LocalUriFetcher<InputStream> {
     private static final int ID_CONTACTS_CONTACT = 3;
     private static final int ID_CONTACTS_LOOKUP = 1;
@@ -31,13 +32,15 @@ public class StreamLocalUriFetcher extends LocalUriFetcher<InputStream> {
         super(resolver, uri);
     }
 
-    /* access modifiers changed from: protected */
+    /* JADX INFO: Access modifiers changed from: protected */
+    /* JADX WARN: Can't rename method to resolve collision */
+    @Override // com.bumptech.glide.load.data.LocalUriFetcher
     public InputStream loadResource(Uri uri, ContentResolver contentResolver) throws FileNotFoundException {
         InputStream inputStream = loadResourceFromUri(uri, contentResolver);
-        if (inputStream != null) {
-            return inputStream;
+        if (inputStream == null) {
+            throw new FileNotFoundException("InputStream is null for " + uri);
         }
-        throw new FileNotFoundException("InputStream is null for " + uri);
+        return inputStream;
     }
 
     private InputStream loadResourceFromUri(Uri uri, ContentResolver contentResolver) throws FileNotFoundException {
@@ -45,14 +48,16 @@ public class StreamLocalUriFetcher extends LocalUriFetcher<InputStream> {
             case 1:
             case 5:
                 Uri uri2 = ContactsContract.Contacts.lookupContact(contentResolver, uri);
-                if (uri2 != null) {
-                    return openContactPhotoInputStream(contentResolver, uri2);
+                if (uri2 == null) {
+                    throw new FileNotFoundException("Contact cannot be found");
                 }
-                throw new FileNotFoundException("Contact cannot be found");
-            case 3:
-                return openContactPhotoInputStream(contentResolver, uri);
+                return openContactPhotoInputStream(contentResolver, uri2);
+            case 2:
+            case 4:
             default:
                 return contentResolver.openInputStream(uri);
+            case 3:
+                return openContactPhotoInputStream(contentResolver, uri);
         }
     }
 
@@ -60,11 +65,13 @@ public class StreamLocalUriFetcher extends LocalUriFetcher<InputStream> {
         return ContactsContract.Contacts.openContactPhotoInputStream(contentResolver, contactUri, true);
     }
 
-    /* access modifiers changed from: protected */
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // com.bumptech.glide.load.data.LocalUriFetcher
     public void close(InputStream data) throws IOException {
         data.close();
     }
 
+    @Override // com.bumptech.glide.load.data.DataFetcher
     public Class<InputStream> getDataClass() {
         return InputStream.class;
     }

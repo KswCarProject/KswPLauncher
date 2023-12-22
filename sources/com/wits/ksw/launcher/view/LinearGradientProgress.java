@@ -13,44 +13,57 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bmw_id8_ui.ID8LauncherConstants;
 import com.wits.ksw.launcher.utils.BitmapUtil;
 import skin.support.content.res.SkinCompatResources;
 import skin.support.widget.SkinCompatSupportable;
 
+/* loaded from: classes16.dex */
 public class LinearGradientProgress extends View implements SkinCompatSupportable {
     private static final String TAG = LinearGradientProgress.class.getSimpleName();
     private int[] colorArray;
-    private final int colorArrayLength = 5;
+    private final int colorArrayLength;
     private float[] colorPosition;
     private LinearGradient linearGradient;
     private boolean linearVisible;
     private int mHeight;
     private int mOrientation;
-    private int mScale = 0;
+    private int mScale;
     private int mWidth;
-    private Bitmap maskBitmap = null;
+    private Bitmap maskBitmap;
     private Drawable maskDrawable;
     private boolean maskVisible;
-    private int maxScale = 100;
+    private int maxScale;
     private Paint paint;
-    private Bitmap rulerBitmap = null;
+    private Bitmap rulerBitmap;
     private Drawable rulerDrawable;
     private boolean rulerVisible;
-    private Bitmap scaleBitmap = null;
+    private Bitmap scaleBitmap;
     private Drawable scaleDrawable;
     private boolean scaleVisible;
     private TypedArray typedArray;
 
     public LinearGradientProgress(Context context) {
         super(context);
+        this.colorArrayLength = 5;
+        this.maxScale = 100;
+        this.mScale = 0;
+        this.rulerBitmap = null;
+        this.maskBitmap = null;
+        this.scaleBitmap = null;
         Log.i(TAG, "init context");
         initView();
     }
 
     public LinearGradientProgress(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.colorArrayLength = 5;
+        this.maxScale = 100;
+        this.mScale = 0;
+        this.rulerBitmap = null;
+        this.maskBitmap = null;
+        this.scaleBitmap = null;
         Log.i(TAG, "init context attrs");
         initConfig(context, attrs);
         initView();
@@ -58,13 +71,19 @@ public class LinearGradientProgress extends View implements SkinCompatSupportabl
 
     public LinearGradientProgress(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.colorArrayLength = 5;
+        this.maxScale = 100;
+        this.mScale = 0;
+        this.rulerBitmap = null;
+        this.maskBitmap = null;
+        this.scaleBitmap = null;
         Log.i(TAG, "init context attrs defStyleAttr");
         initConfig(context, attrs);
         initView();
     }
 
     private void initConfig(Context context, AttributeSet attrs) {
-        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attrs, R.styleable.Linear_Gradient_Progress);
+        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attrs, C0899R.styleable.Linear_Gradient_Progress);
         this.typedArray = obtainStyledAttributes;
         this.linearVisible = obtainStyledAttributes.getBoolean(0, true);
         this.rulerVisible = this.typedArray.getBoolean(6, false);
@@ -84,16 +103,16 @@ public class LinearGradientProgress extends View implements SkinCompatSupportabl
     }
 
     private void initView() {
-        Paint paint2 = new Paint();
-        this.paint = paint2;
-        paint2.setAntiAlias(true);
+        Paint paint = new Paint();
+        this.paint = paint;
+        paint.setAntiAlias(true);
         this.paint.setDither(true);
         if (TextUtils.equals(ID8LauncherConstants.ID8_SKIN_SPORT, ID8LauncherConstants.loadCurrentSkin())) {
-            this.colorArray = getResources().getIntArray(R.array.bmw_id8_dashboard_linear_red);
+            this.colorArray = getResources().getIntArray(C0899R.array.bmw_id8_dashboard_linear_red);
         } else if (TextUtils.equals(ID8LauncherConstants.ID8_SKIN_EFFICIENT, ID8LauncherConstants.loadCurrentSkin())) {
-            this.colorArray = getResources().getIntArray(R.array.bmw_id8_dashboard_linear_blue);
+            this.colorArray = getResources().getIntArray(C0899R.array.bmw_id8_dashboard_linear_blue);
         } else {
-            this.colorArray = getResources().getIntArray(R.array.bmw_id8_dashboard_linear_yellow);
+            this.colorArray = getResources().getIntArray(C0899R.array.bmw_id8_dashboard_linear_yellow);
         }
         this.colorPosition = new float[]{0.0f, 0.21f, 0.47f, 0.71f, 0.78f, 0.94f};
         this.rulerBitmap = BitmapUtil.drawableToBitmap(this.rulerDrawable);
@@ -101,50 +120,49 @@ public class LinearGradientProgress extends View implements SkinCompatSupportabl
         this.scaleBitmap = BitmapUtil.drawableToBitmap(this.scaleDrawable);
     }
 
-    /* access modifiers changed from: protected */
-    public void onSizeChanged(int w, int h, int oldw, int oldh) {
+    @Override // android.view.View
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         Log.i(TAG, "onSizeChanged w " + w + " h " + h);
         this.mWidth = w;
         this.mHeight = h;
     }
 
-    /* access modifiers changed from: protected */
-    public void onDraw(Canvas canvas) {
-        Rect mDestRect;
+    @Override // android.view.View
+    protected void onDraw(Canvas canvas) {
         Rect mSrcRect;
+        Rect mDestRect;
         Bitmap bitmap;
         Bitmap bitmap2;
-        Canvas canvas2 = canvas;
         super.onDraw(canvas);
         Log.i(TAG, "onDraw");
         if (this.linearVisible && this.paint != null) {
             if (this.mOrientation == 0) {
                 int i = this.mHeight;
-                LinearGradient linearGradient2 = new LinearGradient(0.0f, (float) i, 0.0f, (float) (i - calcScale(this.mScale)), this.colorArray, this.colorPosition, Shader.TileMode.CLAMP);
+                LinearGradient linearGradient = new LinearGradient(0.0f, i, 0.0f, i - calcScale(this.mScale), this.colorArray, this.colorPosition, Shader.TileMode.CLAMP);
+                this.linearGradient = linearGradient;
+                this.paint.setShader(linearGradient);
+                canvas.drawRect(0.0f, this.mHeight - calcScale(this.mScale), this.mWidth, this.mHeight, this.paint);
+            } else {
+                LinearGradient linearGradient2 = new LinearGradient(0.0f, 0.0f, calcScale(this.mScale), this.mHeight, this.colorArray, this.colorPosition, Shader.TileMode.CLAMP);
                 this.linearGradient = linearGradient2;
                 this.paint.setShader(linearGradient2);
-                canvas.drawRect(0.0f, (float) (this.mHeight - calcScale(this.mScale)), (float) this.mWidth, (float) this.mHeight, this.paint);
-            } else {
-                LinearGradient linearGradient3 = new LinearGradient(0.0f, 0.0f, (float) calcScale(this.mScale), (float) this.mHeight, this.colorArray, this.colorPosition, Shader.TileMode.CLAMP);
-                this.linearGradient = linearGradient3;
-                this.paint.setShader(linearGradient3);
-                canvas.drawRect(0.0f, 0.0f, (float) calcScale(this.mScale), (float) this.mHeight, this.paint);
+                canvas.drawRect(0.0f, 0.0f, calcScale(this.mScale), this.mHeight, this.paint);
             }
         }
         if (this.rulerVisible && (bitmap2 = this.rulerBitmap) != null) {
-            if (this.mOrientation == 0) {
-                Bitmap createScaledBitmap = Bitmap.createScaledBitmap(bitmap2, this.mWidth, bitmap2.getHeight(), true);
+            if (this.mOrientation != 0) {
+                Bitmap createScaledBitmap = Bitmap.createScaledBitmap(bitmap2, bitmap2.getWidth(), this.mHeight, true);
                 this.rulerBitmap = createScaledBitmap;
-                canvas2.drawBitmap(createScaledBitmap, 0.0f, (float) (this.mHeight - calcScale(this.mScale)), (Paint) null);
+                canvas.drawBitmap(createScaledBitmap, calcScale(this.mScale), 0.0f, (Paint) null);
             } else {
-                Bitmap createScaledBitmap2 = Bitmap.createScaledBitmap(bitmap2, bitmap2.getWidth(), this.mHeight, true);
+                Bitmap createScaledBitmap2 = Bitmap.createScaledBitmap(bitmap2, this.mWidth, bitmap2.getHeight(), true);
                 this.rulerBitmap = createScaledBitmap2;
-                canvas2.drawBitmap(createScaledBitmap2, (float) calcScale(this.mScale), 0.0f, (Paint) null);
+                canvas.drawBitmap(createScaledBitmap2, 0.0f, this.mHeight - calcScale(this.mScale), (Paint) null);
             }
         }
         if (this.maskVisible && (bitmap = this.maskBitmap) != null) {
-            canvas2.drawBitmap(bitmap, 0.0f, 0.0f, (Paint) null);
+            canvas.drawBitmap(bitmap, 0.0f, 0.0f, (Paint) null);
         }
         if (this.scaleVisible && this.scaleBitmap != null) {
             if (this.mOrientation == 0) {
@@ -154,22 +172,24 @@ public class LinearGradientProgress extends View implements SkinCompatSupportabl
                 mSrcRect = new Rect(0, 0, calcScale(this.mScale), this.mHeight);
                 mDestRect = new Rect(0, 0, calcScale(this.mScale), this.mHeight);
             }
-            canvas2.drawBitmap(this.scaleBitmap, mSrcRect, mDestRect, (Paint) null);
+            canvas.drawBitmap(this.scaleBitmap, mSrcRect, mDestRect, (Paint) null);
         }
     }
 
     public void setColorArray(int[] color) {
-        if (color != null && color.length == 5) {
-            this.colorArray = color;
-            invalidate();
+        if (color == null || color.length != 5) {
+            return;
         }
+        this.colorArray = color;
+        invalidate();
     }
 
     public void setPositionArray(float[] position) {
-        if (position != null && position.length == 5) {
-            this.colorPosition = position;
-            invalidate();
+        if (position == null || position.length != 5) {
+            return;
         }
+        this.colorPosition = position;
+        invalidate();
     }
 
     public void setScale(int scale) {
@@ -200,16 +220,17 @@ public class LinearGradientProgress extends View implements SkinCompatSupportabl
         return value;
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         Log.i(TAG, "applySkin");
         if (TextUtils.equals(ID8LauncherConstants.ID8_SKIN_SPORT, ID8LauncherConstants.loadCurrentSkin())) {
-            this.colorArray = getResources().getIntArray(R.array.bmw_id8_dashboard_linear_red);
+            this.colorArray = getResources().getIntArray(C0899R.array.bmw_id8_dashboard_linear_red);
         } else if (TextUtils.equals(ID8LauncherConstants.ID8_SKIN_EFFICIENT, ID8LauncherConstants.loadCurrentSkin())) {
-            this.colorArray = getResources().getIntArray(R.array.bmw_id8_dashboard_linear_blue);
+            this.colorArray = getResources().getIntArray(C0899R.array.bmw_id8_dashboard_linear_blue);
         } else {
-            this.colorArray = getResources().getIntArray(R.array.bmw_id8_dashboard_linear_yellow);
+            this.colorArray = getResources().getIntArray(C0899R.array.bmw_id8_dashboard_linear_yellow);
         }
-        if (!(SkinCompatResources.getInstance() == null || this.typedArray == null)) {
+        if (SkinCompatResources.getInstance() != null && this.typedArray != null) {
             Drawable drawable = SkinCompatResources.getInstance().getDrawable(this.typedArray.getResourceId(1, 1));
             this.maskDrawable = drawable;
             this.maskBitmap = BitmapUtil.drawableToBitmap(drawable);

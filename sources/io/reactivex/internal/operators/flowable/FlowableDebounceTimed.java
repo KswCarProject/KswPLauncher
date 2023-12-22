@@ -18,23 +18,25 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableDebounceTimed<T> extends AbstractFlowableWithUpstream<T, T> {
     final Scheduler scheduler;
     final long timeout;
     final TimeUnit unit;
 
-    public FlowableDebounceTimed(Flowable<T> source, long timeout2, TimeUnit unit2, Scheduler scheduler2) {
+    public FlowableDebounceTimed(Flowable<T> source, long timeout, TimeUnit unit, Scheduler scheduler) {
         super(source);
-        this.timeout = timeout2;
-        this.unit = unit2;
-        this.scheduler = scheduler2;
+        this.timeout = timeout;
+        this.unit = unit;
+        this.scheduler = scheduler;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
-        this.source.subscribe(new DebounceTimedSubscriber(new SerializedSubscriber(s), this.timeout, this.unit, this.scheduler.createWorker()));
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
+        this.source.subscribe((FlowableSubscriber) new DebounceTimedSubscriber(new SerializedSubscriber(s), this.timeout, this.unit, this.scheduler.createWorker()));
     }
 
+    /* loaded from: classes.dex */
     static final class DebounceTimedSubscriber<T> extends AtomicLong implements FlowableSubscriber<T>, Subscription {
         private static final long serialVersionUID = -9102637559663639004L;
         boolean done;
@@ -46,13 +48,14 @@ public final class FlowableDebounceTimed<T> extends AbstractFlowableWithUpstream
         Subscription upstream;
         final Scheduler.Worker worker;
 
-        DebounceTimedSubscriber(Subscriber<? super T> actual, long timeout2, TimeUnit unit2, Scheduler.Worker worker2) {
+        DebounceTimedSubscriber(Subscriber<? super T> actual, long timeout, TimeUnit unit, Scheduler.Worker worker) {
             this.downstream = actual;
-            this.timeout = timeout2;
-            this.unit = unit2;
-            this.worker = worker2;
+            this.timeout = timeout;
+            this.unit = unit;
+            this.worker = worker;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -61,20 +64,23 @@ public final class FlowableDebounceTimed<T> extends AbstractFlowableWithUpstream
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
-            if (!this.done) {
-                long idx = this.index + 1;
-                this.index = idx;
-                Disposable d = this.timer;
-                if (d != null) {
-                    d.dispose();
-                }
-                DebounceEmitter<T> de = new DebounceEmitter<>(t, idx, this);
-                this.timer = de;
-                de.setResource(this.worker.schedule(de, this.timeout, this.unit));
+            if (this.done) {
+                return;
             }
+            long idx = this.index + 1;
+            this.index = idx;
+            Disposable d = this.timer;
+            if (d != null) {
+                d.dispose();
+            }
+            DebounceEmitter<T> de = new DebounceEmitter<>(t, idx, this);
+            this.timer = de;
+            de.setResource(this.worker.schedule(de, this.timeout, this.unit));
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (this.done) {
                 RxJavaPlugins.onError(t);
@@ -89,49 +95,53 @@ public final class FlowableDebounceTimed<T> extends AbstractFlowableWithUpstream
             this.worker.dispose();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                Disposable d = this.timer;
-                if (d != null) {
-                    d.dispose();
-                }
-                DebounceEmitter<T> de = (DebounceEmitter) d;
-                if (de != null) {
-                    de.emit();
-                }
-                this.downstream.onComplete();
-                this.worker.dispose();
+            if (this.done) {
+                return;
             }
+            this.done = true;
+            Disposable d = this.timer;
+            if (d != null) {
+                d.dispose();
+            }
+            DebounceEmitter<T> de = (DebounceEmitter) d;
+            if (de != null) {
+                de.emit();
+            }
+            this.downstream.onComplete();
+            this.worker.dispose();
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             if (SubscriptionHelper.validate(n)) {
                 BackpressureHelper.add(this, n);
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             this.upstream.cancel();
             this.worker.dispose();
         }
 
-        /* access modifiers changed from: package-private */
-        public void emit(long idx, T t, DebounceEmitter<T> emitter) {
-            if (idx != this.index) {
-                return;
+        void emit(long idx, T t, DebounceEmitter<T> emitter) {
+            if (idx == this.index) {
+                long r = get();
+                if (r != 0) {
+                    this.downstream.onNext(t);
+                    BackpressureHelper.produced(this, 1L);
+                    emitter.dispose();
+                    return;
+                }
+                cancel();
+                this.downstream.onError(new MissingBackpressureException("Could not deliver value due to lack of requests"));
             }
-            if (get() != 0) {
-                this.downstream.onNext(t);
-                BackpressureHelper.produced(this, 1);
-                emitter.dispose();
-                return;
-            }
-            cancel();
-            this.downstream.onError(new MissingBackpressureException("Could not deliver value due to lack of requests"));
         }
     }
 
+    /* loaded from: classes.dex */
     static final class DebounceEmitter<T> extends AtomicReference<Disposable> implements Runnable, Disposable {
         private static final long serialVersionUID = 6812032969491025141L;
         final long idx;
@@ -139,27 +149,29 @@ public final class FlowableDebounceTimed<T> extends AbstractFlowableWithUpstream
         final DebounceTimedSubscriber<T> parent;
         final T value;
 
-        DebounceEmitter(T value2, long idx2, DebounceTimedSubscriber<T> parent2) {
-            this.value = value2;
-            this.idx = idx2;
-            this.parent = parent2;
+        DebounceEmitter(T value, long idx, DebounceTimedSubscriber<T> parent) {
+            this.value = value;
+            this.idx = idx;
+            this.parent = parent;
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             emit();
         }
 
-        /* access modifiers changed from: package-private */
-        public void emit() {
+        void emit() {
             if (this.once.compareAndSet(false, true)) {
                 this.parent.emit(this.idx, this.value, this);
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             DisposableHelper.dispose(this);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return get() == DisposableHelper.DISPOSED;
         }

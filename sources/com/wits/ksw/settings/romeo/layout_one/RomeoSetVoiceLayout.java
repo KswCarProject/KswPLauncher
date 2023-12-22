@@ -12,16 +12,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.utils.ExceptionPrint;
+import com.wits.ksw.launcher.view.benzmbux2021new.util.BenzUtils;
 import com.wits.ksw.settings.romeo.interfaces.IUpdateListBg;
 import com.wits.ksw.settings.romeo.interfaces.IUpdateTwoLayout;
 
+/* loaded from: classes11.dex */
 public class RomeoSetVoiceLayout extends RelativeLayout implements View.OnClickListener {
     private Context context;
-    private int daohan = 26;
-    private int htongh = 28;
-    private int meiti = 26;
+    private int daohan;
+    private int htongh;
+    private int meiti;
     private LinearLayout romeo_voice_ll;
     private SeekBar seek_daohvoicb;
     private SeekBar seek_mtb;
@@ -34,15 +36,18 @@ public class RomeoSetVoiceLayout extends RelativeLayout implements View.OnClickL
     private TextView tv_tonghsize;
     private TextView tv_yuancthsize;
     private TextView tv_yuancvoc;
-    /* access modifiers changed from: private */
-    public IUpdateListBg updateListBg;
+    private IUpdateListBg updateListBg;
     private IUpdateTwoLayout updateTwoLayout;
-    private int ytongh = 26;
+    private int ytongh;
 
-    public RomeoSetVoiceLayout(Context context2) {
-        super(context2);
-        this.context = context2;
-        View view = LayoutInflater.from(context2).inflate(R.layout.romeo_layout_set_voice, (ViewGroup) null);
+    public RomeoSetVoiceLayout(Context context) {
+        super(context);
+        this.meiti = 26;
+        this.htongh = 28;
+        this.ytongh = 26;
+        this.daohan = 26;
+        this.context = context;
+        View view = LayoutInflater.from(context).inflate(C0899R.C0902layout.romeo_layout_set_voice, (ViewGroup) null);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(-1, -1);
         initView(view);
         view.setLayoutParams(layoutParams);
@@ -53,14 +58,15 @@ public class RomeoSetVoiceLayout extends RelativeLayout implements View.OnClickL
         this.updateTwoLayout = twoLayout;
     }
 
-    public void registIUpdateListBg(IUpdateListBg updateListBg2) {
-        this.updateListBg = updateListBg2;
+    public void registIUpdateListBg(IUpdateListBg updateListBg) {
+        this.updateListBg = updateListBg;
     }
 
-    private void changeItemBg(final ViewGroup viewGroup, Context context2) {
+    private void changeItemBg(final ViewGroup viewGroup, Context context) {
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             final int finalI = i;
-            viewGroup.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
+            viewGroup.getChildAt(i).setOnTouchListener(new View.OnTouchListener() { // from class: com.wits.ksw.settings.romeo.layout_one.RomeoSetVoiceLayout.1
+                @Override // android.view.View.OnTouchListener
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     int[] locW = new int[2];
                     viewGroup.getChildAt(finalI).getLocationInWindow(locW);
@@ -74,25 +80,26 @@ public class RomeoSetVoiceLayout extends RelativeLayout implements View.OnClickL
                     return false;
                 }
             });
-            viewGroup.getChildAt(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            viewGroup.getChildAt(i).setOnFocusChangeListener(new View.OnFocusChangeListener() { // from class: com.wits.ksw.settings.romeo.layout_one.RomeoSetVoiceLayout.2
+                @Override // android.view.View.OnFocusChangeListener
                 public void onFocusChange(View view, boolean b) {
-                    if (b) {
-                        int[] locW = new int[2];
-                        viewGroup.getChildAt(finalI).getLocationInWindow(locW);
-                        RomeoSetVoiceLayout.this.updateListBg.updateListBg(locW[1] - 78, 1);
+                    if (!b) {
+                        RomeoSetVoiceLayout.this.updateListBg.updateListBg(0, 0);
                         return;
                     }
-                    RomeoSetVoiceLayout.this.updateListBg.updateListBg(0, 0);
+                    int[] locW = new int[2];
+                    viewGroup.getChildAt(finalI).getLocationInWindow(locW);
+                    RomeoSetVoiceLayout.this.updateListBg.updateListBg(locW[1] - 78, 1);
                 }
             });
         }
     }
 
     private void initView(View view) {
-        this.tv_houzvoc = (TextView) view.findViewById(R.id.tv_houzvoc);
-        this.tv_yuancvoc = (TextView) view.findViewById(R.id.tv_yuancvoc);
-        this.tv_eq = (TextView) view.findViewById(R.id.tv_eq);
-        this.romeo_voice_ll = (LinearLayout) view.findViewById(R.id.romeo_voice_ll);
+        this.tv_houzvoc = (TextView) view.findViewById(C0899R.C0901id.tv_houzvoc);
+        this.tv_yuancvoc = (TextView) view.findViewById(C0899R.C0901id.tv_yuancvoc);
+        this.tv_eq = (TextView) view.findViewById(C0899R.C0901id.tv_eq);
+        this.romeo_voice_ll = (LinearLayout) view.findViewById(C0899R.C0901id.romeo_voice_ll);
         this.tv_houzvoc.setOnClickListener(this);
         this.tv_yuancvoc.setOnClickListener(this);
         this.tv_eq.setOnClickListener(this);
@@ -109,6 +116,7 @@ public class RomeoSetVoiceLayout extends RelativeLayout implements View.OnClickL
         }
     }
 
+    @Override // android.view.View.OnClickListener
     public void onClick(View v) {
         if (this.updateTwoLayout == null) {
             ExceptionPrint.print("updateTwoLayout is null");
@@ -116,22 +124,22 @@ public class RomeoSetVoiceLayout extends RelativeLayout implements View.OnClickL
         }
         resetTextColor();
         switch (v.getId()) {
-            case R.id.tv_eq /*2131297848*/:
+            case C0899R.C0901id.tv_eq /* 2131297900 */:
                 this.tv_houzvoc.setTextColor(-1);
                 this.tv_yuancvoc.setTextColor(-1);
                 this.tv_eq.setTextColor(Color.argb(255, 172, 216, 255));
                 this.updateTwoLayout.updateTwoLayout(5, 2);
                 Intent intent = new Intent();
-                intent.setClassName("com.wits.csp.eq", "com.wits.csp.eq.view.MainActivity");
+                intent.setClassName(BenzUtils.EQ_PKG, "com.wits.csp.eq.view.MainActivity");
                 this.context.startActivity(intent);
                 return;
-            case R.id.tv_houzvoc /*2131297864*/:
+            case C0899R.C0901id.tv_houzvoc /* 2131297916 */:
                 this.tv_yuancvoc.setTextColor(-1);
                 this.tv_eq.setTextColor(-1);
                 this.tv_houzvoc.setTextColor(Color.argb(255, 172, 216, 255));
                 this.updateTwoLayout.updateTwoLayout(5, 0);
                 return;
-            case R.id.tv_yuancvoc /*2131297956*/:
+            case C0899R.C0901id.tv_yuancvoc /* 2131298008 */:
                 this.tv_houzvoc.setTextColor(-1);
                 this.tv_eq.setTextColor(-1);
                 this.tv_yuancvoc.setTextColor(Color.argb(255, 172, 216, 255));

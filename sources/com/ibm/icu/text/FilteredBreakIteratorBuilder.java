@@ -4,6 +4,7 @@ import com.ibm.icu.impl.SimpleFilteredSentenceBreakIterator;
 import com.ibm.icu.util.ULocale;
 import java.util.Locale;
 
+/* loaded from: classes.dex */
 public abstract class FilteredBreakIteratorBuilder {
     public abstract boolean suppressBreakAfter(CharSequence charSequence);
 

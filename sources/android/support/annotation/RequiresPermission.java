@@ -7,14 +7,17 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.CLASS)
+/* loaded from: classes.dex */
 public @interface RequiresPermission {
 
     @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    /* loaded from: classes.dex */
     public @interface Read {
         RequiresPermission value() default @RequiresPermission;
     }
 
     @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    /* loaded from: classes.dex */
     public @interface Write {
         RequiresPermission value() default @RequiresPermission;
     }

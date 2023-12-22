@@ -15,6 +15,7 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class UnicastProcessor<T> extends FlowableProcessor<T> {
     volatile boolean cancelled;
     final boolean delayError;
@@ -39,8 +40,8 @@ public final class UnicastProcessor<T> extends FlowableProcessor<T> {
     }
 
     @CheckReturnValue
-    public static <T> UnicastProcessor<T> create(boolean delayError2) {
-        return new UnicastProcessor<>(bufferSize(), (Runnable) null, delayError2);
+    public static <T> UnicastProcessor<T> create(boolean delayError) {
+        return new UnicastProcessor<>(bufferSize(), null, delayError);
     }
 
     @CheckReturnValue
@@ -50,162 +51,149 @@ public final class UnicastProcessor<T> extends FlowableProcessor<T> {
     }
 
     @CheckReturnValue
-    public static <T> UnicastProcessor<T> create(int capacityHint, Runnable onCancelled, boolean delayError2) {
+    public static <T> UnicastProcessor<T> create(int capacityHint, Runnable onCancelled, boolean delayError) {
         ObjectHelper.requireNonNull(onCancelled, "onTerminate");
-        return new UnicastProcessor<>(capacityHint, onCancelled, delayError2);
+        return new UnicastProcessor<>(capacityHint, onCancelled, delayError);
     }
 
     UnicastProcessor(int capacityHint) {
-        this(capacityHint, (Runnable) null, true);
+        this(capacityHint, null, true);
     }
 
-    UnicastProcessor(int capacityHint, Runnable onTerminate2) {
-        this(capacityHint, onTerminate2, true);
+    UnicastProcessor(int capacityHint, Runnable onTerminate) {
+        this(capacityHint, onTerminate, true);
     }
 
-    UnicastProcessor(int capacityHint, Runnable onTerminate2, boolean delayError2) {
+    UnicastProcessor(int capacityHint, Runnable onTerminate, boolean delayError) {
         this.queue = new SpscLinkedArrayQueue<>(ObjectHelper.verifyPositive(capacityHint, "capacityHint"));
-        this.onTerminate = new AtomicReference<>(onTerminate2);
-        this.delayError = delayError2;
+        this.onTerminate = new AtomicReference<>(onTerminate);
+        this.delayError = delayError;
         this.downstream = new AtomicReference<>();
         this.once = new AtomicBoolean();
         this.wip = new UnicastQueueSubscription();
         this.requested = new AtomicLong();
     }
 
-    /* access modifiers changed from: package-private */
-    public void doTerminate() {
-        Runnable r = this.onTerminate.getAndSet((Object) null);
+    void doTerminate() {
+        Runnable r = this.onTerminate.getAndSet(null);
         if (r != null) {
             r.run();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public void drainRegular(Subscriber<? super T> a) {
+    void drainRegular(Subscriber<? super T> a) {
         SpscLinkedArrayQueue<T> q = this.queue;
         boolean failFast = !this.delayError;
         int missed = 1;
         do {
             long r = this.requested.get();
             long e = 0;
-            while (true) {
-                if (r == e) {
-                    Subscriber<? super T> subscriber = a;
-                    break;
-                }
+            while (r != e) {
                 boolean d = this.done;
                 T t = q.poll();
                 boolean empty = t == null;
-                if (!checkTerminated(failFast, d, empty, a, q)) {
-                    if (empty) {
-                        Subscriber<? super T> subscriber2 = a;
-                        break;
-                    } else {
-                        a.onNext(t);
-                        e++;
-                    }
-                } else {
+                if (checkTerminated(failFast, d, empty, a, q)) {
                     return;
                 }
-            }
-            if (r == e) {
-                if (checkTerminated(failFast, this.done, q.isEmpty(), a, q)) {
-                    return;
+                if (empty) {
+                    break;
                 }
+                a.onNext(t);
+                e++;
             }
-            if (!(e == 0 || r == LongCompanionObject.MAX_VALUE)) {
+            if (r == e && checkTerminated(failFast, this.done, q.isEmpty(), a, q)) {
+                return;
+            }
+            if (e != 0 && r != LongCompanionObject.MAX_VALUE) {
                 this.requested.addAndGet(-e);
             }
             missed = this.wip.addAndGet(-missed);
         } while (missed != 0);
     }
 
-    /* access modifiers changed from: package-private */
-    public void drainFused(Subscriber<? super T> a) {
+    void drainFused(Subscriber<? super T> a) {
         int missed = 1;
         SpscLinkedArrayQueue<T> q = this.queue;
         boolean failFast = !this.delayError;
         while (!this.cancelled) {
             boolean d = this.done;
-            if (!failFast || !d || this.error == null) {
-                a.onNext(null);
-                if (d) {
-                    this.downstream.lazySet((Object) null);
-                    Throwable ex = this.error;
-                    if (ex != null) {
-                        a.onError(ex);
-                        return;
-                    } else {
-                        a.onComplete();
-                        return;
-                    }
-                } else {
-                    missed = this.wip.addAndGet(-missed);
-                    if (missed == 0) {
-                        return;
-                    }
-                }
-            } else {
+            if (failFast && d && this.error != null) {
                 q.clear();
-                this.downstream.lazySet((Object) null);
+                this.downstream.lazySet(null);
                 a.onError(this.error);
                 return;
             }
-        }
-        this.downstream.lazySet((Object) null);
-    }
-
-    /* access modifiers changed from: package-private */
-    public void drain() {
-        if (this.wip.getAndIncrement() == 0) {
-            int missed = 1;
-            Subscriber<? super T> a = this.downstream.get();
-            while (a == null) {
-                missed = this.wip.addAndGet(-missed);
-                if (missed != 0) {
-                    a = this.downstream.get();
+            a.onNext(null);
+            if (d) {
+                this.downstream.lazySet(null);
+                Throwable ex = this.error;
+                if (ex != null) {
+                    a.onError(ex);
+                    return;
                 } else {
+                    a.onComplete();
                     return;
                 }
             }
-            if (this.enableOperatorFusion) {
-                drainFused(a);
-            } else {
-                drainRegular(a);
+            missed = this.wip.addAndGet(-missed);
+            if (missed == 0) {
+                return;
             }
+        }
+        this.downstream.lazySet(null);
+    }
+
+    void drain() {
+        if (this.wip.getAndIncrement() != 0) {
+            return;
+        }
+        int missed = 1;
+        Subscriber<? super T> a = this.downstream.get();
+        while (a == null) {
+            missed = this.wip.addAndGet(-missed);
+            if (missed != 0) {
+                Subscriber<? super T> a2 = this.downstream.get();
+                a = a2;
+            } else {
+                return;
+            }
+        }
+        if (this.enableOperatorFusion) {
+            drainFused(a);
+        } else {
+            drainRegular(a);
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean checkTerminated(boolean failFast, boolean d, boolean empty, Subscriber<? super T> a, SpscLinkedArrayQueue<T> q) {
+    boolean checkTerminated(boolean failFast, boolean d, boolean empty, Subscriber<? super T> a, SpscLinkedArrayQueue<T> q) {
         if (this.cancelled) {
             q.clear();
-            this.downstream.lazySet((Object) null);
+            this.downstream.lazySet(null);
             return true;
-        } else if (!d) {
-            return false;
-        } else {
+        } else if (d) {
             if (failFast && this.error != null) {
                 q.clear();
-                this.downstream.lazySet((Object) null);
+                this.downstream.lazySet(null);
                 a.onError(this.error);
                 return true;
-            } else if (!empty) {
-                return false;
-            } else {
+            } else if (empty) {
                 Throwable e = this.error;
-                this.downstream.lazySet((Object) null);
+                this.downstream.lazySet(null);
                 if (e != null) {
                     a.onError(e);
                 } else {
                     a.onComplete();
                 }
                 return true;
+            } else {
+                return false;
             }
+        } else {
+            return false;
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onSubscribe(Subscription s) {
         if (this.done || this.cancelled) {
             s.cancel();
@@ -214,14 +202,17 @@ public final class UnicastProcessor<T> extends FlowableProcessor<T> {
         }
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onNext(T t) {
         ObjectHelper.requireNonNull(t, "onNext called with null. Null values are generally not allowed in 2.x operators and sources.");
-        if (!this.done && !this.cancelled) {
-            this.queue.offer(t);
-            drain();
+        if (this.done || this.cancelled) {
+            return;
         }
+        this.queue.offer(t);
+        drain();
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onError(Throwable t) {
         ObjectHelper.requireNonNull(t, "onError called with null. Null values are generally not allowed in 2.x operators and sources.");
         if (this.done || this.cancelled) {
@@ -234,55 +225,64 @@ public final class UnicastProcessor<T> extends FlowableProcessor<T> {
         drain();
     }
 
+    @Override // org.reactivestreams.Subscriber
     public void onComplete() {
-        if (!this.done && !this.cancelled) {
-            this.done = true;
-            doTerminate();
-            drain();
-        }
-    }
-
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super T> s) {
-        if (this.once.get() || !this.once.compareAndSet(false, true)) {
-            EmptySubscription.error(new IllegalStateException("This processor allows only a single Subscriber"), s);
+        if (this.done || this.cancelled) {
             return;
         }
-        s.onSubscribe(this.wip);
-        this.downstream.set(s);
-        if (this.cancelled) {
-            this.downstream.lazySet((Object) null);
-        } else {
-            drain();
-        }
+        this.done = true;
+        doTerminate();
+        drain();
     }
 
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super T> s) {
+        if (!this.once.get() && this.once.compareAndSet(false, true)) {
+            s.onSubscribe(this.wip);
+            this.downstream.set(s);
+            if (this.cancelled) {
+                this.downstream.lazySet(null);
+                return;
+            } else {
+                drain();
+                return;
+            }
+        }
+        EmptySubscription.error(new IllegalStateException("This processor allows only a single Subscriber"), s);
+    }
+
+    /* loaded from: classes.dex */
     final class UnicastQueueSubscription extends BasicIntQueueSubscription<T> {
         private static final long serialVersionUID = -4896760517184205454L;
 
         UnicastQueueSubscription() {
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public T poll() {
             return UnicastProcessor.this.queue.poll();
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public boolean isEmpty() {
             return UnicastProcessor.this.queue.isEmpty();
         }
 
+        @Override // io.reactivex.internal.fuseable.SimpleQueue
         public void clear() {
             UnicastProcessor.this.queue.clear();
         }
 
+        @Override // io.reactivex.internal.fuseable.QueueFuseable
         public int requestFusion(int requestedMode) {
-            if ((requestedMode & 2) == 0) {
-                return 0;
+            if ((requestedMode & 2) != 0) {
+                UnicastProcessor.this.enableOperatorFusion = true;
+                return 2;
             }
-            UnicastProcessor.this.enableOperatorFusion = true;
-            return 2;
+            return 0;
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             if (SubscriptionHelper.validate(n)) {
                 BackpressureHelper.add(UnicastProcessor.this.requested, n);
@@ -290,25 +290,29 @@ public final class UnicastProcessor<T> extends FlowableProcessor<T> {
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
-            if (!UnicastProcessor.this.cancelled) {
-                UnicastProcessor.this.cancelled = true;
-                UnicastProcessor.this.doTerminate();
-                UnicastProcessor.this.downstream.lazySet((Object) null);
-                if (UnicastProcessor.this.wip.getAndIncrement() == 0) {
-                    UnicastProcessor.this.downstream.lazySet((Object) null);
-                    if (!UnicastProcessor.this.enableOperatorFusion) {
-                        UnicastProcessor.this.queue.clear();
-                    }
+            if (UnicastProcessor.this.cancelled) {
+                return;
+            }
+            UnicastProcessor.this.cancelled = true;
+            UnicastProcessor.this.doTerminate();
+            UnicastProcessor.this.downstream.lazySet(null);
+            if (UnicastProcessor.this.wip.getAndIncrement() == 0) {
+                UnicastProcessor.this.downstream.lazySet(null);
+                if (!UnicastProcessor.this.enableOperatorFusion) {
+                    UnicastProcessor.this.queue.clear();
                 }
             }
         }
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public boolean hasSubscribers() {
         return this.downstream.get() != null;
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public Throwable getThrowable() {
         if (this.done) {
             return this.error;
@@ -316,10 +320,12 @@ public final class UnicastProcessor<T> extends FlowableProcessor<T> {
         return null;
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public boolean hasComplete() {
         return this.done && this.error == null;
     }
 
+    @Override // io.reactivex.processors.FlowableProcessor
     public boolean hasThrowable() {
         return this.done && this.error != null;
     }

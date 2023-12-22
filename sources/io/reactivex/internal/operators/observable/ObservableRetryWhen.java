@@ -16,93 +16,97 @@ import io.reactivex.subjects.Subject;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class ObservableRetryWhen<T> extends AbstractObservableWithUpstream<T, T> {
     final Function<? super Observable<Throwable>, ? extends ObservableSource<?>> handler;
 
-    public ObservableRetryWhen(ObservableSource<T> source, Function<? super Observable<Throwable>, ? extends ObservableSource<?>> handler2) {
+    public ObservableRetryWhen(ObservableSource<T> source, Function<? super Observable<Throwable>, ? extends ObservableSource<?>> handler) {
         super(source);
-        this.handler = handler2;
+        this.handler = handler;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Observer<? super T> observer) {
-        Subject<Throwable> signaller = PublishSubject.create().toSerialized();
+    @Override // io.reactivex.Observable
+    protected void subscribeActual(Observer<? super T> observer) {
+        Subject<T> serialized = PublishSubject.create().toSerialized();
         try {
-            ObservableSource<?> other = (ObservableSource) ObjectHelper.requireNonNull(this.handler.apply(signaller), "The handler returned a null ObservableSource");
-            RepeatWhenObserver<T> parent = new RepeatWhenObserver<>(observer, signaller, this.source);
+            ObservableSource<?> other = (ObservableSource) ObjectHelper.requireNonNull(this.handler.apply(serialized), "The handler returned a null ObservableSource");
+            RepeatWhenObserver<T> parent = new RepeatWhenObserver<>(observer, serialized, this.source);
             observer.onSubscribe(parent);
             other.subscribe(parent.inner);
             parent.subscribeNext();
         } catch (Throwable ex) {
             Exceptions.throwIfFatal(ex);
-            EmptyDisposable.error(ex, (Observer<?>) observer);
+            EmptyDisposable.error(ex, observer);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class RepeatWhenObserver<T> extends AtomicInteger implements Observer<T>, Disposable {
         private static final long serialVersionUID = 802743776666017014L;
         volatile boolean active;
         final Observer<? super T> downstream;
-        final AtomicThrowable error = new AtomicThrowable();
-        final RepeatWhenObserver<T>.InnerRepeatObserver inner = new InnerRepeatObserver();
         final Subject<Throwable> signaller;
         final ObservableSource<T> source;
-        final AtomicReference<Disposable> upstream = new AtomicReference<>();
         final AtomicInteger wip = new AtomicInteger();
+        final AtomicThrowable error = new AtomicThrowable();
+        final RepeatWhenObserver<T>.InnerRepeatObserver inner = new InnerRepeatObserver();
+        final AtomicReference<Disposable> upstream = new AtomicReference<>();
 
-        RepeatWhenObserver(Observer<? super T> actual, Subject<Throwable> signaller2, ObservableSource<T> source2) {
+        RepeatWhenObserver(Observer<? super T> actual, Subject<Throwable> signaller, ObservableSource<T> source) {
             this.downstream = actual;
-            this.signaller = signaller2;
-            this.source = source2;
+            this.signaller = signaller;
+            this.source = source;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             DisposableHelper.replace(this.upstream, d);
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
-            HalfSerializer.onNext(this.downstream, t, (AtomicInteger) this, this.error);
+            HalfSerializer.onNext(this.downstream, t, this, this.error);
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable e) {
-            DisposableHelper.replace(this.upstream, (Disposable) null);
+            DisposableHelper.replace(this.upstream, null);
             this.active = false;
             this.signaller.onNext(e);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             DisposableHelper.dispose(this.inner);
-            HalfSerializer.onComplete((Observer<?>) this.downstream, (AtomicInteger) this, this.error);
+            HalfSerializer.onComplete(this.downstream, this, this.error);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return DisposableHelper.isDisposed(this.upstream.get());
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             DisposableHelper.dispose(this.upstream);
             DisposableHelper.dispose(this.inner);
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerNext() {
+        void innerNext() {
             subscribeNext();
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerError(Throwable ex) {
+        void innerError(Throwable ex) {
             DisposableHelper.dispose(this.upstream);
-            HalfSerializer.onError((Observer<?>) this.downstream, ex, (AtomicInteger) this, this.error);
+            HalfSerializer.onError(this.downstream, ex, this, this.error);
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerComplete() {
+        void innerComplete() {
             DisposableHelper.dispose(this.upstream);
-            HalfSerializer.onComplete((Observer<?>) this.downstream, (AtomicInteger) this, this.error);
+            HalfSerializer.onComplete(this.downstream, this, this.error);
         }
 
-        /* access modifiers changed from: package-private */
-        public void subscribeNext() {
+        void subscribeNext() {
             if (this.wip.getAndIncrement() == 0) {
                 while (!isDisposed()) {
                     if (!this.active) {
@@ -116,24 +120,29 @@ public final class ObservableRetryWhen<T> extends AbstractObservableWithUpstream
             }
         }
 
+        /* loaded from: classes.dex */
         final class InnerRepeatObserver extends AtomicReference<Disposable> implements Observer<Object> {
             private static final long serialVersionUID = 3254781284376480842L;
 
             InnerRepeatObserver() {
             }
 
+            @Override // io.reactivex.Observer
             public void onSubscribe(Disposable d) {
                 DisposableHelper.setOnce(this, d);
             }
 
+            @Override // io.reactivex.Observer
             public void onNext(Object t) {
                 RepeatWhenObserver.this.innerNext();
             }
 
+            @Override // io.reactivex.Observer
             public void onError(Throwable e) {
                 RepeatWhenObserver.this.innerError(e);
             }
 
+            @Override // io.reactivex.Observer
             public void onComplete() {
                 RepeatWhenObserver.this.innerComplete();
             }

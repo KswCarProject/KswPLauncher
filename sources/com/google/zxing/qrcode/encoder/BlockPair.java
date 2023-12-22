@@ -1,5 +1,6 @@
 package com.google.zxing.qrcode.encoder;
 
+/* loaded from: classes.dex */
 final class BlockPair {
     private final byte[] dataBytes;
     private final byte[] errorCorrectionBytes;

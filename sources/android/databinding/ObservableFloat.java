@@ -4,12 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import java.io.Serializable;
 
+/* loaded from: classes.dex */
 public class ObservableFloat extends BaseObservableField implements Parcelable, Serializable {
-    public static final Parcelable.Creator<ObservableFloat> CREATOR = new Parcelable.Creator<ObservableFloat>() {
+    public static final Parcelable.Creator<ObservableFloat> CREATOR = new Parcelable.Creator<ObservableFloat>() { // from class: android.databinding.ObservableFloat.1
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // android.os.Parcelable.Creator
         public ObservableFloat createFromParcel(Parcel source) {
             return new ObservableFloat(source.readFloat());
         }
 
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // android.os.Parcelable.Creator
         public ObservableFloat[] newArray(int size) {
             return new ObservableFloat[size];
         }
@@ -39,10 +44,12 @@ public class ObservableFloat extends BaseObservableField implements Parcelable, 
         }
     }
 
+    @Override // android.os.Parcelable
     public int describeContents() {
         return 0;
     }
 
+    @Override // android.os.Parcelable
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeFloat(this.mValue);
     }

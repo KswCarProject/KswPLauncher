@@ -9,9 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.AudiViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class AudiMib3RightCarinfoBinding extends ViewDataBinding {
     public final ConstraintLayout KSWA4LRightTrafficInformation;
     public final TextView TvDrivingRange;
@@ -26,20 +27,20 @@ public abstract class AudiMib3RightCarinfoBinding extends ViewDataBinding {
     public final ImageView pointerImageView;
     public final TextView textView4;
 
-    public abstract void setVm(AudiViewModel audiViewModel);
+    public abstract void setVm(AudiViewModel vm);
 
-    protected AudiMib3RightCarinfoBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout KSWA4LRightTrafficInformation2, TextView TvDrivingRange2, TextView TvTemp2, TextView TvZhuanSu2, ImageView imageView102, ImageView imageView112, ImageView imageView52, ImageView imageView92, ImageView pointerImageView2, TextView textView42) {
+    protected AudiMib3RightCarinfoBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout KSWA4LRightTrafficInformation, TextView TvDrivingRange, TextView TvTemp, TextView TvZhuanSu, ImageView imageView10, ImageView imageView11, ImageView imageView5, ImageView imageView9, ImageView pointerImageView, TextView textView4) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.KSWA4LRightTrafficInformation = KSWA4LRightTrafficInformation2;
-        this.TvDrivingRange = TvDrivingRange2;
-        this.TvTemp = TvTemp2;
-        this.TvZhuanSu = TvZhuanSu2;
-        this.imageView10 = imageView102;
-        this.imageView11 = imageView112;
-        this.imageView5 = imageView52;
-        this.imageView9 = imageView92;
-        this.pointerImageView = pointerImageView2;
-        this.textView4 = textView42;
+        this.KSWA4LRightTrafficInformation = KSWA4LRightTrafficInformation;
+        this.TvDrivingRange = TvDrivingRange;
+        this.TvTemp = TvTemp;
+        this.TvZhuanSu = TvZhuanSu;
+        this.imageView10 = imageView10;
+        this.imageView11 = imageView11;
+        this.imageView5 = imageView5;
+        this.imageView9 = imageView9;
+        this.pointerImageView = pointerImageView;
+        this.textView4 = textView4;
     }
 
     public AudiViewModel getVm() {
@@ -52,7 +53,7 @@ public abstract class AudiMib3RightCarinfoBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3RightCarinfoBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AudiMib3RightCarinfoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_mib3_right_carinfo, root, attachToRoot, component);
+        return (AudiMib3RightCarinfoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_mib3_right_carinfo, root, attachToRoot, component);
     }
 
     public static AudiMib3RightCarinfoBinding inflate(LayoutInflater inflater) {
@@ -61,7 +62,7 @@ public abstract class AudiMib3RightCarinfoBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3RightCarinfoBinding inflate(LayoutInflater inflater, Object component) {
-        return (AudiMib3RightCarinfoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_mib3_right_carinfo, (ViewGroup) null, false, component);
+        return (AudiMib3RightCarinfoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_mib3_right_carinfo, null, false, component);
     }
 
     public static AudiMib3RightCarinfoBinding bind(View view) {
@@ -70,6 +71,6 @@ public abstract class AudiMib3RightCarinfoBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiMib3RightCarinfoBinding bind(View view, Object component) {
-        return (AudiMib3RightCarinfoBinding) bind(component, view, R.layout.audi_mib3_right_carinfo);
+        return (AudiMib3RightCarinfoBinding) bind(component, view, C0899R.C0902layout.audi_mib3_right_carinfo);
     }
 }

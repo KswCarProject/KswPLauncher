@@ -3,6 +3,7 @@ package com.google.zxing;
 import java.util.EnumMap;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class Result {
     private final BarcodeFormat format;
     private final int numBits;
@@ -12,23 +13,22 @@ public final class Result {
     private final String text;
     private final long timestamp;
 
-    public Result(String text2, byte[] rawBytes2, ResultPoint[] resultPoints2, BarcodeFormat format2) {
-        this(text2, rawBytes2, resultPoints2, format2, System.currentTimeMillis());
+    public Result(String text, byte[] rawBytes, ResultPoint[] resultPoints, BarcodeFormat format) {
+        this(text, rawBytes, resultPoints, format, System.currentTimeMillis());
     }
 
-    /* JADX INFO: this call moved to the top of the method (can break code semantics) */
-    public Result(String text2, byte[] rawBytes2, ResultPoint[] resultPoints2, BarcodeFormat format2, long timestamp2) {
-        this(text2, rawBytes2, rawBytes2 == null ? 0 : rawBytes2.length * 8, resultPoints2, format2, timestamp2);
+    public Result(String text, byte[] rawBytes, ResultPoint[] resultPoints, BarcodeFormat format, long timestamp) {
+        this(text, rawBytes, rawBytes == null ? 0 : rawBytes.length * 8, resultPoints, format, timestamp);
     }
 
-    public Result(String text2, byte[] rawBytes2, int numBits2, ResultPoint[] resultPoints2, BarcodeFormat format2, long timestamp2) {
-        this.text = text2;
-        this.rawBytes = rawBytes2;
-        this.numBits = numBits2;
-        this.resultPoints = resultPoints2;
-        this.format = format2;
+    public Result(String text, byte[] rawBytes, int numBits, ResultPoint[] resultPoints, BarcodeFormat format, long timestamp) {
+        this.text = text;
+        this.rawBytes = rawBytes;
+        this.numBits = numBits;
+        this.resultPoints = resultPoints;
+        this.format = format;
         this.resultMetadata = null;
-        this.timestamp = timestamp2;
+        this.timestamp = timestamp;
     }
 
     public String getText() {
@@ -74,12 +74,11 @@ public final class Result {
     }
 
     public void addResultPoints(ResultPoint[] newPoints) {
-        ResultPoint[] resultPointArr = this.resultPoints;
-        ResultPoint[] oldPoints = resultPointArr;
-        if (resultPointArr == null) {
+        ResultPoint[] oldPoints = this.resultPoints;
+        if (oldPoints == null) {
             this.resultPoints = newPoints;
         } else if (newPoints != null && newPoints.length > 0) {
-            ResultPoint[] allPoints = new ResultPoint[(oldPoints.length + newPoints.length)];
+            ResultPoint[] allPoints = new ResultPoint[oldPoints.length + newPoints.length];
             System.arraycopy(oldPoints, 0, allPoints, 0, oldPoints.length);
             System.arraycopy(newPoints, 0, allPoints, oldPoints.length, newPoints.length);
             this.resultPoints = allPoints;

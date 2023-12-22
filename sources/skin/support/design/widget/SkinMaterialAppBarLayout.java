@@ -6,14 +6,15 @@ import android.util.AttributeSet;
 import skin.support.widget.SkinCompatBackgroundHelper;
 import skin.support.widget.SkinCompatSupportable;
 
+/* loaded from: classes.dex */
 public class SkinMaterialAppBarLayout extends AppBarLayout implements SkinCompatSupportable {
     private SkinCompatBackgroundHelper mBackgroundTintHelper;
 
     public SkinMaterialAppBarLayout(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
-    /* JADX WARNING: type inference failed for: r2v0, types: [skin.support.design.widget.SkinMaterialAppBarLayout, android.view.View] */
+    /* JADX WARN: Multi-variable type inference failed */
     public SkinMaterialAppBarLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = new SkinCompatBackgroundHelper(this);
@@ -21,6 +22,7 @@ public class SkinMaterialAppBarLayout extends AppBarLayout implements SkinCompat
         skinCompatBackgroundHelper.loadFromAttributes(attrs, 0);
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
         if (skinCompatBackgroundHelper != null) {

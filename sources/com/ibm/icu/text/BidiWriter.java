@@ -2,10 +2,11 @@ package com.ibm.icu.text;
 
 import com.ibm.icu.lang.UCharacter;
 
+/* loaded from: classes.dex */
 final class BidiWriter {
-    static final char LRM_CHAR = '‎';
+    static final char LRM_CHAR = '\u200e';
     static final int MASK_R_AL = 8194;
-    static final char RLM_CHAR = '‏';
+    static final char RLM_CHAR = '\u200f';
 
     BidiWriter() {
     }
@@ -36,10 +37,11 @@ final class BidiWriter {
                     if (!Bidi.IsBidiControlChar(c2)) {
                         dest2.append(c2);
                     }
-                    if (i3 >= src.length()) {
+                    if (i3 < src.length()) {
+                        i2 = i3;
+                    } else {
                         return dest2.toString();
                     }
-                    i2 = i3;
                 }
             default:
                 StringBuffer dest3 = new StringBuffer(src.length());
@@ -78,13 +80,10 @@ final class BidiWriter {
                     do {
                         c = UTF16.charAt(src, srcLength2 - 1);
                         srcLength2 -= UTF16.getCharCount(c);
-                        if (srcLength2 <= 0 || !IsCombining(UCharacter.getType(c))) {
-                            dest.append(src.substring(srcLength2, i2));
+                        if (srcLength2 > 0) {
                         }
-                        c = UTF16.charAt(src, srcLength2 - 1);
-                        srcLength2 -= UTF16.getCharCount(c);
                         dest.append(src.substring(srcLength2, i2));
-                    } while (!IsCombining(UCharacter.getType(c)));
+                    } while (IsCombining(UCharacter.getType(c)));
                     dest.append(src.substring(srcLength2, i2));
                 } while (srcLength2 > 0);
                 break;
@@ -128,12 +127,12 @@ final class BidiWriter {
         char[] text = bidi.text;
         int runCount = bidi.countRuns();
         if ((bidi.reorderingOptions & 1) != 0) {
-            options = (options | 4) & -9;
+            options = (options | 4) & (-9);
         }
         if ((bidi.reorderingOptions & 2) != 0) {
-            options = (options | 8) & -5;
+            options = (options | 8) & (-5);
         }
-        if (!(bidi.reorderingMode == 4 || bidi.reorderingMode == 5 || bidi.reorderingMode == 6 || bidi.reorderingMode == 3)) {
+        if (bidi.reorderingMode != 4 && bidi.reorderingMode != 5 && bidi.reorderingMode != 6 && bidi.reorderingMode != 3) {
             options &= -5;
         }
         StringBuilder dest = new StringBuilder((options & 4) != 0 ? bidi.length * 2 : bidi.length);
@@ -142,15 +141,14 @@ final class BidiWriter {
                 for (int run = 0; run < runCount; run++) {
                     BidiRun bidiRun = bidi.getVisualRun(run);
                     if (bidiRun.isEvenRun()) {
-                        dest.append(doWriteForward(text, bidiRun.start, bidiRun.limit, options & -3));
+                        dest.append(doWriteForward(text, bidiRun.start, bidiRun.limit, options & (-3)));
                     } else {
                         dest.append(doWriteReverse(text, bidiRun.start, bidiRun.limit, options));
                     }
                 }
             } else {
                 byte[] dirProps = bidi.dirProps;
-                int run2 = 0;
-                while (run2 < runCount) {
+                for (int run2 = 0; run2 < runCount; run2++) {
                     BidiRun bidiRun2 = bidi.getVisualRun(run2);
                     int markFlag = bidi.runs[run2].insertRemove;
                     if (markFlag < 0) {
@@ -170,7 +168,7 @@ final class BidiWriter {
                         if (uc3 != 0) {
                             dest.append(uc3);
                         }
-                        dest.append(doWriteForward(text, bidiRun2.start, bidiRun2.limit, options & -3));
+                        dest.append(doWriteForward(text, bidiRun2.start, bidiRun2.limit, options & (-3)));
                         if (bidi.isInverse() && dirProps[bidiRun2.limit - 1] != 0) {
                             markFlag |= 2;
                         }
@@ -185,7 +183,7 @@ final class BidiWriter {
                             dest.append(uc4);
                         }
                     } else {
-                        if (bidi.isInverse() != 0 && !bidi.testDirPropFlagAt(8194, bidiRun2.limit - 1)) {
+                        if (bidi.isInverse() && !bidi.testDirPropFlagAt(8194, bidiRun2.limit - 1)) {
                             markFlag |= 4;
                         }
                         if ((markFlag & 1) != 0) {
@@ -213,9 +211,7 @@ final class BidiWriter {
                             dest.append(uc2);
                         }
                     }
-                    run2++;
                 }
-                int i = run2;
             }
         } else if ((options & 4) == 0) {
             int run3 = runCount;
@@ -226,7 +222,7 @@ final class BidiWriter {
                 }
                 BidiRun bidiRun3 = bidi.getVisualRun(run3);
                 if (bidiRun3.isEvenRun()) {
-                    dest.append(doWriteReverse(text, bidiRun3.start, bidiRun3.limit, options & -3));
+                    dest.append(doWriteReverse(text, bidiRun3.start, bidiRun3.limit, options & (-3)));
                 } else {
                     dest.append(doWriteForward(text, bidiRun3.start, bidiRun3.limit, options));
                 }
@@ -244,7 +240,7 @@ final class BidiWriter {
                     if (dirProps2[bidiRun4.limit - 1] != 0) {
                         dest.append(LRM_CHAR);
                     }
-                    dest.append(doWriteReverse(text, bidiRun4.start, bidiRun4.limit, options & -3));
+                    dest.append(doWriteReverse(text, bidiRun4.start, bidiRun4.limit, options & (-3)));
                     if (dirProps2[bidiRun4.start] != 0) {
                         dest.append(LRM_CHAR);
                     }
@@ -258,7 +254,6 @@ final class BidiWriter {
                     }
                 }
             }
-            int i2 = run4;
         }
         return dest.toString();
     }

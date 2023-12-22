@@ -1,6 +1,7 @@
 package io.reactivex.internal.operators.flowable;
 
 import io.reactivex.Flowable;
+import io.reactivex.FlowableSubscriber;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.exceptions.Exceptions;
@@ -23,6 +24,7 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableBufferTimed<T, U extends Collection<? super T>> extends AbstractFlowableWithUpstream<T, U> {
     final Callable<U> bufferSupplier;
     final int maxSize;
@@ -32,60 +34,70 @@ public final class FlowableBufferTimed<T, U extends Collection<? super T>> exten
     final long timespan;
     final TimeUnit unit;
 
-    public FlowableBufferTimed(Flowable<T> source, long timespan2, long timeskip2, TimeUnit unit2, Scheduler scheduler2, Callable<U> bufferSupplier2, int maxSize2, boolean restartTimerOnMaxSize2) {
+    public FlowableBufferTimed(Flowable<T> source, long timespan, long timeskip, TimeUnit unit, Scheduler scheduler, Callable<U> bufferSupplier, int maxSize, boolean restartTimerOnMaxSize) {
         super(source);
-        this.timespan = timespan2;
-        this.timeskip = timeskip2;
-        this.unit = unit2;
-        this.scheduler = scheduler2;
-        this.bufferSupplier = bufferSupplier2;
-        this.maxSize = maxSize2;
-        this.restartTimerOnMaxSize = restartTimerOnMaxSize2;
+        this.timespan = timespan;
+        this.timeskip = timeskip;
+        this.unit = unit;
+        this.scheduler = scheduler;
+        this.bufferSupplier = bufferSupplier;
+        this.maxSize = maxSize;
+        this.restartTimerOnMaxSize = restartTimerOnMaxSize;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(Subscriber<? super U> s) {
+    @Override // io.reactivex.Flowable
+    protected void subscribeActual(Subscriber<? super U> s) {
         if (this.timespan == this.timeskip && this.maxSize == Integer.MAX_VALUE) {
-            this.source.subscribe(new BufferExactUnboundedSubscriber(new SerializedSubscriber(s), this.bufferSupplier, this.timespan, this.unit, this.scheduler));
+            this.source.subscribe((FlowableSubscriber) new BufferExactUnboundedSubscriber(new SerializedSubscriber(s), this.bufferSupplier, this.timespan, this.unit, this.scheduler));
             return;
         }
         Scheduler.Worker w = this.scheduler.createWorker();
         if (this.timespan == this.timeskip) {
-            this.source.subscribe(new BufferExactBoundedSubscriber(new SerializedSubscriber(s), this.bufferSupplier, this.timespan, this.unit, this.maxSize, this.restartTimerOnMaxSize, w));
+            this.source.subscribe((FlowableSubscriber) new BufferExactBoundedSubscriber(new SerializedSubscriber(s), this.bufferSupplier, this.timespan, this.unit, this.maxSize, this.restartTimerOnMaxSize, w));
         } else {
-            this.source.subscribe(new BufferSkipBoundedSubscriber(new SerializedSubscriber(s), this.bufferSupplier, this.timespan, this.timeskip, this.unit, w));
+            this.source.subscribe((FlowableSubscriber) new BufferSkipBoundedSubscriber(new SerializedSubscriber(s), this.bufferSupplier, this.timespan, this.timeskip, this.unit, w));
         }
     }
 
+    /* loaded from: classes.dex */
     static final class BufferExactUnboundedSubscriber<T, U extends Collection<? super T>> extends QueueDrainSubscriber<T, U, U> implements Subscription, Runnable, Disposable {
         U buffer;
         final Callable<U> bufferSupplier;
         final Scheduler scheduler;
-        final AtomicReference<Disposable> timer = new AtomicReference<>();
+        final AtomicReference<Disposable> timer;
         final long timespan;
         final TimeUnit unit;
         Subscription upstream;
 
-        BufferExactUnboundedSubscriber(Subscriber<? super U> actual, Callable<U> bufferSupplier2, long timespan2, TimeUnit unit2, Scheduler scheduler2) {
-            super(actual, new MpscLinkedQueue());
-            this.bufferSupplier = bufferSupplier2;
-            this.timespan = timespan2;
-            this.unit = unit2;
-            this.scheduler = scheduler2;
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.internal.subscribers.QueueDrainSubscriber, io.reactivex.internal.util.QueueDrain
+        public /* bridge */ /* synthetic */ boolean accept(Subscriber subscriber, Object obj) {
+            return accept((Subscriber<? super Subscriber>) subscriber, (Subscriber) ((Collection) obj));
         }
 
+        BufferExactUnboundedSubscriber(Subscriber<? super U> actual, Callable<U> bufferSupplier, long timespan, TimeUnit unit, Scheduler scheduler) {
+            super(actual, new MpscLinkedQueue());
+            this.timer = new AtomicReference<>();
+            this.bufferSupplier = bufferSupplier;
+            this.timespan = timespan;
+            this.unit = unit;
+            this.scheduler = scheduler;
+        }
+
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
                 try {
-                    this.buffer = (Collection) ObjectHelper.requireNonNull(this.bufferSupplier.call(), "The supplied buffer is null");
+                    U b = (U) ObjectHelper.requireNonNull(this.bufferSupplier.call(), "The supplied buffer is null");
+                    this.buffer = b;
                     this.downstream.onSubscribe(this);
                     if (!this.cancelled) {
                         s.request(LongCompanionObject.MAX_VALUE);
-                        Scheduler scheduler2 = this.scheduler;
+                        Scheduler scheduler = this.scheduler;
                         long j = this.timespan;
-                        Disposable d = scheduler2.schedulePeriodicallyDirect(this, j, j, this.unit);
-                        if (!this.timer.compareAndSet((Object) null, d)) {
+                        Disposable d = scheduler.schedulePeriodicallyDirect(this, j, j, this.unit);
+                        if (!this.timer.compareAndSet(null, d)) {
                             d.dispose();
                         }
                     }
@@ -97,6 +109,7 @@ public final class FlowableBufferTimed<T, U extends Collection<? super T>> exten
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             synchronized (this) {
                 U b = this.buffer;
@@ -106,6 +119,7 @@ public final class FlowableBufferTimed<T, U extends Collection<? super T>> exten
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             DisposableHelper.dispose(this.timer);
             synchronized (this) {
@@ -114,76 +128,46 @@ public final class FlowableBufferTimed<T, U extends Collection<? super T>> exten
             this.downstream.onError(t);
         }
 
-        /* JADX WARNING: Code restructure failed: missing block: B:10:0x001c, code lost:
-            if (enter() == false) goto L_?;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:11:0x001e, code lost:
-            io.reactivex.internal.util.QueueDrainHelper.drainMaxLoop(r5.queue, r5.downstream, false, (io.reactivex.disposables.Disposable) null, r5);
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:19:?, code lost:
-            return;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:20:?, code lost:
-            return;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:9:0x0010, code lost:
-            r5.queue.offer(r0);
-            r5.done = true;
-         */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
-            /*
-                r5 = this;
-                java.util.concurrent.atomic.AtomicReference<io.reactivex.disposables.Disposable> r0 = r5.timer
-                io.reactivex.internal.disposables.DisposableHelper.dispose(r0)
-                monitor-enter(r5)
-                U r0 = r5.buffer     // Catch:{ all -> 0x0027 }
-                if (r0 != 0) goto L_0x000c
-                monitor-exit(r5)     // Catch:{ all -> 0x0027 }
-                return
-            L_0x000c:
-                r1 = 0
-                r5.buffer = r1     // Catch:{ all -> 0x0027 }
-                monitor-exit(r5)     // Catch:{ all -> 0x0027 }
-                io.reactivex.internal.fuseable.SimplePlainQueue r2 = r5.queue
-                r2.offer(r0)
-                r2 = 1
-                r5.done = r2
-                boolean r2 = r5.enter()
-                if (r2 == 0) goto L_0x0026
-                io.reactivex.internal.fuseable.SimplePlainQueue r2 = r5.queue
-                org.reactivestreams.Subscriber r3 = r5.downstream
-                r4 = 0
-                io.reactivex.internal.util.QueueDrainHelper.drainMaxLoop(r2, r3, r4, r1, r5)
-            L_0x0026:
-                return
-            L_0x0027:
-                r0 = move-exception
-                monitor-exit(r5)     // Catch:{ all -> 0x0027 }
-                throw r0
-            */
-            throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.operators.flowable.FlowableBufferTimed.BufferExactUnboundedSubscriber.onComplete():void");
+            DisposableHelper.dispose(this.timer);
+            synchronized (this) {
+                U b = this.buffer;
+                if (b == null) {
+                    return;
+                }
+                this.buffer = null;
+                this.queue.offer(b);
+                this.done = true;
+                if (enter()) {
+                    QueueDrainHelper.drainMaxLoop(this.queue, this.downstream, false, null, this);
+                }
+            }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             requested(n);
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             this.cancelled = true;
             this.upstream.cancel();
             DisposableHelper.dispose(this.timer);
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             try {
-                U next = (Collection) ObjectHelper.requireNonNull(this.bufferSupplier.call(), "The supplied buffer is null");
+                U next = (U) ObjectHelper.requireNonNull(this.bufferSupplier.call(), "The supplied buffer is null");
                 synchronized (this) {
                     U current = this.buffer;
-                    if (current != null) {
-                        this.buffer = next;
-                        fastPathEmitMax(current, false, this);
+                    if (current == null) {
+                        return;
                     }
+                    this.buffer = next;
+                    fastPathEmitMax(current, false, this);
                 }
             } catch (Throwable e) {
                 Exceptions.throwIfFatal(e);
@@ -192,59 +176,75 @@ public final class FlowableBufferTimed<T, U extends Collection<? super T>> exten
             }
         }
 
-        public boolean accept(Subscriber<? super U> subscriber, U v) {
+        public boolean accept(Subscriber<? super U> a, U v) {
             this.downstream.onNext(v);
             return true;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             cancel();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.timer.get() == DisposableHelper.DISPOSED;
         }
     }
 
+    /* loaded from: classes.dex */
     static final class BufferSkipBoundedSubscriber<T, U extends Collection<? super T>> extends QueueDrainSubscriber<T, U, U> implements Subscription, Runnable {
         final Callable<U> bufferSupplier;
-        final List<U> buffers = new LinkedList();
+        final List<U> buffers;
         final long timeskip;
         final long timespan;
         final TimeUnit unit;
         Subscription upstream;
-        final Scheduler.Worker w;
 
-        BufferSkipBoundedSubscriber(Subscriber<? super U> actual, Callable<U> bufferSupplier2, long timespan2, long timeskip2, TimeUnit unit2, Scheduler.Worker w2) {
-            super(actual, new MpscLinkedQueue());
-            this.bufferSupplier = bufferSupplier2;
-            this.timespan = timespan2;
-            this.timeskip = timeskip2;
-            this.unit = unit2;
-            this.w = w2;
+        /* renamed from: w */
+        final Scheduler.Worker f279w;
+
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.internal.subscribers.QueueDrainSubscriber, io.reactivex.internal.util.QueueDrain
+        public /* bridge */ /* synthetic */ boolean accept(Subscriber subscriber, Object obj) {
+            return accept((Subscriber<? super Subscriber>) subscriber, (Subscriber) ((Collection) obj));
         }
 
+        BufferSkipBoundedSubscriber(Subscriber<? super U> actual, Callable<U> bufferSupplier, long timespan, long timeskip, TimeUnit unit, Scheduler.Worker w) {
+            super(actual, new MpscLinkedQueue());
+            this.bufferSupplier = bufferSupplier;
+            this.timespan = timespan;
+            this.timeskip = timeskip;
+            this.unit = unit;
+            this.f279w = w;
+            this.buffers = new LinkedList();
+        }
+
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
-            if (SubscriptionHelper.validate(this.upstream, s)) {
-                this.upstream = s;
-                try {
-                    U b = (Collection) ObjectHelper.requireNonNull(this.bufferSupplier.call(), "The supplied buffer is null");
-                    this.buffers.add(b);
-                    this.downstream.onSubscribe(this);
-                    s.request(LongCompanionObject.MAX_VALUE);
-                    Scheduler.Worker worker = this.w;
-                    long j = this.timeskip;
-                    worker.schedulePeriodically(this, j, j, this.unit);
-                    this.w.schedule(new RemoveFromBuffer(b), this.timespan, this.unit);
-                } catch (Throwable e) {
-                    Exceptions.throwIfFatal(e);
-                    this.w.dispose();
-                    s.cancel();
-                    EmptySubscription.error(e, this.downstream);
-                }
+            if (!SubscriptionHelper.validate(this.upstream, s)) {
+                return;
+            }
+            this.upstream = s;
+            try {
+                Collection collection = (Collection) ObjectHelper.requireNonNull(this.bufferSupplier.call(), "The supplied buffer is null");
+                this.buffers.add(collection);
+                this.downstream.onSubscribe(this);
+                s.request(LongCompanionObject.MAX_VALUE);
+                Scheduler.Worker worker = this.f279w;
+                long j = this.timeskip;
+                worker.schedulePeriodically(this, j, j, this.unit);
+                this.f279w.schedule(new RemoveFromBuffer(collection), this.timespan, this.unit);
+            } catch (Throwable e) {
+                Exceptions.throwIfFatal(e);
+                this.f279w.dispose();
+                s.cancel();
+                EmptySubscription.error(e, this.downstream);
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             synchronized (this) {
                 for (U b : this.buffers) {
@@ -253,13 +253,15 @@ public final class FlowableBufferTimed<T, U extends Collection<? super T>> exten
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             this.done = true;
-            this.w.dispose();
+            this.f279w.dispose();
             clear();
             this.downstream.onError(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             List<U> bs;
             synchronized (this) {
@@ -271,43 +273,48 @@ public final class FlowableBufferTimed<T, U extends Collection<? super T>> exten
             }
             this.done = true;
             if (enter()) {
-                QueueDrainHelper.drainMaxLoop(this.queue, this.downstream, false, this.w, this);
+                QueueDrainHelper.drainMaxLoop(this.queue, this.downstream, false, this.f279w, this);
             }
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             requested(n);
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             this.cancelled = true;
             this.upstream.cancel();
-            this.w.dispose();
+            this.f279w.dispose();
             clear();
         }
 
-        /* access modifiers changed from: package-private */
-        public void clear() {
+        void clear() {
             synchronized (this) {
                 this.buffers.clear();
             }
         }
 
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // java.lang.Runnable
         public void run() {
-            if (!this.cancelled) {
-                try {
-                    U b = (Collection) ObjectHelper.requireNonNull(this.bufferSupplier.call(), "The supplied buffer is null");
-                    synchronized (this) {
-                        if (!this.cancelled) {
-                            this.buffers.add(b);
-                            this.w.schedule(new RemoveFromBuffer(b), this.timespan, this.unit);
-                        }
+            if (this.cancelled) {
+                return;
+            }
+            try {
+                Collection collection = (Collection) ObjectHelper.requireNonNull(this.bufferSupplier.call(), "The supplied buffer is null");
+                synchronized (this) {
+                    if (this.cancelled) {
+                        return;
                     }
-                } catch (Throwable e) {
-                    Exceptions.throwIfFatal(e);
-                    cancel();
-                    this.downstream.onError(e);
+                    this.buffers.add(collection);
+                    this.f279w.schedule(new RemoveFromBuffer(collection), this.timespan, this.unit);
                 }
+            } catch (Throwable e) {
+                Exceptions.throwIfFatal(e);
+                cancel();
+                this.downstream.onError(e);
             }
         }
 
@@ -316,23 +323,26 @@ public final class FlowableBufferTimed<T, U extends Collection<? super T>> exten
             return true;
         }
 
+        /* loaded from: classes.dex */
         final class RemoveFromBuffer implements Runnable {
             private final U buffer;
 
-            RemoveFromBuffer(U buffer2) {
-                this.buffer = buffer2;
+            RemoveFromBuffer(U buffer) {
+                this.buffer = buffer;
             }
 
+            @Override // java.lang.Runnable
             public void run() {
                 synchronized (BufferSkipBoundedSubscriber.this) {
                     BufferSkipBoundedSubscriber.this.buffers.remove(this.buffer);
                 }
                 BufferSkipBoundedSubscriber bufferSkipBoundedSubscriber = BufferSkipBoundedSubscriber.this;
-                bufferSkipBoundedSubscriber.fastPathOrderedEmitMax(this.buffer, false, bufferSkipBoundedSubscriber.w);
+                bufferSkipBoundedSubscriber.fastPathOrderedEmitMax(this.buffer, false, bufferSkipBoundedSubscriber.f279w);
             }
         }
     }
 
+    /* loaded from: classes.dex */
     static final class BufferExactBoundedSubscriber<T, U extends Collection<? super T>> extends QueueDrainSubscriber<T, U, U> implements Subscription, Runnable, Disposable {
         U buffer;
         final Callable<U> bufferSupplier;
@@ -344,164 +354,94 @@ public final class FlowableBufferTimed<T, U extends Collection<? super T>> exten
         final long timespan;
         final TimeUnit unit;
         Subscription upstream;
-        final Scheduler.Worker w;
 
-        BufferExactBoundedSubscriber(Subscriber<? super U> actual, Callable<U> bufferSupplier2, long timespan2, TimeUnit unit2, int maxSize2, boolean restartOnMaxSize, Scheduler.Worker w2) {
-            super(actual, new MpscLinkedQueue());
-            this.bufferSupplier = bufferSupplier2;
-            this.timespan = timespan2;
-            this.unit = unit2;
-            this.maxSize = maxSize2;
-            this.restartTimerOnMaxSize = restartOnMaxSize;
-            this.w = w2;
+        /* renamed from: w */
+        final Scheduler.Worker f278w;
+
+        /* JADX WARN: Multi-variable type inference failed */
+        @Override // io.reactivex.internal.subscribers.QueueDrainSubscriber, io.reactivex.internal.util.QueueDrain
+        public /* bridge */ /* synthetic */ boolean accept(Subscriber subscriber, Object obj) {
+            return accept((Subscriber<? super Subscriber>) subscriber, (Subscriber) ((Collection) obj));
         }
 
+        BufferExactBoundedSubscriber(Subscriber<? super U> actual, Callable<U> bufferSupplier, long timespan, TimeUnit unit, int maxSize, boolean restartOnMaxSize, Scheduler.Worker w) {
+            super(actual, new MpscLinkedQueue());
+            this.bufferSupplier = bufferSupplier;
+            this.timespan = timespan;
+            this.unit = unit;
+            this.maxSize = maxSize;
+            this.restartTimerOnMaxSize = restartOnMaxSize;
+            this.f278w = w;
+        }
+
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
-            if (SubscriptionHelper.validate(this.upstream, s)) {
-                this.upstream = s;
+            if (!SubscriptionHelper.validate(this.upstream, s)) {
+                return;
+            }
+            this.upstream = s;
+            try {
+                U b = (U) ObjectHelper.requireNonNull(this.bufferSupplier.call(), "The supplied buffer is null");
+                this.buffer = b;
+                this.downstream.onSubscribe(this);
+                Scheduler.Worker worker = this.f278w;
+                long j = this.timespan;
+                this.timer = worker.schedulePeriodically(this, j, j, this.unit);
+                s.request(LongCompanionObject.MAX_VALUE);
+            } catch (Throwable e) {
+                Exceptions.throwIfFatal(e);
+                this.f278w.dispose();
+                s.cancel();
+                EmptySubscription.error(e, this.downstream);
+            }
+        }
+
+        @Override // org.reactivestreams.Subscriber
+        public void onNext(T t) {
+            synchronized (this) {
+                U b = this.buffer;
+                if (b == null) {
+                    return;
+                }
+                b.add(t);
+                if (b.size() < this.maxSize) {
+                    return;
+                }
+                this.buffer = null;
+                this.producerIndex++;
+                if (this.restartTimerOnMaxSize) {
+                    this.timer.dispose();
+                }
+                fastPathOrderedEmitMax(b, false, this);
                 try {
-                    this.buffer = (Collection) ObjectHelper.requireNonNull(this.bufferSupplier.call(), "The supplied buffer is null");
-                    this.downstream.onSubscribe(this);
-                    Scheduler.Worker worker = this.w;
-                    long j = this.timespan;
-                    this.timer = worker.schedulePeriodically(this, j, j, this.unit);
-                    s.request(LongCompanionObject.MAX_VALUE);
+                    U b2 = (U) ObjectHelper.requireNonNull(this.bufferSupplier.call(), "The supplied buffer is null");
+                    synchronized (this) {
+                        this.buffer = b2;
+                        this.consumerIndex++;
+                    }
+                    if (this.restartTimerOnMaxSize) {
+                        Scheduler.Worker worker = this.f278w;
+                        long j = this.timespan;
+                        this.timer = worker.schedulePeriodically(this, j, j, this.unit);
+                    }
                 } catch (Throwable e) {
                     Exceptions.throwIfFatal(e);
-                    this.w.dispose();
-                    s.cancel();
-                    EmptySubscription.error(e, this.downstream);
+                    cancel();
+                    this.downstream.onError(e);
                 }
             }
         }
 
-        /* JADX WARNING: Code restructure failed: missing block: B:13:0x0021, code lost:
-            if (r9.restartTimerOnMaxSize == false) goto L_0x0028;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:14:0x0023, code lost:
-            r9.timer.dispose();
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:15:0x0028, code lost:
-            fastPathOrderedEmitMax(r0, false, r9);
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:17:?, code lost:
-            r1 = (java.util.Collection) io.reactivex.internal.functions.ObjectHelper.requireNonNull(r9.bufferSupplier.call(), "The supplied buffer is null");
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:18:0x003b, code lost:
-            monitor-enter(r9);
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:20:?, code lost:
-            r9.buffer = r1;
-            r9.consumerIndex++;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:21:0x0043, code lost:
-            monitor-exit(r9);
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:23:0x0046, code lost:
-            if (r9.restartTimerOnMaxSize == false) goto L_?;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:24:0x0048, code lost:
-            r2 = r9.w;
-            r6 = r9.timespan;
-            r9.timer = r2.schedulePeriodically(r9, r6, r6, r9.unit);
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:29:0x005a, code lost:
-            r1 = move-exception;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:30:0x005b, code lost:
-            io.reactivex.exceptions.Exceptions.throwIfFatal(r1);
-            cancel();
-            r9.downstream.onError(r1);
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:31:0x0066, code lost:
-            return;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:42:?, code lost:
-            return;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:43:?, code lost:
-            return;
-         */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public void onNext(T r10) {
-            /*
-                r9 = this;
-                monitor-enter(r9)
-                U r0 = r9.buffer     // Catch:{ all -> 0x0067 }
-                if (r0 != 0) goto L_0x0007
-                monitor-exit(r9)     // Catch:{ all -> 0x0067 }
-                return
-            L_0x0007:
-                r0.add(r10)     // Catch:{ all -> 0x0067 }
-                int r1 = r0.size()     // Catch:{ all -> 0x0067 }
-                int r2 = r9.maxSize     // Catch:{ all -> 0x0067 }
-                if (r1 >= r2) goto L_0x0014
-                monitor-exit(r9)     // Catch:{ all -> 0x0067 }
-                return
-            L_0x0014:
-                r1 = 0
-                r9.buffer = r1     // Catch:{ all -> 0x0067 }
-                long r1 = r9.producerIndex     // Catch:{ all -> 0x0067 }
-                r3 = 1
-                long r1 = r1 + r3
-                r9.producerIndex = r1     // Catch:{ all -> 0x0067 }
-                monitor-exit(r9)     // Catch:{ all -> 0x0067 }
-                boolean r1 = r9.restartTimerOnMaxSize
-                if (r1 == 0) goto L_0x0028
-                io.reactivex.disposables.Disposable r1 = r9.timer
-                r1.dispose()
-            L_0x0028:
-                r1 = 0
-                r9.fastPathOrderedEmitMax(r0, r1, r9)
-                java.util.concurrent.Callable<U> r1 = r9.bufferSupplier     // Catch:{ all -> 0x005a }
-                java.lang.Object r1 = r1.call()     // Catch:{ all -> 0x005a }
-                java.lang.String r2 = "The supplied buffer is null"
-                java.lang.Object r1 = io.reactivex.internal.functions.ObjectHelper.requireNonNull(r1, (java.lang.String) r2)     // Catch:{ all -> 0x005a }
-                java.util.Collection r1 = (java.util.Collection) r1     // Catch:{ all -> 0x005a }
-                monitor-enter(r9)
-                r9.buffer = r1     // Catch:{ all -> 0x0057 }
-                long r5 = r9.consumerIndex     // Catch:{ all -> 0x0057 }
-                long r5 = r5 + r3
-                r9.consumerIndex = r5     // Catch:{ all -> 0x0057 }
-                monitor-exit(r9)     // Catch:{ all -> 0x0057 }
-                boolean r0 = r9.restartTimerOnMaxSize
-                if (r0 == 0) goto L_0x0056
-                io.reactivex.Scheduler$Worker r2 = r9.w
-                long r6 = r9.timespan
-                java.util.concurrent.TimeUnit r8 = r9.unit
-                r3 = r9
-                r4 = r6
-                io.reactivex.disposables.Disposable r0 = r2.schedulePeriodically(r3, r4, r6, r8)
-                r9.timer = r0
-            L_0x0056:
-                return
-            L_0x0057:
-                r0 = move-exception
-                monitor-exit(r9)     // Catch:{ all -> 0x0057 }
-                throw r0
-            L_0x005a:
-                r1 = move-exception
-                io.reactivex.exceptions.Exceptions.throwIfFatal(r1)
-                r9.cancel()
-                org.reactivestreams.Subscriber r2 = r9.downstream
-                r2.onError(r1)
-                return
-            L_0x0067:
-                r0 = move-exception
-                monitor-exit(r9)     // Catch:{ all -> 0x0067 }
-                throw r0
-            */
-            throw new UnsupportedOperationException("Method not decompiled: io.reactivex.internal.operators.flowable.FlowableBufferTimed.BufferExactBoundedSubscriber.onNext(java.lang.Object):void");
-        }
-
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             synchronized (this) {
                 this.buffer = null;
             }
             this.downstream.onError(t);
-            this.w.dispose();
+            this.f278w.dispose();
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             U b;
             synchronized (this) {
@@ -514,7 +454,7 @@ public final class FlowableBufferTimed<T, U extends Collection<? super T>> exten
                 if (enter()) {
                     QueueDrainHelper.drainMaxLoop(this.queue, this.downstream, false, this, this);
                 }
-                this.w.dispose();
+                this.f278w.dispose();
             }
         }
 
@@ -523,10 +463,12 @@ public final class FlowableBufferTimed<T, U extends Collection<? super T>> exten
             return true;
         }
 
+        @Override // org.reactivestreams.Subscription
         public void request(long n) {
             requested(n);
         }
 
+        @Override // org.reactivestreams.Subscription
         public void cancel() {
             if (!this.cancelled) {
                 this.cancelled = true;
@@ -534,28 +476,29 @@ public final class FlowableBufferTimed<T, U extends Collection<? super T>> exten
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             synchronized (this) {
                 this.buffer = null;
             }
             this.upstream.cancel();
-            this.w.dispose();
+            this.f278w.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return this.w.isDisposed();
+            return this.f278w.isDisposed();
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             try {
-                U next = (Collection) ObjectHelper.requireNonNull(this.bufferSupplier.call(), "The supplied buffer is null");
+                U next = (U) ObjectHelper.requireNonNull(this.bufferSupplier.call(), "The supplied buffer is null");
                 synchronized (this) {
                     U current = this.buffer;
-                    if (current != null) {
-                        if (this.producerIndex == this.consumerIndex) {
-                            this.buffer = next;
-                            fastPathOrderedEmitMax(current, false, this);
-                        }
+                    if (current != null && this.producerIndex == this.consumerIndex) {
+                        this.buffer = next;
+                        fastPathOrderedEmitMax(current, false, this);
                     }
                 }
             } catch (Throwable e) {

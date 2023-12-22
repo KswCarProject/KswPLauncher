@@ -9,9 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bean.AppInfo;
 
+/* loaded from: classes7.dex */
 public abstract class RoundAppItemBinding extends ViewDataBinding {
     public final ConstraintLayout BcItemConstraintLayout;
     @Bindable
@@ -19,13 +20,13 @@ public abstract class RoundAppItemBinding extends ViewDataBinding {
     public final ImageView nameImageView;
     public final TextView textView;
 
-    public abstract void setListItem(AppInfo appInfo);
+    public abstract void setListItem(AppInfo listItem);
 
-    protected RoundAppItemBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout BcItemConstraintLayout2, ImageView nameImageView2, TextView textView2) {
+    protected RoundAppItemBinding(Object _bindingComponent, View _root, int _localFieldCount, ConstraintLayout BcItemConstraintLayout, ImageView nameImageView, TextView textView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.BcItemConstraintLayout = BcItemConstraintLayout2;
-        this.nameImageView = nameImageView2;
-        this.textView = textView2;
+        this.BcItemConstraintLayout = BcItemConstraintLayout;
+        this.nameImageView = nameImageView;
+        this.textView = textView;
     }
 
     public AppInfo getListItem() {
@@ -38,7 +39,7 @@ public abstract class RoundAppItemBinding extends ViewDataBinding {
 
     @Deprecated
     public static RoundAppItemBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (RoundAppItemBinding) ViewDataBinding.inflateInternal(inflater, R.layout.round_app_item, root, attachToRoot, component);
+        return (RoundAppItemBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.round_app_item, root, attachToRoot, component);
     }
 
     public static RoundAppItemBinding inflate(LayoutInflater inflater) {
@@ -47,7 +48,7 @@ public abstract class RoundAppItemBinding extends ViewDataBinding {
 
     @Deprecated
     public static RoundAppItemBinding inflate(LayoutInflater inflater, Object component) {
-        return (RoundAppItemBinding) ViewDataBinding.inflateInternal(inflater, R.layout.round_app_item, (ViewGroup) null, false, component);
+        return (RoundAppItemBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.round_app_item, null, false, component);
     }
 
     public static RoundAppItemBinding bind(View view) {
@@ -56,6 +57,6 @@ public abstract class RoundAppItemBinding extends ViewDataBinding {
 
     @Deprecated
     public static RoundAppItemBinding bind(View view, Object component) {
-        return (RoundAppItemBinding) bind(component, view, R.layout.round_app_item);
+        return (RoundAppItemBinding) bind(component, view, C0899R.C0902layout.round_app_item);
     }
 }

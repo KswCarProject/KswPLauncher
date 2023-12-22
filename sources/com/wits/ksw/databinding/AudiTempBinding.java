@@ -7,19 +7,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
-import com.wits.ksw.R;
-import com.wits.ksw.settings.audi.vm.AudiSystemViewModel;
+import com.wits.ksw.C0899R;
+import com.wits.ksw.settings.audi.p007vm.AudiSystemViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class AudiTempBinding extends ViewDataBinding {
     @Bindable
     protected AudiSystemViewModel mVm;
     public final RadioGroup timeRadioGroup;
 
-    public abstract void setVm(AudiSystemViewModel audiSystemViewModel);
+    public abstract void setVm(AudiSystemViewModel vm);
 
-    protected AudiTempBinding(Object _bindingComponent, View _root, int _localFieldCount, RadioGroup timeRadioGroup2) {
+    protected AudiTempBinding(Object _bindingComponent, View _root, int _localFieldCount, RadioGroup timeRadioGroup) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.timeRadioGroup = timeRadioGroup2;
+        this.timeRadioGroup = timeRadioGroup;
     }
 
     public AudiSystemViewModel getVm() {
@@ -32,7 +33,7 @@ public abstract class AudiTempBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiTempBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AudiTempBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_temp, root, attachToRoot, component);
+        return (AudiTempBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_temp, root, attachToRoot, component);
     }
 
     public static AudiTempBinding inflate(LayoutInflater inflater) {
@@ -41,7 +42,7 @@ public abstract class AudiTempBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiTempBinding inflate(LayoutInflater inflater, Object component) {
-        return (AudiTempBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_temp, (ViewGroup) null, false, component);
+        return (AudiTempBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.audi_temp, null, false, component);
     }
 
     public static AudiTempBinding bind(View view) {
@@ -50,6 +51,6 @@ public abstract class AudiTempBinding extends ViewDataBinding {
 
     @Deprecated
     public static AudiTempBinding bind(View view, Object component) {
-        return (AudiTempBinding) bind(component, view, R.layout.audi_temp);
+        return (AudiTempBinding) bind(component, view, C0899R.C0902layout.audi_temp);
     }
 }

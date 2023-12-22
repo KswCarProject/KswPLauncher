@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="land_rover_main_text_style">
+    <style name="land_rover_main_text_style" parent="">
         <item name="android:textSize">27sp</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:focusable">false</item>
@@ -12,7 +12,7 @@
         <item name="android:singleLine">true</item>
         <item name="android:layout_marginStart">90dp</item>
     </style>
-    <style name="land_rover_settings_sec_item">
+    <style name="land_rover_settings_sec_item" parent="">
         <item name="android:textSize">23sp</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:background">@drawable/ksw_land_rover_seting_mp_bg</item>

@@ -9,11 +9,15 @@ import com.ibm.icu.impl.SimpleCache;
 import com.ibm.icu.impl.SimpleFormatterImpl;
 import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.text.DateFormat;
+import com.ibm.icu.text.DateFormatSymbols;
 import com.ibm.icu.text.DisplayContext;
 import com.ibm.icu.text.TimeZoneFormat;
+import com.ibm.icu.util.BasicTimeZone;
 import com.ibm.icu.util.Calendar;
+import com.ibm.icu.util.HebrewCalendar;
 import com.ibm.icu.util.Output;
 import com.ibm.icu.util.TimeZone;
+import com.ibm.icu.util.TimeZoneTransition;
 import com.ibm.icu.util.ULocale;
 import com.ibm.icu.util.UResourceBundle;
 import java.io.IOException;
@@ -33,28 +37,17 @@ import java.util.MissingResourceException;
 import java.util.UUID;
 import kotlin.text.Typography;
 
+/* loaded from: classes.dex */
 public class SimpleDateFormat extends DateFormat {
     static final /* synthetic */ boolean $assertionsDisabled = false;
-    private static final int[] CALENDAR_FIELD_TO_LEVEL = {0, 10, 20, 20, 30, 30, 20, 30, 30, 40, 50, 50, 60, 70, 80, 0, 0, 10, 30, 10, 0, 40, 0, 0};
-    static final UnicodeSet DATE_PATTERN_TYPE = new UnicodeSet("[GyYuUQqMLlwWd]").freeze();
     private static final int DECIMAL_BUF_SIZE = 10;
-    static boolean DelayedHebrewMonthCheck = false;
     private static final String FALLBACKPATTERN = "yy/MM/dd HH:mm";
     private static final int HEBREW_CAL_CUR_MILLENIUM_END_YEAR = 6000;
     private static final int HEBREW_CAL_CUR_MILLENIUM_START_YEAR = 5000;
     private static final int ISOSpecialEra = -32000;
     private static final String NUMERIC_FORMAT_CHARS = "ADdFgHhKkmrSsuWwYy";
     private static final String NUMERIC_FORMAT_CHARS2 = "ceLMQq";
-    private static ICUCache<String, Object[]> PARSED_PATTERN_CACHE = new SimpleCache();
-    private static final boolean[] PATTERN_CHAR_IS_SYNTAX = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false};
-    private static final int[] PATTERN_CHAR_TO_INDEX = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 22, 36, -1, 10, 9, 11, 0, 5, -1, -1, 16, 26, 2, -1, 31, -1, 27, -1, 8, -1, 30, 29, 13, 32, 18, 23, -1, -1, -1, -1, -1, -1, 14, 35, 25, 3, 19, -1, 21, 15, -1, -1, 4, -1, 6, -1, -1, -1, 28, 34, 7, -1, 20, 24, 12, 33, 1, 17, -1, -1, -1, -1, -1};
-    private static final int[] PATTERN_CHAR_TO_LEVEL = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 40, -1, -1, 20, 30, 30, 0, 50, -1, -1, 50, 20, 20, -1, 0, -1, 20, -1, 80, -1, 10, 0, 30, 0, 10, 0, -1, -1, -1, -1, -1, -1, 40, -1, 30, 30, 30, -1, 0, 50, -1, -1, 50, -1, 60, -1, -1, -1, 20, 10, 70, -1, 10, 0, 20, 0, 10, 0, -1, -1, -1, -1, -1};
-    private static final int[] PATTERN_INDEX_TO_CALENDAR_FIELD = {0, 1, 2, 5, 11, 11, 12, 13, 14, 7, 6, 8, 3, 4, 9, 10, 10, 15, 17, 18, 19, 20, 21, 15, 15, 18, 2, 2, 2, 15, 1, 15, 15, 15, 19, -1, -2};
-    private static final DateFormat.Field[] PATTERN_INDEX_TO_DATE_FORMAT_ATTRIBUTE = {DateFormat.Field.ERA, DateFormat.Field.YEAR, DateFormat.Field.MONTH, DateFormat.Field.DAY_OF_MONTH, DateFormat.Field.HOUR_OF_DAY1, DateFormat.Field.HOUR_OF_DAY0, DateFormat.Field.MINUTE, DateFormat.Field.SECOND, DateFormat.Field.MILLISECOND, DateFormat.Field.DAY_OF_WEEK, DateFormat.Field.DAY_OF_YEAR, DateFormat.Field.DAY_OF_WEEK_IN_MONTH, DateFormat.Field.WEEK_OF_YEAR, DateFormat.Field.WEEK_OF_MONTH, DateFormat.Field.AM_PM, DateFormat.Field.HOUR1, DateFormat.Field.HOUR0, DateFormat.Field.TIME_ZONE, DateFormat.Field.YEAR_WOY, DateFormat.Field.DOW_LOCAL, DateFormat.Field.EXTENDED_YEAR, DateFormat.Field.JULIAN_DAY, DateFormat.Field.MILLISECONDS_IN_DAY, DateFormat.Field.TIME_ZONE, DateFormat.Field.TIME_ZONE, DateFormat.Field.DAY_OF_WEEK, DateFormat.Field.MONTH, DateFormat.Field.QUARTER, DateFormat.Field.QUARTER, DateFormat.Field.TIME_ZONE, DateFormat.Field.YEAR, DateFormat.Field.TIME_ZONE, DateFormat.Field.TIME_ZONE, DateFormat.Field.TIME_ZONE, DateFormat.Field.RELATED_YEAR, DateFormat.Field.AM_PM_MIDNIGHT_NOON, DateFormat.Field.FLEXIBLE_DAY_PERIOD, DateFormat.Field.TIME_SEPARATOR};
-    private static final int[] PATTERN_INDEX_TO_DATE_FORMAT_FIELD = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37};
-    private static final String SUPPRESS_NEGATIVE_PREFIX = "꬀";
-    private static ULocale cachedDefaultLocale = null;
-    private static String cachedDefaultPattern = null;
+    private static final String SUPPRESS_NEGATIVE_PREFIX = "\uab00";
     static final int currentSerialVersion = 2;
     private static final int millisPerHour = 3600000;
     private static final long serialVersionUID = 4774881970558875024L;
@@ -77,7 +70,20 @@ public class SimpleDateFormat extends DateFormat {
     private volatile TimeZoneFormat tzFormat;
     private transient boolean useFastFormat;
     private transient boolean useLocalZeroPaddingNumberFormat;
+    static boolean DelayedHebrewMonthCheck = false;
+    private static final int[] CALENDAR_FIELD_TO_LEVEL = {0, 10, 20, 20, 30, 30, 20, 30, 30, 40, 50, 50, 60, 70, 80, 0, 0, 10, 30, 10, 0, 40, 0, 0};
+    private static final int[] PATTERN_CHAR_TO_LEVEL = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 40, -1, -1, 20, 30, 30, 0, 50, -1, -1, 50, 20, 20, -1, 0, -1, 20, -1, 80, -1, 10, 0, 30, 0, 10, 0, -1, -1, -1, -1, -1, -1, 40, -1, 30, 30, 30, -1, 0, 50, -1, -1, 50, -1, 60, -1, -1, -1, 20, 10, 70, -1, 10, 0, 20, 0, 10, 0, -1, -1, -1, -1, -1};
+    private static final boolean[] PATTERN_CHAR_IS_SYNTAX = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false};
+    private static ULocale cachedDefaultLocale = null;
+    private static String cachedDefaultPattern = null;
+    private static final int[] PATTERN_CHAR_TO_INDEX = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 22, 36, -1, 10, 9, 11, 0, 5, -1, -1, 16, 26, 2, -1, 31, -1, 27, -1, 8, -1, 30, 29, 13, 32, 18, 23, -1, -1, -1, -1, -1, -1, 14, 35, 25, 3, 19, -1, 21, 15, -1, -1, 4, -1, 6, -1, -1, -1, 28, 34, 7, -1, 20, 24, 12, 33, 1, 17, -1, -1, -1, -1, -1};
+    private static final int[] PATTERN_INDEX_TO_CALENDAR_FIELD = {0, 1, 2, 5, 11, 11, 12, 13, 14, 7, 6, 8, 3, 4, 9, 10, 10, 15, 17, 18, 19, 20, 21, 15, 15, 18, 2, 2, 2, 15, 1, 15, 15, 15, 19, -1, -2};
+    private static final int[] PATTERN_INDEX_TO_DATE_FORMAT_FIELD = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37};
+    private static final DateFormat.Field[] PATTERN_INDEX_TO_DATE_FORMAT_ATTRIBUTE = {DateFormat.Field.ERA, DateFormat.Field.YEAR, DateFormat.Field.MONTH, DateFormat.Field.DAY_OF_MONTH, DateFormat.Field.HOUR_OF_DAY1, DateFormat.Field.HOUR_OF_DAY0, DateFormat.Field.MINUTE, DateFormat.Field.SECOND, DateFormat.Field.MILLISECOND, DateFormat.Field.DAY_OF_WEEK, DateFormat.Field.DAY_OF_YEAR, DateFormat.Field.DAY_OF_WEEK_IN_MONTH, DateFormat.Field.WEEK_OF_YEAR, DateFormat.Field.WEEK_OF_MONTH, DateFormat.Field.AM_PM, DateFormat.Field.HOUR1, DateFormat.Field.HOUR0, DateFormat.Field.TIME_ZONE, DateFormat.Field.YEAR_WOY, DateFormat.Field.DOW_LOCAL, DateFormat.Field.EXTENDED_YEAR, DateFormat.Field.JULIAN_DAY, DateFormat.Field.MILLISECONDS_IN_DAY, DateFormat.Field.TIME_ZONE, DateFormat.Field.TIME_ZONE, DateFormat.Field.DAY_OF_WEEK, DateFormat.Field.MONTH, DateFormat.Field.QUARTER, DateFormat.Field.QUARTER, DateFormat.Field.TIME_ZONE, DateFormat.Field.YEAR, DateFormat.Field.TIME_ZONE, DateFormat.Field.TIME_ZONE, DateFormat.Field.TIME_ZONE, DateFormat.Field.RELATED_YEAR, DateFormat.Field.AM_PM_MIDNIGHT_NOON, DateFormat.Field.FLEXIBLE_DAY_PERIOD, DateFormat.Field.TIME_SEPARATOR};
+    private static ICUCache<String, Object[]> PARSED_PATTERN_CACHE = new SimpleCache();
+    static final UnicodeSet DATE_PATTERN_TYPE = new UnicodeSet("[GyYuUQqMLlwWd]").m87freeze();
 
+    /* loaded from: classes.dex */
     private enum ContextValue {
         UNKNOWN,
         CAPITALIZATION_FOR_MIDDLE_OF_SENTENCE,
@@ -89,7 +95,7 @@ public class SimpleDateFormat extends DateFormat {
     private static int getLevelFromChar(char ch) {
         int[] iArr = PATTERN_CHAR_TO_LEVEL;
         if (ch < iArr.length) {
-            return iArr[ch & 255];
+            return iArr[ch & '\u00ff'];
         }
         return -1;
     }
@@ -97,61 +103,62 @@ public class SimpleDateFormat extends DateFormat {
     private static boolean isSyntaxChar(char ch) {
         boolean[] zArr = PATTERN_CHAR_IS_SYNTAX;
         if (ch < zArr.length) {
-            return zArr[ch & 255];
+            return zArr[ch & '\u00ff'];
         }
         return false;
     }
 
     public SimpleDateFormat() {
-        this(getDefaultPattern(), (DateFormatSymbols) null, (Calendar) null, (NumberFormat) null, (ULocale) null, true, (String) null);
+        this(getDefaultPattern(), null, null, null, null, true, null);
     }
 
-    public SimpleDateFormat(String pattern2) {
-        this(pattern2, (DateFormatSymbols) null, (Calendar) null, (NumberFormat) null, (ULocale) null, true, (String) null);
+    public SimpleDateFormat(String pattern) {
+        this(pattern, null, null, null, null, true, null);
     }
 
-    public SimpleDateFormat(String pattern2, Locale loc) {
-        this(pattern2, (DateFormatSymbols) null, (Calendar) null, (NumberFormat) null, ULocale.forLocale(loc), true, (String) null);
+    public SimpleDateFormat(String pattern, Locale loc) {
+        this(pattern, null, null, null, ULocale.forLocale(loc), true, null);
     }
 
-    public SimpleDateFormat(String pattern2, ULocale loc) {
-        this(pattern2, (DateFormatSymbols) null, (Calendar) null, (NumberFormat) null, loc, true, (String) null);
+    public SimpleDateFormat(String pattern, ULocale loc) {
+        this(pattern, null, null, null, loc, true, null);
     }
 
-    public SimpleDateFormat(String pattern2, String override2, ULocale loc) {
-        this(pattern2, (DateFormatSymbols) null, (Calendar) null, (NumberFormat) null, loc, false, override2);
+    public SimpleDateFormat(String pattern, String override, ULocale loc) {
+        this(pattern, null, null, null, loc, false, override);
     }
 
-    public SimpleDateFormat(String pattern2, DateFormatSymbols formatData2) {
-        this(pattern2, (DateFormatSymbols) formatData2.clone(), (Calendar) null, (NumberFormat) null, (ULocale) null, true, (String) null);
+    public SimpleDateFormat(String pattern, DateFormatSymbols formatData) {
+        this(pattern, (DateFormatSymbols) formatData.clone(), null, null, null, true, null);
     }
 
     @Deprecated
-    public SimpleDateFormat(String pattern2, DateFormatSymbols formatData2, ULocale loc) {
-        this(pattern2, (DateFormatSymbols) formatData2.clone(), (Calendar) null, (NumberFormat) null, loc, true, (String) null);
+    public SimpleDateFormat(String pattern, DateFormatSymbols formatData, ULocale loc) {
+        this(pattern, (DateFormatSymbols) formatData.clone(), null, null, loc, true, null);
     }
 
-    SimpleDateFormat(String pattern2, DateFormatSymbols formatData2, Calendar calendar, ULocale locale2, boolean useFastFormat2, String override2) {
-        this(pattern2, (DateFormatSymbols) formatData2.clone(), (Calendar) calendar.clone(), (NumberFormat) null, locale2, useFastFormat2, override2);
+    SimpleDateFormat(String pattern, DateFormatSymbols formatData, Calendar calendar, ULocale locale, boolean useFastFormat, String override) {
+        this(pattern, (DateFormatSymbols) formatData.clone(), (Calendar) calendar.clone(), null, locale, useFastFormat, override);
     }
 
-    private SimpleDateFormat(String pattern2, DateFormatSymbols formatData2, Calendar calendar, NumberFormat numberFormat, ULocale locale2, boolean useFastFormat2, String override2) {
+    private SimpleDateFormat(String pattern, DateFormatSymbols formatData, Calendar calendar, NumberFormat numberFormat, ULocale locale, boolean useFastFormat, String override) {
         this.serialVersionOnStream = 2;
         this.capitalizationBrkIter = null;
-        this.pattern = pattern2;
-        this.formatData = formatData2;
+        this.pattern = pattern;
+        this.formatData = formatData;
         this.calendar = calendar;
         this.numberFormat = numberFormat;
-        this.locale = locale2;
-        this.useFastFormat = useFastFormat2;
-        this.override = override2;
+        this.locale = locale;
+        this.useFastFormat = useFastFormat;
+        this.override = override;
         initialize();
     }
 
     @Deprecated
     public static SimpleDateFormat getInstance(Calendar.FormatConfiguration formatConfig) {
         String ostr = formatConfig.getOverrideString();
-        return new SimpleDateFormat(formatConfig.getPatternString(), formatConfig.getDateFormatSymbols(), formatConfig.getCalendar(), (NumberFormat) null, formatConfig.getLocale(), ostr != null && ostr.length() > 0, formatConfig.getOverrideString());
+        boolean useFast = ostr != null && ostr.length() > 0;
+        return new SimpleDateFormat(formatConfig.getPatternString(), formatConfig.getDateFormatSymbols(), formatConfig.getCalendar(), null, formatConfig.getLocale(), useFast, formatConfig.getOverrideString());
     }
 
     private void initialize() {
@@ -168,9 +175,10 @@ public class SimpleDateFormat extends DateFormat {
             NumberingSystem ns = NumberingSystem.getInstance(this.locale);
             String digitString = ns.getDescription();
             if (ns.isAlgorithmic() || digitString.length() != 10) {
-                this.numberFormat = NumberFormat.getInstance((ULocale) this.locale);
+                this.numberFormat = NumberFormat.getInstance(this.locale);
             } else {
-                this.numberFormat = new DateNumberFormat(this.locale, digitString, ns.getName());
+                String nsName = ns.getName();
+                this.numberFormat = new DateNumberFormat(this.locale, digitString, nsName);
             }
         }
         if (this.numberFormat instanceof DecimalFormat) {
@@ -185,79 +193,34 @@ public class SimpleDateFormat extends DateFormat {
         parsePattern();
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:4:0x0005, code lost:
-        if (r7.tzFormat == null) goto L_0x0007;
+    /* JADX WARN: Code restructure failed: missing block: B:5:0x0005, code lost:
+        if (r7.tzFormat == null) goto L3;
      */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private synchronized void initializeTimeZoneFormat(boolean r8) {
-        /*
-            r7 = this;
-            monitor-enter(r7)
-            if (r8 != 0) goto L_0x0007
-            com.ibm.icu.text.TimeZoneFormat r0 = r7.tzFormat     // Catch:{ all -> 0x0075 }
-            if (r0 != 0) goto L_0x0073
-        L_0x0007:
-            com.ibm.icu.util.ULocale r0 = r7.locale     // Catch:{ all -> 0x0075 }
-            com.ibm.icu.text.TimeZoneFormat r0 = com.ibm.icu.text.TimeZoneFormat.getInstance((com.ibm.icu.util.ULocale) r0)     // Catch:{ all -> 0x0075 }
-            r7.tzFormat = r0     // Catch:{ all -> 0x0075 }
-            r0 = 0
-            com.ibm.icu.text.NumberFormat r1 = r7.numberFormat     // Catch:{ all -> 0x0075 }
-            boolean r1 = r1 instanceof com.ibm.icu.text.DecimalFormat     // Catch:{ all -> 0x0075 }
-            if (r1 == 0) goto L_0x003a
-            com.ibm.icu.text.NumberFormat r1 = r7.numberFormat     // Catch:{ all -> 0x0075 }
-            com.ibm.icu.text.DecimalFormat r1 = (com.ibm.icu.text.DecimalFormat) r1     // Catch:{ all -> 0x0075 }
-            com.ibm.icu.text.DecimalFormatSymbols r1 = r1.getDecimalFormatSymbols()     // Catch:{ all -> 0x0075 }
-            java.lang.String[] r2 = r1.getDigitStringsLocal()     // Catch:{ all -> 0x0075 }
-            java.lang.StringBuilder r3 = new java.lang.StringBuilder     // Catch:{ all -> 0x0075 }
-            r3.<init>()     // Catch:{ all -> 0x0075 }
-            int r4 = r2.length     // Catch:{ all -> 0x0075 }
-            r5 = 0
-        L_0x0029:
-            if (r5 >= r4) goto L_0x0034
-            r6 = r2[r5]     // Catch:{ all -> 0x0075 }
-            r3.append(r6)     // Catch:{ all -> 0x0075 }
-            int r5 = r5 + 1
-            goto L_0x0029
-        L_0x0034:
-            java.lang.String r4 = r3.toString()     // Catch:{ all -> 0x0075 }
-            r0 = r4
-            goto L_0x004f
-        L_0x003a:
-            com.ibm.icu.text.NumberFormat r1 = r7.numberFormat     // Catch:{ all -> 0x0075 }
-            boolean r1 = r1 instanceof com.ibm.icu.impl.DateNumberFormat     // Catch:{ all -> 0x0075 }
-            if (r1 == 0) goto L_0x004f
-            java.lang.String r1 = new java.lang.String     // Catch:{ all -> 0x0075 }
-            com.ibm.icu.text.NumberFormat r2 = r7.numberFormat     // Catch:{ all -> 0x0075 }
-            com.ibm.icu.impl.DateNumberFormat r2 = (com.ibm.icu.impl.DateNumberFormat) r2     // Catch:{ all -> 0x0075 }
-            char[] r2 = r2.getDigits()     // Catch:{ all -> 0x0075 }
-            r1.<init>(r2)     // Catch:{ all -> 0x0075 }
-            r0 = r1
-            goto L_0x0050
-        L_0x004f:
-        L_0x0050:
-            if (r0 == 0) goto L_0x0073
-            com.ibm.icu.text.TimeZoneFormat r1 = r7.tzFormat     // Catch:{ all -> 0x0075 }
-            java.lang.String r1 = r1.getGMTOffsetDigits()     // Catch:{ all -> 0x0075 }
-            boolean r1 = r1.equals(r0)     // Catch:{ all -> 0x0075 }
-            if (r1 != 0) goto L_0x0073
-            com.ibm.icu.text.TimeZoneFormat r1 = r7.tzFormat     // Catch:{ all -> 0x0075 }
-            boolean r1 = r1.isFrozen()     // Catch:{ all -> 0x0075 }
-            if (r1 == 0) goto L_0x006e
-            com.ibm.icu.text.TimeZoneFormat r1 = r7.tzFormat     // Catch:{ all -> 0x0075 }
-            com.ibm.icu.text.TimeZoneFormat r1 = r1.cloneAsThawed()     // Catch:{ all -> 0x0075 }
-            r7.tzFormat = r1     // Catch:{ all -> 0x0075 }
-        L_0x006e:
-            com.ibm.icu.text.TimeZoneFormat r1 = r7.tzFormat     // Catch:{ all -> 0x0075 }
-            r1.setGMTOffsetDigits(r0)     // Catch:{ all -> 0x0075 }
-        L_0x0073:
-            monitor-exit(r7)
-            return
-        L_0x0075:
-            r8 = move-exception
-            monitor-exit(r7)
-            throw r8
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.SimpleDateFormat.initializeTimeZoneFormat(boolean):void");
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    private synchronized void initializeTimeZoneFormat(boolean bForceUpdate) {
+        if (!bForceUpdate) {
+        }
+        this.tzFormat = TimeZoneFormat.getInstance(this.locale);
+        String digits = null;
+        if (this.numberFormat instanceof DecimalFormat) {
+            DecimalFormatSymbols decsym = ((DecimalFormat) this.numberFormat).getDecimalFormatSymbols();
+            String[] strDigits = decsym.getDigitStringsLocal();
+            StringBuilder digitsBuf = new StringBuilder();
+            for (String digit : strDigits) {
+                digitsBuf.append(digit);
+            }
+            digits = digitsBuf.toString();
+        } else if (this.numberFormat instanceof DateNumberFormat) {
+            digits = new String(this.numberFormat.getDigits());
+        }
+        if (digits != null && !this.tzFormat.getGMTOffsetDigits().equals(digits)) {
+            if (this.tzFormat.isFrozen()) {
+                this.tzFormat = this.tzFormat.m84cloneAsThawed();
+            }
+            this.tzFormat.setGMTOffsetDigits(digits);
+        }
     }
 
     private TimeZoneFormat tzFormat() {
@@ -268,35 +231,35 @@ public class SimpleDateFormat extends DateFormat {
     }
 
     private static synchronized String getDefaultPattern() {
-        Calendar cal;
+        String str;
         synchronized (SimpleDateFormat.class) {
             ULocale defaultLocale = ULocale.getDefault(ULocale.Category.FORMAT);
             if (!defaultLocale.equals(cachedDefaultLocale)) {
                 cachedDefaultLocale = defaultLocale;
-                Calendar cal2 = Calendar.getInstance(defaultLocale);
+                Calendar cal = Calendar.getInstance(defaultLocale);
                 try {
                     ICUResourceBundle rb = UResourceBundle.getBundleInstance("com/ibm/icu/impl/data/icudt63b", cachedDefaultLocale);
-                    ICUResourceBundle patternsRb = rb.findWithFallback("calendar/" + cal2.getType() + "/DateTimePatterns");
+                    String resourcePath = "calendar/" + cal.getType() + "/DateTimePatterns";
+                    ICUResourceBundle patternsRb = rb.findWithFallback(resourcePath);
                     if (patternsRb == null) {
                         patternsRb = rb.findWithFallback("calendar/gregorian/DateTimePatterns");
                     }
-                    if (patternsRb != null) {
-                        if (patternsRb.getSize() >= 9) {
-                            int defaultIndex = 8;
-                            if (patternsRb.getSize() >= 13) {
-                                defaultIndex = 8 + 4;
-                            }
-                            cachedDefaultPattern = SimpleFormatterImpl.formatRawPattern(patternsRb.getString(defaultIndex), 2, 2, new CharSequence[]{patternsRb.getString(3), patternsRb.getString(7)});
+                    if (patternsRb != null && patternsRb.getSize() >= 9) {
+                        int defaultIndex = 8;
+                        if (patternsRb.getSize() >= 13) {
+                            defaultIndex = 8 + 4;
                         }
+                        String basePattern = patternsRb.getString(defaultIndex);
+                        cachedDefaultPattern = SimpleFormatterImpl.formatRawPattern(basePattern, 2, 2, new CharSequence[]{patternsRb.getString(3), patternsRb.getString(7)});
                     }
                     cachedDefaultPattern = FALLBACKPATTERN;
                 } catch (MissingResourceException e) {
                     cachedDefaultPattern = FALLBACKPATTERN;
                 }
             }
-            cal = cachedDefaultPattern;
+            str = cachedDefaultPattern;
         }
-        return cal;
+        return str;
     }
 
     private void parseAmbiguousDatesAsAfter(Date startDate) {
@@ -336,16 +299,17 @@ public class SimpleDateFormat extends DateFormat {
         return getDefaultCenturyStart();
     }
 
+    @Override // com.ibm.icu.text.DateFormat
     public void setContext(DisplayContext context) {
         super.setContext(context);
-        if (this.capitalizationBrkIter != null) {
-            return;
-        }
-        if (context == DisplayContext.CAPITALIZATION_FOR_BEGINNING_OF_SENTENCE || context == DisplayContext.CAPITALIZATION_FOR_UI_LIST_OR_MENU || context == DisplayContext.CAPITALIZATION_FOR_STANDALONE) {
-            this.capitalizationBrkIter = BreakIterator.getSentenceInstance(this.locale);
+        if (this.capitalizationBrkIter == null) {
+            if (context == DisplayContext.CAPITALIZATION_FOR_BEGINNING_OF_SENTENCE || context == DisplayContext.CAPITALIZATION_FOR_UI_LIST_OR_MENU || context == DisplayContext.CAPITALIZATION_FOR_STANDALONE) {
+                this.capitalizationBrkIter = BreakIterator.getSentenceInstance(this.locale);
+            }
         }
     }
 
+    @Override // com.ibm.icu.text.DateFormat
     public StringBuffer format(Calendar cal, StringBuffer toAppendTo, FieldPosition pos) {
         TimeZone backupTZ = null;
         if (cal != this.calendar && !cal.getType().equals(this.calendar.getType())) {
@@ -354,7 +318,7 @@ public class SimpleDateFormat extends DateFormat {
             this.calendar.setTimeZone(cal.getTimeZone());
             cal = this.calendar;
         }
-        StringBuffer result = format(cal, getContext(DisplayContext.Type.CAPITALIZATION), toAppendTo, pos, (List<FieldPosition>) null);
+        StringBuffer result = format(cal, getContext(DisplayContext.Type.CAPITALIZATION), toAppendTo, pos, null);
         if (backupTZ != null) {
             this.calendar.setTimeZone(backupTZ);
         }
@@ -364,56 +328,51 @@ public class SimpleDateFormat extends DateFormat {
     private StringBuffer format(Calendar cal, DisplayContext capitalizationContext, StringBuffer toAppendTo, FieldPosition pos, List<FieldPosition> attributes) {
         int start;
         int start2;
-        StringBuffer stringBuffer = toAppendTo;
-        FieldPosition fieldPosition = pos;
-        List<FieldPosition> list = attributes;
-        fieldPosition.setBeginIndex(0);
-        fieldPosition.setEndIndex(0);
+        pos.setBeginIndex(0);
+        pos.setEndIndex(0);
         Object[] items = getPatternItems();
-        int i = 0;
-        while (i < items.length) {
+        for (int i = 0; i < items.length; i++) {
             if (items[i] instanceof String) {
-                stringBuffer.append((String) items[i]);
+                toAppendTo.append((String) items[i]);
             } else {
                 PatternItem item = (PatternItem) items[i];
-                if (list != null) {
-                    start = toAppendTo.length();
-                } else {
+                if (attributes == null) {
                     start = 0;
+                } else {
+                    int start3 = toAppendTo.length();
+                    start = start3;
                 }
-                if (this.useFastFormat != 0) {
+                if (this.useFastFormat) {
                     start2 = start;
                     subFormat(toAppendTo, item.type, item.length, toAppendTo.length(), i, capitalizationContext, pos, cal);
                 } else {
                     start2 = start;
-                    stringBuffer.append(subFormat(item.type, item.length, toAppendTo.length(), i, capitalizationContext, pos, cal));
+                    toAppendTo.append(subFormat(item.type, item.length, toAppendTo.length(), i, capitalizationContext, pos, cal));
                 }
-                if (list != null) {
+                if (attributes != null) {
                     int end = toAppendTo.length();
                     if (end - start2 > 0) {
-                        FieldPosition fp = new FieldPosition(patternCharToDateFormatField(item.type));
+                        DateFormat.Field attr = patternCharToDateFormatField(item.type);
+                        FieldPosition fp = new FieldPosition(attr);
                         fp.setBeginIndex(start2);
                         fp.setEndIndex(end);
-                        list.add(fp);
+                        attributes.add(fp);
                     }
                 }
             }
-            i++;
-            FieldPosition fieldPosition2 = pos;
         }
-        return stringBuffer;
+        return toAppendTo;
     }
 
     private static int getIndexFromChar(char ch) {
         int[] iArr = PATTERN_CHAR_TO_INDEX;
         if (ch < iArr.length) {
-            return iArr[ch & 255];
+            return iArr[ch & '\u00ff'];
         }
         return -1;
     }
 
-    /* access modifiers changed from: protected */
-    public DateFormat.Field patternCharToDateFormatField(char ch) {
+    protected DateFormat.Field patternCharToDateFormatField(char ch) {
         int patternCharIndex = getIndexFromChar(ch);
         if (patternCharIndex != -1) {
             return PATTERN_INDEX_TO_DATE_FORMAT_ATTRIBUTE[patternCharIndex];
@@ -421,1590 +380,765 @@ public class SimpleDateFormat extends DateFormat {
         return null;
     }
 
-    /* access modifiers changed from: protected */
-    public String subFormat(char ch, int count, int beginOffset, FieldPosition pos, DateFormatSymbols fmtData, Calendar cal) throws IllegalArgumentException {
+    protected String subFormat(char ch, int count, int beginOffset, FieldPosition pos, DateFormatSymbols fmtData, Calendar cal) throws IllegalArgumentException {
         return subFormat(ch, count, beginOffset, 0, DisplayContext.CAPITALIZATION_NONE, pos, cal);
     }
 
-    /* access modifiers changed from: protected */
     @Deprecated
-    public String subFormat(char ch, int count, int beginOffset, int fieldNum, DisplayContext capitalizationContext, FieldPosition pos, Calendar cal) {
+    protected String subFormat(char ch, int count, int beginOffset, int fieldNum, DisplayContext capitalizationContext, FieldPosition pos, Calendar cal) {
         StringBuffer buf = new StringBuffer();
         subFormat(buf, ch, count, beginOffset, fieldNum, capitalizationContext, pos, cal);
         return buf.toString();
     }
 
-    /* access modifiers changed from: protected */
-    /* JADX WARNING: Can't fix incorrect switch cases order */
-    /* JADX WARNING: Code restructure failed: missing block: B:222:0x0651, code lost:
-        if (r12 != 5) goto L_0x0662;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:223:0x0653, code lost:
-        safeAppend(r9.formatData.narrowWeekdays, r1, r10);
-        r0 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_NARROW;
-        r23 = r27;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:224:0x0662, code lost:
-        if (r12 != 4) goto L_0x0673;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:225:0x0664, code lost:
-        safeAppend(r9.formatData.weekdays, r1, r10);
-        r0 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_FORMAT;
-        r23 = r27;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:227:0x0674, code lost:
-        if (r12 != 6) goto L_0x068b;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:229:0x067a, code lost:
-        if (r9.formatData.shorterWeekdays == null) goto L_0x068b;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:230:0x067c, code lost:
-        safeAppend(r9.formatData.shorterWeekdays, r1, r10);
-        r0 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_FORMAT;
-        r23 = r27;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:231:0x068b, code lost:
-        safeAppend(r9.formatData.shortWeekdays, r1, r10);
-        r0 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_FORMAT;
-        r23 = r27;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:309:0x0864, code lost:
-        r0 = r9.override;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:310:0x0866, code lost:
-        if (r0 == null) goto L_0x0888;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:312:0x086e, code lost:
-        if (r0.compareTo("hebr") == 0) goto L_0x087b;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:314:0x0879, code lost:
-        if (r9.override.indexOf("y=hebr") < 0) goto L_0x0888;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:316:0x087d, code lost:
-        if (r3 <= HEBREW_CAL_CUR_MILLENIUM_START_YEAR) goto L_0x0888;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:318:0x0881, code lost:
-        if (r3 >= HEBREW_CAL_CUR_MILLENIUM_END_YEAR) goto L_0x0888;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:319:0x0883, code lost:
-        r19 = r3 - 5000;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:320:0x0888, code lost:
-        r19 = r3;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:321:0x088a, code lost:
-        if (r12 != 2) goto L_0x089b;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:322:0x088c, code lost:
-        zeroPaddingNumber(r18, r36, r19, 2, 2);
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:323:0x089b, code lost:
-        zeroPaddingNumber(r18, r36, r19, r38, Integer.MAX_VALUE);
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:336:0x090b, code lost:
-        if (r40 != 0) goto L_0x0979;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:337:0x090d, code lost:
-        if (r14 == null) goto L_0x0979;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:338:0x090f, code lost:
-        r2 = r32;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:339:0x0919, code lost:
-        if (com.ibm.icu.lang.UCharacter.isLowerCase(r10.codePointAt(r2)) == false) goto L_0x0974;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:340:0x091b, code lost:
-        r3 = false;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:341:0x0924, code lost:
-        switch(com.ibm.icu.text.SimpleDateFormat.AnonymousClass1.$SwitchMap$com$ibm$icu$text$DisplayContext[r41.ordinal()]) {
-            case 1: goto L_0x0945;
-            case 2: goto L_0x0928;
-            case 3: goto L_0x0928;
-            default: goto L_0x0927;
-        };
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:343:0x092c, code lost:
-        if (r9.formatData.capitalization == null) goto L_0x0947;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:344:0x092e, code lost:
-        r4 = r9.formatData.capitalization.get(r0);
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:345:0x093a, code lost:
-        if (r14 != com.ibm.icu.text.DisplayContext.CAPITALIZATION_FOR_UI_LIST_OR_MENU) goto L_0x0940;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:346:0x093c, code lost:
-        r5 = r4[0];
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:347:0x0940, code lost:
-        r5 = r4[1];
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:348:0x0943, code lost:
-        r3 = r5;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:349:0x0945, code lost:
-        r3 = true;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:350:0x0947, code lost:
-        if (r3 == false) goto L_0x096f;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:352:0x094b, code lost:
-        if (r9.capitalizationBrkIter != null) goto L_0x0955;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:353:0x094d, code lost:
-        r9.capitalizationBrkIter = com.ibm.icu.text.BreakIterator.getSentenceInstance(r9.locale);
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:354:0x0955, code lost:
-        r19 = r0;
-        r20 = r1;
-        r10.replace(r2, r36.length(), com.ibm.icu.lang.UCharacter.toTitleCase(r9.locale, r10.substring(r2), r9.capitalizationBrkIter, 768));
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:355:0x096f, code lost:
-        r19 = r0;
-        r20 = r1;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:356:0x0974, code lost:
-        r19 = r0;
-        r20 = r1;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:357:0x0979, code lost:
-        r19 = r0;
-        r20 = r1;
-        r2 = r32;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:359:0x0987, code lost:
-        if (r42.getBeginIndex() != r42.getEndIndex()) goto L_?;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:361:0x0991, code lost:
-        if (r42.getField() != PATTERN_INDEX_TO_DATE_FORMAT_FIELD[r23]) goto L_0x09a0;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:362:0x0993, code lost:
-        r15.setBeginIndex(r13);
-        r15.setEndIndex((r36.length() + r13) - r2);
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:364:0x09a8, code lost:
-        if (r42.getFieldAttribute() != PATTERN_INDEX_TO_DATE_FORMAT_ATTRIBUTE[r23]) goto L_?;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:365:0x09aa, code lost:
-        r15.setBeginIndex(r13);
-        r15.setEndIndex((r36.length() + r13) - r2);
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:366:?, code lost:
-        return;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:367:?, code lost:
-        return;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:368:?, code lost:
-        return;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:369:?, code lost:
-        return;
-     */
-    /* JADX WARNING: Removed duplicated region for block: B:257:0x0751  */
-    /* JADX WARNING: Removed duplicated region for block: B:261:0x075c  */
-    @java.lang.Deprecated
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void subFormat(java.lang.StringBuffer r36, char r37, int r38, int r39, int r40, com.ibm.icu.text.DisplayContext r41, java.text.FieldPosition r42, com.ibm.icu.util.Calendar r43) {
-        /*
-            r35 = this;
-            r9 = r35
-            r10 = r36
-            r11 = r37
-            r12 = r38
-            r13 = r39
-            r14 = r41
-            r15 = r42
-            r8 = r43
-            r16 = 2147483647(0x7fffffff, float:NaN)
-            int r7 = r36.length()
-            com.ibm.icu.util.TimeZone r6 = r43.getTimeZone()
-            long r4 = r43.getTimeInMillis()
-            r17 = 0
-            int r3 = getIndexFromChar(r37)
-            r1 = -1
-            if (r3 != r1) goto L_0x0058
-            r1 = 108(0x6c, float:1.51E-43)
-            if (r11 != r1) goto L_0x002d
-            return
-        L_0x002d:
-            java.lang.IllegalArgumentException r1 = new java.lang.IllegalArgumentException
-            java.lang.StringBuilder r2 = new java.lang.StringBuilder
-            r2.<init>()
-            java.lang.String r0 = "Illegal pattern character '"
-            java.lang.StringBuilder r0 = r2.append(r0)
-            java.lang.StringBuilder r0 = r0.append(r11)
-            java.lang.String r2 = "' in \""
-            java.lang.StringBuilder r0 = r0.append(r2)
-            java.lang.String r2 = r9.pattern
-            java.lang.StringBuilder r0 = r0.append(r2)
-            r2 = 34
-            java.lang.StringBuilder r0 = r0.append(r2)
-            java.lang.String r0 = r0.toString()
-            r1.<init>(r0)
-            throw r1
-        L_0x0058:
-            int[] r0 = PATTERN_INDEX_TO_CALENDAR_FIELD
-            r2 = r0[r3]
-            r0 = 0
-            if (r2 < 0) goto L_0x006e
-            r1 = 34
-            if (r3 == r1) goto L_0x0068
-            int r1 = r8.get(r2)
-            goto L_0x006c
-        L_0x0068:
-            int r1 = r43.getRelatedYear()
-        L_0x006c:
-            r0 = r1
-            goto L_0x006f
-        L_0x006e:
-            r1 = r0
-        L_0x006f:
-            com.ibm.icu.text.NumberFormat r18 = r9.getNumberFormat(r11)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.OTHER
-            r0 = 12
-            r24 = r2
-            r25 = r4
-            r4 = 2
-            r2 = 4
-            r5 = 3
-            switch(r3) {
-                case 0: goto L_0x08ac;
-                case 1: goto L_0x085c;
-                case 2: goto L_0x0722;
-                case 3: goto L_0x0081;
-                case 4: goto L_0x06e1;
-                case 5: goto L_0x0081;
-                case 6: goto L_0x0081;
-                case 7: goto L_0x0081;
-                case 8: goto L_0x069a;
-                case 9: goto L_0x0648;
-                case 10: goto L_0x0081;
-                case 11: goto L_0x0081;
-                case 12: goto L_0x0081;
-                case 13: goto L_0x0081;
-                case 14: goto L_0x0615;
-                case 15: goto L_0x05ce;
-                case 16: goto L_0x0081;
-                case 17: goto L_0x0599;
-                case 18: goto L_0x085c;
-                case 19: goto L_0x0571;
-                case 20: goto L_0x0081;
-                case 21: goto L_0x0081;
-                case 22: goto L_0x0081;
-                case 23: goto L_0x0536;
-                case 24: goto L_0x04fb;
-                case 25: goto L_0x048c;
-                case 26: goto L_0x0722;
-                case 27: goto L_0x0442;
-                case 28: goto L_0x03fc;
-                case 29: goto L_0x03a7;
-                case 30: goto L_0x037a;
-                case 31: goto L_0x0343;
-                case 32: goto L_0x02de;
-                case 33: goto L_0x026f;
-                case 34: goto L_0x0081;
-                case 35: goto L_0x01e6;
-                case 36: goto L_0x00b0;
-                case 37: goto L_0x009c;
-                default: goto L_0x0081;
+    /* JADX WARN: Removed duplicated region for block: B:229:0x0653  */
+    /* JADX WARN: Removed duplicated region for block: B:230:0x0662  */
+    /* JADX WARN: Removed duplicated region for block: B:263:0x0751  */
+    /* JADX WARN: Removed duplicated region for block: B:267:0x075c  */
+    /* JADX WARN: Removed duplicated region for block: B:328:0x088c  */
+    /* JADX WARN: Removed duplicated region for block: B:329:0x089b  */
+    @Deprecated
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    protected void subFormat(StringBuffer buf, char ch, int count, int beginOffset, int fieldNum, DisplayContext capitalizationContext, FieldPosition pos, Calendar cal) {
+        int value;
+        int patternCharIndex;
+        int bufstart;
+        int value2;
+        DateFormatSymbols.CapitalizationContextUsage capContextUsageType;
+        int value3;
+        int value4;
+        char c;
+        int value5;
+        int value6;
+        char c2;
+        int patternCharIndex2;
+        int value7;
+        String result;
+        DateFormatSymbols.CapitalizationContextUsage capContextUsageType2;
+        String result2;
+        String result3;
+        String result4;
+        String str;
+        String result5;
+        String result6;
+        String result7;
+        String toAppend;
+        DayPeriodRules ruleSet;
+        DayPeriodRules.DayPeriod periodType;
+        DayPeriodRules.DayPeriod periodType2;
+        String toAppend2;
+        int bufstart2;
+        int bufstart3 = buf.length();
+        TimeZone tz = cal.getTimeZone();
+        long date = cal.getTimeInMillis();
+        int patternCharIndex3 = getIndexFromChar(ch);
+        if (patternCharIndex3 == -1) {
+            if (ch == 'l') {
+                return;
             }
-        L_0x0081:
-            r19 = r1
-            r23 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            r5 = 2147483647(0x7fffffff, float:NaN)
-            r0 = r35
-            r1 = r18
-            r2 = r36
-            r3 = r19
-            r4 = r38
-            r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-            goto L_0x0907
-        L_0x009c:
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String r0 = r0.getTimeSeparatorString()
-            r10.append(r0)
-            r19 = r1
-            r23 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            goto L_0x0907
-        L_0x00b0:
-            com.ibm.icu.util.ULocale r4 = r35.getLocale()
-            com.ibm.icu.impl.DayPeriodRules r4 = com.ibm.icu.impl.DayPeriodRules.getInstance(r4)
-            if (r4 != 0) goto L_0x00e8
-            r2 = 97
-            r0 = r35
-            r5 = r1
-            r1 = r36
-            r11 = 1
-            r27 = r3
-            r3 = r38
-            r19 = r4
-            r28 = r25
-            r4 = r39
-            r30 = r5
-            r5 = r40
-            r31 = r6
-            r6 = r41
-            r32 = r7
-            r7 = r42
-            r11 = r8
-            r8 = r43
-            r0.subFormat(r1, r2, r3, r4, r5, r6, r7, r8)
-            r23 = r27
-            r7 = r28
-            r19 = r30
-            r6 = r31
-            goto L_0x0907
-        L_0x00e8:
-            r30 = r1
-            r27 = r3
-            r19 = r4
-            r31 = r6
-            r32 = r7
-            r11 = r8
-            r28 = r25
-            r1 = 11
-            int r8 = r11.get(r1)
-            r1 = 0
-            r3 = 0
-            boolean r4 = r9.hasMinute
-            if (r4 == 0) goto L_0x0105
-            int r1 = r11.get(r0)
-        L_0x0105:
-            r22 = r1
-            boolean r1 = r9.hasSecond
-            if (r1 == 0) goto L_0x0111
-            r1 = 13
-            int r3 = r11.get(r1)
-        L_0x0111:
-            r21 = r3
-            if (r8 != 0) goto L_0x0124
-            if (r22 != 0) goto L_0x0124
-            if (r21 != 0) goto L_0x0124
-            boolean r1 = r19.hasMidnight()
-            if (r1 == 0) goto L_0x0124
-            com.ibm.icu.impl.DayPeriodRules$DayPeriod r0 = com.ibm.icu.impl.DayPeriodRules.DayPeriod.MIDNIGHT
-            r7 = r19
-            goto L_0x013b
-        L_0x0124:
-            if (r8 != r0) goto L_0x0135
-            if (r22 != 0) goto L_0x0135
-            if (r21 != 0) goto L_0x0135
-            boolean r0 = r19.hasNoon()
-            if (r0 == 0) goto L_0x0135
-            com.ibm.icu.impl.DayPeriodRules$DayPeriod r0 = com.ibm.icu.impl.DayPeriodRules.DayPeriod.NOON
-            r7 = r19
-            goto L_0x013b
-        L_0x0135:
-            r7 = r19
-            com.ibm.icu.impl.DayPeriodRules$DayPeriod r0 = r7.getDayPeriodForHour(r8)
-        L_0x013b:
-            if (r0 == 0) goto L_0x01e0
-            r1 = 0
-            com.ibm.icu.impl.DayPeriodRules$DayPeriod r3 = com.ibm.icu.impl.DayPeriodRules.DayPeriod.AM
-            if (r0 == r3) goto L_0x016a
-            com.ibm.icu.impl.DayPeriodRules$DayPeriod r3 = com.ibm.icu.impl.DayPeriodRules.DayPeriod.PM
-            if (r0 == r3) goto L_0x016a
-            com.ibm.icu.impl.DayPeriodRules$DayPeriod r3 = com.ibm.icu.impl.DayPeriodRules.DayPeriod.MIDNIGHT
-            if (r0 == r3) goto L_0x016a
-            int r3 = r0.ordinal()
-            if (r12 > r5) goto L_0x0157
-            com.ibm.icu.text.DateFormatSymbols r4 = r9.formatData
-            java.lang.String[] r4 = r4.abbreviatedDayPeriods
-            r1 = r4[r3]
-            goto L_0x016a
-        L_0x0157:
-            if (r12 == r2) goto L_0x0164
-            r4 = 5
-            if (r12 <= r4) goto L_0x015d
-            goto L_0x0164
-        L_0x015d:
-            com.ibm.icu.text.DateFormatSymbols r4 = r9.formatData
-            java.lang.String[] r4 = r4.narrowDayPeriods
-            r1 = r4[r3]
-            goto L_0x016a
-        L_0x0164:
-            com.ibm.icu.text.DateFormatSymbols r4 = r9.formatData
-            java.lang.String[] r4 = r4.wideDayPeriods
-            r1 = r4[r3]
-        L_0x016a:
-            if (r1 != 0) goto L_0x019f
-            com.ibm.icu.impl.DayPeriodRules$DayPeriod r3 = com.ibm.icu.impl.DayPeriodRules.DayPeriod.MIDNIGHT
-            if (r0 == r3) goto L_0x0174
-            com.ibm.icu.impl.DayPeriodRules$DayPeriod r3 = com.ibm.icu.impl.DayPeriodRules.DayPeriod.NOON
-            if (r0 != r3) goto L_0x019f
-        L_0x0174:
-            com.ibm.icu.impl.DayPeriodRules$DayPeriod r0 = r7.getDayPeriodForHour(r8)
-            int r3 = r0.ordinal()
-            if (r12 > r5) goto L_0x0187
-            com.ibm.icu.text.DateFormatSymbols r2 = r9.formatData
-            java.lang.String[] r2 = r2.abbreviatedDayPeriods
-            r1 = r2[r3]
-            r6 = r0
-            r5 = r1
-            goto L_0x01a1
-        L_0x0187:
-            if (r12 == r2) goto L_0x0196
-            r2 = 5
-            if (r12 <= r2) goto L_0x018d
-            goto L_0x0196
-        L_0x018d:
-            com.ibm.icu.text.DateFormatSymbols r2 = r9.formatData
-            java.lang.String[] r2 = r2.narrowDayPeriods
-            r1 = r2[r3]
-            r6 = r0
-            r5 = r1
-            goto L_0x01a1
-        L_0x0196:
-            com.ibm.icu.text.DateFormatSymbols r2 = r9.formatData
-            java.lang.String[] r2 = r2.wideDayPeriods
-            r1 = r2[r3]
-            r6 = r0
-            r5 = r1
-            goto L_0x01a1
-        L_0x019f:
-            r6 = r0
-            r5 = r1
-        L_0x01a1:
-            com.ibm.icu.impl.DayPeriodRules$DayPeriod r0 = com.ibm.icu.impl.DayPeriodRules.DayPeriod.AM
-            if (r6 == r0) goto L_0x01b9
-            com.ibm.icu.impl.DayPeriodRules$DayPeriod r0 = com.ibm.icu.impl.DayPeriodRules.DayPeriod.PM
-            if (r6 == r0) goto L_0x01b9
-            if (r5 != 0) goto L_0x01ac
-            goto L_0x01b9
-        L_0x01ac:
-            r10.append(r5)
-            r23 = r27
-            r7 = r28
-            r19 = r30
-            r6 = r31
-            goto L_0x0907
-        L_0x01b9:
-            r2 = 97
-            r0 = r35
-            r1 = r36
-            r3 = r38
-            r4 = r39
-            r19 = r5
-            r5 = r40
-            r23 = r6
-            r6 = r41
-            r25 = r7
-            r7 = r42
-            r26 = r8
-            r8 = r43
-            r0.subFormat(r1, r2, r3, r4, r5, r6, r7, r8)
-            r23 = r27
-            r7 = r28
-            r19 = r30
-            r6 = r31
-            goto L_0x0907
-        L_0x01e0:
-            java.lang.AssertionError r1 = new java.lang.AssertionError
-            r1.<init>()
-            throw r1
-        L_0x01e6:
-            r30 = r1
-            r27 = r3
-            r31 = r6
-            r32 = r7
-            r11 = r8
-            r28 = r25
-            r1 = 11
-            int r8 = r11.get(r1)
-            r1 = 0
-            if (r8 != r0) goto L_0x023c
-            boolean r3 = r9.hasMinute
-            if (r3 == 0) goto L_0x0204
-            int r0 = r11.get(r0)
-            if (r0 != 0) goto L_0x023c
-        L_0x0204:
-            boolean r0 = r9.hasSecond
-            if (r0 == 0) goto L_0x0210
-            r0 = 13
-            int r0 = r11.get(r0)
-            if (r0 != 0) goto L_0x023c
-        L_0x0210:
-            r0 = 9
-            int r0 = r11.get(r0)
-            if (r12 > r5) goto L_0x0222
-            com.ibm.icu.text.DateFormatSymbols r2 = r9.formatData
-            java.lang.String[] r2 = r2.abbreviatedDayPeriods
-            r1 = r2[r0]
-            r30 = r0
-            r7 = r1
-            goto L_0x023d
-        L_0x0222:
-            if (r12 == r2) goto L_0x0232
-            r2 = 5
-            if (r12 <= r2) goto L_0x0228
-            goto L_0x0232
-        L_0x0228:
-            com.ibm.icu.text.DateFormatSymbols r2 = r9.formatData
-            java.lang.String[] r2 = r2.narrowDayPeriods
-            r1 = r2[r0]
-            r30 = r0
-            r7 = r1
-            goto L_0x023d
-        L_0x0232:
-            com.ibm.icu.text.DateFormatSymbols r2 = r9.formatData
-            java.lang.String[] r2 = r2.wideDayPeriods
-            r1 = r2[r0]
-            r30 = r0
-            r7 = r1
-            goto L_0x023d
-        L_0x023c:
-            r7 = r1
-        L_0x023d:
-            if (r7 != 0) goto L_0x0259
-            r2 = 97
-            r0 = r35
-            r1 = r36
-            r3 = r38
-            r4 = r39
-            r5 = r40
-            r6 = r41
-            r33 = r7
-            r7 = r42
-            r19 = r8
-            r8 = r43
-            r0.subFormat(r1, r2, r3, r4, r5, r6, r7, r8)
-            goto L_0x0263
-        L_0x0259:
-            r33 = r7
-            r19 = r8
-            r1 = r33
-            r10.append(r1)
-        L_0x0263:
-            r0 = r20
-            r23 = r27
-            r7 = r28
-            r1 = r30
-            r6 = r31
-            goto L_0x090b
-        L_0x026f:
-            r30 = r1
-            r27 = r3
-            r31 = r6
-            r32 = r7
-            r11 = r8
-            r28 = r25
-            r0 = 1
-            if (r12 != r0) goto L_0x028e
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_BASIC_LOCAL_SHORT
-            r7 = r28
-            r6 = r31
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            r0 = r17
-            goto L_0x02d1
-        L_0x028e:
-            r7 = r28
-            r6 = r31
-            if (r12 != r4) goto L_0x02a1
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_BASIC_LOCAL_FIXED
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            r0 = r17
-            goto L_0x02d1
-        L_0x02a1:
-            if (r12 != r5) goto L_0x02b0
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_EXTENDED_LOCAL_FIXED
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            r0 = r17
-            goto L_0x02d1
-        L_0x02b0:
-            if (r12 != r2) goto L_0x02bf
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_BASIC_LOCAL_FULL
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            r0 = r17
-            goto L_0x02d1
-        L_0x02bf:
-            r0 = 5
-            if (r12 != r0) goto L_0x02cf
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_EXTENDED_LOCAL_FULL
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            r0 = r17
-            goto L_0x02d1
-        L_0x02cf:
-            r0 = r17
-        L_0x02d1:
-            r10.append(r0)
-            r17 = r0
-            r0 = r20
-            r23 = r27
-            r1 = r30
-            goto L_0x090b
-        L_0x02de:
-            r30 = r1
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            r0 = 1
-            if (r12 != r0) goto L_0x02f7
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_BASIC_SHORT
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            r0 = r17
-            goto L_0x0336
-        L_0x02f7:
-            if (r12 != r4) goto L_0x0306
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_BASIC_FIXED
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            r0 = r17
-            goto L_0x0336
-        L_0x0306:
-            if (r12 != r5) goto L_0x0315
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_EXTENDED_FIXED
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            r0 = r17
-            goto L_0x0336
-        L_0x0315:
-            if (r12 != r2) goto L_0x0324
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_BASIC_FULL
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            r0 = r17
-            goto L_0x0336
-        L_0x0324:
-            r0 = 5
-            if (r12 != r0) goto L_0x0334
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_EXTENDED_FULL
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            r0 = r17
-            goto L_0x0336
-        L_0x0334:
-            r0 = r17
-        L_0x0336:
-            r10.append(r0)
-            r17 = r0
-            r0 = r20
-            r23 = r27
-            r1 = r30
-            goto L_0x090b
-        L_0x0343:
-            r30 = r1
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            r0 = 1
-            if (r12 != r0) goto L_0x035c
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.LOCALIZED_GMT_SHORT
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            r0 = r17
-            goto L_0x036d
-        L_0x035c:
-            if (r12 != r2) goto L_0x036b
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.LOCALIZED_GMT
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            r0 = r17
-            goto L_0x036d
-        L_0x036b:
-            r0 = r17
-        L_0x036d:
-            r10.append(r0)
-            r17 = r0
-            r0 = r20
-            r23 = r27
-            r1 = r30
-            goto L_0x090b
-        L_0x037a:
-            r30 = r1
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.shortYearNames
-            if (r0 == 0) goto L_0x03a1
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.shortYearNames
-            int r0 = r0.length
-            r3 = r30
-            if (r3 > r0) goto L_0x03a3
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.shortYearNames
-            int r1 = r3 + -1
-            safeAppend(r0, r1, r10)
-            r19 = r3
-            r23 = r27
-            goto L_0x0907
-        L_0x03a1:
-            r3 = r30
-        L_0x03a3:
-            r23 = r27
-            goto L_0x0864
-        L_0x03a7:
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            r3 = r1
-            r0 = 1
-            if (r12 != r0) goto L_0x03bf
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.ZONE_ID_SHORT
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            r0 = r17
-            goto L_0x03f0
-        L_0x03bf:
-            if (r12 != r4) goto L_0x03ce
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.ZONE_ID
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            r0 = r17
-            goto L_0x03f0
-        L_0x03ce:
-            if (r12 != r5) goto L_0x03dd
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.EXEMPLAR_LOCATION
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            r0 = r17
-            goto L_0x03f0
-        L_0x03dd:
-            if (r12 != r2) goto L_0x03ee
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.GENERIC_LOCATION
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.ZONE_LONG
-            r0 = r17
-            goto L_0x03f0
-        L_0x03ee:
-            r0 = r17
-        L_0x03f0:
-            r10.append(r0)
-            r17 = r0
-            r1 = r3
-            r0 = r20
-            r23 = r27
-            goto L_0x090b
-        L_0x03fc:
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            r3 = r1
-            if (r12 < r2) goto L_0x0415
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.standaloneQuarters
-            int r1 = r3 / 3
-            safeAppend(r0, r1, r10)
-            r19 = r3
-            r23 = r27
-            goto L_0x0907
-        L_0x0415:
-            if (r12 != r5) goto L_0x0426
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.standaloneShortQuarters
-            int r1 = r3 / 3
-            safeAppend(r0, r1, r10)
-            r19 = r3
-            r23 = r27
-            goto L_0x0907
-        L_0x0426:
-            int r1 = r3 / 3
-            r0 = 1
-            int r4 = r1 + 1
-            r5 = 2147483647(0x7fffffff, float:NaN)
-            r0 = r35
-            r1 = r18
-            r2 = r36
-            r34 = r3
-            r3 = r4
-            r4 = r38
-            r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-            r23 = r27
-            r19 = r34
-            goto L_0x0907
-        L_0x0442:
-            r34 = r1
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            if (r12 < r2) goto L_0x045e
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.quarters
-            r4 = r34
-            int r1 = r4 / 3
-            safeAppend(r0, r1, r10)
-            r19 = r4
-            r23 = r27
-            goto L_0x0907
-        L_0x045e:
-            r4 = r34
-            if (r12 != r5) goto L_0x0471
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.shortQuarters
-            int r1 = r4 / 3
-            safeAppend(r0, r1, r10)
-            r19 = r4
-            r23 = r27
-            goto L_0x0907
-        L_0x0471:
-            int r1 = r4 / 3
-            r0 = 1
-            int r3 = r1 + 1
-            r5 = 2147483647(0x7fffffff, float:NaN)
-            r0 = r35
-            r1 = r18
-            r2 = r36
-            r30 = r4
-            r4 = r38
-            r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-            r23 = r27
-            r19 = r30
-            goto L_0x0907
-        L_0x048c:
-            r30 = r1
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            if (r12 >= r5) goto L_0x04ac
-            r4 = 1
-            r5 = 2147483647(0x7fffffff, float:NaN)
-            r0 = r35
-            r1 = r18
-            r2 = r36
-            r3 = r30
-            r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-            r23 = r27
-            r19 = r30
-            goto L_0x0907
-        L_0x04ac:
-            r0 = 7
-            int r1 = r11.get(r0)
-            r0 = 5
-            if (r12 != r0) goto L_0x04c3
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.standaloneNarrowWeekdays
-            safeAppend(r0, r1, r10)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_NARROW
-            r0 = r20
-            r23 = r27
-            goto L_0x090b
-        L_0x04c3:
-            if (r12 != r2) goto L_0x04d4
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.standaloneWeekdays
-            safeAppend(r0, r1, r10)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_STANDALONE
-            r0 = r20
-            r23 = r27
-            goto L_0x090b
-        L_0x04d4:
-            r0 = 6
-            if (r12 != r0) goto L_0x04ec
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.standaloneShorterWeekdays
-            if (r0 == 0) goto L_0x04ec
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.standaloneShorterWeekdays
-            safeAppend(r0, r1, r10)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_STANDALONE
-            r0 = r20
-            r23 = r27
-            goto L_0x090b
-        L_0x04ec:
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.standaloneShortWeekdays
-            safeAppend(r0, r1, r10)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_STANDALONE
-            r0 = r20
-            r23 = r27
-            goto L_0x090b
-        L_0x04fb:
-            r30 = r1
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            r0 = 1
-            if (r12 != r0) goto L_0x0516
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.GENERIC_SHORT
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.METAZONE_SHORT
-            r0 = r17
-            goto L_0x0529
-        L_0x0516:
-            if (r12 != r2) goto L_0x0527
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.GENERIC_LONG
-            java.lang.String r17 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.METAZONE_LONG
-            r0 = r17
-            goto L_0x0529
-        L_0x0527:
-            r0 = r17
-        L_0x0529:
-            r10.append(r0)
-            r17 = r0
-            r0 = r20
-            r23 = r27
-            r1 = r30
-            goto L_0x090b
-        L_0x0536:
-            r30 = r1
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            if (r12 >= r2) goto L_0x054c
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_BASIC_LOCAL_FULL
-            java.lang.String r0 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            goto L_0x0564
-        L_0x054c:
-            r0 = 5
-            if (r12 != r0) goto L_0x055a
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_EXTENDED_FULL
-            java.lang.String r0 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            goto L_0x0564
-        L_0x055a:
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.LOCALIZED_GMT
-            java.lang.String r0 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-        L_0x0564:
-            r10.append(r0)
-            r17 = r0
-            r0 = r20
-            r23 = r27
-            r1 = r30
-            goto L_0x090b
-        L_0x0571:
-            r30 = r1
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            if (r12 >= r5) goto L_0x0592
-            r5 = 2147483647(0x7fffffff, float:NaN)
-            r0 = r35
-            r1 = r18
-            r2 = r36
-            r3 = r30
-            r4 = r38
-            r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-            r23 = r27
-            r19 = r30
-            goto L_0x0907
-        L_0x0592:
-            r0 = 7
-            int r1 = r11.get(r0)
-            goto L_0x0650
-        L_0x0599:
-            r30 = r1
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            if (r12 >= r2) goto L_0x05b3
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.SPECIFIC_SHORT
-            java.lang.String r0 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r1 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.METAZONE_SHORT
-            r20 = r1
-            goto L_0x05c1
-        L_0x05b3:
-            com.ibm.icu.text.TimeZoneFormat r0 = r35.tzFormat()
-            com.ibm.icu.text.TimeZoneFormat$Style r1 = com.ibm.icu.text.TimeZoneFormat.Style.SPECIFIC_LONG
-            java.lang.String r0 = r0.format((com.ibm.icu.text.TimeZoneFormat.Style) r1, (com.ibm.icu.util.TimeZone) r6, (long) r7)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r1 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.METAZONE_LONG
-            r20 = r1
-        L_0x05c1:
-            r10.append(r0)
-            r17 = r0
-            r0 = r20
-            r23 = r27
-            r1 = r30
-            goto L_0x090b
-        L_0x05ce:
-            r30 = r1
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            r5 = r30
-            if (r5 != 0) goto L_0x05fd
-            r0 = 10
-            int r0 = r11.getLeastMaximum(r0)
-            r1 = 1
-            int r3 = r0 + 1
-            r19 = 2147483647(0x7fffffff, float:NaN)
-            r0 = r35
-            r1 = r18
-            r2 = r36
-            r4 = r38
-            r30 = r5
-            r5 = r19
-            r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-            r23 = r27
-            r19 = r30
-            goto L_0x0907
-        L_0x05fd:
-            r30 = r5
-            r5 = 2147483647(0x7fffffff, float:NaN)
-            r0 = r35
-            r1 = r18
-            r2 = r36
-            r3 = r30
-            r4 = r38
-            r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-            r23 = r27
-            r19 = r30
-            goto L_0x0907
-        L_0x0615:
-            r30 = r1
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            r0 = 5
-            if (r12 < r0) goto L_0x0639
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.ampmsNarrow
-            if (r0 != 0) goto L_0x062a
-            r3 = r30
-            goto L_0x063b
-        L_0x062a:
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.ampmsNarrow
-            r3 = r30
-            safeAppend(r0, r3, r10)
-            r19 = r3
-            r23 = r27
-            goto L_0x0907
-        L_0x0639:
-            r3 = r30
-        L_0x063b:
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.ampms
-            safeAppend(r0, r3, r10)
-            r19 = r3
-            r23 = r27
-            goto L_0x0907
-        L_0x0648:
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            r3 = r1
-        L_0x0650:
-            r0 = 5
-            if (r12 != r0) goto L_0x0662
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.narrowWeekdays
-            safeAppend(r0, r1, r10)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_NARROW
-            r0 = r20
-            r23 = r27
-            goto L_0x090b
-        L_0x0662:
-            if (r12 != r2) goto L_0x0673
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.weekdays
-            safeAppend(r0, r1, r10)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_FORMAT
-            r0 = r20
-            r23 = r27
-            goto L_0x090b
-        L_0x0673:
-            r0 = 6
-            if (r12 != r0) goto L_0x068b
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.shorterWeekdays
-            if (r0 == 0) goto L_0x068b
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.shorterWeekdays
-            safeAppend(r0, r1, r10)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_FORMAT
-            r0 = r20
-            r23 = r27
-            goto L_0x090b
-        L_0x068b:
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.shortWeekdays
-            safeAppend(r0, r1, r10)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_FORMAT
-            r0 = r20
-            r23 = r27
-            goto L_0x090b
-        L_0x069a:
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            r3 = r1
-            com.ibm.icu.text.NumberFormat r0 = r9.numberFormat
-            int r1 = java.lang.Math.min(r5, r12)
-            r0.setMinimumIntegerDigits(r1)
-            com.ibm.icu.text.NumberFormat r0 = r9.numberFormat
-            r1 = 2147483647(0x7fffffff, float:NaN)
-            r0.setMaximumIntegerDigits(r1)
-            r0 = 1
-            if (r12 != r0) goto L_0x06b9
-            int r1 = r3 / 100
-            goto L_0x06bf
-        L_0x06b9:
-            if (r12 != r4) goto L_0x06be
-            int r1 = r3 / 10
-            goto L_0x06bf
-        L_0x06be:
-            r1 = r3
-        L_0x06bf:
-            java.text.FieldPosition r0 = new java.text.FieldPosition
-            r2 = -1
-            r0.<init>(r2)
-            com.ibm.icu.text.NumberFormat r2 = r9.numberFormat
-            long r3 = (long) r1
-            r2.format((long) r3, (java.lang.StringBuffer) r10, (java.text.FieldPosition) r0)
-            if (r12 <= r5) goto L_0x06db
-            com.ibm.icu.text.NumberFormat r2 = r9.numberFormat
-            int r3 = r12 + -3
-            r2.setMinimumIntegerDigits(r3)
-            com.ibm.icu.text.NumberFormat r2 = r9.numberFormat
-            r3 = 0
-            r2.format((long) r3, (java.lang.StringBuffer) r10, (java.text.FieldPosition) r0)
-        L_0x06db:
-            r0 = r20
-            r23 = r27
-            goto L_0x090b
-        L_0x06e1:
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            r3 = r1
-            if (r3 != 0) goto L_0x070c
-            r0 = 11
-            int r0 = r11.getMaximum(r0)
-            r1 = 1
-            int r4 = r0 + 1
-            r5 = 2147483647(0x7fffffff, float:NaN)
-            r0 = r35
-            r1 = r18
-            r2 = r36
-            r30 = r3
-            r3 = r4
-            r4 = r38
-            r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-            r23 = r27
-            r19 = r30
-            goto L_0x0907
-        L_0x070c:
-            r30 = r3
-            r5 = 2147483647(0x7fffffff, float:NaN)
-            r0 = r35
-            r1 = r18
-            r2 = r36
-            r4 = r38
-            r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-            r23 = r27
-            r19 = r30
-            goto L_0x0907
-        L_0x0722:
-            r30 = r1
-            r27 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            java.lang.String r0 = r43.getType()
-            java.lang.String r1 = "hebrew"
-            boolean r0 = r0.equals(r1)
-            if (r0 == 0) goto L_0x0761
-            r0 = 1
-            int r1 = r11.get(r0)
-            boolean r0 = com.ibm.icu.util.HebrewCalendar.isLeapYear(r1)
-            if (r0 == 0) goto L_0x074c
-            r3 = r30
-            r1 = 6
-            if (r3 != r1) goto L_0x074e
-            if (r12 < r5) goto L_0x074e
-            r1 = 13
-            goto L_0x074f
-        L_0x074c:
-            r3 = r30
-        L_0x074e:
-            r1 = r3
-        L_0x074f:
-            if (r0 != 0) goto L_0x075c
-            r3 = 6
-            if (r1 < r3) goto L_0x075d
-            if (r12 >= r5) goto L_0x075d
-            int r1 = r1 + -1
-            r19 = r3
-            r3 = r1
-            goto L_0x0765
-        L_0x075c:
-            r3 = 6
-        L_0x075d:
-            r19 = r3
-            r3 = r1
-            goto L_0x0765
-        L_0x0761:
-            r3 = r30
-            r19 = 6
-        L_0x0765:
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.leapMonthPatterns
-            if (r0 == 0) goto L_0x077a
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.leapMonthPatterns
-            int r0 = r0.length
-            r1 = 7
-            if (r0 < r1) goto L_0x077a
-            r0 = 22
-            int r0 = r11.get(r0)
-            goto L_0x077b
-        L_0x077a:
-            r0 = 0
-        L_0x077b:
-            r21 = r0
-            r22 = 0
-            r0 = 5
-            if (r12 != r0) goto L_0x07b3
-            r1 = r27
-            if (r1 != r4) goto L_0x0798
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.narrowMonths
-            if (r21 == 0) goto L_0x0792
-            com.ibm.icu.text.DateFormatSymbols r2 = r9.formatData
-            java.lang.String[] r2 = r2.leapMonthPatterns
-            r22 = r2[r4]
-        L_0x0792:
-            r2 = r22
-            safeAppendWithMonthPattern(r0, r3, r10, r2)
-            goto L_0x07aa
-        L_0x0798:
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.standaloneNarrowMonths
-            if (r21 == 0) goto L_0x07a5
-            com.ibm.icu.text.DateFormatSymbols r2 = r9.formatData
-            java.lang.String[] r2 = r2.leapMonthPatterns
-            r4 = 5
-            r22 = r2[r4]
-        L_0x07a5:
-            r2 = r22
-            safeAppendWithMonthPattern(r0, r3, r10, r2)
-        L_0x07aa:
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.MONTH_NARROW
-            r23 = r1
-            r1 = r3
-            r0 = r20
-            goto L_0x090b
-        L_0x07b3:
-            r1 = r27
-            if (r12 != r2) goto L_0x07ee
-            if (r1 != r4) goto L_0x07d4
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.months
-            if (r21 == 0) goto L_0x07c6
-            com.ibm.icu.text.DateFormatSymbols r2 = r9.formatData
-            java.lang.String[] r2 = r2.leapMonthPatterns
-            r4 = 0
-            r22 = r2[r4]
-        L_0x07c6:
-            r2 = r22
-            safeAppendWithMonthPattern(r0, r3, r10, r2)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.MONTH_FORMAT
-            r23 = r1
-            r1 = r3
-            r0 = r20
-            goto L_0x090b
-        L_0x07d4:
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.standaloneMonths
-            if (r21 == 0) goto L_0x07e0
-            com.ibm.icu.text.DateFormatSymbols r2 = r9.formatData
-            java.lang.String[] r2 = r2.leapMonthPatterns
-            r22 = r2[r5]
-        L_0x07e0:
-            r2 = r22
-            safeAppendWithMonthPattern(r0, r3, r10, r2)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.MONTH_STANDALONE
-            r23 = r1
-            r1 = r3
-            r0 = r20
-            goto L_0x090b
-        L_0x07ee:
-            if (r12 != r5) goto L_0x0827
-            if (r1 != r4) goto L_0x080d
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.shortMonths
-            if (r21 == 0) goto L_0x07ff
-            com.ibm.icu.text.DateFormatSymbols r2 = r9.formatData
-            java.lang.String[] r2 = r2.leapMonthPatterns
-            r4 = 1
-            r22 = r2[r4]
-        L_0x07ff:
-            r2 = r22
-            safeAppendWithMonthPattern(r0, r3, r10, r2)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.MONTH_FORMAT
-            r23 = r1
-            r1 = r3
-            r0 = r20
-            goto L_0x090b
-        L_0x080d:
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.standaloneShortMonths
-            if (r21 == 0) goto L_0x0819
-            com.ibm.icu.text.DateFormatSymbols r4 = r9.formatData
-            java.lang.String[] r4 = r4.leapMonthPatterns
-            r22 = r4[r2]
-        L_0x0819:
-            r2 = r22
-            safeAppendWithMonthPattern(r0, r3, r10, r2)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.MONTH_STANDALONE
-            r23 = r1
-            r1 = r3
-            r0 = r20
-            goto L_0x090b
-        L_0x0827:
-            java.lang.StringBuffer r2 = new java.lang.StringBuffer
-            r2.<init>()
-            int r4 = r3 + 1
-            r5 = 2147483647(0x7fffffff, float:NaN)
-            r0 = r35
-            r23 = r1
-            r1 = r18
-            r25 = r3
-            r3 = r4
-            r4 = r38
-            r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-            r0 = 1
-            java.lang.String[] r1 = new java.lang.String[r0]
-            java.lang.String r0 = r2.toString()
-            r3 = 0
-            r1[r3] = r0
-            if (r21 == 0) goto L_0x0851
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.leapMonthPatterns
-            r22 = r0[r19]
-        L_0x0851:
-            r0 = r22
-            safeAppendWithMonthPattern(r1, r3, r10, r0)
-            r0 = r20
-            r1 = r25
-            goto L_0x090b
-        L_0x085c:
-            r23 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            r3 = r1
-        L_0x0864:
-            java.lang.String r0 = r9.override
-            if (r0 == 0) goto L_0x0888
-            java.lang.String r1 = "hebr"
-            int r0 = r0.compareTo(r1)
-            if (r0 == 0) goto L_0x087b
-            java.lang.String r0 = r9.override
-            java.lang.String r1 = "y=hebr"
-            int r0 = r0.indexOf(r1)
-            if (r0 < 0) goto L_0x0888
-        L_0x087b:
-            r0 = 5000(0x1388, float:7.006E-42)
-            if (r3 <= r0) goto L_0x0888
-            r0 = 6000(0x1770, float:8.408E-42)
-            if (r3 >= r0) goto L_0x0888
-            int r1 = r3 + -5000
-            r19 = r1
-            goto L_0x088a
-        L_0x0888:
-            r19 = r3
-        L_0x088a:
-            if (r12 != r4) goto L_0x089b
-            r4 = 2
-            r5 = 2
-            r0 = r35
-            r1 = r18
-            r2 = r36
-            r3 = r19
-            r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-            goto L_0x0907
-        L_0x089b:
-            r5 = 2147483647(0x7fffffff, float:NaN)
-            r0 = r35
-            r1 = r18
-            r2 = r36
-            r3 = r19
-            r4 = r38
-            r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-            goto L_0x0907
-        L_0x08ac:
-            r23 = r3
-            r32 = r7
-            r11 = r8
-            r7 = r25
-            r3 = r1
-            java.lang.String r0 = r43.getType()
-            java.lang.String r1 = "chinese"
-            boolean r0 = r0.equals(r1)
-            if (r0 != 0) goto L_0x08f9
-            java.lang.String r0 = r43.getType()
-            java.lang.String r1 = "dangi"
-            boolean r0 = r0.equals(r1)
-            if (r0 == 0) goto L_0x08cd
-            goto L_0x08f9
-        L_0x08cd:
-            r0 = 5
-            if (r12 != r0) goto L_0x08dd
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.narrowEras
-            safeAppend(r0, r3, r10)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.ERA_NARROW
-            r1 = r3
-            r0 = r20
-            goto L_0x090b
-        L_0x08dd:
-            if (r12 != r2) goto L_0x08ec
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.eraNames
-            safeAppend(r0, r3, r10)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.ERA_WIDE
-            r1 = r3
-            r0 = r20
-            goto L_0x090b
-        L_0x08ec:
-            com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
-            java.lang.String[] r0 = r0.eras
-            safeAppend(r0, r3, r10)
-            com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.ERA_ABBREV
-            r1 = r3
-            r0 = r20
-            goto L_0x090b
-        L_0x08f9:
-            r4 = 1
-            r5 = 9
-            r0 = r35
-            r1 = r18
-            r2 = r36
-            r19 = r3
-            r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-        L_0x0907:
-            r1 = r19
-            r0 = r20
-        L_0x090b:
-            if (r40 != 0) goto L_0x0979
-            if (r14 == 0) goto L_0x0979
-            r2 = r32
-            int r3 = r10.codePointAt(r2)
-            boolean r3 = com.ibm.icu.lang.UCharacter.isLowerCase(r3)
-            if (r3 == 0) goto L_0x0974
-            r3 = 0
-            int[] r4 = com.ibm.icu.text.SimpleDateFormat.AnonymousClass1.$SwitchMap$com$ibm$icu$text$DisplayContext
-            int r5 = r41.ordinal()
-            r4 = r4[r5]
-            switch(r4) {
-                case 1: goto L_0x0945;
-                case 2: goto L_0x0928;
-                case 3: goto L_0x0928;
-                default: goto L_0x0927;
+            throw new IllegalArgumentException("Illegal pattern character '" + ch + "' in \"" + this.pattern + Typography.quote);
+        }
+        int field = PATTERN_INDEX_TO_CALENDAR_FIELD[patternCharIndex3];
+        if (field < 0) {
+            value = 0;
+        } else {
+            value = patternCharIndex3 != 34 ? cal.get(field) : cal.getRelatedYear();
+        }
+        NumberFormat currentNumberFormat = getNumberFormat(ch);
+        DateFormatSymbols.CapitalizationContextUsage capContextUsageType3 = DateFormatSymbols.CapitalizationContextUsage.OTHER;
+        switch (patternCharIndex3) {
+            case 0:
+                patternCharIndex = patternCharIndex3;
+                bufstart = bufstart3;
+                int patternCharIndex4 = value;
+                if (cal.getType().equals("chinese") || cal.getType().equals("dangi")) {
+                    value2 = patternCharIndex4;
+                    zeroPaddingNumber(currentNumberFormat, buf, patternCharIndex4, 1, 9);
+                    value = value2;
+                    capContextUsageType = capContextUsageType3;
+                    break;
+                } else if (count == 5) {
+                    safeAppend(this.formatData.narrowEras, patternCharIndex4, buf);
+                    value = patternCharIndex4;
+                    capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.ERA_NARROW;
+                    break;
+                } else if (count == 4) {
+                    safeAppend(this.formatData.eraNames, patternCharIndex4, buf);
+                    value = patternCharIndex4;
+                    capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.ERA_WIDE;
+                    break;
+                } else {
+                    safeAppend(this.formatData.eras, patternCharIndex4, buf);
+                    value = patternCharIndex4;
+                    capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.ERA_ABBREV;
+                    break;
+                }
+                break;
+            case 1:
+            case 18:
+                patternCharIndex = patternCharIndex3;
+                bufstart = bufstart3;
+                value3 = value;
+                str = this.override;
+                if (str == null && ((str.compareTo("hebr") == 0 || this.override.indexOf("y=hebr") >= 0) && value3 > HEBREW_CAL_CUR_MILLENIUM_START_YEAR && value3 < HEBREW_CAL_CUR_MILLENIUM_END_YEAR)) {
+                    value2 = value3 - 5000;
+                } else {
+                    value2 = value3;
+                }
+                if (count != 2) {
+                    zeroPaddingNumber(currentNumberFormat, buf, value2, 2, 2);
+                } else {
+                    zeroPaddingNumber(currentNumberFormat, buf, value2, count, Integer.MAX_VALUE);
+                }
+                value = value2;
+                capContextUsageType = capContextUsageType3;
+                break;
+            case 2:
+            case 26:
+                int value8 = value;
+                bufstart = bufstart3;
+                if (!cal.getType().equals("hebrew")) {
+                    value4 = value8;
+                    c = 6;
+                } else {
+                    boolean isLeap = HebrewCalendar.isLeapYear(cal.get(1));
+                    if (isLeap) {
+                        value5 = value8;
+                        if (value5 == 6 && count >= 3) {
+                            value6 = 13;
+                            if (isLeap) {
+                                c2 = 6;
+                                if (value6 >= 6 && count < 3) {
+                                    c = 6;
+                                    value4 = value6 - 1;
+                                }
+                            } else {
+                                c2 = 6;
+                            }
+                            c = c2;
+                            value4 = value6;
+                        }
+                    } else {
+                        value5 = value8;
+                    }
+                    value6 = value5;
+                    if (isLeap) {
+                    }
+                    c = c2;
+                    value4 = value6;
+                }
+                int isLeapMonth = (this.formatData.leapMonthPatterns == null || this.formatData.leapMonthPatterns.length < 7) ? 0 : cal.get(22);
+                String str2 = null;
+                if (count != 5) {
+                    if (count == 4) {
+                        if (patternCharIndex3 == 2) {
+                            String[] strArr = this.formatData.months;
+                            if (isLeapMonth != 0) {
+                                str2 = this.formatData.leapMonthPatterns[0];
+                            }
+                            safeAppendWithMonthPattern(strArr, value4, buf, str2);
+                            patternCharIndex = patternCharIndex3;
+                            value = value4;
+                            capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.MONTH_FORMAT;
+                            break;
+                        } else {
+                            String[] strArr2 = this.formatData.standaloneMonths;
+                            if (isLeapMonth != 0) {
+                                str2 = this.formatData.leapMonthPatterns[3];
+                            }
+                            safeAppendWithMonthPattern(strArr2, value4, buf, str2);
+                            patternCharIndex = patternCharIndex3;
+                            value = value4;
+                            capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.MONTH_STANDALONE;
+                            break;
+                        }
+                    } else if (count == 3) {
+                        if (patternCharIndex3 == 2) {
+                            String[] strArr3 = this.formatData.shortMonths;
+                            if (isLeapMonth != 0) {
+                                str2 = this.formatData.leapMonthPatterns[1];
+                            }
+                            safeAppendWithMonthPattern(strArr3, value4, buf, str2);
+                            patternCharIndex = patternCharIndex3;
+                            value = value4;
+                            capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.MONTH_FORMAT;
+                            break;
+                        } else {
+                            String[] strArr4 = this.formatData.standaloneShortMonths;
+                            if (isLeapMonth != 0) {
+                                str2 = this.formatData.leapMonthPatterns[4];
+                            }
+                            safeAppendWithMonthPattern(strArr4, value4, buf, str2);
+                            patternCharIndex = patternCharIndex3;
+                            value = value4;
+                            capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.MONTH_STANDALONE;
+                            break;
+                        }
+                    } else {
+                        StringBuffer monthNumber = new StringBuffer();
+                        patternCharIndex = patternCharIndex3;
+                        int value9 = value4;
+                        zeroPaddingNumber(currentNumberFormat, monthNumber, value4 + 1, count, Integer.MAX_VALUE);
+                        String[] monthNumberStrings = {monthNumber.toString()};
+                        if (isLeapMonth != 0) {
+                            str2 = this.formatData.leapMonthPatterns[c];
+                        }
+                        safeAppendWithMonthPattern(monthNumberStrings, 0, buf, str2);
+                        capContextUsageType = capContextUsageType3;
+                        value = value9;
+                        break;
+                    }
+                } else {
+                    if (patternCharIndex3 == 2) {
+                        String[] strArr5 = this.formatData.narrowMonths;
+                        if (isLeapMonth != 0) {
+                            str2 = this.formatData.leapMonthPatterns[2];
+                        }
+                        safeAppendWithMonthPattern(strArr5, value4, buf, str2);
+                    } else {
+                        String[] strArr6 = this.formatData.standaloneNarrowMonths;
+                        if (isLeapMonth != 0) {
+                            str2 = this.formatData.leapMonthPatterns[5];
+                        }
+                        safeAppendWithMonthPattern(strArr6, value4, buf, str2);
+                    }
+                    patternCharIndex = patternCharIndex3;
+                    value = value4;
+                    capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.MONTH_NARROW;
+                    break;
+                }
+                break;
+            case 3:
+            case 5:
+            case 6:
+            case 7:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 16:
+            case 20:
+            case 21:
+            case 22:
+            case 34:
+            default:
+                value2 = value;
+                patternCharIndex = patternCharIndex3;
+                bufstart = bufstart3;
+                zeroPaddingNumber(currentNumberFormat, buf, value2, count, Integer.MAX_VALUE);
+                value = value2;
+                capContextUsageType = capContextUsageType3;
+                break;
+            case 4:
+                bufstart = bufstart3;
+                int patternCharIndex5 = value;
+                if (patternCharIndex5 == 0) {
+                    zeroPaddingNumber(currentNumberFormat, buf, cal.getMaximum(11) + 1, count, Integer.MAX_VALUE);
+                    patternCharIndex = patternCharIndex3;
+                    value2 = patternCharIndex5;
+                } else {
+                    zeroPaddingNumber(currentNumberFormat, buf, patternCharIndex5, count, Integer.MAX_VALUE);
+                    patternCharIndex = patternCharIndex3;
+                    value2 = patternCharIndex5;
+                }
+                value = value2;
+                capContextUsageType = capContextUsageType3;
+                break;
+            case 8:
+                bufstart = bufstart3;
+                int patternCharIndex6 = value;
+                this.numberFormat.setMinimumIntegerDigits(Math.min(3, count));
+                this.numberFormat.setMaximumIntegerDigits(Integer.MAX_VALUE);
+                if (count == 1) {
+                    value = patternCharIndex6 / 100;
+                } else if (count != 2) {
+                    value = patternCharIndex6;
+                } else {
+                    value = patternCharIndex6 / 10;
+                }
+                FieldPosition p = new FieldPosition(-1);
+                this.numberFormat.format(value, buf, p);
+                if (count > 3) {
+                    this.numberFormat.setMinimumIntegerDigits(count - 3);
+                    this.numberFormat.format(0L, buf, p);
+                }
+                capContextUsageType = capContextUsageType3;
+                patternCharIndex = patternCharIndex3;
+                break;
+            case 9:
+                patternCharIndex2 = patternCharIndex3;
+                bufstart = bufstart3;
+                if (count != 5) {
+                    safeAppend(this.formatData.narrowWeekdays, value, buf);
+                    capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.DAY_NARROW;
+                    patternCharIndex = patternCharIndex2;
+                    break;
+                } else if (count == 4) {
+                    safeAppend(this.formatData.weekdays, value, buf);
+                    capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.DAY_FORMAT;
+                    patternCharIndex = patternCharIndex2;
+                    break;
+                } else if (count == 6 && this.formatData.shorterWeekdays != null) {
+                    safeAppend(this.formatData.shorterWeekdays, value, buf);
+                    capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.DAY_FORMAT;
+                    patternCharIndex = patternCharIndex2;
+                    break;
+                } else {
+                    safeAppend(this.formatData.shortWeekdays, value, buf);
+                    capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.DAY_FORMAT;
+                    patternCharIndex = patternCharIndex2;
+                    break;
+                }
+                break;
+            case 14:
+                int value10 = value;
+                bufstart = bufstart3;
+                if (count >= 5) {
+                    if (this.formatData.ampmsNarrow != null) {
+                        safeAppend(this.formatData.ampmsNarrow, value10, buf);
+                        value2 = value10;
+                        patternCharIndex = patternCharIndex3;
+                        value = value2;
+                        capContextUsageType = capContextUsageType3;
+                        break;
+                    } else {
+                        value7 = value10;
+                    }
+                } else {
+                    value7 = value10;
+                }
+                safeAppend(this.formatData.ampms, value7, buf);
+                value2 = value7;
+                patternCharIndex = patternCharIndex3;
+                value = value2;
+                capContextUsageType = capContextUsageType3;
+            case 15:
+                int value11 = value;
+                bufstart = bufstart3;
+                if (value11 == 0) {
+                    zeroPaddingNumber(currentNumberFormat, buf, cal.getLeastMaximum(10) + 1, count, Integer.MAX_VALUE);
+                    patternCharIndex = patternCharIndex3;
+                    value2 = value11;
+                } else {
+                    zeroPaddingNumber(currentNumberFormat, buf, value11, count, Integer.MAX_VALUE);
+                    patternCharIndex = patternCharIndex3;
+                    value2 = value11;
+                }
+                value = value2;
+                capContextUsageType = capContextUsageType3;
+                break;
+            case 17:
+                int value12 = value;
+                bufstart = bufstart3;
+                if (count < 4) {
+                    result = tzFormat().format(TimeZoneFormat.Style.SPECIFIC_SHORT, tz, date);
+                    capContextUsageType2 = DateFormatSymbols.CapitalizationContextUsage.METAZONE_SHORT;
+                } else {
+                    result = tzFormat().format(TimeZoneFormat.Style.SPECIFIC_LONG, tz, date);
+                    capContextUsageType2 = DateFormatSymbols.CapitalizationContextUsage.METAZONE_LONG;
+                }
+                buf.append(result);
+                capContextUsageType = capContextUsageType2;
+                patternCharIndex = patternCharIndex3;
+                value = value12;
+                break;
+            case 19:
+                int value13 = value;
+                patternCharIndex2 = patternCharIndex3;
+                bufstart = bufstart3;
+                if (count < 3) {
+                    zeroPaddingNumber(currentNumberFormat, buf, value13, count, Integer.MAX_VALUE);
+                    patternCharIndex = patternCharIndex2;
+                    value2 = value13;
+                    value = value2;
+                    capContextUsageType = capContextUsageType3;
+                    break;
+                } else {
+                    value = cal.get(7);
+                    if (count != 5) {
+                    }
+                }
+                break;
+            case 23:
+                int value14 = value;
+                bufstart = bufstart3;
+                if (count < 4) {
+                    result2 = tzFormat().format(TimeZoneFormat.Style.ISO_BASIC_LOCAL_FULL, tz, date);
+                } else if (count == 5) {
+                    result2 = tzFormat().format(TimeZoneFormat.Style.ISO_EXTENDED_FULL, tz, date);
+                } else {
+                    result2 = tzFormat().format(TimeZoneFormat.Style.LOCALIZED_GMT, tz, date);
+                }
+                buf.append(result2);
+                capContextUsageType = capContextUsageType3;
+                patternCharIndex = patternCharIndex3;
+                value = value14;
+                break;
+            case 24:
+                int value15 = value;
+                bufstart = bufstart3;
+                if (count == 1) {
+                    String result8 = tzFormat().format(TimeZoneFormat.Style.GENERIC_SHORT, tz, date);
+                    capContextUsageType3 = DateFormatSymbols.CapitalizationContextUsage.METAZONE_SHORT;
+                    result3 = result8;
+                } else if (count != 4) {
+                    result3 = null;
+                } else {
+                    String result9 = tzFormat().format(TimeZoneFormat.Style.GENERIC_LONG, tz, date);
+                    capContextUsageType3 = DateFormatSymbols.CapitalizationContextUsage.METAZONE_LONG;
+                    result3 = result9;
+                }
+                buf.append(result3);
+                capContextUsageType = capContextUsageType3;
+                patternCharIndex = patternCharIndex3;
+                value = value15;
+                break;
+            case 25:
+                int value16 = value;
+                bufstart = bufstart3;
+                if (count < 3) {
+                    zeroPaddingNumber(currentNumberFormat, buf, value16, 1, Integer.MAX_VALUE);
+                    patternCharIndex = patternCharIndex3;
+                    value2 = value16;
+                    value = value2;
+                    capContextUsageType = capContextUsageType3;
+                    break;
+                } else {
+                    value = cal.get(7);
+                    if (count == 5) {
+                        safeAppend(this.formatData.standaloneNarrowWeekdays, value, buf);
+                        capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.DAY_NARROW;
+                        patternCharIndex = patternCharIndex3;
+                        break;
+                    } else if (count == 4) {
+                        safeAppend(this.formatData.standaloneWeekdays, value, buf);
+                        capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.DAY_STANDALONE;
+                        patternCharIndex = patternCharIndex3;
+                        break;
+                    } else if (count == 6 && this.formatData.standaloneShorterWeekdays != null) {
+                        safeAppend(this.formatData.standaloneShorterWeekdays, value, buf);
+                        capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.DAY_STANDALONE;
+                        patternCharIndex = patternCharIndex3;
+                        break;
+                    } else {
+                        safeAppend(this.formatData.standaloneShortWeekdays, value, buf);
+                        capContextUsageType = DateFormatSymbols.CapitalizationContextUsage.DAY_STANDALONE;
+                        patternCharIndex = patternCharIndex3;
+                        break;
+                    }
+                }
+                break;
+            case 27:
+                int value17 = value;
+                bufstart = bufstart3;
+                if (count >= 4) {
+                    safeAppend(this.formatData.quarters, value17 / 3, buf);
+                    value2 = value17;
+                    patternCharIndex = patternCharIndex3;
+                } else if (count == 3) {
+                    safeAppend(this.formatData.shortQuarters, value17 / 3, buf);
+                    value2 = value17;
+                    patternCharIndex = patternCharIndex3;
+                } else {
+                    zeroPaddingNumber(currentNumberFormat, buf, (value17 / 3) + 1, count, Integer.MAX_VALUE);
+                    patternCharIndex = patternCharIndex3;
+                    value2 = value17;
+                }
+                value = value2;
+                capContextUsageType = capContextUsageType3;
+                break;
+            case 28:
+                bufstart = bufstart3;
+                int patternCharIndex7 = value;
+                if (count >= 4) {
+                    safeAppend(this.formatData.standaloneQuarters, patternCharIndex7 / 3, buf);
+                    value2 = patternCharIndex7;
+                    patternCharIndex = patternCharIndex3;
+                } else if (count == 3) {
+                    safeAppend(this.formatData.standaloneShortQuarters, patternCharIndex7 / 3, buf);
+                    value2 = patternCharIndex7;
+                    patternCharIndex = patternCharIndex3;
+                } else {
+                    zeroPaddingNumber(currentNumberFormat, buf, (patternCharIndex7 / 3) + 1, count, Integer.MAX_VALUE);
+                    patternCharIndex = patternCharIndex3;
+                    value2 = patternCharIndex7;
+                }
+                value = value2;
+                capContextUsageType = capContextUsageType3;
+                break;
+            case 29:
+                bufstart = bufstart3;
+                int patternCharIndex8 = value;
+                if (count == 1) {
+                    String result10 = tzFormat().format(TimeZoneFormat.Style.ZONE_ID_SHORT, tz, date);
+                    result4 = result10;
+                } else if (count == 2) {
+                    String result11 = tzFormat().format(TimeZoneFormat.Style.ZONE_ID, tz, date);
+                    result4 = result11;
+                } else if (count == 3) {
+                    String result12 = tzFormat().format(TimeZoneFormat.Style.EXEMPLAR_LOCATION, tz, date);
+                    result4 = result12;
+                } else if (count != 4) {
+                    result4 = null;
+                } else {
+                    String result13 = tzFormat().format(TimeZoneFormat.Style.GENERIC_LOCATION, tz, date);
+                    capContextUsageType3 = DateFormatSymbols.CapitalizationContextUsage.ZONE_LONG;
+                    result4 = result13;
+                }
+                buf.append(result4);
+                value = patternCharIndex8;
+                capContextUsageType = capContextUsageType3;
+                patternCharIndex = patternCharIndex3;
+                break;
+            case 30:
+                int value18 = value;
+                bufstart = bufstart3;
+                if (this.formatData.shortYearNames != null) {
+                    value3 = value18;
+                    if (value3 <= this.formatData.shortYearNames.length) {
+                        safeAppend(this.formatData.shortYearNames, value3 - 1, buf);
+                        value2 = value3;
+                        patternCharIndex = patternCharIndex3;
+                        value = value2;
+                        capContextUsageType = capContextUsageType3;
+                        break;
+                    }
+                } else {
+                    value3 = value18;
+                }
+                patternCharIndex = patternCharIndex3;
+                str = this.override;
+                if (str == null) {
+                    break;
+                }
+                value2 = value3;
+                if (count != 2) {
+                }
+                value = value2;
+                capContextUsageType = capContextUsageType3;
+                break;
+            case 31:
+                int value19 = value;
+                bufstart = bufstart3;
+                if (count == 1) {
+                    String result14 = tzFormat().format(TimeZoneFormat.Style.LOCALIZED_GMT_SHORT, tz, date);
+                    result5 = result14;
+                } else if (count != 4) {
+                    result5 = null;
+                } else {
+                    String result15 = tzFormat().format(TimeZoneFormat.Style.LOCALIZED_GMT, tz, date);
+                    result5 = result15;
+                }
+                buf.append(result5);
+                capContextUsageType = capContextUsageType3;
+                patternCharIndex = patternCharIndex3;
+                value = value19;
+                break;
+            case 32:
+                int value20 = value;
+                bufstart = bufstart3;
+                if (count == 1) {
+                    String result16 = tzFormat().format(TimeZoneFormat.Style.ISO_BASIC_SHORT, tz, date);
+                    result6 = result16;
+                } else if (count == 2) {
+                    String result17 = tzFormat().format(TimeZoneFormat.Style.ISO_BASIC_FIXED, tz, date);
+                    result6 = result17;
+                } else if (count == 3) {
+                    String result18 = tzFormat().format(TimeZoneFormat.Style.ISO_EXTENDED_FIXED, tz, date);
+                    result6 = result18;
+                } else if (count == 4) {
+                    String result19 = tzFormat().format(TimeZoneFormat.Style.ISO_BASIC_FULL, tz, date);
+                    result6 = result19;
+                } else if (count != 5) {
+                    result6 = null;
+                } else {
+                    String result20 = tzFormat().format(TimeZoneFormat.Style.ISO_EXTENDED_FULL, tz, date);
+                    result6 = result20;
+                }
+                buf.append(result6);
+                capContextUsageType = capContextUsageType3;
+                patternCharIndex = patternCharIndex3;
+                value = value20;
+                break;
+            case 33:
+                int value21 = value;
+                bufstart = bufstart3;
+                if (count == 1) {
+                    String result21 = tzFormat().format(TimeZoneFormat.Style.ISO_BASIC_LOCAL_SHORT, tz, date);
+                    result7 = result21;
+                } else if (count == 2) {
+                    String result22 = tzFormat().format(TimeZoneFormat.Style.ISO_BASIC_LOCAL_FIXED, tz, date);
+                    result7 = result22;
+                } else if (count == 3) {
+                    String result23 = tzFormat().format(TimeZoneFormat.Style.ISO_EXTENDED_LOCAL_FIXED, tz, date);
+                    result7 = result23;
+                } else if (count == 4) {
+                    String result24 = tzFormat().format(TimeZoneFormat.Style.ISO_BASIC_LOCAL_FULL, tz, date);
+                    result7 = result24;
+                } else if (count == 5) {
+                    String result25 = tzFormat().format(TimeZoneFormat.Style.ISO_EXTENDED_LOCAL_FULL, tz, date);
+                    result7 = result25;
+                } else {
+                    result7 = null;
+                }
+                buf.append(result7);
+                capContextUsageType = capContextUsageType3;
+                patternCharIndex = patternCharIndex3;
+                value = value21;
+                break;
+            case 35:
+                int value22 = value;
+                bufstart = bufstart3;
+                if (cal.get(11) == 12 && ((!this.hasMinute || cal.get(12) == 0) && (!this.hasSecond || cal.get(13) == 0))) {
+                    int value23 = cal.get(9);
+                    if (count <= 3) {
+                        String toAppend3 = this.formatData.abbreviatedDayPeriods[value23];
+                        value22 = value23;
+                        toAppend = toAppend3;
+                    } else if (count == 4 || count > 5) {
+                        String toAppend4 = this.formatData.wideDayPeriods[value23];
+                        value22 = value23;
+                        toAppend = toAppend4;
+                    } else {
+                        String toAppend5 = this.formatData.narrowDayPeriods[value23];
+                        value22 = value23;
+                        toAppend = toAppend5;
+                    }
+                } else {
+                    toAppend = null;
+                }
+                if (toAppend == null) {
+                    subFormat(buf, 'a', count, beginOffset, fieldNum, capitalizationContext, pos, cal);
+                } else {
+                    buf.append(toAppend);
+                }
+                capContextUsageType = capContextUsageType3;
+                patternCharIndex = patternCharIndex3;
+                value = value22;
+                break;
+            case 36:
+                DayPeriodRules ruleSet2 = DayPeriodRules.getInstance(getLocale());
+                if (ruleSet2 == null) {
+                    bufstart = bufstart3;
+                    subFormat(buf, 'a', count, beginOffset, fieldNum, capitalizationContext, pos, cal);
+                    patternCharIndex = patternCharIndex3;
+                    value2 = value;
+                } else {
+                    int value24 = value;
+                    bufstart = bufstart3;
+                    int hour = cal.get(11);
+                    int minute = 0;
+                    if (this.hasMinute) {
+                        minute = cal.get(12);
+                    }
+                    int minute2 = minute;
+                    int second = this.hasSecond ? cal.get(13) : 0;
+                    if (hour == 0 && minute2 == 0 && second == 0 && ruleSet2.hasMidnight()) {
+                        periodType = DayPeriodRules.DayPeriod.MIDNIGHT;
+                        ruleSet = ruleSet2;
+                    } else if (hour == 12 && minute2 == 0 && second == 0 && ruleSet2.hasNoon()) {
+                        periodType = DayPeriodRules.DayPeriod.NOON;
+                        ruleSet = ruleSet2;
+                    } else {
+                        ruleSet = ruleSet2;
+                        periodType = ruleSet.getDayPeriodForHour(hour);
+                    }
+                    if (periodType == null) {
+                        throw new AssertionError();
+                    }
+                    String toAppend6 = null;
+                    if (periodType != DayPeriodRules.DayPeriod.AM && periodType != DayPeriodRules.DayPeriod.PM && periodType != DayPeriodRules.DayPeriod.MIDNIGHT) {
+                        int index = periodType.ordinal();
+                        toAppend6 = count <= 3 ? this.formatData.abbreviatedDayPeriods[index] : (count == 4 || count > 5) ? this.formatData.wideDayPeriods[index] : this.formatData.narrowDayPeriods[index];
+                    }
+                    if (toAppend6 == null && (periodType == DayPeriodRules.DayPeriod.MIDNIGHT || periodType == DayPeriodRules.DayPeriod.NOON)) {
+                        DayPeriodRules.DayPeriod periodType3 = ruleSet.getDayPeriodForHour(hour);
+                        int index2 = periodType3.ordinal();
+                        if (count <= 3) {
+                            String toAppend7 = this.formatData.abbreviatedDayPeriods[index2];
+                            periodType2 = periodType3;
+                            toAppend2 = toAppend7;
+                        } else if (count == 4 || count > 5) {
+                            String toAppend8 = this.formatData.wideDayPeriods[index2];
+                            periodType2 = periodType3;
+                            toAppend2 = toAppend8;
+                        } else {
+                            String toAppend9 = this.formatData.narrowDayPeriods[index2];
+                            periodType2 = periodType3;
+                            toAppend2 = toAppend9;
+                        }
+                    } else {
+                        periodType2 = periodType;
+                        toAppend2 = toAppend6;
+                    }
+                    DayPeriodRules.DayPeriod periodType4 = DayPeriodRules.DayPeriod.AM;
+                    if (periodType2 == periodType4 || periodType2 == DayPeriodRules.DayPeriod.PM || toAppend2 == null) {
+                        subFormat(buf, 'a', count, beginOffset, fieldNum, capitalizationContext, pos, cal);
+                        patternCharIndex = patternCharIndex3;
+                        value2 = value24;
+                    } else {
+                        buf.append(toAppend2);
+                        patternCharIndex = patternCharIndex3;
+                        value2 = value24;
+                    }
+                }
+                value = value2;
+                capContextUsageType = capContextUsageType3;
+                break;
+            case 37:
+                buf.append(this.formatData.getTimeSeparatorString());
+                value2 = value;
+                patternCharIndex = patternCharIndex3;
+                bufstart = bufstart3;
+                value = value2;
+                capContextUsageType = capContextUsageType3;
+                break;
+        }
+        if (fieldNum != 0 || capitalizationContext == null) {
+            bufstart2 = bufstart;
+        } else {
+            bufstart2 = bufstart;
+            if (UCharacter.isLowerCase(buf.codePointAt(bufstart2))) {
+                boolean titlecase = false;
+                switch (C07521.$SwitchMap$com$ibm$icu$text$DisplayContext[capitalizationContext.ordinal()]) {
+                    case 1:
+                        titlecase = true;
+                        break;
+                    case 2:
+                    case 3:
+                        if (this.formatData.capitalization != null) {
+                            boolean[] transforms = this.formatData.capitalization.get(capContextUsageType);
+                            titlecase = capitalizationContext == DisplayContext.CAPITALIZATION_FOR_UI_LIST_OR_MENU ? transforms[0] : transforms[1];
+                            break;
+                        }
+                        break;
+                }
+                if (titlecase) {
+                    if (this.capitalizationBrkIter == null) {
+                        this.capitalizationBrkIter = BreakIterator.getSentenceInstance(this.locale);
+                    }
+                    String firstField = buf.substring(bufstart2);
+                    String firstFieldTitleCase = UCharacter.toTitleCase(this.locale, firstField, this.capitalizationBrkIter, 768);
+                    buf.replace(bufstart2, buf.length(), firstFieldTitleCase);
+                }
             }
-        L_0x0927:
-            goto L_0x0947
-        L_0x0928:
-            com.ibm.icu.text.DateFormatSymbols r4 = r9.formatData
-            java.util.Map<com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage, boolean[]> r4 = r4.capitalization
-            if (r4 == 0) goto L_0x0947
-            com.ibm.icu.text.DateFormatSymbols r4 = r9.formatData
-            java.util.Map<com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage, boolean[]> r4 = r4.capitalization
-            java.lang.Object r4 = r4.get(r0)
-            boolean[] r4 = (boolean[]) r4
-            com.ibm.icu.text.DisplayContext r5 = com.ibm.icu.text.DisplayContext.CAPITALIZATION_FOR_UI_LIST_OR_MENU
-            if (r14 != r5) goto L_0x0940
-            r5 = 0
-            boolean r5 = r4[r5]
-            goto L_0x0943
-        L_0x0940:
-            r5 = 1
-            boolean r5 = r4[r5]
-        L_0x0943:
-            r3 = r5
-            goto L_0x0947
-        L_0x0945:
-            r3 = 1
-        L_0x0947:
-            if (r3 == 0) goto L_0x096f
-            com.ibm.icu.text.BreakIterator r4 = r9.capitalizationBrkIter
-            if (r4 != 0) goto L_0x0955
-            com.ibm.icu.util.ULocale r4 = r9.locale
-            com.ibm.icu.text.BreakIterator r4 = com.ibm.icu.text.BreakIterator.getSentenceInstance((com.ibm.icu.util.ULocale) r4)
-            r9.capitalizationBrkIter = r4
-        L_0x0955:
-            java.lang.String r4 = r10.substring(r2)
-            com.ibm.icu.util.ULocale r5 = r9.locale
-            r19 = r0
-            com.ibm.icu.text.BreakIterator r0 = r9.capitalizationBrkIter
-            r20 = r1
-            r1 = 768(0x300, float:1.076E-42)
-            java.lang.String r0 = com.ibm.icu.lang.UCharacter.toTitleCase(r5, r4, r0, r1)
-            int r1 = r36.length()
-            r10.replace(r2, r1, r0)
-            goto L_0x097f
-        L_0x096f:
-            r19 = r0
-            r20 = r1
-            goto L_0x097f
-        L_0x0974:
-            r19 = r0
-            r20 = r1
-            goto L_0x097f
-        L_0x0979:
-            r19 = r0
-            r20 = r1
-            r2 = r32
-        L_0x097f:
-            int r0 = r42.getBeginIndex()
-            int r1 = r42.getEndIndex()
-            if (r0 != r1) goto L_0x09b6
-            int r0 = r42.getField()
-            int[] r1 = PATTERN_INDEX_TO_DATE_FORMAT_FIELD
-            r1 = r1[r23]
-            if (r0 != r1) goto L_0x09a0
-            r15.setBeginIndex(r13)
-            int r0 = r36.length()
-            int r0 = r0 + r13
-            int r0 = r0 - r2
-            r15.setEndIndex(r0)
-            goto L_0x09b6
-        L_0x09a0:
-            java.text.Format$Field r0 = r42.getFieldAttribute()
-            com.ibm.icu.text.DateFormat$Field[] r1 = PATTERN_INDEX_TO_DATE_FORMAT_ATTRIBUTE
-            r1 = r1[r23]
-            if (r0 != r1) goto L_0x09b6
-            r15.setBeginIndex(r13)
-            int r0 = r36.length()
-            int r0 = r0 + r13
-            int r0 = r0 - r2
-            r15.setEndIndex(r0)
-        L_0x09b6:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.SimpleDateFormat.subFormat(java.lang.StringBuffer, char, int, int, int, com.ibm.icu.text.DisplayContext, java.text.FieldPosition, com.ibm.icu.util.Calendar):void");
+        }
+        if (pos.getBeginIndex() == pos.getEndIndex()) {
+            if (pos.getField() == PATTERN_INDEX_TO_DATE_FORMAT_FIELD[patternCharIndex]) {
+                pos.setBeginIndex(beginOffset);
+                pos.setEndIndex((buf.length() + beginOffset) - bufstart2);
+            } else if (pos.getFieldAttribute() == PATTERN_INDEX_TO_DATE_FORMAT_ATTRIBUTE[patternCharIndex]) {
+                pos.setBeginIndex(beginOffset);
+                pos.setEndIndex((buf.length() + beginOffset) - bufstart2);
+            }
+        }
     }
 
-    /* renamed from: com.ibm.icu.text.SimpleDateFormat$1  reason: invalid class name */
-    static /* synthetic */ class AnonymousClass1 {
+    /* renamed from: com.ibm.icu.text.SimpleDateFormat$1 */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class C07521 {
         static final /* synthetic */ int[] $SwitchMap$com$ibm$icu$text$DisplayContext;
 
         static {
@@ -2037,19 +1171,21 @@ public class SimpleDateFormat extends DateFormat {
                 appendTo.append(array[value]);
                 return;
             }
-            appendTo.append(SimpleFormatterImpl.formatRawPattern(monthPattern, 1, 1, new CharSequence[]{array[value]}));
+            String s = SimpleFormatterImpl.formatRawPattern(monthPattern, 1, 1, new CharSequence[]{array[value]});
+            appendTo.append(s);
         }
     }
 
+    /* loaded from: classes.dex */
     private static class PatternItem {
         final boolean isNumeric;
         final int length;
         final char type;
 
-        PatternItem(char type2, int length2) {
-            this.type = type2;
-            this.length = length2;
-            this.isNumeric = SimpleDateFormat.isNumeric(type2, length2);
+        PatternItem(char type, int length) {
+            this.type = type;
+            this.length = length;
+            this.isNumeric = SimpleDateFormat.isNumeric(type, length);
         }
     }
 
@@ -2071,7 +1207,6 @@ public class SimpleDateFormat extends DateFormat {
         List<Object> items = new ArrayList<>();
         int i = 0;
         while (true) {
-            boolean z = false;
             if (i >= this.pattern.length()) {
                 break;
             }
@@ -2087,40 +1222,43 @@ public class SimpleDateFormat extends DateFormat {
                         itemType = 0;
                     }
                 }
-                if (!inQuote) {
-                    z = true;
-                }
-                inQuote = z;
+                inQuote = inQuote ? false : true;
             } else {
                 isPrevQuote = false;
                 if (inQuote) {
                     text.append(ch);
-                } else if (!isSyntaxChar(ch)) {
+                } else if (isSyntaxChar(ch)) {
+                    if (ch == itemType) {
+                        itemLength++;
+                    } else {
+                        if (itemType == 0) {
+                            if (text.length() > 0) {
+                                items.add(text.toString());
+                                text.setLength(0);
+                            }
+                        } else {
+                            items.add(new PatternItem(itemType, itemLength));
+                        }
+                        itemType = ch;
+                        itemLength = 1;
+                    }
+                } else {
                     if (itemType != 0) {
                         items.add(new PatternItem(itemType, itemLength));
                         itemType = 0;
                     }
                     text.append(ch);
-                } else if (ch == itemType) {
-                    itemLength++;
-                } else {
-                    if (itemType != 0) {
-                        items.add(new PatternItem(itemType, itemLength));
-                    } else if (text.length() > 0) {
-                        items.add(text.toString());
-                        text.setLength(0);
-                    }
-                    itemType = ch;
-                    itemLength = 1;
                 }
             }
             i++;
         }
-        if (itemType != 0) {
+        if (itemType == 0) {
+            if (text.length() > 0) {
+                items.add(text.toString());
+                text.setLength(0);
+            }
+        } else {
             items.add(new PatternItem(itemType, itemLength));
-        } else if (text.length() > 0) {
-            items.add(text.toString());
-            text.setLength(0);
         }
         Object[] array = items.toArray(new Object[items.size()]);
         this.patternItems = array;
@@ -2128,18 +1266,18 @@ public class SimpleDateFormat extends DateFormat {
         return this.patternItems;
     }
 
-    /* access modifiers changed from: protected */
     @Deprecated
-    public void zeroPaddingNumber(NumberFormat nf, StringBuffer buf, int value, int minDigits, int maxDigits) {
-        if (!this.useLocalZeroPaddingNumberFormat || value < 0) {
-            nf.setMinimumIntegerDigits(minDigits);
-            nf.setMaximumIntegerDigits(maxDigits);
-            nf.format((long) value, buf, new FieldPosition(-1));
+    protected void zeroPaddingNumber(NumberFormat nf, StringBuffer buf, int value, int minDigits, int maxDigits) {
+        if (this.useLocalZeroPaddingNumberFormat && value >= 0) {
+            fastZeroPaddingNumber(buf, value, minDigits, maxDigits);
             return;
         }
-        fastZeroPaddingNumber(buf, value, minDigits, maxDigits);
+        nf.setMinimumIntegerDigits(minDigits);
+        nf.setMaximumIntegerDigits(maxDigits);
+        nf.format(value, buf, new FieldPosition(-1));
     }
 
+    @Override // com.ibm.icu.text.DateFormat
     public void setNumberFormat(NumberFormat newNumberFormat) {
         super.setNumberFormat(newNumberFormat);
         initLocalZeroPaddingNumberFormat();
@@ -2154,7 +1292,8 @@ public class SimpleDateFormat extends DateFormat {
 
     private void initLocalZeroPaddingNumberFormat() {
         if (this.numberFormat instanceof DecimalFormat) {
-            String[] tmpDigits = ((DecimalFormat) this.numberFormat).getDecimalFormatSymbols().getDigitStringsLocal();
+            DecimalFormatSymbols tmpDecfs = ((DecimalFormat) this.numberFormat).getDecimalFormatSymbols();
+            String[] tmpDigits = tmpDecfs.getDigitStringsLocal();
             this.useLocalZeroPaddingNumberFormat = true;
             this.decDigits = new char[10];
             int i = 0;
@@ -2188,2628 +1327,1307 @@ public class SimpleDateFormat extends DateFormat {
             this.decimalBuf[index] = this.decDigits[value % 10];
             value /= 10;
             if (index == 0 || value == 0) {
-                int padding = minDigits - (limit - index);
-            } else {
-                index--;
+                break;
             }
+            index--;
         }
-        int padding2 = minDigits - (limit - index);
-        while (padding2 > 0 && index > 0) {
+        int padding = minDigits - (limit - index);
+        while (padding > 0 && index > 0) {
             index--;
             this.decimalBuf[index] = this.decDigits[0];
-            padding2--;
+            padding--;
         }
-        while (padding2 > 0) {
+        while (padding > 0) {
             buf.append(this.decDigits[0]);
-            padding2--;
+            padding--;
         }
         buf.append(this.decimalBuf, index, limit - index);
     }
 
-    /* access modifiers changed from: protected */
-    public String zeroPaddingNumber(long value, int minDigits, int maxDigits) {
+    protected String zeroPaddingNumber(long value, int minDigits, int maxDigits) {
         this.numberFormat.setMinimumIntegerDigits(minDigits);
         this.numberFormat.setMaximumIntegerDigits(maxDigits);
         return this.numberFormat.format(value);
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public static final boolean isNumeric(char formatChar, int count) {
         return NUMERIC_FORMAT_CHARS.indexOf(formatChar) >= 0 || (count <= 2 && NUMERIC_FORMAT_CHARS2.indexOf(formatChar) >= 0);
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:191:0x03fa, code lost:
-        if (r12[1] == 0) goto L_0x03fc;
+    /* JADX WARN: Code restructure failed: missing block: B:186:0x03fa, code lost:
+        if (r12[1] == 0) goto L229;
      */
-    /* JADX WARNING: Removed duplicated region for block: B:103:0x028e  */
-    /* JADX WARNING: Removed duplicated region for block: B:137:0x0325  */
-    /* JADX WARNING: Removed duplicated region for block: B:142:0x0335 A[SYNTHETIC, Splitter:B:142:0x0335] */
-    /* JADX WARNING: Removed duplicated region for block: B:152:0x0356 A[SYNTHETIC, Splitter:B:152:0x0356] */
-    /* JADX WARNING: Removed duplicated region for block: B:159:0x0378 A[SYNTHETIC, Splitter:B:159:0x0378] */
-    /* JADX WARNING: Removed duplicated region for block: B:244:0x04f2  */
-    /* JADX WARNING: Removed duplicated region for block: B:247:0x0500  */
-    /* JADX WARNING: Removed duplicated region for block: B:249:0x0510  */
-    /* JADX WARNING: Removed duplicated region for block: B:250:0x0518  */
-    /* JADX WARNING: Removed duplicated region for block: B:255:0x0531  */
-    /* JADX WARNING: Removed duplicated region for block: B:281:? A[RETURN, SYNTHETIC] */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void parse(java.lang.String r39, com.ibm.icu.util.Calendar r40, java.text.ParsePosition r41) {
-        /*
-            r38 = this;
-            r13 = r38
-            r14 = r41
-            r0 = 0
-            r1 = 0
-            com.ibm.icu.util.Calendar r2 = r13.calendar
-            r3 = r40
-            if (r3 == r2) goto L_0x003c
-            java.lang.String r2 = r40.getType()
-            com.ibm.icu.util.Calendar r4 = r13.calendar
-            java.lang.String r4 = r4.getType()
-            boolean r2 = r2.equals(r4)
-            if (r2 != 0) goto L_0x003c
-            com.ibm.icu.util.Calendar r2 = r13.calendar
-            long r4 = r40.getTimeInMillis()
-            r2.setTimeInMillis(r4)
-            com.ibm.icu.util.Calendar r2 = r13.calendar
-            com.ibm.icu.util.TimeZone r0 = r2.getTimeZone()
-            com.ibm.icu.util.Calendar r2 = r13.calendar
-            com.ibm.icu.util.TimeZone r4 = r40.getTimeZone()
-            r2.setTimeZone(r4)
-            r1 = r40
-            com.ibm.icu.util.Calendar r2 = r13.calendar
-            r12 = r0
-            r11 = r1
-            r15 = r2
-            goto L_0x003f
-        L_0x003c:
-            r12 = r0
-            r11 = r1
-            r15 = r3
-        L_0x003f:
-            int r0 = r41.getIndex()
-            r10 = 0
-            if (r0 >= 0) goto L_0x004a
-            r14.setErrorIndex(r10)
-            return
-        L_0x004a:
-            r9 = r0
-            com.ibm.icu.util.Output r1 = new com.ibm.icu.util.Output
-            r2 = 0
-            r1.<init>(r2)
-            r8 = r1
-            com.ibm.icu.util.Output r1 = new com.ibm.icu.util.Output
-            com.ibm.icu.text.TimeZoneFormat$TimeType r2 = com.ibm.icu.text.TimeZoneFormat.TimeType.UNKNOWN
-            r1.<init>(r2)
-            r7 = r1
-            r6 = 1
-            boolean[] r1 = new boolean[r6]
-            r1[r10] = r10
-            r16 = r1
-            r1 = -1
-            r2 = 0
-            r3 = 0
-            r4 = 0
-            com.ibm.icu.text.DateFormatSymbols r5 = r13.formatData
-            java.lang.String[] r5 = r5.leapMonthPatterns
-            if (r5 == 0) goto L_0x0086
-            com.ibm.icu.text.DateFormatSymbols r5 = r13.formatData
-            java.lang.String[] r5 = r5.leapMonthPatterns
-            int r5 = r5.length
-            r6 = 7
-            if (r5 < r6) goto L_0x0086
-            com.ibm.icu.text.MessageFormat r5 = new com.ibm.icu.text.MessageFormat
-            com.ibm.icu.text.DateFormatSymbols r6 = r13.formatData
-            java.lang.String[] r6 = r6.leapMonthPatterns
-            r17 = 6
-            r6 = r6[r17]
-            com.ibm.icu.util.ULocale r10 = r13.locale
-            r5.<init>((java.lang.String) r6, (com.ibm.icu.util.ULocale) r10)
-            r4 = r5
-            r18 = r4
-            goto L_0x0088
-        L_0x0086:
-            r18 = r4
-        L_0x0088:
-            java.lang.Object[] r10 = r38.getPatternItems()
-            r4 = 0
-            r19 = r2
-            r20 = r3
-            r6 = r4
-        L_0x0092:
-            int r2 = r10.length
-            if (r6 >= r2) goto L_0x0248
-            r2 = r10[r6]
-            boolean r2 = r2 instanceof com.ibm.icu.text.SimpleDateFormat.PatternItem
-            if (r2 == 0) goto L_0x0206
-            r2 = r10[r6]
-            r5 = r2
-            com.ibm.icu.text.SimpleDateFormat$PatternItem r5 = (com.ibm.icu.text.SimpleDateFormat.PatternItem) r5
-            boolean r2 = r5.isNumeric
-            r3 = -1
-            if (r2 == 0) goto L_0x00c8
-            if (r1 != r3) goto L_0x00c8
-            int r2 = r6 + 1
-            int r4 = r10.length
-            if (r2 >= r4) goto L_0x00c8
-            int r2 = r6 + 1
-            r2 = r10[r2]
-            boolean r2 = r2 instanceof com.ibm.icu.text.SimpleDateFormat.PatternItem
-            if (r2 == 0) goto L_0x00c8
-            int r2 = r6 + 1
-            r2 = r10[r2]
-            com.ibm.icu.text.SimpleDateFormat$PatternItem r2 = (com.ibm.icu.text.SimpleDateFormat.PatternItem) r2
-            boolean r2 = r2.isNumeric
-            if (r2 == 0) goto L_0x00c8
-            r1 = r6
-            int r2 = r5.length
-            r4 = r0
-            r19 = r2
-            r20 = r4
-            r4 = r1
-            goto L_0x00c9
-        L_0x00c8:
-            r4 = r1
-        L_0x00c9:
-            if (r4 == r3) goto L_0x013d
-            int r1 = r5.length
-            if (r4 != r6) goto L_0x00d4
-            r1 = r19
-            r21 = r1
-            goto L_0x00d6
-        L_0x00d4:
-            r21 = r1
-        L_0x00d6:
-            char r3 = r5.type
-            r22 = 1
-            r23 = 0
-            r1 = r38
-            r2 = r39
-            r24 = r3
-            r3 = r0
-            r25 = r4
-            r4 = r24
-            r26 = r5
-            r5 = r21
-            r24 = r6
-            r6 = r22
-            r40 = r7
-            r7 = r23
-            r22 = r8
-            r8 = r16
-            r28 = r9
-            r9 = r15
-            r29 = r10
-            r10 = r18
-            r30 = r11
-            r11 = r40
-            int r0 = r1.subParse(r2, r3, r4, r5, r6, r7, r8, r9, r10, r11)
-            if (r0 >= 0) goto L_0x012f
-            int r19 = r19 + -1
-            if (r19 != 0) goto L_0x011c
-            r11 = r28
-            r14.setIndex(r11)
-            r14.setErrorIndex(r0)
-            if (r12 == 0) goto L_0x011b
-            com.ibm.icu.util.Calendar r1 = r13.calendar
-            r1.setTimeZone(r12)
-        L_0x011b:
-            return
-        L_0x011c:
-            r11 = r28
-            r6 = r25
-            r0 = r20
-            r7 = r40
-            r9 = r11
-            r8 = r22
-            r1 = r25
-            r10 = r29
-            r11 = r30
-            goto L_0x0092
-        L_0x012f:
-            r11 = r28
-            r8 = r11
-            r26 = r15
-            r6 = r24
-            r4 = r25
-            r7 = r29
-            r15 = r12
-            goto L_0x0202
-        L_0x013d:
-            r25 = r4
-            r26 = r5
-            r24 = r6
-            r40 = r7
-            r22 = r8
-            r29 = r10
-            r30 = r11
-            r11 = r9
-            r10 = r26
-            char r1 = r10.type
-            r2 = 108(0x6c, float:1.51E-43)
-            if (r1 == r2) goto L_0x01f6
-            r17 = -1
-            r9 = r0
-            char r4 = r10.type
-            int r5 = r10.length
-            r6 = 0
-            r7 = 1
-            r1 = r38
-            r2 = r39
-            r3 = r0
-            r8 = r16
-            r21 = r9
-            r9 = r15
-            r23 = r10
-            r10 = r18
-            r31 = r11
-            r11 = r40
-            r26 = r15
-            r15 = r12
-            r12 = r22
-            int r0 = r1.subParse(r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12)
-            if (r0 >= 0) goto L_0x01eb
-            r1 = -32000(0xffffffffffff8300, float:NaN)
-            if (r0 != r1) goto L_0x01d7
-            r1 = r21
-            int r6 = r24 + 1
-            r7 = r29
-            int r0 = r7.length
-            if (r6 >= r0) goto L_0x01cd
-            r2 = 0
-            int r6 = r24 + 1
-            r0 = r7[r6]     // Catch:{ ClassCastException -> 0x01ba }
-            java.lang.String r0 = (java.lang.String) r0     // Catch:{ ClassCastException -> 0x01ba }
-            if (r0 != 0) goto L_0x0198
-            int r6 = r24 + 1
-            r2 = r7[r6]
-            r0 = r2
-            java.lang.String r0 = (java.lang.String) r0
-        L_0x0198:
-            int r2 = r0.length()
-            r3 = 0
-        L_0x019d:
-            if (r3 >= r2) goto L_0x01ad
-            char r4 = r0.charAt(r3)
-            boolean r5 = com.ibm.icu.impl.PatternProps.isWhiteSpace(r4)
-            if (r5 == 0) goto L_0x01ad
-            int r3 = r3 + 1
-            goto L_0x019d
-        L_0x01ad:
-            if (r3 != r2) goto L_0x01b2
-            int r6 = r24 + 1
-            goto L_0x01b4
-        L_0x01b2:
-            r6 = r24
-        L_0x01b4:
-            r0 = r1
-            r4 = r17
-            r8 = r31
-            goto L_0x0202
-        L_0x01ba:
-            r0 = move-exception
-            r8 = r31
-            r14.setIndex(r8)
-            r3 = r21
-            r14.setErrorIndex(r3)
-            if (r15 == 0) goto L_0x01cc
-            com.ibm.icu.util.Calendar r4 = r13.calendar
-            r4.setTimeZone(r15)
-        L_0x01cc:
-            return
-        L_0x01cd:
-            r3 = r21
-            r8 = r31
-            r0 = r1
-            r4 = r17
-            r6 = r24
-            goto L_0x0202
-        L_0x01d7:
-            r3 = r21
-            r7 = r29
-            r8 = r31
-            r14.setIndex(r8)
-            r14.setErrorIndex(r3)
-            if (r15 == 0) goto L_0x01ea
-            com.ibm.icu.util.Calendar r1 = r13.calendar
-            r1.setTimeZone(r15)
-        L_0x01ea:
-            return
-        L_0x01eb:
-            r3 = r21
-            r7 = r29
-            r8 = r31
-            r4 = r17
-            r6 = r24
-            goto L_0x0202
-        L_0x01f6:
-            r23 = r10
-            r8 = r11
-            r26 = r15
-            r7 = r29
-            r15 = r12
-            r6 = r24
-            r4 = r25
-        L_0x0202:
-            r1 = r4
-            r2 = 0
-            r10 = 1
-            goto L_0x023a
-        L_0x0206:
-            r24 = r6
-            r40 = r7
-            r22 = r8
-            r8 = r9
-            r7 = r10
-            r30 = r11
-            r26 = r15
-            r15 = r12
-            r9 = -1
-            r10 = 1
-            boolean[] r11 = new boolean[r10]
-            r1 = r38
-            r2 = r39
-            r3 = r0
-            r4 = r7
-            r5 = r24
-            r6 = r11
-            int r0 = r1.matchLiteral(r2, r3, r4, r5, r6)
-            r2 = 0
-            boolean r1 = r11[r2]
-            if (r1 != 0) goto L_0x0237
-            r14.setIndex(r8)
-            r14.setErrorIndex(r0)
-            if (r15 == 0) goto L_0x0236
-            com.ibm.icu.util.Calendar r1 = r13.calendar
-            r1.setTimeZone(r15)
-        L_0x0236:
-            return
-        L_0x0237:
-            r1 = r9
-            r6 = r24
-        L_0x023a:
-            int r6 = r6 + r10
-            r10 = r7
-            r9 = r8
-            r12 = r15
-            r8 = r22
-            r15 = r26
-            r11 = r30
-            r7 = r40
-            goto L_0x0092
-        L_0x0248:
-            r24 = r6
-            r40 = r7
-            r22 = r8
-            r8 = r9
-            r7 = r10
-            r30 = r11
-            r26 = r15
-            r2 = 0
-            r10 = 1
-            r15 = r12
-            int r3 = r39.length()
-            if (r0 >= r3) goto L_0x0285
-            r3 = r39
-            char r4 = r3.charAt(r0)
-            r5 = 46
-            if (r4 != r5) goto L_0x0287
-            com.ibm.icu.text.DateFormat$BooleanAttribute r5 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_ALLOW_WHITESPACE
-            boolean r5 = r13.getBooleanAttribute(r5)
-            if (r5 == 0) goto L_0x0287
-            int r5 = r7.length
-            if (r5 == 0) goto L_0x0287
-            int r5 = r7.length
-            int r5 = r5 - r10
-            r5 = r7[r5]
-            boolean r6 = r5 instanceof com.ibm.icu.text.SimpleDateFormat.PatternItem
-            if (r6 == 0) goto L_0x0287
-            r6 = r5
-            com.ibm.icu.text.SimpleDateFormat$PatternItem r6 = (com.ibm.icu.text.SimpleDateFormat.PatternItem) r6
-            boolean r6 = r6.isNumeric
-            if (r6 != 0) goto L_0x0287
-            int r0 = r0 + 1
-            r4 = r0
-            goto L_0x0288
-        L_0x0285:
-            r3 = r39
-        L_0x0287:
-            r4 = r0
-        L_0x0288:
-            r5 = r22
-            java.lang.Object r0 = r5.value
-            if (r0 == 0) goto L_0x0325
-            com.ibm.icu.util.ULocale r0 = r38.getLocale()
-            com.ibm.icu.impl.DayPeriodRules r0 = com.ibm.icu.impl.DayPeriodRules.getInstance(r0)
-            r6 = 10
-            r9 = r26
-            boolean r11 = r9.isSet(r6)
-            r10 = 11
-            if (r11 != 0) goto L_0x02c7
-            boolean r11 = r9.isSet(r10)
-            if (r11 != 0) goto L_0x02c7
-            java.lang.Object r6 = r5.value
-            com.ibm.icu.impl.DayPeriodRules$DayPeriod r6 = (com.ibm.icu.impl.DayPeriodRules.DayPeriod) r6
-            double r2 = r0.getMidPointForDayPeriod(r6)
-            int r6 = (int) r2
-            double r12 = (double) r6
-            double r12 = r2 - r12
-            r21 = 0
-            int r12 = (r12 > r21 ? 1 : (r12 == r21 ? 0 : -1))
-            if (r12 <= 0) goto L_0x02bd
-            r12 = 30
-            goto L_0x02be
-        L_0x02bd:
-            r12 = 0
-        L_0x02be:
-            r9.set(r10, r6)
-            r10 = 12
-            r9.set(r10, r12)
-            goto L_0x0327
-        L_0x02c7:
-            boolean r2 = r9.isSet(r10)
-            if (r2 == 0) goto L_0x02d2
-            int r2 = r9.get(r10)
-            goto L_0x02da
-        L_0x02d2:
-            int r2 = r9.get(r6)
-            if (r2 != 0) goto L_0x02da
-            r2 = 12
-        L_0x02da:
-            if (r2 < 0) goto L_0x031f
-            r3 = 23
-            if (r2 > r3) goto L_0x031f
-            if (r2 == 0) goto L_0x031b
-            r6 = 13
-            if (r6 > r2) goto L_0x02e9
-            if (r2 > r3) goto L_0x02e9
-            goto L_0x031b
-        L_0x02e9:
-            r3 = 12
-            if (r2 != r3) goto L_0x02ee
-            r2 = 0
-        L_0x02ee:
-            double r10 = (double) r2
-            int r3 = r9.get(r3)
-            double r12 = (double) r3
-            r21 = 4633641066610819072(0x404e000000000000, double:60.0)
-            double r12 = r12 / r21
-            double r10 = r10 + r12
-            java.lang.Object r3 = r5.value
-            com.ibm.icu.impl.DayPeriodRules$DayPeriod r3 = (com.ibm.icu.impl.DayPeriodRules.DayPeriod) r3
-            double r12 = r0.getMidPointForDayPeriod(r3)
-            double r21 = r10 - r12
-            r25 = -4604930618986332160(0xc018000000000000, double:-6.0)
-            int r3 = (r25 > r21 ? 1 : (r25 == r21 ? 0 : -1))
-            r6 = 9
-            if (r3 > 0) goto L_0x0316
-            r25 = 4618441417868443648(0x4018000000000000, double:6.0)
-            int r3 = (r21 > r25 ? 1 : (r21 == r25 ? 0 : -1))
-            if (r3 >= 0) goto L_0x0316
-            r3 = 0
-            r9.set(r6, r3)
-            goto L_0x0327
-        L_0x0316:
-            r3 = 1
-            r9.set(r6, r3)
-            goto L_0x0327
-        L_0x031b:
-            r9.set(r10, r2)
-            goto L_0x0327
-        L_0x031f:
-            java.lang.AssertionError r3 = new java.lang.AssertionError
-            r3.<init>()
-            throw r3
-        L_0x0325:
-            r9 = r26
-        L_0x0327:
-            r14.setIndex(r4)
-            r2 = r40
-            java.lang.Object r0 = r2.value     // Catch:{ IllegalArgumentException -> 0x051b }
-            com.ibm.icu.text.TimeZoneFormat$TimeType r0 = (com.ibm.icu.text.TimeZoneFormat.TimeType) r0     // Catch:{ IllegalArgumentException -> 0x051b }
-            r3 = 0
-            boolean r6 = r16[r3]     // Catch:{ IllegalArgumentException -> 0x051b }
-            if (r6 != 0) goto L_0x0351
-            com.ibm.icu.text.TimeZoneFormat$TimeType r3 = com.ibm.icu.text.TimeZoneFormat.TimeType.UNKNOWN     // Catch:{ IllegalArgumentException -> 0x0343 }
-            if (r0 == r3) goto L_0x033a
-            goto L_0x0351
-        L_0x033a:
-            r13 = r1
-            r17 = r2
-            r29 = r7
-            r28 = r8
-            goto L_0x04fb
-        L_0x0343:
-            r0 = move-exception
-            r13 = r1
-            r17 = r2
-            r29 = r7
-            r28 = r8
-            r1 = r30
-            r2 = r38
-            goto L_0x0527
-        L_0x0351:
-            r3 = 0
-            boolean r6 = r16[r3]     // Catch:{ IllegalArgumentException -> 0x051b }
-            if (r6 == 0) goto L_0x0374
-            java.lang.Object r3 = r9.clone()     // Catch:{ IllegalArgumentException -> 0x0343 }
-            com.ibm.icu.util.Calendar r3 = (com.ibm.icu.util.Calendar) r3     // Catch:{ IllegalArgumentException -> 0x0343 }
-            java.util.Date r6 = r3.getTime()     // Catch:{ IllegalArgumentException -> 0x0343 }
-            java.util.Date r10 = r38.getDefaultCenturyStart()     // Catch:{ IllegalArgumentException -> 0x0343 }
-            boolean r10 = r6.before(r10)     // Catch:{ IllegalArgumentException -> 0x0343 }
-            if (r10 == 0) goto L_0x0374
-            int r10 = r38.getDefaultCenturyStartYear()     // Catch:{ IllegalArgumentException -> 0x0343 }
-            int r10 = r10 + 100
-            r11 = 1
-            r9.set(r11, r10)     // Catch:{ IllegalArgumentException -> 0x0343 }
-        L_0x0374:
-            com.ibm.icu.text.TimeZoneFormat$TimeType r3 = com.ibm.icu.text.TimeZoneFormat.TimeType.UNKNOWN     // Catch:{ IllegalArgumentException -> 0x051b }
-            if (r0 == r3) goto L_0x04f2
-            java.lang.Object r3 = r9.clone()     // Catch:{ IllegalArgumentException -> 0x04e5 }
-            com.ibm.icu.util.Calendar r3 = (com.ibm.icu.util.Calendar) r3     // Catch:{ IllegalArgumentException -> 0x04e5 }
-            com.ibm.icu.util.TimeZone r6 = r3.getTimeZone()     // Catch:{ IllegalArgumentException -> 0x04e5 }
-            r10 = 0
-            boolean r11 = r6 instanceof com.ibm.icu.util.BasicTimeZone     // Catch:{ IllegalArgumentException -> 0x04e5 }
-            if (r11 == 0) goto L_0x038b
-            r11 = r6
-            com.ibm.icu.util.BasicTimeZone r11 = (com.ibm.icu.util.BasicTimeZone) r11     // Catch:{ IllegalArgumentException -> 0x0343 }
-            r10 = r11
-        L_0x038b:
-            r11 = 15
-            r12 = 0
-            r3.set(r11, r12)     // Catch:{ IllegalArgumentException -> 0x04e5 }
-            r13 = 16
-            r3.set(r13, r12)     // Catch:{ IllegalArgumentException -> 0x04e5 }
-            long r21 = r3.getTimeInMillis()     // Catch:{ IllegalArgumentException -> 0x04e5 }
-            r25 = r21
-            r12 = 2
-            int[] r12 = new int[r12]     // Catch:{ IllegalArgumentException -> 0x04e5 }
-            if (r10 == 0) goto L_0x03d3
-            com.ibm.icu.text.TimeZoneFormat$TimeType r13 = com.ibm.icu.text.TimeZoneFormat.TimeType.STANDARD     // Catch:{ IllegalArgumentException -> 0x0343 }
-            if (r0 != r13) goto L_0x03bc
-            r34 = 1
-            r35 = 1
-            r31 = r10
-            r32 = r25
-            r36 = r12
-            r31.getOffsetFromLocal(r32, r34, r35, r36)     // Catch:{ IllegalArgumentException -> 0x0343 }
-            r13 = r1
-            r17 = r2
-            r29 = r7
-            r28 = r8
-            r1 = r25
-            goto L_0x040d
-        L_0x03bc:
-            r34 = 3
-            r35 = 3
-            r31 = r10
-            r32 = r25
-            r36 = r12
-            r31.getOffsetFromLocal(r32, r34, r35, r36)     // Catch:{ IllegalArgumentException -> 0x0343 }
-            r13 = r1
-            r17 = r2
-            r29 = r7
-            r28 = r8
-            r1 = r25
-            goto L_0x040d
-        L_0x03d3:
-            r13 = r1
-            r17 = r2
-            r1 = r25
-            r11 = 1
-            r6.getOffset(r1, r11, r12)     // Catch:{ IllegalArgumentException -> 0x04db }
-            com.ibm.icu.text.TimeZoneFormat$TimeType r11 = com.ibm.icu.text.TimeZoneFormat.TimeType.STANDARD     // Catch:{ IllegalArgumentException -> 0x04db }
-            if (r0 != r11) goto L_0x03f3
-            r11 = 1
-            r22 = r12[r11]     // Catch:{ IllegalArgumentException -> 0x03e8 }
-            if (r22 != 0) goto L_0x03e6
-            goto L_0x03f3
-        L_0x03e6:
-            r11 = 1
-            goto L_0x03fc
-        L_0x03e8:
-            r0 = move-exception
-            r2 = r38
-            r29 = r7
-            r28 = r8
-            r1 = r30
-            goto L_0x0527
-        L_0x03f3:
-            com.ibm.icu.text.TimeZoneFormat$TimeType r11 = com.ibm.icu.text.TimeZoneFormat.TimeType.DAYLIGHT     // Catch:{ IllegalArgumentException -> 0x04db }
-            if (r0 != r11) goto L_0x0409
-            r11 = 1
-            r22 = r12[r11]     // Catch:{ IllegalArgumentException -> 0x04db }
-            if (r22 != 0) goto L_0x0409
-        L_0x03fc:
-            r22 = 86400000(0x5265c00, double:4.2687272E-316)
-            r29 = r7
-            r28 = r8
-            long r7 = r1 - r22
-            r6.getOffset(r7, r11, r12)     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            goto L_0x040d
-        L_0x0409:
-            r29 = r7
-            r28 = r8
-        L_0x040d:
-            r7 = 1
-            r8 = r12[r7]     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            com.ibm.icu.text.TimeZoneFormat$TimeType r11 = com.ibm.icu.text.TimeZoneFormat.TimeType.STANDARD     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            if (r0 != r11) goto L_0x0427
-            r7 = r12[r7]     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            if (r7 == 0) goto L_0x041f
-            r8 = 0
-            r33 = r0
-            r34 = r1
-            goto L_0x04c7
-        L_0x041f:
-            r33 = r0
-            r34 = r1
-            r22 = r8
-            goto L_0x04c5
-        L_0x0427:
-            r7 = 1
-            r11 = r12[r7]     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            if (r11 != 0) goto L_0x04bf
-            if (r10 == 0) goto L_0x04ae
-            r7 = 0
-            r11 = r12[r7]     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            r22 = r8
-            long r7 = (long) r11     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            long r25 = r1 + r7
-            r7 = r25
-            r31 = r25
-            r11 = 0
-            r23 = 0
-        L_0x043d:
-            r33 = r0
-            r0 = 1
-            com.ibm.icu.util.TimeZoneTransition r27 = r10.getPreviousTransition(r7, r0)     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            if (r27 != 0) goto L_0x044b
-            r34 = r1
-            r0 = r31
-            goto L_0x0463
-        L_0x044b:
-            long r34 = r27.getTime()     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            r36 = 1
-            long r7 = r34 - r36
-            com.ibm.icu.util.TimeZoneRule r34 = r27.getFrom()     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            int r34 = r34.getDSTSavings()     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            r11 = r34
-            if (r11 == 0) goto L_0x04a9
-            r34 = r1
-            r0 = r31
-        L_0x0463:
-            r2 = 0
-            com.ibm.icu.util.TimeZoneTransition r31 = r10.getNextTransition(r0, r2)     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            r2 = r31
-            if (r2 != 0) goto L_0x046d
-            goto L_0x0480
-        L_0x046d:
-            long r31 = r2.getTime()     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            r0 = r31
-            com.ibm.icu.util.TimeZoneRule r31 = r2.getTo()     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            int r31 = r31.getDSTSavings()     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            r23 = r31
-            if (r23 == 0) goto L_0x0463
-        L_0x0480:
-            if (r27 == 0) goto L_0x0492
-            if (r2 == 0) goto L_0x0492
-            long r31 = r25 - r7
-            long r36 = r0 - r25
-            int r31 = (r31 > r36 ? 1 : (r31 == r36 ? 0 : -1))
-            if (r31 <= 0) goto L_0x048f
-            r22 = r23
-            goto L_0x04a6
-        L_0x048f:
-            r22 = r11
-            goto L_0x04a6
-        L_0x0492:
-            if (r27 == 0) goto L_0x0499
-            if (r11 == 0) goto L_0x0499
-            r22 = r11
-            goto L_0x04a6
-        L_0x0499:
-            if (r2 == 0) goto L_0x04a0
-            if (r23 == 0) goto L_0x04a0
-            r22 = r23
-            goto L_0x04a6
-        L_0x04a0:
-            int r31 = r10.getDSTSavings()     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            r22 = r31
-        L_0x04a6:
-            r8 = r22
-            goto L_0x04b9
-        L_0x04a9:
-            r34 = r1
-            r0 = r33
-            goto L_0x043d
-        L_0x04ae:
-            r33 = r0
-            r34 = r1
-            r22 = r8
-            int r0 = r6.getDSTSavings()     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            r8 = r0
-        L_0x04b9:
-            if (r8 != 0) goto L_0x04c7
-            r8 = 3600000(0x36ee80, float:5.044674E-39)
-            goto L_0x04c7
-        L_0x04bf:
-            r33 = r0
-            r34 = r1
-            r22 = r8
-        L_0x04c5:
-            r8 = r22
-        L_0x04c7:
-            r0 = 0
-            r0 = r12[r0]     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            r1 = 15
-            r9.set(r1, r0)     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            r0 = 16
-            r9.set(r0, r8)     // Catch:{ IllegalArgumentException -> 0x04d5 }
-            goto L_0x04fb
-        L_0x04d5:
-            r0 = move-exception
-            r2 = r38
-            r1 = r30
-            goto L_0x0527
-        L_0x04db:
-            r0 = move-exception
-            r29 = r7
-            r28 = r8
-            r2 = r38
-            r1 = r30
-            goto L_0x0527
-        L_0x04e5:
-            r0 = move-exception
-            r13 = r1
-            r17 = r2
-            r29 = r7
-            r28 = r8
-            r2 = r38
-            r1 = r30
-            goto L_0x0527
-        L_0x04f2:
-            r33 = r0
-            r13 = r1
-            r17 = r2
-            r29 = r7
-            r28 = r8
-        L_0x04fb:
-            r1 = r30
-            if (r1 == 0) goto L_0x050e
-            com.ibm.icu.util.TimeZone r0 = r9.getTimeZone()
-            r1.setTimeZone(r0)
-            long r2 = r9.getTimeInMillis()
-            r1.setTimeInMillis(r2)
-        L_0x050e:
-            if (r15 == 0) goto L_0x0518
-            r2 = r38
-            com.ibm.icu.util.Calendar r0 = r2.calendar
-            r0.setTimeZone(r15)
-            goto L_0x051a
-        L_0x0518:
-            r2 = r38
-        L_0x051a:
-            return
-        L_0x051b:
-            r0 = move-exception
-            r13 = r1
-            r17 = r2
-            r29 = r7
-            r28 = r8
-            r1 = r30
-            r2 = r38
-        L_0x0527:
-            r14.setErrorIndex(r4)
-            r3 = r28
-            r14.setIndex(r3)
-            if (r15 == 0) goto L_0x0536
-            com.ibm.icu.util.Calendar r6 = r2.calendar
-            r6.setTimeZone(r15)
-        L_0x0536:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.SimpleDateFormat.parse(java.lang.String, com.ibm.icu.util.Calendar, java.text.ParsePosition):void");
+    /* JADX WARN: Incorrect condition in loop: B:20:0x0093 */
+    /* JADX WARN: Removed duplicated region for block: B:108:0x028e  */
+    /* JADX WARN: Removed duplicated region for block: B:143:0x0325  */
+    /* JADX WARN: Removed duplicated region for block: B:156:0x0356 A[Catch: IllegalArgumentException -> 0x0343, TRY_ENTER, TryCatch #0 {IllegalArgumentException -> 0x0343, blocks: (B:147:0x0335, B:156:0x0356, B:158:0x036a, B:163:0x0387, B:168:0x03a1, B:170:0x03a5, B:171:0x03bc), top: B:253:0x0335 }] */
+    /* JADX WARN: Removed duplicated region for block: B:239:0x04f2  */
+    /* JADX WARN: Removed duplicated region for block: B:242:0x0500  */
+    /* JADX WARN: Removed duplicated region for block: B:244:0x0510  */
+    /* JADX WARN: Removed duplicated region for block: B:245:0x0518  */
+    /* JADX WARN: Removed duplicated region for block: B:251:0x0531  */
+    /* JADX WARN: Removed duplicated region for block: B:253:0x0335 A[EXC_TOP_SPLITTER, SYNTHETIC] */
+    /* JADX WARN: Removed duplicated region for block: B:256:0x0378 A[EXC_TOP_SPLITTER, SYNTHETIC] */
+    /* JADX WARN: Removed duplicated region for block: B:289:? A[RETURN, SYNTHETIC] */
+    @Override // com.ibm.icu.text.DateFormat
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    public void parse(String text, Calendar cal, ParsePosition parsePos) {
+        TimeZone backupTZ;
+        Calendar resultCal;
+        Calendar cal2;
+        MessageFormat numericLeapMonthFormatter;
+        int pos;
+        Calendar cal3;
+        int start;
+        SimpleDateFormat simpleDateFormat;
+        TimeZoneFormat.TimeType tztype;
+        long localMillis;
+        boolean z;
+        int resolvedSavings;
+        int resolvedSavings2;
+        TimeZoneTransition beforeTrs;
+        long afterT;
+        TimeZoneTransition afterTrs;
+        int hourOfDay;
+        Output<TimeZoneFormat.TimeType> tzTimeType;
+        Output<DayPeriodRules.DayPeriod> dayPeriod;
+        int start2;
+        Object[] items;
+        Calendar resultCal2;
+        Calendar cal4;
+        TimeZone backupTZ2;
+        int i;
+        int i2;
+        int numericFieldStart;
+        int numericFieldStart2;
+        int len;
+        if (cal == this.calendar || cal.getType().equals(this.calendar.getType())) {
+            backupTZ = null;
+            resultCal = null;
+            cal2 = cal;
+        } else {
+            this.calendar.setTimeInMillis(cal.getTimeInMillis());
+            TimeZone backupTZ3 = this.calendar.getTimeZone();
+            this.calendar.setTimeZone(cal.getTimeZone());
+            backupTZ = backupTZ3;
+            resultCal = cal;
+            cal2 = this.calendar;
+        }
+        int pos2 = parsePos.getIndex();
+        if (pos2 < 0) {
+            parsePos.setErrorIndex(0);
+            return;
+        }
+        int start3 = pos2;
+        Output<DayPeriodRules.DayPeriod> dayPeriod2 = new Output<>((Object) null);
+        Output<TimeZoneFormat.TimeType> tzTimeType2 = new Output<>(TimeZoneFormat.TimeType.UNKNOWN);
+        boolean[] ambiguousYear = {false};
+        int numericFieldStart3 = -1;
+        if (this.formatData.leapMonthPatterns == null || this.formatData.leapMonthPatterns.length < 7) {
+            numericLeapMonthFormatter = null;
+        } else {
+            MessageFormat numericLeapMonthFormatter2 = new MessageFormat(this.formatData.leapMonthPatterns[6], this.locale);
+            numericLeapMonthFormatter = numericLeapMonthFormatter2;
+        }
+        Object[] items2 = getPatternItems();
+        int numericFieldLength = 0;
+        int numericStartPos = 0;
+        int i3 = 0;
+        while (i3 < numericFieldLength) {
+            if (items2[i3] instanceof PatternItem) {
+                PatternItem field = (PatternItem) items2[i3];
+                if (field.isNumeric && numericFieldStart3 == -1 && i3 + 1 < items2.length && (items2[i3 + 1] instanceof PatternItem) && ((PatternItem) items2[i3 + 1]).isNumeric) {
+                    int numericFieldStart4 = i3;
+                    int numericFieldLength2 = field.length;
+                    numericFieldLength = numericFieldLength2;
+                    numericStartPos = pos2;
+                    numericFieldStart = numericFieldStart4;
+                } else {
+                    numericFieldStart = numericFieldStart3;
+                }
+                if (numericFieldStart != -1) {
+                    int len2 = field.length;
+                    if (numericFieldStart == i3) {
+                        int len3 = numericFieldLength;
+                        len = len3;
+                    } else {
+                        len = len2;
+                    }
+                    int numericFieldStart5 = numericFieldStart;
+                    int i4 = i3;
+                    tzTimeType = tzTimeType2;
+                    dayPeriod = dayPeriod2;
+                    int start4 = start3;
+                    Object[] items3 = items2;
+                    resultCal2 = resultCal;
+                    pos2 = subParse(text, pos2, field.type, len, true, false, ambiguousYear, cal2, numericLeapMonthFormatter, tzTimeType);
+                    if (pos2 < 0) {
+                        numericFieldLength--;
+                        if (numericFieldLength == 0) {
+                            parsePos.setIndex(start4);
+                            parsePos.setErrorIndex(pos2);
+                            if (backupTZ != null) {
+                                this.calendar.setTimeZone(backupTZ);
+                                return;
+                            }
+                            return;
+                        }
+                        i3 = numericFieldStart5;
+                        pos2 = numericStartPos;
+                        tzTimeType2 = tzTimeType;
+                        start3 = start4;
+                        dayPeriod2 = dayPeriod;
+                        numericFieldStart3 = numericFieldStart5;
+                        items2 = items3;
+                        resultCal = resultCal2;
+                    } else {
+                        start2 = start4;
+                        cal4 = cal2;
+                        i2 = i4;
+                        numericFieldStart2 = numericFieldStart5;
+                        items = items3;
+                        backupTZ2 = backupTZ;
+                    }
+                } else {
+                    int numericFieldStart6 = numericFieldStart;
+                    int i5 = i3;
+                    tzTimeType = tzTimeType2;
+                    dayPeriod = dayPeriod2;
+                    Object[] items4 = items2;
+                    resultCal2 = resultCal;
+                    int start5 = start3;
+                    if (field.type != 'l') {
+                        int s = pos2;
+                        cal4 = cal2;
+                        backupTZ2 = backupTZ;
+                        pos2 = subParse(text, pos2, field.type, field.length, false, true, ambiguousYear, cal2, numericLeapMonthFormatter, tzTimeType, dayPeriod);
+                        if (pos2 >= 0) {
+                            items = items4;
+                            start2 = start5;
+                            numericFieldStart2 = -1;
+                            i2 = i5;
+                        } else if (pos2 != ISOSpecialEra) {
+                            parsePos.setIndex(start5);
+                            parsePos.setErrorIndex(s);
+                            if (backupTZ2 != null) {
+                                this.calendar.setTimeZone(backupTZ2);
+                                return;
+                            }
+                            return;
+                        } else {
+                            items = items4;
+                            if (i5 + 1 < items.length) {
+                                try {
+                                    String patl = (String) items[i5 + 1];
+                                    if (patl == null) {
+                                        patl = (String) items[i5 + 1];
+                                    }
+                                    int plen = patl.length();
+                                    int idx = 0;
+                                    while (idx < plen) {
+                                        char pch = patl.charAt(idx);
+                                        if (!PatternProps.isWhiteSpace(pch)) {
+                                            break;
+                                        }
+                                        idx++;
+                                    }
+                                    i2 = idx == plen ? i5 + 1 : i5;
+                                    pos2 = s;
+                                    numericFieldStart2 = -1;
+                                    start2 = start5;
+                                } catch (ClassCastException e) {
+                                    parsePos.setIndex(start5);
+                                    parsePos.setErrorIndex(s);
+                                    if (backupTZ2 != null) {
+                                        this.calendar.setTimeZone(backupTZ2);
+                                        return;
+                                    }
+                                    return;
+                                }
+                            } else {
+                                start2 = start5;
+                                pos2 = s;
+                                numericFieldStart2 = -1;
+                                i2 = i5;
+                            }
+                        }
+                    } else {
+                        start2 = start5;
+                        cal4 = cal2;
+                        items = items4;
+                        backupTZ2 = backupTZ;
+                        i2 = i5;
+                        numericFieldStart2 = numericFieldStart6;
+                    }
+                }
+                numericFieldStart3 = numericFieldStart2;
+                i = 1;
+            } else {
+                int i6 = i3;
+                tzTimeType = tzTimeType2;
+                dayPeriod = dayPeriod2;
+                start2 = start3;
+                items = items2;
+                resultCal2 = resultCal;
+                cal4 = cal2;
+                backupTZ2 = backupTZ;
+                i = 1;
+                boolean[] complete = new boolean[1];
+                pos2 = matchLiteral(text, pos2, items, i6, complete);
+                if (!complete[0]) {
+                    parsePos.setIndex(start2);
+                    parsePos.setErrorIndex(pos2);
+                    if (backupTZ2 != null) {
+                        this.calendar.setTimeZone(backupTZ2);
+                        return;
+                    }
+                    return;
+                }
+                numericFieldStart3 = -1;
+                i2 = i6;
+            }
+            i3 = i2 + i;
+            items2 = items;
+            start3 = start2;
+            backupTZ = backupTZ2;
+            dayPeriod2 = dayPeriod;
+            cal2 = cal4;
+            resultCal = resultCal2;
+            tzTimeType2 = tzTimeType;
+        }
+        Output<TimeZoneFormat.TimeType> tzTimeType3 = tzTimeType2;
+        Output<DayPeriodRules.DayPeriod> dayPeriod3 = dayPeriod2;
+        int start6 = start3;
+        Object[] items5 = items2;
+        Calendar resultCal3 = resultCal;
+        Calendar cal5 = cal2;
+        TimeZone backupTZ4 = backupTZ;
+        try {
+            if (pos2 < text.length()) {
+                char extra = text.charAt(pos2);
+                if (extra == '.' && getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_ALLOW_WHITESPACE) && items5.length != 0) {
+                    Object lastItem = items5[items5.length - 1];
+                    if ((lastItem instanceof PatternItem) && !((PatternItem) lastItem).isNumeric) {
+                        pos = pos2 + 1;
+                        if (dayPeriod3.value == null) {
+                            DayPeriodRules ruleSet = DayPeriodRules.getInstance(getLocale());
+                            cal3 = cal5;
+                            if (cal3.isSet(10) || cal3.isSet(11)) {
+                                if (cal3.isSet(11)) {
+                                    hourOfDay = cal3.get(11);
+                                } else {
+                                    hourOfDay = cal3.get(10);
+                                    if (hourOfDay == 0) {
+                                        hourOfDay = 12;
+                                    }
+                                }
+                                if (hourOfDay < 0 || hourOfDay > 23) {
+                                    throw new AssertionError();
+                                }
+                                if (hourOfDay == 0 || (13 <= hourOfDay && hourOfDay <= 23)) {
+                                    cal3.set(11, hourOfDay);
+                                } else {
+                                    if (hourOfDay == 12) {
+                                        hourOfDay = 0;
+                                    }
+                                    double currentHour = hourOfDay + (cal3.get(12) / 60.0d);
+                                    double hoursAheadMidPoint = currentHour - ruleSet.getMidPointForDayPeriod((DayPeriodRules.DayPeriod) dayPeriod3.value);
+                                    if (-6.0d > hoursAheadMidPoint || hoursAheadMidPoint >= 6.0d) {
+                                        cal3.set(9, 1);
+                                    } else {
+                                        cal3.set(9, 0);
+                                    }
+                                }
+                            } else {
+                                double midPoint = ruleSet.getMidPointForDayPeriod((DayPeriodRules.DayPeriod) dayPeriod3.value);
+                                int midPointHour = (int) midPoint;
+                                int midPointMinute = midPoint - ((double) midPointHour) > 0.0d ? 30 : 0;
+                                cal3.set(11, midPointHour);
+                                cal3.set(12, midPointMinute);
+                            }
+                        } else {
+                            cal3 = cal5;
+                        }
+                        parsePos.setIndex(pos);
+                        tztype = (TimeZoneFormat.TimeType) tzTimeType3.value;
+                        if (!ambiguousYear[0]) {
+                            try {
+                                if (tztype == TimeZoneFormat.TimeType.UNKNOWN) {
+                                    if (resultCal3 != null) {
+                                        resultCal3.setTimeZone(cal3.getTimeZone());
+                                        resultCal3.setTimeInMillis(cal3.getTimeInMillis());
+                                    }
+                                    if (backupTZ4 != null) {
+                                        this.calendar.setTimeZone(backupTZ4);
+                                        return;
+                                    }
+                                    return;
+                                }
+                            } catch (IllegalArgumentException e2) {
+                                start = start6;
+                                simpleDateFormat = this;
+                                parsePos.setErrorIndex(pos);
+                                parsePos.setIndex(start);
+                                if (backupTZ4 != null) {
+                                    simpleDateFormat.calendar.setTimeZone(backupTZ4);
+                                    return;
+                                }
+                                return;
+                            }
+                        }
+                        if (ambiguousYear[0]) {
+                            Date parsedDate = ((Calendar) cal3.clone()).getTime();
+                            if (parsedDate.before(getDefaultCenturyStart())) {
+                                cal3.set(1, getDefaultCenturyStartYear() + 100);
+                            }
+                        }
+                        if (tztype == TimeZoneFormat.TimeType.UNKNOWN) {
+                            try {
+                                Calendar copy = (Calendar) cal3.clone();
+                                BasicTimeZone timeZone = copy.getTimeZone();
+                                BasicTimeZone btz = timeZone instanceof BasicTimeZone ? timeZone : null;
+                                copy.set(15, 0);
+                                copy.set(16, 0);
+                                long localMillis2 = copy.getTimeInMillis();
+                                int[] offsets = new int[2];
+                                if (btz == null) {
+                                    localMillis = localMillis2;
+                                    try {
+                                        timeZone.getOffset(localMillis, true, offsets);
+                                        if (tztype == TimeZoneFormat.TimeType.STANDARD) {
+                                            try {
+                                                if (offsets[1] != 0) {
+                                                    z = true;
+                                                    start = start6;
+                                                    try {
+                                                        timeZone.getOffset(localMillis - 86400000, z, offsets);
+                                                    } catch (IllegalArgumentException e3) {
+                                                        simpleDateFormat = this;
+                                                        parsePos.setErrorIndex(pos);
+                                                        parsePos.setIndex(start);
+                                                        if (backupTZ4 != null) {
+                                                        }
+                                                    }
+                                                }
+                                            } catch (IllegalArgumentException e4) {
+                                                simpleDateFormat = this;
+                                                start = start6;
+                                                parsePos.setErrorIndex(pos);
+                                                parsePos.setIndex(start);
+                                                if (backupTZ4 != null) {
+                                                }
+                                            }
+                                        }
+                                        z = tztype == TimeZoneFormat.TimeType.DAYLIGHT ? true : true;
+                                        start = start6;
+                                    } catch (IllegalArgumentException e5) {
+                                        start = start6;
+                                        simpleDateFormat = this;
+                                    }
+                                } else if (tztype == TimeZoneFormat.TimeType.STANDARD) {
+                                    btz.getOffsetFromLocal(localMillis2, 1, 1, offsets);
+                                    start = start6;
+                                    localMillis = localMillis2;
+                                } else {
+                                    btz.getOffsetFromLocal(localMillis2, 3, 3, offsets);
+                                    start = start6;
+                                    localMillis = localMillis2;
+                                }
+                                int resolvedSavings3 = offsets[1];
+                                if (tztype == TimeZoneFormat.TimeType.STANDARD) {
+                                    if (offsets[1] != 0) {
+                                        resolvedSavings2 = 0;
+                                        cal3.set(15, offsets[0]);
+                                        cal3.set(16, resolvedSavings2);
+                                    } else {
+                                        resolvedSavings = resolvedSavings3;
+                                        resolvedSavings2 = resolvedSavings;
+                                        cal3.set(15, offsets[0]);
+                                        cal3.set(16, resolvedSavings2);
+                                    }
+                                } else if (offsets[1] == 0) {
+                                    if (btz != null) {
+                                        long time = localMillis + offsets[0];
+                                        long beforeT = time;
+                                        int beforeSav = 0;
+                                        int afterSav = 0;
+                                        while (true) {
+                                            TimeZoneFormat.TimeType tztype2 = tztype;
+                                            beforeTrs = btz.getPreviousTransition(beforeT, true);
+                                            if (beforeTrs == null) {
+                                                afterT = time;
+                                                break;
+                                            }
+                                            beforeT = beforeTrs.getTime() - 1;
+                                            beforeSav = beforeTrs.getFrom().getDSTSavings();
+                                            if (beforeSav != 0) {
+                                                afterT = time;
+                                                break;
+                                            }
+                                            tztype = tztype2;
+                                        }
+                                        do {
+                                            afterTrs = btz.getNextTransition(afterT, false);
+                                            if (afterTrs == null) {
+                                                break;
+                                            }
+                                            afterT = afterTrs.getTime();
+                                            afterSav = afterTrs.getTo().getDSTSavings();
+                                        } while (afterSav == 0);
+                                        resolvedSavings2 = (beforeTrs == null || afterTrs == null) ? (beforeTrs == null || beforeSav == 0) ? (afterTrs == null || afterSav == 0) ? btz.getDSTSavings() : afterSav : beforeSav : time - beforeT > afterT - time ? afterSav : beforeSav;
+                                    } else {
+                                        resolvedSavings2 = timeZone.getDSTSavings();
+                                    }
+                                    if (resolvedSavings2 == 0) {
+                                        resolvedSavings2 = millisPerHour;
+                                    }
+                                    cal3.set(15, offsets[0]);
+                                    cal3.set(16, resolvedSavings2);
+                                } else {
+                                    resolvedSavings = resolvedSavings3;
+                                    resolvedSavings2 = resolvedSavings;
+                                    cal3.set(15, offsets[0]);
+                                    cal3.set(16, resolvedSavings2);
+                                }
+                            } catch (IllegalArgumentException e6) {
+                                start = start6;
+                                simpleDateFormat = this;
+                            }
+                        }
+                        if (resultCal3 != null) {
+                        }
+                        if (backupTZ4 != null) {
+                        }
+                    }
+                }
+            }
+            tztype = (TimeZoneFormat.TimeType) tzTimeType3.value;
+            if (!ambiguousYear[0]) {
+            }
+            if (ambiguousYear[0]) {
+            }
+            if (tztype == TimeZoneFormat.TimeType.UNKNOWN) {
+            }
+            if (resultCal3 != null) {
+            }
+            if (backupTZ4 != null) {
+            }
+        } catch (IllegalArgumentException e7) {
+            start = start6;
+            simpleDateFormat = this;
+        }
+        pos = pos2;
+        if (dayPeriod3.value == null) {
+        }
+        parsePos.setIndex(pos);
     }
 
     private int matchLiteral(String text, int pos, Object[] items, int itemIndex, boolean[] complete) {
-        String str = text;
-        Object[] objArr = items;
-        int i = itemIndex;
-        int originalPos = pos;
-        String patternLiteral = (String) objArr[i];
+        boolean z;
+        String patternLiteral = (String) items[itemIndex];
         int plen = patternLiteral.length();
         int tlen = text.length();
         int idx = 0;
         int pos2 = pos;
         while (idx < plen && pos2 < tlen) {
             char pch = patternLiteral.charAt(idx);
-            char ich = str.charAt(pos2);
-            if (!PatternProps.isWhiteSpace(pch) || !PatternProps.isWhiteSpace(ich)) {
-                if (pch != ich) {
-                    if (ich != '.' || pos2 != originalPos || i <= 0 || !getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_ALLOW_WHITESPACE)) {
-                        if ((pch != ' ' && pch != '.') || !getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_ALLOW_WHITESPACE)) {
-                            if (pos2 == originalPos || !getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_PARTIAL_LITERAL_MATCH)) {
-                                break;
-                            }
-                            idx++;
-                        } else {
-                            idx++;
-                        }
-                    } else {
-                        Object before = objArr[i - 1];
-                        if (!(before instanceof PatternItem) || ((PatternItem) before).isNumeric) {
-                            break;
-                        }
-                        pos2++;
-                    }
-                }
-            } else {
+            char ich = text.charAt(pos2);
+            if (PatternProps.isWhiteSpace(pch) && PatternProps.isWhiteSpace(ich)) {
                 while (idx + 1 < plen && PatternProps.isWhiteSpace(patternLiteral.charAt(idx + 1))) {
                     idx++;
                 }
-                while (pos2 + 1 < tlen && PatternProps.isWhiteSpace(str.charAt(pos2 + 1))) {
+                while (pos2 + 1 < tlen && PatternProps.isWhiteSpace(text.charAt(pos2 + 1))) {
+                    pos2++;
+                }
+            } else if (pch != ich) {
+                if (ich != '.' || pos2 != pos || itemIndex <= 0 || !getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_ALLOW_WHITESPACE)) {
+                    if ((pch == ' ' || pch == '.') && getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_ALLOW_WHITESPACE)) {
+                        idx++;
+                    } else if (pos2 == pos || !getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_PARTIAL_LITERAL_MATCH)) {
+                        break;
+                    } else {
+                        idx++;
+                    }
+                } else {
+                    Object before = items[itemIndex - 1];
+                    if (!(before instanceof PatternItem)) {
+                        break;
+                    }
+                    boolean isNumeric = ((PatternItem) before).isNumeric;
+                    if (isNumeric) {
+                        break;
+                    }
                     pos2++;
                 }
             }
             idx++;
             pos2++;
         }
-        complete[0] = idx == plen;
-        if (complete[0] || !getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_ALLOW_WHITESPACE) || i <= 0 || i >= objArr.length - 1 || originalPos >= tlen) {
+        if (idx == plen) {
+            z = true;
+        } else {
+            z = false;
+        }
+        complete[0] = z;
+        if (!complete[0] && getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_ALLOW_WHITESPACE) && itemIndex > 0 && itemIndex < items.length - 1 && pos < tlen) {
+            Object before2 = items[itemIndex - 1];
+            Object after = items[itemIndex + 1];
+            if ((before2 instanceof PatternItem) && (after instanceof PatternItem)) {
+                char beforeType = ((PatternItem) before2).type;
+                char afterType = ((PatternItem) after).type;
+                UnicodeSet unicodeSet = DATE_PATTERN_TYPE;
+                if (unicodeSet.contains(beforeType) != unicodeSet.contains(afterType)) {
+                    int newPos = pos;
+                    while (newPos < tlen && PatternProps.isWhiteSpace(text.charAt(newPos))) {
+                        newPos++;
+                    }
+                    complete[0] = newPos > pos;
+                    return newPos;
+                }
+                return pos2;
+            }
             return pos2;
         }
-        Object before2 = objArr[i - 1];
-        Object after = objArr[i + 1];
-        if (!(before2 instanceof PatternItem) || !(after instanceof PatternItem)) {
-            return pos2;
-        }
-        char beforeType = ((PatternItem) before2).type;
-        char afterType = ((PatternItem) after).type;
-        UnicodeSet unicodeSet = DATE_PATTERN_TYPE;
-        if (unicodeSet.contains((int) beforeType) == unicodeSet.contains((int) afterType)) {
-            return pos2;
-        }
-        int newPos = originalPos;
-        while (newPos < tlen && PatternProps.isWhiteSpace(str.charAt(newPos))) {
-            newPos++;
-        }
-        complete[0] = newPos > originalPos;
-        return newPos;
+        return pos2;
     }
 
-    /* access modifiers changed from: protected */
-    public int matchString(String text, int start, int field, String[] data, Calendar cal) {
-        return matchString(text, start, field, data, (String) null, cal);
+    protected int matchString(String text, int start, int field, String[] data, Calendar cal) {
+        return matchString(text, start, field, data, null, cal);
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:12:0x0031, code lost:
-        r13 = com.ibm.icu.impl.SimpleFormatterImpl.formatRawPattern(r5, 1, 1, new java.lang.CharSequence[]{r4[r7]});
-     */
-    @java.lang.Deprecated
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private int matchString(java.lang.String r19, int r20, int r21, java.lang.String[] r22, java.lang.String r23, com.ibm.icu.util.Calendar r24) {
-        /*
-            r18 = this;
-            r0 = r18
-            r1 = r19
-            r2 = r20
-            r3 = r21
-            r4 = r22
-            r5 = r23
-            r6 = r24
-            r7 = 0
-            int r8 = r4.length
-            r9 = 7
-            if (r3 != r9) goto L_0x0014
-            r7 = 1
-        L_0x0014:
-            r9 = 0
-            r10 = -1
-            r11 = 0
-            r12 = 0
-        L_0x0018:
-            r13 = 1
-            if (r7 >= r8) goto L_0x0050
-            r14 = r4[r7]
-            int r14 = r14.length()
-            if (r14 <= r9) goto L_0x002f
-            r15 = r4[r7]
-            int r15 = r0.regionMatchesWithOptionalDot(r1, r2, r15, r14)
-            r12 = r15
-            if (r15 < 0) goto L_0x002f
-            r10 = r7
-            r9 = r12
-            r11 = 0
-        L_0x002f:
-            if (r5 == 0) goto L_0x004d
-            java.lang.CharSequence[] r15 = new java.lang.CharSequence[r13]
-            r16 = 0
-            r17 = r4[r7]
-            r15[r16] = r17
-            java.lang.String r13 = com.ibm.icu.impl.SimpleFormatterImpl.formatRawPattern(r5, r13, r13, r15)
-            int r14 = r13.length()
-            if (r14 <= r9) goto L_0x004d
-            int r15 = r0.regionMatchesWithOptionalDot(r1, r2, r13, r14)
-            r12 = r15
-            if (r15 < 0) goto L_0x004d
-            r10 = r7
-            r9 = r12
-            r11 = 1
-        L_0x004d:
-            int r7 = r7 + 1
-            goto L_0x0018
-        L_0x0050:
-            if (r10 < 0) goto L_0x0065
-            if (r3 < 0) goto L_0x0062
-            if (r3 != r13) goto L_0x0058
-            int r10 = r10 + 1
-        L_0x0058:
-            r6.set(r3, r10)
-            if (r5 == 0) goto L_0x0062
-            r13 = 22
-            r6.set(r13, r11)
-        L_0x0062:
-            int r13 = r2 + r9
-            return r13
-        L_0x0065:
-            int r13 = ~r2
-            return r13
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.SimpleDateFormat.matchString(java.lang.String, int, int, java.lang.String[], java.lang.String, com.ibm.icu.util.Calendar):int");
+    @Deprecated
+    private int matchString(String text, int start, int field, String[] data, String monthPattern, Calendar cal) {
+        String leapMonthName;
+        int length;
+        int matchLength;
+        int matchLength2;
+        int count = data.length;
+        int bestMatchLength = 0;
+        int bestMatch = -1;
+        int isLeapMonth = 0;
+        for (int i = field == 7 ? 1 : 0; i < count; i++) {
+            int length2 = data[i].length();
+            if (length2 > bestMatchLength && (matchLength2 = regionMatchesWithOptionalDot(text, start, data[i], length2)) >= 0) {
+                bestMatch = i;
+                bestMatchLength = matchLength2;
+                isLeapMonth = 0;
+            }
+            if (monthPattern != null && (length = (leapMonthName = SimpleFormatterImpl.formatRawPattern(monthPattern, 1, 1, new CharSequence[]{data[i]})).length()) > bestMatchLength && (matchLength = regionMatchesWithOptionalDot(text, start, leapMonthName, length)) >= 0) {
+                bestMatch = i;
+                bestMatchLength = matchLength;
+                isLeapMonth = 1;
+            }
+        }
+        if (bestMatch >= 0) {
+            if (field >= 0) {
+                if (field == 1) {
+                    bestMatch++;
+                }
+                cal.set(field, bestMatch);
+                if (monthPattern != null) {
+                    cal.set(22, isLeapMonth);
+                }
+            }
+            return start + bestMatchLength;
+        }
+        return ~start;
     }
 
     private int regionMatchesWithOptionalDot(String text, int start, String data, int length) {
-        if (text.regionMatches(true, start, data, 0, length)) {
+        boolean matches = text.regionMatches(true, start, data, 0, length);
+        if (matches) {
             return length;
         }
-        if (data.length() <= 0 || data.charAt(data.length() - 1) != '.') {
-            return -1;
-        }
-        if (text.regionMatches(true, start, data, 0, length - 1)) {
+        if (data.length() > 0 && data.charAt(data.length() - 1) == '.' && text.regionMatches(true, start, data, 0, length - 1)) {
             return length - 1;
         }
         return -1;
     }
 
-    /* access modifiers changed from: protected */
-    public int matchQuarterString(String text, int start, int field, String[] data, Calendar cal) {
+    protected int matchQuarterString(String text, int start, int field, String[] data, Calendar cal) {
+        int matchLength;
         int count = data.length;
         int bestMatchLength = 0;
         int bestMatch = -1;
         for (int i = 0; i < count; i++) {
             int length = data[i].length();
-            if (length > bestMatchLength) {
-                int regionMatchesWithOptionalDot = regionMatchesWithOptionalDot(text, start, data[i], length);
-                int matchLength = regionMatchesWithOptionalDot;
-                if (regionMatchesWithOptionalDot >= 0) {
-                    bestMatch = i;
-                    bestMatchLength = matchLength;
-                }
+            if (length > bestMatchLength && (matchLength = regionMatchesWithOptionalDot(text, start, data[i], length)) >= 0) {
+                bestMatch = i;
+                bestMatchLength = matchLength;
             }
         }
-        if (bestMatch < 0) {
-            return -start;
+        if (bestMatch >= 0) {
+            cal.set(field, bestMatch * 3);
+            return start + bestMatchLength;
         }
-        cal.set(field, bestMatch * 3);
-        return start + bestMatchLength;
+        return -start;
     }
 
     private int matchDayPeriodString(String text, int start, String[] data, int dataLength, Output<DayPeriodRules.DayPeriod> dayPeriod) {
         int length;
+        int matchLength;
         int bestMatchLength = 0;
         int bestMatch = -1;
         for (int i = 0; i < dataLength; i++) {
-            if (data[i] != null && (length = data[i].length()) > bestMatchLength) {
-                int regionMatchesWithOptionalDot = regionMatchesWithOptionalDot(text, start, data[i], length);
-                int matchLength = regionMatchesWithOptionalDot;
-                if (regionMatchesWithOptionalDot >= 0) {
-                    bestMatch = i;
-                    bestMatchLength = matchLength;
+            if (data[i] != null && (length = data[i].length()) > bestMatchLength && (matchLength = regionMatchesWithOptionalDot(text, start, data[i], length)) >= 0) {
+                bestMatch = i;
+                bestMatchLength = matchLength;
+            }
+        }
+        if (bestMatch >= 0) {
+            dayPeriod.value = DayPeriodRules.DayPeriod.VALUES[bestMatch];
+            return start + bestMatchLength;
+        }
+        return -start;
+    }
+
+    protected int subParse(String text, int start, char ch, int count, boolean obeyCount, boolean allowNegative, boolean[] ambiguousYear, Calendar cal) {
+        return subParse(text, start, ch, count, obeyCount, allowNegative, ambiguousYear, cal, null, null);
+    }
+
+    private int subParse(String text, int start, char ch, int count, boolean obeyCount, boolean allowNegative, boolean[] ambiguousYear, Calendar cal, MessageFormat numericLeapMonthFormatter, Output<TimeZoneFormat.TimeType> tzTimeType) {
+        return subParse(text, start, ch, count, obeyCount, allowNegative, ambiguousYear, cal, null, null, null);
+    }
+
+    /* JADX WARN: Code restructure failed: missing block: B:200:0x038b, code lost:
+        if (r5 > r33.formatData.shortYearNames.length) goto L173;
+     */
+    /* JADX WARN: Removed duplicated region for block: B:75:0x0103  */
+    /* JADX WARN: Removed duplicated region for block: B:87:0x013d  */
+    /* JADX WARN: Removed duplicated region for block: B:89:0x0146  */
+    /* JADX WARN: Removed duplicated region for block: B:90:0x014d  */
+    @Deprecated
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    private int subParse(String text, int start, char ch, int count, boolean obeyCount, boolean allowNegative, boolean[] ambiguousYear, Calendar cal, MessageFormat numericLeapMonthFormatter, Output<TimeZoneFormat.TimeType> tzTimeType, Output<DayPeriodRules.DayPeriod> dayPeriod) {
+        boolean parsedNumericLeapMonth;
+        int field;
+        boolean parsedNumericLeapMonth2;
+        int patternCharIndex;
+        int field2;
+        int i;
+        NumberFormat currentNumberFormat;
+        Number number;
+        int i2;
+        int ps;
+        int i3;
+        int value;
+        int patternCharIndex2;
+        int matchString;
+        int value2;
+        int value3;
+        int start2;
+        int field3;
+        int value4;
+        int i4;
+        int field4;
+        int newStart;
+        int newStart2;
+        int value5;
+        int field5;
+        int i5;
+        int value6;
+        int value7;
+        TimeZoneFormat.Style style;
+        int value8;
+        int newStart3;
+        TimeZoneFormat.Style style2;
+        TimeZoneFormat.Style style3;
+        Calendar calendar;
+        Number number2;
+        int value9 = 0;
+        ParsePosition pos = new ParsePosition(0);
+        int patternCharIndex3 = getIndexFromChar(ch);
+        if (patternCharIndex3 != -1) {
+            NumberFormat currentNumberFormat2 = getNumberFormat(ch);
+            int field6 = PATTERN_INDEX_TO_CALENDAR_FIELD[patternCharIndex3];
+            if (numericLeapMonthFormatter != null) {
+                numericLeapMonthFormatter.setFormatByArgumentIndex(0, currentNumberFormat2);
+            }
+            Number number3 = null;
+            boolean isChineseCalendar = cal.getType().equals("chinese") || cal.getType().equals("dangi");
+            int start3 = start;
+            while (start3 < text.length()) {
+                int c = UTF16.charAt(text, start3);
+                if (UCharacter.isUWhiteSpace(c) && PatternProps.isWhiteSpace(c)) {
+                    start3 += UTF16.getCharCount(c);
+                } else {
+                    pos.setIndex(start3);
+                    if (patternCharIndex3 != 4 && patternCharIndex3 != 15 && ((patternCharIndex3 != 2 || count > 2) && patternCharIndex3 != 26 && patternCharIndex3 != 19 && patternCharIndex3 != 25 && patternCharIndex3 != 1 && patternCharIndex3 != 18 && patternCharIndex3 != 30 && ((patternCharIndex3 != 0 || !isChineseCalendar) && patternCharIndex3 != 27 && patternCharIndex3 != 28 && patternCharIndex3 != 8))) {
+                        field2 = field6;
+                        i = 2;
+                        patternCharIndex = patternCharIndex3;
+                        currentNumberFormat = currentNumberFormat2;
+                    } else {
+                        if (numericLeapMonthFormatter != null) {
+                            if (patternCharIndex3 != 2 && patternCharIndex3 != 26) {
+                                parsedNumericLeapMonth = false;
+                                field = field6;
+                            } else {
+                                Object[] args = numericLeapMonthFormatter.parse(text, pos);
+                                parsedNumericLeapMonth = false;
+                                if (args == null || pos.getIndex() <= start3) {
+                                    field = field6;
+                                    i2 = 22;
+                                } else {
+                                    field = field6;
+                                    if (!(args[0] instanceof Number)) {
+                                        i2 = 22;
+                                    } else {
+                                        parsedNumericLeapMonth2 = true;
+                                        cal.set(22, 1);
+                                        number3 = (Number) args[0];
+                                        if (!parsedNumericLeapMonth2) {
+                                            patternCharIndex = patternCharIndex3;
+                                            field2 = field;
+                                            i = 2;
+                                            currentNumberFormat = currentNumberFormat2;
+                                            number = number3;
+                                        } else {
+                                            if (obeyCount) {
+                                                if (start3 + count > text.length()) {
+                                                    return ~start3;
+                                                }
+                                                field2 = field;
+                                                i = 2;
+                                                patternCharIndex = patternCharIndex3;
+                                                currentNumberFormat = currentNumberFormat2;
+                                                number = parseInt(text, count, pos, allowNegative, currentNumberFormat);
+                                            } else {
+                                                patternCharIndex = patternCharIndex3;
+                                                field2 = field;
+                                                i = 2;
+                                                currentNumberFormat = currentNumberFormat2;
+                                                number = parseInt(text, pos, allowNegative, currentNumberFormat);
+                                            }
+                                            if (number == null && !allowNumericFallback(patternCharIndex)) {
+                                                return ~start3;
+                                            }
+                                        }
+                                        if (number != null) {
+                                            number3 = number;
+                                        } else {
+                                            value9 = number.intValue();
+                                            number3 = number;
+                                        }
+                                    }
+                                }
+                                pos.setIndex(start3);
+                                cal.set(i2, 0);
+                            }
+                        } else {
+                            parsedNumericLeapMonth = false;
+                            field = field6;
+                        }
+                        parsedNumericLeapMonth2 = parsedNumericLeapMonth;
+                        if (!parsedNumericLeapMonth2) {
+                        }
+                        if (number != null) {
+                        }
+                    }
+                    switch (patternCharIndex) {
+                        case 0:
+                            int start4 = start3;
+                            if (isChineseCalendar) {
+                                cal.set(0, value9);
+                                return pos.getIndex();
+                            }
+                            if (count == 5) {
+                                ps = matchString(text, start4, 0, this.formatData.narrowEras, null, cal);
+                            } else if (count == 4) {
+                                ps = matchString(text, start4, 0, this.formatData.eraNames, null, cal);
+                            } else {
+                                ps = matchString(text, start4, 0, this.formatData.eras, null, cal);
+                            }
+                            if (ps == (~start4)) {
+                                return ISOSpecialEra;
+                            }
+                            return ps;
+                        case 1:
+                        case 18:
+                            int start5 = start3;
+                            int i6 = i;
+                            int field7 = field2;
+                            String str = this.override;
+                            if (str != null && ((str.compareTo("hebr") == 0 || this.override.indexOf("y=hebr") >= 0) && value9 < 1000)) {
+                                value9 += HEBREW_CAL_CUR_MILLENIUM_START_YEAR;
+                            } else if (count == i6 && countDigits(text, start5, pos.getIndex()) == i6 && cal.haveDefaultCentury()) {
+                                int ambiguousTwoDigitYear = getDefaultCenturyStartYear() % 100;
+                                ambiguousYear[0] = value9 == ambiguousTwoDigitYear;
+                                value9 += ((getDefaultCenturyStartYear() / 100) * 100) + (value9 >= ambiguousTwoDigitYear ? 0 : 100);
+                            }
+                            cal.set(field7, value9);
+                            if (DelayedHebrewMonthCheck) {
+                                if (!HebrewCalendar.isLeapYear(value9)) {
+                                    cal.add(i6, 1);
+                                }
+                                DelayedHebrewMonthCheck = false;
+                            }
+                            return pos.getIndex();
+                        case 2:
+                        case 26:
+                            int value10 = value9;
+                            int start6 = start3;
+                            int i7 = i;
+                            int patternCharIndex4 = patternCharIndex;
+                            if (count > i7) {
+                                if (number3 == null || !getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_ALLOW_NUMERIC)) {
+                                    boolean haveMonthPat = this.formatData.leapMonthPatterns != null && this.formatData.leapMonthPatterns.length >= 7;
+                                    int newStart4 = 0;
+                                    if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 4) {
+                                        if (patternCharIndex4 == i7) {
+                                            patternCharIndex2 = patternCharIndex4;
+                                            matchString = matchString(text, start6, 2, this.formatData.months, haveMonthPat ? this.formatData.leapMonthPatterns[0] : null, cal);
+                                        } else {
+                                            patternCharIndex2 = patternCharIndex4;
+                                            matchString = matchString(text, start6, 2, this.formatData.standaloneMonths, haveMonthPat ? this.formatData.leapMonthPatterns[3] : null, cal);
+                                        }
+                                        newStart4 = matchString;
+                                        if (newStart4 > 0) {
+                                            return newStart4;
+                                        }
+                                    } else {
+                                        patternCharIndex2 = patternCharIndex4;
+                                    }
+                                    if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 3) {
+                                        if (patternCharIndex2 == 2) {
+                                            return matchString(text, start6, 2, this.formatData.shortMonths, haveMonthPat ? this.formatData.leapMonthPatterns[1] : null, cal);
+                                        }
+                                        return matchString(text, start6, 2, this.formatData.standaloneShortMonths, haveMonthPat ? this.formatData.leapMonthPatterns[4] : null, cal);
+                                    }
+                                    return newStart4;
+                                }
+                                i3 = i7;
+                                value = value10;
+                            } else {
+                                i3 = i7;
+                                value = value10;
+                            }
+                            int value11 = value;
+                            cal.set(i3, value11 - 1);
+                            if (cal.getType().equals("hebrew") && value11 >= 6) {
+                                if (cal.isSet(1)) {
+                                    if (!HebrewCalendar.isLeapYear(cal.get(1))) {
+                                        cal.set(i3, value11);
+                                    }
+                                } else {
+                                    DelayedHebrewMonthCheck = true;
+                                }
+                            }
+                            return pos.getIndex();
+                        case 3:
+                        case 5:
+                        case 6:
+                        case 7:
+                        case 10:
+                        case 11:
+                        case 12:
+                        case 13:
+                        case 16:
+                        case 20:
+                        case 21:
+                        case 22:
+                        case 34:
+                        default:
+                            NumberFormat currentNumberFormat3 = currentNumberFormat;
+                            int start7 = start3;
+                            int patternCharIndex5 = patternCharIndex;
+                            int field8 = field2;
+                            if (!obeyCount) {
+                                calendar = cal;
+                                number2 = parseInt(text, pos, allowNegative, currentNumberFormat3);
+                            } else if (start7 + count > text.length()) {
+                                return -start7;
+                            } else {
+                                number2 = parseInt(text, count, pos, allowNegative, currentNumberFormat3);
+                                calendar = cal;
+                            }
+                            if (number2 != null) {
+                                if (patternCharIndex5 != 34) {
+                                    calendar.set(field8, number2.intValue());
+                                } else {
+                                    calendar.setRelatedYear(number2.intValue());
+                                }
+                                return pos.getIndex();
+                            }
+                            return ~start7;
+                        case 4:
+                            int value12 = value9;
+                            if (value12 != cal.getMaximum(11) + 1) {
+                                value2 = value12;
+                            } else {
+                                value2 = 0;
+                            }
+                            cal.set(11, value2);
+                            return pos.getIndex();
+                        case 8:
+                            int value13 = value9;
+                            int i8 = countDigits(text, start3, pos.getIndex());
+                            if (i8 < 3) {
+                                value3 = value13;
+                                while (i8 < 3) {
+                                    value3 *= 10;
+                                    i8++;
+                                }
+                            } else {
+                                int a = 1;
+                                while (i8 > 3) {
+                                    a *= 10;
+                                    i8--;
+                                }
+                                value3 = value13 / a;
+                            }
+                            cal.set(14, value3);
+                            return pos.getIndex();
+                        case 9:
+                            start2 = start3;
+                            field3 = field2;
+                            value4 = 4;
+                            i4 = 6;
+                            field4 = 3;
+                            break;
+                        case 14:
+                            int start8 = start3;
+                            if (this.formatData.ampmsNarrow == null || count < 5 || getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH)) {
+                                newStart = 5;
+                                int newStart5 = matchString(text, start8, 9, this.formatData.ampms, null, cal);
+                                if (newStart5 > 0) {
+                                    return newStart5;
+                                }
+                            } else {
+                                newStart = 5;
+                            }
+                            return (this.formatData.ampmsNarrow == null || (count < newStart && !getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH)) || (newStart2 = matchString(text, start8, 9, this.formatData.ampmsNarrow, null, cal)) <= 0) ? ~start8 : newStart2;
+                        case 15:
+                            int value14 = value9;
+                            if (value14 != cal.getLeastMaximum(10) + 1) {
+                                value5 = value14;
+                            } else {
+                                value5 = 0;
+                            }
+                            cal.set(10, value5);
+                            return pos.getIndex();
+                        case 17:
+                            int start9 = start3;
+                            TimeZoneFormat.Style style4 = count < 4 ? TimeZoneFormat.Style.SPECIFIC_SHORT : TimeZoneFormat.Style.SPECIFIC_LONG;
+                            TimeZone tz = tzFormat().parse(style4, text, pos, tzTimeType);
+                            if (tz != null) {
+                                cal.setTimeZone(tz);
+                                return pos.getIndex();
+                            }
+                            return ~start9;
+                        case 19:
+                            start2 = start3;
+                            i4 = 6;
+                            int value15 = value9;
+                            int field9 = field2;
+                            value4 = 4;
+                            if (count > i && (number3 == null || !getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_ALLOW_NUMERIC))) {
+                                field3 = field9;
+                                field4 = 3;
+                                break;
+                            } else {
+                                cal.set(field9, value15);
+                                return pos.getIndex();
+                            }
+                        case 23:
+                            int start10 = start3;
+                            TimeZoneFormat.Style style5 = count < 4 ? TimeZoneFormat.Style.ISO_BASIC_LOCAL_FULL : count == 5 ? TimeZoneFormat.Style.ISO_EXTENDED_FULL : TimeZoneFormat.Style.LOCALIZED_GMT;
+                            TimeZone tz2 = tzFormat().parse(style5, text, pos, tzTimeType);
+                            if (tz2 != null) {
+                                cal.setTimeZone(tz2);
+                                return pos.getIndex();
+                            }
+                            return ~start10;
+                        case 24:
+                            int start11 = start3;
+                            TimeZoneFormat.Style style6 = count < 4 ? TimeZoneFormat.Style.GENERIC_SHORT : TimeZoneFormat.Style.GENERIC_LONG;
+                            TimeZone tz3 = tzFormat().parse(style6, text, pos, tzTimeType);
+                            if (tz3 != null) {
+                                cal.setTimeZone(tz3);
+                                return pos.getIndex();
+                            }
+                            return ~start11;
+                        case 25:
+                            int value16 = value9;
+                            int start12 = start3;
+                            if (count == 1 || (number3 != null && getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_ALLOW_NUMERIC))) {
+                                cal.set(field2, value16);
+                                return pos.getIndex();
+                            }
+                            int newStart6 = 0;
+                            if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 4) {
+                                int matchString2 = matchString(text, start12, 7, this.formatData.standaloneWeekdays, null, cal);
+                                newStart6 = matchString2;
+                                if (matchString2 > 0) {
+                                    return newStart6;
+                                }
+                            }
+                            if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 3) {
+                                int matchString3 = matchString(text, start12, 7, this.formatData.standaloneShortWeekdays, null, cal);
+                                newStart6 = matchString3;
+                                if (matchString3 > 0) {
+                                    return newStart6;
+                                }
+                            }
+                            if ((getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 6) && this.formatData.standaloneShorterWeekdays != null) {
+                                return matchString(text, start12, 7, this.formatData.standaloneShorterWeekdays, null, cal);
+                            }
+                            return newStart6;
+                        case 27:
+                            int value17 = value9;
+                            int start13 = start3;
+                            if (count > i) {
+                                if (number3 == null || !getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_ALLOW_NUMERIC)) {
+                                    int newStart7 = 0;
+                                    if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 4) {
+                                        int matchQuarterString = matchQuarterString(text, start13, 2, this.formatData.quarters, cal);
+                                        newStart7 = matchQuarterString;
+                                        if (matchQuarterString > 0) {
+                                            return newStart7;
+                                        }
+                                    }
+                                    if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 3) {
+                                        return matchQuarterString(text, start13, 2, this.formatData.shortQuarters, cal);
+                                    }
+                                    return newStart7;
+                                }
+                                value6 = value17;
+                            } else {
+                                value6 = value17;
+                            }
+                            cal.set(i, (value6 - 1) * 3);
+                            return pos.getIndex();
+                        case 28:
+                            int value18 = value9;
+                            int start14 = start3;
+                            if (count > i) {
+                                if (number3 == null || !getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_ALLOW_NUMERIC)) {
+                                    int newStart8 = 0;
+                                    if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 4) {
+                                        int matchQuarterString2 = matchQuarterString(text, start14, 2, this.formatData.standaloneQuarters, cal);
+                                        newStart8 = matchQuarterString2;
+                                        if (matchQuarterString2 > 0) {
+                                            return newStart8;
+                                        }
+                                    }
+                                    if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 3) {
+                                        return matchQuarterString(text, start14, 2, this.formatData.standaloneShortQuarters, cal);
+                                    }
+                                    return newStart8;
+                                }
+                                value7 = value18;
+                            } else {
+                                value7 = value18;
+                            }
+                            cal.set(i, (value7 - 1) * 3);
+                            return pos.getIndex();
+                        case 29:
+                            int start15 = start3;
+                            switch (count) {
+                                case 1:
+                                    style = TimeZoneFormat.Style.ZONE_ID_SHORT;
+                                    break;
+                                case 2:
+                                    style = TimeZoneFormat.Style.ZONE_ID;
+                                    break;
+                                case 3:
+                                    style = TimeZoneFormat.Style.EXEMPLAR_LOCATION;
+                                    break;
+                                default:
+                                    style = TimeZoneFormat.Style.GENERIC_LOCATION;
+                                    break;
+                            }
+                            TimeZone tz4 = tzFormat().parse(style, text, pos, tzTimeType);
+                            if (tz4 != null) {
+                                cal.setTimeZone(tz4);
+                                return pos.getIndex();
+                            }
+                            return ~start15;
+                        case 30:
+                            int value19 = value9;
+                            int start16 = start3;
+                            if (this.formatData.shortYearNames != null && (newStart3 = matchString(text, start16, 1, this.formatData.shortYearNames, null, cal)) > 0) {
+                                return newStart3;
+                            }
+                            if (number3 != null) {
+                                if (!getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_ALLOW_NUMERIC) && this.formatData.shortYearNames != null) {
+                                    value8 = value19;
+                                    break;
+                                } else {
+                                    value8 = value19;
+                                }
+                                cal.set(1, value8);
+                                return pos.getIndex();
+                            }
+                            return ~start16;
+                        case 31:
+                            int start17 = start3;
+                            TimeZoneFormat.Style style7 = count < 4 ? TimeZoneFormat.Style.LOCALIZED_GMT_SHORT : TimeZoneFormat.Style.LOCALIZED_GMT;
+                            TimeZone tz5 = tzFormat().parse(style7, text, pos, tzTimeType);
+                            if (tz5 != null) {
+                                cal.setTimeZone(tz5);
+                                return pos.getIndex();
+                            }
+                            return ~start17;
+                        case 32:
+                            int start18 = start3;
+                            switch (count) {
+                                case 1:
+                                    style2 = TimeZoneFormat.Style.ISO_BASIC_SHORT;
+                                    break;
+                                case 2:
+                                    style2 = TimeZoneFormat.Style.ISO_BASIC_FIXED;
+                                    break;
+                                case 3:
+                                    style2 = TimeZoneFormat.Style.ISO_EXTENDED_FIXED;
+                                    break;
+                                case 4:
+                                    style2 = TimeZoneFormat.Style.ISO_BASIC_FULL;
+                                    break;
+                                default:
+                                    style2 = TimeZoneFormat.Style.ISO_EXTENDED_FULL;
+                                    break;
+                            }
+                            TimeZone tz6 = tzFormat().parse(style2, text, pos, tzTimeType);
+                            if (tz6 != null) {
+                                cal.setTimeZone(tz6);
+                                return pos.getIndex();
+                            }
+                            return ~start18;
+                        case 33:
+                            int start19 = start3;
+                            switch (count) {
+                                case 1:
+                                    style3 = TimeZoneFormat.Style.ISO_BASIC_LOCAL_SHORT;
+                                    break;
+                                case 2:
+                                    style3 = TimeZoneFormat.Style.ISO_BASIC_LOCAL_FIXED;
+                                    break;
+                                case 3:
+                                    style3 = TimeZoneFormat.Style.ISO_EXTENDED_LOCAL_FIXED;
+                                    break;
+                                case 4:
+                                    style3 = TimeZoneFormat.Style.ISO_BASIC_LOCAL_FULL;
+                                    break;
+                                default:
+                                    style3 = TimeZoneFormat.Style.ISO_EXTENDED_LOCAL_FULL;
+                                    break;
+                            }
+                            TimeZone tz7 = tzFormat().parse(style3, text, pos, tzTimeType);
+                            if (tz7 != null) {
+                                cal.setTimeZone(tz7);
+                                return pos.getIndex();
+                            }
+                            return ~start19;
+                        case 35:
+                            int start20 = start3;
+                            int ampmStart = subParse(text, start3, 'a', count, obeyCount, allowNegative, ambiguousYear, cal, numericLeapMonthFormatter, tzTimeType, dayPeriod);
+                            if (ampmStart > 0) {
+                                return ampmStart;
+                            }
+                            int newStart9 = 0;
+                            if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 3) {
+                                int matchDayPeriodString = matchDayPeriodString(text, start20, this.formatData.abbreviatedDayPeriods, 2, dayPeriod);
+                                newStart9 = matchDayPeriodString;
+                                if (matchDayPeriodString > 0) {
+                                    return newStart9;
+                                }
+                            }
+                            if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 4) {
+                                int matchDayPeriodString2 = matchDayPeriodString(text, start20, this.formatData.wideDayPeriods, 2, dayPeriod);
+                                newStart9 = matchDayPeriodString2;
+                                if (matchDayPeriodString2 > 0) {
+                                    return newStart9;
+                                }
+                            }
+                            if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 4) {
+                                int matchDayPeriodString3 = matchDayPeriodString(text, start20, this.formatData.narrowDayPeriods, 2, dayPeriod);
+                                newStart9 = matchDayPeriodString3;
+                                if (matchDayPeriodString3 > 0) {
+                                    return newStart9;
+                                }
+                            }
+                            return newStart9;
+                        case 36:
+                            int newStart10 = 0;
+                            if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 3) {
+                                int matchDayPeriodString4 = matchDayPeriodString(text, start3, this.formatData.abbreviatedDayPeriods, this.formatData.abbreviatedDayPeriods.length, dayPeriod);
+                                newStart10 = matchDayPeriodString4;
+                                if (matchDayPeriodString4 > 0) {
+                                    return newStart10;
+                                }
+                            }
+                            if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 4) {
+                                int matchDayPeriodString5 = matchDayPeriodString(text, start3, this.formatData.wideDayPeriods, this.formatData.wideDayPeriods.length, dayPeriod);
+                                newStart10 = matchDayPeriodString5;
+                                if (matchDayPeriodString5 > 0) {
+                                    return newStart10;
+                                }
+                            }
+                            if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 4) {
+                                int matchDayPeriodString6 = matchDayPeriodString(text, start3, this.formatData.narrowDayPeriods, this.formatData.narrowDayPeriods.length, dayPeriod);
+                                newStart10 = matchDayPeriodString6;
+                                if (matchDayPeriodString6 > 0) {
+                                    return newStart10;
+                                }
+                            }
+                            return newStart10;
+                        case 37:
+                            ArrayList<String> data = new ArrayList<>(3);
+                            data.add(this.formatData.getTimeSeparatorString());
+                            if (!this.formatData.getTimeSeparatorString().equals(":")) {
+                                data.add(":");
+                            }
+                            if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_PARTIAL_LITERAL_MATCH) && !this.formatData.getTimeSeparatorString().equals(".")) {
+                                data.add(".");
+                            }
+                            return matchString(text, start3, -1, (String[]) data.toArray(new String[0]), cal);
+                    }
+                    int newStart11 = 0;
+                    if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == value4) {
+                        field5 = field4;
+                        i5 = i4;
+                        int matchString4 = matchString(text, start2, 7, this.formatData.weekdays, null, cal);
+                        newStart11 = matchString4;
+                        if (matchString4 > 0) {
+                            return newStart11;
+                        }
+                    } else {
+                        i5 = i4;
+                        field5 = field4;
+                    }
+                    if (getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == field5) {
+                        int matchString5 = matchString(text, start2, 7, this.formatData.shortWeekdays, null, cal);
+                        newStart11 = matchString5;
+                        if (matchString5 > 0) {
+                            return newStart11;
+                        }
+                    }
+                    if ((getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == i5) && this.formatData.shorterWeekdays != null) {
+                        int matchString6 = matchString(text, start2, 7, this.formatData.shorterWeekdays, null, cal);
+                        newStart11 = matchString6;
+                        if (matchString6 > 0) {
+                            return newStart11;
+                        }
+                    }
+                    if ((getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH) || count == 5) && this.formatData.narrowWeekdays != null) {
+                        int matchString7 = matchString(text, start2, 7, this.formatData.narrowWeekdays, null, cal);
+                        newStart11 = matchString7;
+                        if (matchString7 > 0) {
+                            return newStart11;
+                        }
+                    }
+                    return newStart11;
                 }
             }
+            return ~start3;
         }
-        if (bestMatch < 0) {
-            return -start;
-        }
-        dayPeriod.value = DayPeriodRules.DayPeriod.VALUES[bestMatch];
-        return start + bestMatchLength;
-    }
-
-    /* access modifiers changed from: protected */
-    public int subParse(String text, int start, char ch, int count, boolean obeyCount, boolean allowNegative, boolean[] ambiguousYear, Calendar cal) {
-        return subParse(text, start, ch, count, obeyCount, allowNegative, ambiguousYear, cal, (MessageFormat) null, (Output<TimeZoneFormat.TimeType>) null);
-    }
-
-    private int subParse(String text, int start, char ch, int count, boolean obeyCount, boolean allowNegative, boolean[] ambiguousYear, Calendar cal, MessageFormat numericLeapMonthFormatter, Output<TimeZoneFormat.TimeType> output) {
-        return subParse(text, start, ch, count, obeyCount, allowNegative, ambiguousYear, cal, (MessageFormat) null, (Output<TimeZoneFormat.TimeType>) null, (Output<DayPeriodRules.DayPeriod>) null);
-    }
-
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r11v1, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v1, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v10, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v14, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v17, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v20, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r6v22, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r5v18, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r4v11, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r8v10, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r11v25, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v38, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r11v26, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v39, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r11v27, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v40, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r11v28, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v41, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v42, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r11v30, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v93, resolved type: java.lang.Object[]} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v293, resolved type: java.lang.Number} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v43, resolved type: int} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r11v31, resolved type: int} */
-    /* JADX WARNING: Code restructure failed: missing block: B:194:0x038b, code lost:
-        if (r5 > r12.formatData.shortYearNames.length) goto L_0x0390;
-     */
-    /* JADX WARNING: Multi-variable type inference failed */
-    /* JADX WARNING: Removed duplicated region for block: B:69:0x0103  */
-    /* JADX WARNING: Removed duplicated region for block: B:81:0x013d  */
-    /* JADX WARNING: Removed duplicated region for block: B:83:0x0146  */
-    /* JADX WARNING: Removed duplicated region for block: B:84:0x014d  */
-    @java.lang.Deprecated
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private int subParse(java.lang.String r34, int r35, char r36, int r37, boolean r38, boolean r39, boolean[] r40, com.ibm.icu.util.Calendar r41, com.ibm.icu.text.MessageFormat r42, com.ibm.icu.util.Output<com.ibm.icu.text.TimeZoneFormat.TimeType> r43, com.ibm.icu.util.Output<com.ibm.icu.impl.DayPeriodRules.DayPeriod> r44) {
-        /*
-            r33 = this;
-            r12 = r33
-            r13 = r34
-            r14 = r37
-            r15 = r39
-            r11 = r41
-            r10 = r42
-            r9 = r43
-            r0 = 0
-            r1 = 0
-            r6 = 0
-            java.text.ParsePosition r2 = new java.text.ParsePosition
-            r7 = 0
-            r2.<init>(r7)
-            r8 = r2
-            int r5 = getIndexFromChar(r36)
-            r2 = -1
-            if (r5 != r2) goto L_0x0023
-            r2 = r35
-            int r3 = ~r2
-            return r3
-        L_0x0023:
-            r2 = r35
-            r4 = r36
-            com.ibm.icu.text.NumberFormat r3 = r12.getNumberFormat(r4)
-            int[] r1 = PATTERN_INDEX_TO_CALENDAR_FIELD
-            r1 = r1[r5]
-            if (r10 == 0) goto L_0x0034
-            r10.setFormatByArgumentIndex(r7, r3)
-        L_0x0034:
-            java.lang.String r7 = r41.getType()
-            r17 = r0
-            java.lang.String r0 = "chinese"
-            boolean r0 = r7.equals(r0)
-            if (r0 != 0) goto L_0x0051
-            java.lang.String r0 = r41.getType()
-            java.lang.String r7 = "dangi"
-            boolean r0 = r0.equals(r7)
-            if (r0 == 0) goto L_0x004f
-            goto L_0x0051
-        L_0x004f:
-            r0 = 0
-            goto L_0x0052
-        L_0x0051:
-            r0 = 1
-        L_0x0052:
-            r19 = r0
-            r7 = r2
-        L_0x0055:
-            int r0 = r34.length()
-            if (r7 < r0) goto L_0x005d
-            int r0 = ~r7
-            return r0
-        L_0x005d:
-            int r0 = com.ibm.icu.text.UTF16.charAt((java.lang.String) r13, (int) r7)
-            boolean r2 = com.ibm.icu.lang.UCharacter.isUWhiteSpace(r0)
-            if (r2 == 0) goto L_0x0074
-            boolean r2 = com.ibm.icu.impl.PatternProps.isWhiteSpace(r0)
-            if (r2 != 0) goto L_0x006e
-            goto L_0x0074
-        L_0x006e:
-            int r2 = com.ibm.icu.text.UTF16.getCharCount(r0)
-            int r7 = r7 + r2
-            goto L_0x0055
-        L_0x0074:
-            r8.setIndex(r7)
-            r2 = 2
-            r0 = 4
-            if (r5 == r0) goto L_0x00b2
-            r0 = 15
-            if (r5 == r0) goto L_0x00b2
-            if (r5 != r2) goto L_0x0083
-            if (r14 <= r2) goto L_0x00b2
-        L_0x0083:
-            r0 = 26
-            if (r5 == r0) goto L_0x00b2
-            r0 = 19
-            if (r5 == r0) goto L_0x00b2
-            r0 = 25
-            if (r5 == r0) goto L_0x00b2
-            r0 = 1
-            if (r5 == r0) goto L_0x00b2
-            r0 = 18
-            if (r5 == r0) goto L_0x00b2
-            r0 = 30
-            if (r5 == r0) goto L_0x00b2
-            if (r5 != 0) goto L_0x009e
-            if (r19 != 0) goto L_0x00b2
-        L_0x009e:
-            r0 = 27
-            if (r5 == r0) goto L_0x00b2
-            r0 = 28
-            if (r5 == r0) goto L_0x00b2
-            r0 = 8
-            if (r5 != r0) goto L_0x00ab
-            goto L_0x00b2
-        L_0x00ab:
-            r25 = r1
-            r9 = r2
-            r11 = r5
-            r5 = r3
-            goto L_0x014f
-        L_0x00b2:
-            r0 = 0
-            if (r10 == 0) goto L_0x00fb
-            if (r5 == r2) goto L_0x00c1
-            r2 = 26
-            if (r5 != r2) goto L_0x00bc
-            goto L_0x00c1
-        L_0x00bc:
-            r35 = r0
-            r23 = r1
-            goto L_0x00ff
-        L_0x00c1:
-            java.lang.Object[] r2 = r10.parse(r13, r8)
-            r35 = r0
-            if (r2 == 0) goto L_0x00ef
-            int r0 = r8.getIndex()
-            if (r0 <= r7) goto L_0x00ef
-            r23 = r1
-            r0 = 0
-            r1 = r2[r0]
-            boolean r1 = r1 instanceof java.lang.Number
-            if (r1 == 0) goto L_0x00ec
-            r1 = 1
-            r24 = r2[r0]
-            r0 = r24
-            java.lang.Number r0 = (java.lang.Number) r0
-            r35 = r0
-            r22 = r1
-            r0 = 22
-            r1 = 1
-            r11.set(r0, r1)
-            r17 = r35
-            goto L_0x0101
-        L_0x00ec:
-            r0 = 22
-            goto L_0x00f3
-        L_0x00ef:
-            r23 = r1
-            r0 = 22
-        L_0x00f3:
-            r8.setIndex(r7)
-            r1 = 0
-            r11.set(r0, r1)
-            goto L_0x00ff
-        L_0x00fb:
-            r35 = r0
-            r23 = r1
-        L_0x00ff:
-            r22 = r35
-        L_0x0101:
-            if (r22 != 0) goto L_0x013d
-            if (r38 == 0) goto L_0x0127
-            int r0 = r7 + r14
-            int r1 = r34.length()
-            if (r0 <= r1) goto L_0x010f
-            int r0 = ~r7
-            return r0
-        L_0x010f:
-            r2 = 4
-            r0 = r33
-            r25 = r23
-            r1 = r34
-            r11 = r2
-            r9 = 2
-            r2 = r37
-            r35 = r3
-            r3 = r8
-            r4 = r39
-            r11 = r5
-            r5 = r35
-            java.lang.Number r0 = r0.parseInt(r1, r2, r3, r4, r5)
-            goto L_0x0133
-        L_0x0127:
-            r35 = r3
-            r11 = r5
-            r25 = r23
-            r9 = 2
-            r5 = r35
-            java.lang.Number r0 = r12.parseInt(r13, r8, r15, r5)
-        L_0x0133:
-            if (r0 != 0) goto L_0x0144
-            boolean r1 = r12.allowNumericFallback(r11)
-            if (r1 != 0) goto L_0x0144
-            int r1 = ~r7
-            return r1
-        L_0x013d:
-            r11 = r5
-            r25 = r23
-            r9 = 2
-            r5 = r3
-            r0 = r17
-        L_0x0144:
-            if (r0 == 0) goto L_0x014d
-            int r6 = r0.intValue()
-            r17 = r0
-            goto L_0x014f
-        L_0x014d:
-            r17 = r0
-        L_0x014f:
-            r4 = 6
-            r3 = 5
-            r2 = 3
-            switch(r11) {
-                case 0: goto L_0x090f;
-                case 1: goto L_0x089d;
-                case 2: goto L_0x076f;
-                case 3: goto L_0x0155;
-                case 4: goto L_0x074f;
-                case 5: goto L_0x0155;
-                case 6: goto L_0x0155;
-                case 7: goto L_0x0155;
-                case 8: goto L_0x0719;
-                case 9: goto L_0x0668;
-                case 10: goto L_0x0155;
-                case 11: goto L_0x0155;
-                case 12: goto L_0x0155;
-                case 13: goto L_0x0155;
-                case 14: goto L_0x05f6;
-                case 15: goto L_0x05d4;
-                case 16: goto L_0x0155;
-                case 17: goto L_0x05ab;
-                case 18: goto L_0x089d;
-                case 19: goto L_0x057f;
-                case 20: goto L_0x0155;
-                case 21: goto L_0x0155;
-                case 22: goto L_0x0155;
-                case 23: goto L_0x0551;
-                case 24: goto L_0x0528;
-                case 25: goto L_0x049a;
-                case 26: goto L_0x076f;
-                case 27: goto L_0x0433;
-                case 28: goto L_0x03cc;
-                case 29: goto L_0x039d;
-                case 30: goto L_0x034e;
-                case 31: goto L_0x0326;
-                case 32: goto L_0x02f4;
-                case 33: goto L_0x02ba;
-                case 34: goto L_0x0155;
-                case 35: goto L_0x022c;
-                case 36: goto L_0x01c0;
-                case 37: goto L_0x016e;
-                default: goto L_0x0155;
-            }
-        L_0x0155:
-            r35 = r5
-            r18 = r6
-            r15 = r7
-            r10 = r8
-            r9 = r11
-            r8 = r25
-            r11 = r41
-            r7 = r43
-            if (r38 == 0) goto L_0x0982
-            int r0 = r15 + r14
-            int r1 = r34.length()
-            if (r0 <= r1) goto L_0x096c
-            int r0 = -r15
-            return r0
-        L_0x016e:
-            java.util.ArrayList r0 = new java.util.ArrayList
-            r0.<init>(r2)
-            r9 = r0
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String r0 = r0.getTimeSeparatorString()
-            r9.add(r0)
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String r0 = r0.getTimeSeparatorString()
-            java.lang.String r1 = ":"
-            boolean r0 = r0.equals(r1)
-            if (r0 != 0) goto L_0x018e
-            r9.add(r1)
-        L_0x018e:
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_PARTIAL_LITERAL_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 == 0) goto L_0x01a7
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String r0 = r0.getTimeSeparatorString()
-            java.lang.String r1 = "."
-            boolean r0 = r0.equals(r1)
-            if (r0 != 0) goto L_0x01a7
-            r9.add(r1)
-        L_0x01a7:
-            r3 = -1
-            r0 = 0
-            java.lang.String[] r0 = new java.lang.String[r0]
-            java.lang.Object[] r0 = r9.toArray(r0)
-            r4 = r0
-            java.lang.String[] r4 = (java.lang.String[]) r4
-            r0 = r33
-            r1 = r34
-            r2 = r7
-            r35 = r5
-            r5 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5)
-            return r0
-        L_0x01c0:
-            r35 = r5
-            r9 = 0
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x01cd
-            if (r14 != r2) goto L_0x01e5
-        L_0x01cd:
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r3 = r0.abbreviatedDayPeriods
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.abbreviatedDayPeriods
-            int r4 = r0.length
-            r0 = r33
-            r1 = r34
-            r2 = r7
-            r5 = r44
-            int r0 = r0.matchDayPeriodString(r1, r2, r3, r4, r5)
-            r9 = r0
-            if (r0 <= 0) goto L_0x01e5
-            return r9
-        L_0x01e5:
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x01f0
-            r0 = 4
-            if (r14 != r0) goto L_0x0208
-        L_0x01f0:
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r3 = r0.wideDayPeriods
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.wideDayPeriods
-            int r4 = r0.length
-            r0 = r33
-            r1 = r34
-            r2 = r7
-            r5 = r44
-            int r0 = r0.matchDayPeriodString(r1, r2, r3, r4, r5)
-            r9 = r0
-            if (r0 <= 0) goto L_0x0208
-            return r9
-        L_0x0208:
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x0213
-            r5 = 4
-            if (r14 != r5) goto L_0x022b
-        L_0x0213:
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r3 = r0.narrowDayPeriods
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.narrowDayPeriods
-            int r4 = r0.length
-            r0 = r33
-            r1 = r34
-            r2 = r7
-            r5 = r44
-            int r0 = r0.matchDayPeriodString(r1, r2, r3, r4, r5)
-            r9 = r0
-            if (r0 <= 0) goto L_0x022b
-            return r9
-        L_0x022b:
-            return r9
-        L_0x022c:
-            r35 = r5
-            r5 = 4
-            r3 = 97
-            r0 = r33
-            r1 = r34
-            r9 = r2
-            r2 = r7
-            r4 = r37
-            r16 = r5
-            r5 = r38
-            r26 = r6
-            r6 = r39
-            r20 = r7
-            r7 = r40
-            r27 = r8
-            r8 = r41
-            r9 = r42
-            r10 = r43
-            r28 = r11
-            r15 = r16
-            r11 = r44
-            int r6 = r0.subParse(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11)
-            if (r6 <= 0) goto L_0x025a
-            return r6
-        L_0x025a:
-            r7 = 0
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x0266
-            r8 = 3
-            if (r14 != r8) goto L_0x027b
-        L_0x0266:
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r3 = r0.abbreviatedDayPeriods
-            r4 = 2
-            r0 = r33
-            r1 = r34
-            r2 = r20
-            r5 = r44
-            int r0 = r0.matchDayPeriodString(r1, r2, r3, r4, r5)
-            r7 = r0
-            if (r0 <= 0) goto L_0x027b
-            return r7
-        L_0x027b:
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x0285
-            if (r14 != r15) goto L_0x029a
-        L_0x0285:
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r3 = r0.wideDayPeriods
-            r4 = 2
-            r0 = r33
-            r1 = r34
-            r2 = r20
-            r5 = r44
-            int r0 = r0.matchDayPeriodString(r1, r2, r3, r4, r5)
-            r7 = r0
-            if (r0 <= 0) goto L_0x029a
-            return r7
-        L_0x029a:
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x02a4
-            if (r14 != r15) goto L_0x02b9
-        L_0x02a4:
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r3 = r0.narrowDayPeriods
-            r4 = 2
-            r0 = r33
-            r1 = r34
-            r2 = r20
-            r5 = r44
-            int r0 = r0.matchDayPeriodString(r1, r2, r3, r4, r5)
-            r7 = r0
-            if (r0 <= 0) goto L_0x02b9
-            return r7
-        L_0x02b9:
-            return r7
-        L_0x02ba:
-            r35 = r5
-            r26 = r6
-            r20 = r7
-            r27 = r8
-            r28 = r11
-            switch(r14) {
-                case 1: goto L_0x02d3;
-                case 2: goto L_0x02d0;
-                case 3: goto L_0x02cd;
-                case 4: goto L_0x02ca;
-                default: goto L_0x02c7;
-            }
-        L_0x02c7:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_EXTENDED_LOCAL_FULL
-            goto L_0x02d6
-        L_0x02ca:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_BASIC_LOCAL_FULL
-            goto L_0x02d6
-        L_0x02cd:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_EXTENDED_LOCAL_FIXED
-            goto L_0x02d6
-        L_0x02d0:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_BASIC_LOCAL_FIXED
-            goto L_0x02d6
-        L_0x02d3:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_BASIC_LOCAL_SHORT
-        L_0x02d6:
-            com.ibm.icu.text.TimeZoneFormat r1 = r33.tzFormat()
-            r7 = r43
-            r10 = r27
-            com.ibm.icu.util.TimeZone r1 = r1.parse(r0, r13, r10, r7)
-            if (r1 == 0) goto L_0x02ee
-            r11 = r41
-            r11.setTimeZone(r1)
-            int r2 = r10.getIndex()
-            return r2
-        L_0x02ee:
-            r11 = r41
-            r15 = r20
-            int r2 = ~r15
-            return r2
-        L_0x02f4:
-            r35 = r5
-            r26 = r6
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r11 = r41
-            r7 = r43
-            switch(r14) {
-                case 1: goto L_0x030f;
-                case 2: goto L_0x030c;
-                case 3: goto L_0x0309;
-                case 4: goto L_0x0306;
-                default: goto L_0x0303;
-            }
-        L_0x0303:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_EXTENDED_FULL
-            goto L_0x0312
-        L_0x0306:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_BASIC_FULL
-            goto L_0x0312
-        L_0x0309:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_EXTENDED_FIXED
-            goto L_0x0312
-        L_0x030c:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_BASIC_FIXED
-            goto L_0x0312
-        L_0x030f:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_BASIC_SHORT
-        L_0x0312:
-            com.ibm.icu.text.TimeZoneFormat r1 = r33.tzFormat()
-            com.ibm.icu.util.TimeZone r1 = r1.parse(r0, r13, r10, r7)
-            if (r1 == 0) goto L_0x0324
-            r11.setTimeZone(r1)
-            int r2 = r10.getIndex()
-            return r2
-        L_0x0324:
-            int r2 = ~r15
-            return r2
-        L_0x0326:
-            r35 = r5
-            r26 = r6
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r6 = 4
-            r11 = r41
-            r7 = r43
-            if (r14 >= r6) goto L_0x0338
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.LOCALIZED_GMT_SHORT
-            goto L_0x033a
-        L_0x0338:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.LOCALIZED_GMT
-        L_0x033a:
-            com.ibm.icu.text.TimeZoneFormat r1 = r33.tzFormat()
-            com.ibm.icu.util.TimeZone r1 = r1.parse(r0, r13, r10, r7)
-            if (r1 == 0) goto L_0x034c
-            r11.setTimeZone(r1)
-            int r2 = r10.getIndex()
-            return r2
-        L_0x034c:
-            int r2 = ~r15
-            return r2
-        L_0x034e:
-            r35 = r5
-            r26 = r6
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r11 = r41
-            r7 = r43
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.shortYearNames
-            if (r0 == 0) goto L_0x0374
-            r3 = 1
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.shortYearNames
-            r5 = 0
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            if (r0 <= 0) goto L_0x0374
-            return r0
-        L_0x0374:
-            if (r17 == 0) goto L_0x0399
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_ALLOW_NUMERIC
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x038e
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.shortYearNames
-            if (r0 == 0) goto L_0x038e
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.shortYearNames
-            int r0 = r0.length
-            r5 = r26
-            if (r5 <= r0) goto L_0x039b
-            goto L_0x0390
-        L_0x038e:
-            r5 = r26
-        L_0x0390:
-            r0 = 1
-            r11.set(r0, r5)
-            int r0 = r10.getIndex()
-            return r0
-        L_0x0399:
-            r5 = r26
-        L_0x039b:
-            int r0 = ~r15
-            return r0
-        L_0x039d:
-            r35 = r5
-            r5 = r6
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r11 = r41
-            r7 = r43
-            r0 = 0
-            switch(r14) {
-                case 1: goto L_0x03b5;
-                case 2: goto L_0x03b2;
-                case 3: goto L_0x03af;
-                default: goto L_0x03ac;
-            }
-        L_0x03ac:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.GENERIC_LOCATION
-            goto L_0x03b8
-        L_0x03af:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.EXEMPLAR_LOCATION
-            goto L_0x03b8
-        L_0x03b2:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.ZONE_ID
-            goto L_0x03b8
-        L_0x03b5:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.ZONE_ID_SHORT
-        L_0x03b8:
-            com.ibm.icu.text.TimeZoneFormat r1 = r33.tzFormat()
-            com.ibm.icu.util.TimeZone r1 = r1.parse(r0, r13, r10, r7)
-            if (r1 == 0) goto L_0x03ca
-            r11.setTimeZone(r1)
-            int r2 = r10.getIndex()
-            return r2
-        L_0x03ca:
-            int r2 = ~r15
-            return r2
-        L_0x03cc:
-            r35 = r5
-            r5 = r6
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r6 = 4
-            r11 = r41
-            r7 = r43
-            r8 = r2
-            if (r14 <= r9) goto L_0x0427
-            if (r17 == 0) goto L_0x03e7
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_ALLOW_NUMERIC
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 == 0) goto L_0x03e7
-            r6 = r5
-            goto L_0x0428
-        L_0x03e7:
-            r9 = 0
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x03f5
-            if (r14 != r6) goto L_0x03f3
-            goto L_0x03f5
-        L_0x03f3:
-            r6 = r5
-            goto L_0x040a
-        L_0x03f5:
-            r3 = 2
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.standaloneQuarters
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r6 = r5
-            r5 = r41
-            int r0 = r0.matchQuarterString(r1, r2, r3, r4, r5)
-            r9 = r0
-            if (r0 <= 0) goto L_0x040a
-            return r9
-        L_0x040a:
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x0416
-            if (r14 != r8) goto L_0x0415
-            goto L_0x0416
-        L_0x0415:
-            return r9
-        L_0x0416:
-            r3 = 2
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.standaloneShortQuarters
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r5 = r41
-            int r0 = r0.matchQuarterString(r1, r2, r3, r4, r5)
-            return r0
-        L_0x0427:
-            r6 = r5
-        L_0x0428:
-            int r0 = r6 + -1
-            int r0 = r0 * r8
-            r11.set(r9, r0)
-            int r0 = r10.getIndex()
-            return r0
-        L_0x0433:
-            r35 = r5
-            r5 = r6
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r6 = 4
-            r11 = r41
-            r7 = r43
-            r8 = r2
-            if (r14 <= r9) goto L_0x048e
-            if (r17 == 0) goto L_0x044e
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_ALLOW_NUMERIC
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 == 0) goto L_0x044e
-            r6 = r5
-            goto L_0x048f
-        L_0x044e:
-            r9 = 0
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x045c
-            if (r14 != r6) goto L_0x045a
-            goto L_0x045c
-        L_0x045a:
-            r6 = r5
-            goto L_0x0471
-        L_0x045c:
-            r3 = 2
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.quarters
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r6 = r5
-            r5 = r41
-            int r0 = r0.matchQuarterString(r1, r2, r3, r4, r5)
-            r9 = r0
-            if (r0 <= 0) goto L_0x0471
-            return r9
-        L_0x0471:
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x047d
-            if (r14 != r8) goto L_0x047c
-            goto L_0x047d
-        L_0x047c:
-            return r9
-        L_0x047d:
-            r3 = 2
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.shortQuarters
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r5 = r41
-            int r0 = r0.matchQuarterString(r1, r2, r3, r4, r5)
-            return r0
-        L_0x048e:
-            r6 = r5
-        L_0x048f:
-            int r0 = r6 + -1
-            int r0 = r0 * r8
-            r11.set(r9, r0)
-            int r0 = r10.getIndex()
-            return r0
-        L_0x049a:
-            r35 = r5
-            r9 = r6
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r6 = 4
-            r11 = r41
-            r7 = r43
-            r8 = r2
-            r0 = 1
-            if (r14 == r0) goto L_0x051e
-            if (r17 == 0) goto L_0x04b6
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_ALLOW_NUMERIC
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 == 0) goto L_0x04b6
-            goto L_0x051e
-        L_0x04b6:
-            r16 = 0
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x04c2
-            if (r14 != r6) goto L_0x04da
-        L_0x04c2:
-            r3 = 7
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r5 = r0.standaloneWeekdays
-            r6 = 0
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r4 = r5
-            r5 = r6
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            r16 = r0
-            if (r0 <= 0) goto L_0x04da
-            return r16
-        L_0x04da:
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x04e4
-            if (r14 != r8) goto L_0x04fa
-        L_0x04e4:
-            r3 = 7
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.standaloneShortWeekdays
-            r5 = 0
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            r16 = r0
-            if (r0 <= 0) goto L_0x04fa
-            return r16
-        L_0x04fa:
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x0505
-            r5 = 6
-            if (r14 != r5) goto L_0x051d
-        L_0x0505:
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.standaloneShorterWeekdays
-            if (r0 == 0) goto L_0x051d
-            r3 = 7
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.standaloneShorterWeekdays
-            r5 = 0
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            return r0
-        L_0x051d:
-            return r16
-        L_0x051e:
-            r4 = r25
-            r11.set(r4, r9)
-            int r0 = r10.getIndex()
-            return r0
-        L_0x0528:
-            r35 = r5
-            r9 = r6
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r4 = r25
-            r6 = 4
-            r11 = r41
-            r7 = r43
-            if (r14 >= r6) goto L_0x053b
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.GENERIC_SHORT
-            goto L_0x053d
-        L_0x053b:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.GENERIC_LONG
-        L_0x053d:
-            com.ibm.icu.text.TimeZoneFormat r1 = r33.tzFormat()
-            com.ibm.icu.util.TimeZone r1 = r1.parse(r0, r13, r10, r7)
-            if (r1 == 0) goto L_0x054f
-            r11.setTimeZone(r1)
-            int r2 = r10.getIndex()
-            return r2
-        L_0x054f:
-            int r2 = ~r15
-            return r2
-        L_0x0551:
-            r35 = r5
-            r9 = r6
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r4 = r25
-            r6 = 4
-            r11 = r41
-            r7 = r43
-            if (r14 >= r6) goto L_0x0564
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_BASIC_LOCAL_FULL
-            goto L_0x056b
-        L_0x0564:
-            if (r14 != r3) goto L_0x0569
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.ISO_EXTENDED_FULL
-            goto L_0x056b
-        L_0x0569:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.LOCALIZED_GMT
-        L_0x056b:
-            com.ibm.icu.text.TimeZoneFormat r1 = r33.tzFormat()
-            com.ibm.icu.util.TimeZone r1 = r1.parse(r0, r13, r10, r7)
-            if (r1 == 0) goto L_0x057d
-            r11.setTimeZone(r1)
-            int r2 = r10.getIndex()
-            return r2
-        L_0x057d:
-            int r2 = ~r15
-            return r2
-        L_0x057f:
-            r35 = r5
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r11 = r41
-            r7 = r43
-            r8 = r2
-            r5 = r4
-            r2 = r6
-            r4 = r25
-            r6 = 4
-            if (r14 <= r9) goto L_0x05a3
-            if (r17 == 0) goto L_0x059c
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_ALLOW_NUMERIC
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 == 0) goto L_0x059c
-            goto L_0x05a3
-        L_0x059c:
-            r29 = r2
-            r9 = r4
-            r4 = r8
-            r8 = r3
-            goto L_0x067a
-        L_0x05a3:
-            r11.set(r4, r2)
-            int r0 = r10.getIndex()
-            return r0
-        L_0x05ab:
-            r35 = r5
-            r2 = r6
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r4 = r25
-            r6 = 4
-            r11 = r41
-            r7 = r43
-            if (r14 >= r6) goto L_0x05be
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.SPECIFIC_SHORT
-            goto L_0x05c0
-        L_0x05be:
-            com.ibm.icu.text.TimeZoneFormat$Style r0 = com.ibm.icu.text.TimeZoneFormat.Style.SPECIFIC_LONG
-        L_0x05c0:
-            com.ibm.icu.text.TimeZoneFormat r1 = r33.tzFormat()
-            com.ibm.icu.util.TimeZone r1 = r1.parse(r0, r13, r10, r7)
-            if (r1 == 0) goto L_0x05d2
-            r11.setTimeZone(r1)
-            int r3 = r10.getIndex()
-            return r3
-        L_0x05d2:
-            int r3 = ~r15
-            return r3
-        L_0x05d4:
-            r35 = r5
-            r2 = r6
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r4 = r25
-            r11 = r41
-            r7 = r43
-            r0 = 10
-            int r1 = r11.getLeastMaximum(r0)
-            r3 = 1
-            int r1 = r1 + r3
-            if (r2 != r1) goto L_0x05ed
-            r6 = 0
-            goto L_0x05ee
-        L_0x05ed:
-            r6 = r2
-        L_0x05ee:
-            r11.set(r0, r6)
-            int r0 = r10.getIndex()
-            return r0
-        L_0x05f6:
-            r35 = r5
-            r2 = r6
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r4 = r25
-            r11 = r41
-            r7 = r43
-            r8 = 0
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.ampmsNarrow
-            if (r0 == 0) goto L_0x061c
-            if (r14 < r3) goto L_0x061c
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 == 0) goto L_0x0615
-            goto L_0x061c
-        L_0x0615:
-            r29 = r2
-            r9 = r4
-            r16 = r8
-            r8 = r3
-            goto L_0x063f
-        L_0x061c:
-            r5 = 9
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r6 = r0.ampms
-            r9 = 0
-            r0 = r33
-            r1 = r34
-            r29 = r2
-            r2 = r15
-            r16 = r8
-            r8 = r3
-            r3 = r5
-            r5 = r4
-            r4 = r6
-            r6 = r5
-            r5 = r9
-            r9 = r6
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            r1 = r0
-            if (r0 <= 0) goto L_0x063d
-            return r1
-        L_0x063d:
-            r16 = r1
-        L_0x063f:
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.ampmsNarrow
-            if (r0 == 0) goto L_0x0666
-            if (r14 >= r8) goto L_0x064f
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 == 0) goto L_0x0666
-        L_0x064f:
-            r3 = 9
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.ampmsNarrow
-            r5 = 0
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            r16 = r0
-            if (r0 <= 0) goto L_0x0666
-            return r16
-        L_0x0666:
-            int r0 = ~r15
-            return r0
-        L_0x0668:
-            r35 = r5
-            r29 = r6
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r9 = r25
-            r6 = 4
-            r11 = r41
-            r7 = r43
-            r8 = r3
-            r5 = r4
-            r4 = r2
-        L_0x067a:
-            r16 = 0
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x068c
-            if (r14 != r6) goto L_0x0687
-            goto L_0x068c
-        L_0x0687:
-            r8 = r5
-            r25 = r9
-            r9 = r4
-            goto L_0x06ab
-        L_0x068c:
-            r3 = 7
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r6 = r0.weekdays
-            r18 = 0
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r25 = r9
-            r9 = r4
-            r4 = r6
-            r6 = r5
-            r5 = r18
-            r8 = r6
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            r16 = r0
-            if (r0 <= 0) goto L_0x06ab
-            return r16
-        L_0x06ab:
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x06b5
-            if (r14 != r9) goto L_0x06cb
-        L_0x06b5:
-            r3 = 7
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.shortWeekdays
-            r5 = 0
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            r16 = r0
-            if (r0 <= 0) goto L_0x06cb
-            return r16
-        L_0x06cb:
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x06d5
-            if (r14 != r8) goto L_0x06f1
-        L_0x06d5:
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.shorterWeekdays
-            if (r0 == 0) goto L_0x06f1
-            r3 = 7
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.shorterWeekdays
-            r5 = 0
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            r16 = r0
-            if (r0 <= 0) goto L_0x06f1
-            return r16
-        L_0x06f1:
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x06fc
-            r0 = 5
-            if (r14 != r0) goto L_0x0718
-        L_0x06fc:
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.narrowWeekdays
-            if (r0 == 0) goto L_0x0718
-            r3 = 7
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.narrowWeekdays
-            r5 = 0
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            r16 = r0
-            if (r0 <= 0) goto L_0x0718
-            return r16
-        L_0x0718:
-            return r16
-        L_0x0719:
-            r9 = r2
-            r35 = r5
-            r29 = r6
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r11 = r41
-            r7 = r43
-            int r0 = r10.getIndex()
-            int r0 = countDigits(r13, r15, r0)
-            if (r0 >= r9) goto L_0x0739
-            r6 = r29
-        L_0x0732:
-            if (r0 >= r9) goto L_0x0745
-            int r6 = r6 * 10
-            int r0 = r0 + 1
-            goto L_0x0732
-        L_0x0739:
-            r1 = 1
-        L_0x073a:
-            if (r0 <= r9) goto L_0x0741
-            int r1 = r1 * 10
-            int r0 = r0 + -1
-            goto L_0x073a
-        L_0x0741:
-            r5 = r29
-            int r6 = r5 / r1
-        L_0x0745:
-            r1 = 14
-            r11.set(r1, r6)
-            int r1 = r10.getIndex()
-            return r1
-        L_0x074f:
-            r35 = r5
-            r5 = r6
-            r15 = r7
-            r10 = r8
-            r28 = r11
-            r11 = r41
-            r7 = r43
-            r0 = 11
-            int r1 = r11.getMaximum(r0)
-            r2 = 1
-            int r1 = r1 + r2
-            if (r5 != r1) goto L_0x0766
-            r6 = 0
-            goto L_0x0767
-        L_0x0766:
-            r6 = r5
-        L_0x0767:
-            r11.set(r0, r6)
-            int r0 = r10.getIndex()
-            return r0
-        L_0x076f:
-            r35 = r5
-            r5 = r6
-            r15 = r7
-            r10 = r8
-            r3 = r9
-            r28 = r11
-            r6 = 4
-            r11 = r41
-            r7 = r43
-            r9 = r2
-            r8 = r4
-            r4 = r25
-            if (r14 <= r3) goto L_0x0865
-            if (r17 == 0) goto L_0x0795
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_ALLOW_NUMERIC
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 == 0) goto L_0x0795
-            r0 = r3
-            r31 = r4
-            r32 = r5
-            r9 = r28
-            goto L_0x086c
-        L_0x0795:
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.leapMonthPatterns
-            if (r0 == 0) goto L_0x07a5
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.leapMonthPatterns
-            int r0 = r0.length
-            r1 = 7
-            if (r0 < r1) goto L_0x07a5
-            r0 = 1
-            goto L_0x07a6
-        L_0x07a5:
-            r0 = 0
-        L_0x07a6:
-            r8 = r0
-            r20 = 0
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            r21 = 0
-            if (r0 != 0) goto L_0x07be
-            if (r14 != r6) goto L_0x07b6
-            goto L_0x07be
-        L_0x07b6:
-            r31 = r4
-            r32 = r5
-            r30 = r28
-            goto L_0x0818
-        L_0x07be:
-            r2 = r28
-            if (r2 != r3) goto L_0x07f1
-            r22 = 2
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r1 = r0.months
-            if (r8 == 0) goto L_0x07d5
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.leapMonthPatterns
-            r16 = 0
-            r0 = r0[r16]
-            r16 = r0
-            goto L_0x07d7
-        L_0x07d5:
-            r16 = r21
-        L_0x07d7:
-            r0 = r33
-            r23 = r1
-            r1 = r34
-            r30 = r2
-            r2 = r15
-            r3 = r22
-            r31 = r4
-            r4 = r23
-            r32 = r5
-            r5 = r16
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            goto L_0x0813
-        L_0x07f1:
-            r30 = r2
-            r31 = r4
-            r32 = r5
-            r3 = 2
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.standaloneMonths
-            if (r8 == 0) goto L_0x0806
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.leapMonthPatterns
-            r0 = r0[r9]
-            r5 = r0
-            goto L_0x0808
-        L_0x0806:
-            r5 = r21
-        L_0x0808:
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-        L_0x0813:
-            r20 = r0
-            if (r20 <= 0) goto L_0x0818
-            return r20
-        L_0x0818:
-            com.ibm.icu.text.DateFormat$BooleanAttribute r0 = com.ibm.icu.text.DateFormat.BooleanAttribute.PARSE_MULTIPLE_PATTERNS_FOR_MATCH
-            boolean r0 = r12.getBooleanAttribute(r0)
-            if (r0 != 0) goto L_0x0824
-            if (r14 != r9) goto L_0x0823
-            goto L_0x0824
-        L_0x0823:
-            return r20
-        L_0x0824:
-            r9 = r30
-            r0 = 2
-            if (r9 != r0) goto L_0x0847
-            r3 = 2
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.shortMonths
-            if (r8 == 0) goto L_0x0839
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.leapMonthPatterns
-            r1 = 1
-            r0 = r0[r1]
-            r5 = r0
-            goto L_0x083b
-        L_0x0839:
-            r5 = r21
-        L_0x083b:
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            goto L_0x0864
-        L_0x0847:
-            r3 = 2
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.standaloneShortMonths
-            if (r8 == 0) goto L_0x0857
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r0 = r0.leapMonthPatterns
-            r1 = 4
-            r0 = r0[r1]
-            r5 = r0
-            goto L_0x0859
-        L_0x0857:
-            r5 = r21
-        L_0x0859:
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-        L_0x0864:
-            return r0
-        L_0x0865:
-            r0 = r3
-            r31 = r4
-            r32 = r5
-            r9 = r28
-        L_0x086c:
-            r6 = r32
-            int r1 = r6 + -1
-            r11.set(r0, r1)
-            java.lang.String r1 = r41.getType()
-            java.lang.String r2 = "hebrew"
-            boolean r1 = r1.equals(r2)
-            if (r1 == 0) goto L_0x0898
-            if (r6 < r8) goto L_0x0898
-            r1 = 1
-            boolean r2 = r11.isSet(r1)
-            if (r2 == 0) goto L_0x0896
-            int r1 = r11.get(r1)
-            boolean r1 = com.ibm.icu.util.HebrewCalendar.isLeapYear(r1)
-            if (r1 != 0) goto L_0x0898
-            r11.set(r0, r6)
-            goto L_0x0898
-        L_0x0896:
-            DelayedHebrewMonthCheck = r1
-        L_0x0898:
-            int r0 = r10.getIndex()
-            return r0
-        L_0x089d:
-            r35 = r5
-            r15 = r7
-            r10 = r8
-            r0 = r9
-            r9 = r11
-            r31 = r25
-            r11 = r41
-            r7 = r43
-            java.lang.String r1 = r12.override
-            if (r1 == 0) goto L_0x08c7
-            java.lang.String r2 = "hebr"
-            int r1 = r1.compareTo(r2)
-            if (r1 == 0) goto L_0x08c0
-            java.lang.String r1 = r12.override
-            java.lang.String r2 = "y=hebr"
-            int r1 = r1.indexOf(r2)
-            if (r1 < 0) goto L_0x08c7
-        L_0x08c0:
-            r1 = 1000(0x3e8, float:1.401E-42)
-            if (r6 >= r1) goto L_0x08c7
-            int r6 = r6 + 5000
-            goto L_0x08f4
-        L_0x08c7:
-            if (r14 != r0) goto L_0x08f4
-            int r1 = r10.getIndex()
-            int r1 = countDigits(r13, r15, r1)
-            if (r1 != r0) goto L_0x08f4
-            boolean r1 = r41.haveDefaultCentury()
-            if (r1 == 0) goto L_0x08f4
-            int r1 = r33.getDefaultCenturyStartYear()
-            r2 = 100
-            int r1 = r1 % r2
-            if (r6 != r1) goto L_0x08e4
-            r3 = 1
-            goto L_0x08e5
-        L_0x08e4:
-            r3 = 0
-        L_0x08e5:
-            r4 = 0
-            r40[r4] = r3
-            int r3 = r33.getDefaultCenturyStartYear()
-            int r3 = r3 / r2
-            int r3 = r3 * r2
-            if (r6 >= r1) goto L_0x08f1
-            goto L_0x08f2
-        L_0x08f1:
-            r2 = 0
-        L_0x08f2:
-            int r3 = r3 + r2
-            int r6 = r6 + r3
-        L_0x08f4:
-            r8 = r31
-            r11.set(r8, r6)
-            boolean r1 = DelayedHebrewMonthCheck
-            if (r1 == 0) goto L_0x090a
-            boolean r1 = com.ibm.icu.util.HebrewCalendar.isLeapYear(r6)
-            if (r1 != 0) goto L_0x0907
-            r1 = 1
-            r11.add(r0, r1)
-        L_0x0907:
-            r0 = 0
-            DelayedHebrewMonthCheck = r0
-        L_0x090a:
-            int r0 = r10.getIndex()
-            return r0
-        L_0x090f:
-            r35 = r5
-            r15 = r7
-            r10 = r8
-            r9 = r11
-            r8 = r25
-            r0 = 0
-            r1 = 4
-            r11 = r41
-            r7 = r43
-            if (r19 == 0) goto L_0x0926
-            r11.set(r0, r6)
-            int r0 = r10.getIndex()
-            return r0
-        L_0x0926:
-            r16 = 0
-            r0 = 5
-            if (r14 != r0) goto L_0x093f
-            r3 = 0
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.narrowEras
-            r5 = 0
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r18 = r6
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            goto L_0x0966
-        L_0x093f:
-            r18 = r6
-            if (r14 != r1) goto L_0x0955
-            r3 = 0
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.eraNames
-            r5 = 0
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            goto L_0x0966
-        L_0x0955:
-            r3 = 0
-            com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
-            java.lang.String[] r4 = r0.eras
-            r5 = 0
-            r0 = r33
-            r1 = r34
-            r2 = r15
-            r6 = r41
-            int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-        L_0x0966:
-            int r1 = ~r15
-            if (r0 != r1) goto L_0x096b
-            r0 = -32000(0xffffffffffff8300, float:NaN)
-        L_0x096b:
-            return r0
-        L_0x096c:
-            r0 = r33
-            r1 = r34
-            r2 = r37
-            r3 = r10
-            r4 = r39
-            r5 = r35
-            java.lang.Number r0 = r0.parseInt(r1, r2, r3, r4, r5)
-            r2 = r35
-            r3 = r0
-            r1 = r11
-            r0 = r39
-            goto L_0x098b
-        L_0x0982:
-            r2 = r35
-            r0 = r39
-            r1 = r11
-            java.lang.Number r3 = r12.parseInt(r13, r10, r0, r2)
-        L_0x098b:
-            if (r3 == 0) goto L_0x09a5
-            r4 = 34
-            if (r9 == r4) goto L_0x0999
-            int r4 = r3.intValue()
-            r1.set(r8, r4)
-            goto L_0x09a0
-        L_0x0999:
-            int r4 = r3.intValue()
-            r1.setRelatedYear(r4)
-        L_0x09a0:
-            int r4 = r10.getIndex()
-            return r4
-        L_0x09a5:
-            int r4 = ~r15
-            return r4
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.SimpleDateFormat.subParse(java.lang.String, int, char, int, boolean, boolean, boolean[], com.ibm.icu.util.Calendar, com.ibm.icu.text.MessageFormat, com.ibm.icu.util.Output, com.ibm.icu.util.Output):int");
+        return ~start;
     }
 
     private boolean allowNumericFallback(int patternCharIndex) {
@@ -4846,15 +2664,16 @@ public class SimpleDateFormat extends DateFormat {
             }
             number = number3;
         }
-        if (maxDigits <= 0 || (nDigits = pos.getIndex() - oldPos) <= maxDigits) {
-            return number;
+        if (maxDigits > 0 && (nDigits = pos.getIndex() - oldPos) > maxDigits) {
+            double val = number.doubleValue();
+            for (int nDigits2 = nDigits - maxDigits; nDigits2 > 0; nDigits2--) {
+                val /= 10.0d;
+            }
+            pos.setIndex(oldPos + maxDigits);
+            Number number4 = Integer.valueOf((int) val);
+            return number4;
         }
-        double val = number.doubleValue();
-        for (int nDigits2 = nDigits - maxDigits; nDigits2 > 0; nDigits2--) {
-            val /= 10.0d;
-        }
-        pos.setIndex(oldPos + maxDigits);
-        return Integer.valueOf((int) val);
+        return number;
     }
 
     private static int countDigits(String text, int start, int end) {
@@ -4887,10 +2706,10 @@ public class SimpleDateFormat extends DateFormat {
             }
             result.append(c);
         }
-        if (!inQuote) {
-            return result.toString();
+        if (inQuote) {
+            throw new IllegalArgumentException("Unfinished quote in pattern");
         }
-        throw new IllegalArgumentException("Unfinished quote in pattern");
+        return result.toString();
     }
 
     public String toPattern() {
@@ -4904,13 +2723,13 @@ public class SimpleDateFormat extends DateFormat {
     public void applyPattern(String pat) {
         this.pattern = pat;
         parsePattern();
-        setLocale((ULocale) null, (ULocale) null);
+        setLocale(null, null);
         this.patternItems = null;
     }
 
     public void applyLocalizedPattern(String pat) {
         this.pattern = translatePattern(pat, this.formatData.localPatternChars, "GyMdkHmsSEDFwWahKzYeugAZvcLQqVUOXxrbB");
-        setLocale((ULocale) null, (ULocale) null);
+        setLocale(null, null);
     }
 
     public DateFormatSymbols getDateFormatSymbols() {
@@ -4921,23 +2740,23 @@ public class SimpleDateFormat extends DateFormat {
         this.formatData = (DateFormatSymbols) newFormatSymbols.clone();
     }
 
-    /* access modifiers changed from: protected */
-    public DateFormatSymbols getSymbols() {
+    protected DateFormatSymbols getSymbols() {
         return this.formatData;
     }
 
     public TimeZoneFormat getTimeZoneFormat() {
-        return tzFormat().freeze();
+        return tzFormat().m85freeze();
     }
 
     public void setTimeZoneFormat(TimeZoneFormat tzfmt) {
         if (tzfmt.isFrozen()) {
             this.tzFormat = tzfmt;
         } else {
-            this.tzFormat = tzfmt.cloneAsThawed().freeze();
+            this.tzFormat = tzfmt.m84cloneAsThawed().m85freeze();
         }
     }
 
+    @Override // com.ibm.icu.text.DateFormat, java.text.Format
     public Object clone() {
         SimpleDateFormat other = (SimpleDateFormat) super.clone();
         other.formatData = (DateFormatSymbols) this.formatData.clone();
@@ -4947,19 +2766,18 @@ public class SimpleDateFormat extends DateFormat {
         return other;
     }
 
+    @Override // com.ibm.icu.text.DateFormat
     public int hashCode() {
         return this.pattern.hashCode();
     }
 
+    @Override // com.ibm.icu.text.DateFormat
     public boolean equals(Object obj) {
-        if (!super.equals(obj)) {
-            return false;
+        if (super.equals(obj)) {
+            SimpleDateFormat that = (SimpleDateFormat) obj;
+            return this.pattern.equals(that.pattern) && this.formatData.equals(that.formatData);
         }
-        SimpleDateFormat that = (SimpleDateFormat) obj;
-        if (!this.pattern.equals(that.pattern) || !this.formatData.equals(that.formatData)) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
@@ -4980,9 +2798,9 @@ public class SimpleDateFormat extends DateFormat {
             parseAmbiguousDatesAsAfter(this.defaultCenturyStart);
         }
         this.serialVersionOnStream = 2;
-        ULocale locale2 = getLocale(ULocale.VALID_LOCALE);
-        this.locale = locale2;
-        if (locale2 == null) {
+        ULocale locale = getLocale(ULocale.VALID_LOCALE);
+        this.locale = locale;
+        if (locale == null) {
             this.locale = ULocale.getDefault(ULocale.Category.FORMAT);
         }
         initLocalZeroPaddingNumberFormat();
@@ -4996,11 +2814,12 @@ public class SimpleDateFormat extends DateFormat {
                     break;
                 }
                 DisplayContext context = values[i];
-                if (context.value() == capitalizationSettingValue) {
+                if (context.value() != capitalizationSettingValue) {
+                    i++;
+                } else {
                     setContext(context);
                     break;
                 }
-                i++;
             }
         }
         if (!getBooleanAttribute(DateFormat.BooleanAttribute.PARSE_PARTIAL_MATCH)) {
@@ -5009,6 +2828,7 @@ public class SimpleDateFormat extends DateFormat {
         parsePattern();
     }
 
+    @Override // java.text.Format
     public AttributedCharacterIterator formatToCharacterIterator(Object obj) {
         Calendar cal = this.calendar;
         if (obj instanceof Calendar) {
@@ -5022,229 +2842,222 @@ public class SimpleDateFormat extends DateFormat {
         }
         StringBuffer toAppendTo = new StringBuffer();
         FieldPosition pos = new FieldPosition(0);
-        ArrayList arrayList = new ArrayList();
-        format(cal, getContext(DisplayContext.Type.CAPITALIZATION), toAppendTo, pos, arrayList);
+        List<FieldPosition> attributes = new ArrayList<>();
+        format(cal, getContext(DisplayContext.Type.CAPITALIZATION), toAppendTo, pos, attributes);
         AttributedString as = new AttributedString(toAppendTo.toString());
-        for (int i = 0; i < arrayList.size(); i++) {
-            FieldPosition fp = (FieldPosition) arrayList.get(i);
+        for (int i = 0; i < attributes.size(); i++) {
+            FieldPosition fp = attributes.get(i);
             Format.Field attribute = fp.getFieldAttribute();
             as.addAttribute(attribute, attribute, fp.getBeginIndex(), fp.getEndIndex());
         }
         return as.getIterator();
     }
 
-    /* access modifiers changed from: package-private */
-    public ULocale getLocale() {
+    ULocale getLocale() {
         return this.locale;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isFieldUnitIgnored(int field) {
+    boolean isFieldUnitIgnored(int field) {
         return isFieldUnitIgnored(this.pattern, field);
     }
 
-    static boolean isFieldUnitIgnored(String pattern2, int field) {
+    static boolean isFieldUnitIgnored(String pattern, int field) {
         int fieldLevel = CALENDAR_FIELD_TO_LEVEL[field];
         boolean inQuote = false;
         char prevCh = 0;
         int count = 0;
         int i = 0;
         while (true) {
-            boolean z = false;
-            if (i >= pattern2.length()) {
-                return count <= 0 || fieldLevel > getLevelFromChar(prevCh);
-            }
-            char ch = pattern2.charAt(i);
-            if (ch != prevCh && count > 0) {
-                if (fieldLevel <= getLevelFromChar(prevCh)) {
-                    return false;
-                }
-                count = 0;
-            }
-            if (ch == '\'') {
-                if (i + 1 >= pattern2.length() || pattern2.charAt(i + 1) != '\'') {
-                    if (!inQuote) {
-                        z = true;
+            if (i < pattern.length()) {
+                char ch = pattern.charAt(i);
+                if (ch != prevCh && count > 0) {
+                    int level = getLevelFromChar(prevCh);
+                    if (fieldLevel <= level) {
+                        return false;
                     }
-                    inQuote = z;
-                } else {
-                    i++;
+                    count = 0;
                 }
-            } else if (!inQuote && isSyntaxChar(ch)) {
-                prevCh = ch;
-                count++;
+                if (ch == '\'') {
+                    if (i + 1 < pattern.length() && pattern.charAt(i + 1) == '\'') {
+                        i++;
+                    } else {
+                        inQuote = inQuote ? false : true;
+                    }
+                } else if (!inQuote && isSyntaxChar(ch)) {
+                    prevCh = ch;
+                    count++;
+                }
+                i++;
+            } else {
+                if (count > 0) {
+                    int level2 = getLevelFromChar(prevCh);
+                    if (fieldLevel <= level2) {
+                        return false;
+                    }
+                }
+                return true;
             }
-            i++;
         }
     }
 
     @Deprecated
     public final StringBuffer intervalFormatByAlgorithm(Calendar fromCalendar, Calendar toCalendar, StringBuffer appendTo, FieldPosition pos) throws IllegalArgumentException {
         int diffBegin;
-        int highestLevel;
-        int i;
+        IllegalArgumentException e;
         int diffEnd;
+        int i;
+        int highestLevel;
         String str;
-        Calendar calendar = fromCalendar;
-        Calendar calendar2 = toCalendar;
-        StringBuffer stringBuffer = appendTo;
-        FieldPosition fieldPosition = pos;
-        if (fromCalendar.isEquivalentTo(toCalendar)) {
-            Object[] items = getPatternItems();
-            int diffBegin2 = -1;
-            int diffEnd2 = -1;
-            int i2 = 0;
-            while (true) {
-                try {
-                    if (i2 >= items.length) {
-                        break;
-                    } else if (diffCalFieldValue(calendar, calendar2, items, i2)) {
+        if (!fromCalendar.isEquivalentTo(toCalendar)) {
+            throw new IllegalArgumentException("can not format on two different calendars");
+        }
+        Object[] items = getPatternItems();
+        int diffBegin2 = -1;
+        int diffEnd2 = -1;
+        int i2 = 0;
+        while (true) {
+            try {
+                if (i2 < items.length) {
+                    if (!diffCalFieldValue(fromCalendar, toCalendar, items, i2)) {
+                        i2++;
+                    } else {
                         diffBegin2 = i2;
                         break;
-                    } else {
-                        i2++;
                     }
-                } catch (IllegalArgumentException e) {
-                    throw new IllegalArgumentException(e.toString());
-                }
-            }
-            if (diffBegin2 == -1) {
-                return format(calendar, stringBuffer, fieldPosition);
-            }
-            int i3 = items.length - 1;
-            while (true) {
-                if (i3 < diffBegin2) {
+                } else {
                     break;
-                } else if (diffCalFieldValue(calendar, calendar2, items, i3)) {
+                }
+            } catch (IllegalArgumentException e2) {
+                throw new IllegalArgumentException(e2.toString());
+            }
+        }
+        if (diffBegin2 == -1) {
+            return format(fromCalendar, appendTo, pos);
+        }
+        int i3 = items.length - 1;
+        while (true) {
+            if (i3 >= diffBegin2) {
+                if (diffCalFieldValue(fromCalendar, toCalendar, items, i3)) {
                     diffEnd2 = i3;
                     break;
                 } else {
                     i3--;
                 }
+            } else {
+                break;
             }
-            String str2 = " – ";
-            if (diffBegin2 == 0 && diffEnd2 == items.length - 1) {
-                format(calendar, stringBuffer, fieldPosition);
-                stringBuffer.append(str2);
-                format(calendar2, stringBuffer, fieldPosition);
-                return stringBuffer;
-            }
-            int highestLevel2 = 1000;
-            for (int i4 = diffBegin2; i4 <= diffEnd2; i4++) {
-                if (!(items[i4] instanceof String)) {
-                    char ch = ((PatternItem) items[i4]).type;
-                    int patternCharIndex = getIndexFromChar(ch);
-                    if (patternCharIndex == -1) {
-                        throw new IllegalArgumentException("Illegal pattern character '" + ch + "' in \"" + this.pattern + Typography.quote);
-                    } else if (patternCharIndex < highestLevel2) {
-                        highestLevel2 = patternCharIndex;
-                    }
+        }
+        String str2 = " \u2013 ";
+        if (diffBegin2 == 0 && diffEnd2 == items.length - 1) {
+            format(fromCalendar, appendTo, pos);
+            appendTo.append(" \u2013 ");
+            format(toCalendar, appendTo, pos);
+            return appendTo;
+        }
+        int highestLevel2 = 1000;
+        for (int i4 = diffBegin2; i4 <= diffEnd2; i4++) {
+            if (!(items[i4] instanceof String)) {
+                char ch = ((PatternItem) items[i4]).type;
+                int patternCharIndex = getIndexFromChar(ch);
+                if (patternCharIndex == -1) {
+                    throw new IllegalArgumentException("Illegal pattern character '" + ch + "' in \"" + this.pattern + Typography.quote);
+                }
+                if (patternCharIndex < highestLevel2) {
+                    highestLevel2 = patternCharIndex;
                 }
             }
-            int i5 = 0;
+        }
+        int i5 = 0;
+        while (true) {
+            if (i5 >= diffBegin2) {
+                diffBegin = diffBegin2;
+                break;
+            }
+            try {
+                if (!lowerLevel(items, i5, highestLevel2)) {
+                    i5++;
+                } else {
+                    int diffBegin3 = i5;
+                    diffBegin = diffBegin3;
+                    break;
+                }
+            } catch (IllegalArgumentException e3) {
+                e = e3;
+                throw new IllegalArgumentException(e.toString());
+            }
+        }
+        try {
+            int i6 = items.length;
+            int i7 = i6 - 1;
             while (true) {
-                if (i5 >= diffBegin2) {
-                    diffBegin = diffBegin2;
+                if (i7 <= diffEnd2) {
+                    i7 = diffEnd2;
                     break;
                 }
                 try {
-                    if (lowerLevel(items, i5, highestLevel2)) {
-                        diffBegin = i5;
+                    if (lowerLevel(items, i7, highestLevel2)) {
                         break;
                     }
-                    i5++;
-                } catch (IllegalArgumentException e2) {
-                    e = e2;
-                    int i6 = highestLevel2;
+                    i7--;
+                } catch (IllegalArgumentException e4) {
+                    e = e4;
                     throw new IllegalArgumentException(e.toString());
                 }
             }
-            try {
-                int i7 = items.length - 1;
-                while (true) {
-                    if (i7 <= diffEnd2) {
-                        i7 = diffEnd2;
-                        break;
-                    }
-                    try {
-                        if (lowerLevel(items, i7, highestLevel2)) {
-                            int diffEnd3 = i7;
-                            break;
-                        }
-                        i7--;
-                    } catch (IllegalArgumentException e3) {
-                        e = e3;
-                        int i8 = highestLevel2;
-                        int i9 = diffBegin;
-                        throw new IllegalArgumentException(e.toString());
-                    }
-                }
-                if (diffBegin == 0 && i7 == items.length - 1) {
-                    format(calendar, stringBuffer, fieldPosition);
-                    stringBuffer.append(str2);
-                    format(calendar2, stringBuffer, fieldPosition);
-                    return stringBuffer;
-                }
-                fieldPosition.setBeginIndex(0);
-                fieldPosition.setEndIndex(0);
-                DisplayContext capSetting = getContext(DisplayContext.Type.CAPITALIZATION);
-                int i10 = 0;
-                while (i10 <= i7) {
-                    if (items[i10] instanceof String) {
-                        stringBuffer.append((String) items[i10]);
+            if (diffBegin == 0 && i7 == items.length - 1) {
+                format(fromCalendar, appendTo, pos);
+                appendTo.append(" \u2013 ");
+                format(toCalendar, appendTo, pos);
+                return appendTo;
+            }
+            pos.setBeginIndex(0);
+            pos.setEndIndex(0);
+            DisplayContext capSetting = getContext(DisplayContext.Type.CAPITALIZATION);
+            int i8 = 0;
+            while (i8 <= i7) {
+                if (items[i8] instanceof String) {
+                    appendTo.append((String) items[i8]);
+                    diffEnd = i7;
+                    i = i8;
+                    highestLevel = highestLevel2;
+                    str = str2;
+                } else {
+                    PatternItem item = (PatternItem) items[i8];
+                    if (this.useFastFormat) {
                         diffEnd = i7;
-                        i = i10;
+                        i = i8;
                         highestLevel = highestLevel2;
                         str = str2;
+                        subFormat(appendTo, item.type, item.length, appendTo.length(), i8, capSetting, pos, fromCalendar);
                     } else {
-                        PatternItem item = (PatternItem) items[i10];
-                        if (this.useFastFormat) {
-                            diffEnd = i7;
-                            PatternItem patternItem = item;
-                            i = i10;
-                            highestLevel = highestLevel2;
-                            str = str2;
-                            subFormat(appendTo, item.type, item.length, appendTo.length(), i10, capSetting, pos, fromCalendar);
-                        } else {
-                            diffEnd = i7;
-                            PatternItem item2 = item;
-                            i = i10;
-                            highestLevel = highestLevel2;
-                            str = str2;
-                            stringBuffer.append(subFormat(item2.type, item2.length, appendTo.length(), i, capSetting, pos, fromCalendar));
-                        }
-                    }
-                    i10 = i + 1;
-                    str2 = str;
-                    i7 = diffEnd;
-                    highestLevel2 = highestLevel;
-                    Calendar calendar3 = fromCalendar;
-                }
-                int diffEnd4 = i7;
-                int i11 = i10;
-                int i12 = highestLevel2;
-                stringBuffer.append(str2);
-                for (int i13 = diffBegin; i13 < items.length; i13++) {
-                    if (items[i13] instanceof String) {
-                        stringBuffer.append((String) items[i13]);
-                    } else {
-                        PatternItem item3 = (PatternItem) items[i13];
-                        if (this.useFastFormat) {
-                            subFormat(appendTo, item3.type, item3.length, appendTo.length(), i13, capSetting, pos, toCalendar);
-                        } else {
-                            stringBuffer.append(subFormat(item3.type, item3.length, appendTo.length(), i13, capSetting, pos, toCalendar));
-                        }
+                        diffEnd = i7;
+                        i = i8;
+                        highestLevel = highestLevel2;
+                        str = str2;
+                        appendTo.append(subFormat(item.type, item.length, appendTo.length(), i, capSetting, pos, fromCalendar));
                     }
                 }
-                return stringBuffer;
-            } catch (IllegalArgumentException e4) {
-                e = e4;
-                int i14 = highestLevel2;
-                int i15 = diffBegin;
-                throw new IllegalArgumentException(e.toString());
+                i8 = i + 1;
+                str2 = str;
+                i7 = diffEnd;
+                highestLevel2 = highestLevel;
             }
-        } else {
-            throw new IllegalArgumentException("can not format on two different calendars");
+            appendTo.append(str2);
+            for (int i9 = diffBegin; i9 < items.length; i9++) {
+                if (items[i9] instanceof String) {
+                    appendTo.append((String) items[i9]);
+                } else {
+                    PatternItem item2 = (PatternItem) items[i9];
+                    if (this.useFastFormat) {
+                        subFormat(appendTo, item2.type, item2.length, appendTo.length(), i9, capSetting, pos, toCalendar);
+                    } else {
+                        appendTo.append(subFormat(item2.type, item2.length, appendTo.length(), i9, capSetting, pos, toCalendar));
+                    }
+                }
+            }
+            return appendTo;
+        } catch (IllegalArgumentException e5) {
+            e = e5;
         }
     }
 
@@ -5252,31 +3065,34 @@ public class SimpleDateFormat extends DateFormat {
         if (items[i] instanceof String) {
             return false;
         }
-        char ch = items[i].type;
+        PatternItem item = (PatternItem) items[i];
+        char ch = item.type;
         int patternCharIndex = getIndexFromChar(ch);
-        if (patternCharIndex != -1) {
-            int field = PATTERN_INDEX_TO_CALENDAR_FIELD[patternCharIndex];
-            if (field < 0 || fromCalendar.get(field) == toCalendar.get(field)) {
-                return false;
-            }
-            return true;
+        if (patternCharIndex == -1) {
+            throw new IllegalArgumentException("Illegal pattern character '" + ch + "' in \"" + this.pattern + Typography.quote);
         }
-        throw new IllegalArgumentException("Illegal pattern character '" + ch + "' in \"" + this.pattern + Typography.quote);
+        int field = PATTERN_INDEX_TO_CALENDAR_FIELD[patternCharIndex];
+        if (field >= 0) {
+            int value = fromCalendar.get(field);
+            int value_2 = toCalendar.get(field);
+            if (value != value_2) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean lowerLevel(Object[] items, int i, int level) throws IllegalArgumentException {
         if (items[i] instanceof String) {
             return false;
         }
-        char ch = items[i].type;
+        PatternItem item = (PatternItem) items[i];
+        char ch = item.type;
         int patternCharIndex = getLevelFromChar(ch);
-        if (patternCharIndex == -1) {
-            throw new IllegalArgumentException("Illegal pattern character '" + ch + "' in \"" + this.pattern + Typography.quote);
-        } else if (patternCharIndex >= level) {
-            return true;
-        } else {
-            return false;
+        if (patternCharIndex != -1) {
+            return patternCharIndex >= level;
         }
+        throw new IllegalArgumentException("Illegal pattern character '" + ch + "' in \"" + this.pattern + Typography.quote);
     }
 
     public void setNumberFormat(String fields, NumberFormat overrideNF) {
@@ -5288,16 +3104,13 @@ public class SimpleDateFormat extends DateFormat {
         if (this.overrideMap == null) {
             this.overrideMap = new HashMap<>();
         }
-        int i = 0;
-        while (i < fields.length()) {
+        for (int i = 0; i < fields.length(); i++) {
             char field = fields.charAt(i);
-            if ("GyMdkHmsSEDFwWahKzYeugAZvcLQqVUOXxrbB".indexOf(field) != -1) {
-                this.overrideMap.put(Character.valueOf(field), nsName);
-                this.numberFormatters.put(nsName, overrideNF);
-                i++;
-            } else {
+            if ("GyMdkHmsSEDFwWahKzYeugAZvcLQqVUOXxrbB".indexOf(field) == -1) {
                 throw new IllegalArgumentException("Illegal field character '" + field + "' in setNumberFormat.");
             }
+            this.overrideMap.put(Character.valueOf(field), nsName);
+            this.numberFormatters.put(nsName, overrideNF);
         }
         this.useLocalZeroPaddingNumberFormat = false;
     }
@@ -5305,10 +3118,12 @@ public class SimpleDateFormat extends DateFormat {
     public NumberFormat getNumberFormat(char field) {
         Character ovrField = Character.valueOf(field);
         HashMap<Character, String> hashMap = this.overrideMap;
-        if (hashMap == null || !hashMap.containsKey(ovrField)) {
-            return this.numberFormat;
+        if (hashMap != null && hashMap.containsKey(ovrField)) {
+            String nsName = this.overrideMap.get(ovrField).toString();
+            NumberFormat nf = this.numberFormatters.get(nsName);
+            return nf;
         }
-        return this.numberFormatters.get(this.overrideMap.get(ovrField).toString());
+        return this.numberFormat;
     }
 
     private void initNumberFormatters(ULocale loc) {
@@ -5319,41 +3134,44 @@ public class SimpleDateFormat extends DateFormat {
 
     private void processOverrideString(ULocale loc, String str) {
         int end;
-        boolean fullOverride;
         String nsName;
-        if (str != null && str.length() != 0) {
-            int start = 0;
-            boolean moreToProcess = true;
-            while (moreToProcess) {
-                int delimiterPosition = str.indexOf(";", start);
-                if (delimiterPosition == -1) {
-                    moreToProcess = false;
-                    end = str.length();
-                } else {
-                    end = delimiterPosition;
-                }
-                String currentString = str.substring(start, end);
-                int equalSignPosition = currentString.indexOf("=");
-                if (equalSignPosition == -1) {
-                    nsName = currentString;
-                    fullOverride = true;
-                } else {
-                    nsName = currentString.substring(equalSignPosition + 1);
-                    this.overrideMap.put(Character.valueOf(currentString.charAt(0)), nsName);
-                    fullOverride = false;
-                }
-                NumberFormat nf = NumberFormat.createInstance(new ULocale(loc.getBaseName() + "@numbers=" + nsName), 0);
-                nf.setGroupingUsed(false);
-                if (fullOverride) {
-                    setNumberFormat(nf);
-                } else {
-                    this.useLocalZeroPaddingNumberFormat = false;
-                }
-                if (!fullOverride && !this.numberFormatters.containsKey(nsName)) {
-                    this.numberFormatters.put(nsName, nf);
-                }
-                start = delimiterPosition + 1;
+        boolean fullOverride;
+        if (str == null || str.length() == 0) {
+            return;
+        }
+        int start = 0;
+        boolean moreToProcess = true;
+        while (moreToProcess) {
+            int delimiterPosition = str.indexOf(";", start);
+            if (delimiterPosition == -1) {
+                moreToProcess = false;
+                end = str.length();
+            } else {
+                end = delimiterPosition;
             }
+            String currentString = str.substring(start, end);
+            int equalSignPosition = currentString.indexOf("=");
+            if (equalSignPosition == -1) {
+                nsName = currentString;
+                fullOverride = true;
+            } else {
+                nsName = currentString.substring(equalSignPosition + 1);
+                Character ovrField = Character.valueOf(currentString.charAt(0));
+                this.overrideMap.put(ovrField, nsName);
+                fullOverride = false;
+            }
+            ULocale ovrLoc = new ULocale(loc.getBaseName() + "@numbers=" + nsName);
+            NumberFormat nf = NumberFormat.createInstance(ovrLoc, 0);
+            nf.setGroupingUsed(false);
+            if (fullOverride) {
+                setNumberFormat(nf);
+            } else {
+                this.useLocalZeroPaddingNumberFormat = false;
+            }
+            if (!fullOverride && !this.numberFormatters.containsKey(nsName)) {
+                this.numberFormatters.put(nsName, nf);
+            }
+            start = delimiterPosition + 1;
         }
     }
 

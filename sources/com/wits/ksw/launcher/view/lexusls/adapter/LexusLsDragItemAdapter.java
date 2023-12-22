@@ -3,7 +3,7 @@ package com.wits.ksw.launcher.view.lexusls.adapter;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+import android.support.p004v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.utils.KswUtils;
@@ -24,50 +24,55 @@ import com.wits.pms.statuscontrol.WitsCommand;
 import java.util.ArrayList;
 import java.util.List;
 
+/* loaded from: classes9.dex */
 public class LexusLsDragItemAdapter extends RecyclerView.Adapter<mBaseViewHolder> implements DragListener {
     public static final String TAG = "LexusLsDragItemAdapter";
-    private View.OnClickListener clickListener = null;
-    private View.OnClickListener clickMenuListener = null;
+    IOnAddAppClickListener mAddAppListener;
+    private View mClickView;
+    private Context mContext;
+    private ArrayList<LexusLsAppSelBean> mList;
+    private LauncherViewModel viewModel;
     private int defaultSelection = -1;
     private ItemDragListener dragListener = null;
     private View.OnLongClickListener longClickListener = null;
-    IOnAddAppClickListener mAddAppListener;
-    private View mClickView;
-    /* access modifiers changed from: private */
-    public Context mContext;
-    /* access modifiers changed from: private */
-    public ArrayList<LexusLsAppSelBean> mList = new ArrayList<>();
-    /* access modifiers changed from: private */
-    public LauncherViewModel viewModel;
+    private View.OnClickListener clickListener = null;
+    private View.OnClickListener clickMenuListener = null;
 
+    /* loaded from: classes9.dex */
     public interface IOnAddAppClickListener {
         void onClick(View view);
     }
 
+    /* loaded from: classes9.dex */
     public interface ItemDragListener {
-        void onItemDragStarted(View view);
+        void onItemDragStarted(View source);
 
-        void onItemDropCompleted(View view, View view2, boolean z);
+        void onItemDropCompleted(View source, View target, boolean success);
     }
 
+    /* loaded from: classes9.dex */
     public interface OnAdapterItemClickListener {
-        void onAdapterItemClick(View view, int i);
+        void onAdapterItemClick(View view, int position);
     }
 
-    public LexusLsDragItemAdapter(ArrayList<LexusLsAppSelBean> list, LauncherViewModel viewModel2, Context context) {
+    public LexusLsDragItemAdapter(ArrayList<LexusLsAppSelBean> list, LauncherViewModel viewModel, Context context) {
+        this.mList = new ArrayList<>();
         this.mList = list;
-        this.viewModel = viewModel2;
+        this.viewModel = viewModel;
         this.mContext = context;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.Adapter
     public mBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new mBaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lexus_ls_drag_item_layout, parent, false));
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(C0899R.C0902layout.lexus_ls_drag_item_layout, parent, false);
+        return new mBaseViewHolder(itemView);
     }
 
-    public void setItemClickEffect(View mClickView2) {
-        this.mClickView = mClickView2;
+    public void setItemClickEffect(View mClickView) {
+        this.mClickView = mClickView;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.Adapter
     public void onBindViewHolder(mBaseViewHolder holder, int position) {
         LexusLsAppSelBean appItem = this.mList.get(position);
         holder.tv_title.setText(appItem.getAppName());
@@ -108,7 +113,7 @@ public class LexusLsDragItemAdapter extends RecyclerView.Adapter<mBaseViewHolder
 
     public void sendMcuCommand() {
         try {
-            Log.d(TAG, "sendMcuCommand: 发送MCU发指令");
+            Log.d(TAG, "sendMcuCommand: \u53d1\u9001MCU\u53d1\u6307\u4ee4");
             WitsCommand.sendCommand(1, WitsCommand.SystemCommand.OPEN_MODE, "13");
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,24 +121,27 @@ public class LexusLsDragItemAdapter extends RecyclerView.Adapter<mBaseViewHolder
         }
     }
 
+    /* loaded from: classes9.dex */
     class mItemOnclick implements View.OnClickListener {
         View mView;
         int pos;
 
-        mItemOnclick(int pos2, View mView2) {
-            this.pos = pos2;
-            this.mView = mView2;
+        mItemOnclick(int pos, View mView) {
+            this.pos = pos;
+            this.mView = mView;
         }
 
+        @Override // android.view.View.OnClickListener
         public void onClick(View v) {
-            View view = v;
             Log.e(LexusLsDragItemAdapter.TAG, "pos = " + this.pos);
             KswUtils.saveLexusLsLastPosition(LexusLsDragItemAdapter.this.mContext, this.pos);
             LexusLsDragItemAdapter.this.setSelectPosition(this.pos);
             LexusLsAppSelBean appItem = (LexusLsAppSelBean) LexusLsDragItemAdapter.this.mList.get(this.pos);
             if (UiThemeUtils.isLEXUS_LS_UI(LexusLsDragItemAdapter.this.mContext)) {
                 if (!LexusLsDragItemAdapter.isMenu(appItem)) {
-                    ComponentName componentName = new ComponentName(appItem.getAppPkg(), appItem.getAppMainAty());
+                    String pkg = appItem.getAppPkg();
+                    String cls = appItem.getAppMainAty();
+                    ComponentName componentName = new ComponentName(pkg, cls);
                     Intent intent = new Intent();
                     intent.addFlags(270532608);
                     intent.setComponent(componentName);
@@ -143,36 +151,38 @@ public class LexusLsDragItemAdapter extends RecyclerView.Adapter<mBaseViewHolder
                 }
                 String pkgName = appItem.getAppPkg();
                 String[] menuPkgs = LexusLsConfig.PKG_MENU_STRS;
-                LOGE.E("LexusLsDragItemAdapter pkgName = " + pkgName);
+                LOGE.m43E("LexusLsDragItemAdapter pkgName = " + pkgName);
                 if (menuPkgs[0].equals(pkgName)) {
-                    LexusLsDragItemAdapter.this.viewModel.openNaviApp(view);
+                    LexusLsDragItemAdapter.this.viewModel.openNaviApp(v);
                 } else if (menuPkgs[1].equals(pkgName)) {
-                    LexusLsDragItemAdapter.this.viewModel.openMusicMulti(view);
+                    LexusLsDragItemAdapter.this.viewModel.openMusicMulti(v);
                 } else if (menuPkgs[2].equals(pkgName)) {
-                    LexusLsDragItemAdapter.this.viewModel.openBtApp(view);
+                    LexusLsDragItemAdapter.this.viewModel.openBtApp(v);
                 } else if (menuPkgs[3].equals(pkgName)) {
-                    LexusLsDragItemAdapter.this.viewModel.openApps(view);
+                    LexusLsDragItemAdapter.this.viewModel.openApps(v);
                 } else if (menuPkgs[4].equals(pkgName)) {
-                    LexusLsDragItemAdapter.this.viewModel.openVideoMulti(view);
+                    LexusLsDragItemAdapter.this.viewModel.openVideoMulti(v);
                 } else if (menuPkgs[5].equals(pkgName)) {
-                    LexusLsDragItemAdapter.this.viewModel.openLexusCar(view);
+                    LexusLsDragItemAdapter.this.viewModel.openLexusCar(v);
                 } else if (menuPkgs[6].equals(pkgName)) {
-                    LexusLsDragItemAdapter.this.viewModel.openSettings(view);
+                    LexusLsDragItemAdapter.this.viewModel.openSettings(v);
                 } else if (menuPkgs[7].equals(pkgName)) {
-                    LexusLsDragItemAdapter.this.viewModel.openAirControl(view);
+                    LexusLsDragItemAdapter.this.viewModel.openAirControl(v);
                 } else if (menuPkgs[8].equals(pkgName)) {
-                    LexusLsDragItemAdapter.this.viewModel.openDvr(view);
+                    LexusLsDragItemAdapter.this.viewModel.openDvr(v);
                 } else if (menuPkgs[9].equals(pkgName)) {
-                    LexusLsDragItemAdapter.this.viewModel.openDashboard(view);
+                    LexusLsDragItemAdapter.this.viewModel.openDashboard(v);
                 } else if (menuPkgs[10].equals(pkgName)) {
-                    LexusLsDragItemAdapter.this.viewModel.openShouJiHuLian(view);
+                    LexusLsDragItemAdapter.this.viewModel.openShouJiHuLian(v);
                 } else if (menuPkgs[11].equals(pkgName)) {
-                    LexusLsDragItemAdapter.this.viewModel.openFileManager(view);
+                    LexusLsDragItemAdapter.this.viewModel.openFileManager(v);
                 } else if (menuPkgs[12].equals(pkgName) && LexusLsDragItemAdapter.this.mAddAppListener != null) {
-                    LexusLsDragItemAdapter.this.mAddAppListener.onClick(view);
+                    LexusLsDragItemAdapter.this.mAddAppListener.onClick(v);
                 }
             } else if (!LexusLsDragItemAdapter.isMenu_V2(appItem)) {
-                ComponentName componentName2 = new ComponentName(appItem.getAppPkg(), appItem.getAppMainAty());
+                String pkg2 = appItem.getAppPkg();
+                String cls2 = appItem.getAppMainAty();
+                ComponentName componentName2 = new ComponentName(pkg2, cls2);
                 Intent intent2 = new Intent();
                 intent2.addFlags(270532608);
                 intent2.setComponent(componentName2);
@@ -181,35 +191,35 @@ public class LexusLsDragItemAdapter extends RecyclerView.Adapter<mBaseViewHolder
             } else {
                 String pkgName2 = appItem.getAppPkg();
                 String[] menuPkgs2 = LexusLsConfig.PKG_MENU_STRS_V2;
-                LOGE.E("LexusLsDragItemAdapter pkgName = " + pkgName2);
+                LOGE.m43E("LexusLsDragItemAdapter pkgName = " + pkgName2);
                 if (menuPkgs2[0].equals(pkgName2)) {
-                    LexusLsDragItemAdapter.this.viewModel.openNaviApp(view);
+                    LexusLsDragItemAdapter.this.viewModel.openNaviApp(v);
                 } else if (menuPkgs2[1].equals(pkgName2)) {
-                    LexusLsDragItemAdapter.this.viewModel.openMusicMulti(view);
+                    LexusLsDragItemAdapter.this.viewModel.openMusicMulti(v);
                 } else if (menuPkgs2[2].equals(pkgName2)) {
-                    LexusLsDragItemAdapter.this.viewModel.openBtApp(view);
+                    LexusLsDragItemAdapter.this.viewModel.openBtApp(v);
                 } else if (menuPkgs2[3].equals(pkgName2)) {
-                    LexusLsDragItemAdapter.this.viewModel.openApps(view);
+                    LexusLsDragItemAdapter.this.viewModel.openApps(v);
                 } else if (menuPkgs2[4].equals(pkgName2)) {
-                    LexusLsDragItemAdapter.this.viewModel.openVideoMulti(view);
+                    LexusLsDragItemAdapter.this.viewModel.openVideoMulti(v);
                 } else if (menuPkgs2[5].equals(pkgName2)) {
-                    LexusLsDragItemAdapter.this.viewModel.openLexusCar(view);
+                    LexusLsDragItemAdapter.this.viewModel.openLexusCar(v);
                 } else if (menuPkgs2[6].equals(pkgName2)) {
-                    LexusLsDragItemAdapter.this.viewModel.openSettings(view);
+                    LexusLsDragItemAdapter.this.viewModel.openSettings(v);
                 } else if (menuPkgs2[7].equals(pkgName2)) {
-                    LexusLsDragItemAdapter.this.viewModel.openAirControl(view);
+                    LexusLsDragItemAdapter.this.viewModel.openAirControl(v);
                 } else if (menuPkgs2[8].equals(pkgName2)) {
-                    LexusLsDragItemAdapter.this.viewModel.openDvr(view);
+                    LexusLsDragItemAdapter.this.viewModel.openDvr(v);
                 } else if (menuPkgs2[9].equals(pkgName2)) {
-                    LexusLsDragItemAdapter.this.viewModel.openDashboard(view);
+                    LexusLsDragItemAdapter.this.viewModel.openDashboard(v);
                 } else if (menuPkgs2[10].equals(pkgName2)) {
-                    LexusLsDragItemAdapter.this.viewModel.openShouJiHuLian(view);
+                    LexusLsDragItemAdapter.this.viewModel.openShouJiHuLian(v);
                 } else if (menuPkgs2[11].equals(pkgName2)) {
-                    LexusLsDragItemAdapter.this.viewModel.openFileManager(view);
+                    LexusLsDragItemAdapter.this.viewModel.openFileManager(v);
                 } else if (menuPkgs2[12].equals(pkgName2)) {
-                    LexusLsDragItemAdapter.this.viewModel.openWeatherApp(view);
+                    LexusLsDragItemAdapter.this.viewModel.openWeatherApp(v);
                 } else if (menuPkgs2[13].equals(pkgName2) && LexusLsDragItemAdapter.this.mAddAppListener != null) {
-                    LexusLsDragItemAdapter.this.mAddAppListener.onClick(view);
+                    LexusLsDragItemAdapter.this.mAddAppListener.onClick(v);
                 }
             }
         }
@@ -223,6 +233,7 @@ public class LexusLsDragItemAdapter extends RecyclerView.Adapter<mBaseViewHolder
         this.dragListener = listener;
     }
 
+    @Override // com.wits.ksw.launcher.view.lexusls.drag.DragListener
     public void onDragStarted(View source) {
         ItemDragListener itemDragListener = this.dragListener;
         if (itemDragListener != null) {
@@ -230,6 +241,7 @@ public class LexusLsDragItemAdapter extends RecyclerView.Adapter<mBaseViewHolder
         }
     }
 
+    @Override // com.wits.ksw.launcher.view.lexusls.drag.DragListener
     public void onDropCompleted(View source, View target, boolean success) {
         ItemDragListener itemDragListener = this.dragListener;
         if (itemDragListener != null) {
@@ -245,13 +257,15 @@ public class LexusLsDragItemAdapter extends RecyclerView.Adapter<mBaseViewHolder
         this.clickListener = listener;
     }
 
+    /* loaded from: classes9.dex */
     class mMenuOnclick implements View.OnClickListener {
         int pos;
 
-        mMenuOnclick(int pos2, View mView) {
-            this.pos = pos2;
+        mMenuOnclick(int pos, View mView) {
+            this.pos = pos;
         }
 
+        @Override // android.view.View.OnClickListener
         public void onClick(View v) {
         }
     }
@@ -260,6 +274,7 @@ public class LexusLsDragItemAdapter extends RecyclerView.Adapter<mBaseViewHolder
         this.clickMenuListener = tmplistener;
     }
 
+    @Override // android.support.p004v7.widget.RecyclerView.Adapter
     public int getItemCount() {
         ArrayList<LexusLsAppSelBean> arrayList = this.mList;
         if (arrayList != null) {
@@ -276,6 +291,7 @@ public class LexusLsDragItemAdapter extends RecyclerView.Adapter<mBaseViewHolder
         }
     }
 
+    /* loaded from: classes9.dex */
     public class mBaseViewHolder extends RecyclerView.ViewHolder {
         DraggableLayout draggable_layout;
         ImageView icon;
@@ -284,10 +300,10 @@ public class LexusLsDragItemAdapter extends RecyclerView.Adapter<mBaseViewHolder
 
         public mBaseViewHolder(View itemView) {
             super(itemView);
-            this.layoutLL = (RelativeLayout) itemView.findViewById(R.id.layoutLL);
-            this.draggable_layout = (DraggableLayout) itemView.findViewById(R.id.draggable_layout);
-            this.icon = (ImageView) itemView.findViewById(R.id.icon);
-            this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
+            this.layoutLL = (RelativeLayout) itemView.findViewById(C0899R.C0901id.layoutLL);
+            this.draggable_layout = (DraggableLayout) itemView.findViewById(C0899R.C0901id.draggable_layout);
+            this.icon = (ImageView) itemView.findViewById(C0899R.C0901id.icon);
+            this.tv_title = (TextView) itemView.findViewById(C0899R.C0901id.tv_title);
         }
     }
 

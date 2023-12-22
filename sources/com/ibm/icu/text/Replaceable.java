@@ -1,5 +1,6 @@
 package com.ibm.icu.text;
 
+/* loaded from: classes.dex */
 public interface Replaceable {
     int char32At(int i);
 

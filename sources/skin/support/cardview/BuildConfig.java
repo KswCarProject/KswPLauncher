@@ -1,5 +1,6 @@
 package skin.support.cardview;
 
+/* loaded from: classes.dex */
 public final class BuildConfig {
     public static final String APPLICATION_ID = "skin.support.cardview";
     public static final String BUILD_TYPE = "release";

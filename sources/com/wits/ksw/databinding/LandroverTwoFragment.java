@@ -7,9 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.land_rover.model.LandroverViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class LandroverTwoFragment extends ViewDataBinding {
     public final ImageView landroverMainIconApp;
     public final ImageView landroverMainIconBrowser;
@@ -20,16 +21,16 @@ public abstract class LandroverTwoFragment extends ViewDataBinding {
     @Bindable
     protected LandroverViewModel mViewModel;
 
-    public abstract void setViewModel(LandroverViewModel landroverViewModel);
+    public abstract void setViewModel(LandroverViewModel ViewModel);
 
-    protected LandroverTwoFragment(Object _bindingComponent, View _root, int _localFieldCount, ImageView landroverMainIconApp2, ImageView landroverMainIconBrowser2, ImageView landroverMainIconBt2, ImageView landroverMainIconDashboard2, ImageView landroverMainIconFile2, ImageView landroverMainIconPhonelink2) {
+    protected LandroverTwoFragment(Object _bindingComponent, View _root, int _localFieldCount, ImageView landroverMainIconApp, ImageView landroverMainIconBrowser, ImageView landroverMainIconBt, ImageView landroverMainIconDashboard, ImageView landroverMainIconFile, ImageView landroverMainIconPhonelink) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.landroverMainIconApp = landroverMainIconApp2;
-        this.landroverMainIconBrowser = landroverMainIconBrowser2;
-        this.landroverMainIconBt = landroverMainIconBt2;
-        this.landroverMainIconDashboard = landroverMainIconDashboard2;
-        this.landroverMainIconFile = landroverMainIconFile2;
-        this.landroverMainIconPhonelink = landroverMainIconPhonelink2;
+        this.landroverMainIconApp = landroverMainIconApp;
+        this.landroverMainIconBrowser = landroverMainIconBrowser;
+        this.landroverMainIconBt = landroverMainIconBt;
+        this.landroverMainIconDashboard = landroverMainIconDashboard;
+        this.landroverMainIconFile = landroverMainIconFile;
+        this.landroverMainIconPhonelink = landroverMainIconPhonelink;
     }
 
     public LandroverViewModel getViewModel() {
@@ -42,7 +43,7 @@ public abstract class LandroverTwoFragment extends ViewDataBinding {
 
     @Deprecated
     public static LandroverTwoFragment inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (LandroverTwoFragment) ViewDataBinding.inflateInternal(inflater, R.layout.landrover_main_fragment_two, root, attachToRoot, component);
+        return (LandroverTwoFragment) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.landrover_main_fragment_two, root, attachToRoot, component);
     }
 
     public static LandroverTwoFragment inflate(LayoutInflater inflater) {
@@ -51,7 +52,7 @@ public abstract class LandroverTwoFragment extends ViewDataBinding {
 
     @Deprecated
     public static LandroverTwoFragment inflate(LayoutInflater inflater, Object component) {
-        return (LandroverTwoFragment) ViewDataBinding.inflateInternal(inflater, R.layout.landrover_main_fragment_two, (ViewGroup) null, false, component);
+        return (LandroverTwoFragment) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.landrover_main_fragment_two, null, false, component);
     }
 
     public static LandroverTwoFragment bind(View view) {
@@ -60,6 +61,6 @@ public abstract class LandroverTwoFragment extends ViewDataBinding {
 
     @Deprecated
     public static LandroverTwoFragment bind(View view, Object component) {
-        return (LandroverTwoFragment) bind(component, view, R.layout.landrover_main_fragment_two);
+        return (LandroverTwoFragment) bind(component, view, C0899R.C0902layout.landrover_main_fragment_two);
     }
 }

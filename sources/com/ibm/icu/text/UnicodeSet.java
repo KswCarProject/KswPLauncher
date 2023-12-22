@@ -1,11 +1,12 @@
 package com.ibm.icu.text;
 
-import android.support.v4.view.InputDeviceCompat;
+import android.support.p001v4.view.InputDeviceCompat;
 import com.ibm.icu.impl.BMPSet;
 import com.ibm.icu.impl.CharacterPropertiesImpl;
 import com.ibm.icu.impl.PatternProps;
 import com.ibm.icu.impl.RuleCharacterIterator;
 import com.ibm.icu.impl.SortedSetRelation;
+import com.ibm.icu.impl.StringRange;
 import com.ibm.icu.impl.UCaseProps;
 import com.ibm.icu.impl.UPropertyAliases;
 import com.ibm.icu.impl.UnicodeSetStringSpan;
@@ -32,17 +33,15 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import kotlin.text.Typography;
 
+/* loaded from: classes.dex */
 public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Comparable<UnicodeSet>, Freezable<UnicodeSet> {
     static final /* synthetic */ boolean $assertionsDisabled = false;
     public static final int ADD_CASE_MAPPINGS = 4;
-    public static final UnicodeSet ALL_CODE_POINTS = new UnicodeSet(0, 1114111).freeze();
     private static final String ANY_ID = "ANY";
     private static final String ASCII_ID = "ASCII";
     private static final String ASSIGNED = "Assigned";
     public static final int CASE = 2;
     public static final int CASE_INSENSITIVE = 2;
-    public static final UnicodeSet EMPTY = new UnicodeSet().freeze();
-    private static final SortedSet<String> EMPTY_STRINGS = Collections.unmodifiableSortedSet(new TreeSet());
     private static final int HIGH = 1114112;
     public static final int IGNORE_SPACE = 1;
     private static final int INITIAL_CAPACITY = 25;
@@ -57,34 +56,37 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     private static final int MODE0_NONE = 0;
     private static final int MODE1_INBRACKET = 1;
     private static final int MODE2_OUTBRACKET = 2;
-    /* access modifiers changed from: private */
-    public static final VersionInfo NO_VERSION = VersionInfo.getInstance(0, 0, 0, 0);
     private static final int SETMODE0_NONE = 0;
     private static final int SETMODE1_UNICODESET = 1;
     private static final int SETMODE2_PROPERTYPAT = 2;
     private static final int SETMODE3_PREPARSED = 3;
-    private static XSymbolTable XSYMBOL_TABLE = null;
     private volatile BMPSet bmpSet;
     private int[] buffer;
-    /* access modifiers changed from: private */
-    public int len;
-    /* access modifiers changed from: private */
-    public int[] list;
+    private int len;
+    private int[] list;
     private String pat;
     private int[] rangeList;
     private volatile UnicodeSetStringSpan stringSpan;
     SortedSet<String> strings;
+    private static final SortedSet<String> EMPTY_STRINGS = Collections.unmodifiableSortedSet(new TreeSet());
+    public static final UnicodeSet EMPTY = new UnicodeSet().m87freeze();
+    public static final UnicodeSet ALL_CODE_POINTS = new UnicodeSet(0, 1114111).m87freeze();
+    private static XSymbolTable XSYMBOL_TABLE = null;
+    private static final VersionInfo NO_VERSION = VersionInfo.getInstance(0, 0, 0, 0);
 
+    /* loaded from: classes.dex */
     public enum ComparisonStyle {
         SHORTER_FIRST,
         LEXICOGRAPHIC,
         LONGER_FIRST
     }
 
+    /* loaded from: classes.dex */
     private interface Filter {
         boolean contains(int i);
     }
 
+    /* loaded from: classes.dex */
     public enum SpanCondition {
         NOT_CONTAINED,
         CONTAINED,
@@ -115,49 +117,46 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     public UnicodeSet(int... pairs) {
         this.strings = EMPTY_STRINGS;
         this.pat = null;
-        if ((pairs.length & 1) == 0) {
-            int[] iArr = new int[(pairs.length + 1)];
-            this.list = iArr;
-            this.len = iArr.length;
-            int last = -1;
-            int limit = 0;
-            while (limit < pairs.length) {
-                int start = pairs[limit];
-                if (last < start) {
-                    int[] iArr2 = this.list;
-                    int i = limit + 1;
-                    iArr2[limit] = start;
-                    int limit2 = pairs[i] + 1;
-                    if (start < limit2) {
-                        last = limit2;
-                        iArr2[i] = limit2;
-                        limit = i + 1;
-                    } else {
-                        throw new IllegalArgumentException("Must be monotonically increasing.");
-                    }
-                } else {
-                    throw new IllegalArgumentException("Must be monotonically increasing.");
-                }
-            }
-            this.list[limit] = HIGH;
-            return;
+        if ((pairs.length & 1) != 0) {
+            throw new IllegalArgumentException("Must have even number of integers");
         }
-        throw new IllegalArgumentException("Must have even number of integers");
+        int[] iArr = new int[pairs.length + 1];
+        this.list = iArr;
+        this.len = iArr.length;
+        int last = -1;
+        int limit = 0;
+        while (limit < pairs.length) {
+            int start = pairs[limit];
+            if (last >= start) {
+                throw new IllegalArgumentException("Must be monotonically increasing.");
+            }
+            int[] iArr2 = this.list;
+            int i = limit + 1;
+            iArr2[limit] = start;
+            int limit2 = pairs[i] + 1;
+            if (start >= limit2) {
+                throw new IllegalArgumentException("Must be monotonically increasing.");
+            }
+            last = limit2;
+            iArr2[i] = limit2;
+            limit = i + 1;
+        }
+        this.list[limit] = HIGH;
     }
 
     public UnicodeSet(String pattern) {
         this();
-        applyPattern(pattern, (ParsePosition) null, (SymbolTable) null, 1);
+        applyPattern(pattern, null, null, 1);
     }
 
     public UnicodeSet(String pattern, boolean ignoreWhitespace) {
         this();
-        applyPattern(pattern, (ParsePosition) null, (SymbolTable) null, ignoreWhitespace);
+        applyPattern(pattern, null, null, ignoreWhitespace ? 1 : 0);
     }
 
     public UnicodeSet(String pattern, int options) {
         this();
-        applyPattern(pattern, (ParsePosition) null, (SymbolTable) null, options);
+        applyPattern(pattern, null, null, options);
     }
 
     public UnicodeSet(String pattern, ParsePosition pos, SymbolTable symbols) {
@@ -190,7 +189,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         this.len = other.len;
         this.pat = other.pat;
         if (other.hasStrings()) {
-            this.strings = new TreeSet(other.strings);
+            this.strings = new TreeSet((SortedSet) other.strings);
         } else {
             this.strings = EMPTY_STRINGS;
         }
@@ -199,17 +198,17 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
 
     public final UnicodeSet applyPattern(String pattern) {
         checkFrozen();
-        return applyPattern(pattern, (ParsePosition) null, (SymbolTable) null, 1);
+        return applyPattern(pattern, null, null, 1);
     }
 
     public UnicodeSet applyPattern(String pattern, boolean ignoreWhitespace) {
         checkFrozen();
-        return applyPattern(pattern, (ParsePosition) null, (SymbolTable) null, ignoreWhitespace);
+        return applyPattern(pattern, null, null, ignoreWhitespace ? 1 : 0);
     }
 
     public UnicodeSet applyPattern(String pattern, int options) {
         checkFrozen();
-        return applyPattern(pattern, (ParsePosition) null, (SymbolTable) null, options);
+        return applyPattern(pattern, null, null, options);
     }
 
     public static boolean resemblesPattern(String pattern, int pos) {
@@ -219,14 +218,15 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     private static void appendCodePoint(Appendable app, int c) {
         if (c < 0 || c > 1114111) {
             throw new AssertionError();
-        } else if (c <= 65535) {
-            try {
+        }
+        try {
+            if (c <= 65535) {
                 app.append((char) c);
-            } catch (IOException e) {
-                throw new ICUUncheckedIOException(e);
+            } else {
+                app.append(UTF16.getLeadSurrogate(c)).append(UTF16.getTrailSurrogate(c));
             }
-        } else {
-            app.append(UTF16.getLeadSurrogate(c)).append(UTF16.getTrailSurrogate(c));
+        } catch (IOException e) {
+            throw new ICUUncheckedIOException(e);
         }
     }
 
@@ -248,7 +248,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         return buf;
     }
 
-    /* access modifiers changed from: private */
+    /* JADX INFO: Access modifiers changed from: private */
     public static <T extends Appendable> T _appendToPat(T buf, int c, boolean escapeUnprintable) {
         if (escapeUnprintable) {
             try {
@@ -283,27 +283,26 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         return buf;
     }
 
+    @Override // com.ibm.icu.text.UnicodeMatcher
     public String toPattern(boolean escapeUnprintable) {
         String str = this.pat;
-        if (str == null || escapeUnprintable) {
-            return ((StringBuilder) _toPattern(new StringBuilder(), escapeUnprintable)).toString();
+        if (str != null && !escapeUnprintable) {
+            return str;
         }
-        return str;
+        StringBuilder result = new StringBuilder();
+        return ((StringBuilder) _toPattern(result, escapeUnprintable)).toString();
     }
 
     private <T extends Appendable> T _toPattern(T result, boolean escapeUnprintable) {
         String str = this.pat;
         if (str == null) {
-            return appendNewPattern(result, escapeUnprintable, true);
+            return (T) appendNewPattern(result, escapeUnprintable, true);
         }
-        if (!escapeUnprintable) {
-            try {
+        try {
+            if (!escapeUnprintable) {
                 result.append(str);
                 return result;
-            } catch (IOException e) {
-                throw new ICUUncheckedIOException(e);
             }
-        } else {
             boolean oddNumberOfBackslashes = false;
             int i = 0;
             while (i < this.pat.length()) {
@@ -312,20 +311,22 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
                 if (Utility.isUnprintable(c)) {
                     Utility.escapeUnprintable(result, c);
                     oddNumberOfBackslashes = false;
-                } else if (oddNumberOfBackslashes || c != 92) {
+                } else if (!oddNumberOfBackslashes && c == 92) {
+                    oddNumberOfBackslashes = true;
+                } else {
                     if (oddNumberOfBackslashes) {
                         result.append('\\');
                     }
                     appendCodePoint(result, c);
                     oddNumberOfBackslashes = false;
-                } else {
-                    oddNumberOfBackslashes = true;
                 }
             }
             if (oddNumberOfBackslashes) {
                 result.append('\\');
             }
             return result;
+        } catch (IOException e) {
+            throw new ICUUncheckedIOException(e);
         }
     }
 
@@ -381,8 +382,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean hasStrings() {
+    boolean hasStrings() {
         return !this.strings.isEmpty();
     }
 
@@ -399,6 +399,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         return this.len == 1 && !hasStrings();
     }
 
+    @Override // com.ibm.icu.text.UnicodeMatcher
     public boolean matchesIndexValue(int v) {
         for (int i = 0; i < getRangeCount(); i++) {
             int low = getRangeStart(i);
@@ -411,9 +412,10 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
                 return true;
             }
         }
-        if (hasStrings() != 0) {
+        if (hasStrings()) {
             for (String s : this.strings) {
-                if ((UTF16.charAt(s, 0) & 255) == v) {
+                int c = UTF16.charAt(s, 0);
+                if ((c & 255) == v) {
                     return true;
                 }
             }
@@ -421,51 +423,49 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         return false;
     }
 
+    @Override // com.ibm.icu.text.UnicodeFilter, com.ibm.icu.text.UnicodeMatcher
     public int matches(Replaceable text, int[] offset, int limit, boolean incremental) {
-        if (offset[0] != limit) {
-            if (hasStrings()) {
-                boolean forward = offset[0] < limit;
-                char firstChar = text.charAt(offset[0]);
-                int highWaterLength = 0;
-                for (String trial : this.strings) {
-                    char c = trial.charAt(forward ? 0 : trial.length() - 1);
-                    if (!forward || c <= firstChar) {
-                        if (c == firstChar) {
-                            int length = matchRest(text, offset[0], limit, trial);
-                            if (incremental) {
-                                if (length == (forward ? limit - offset[0] : offset[0] - limit)) {
-                                    return 1;
-                                }
-                            }
-                            if (length == trial.length()) {
-                                if (length > highWaterLength) {
-                                    highWaterLength = length;
-                                }
-                                if (forward && length < highWaterLength) {
-                                    break;
-                                }
-                            } else {
-                                continue;
-                            }
+        if (offset[0] == limit) {
+            if (contains(65535)) {
+                return incremental ? 1 : 2;
+            }
+            return 0;
+        }
+        if (hasStrings()) {
+            boolean forward = offset[0] < limit;
+            char firstChar = text.charAt(offset[0]);
+            int highWaterLength = 0;
+            for (String trial : this.strings) {
+                char c = trial.charAt(forward ? 0 : trial.length() - 1);
+                if (forward && c > firstChar) {
+                    break;
+                } else if (c == firstChar) {
+                    int length = matchRest(text, offset[0], limit, trial);
+                    if (incremental) {
+                        int maxLen = forward ? limit - offset[0] : offset[0] - limit;
+                        if (length == maxLen) {
+                            return 1;
+                        }
+                    }
+                    int maxLen2 = trial.length();
+                    if (length == maxLen2) {
+                        if (length > highWaterLength) {
+                            highWaterLength = length;
+                        }
+                        if (forward && length < highWaterLength) {
+                            break;
                         }
                     } else {
-                        break;
+                        continue;
                     }
                 }
-                if (highWaterLength != 0) {
-                    offset[0] = offset[0] + (forward ? highWaterLength : -highWaterLength);
-                    return 2;
-                }
             }
-            return super.matches(text, offset, limit, incremental);
-        } else if (!contains(65535)) {
-            return 0;
-        } else {
-            if (incremental) {
-                return 1;
+            if (highWaterLength != 0) {
+                offset[0] = offset[0] + (forward ? highWaterLength : -highWaterLength);
+                return 2;
             }
-            return 2;
         }
+        return super.matches(text, offset, limit, incremental);
     }
 
     private static int matchRest(Replaceable text, int start, int limit, String s) {
@@ -482,9 +482,9 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
                 }
             }
         } else {
-            int maxLen2 = start - limit;
-            if (maxLen2 > slen) {
-                maxLen2 = slen;
+            maxLen = start - limit;
+            if (maxLen > slen) {
+                maxLen = slen;
             }
             int slen2 = slen - 1;
             for (int i2 = 1; i2 < maxLen; i2++) {
@@ -496,75 +496,58 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         return maxLen;
     }
 
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r5v1, resolved type: java.lang.Object} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v4, resolved type: java.lang.String} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r4v2, resolved type: java.lang.Object} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v6, resolved type: java.lang.String} */
-    /* JADX WARNING: Multi-variable type inference failed */
-    @java.lang.Deprecated
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public int matchesAt(java.lang.CharSequence r7, int r8) {
-        /*
-            r6 = this;
-            r0 = -1
-            boolean r1 = r6.hasStrings()
-            if (r1 == 0) goto L_0x0042
-            char r1 = r7.charAt(r8)
-            r2 = 0
-            java.util.SortedSet<java.lang.String> r3 = r6.strings
-            java.util.Iterator r3 = r3.iterator()
-        L_0x0012:
-            boolean r4 = r3.hasNext()
-            if (r4 == 0) goto L_0x002b
-            java.lang.Object r4 = r3.next()
-            r2 = r4
-            java.lang.String r2 = (java.lang.String) r2
-            r4 = 0
-            char r4 = r2.charAt(r4)
-            if (r4 >= r1) goto L_0x0027
-            goto L_0x0012
-        L_0x0027:
-            if (r4 <= r1) goto L_0x002a
-            goto L_0x0042
-        L_0x002a:
-            goto L_0x0012
-        L_0x002b:
-            int r4 = matchesAt(r7, r8, r2)
-            if (r0 <= r4) goto L_0x0032
-            goto L_0x0042
-        L_0x0032:
-            r0 = r4
-            boolean r5 = r3.hasNext()
-            if (r5 != 0) goto L_0x003a
-            goto L_0x0042
-        L_0x003a:
-            java.lang.Object r5 = r3.next()
-            r2 = r5
-            java.lang.String r2 = (java.lang.String) r2
-            goto L_0x002b
-        L_0x0042:
-            r1 = 2
-            if (r0 >= r1) goto L_0x0053
-            int r1 = com.ibm.icu.text.UTF16.charAt((java.lang.CharSequence) r7, (int) r8)
-            boolean r2 = r6.contains((int) r1)
-            if (r2 == 0) goto L_0x0053
-            int r0 = com.ibm.icu.text.UTF16.getCharCount(r1)
-        L_0x0053:
-            int r1 = r8 + r0
-            return r1
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.UnicodeSet.matchesAt(java.lang.CharSequence, int):int");
+    @Deprecated
+    public int matchesAt(CharSequence text, int offset) {
+        int lastLen = -1;
+        if (hasStrings()) {
+            char firstChar = text.charAt(offset);
+            String trial = null;
+            Iterator<String> it = this.strings.iterator();
+            while (true) {
+                if (it.hasNext()) {
+                    String trial2 = it.next();
+                    trial = trial2;
+                    char firstStringChar = trial.charAt(0);
+                    if (firstStringChar >= firstChar && firstStringChar > firstChar) {
+                        break;
+                    }
+                } else {
+                    while (true) {
+                        int tempLen = matchesAt(text, offset, trial);
+                        if (lastLen > tempLen) {
+                            break;
+                        }
+                        lastLen = tempLen;
+                        if (!it.hasNext()) {
+                            break;
+                        }
+                        String trial3 = it.next();
+                        trial = trial3;
+                    }
+                }
+            }
+        }
+        if (lastLen < 2) {
+            int cp = UTF16.charAt(text, offset);
+            if (contains(cp)) {
+                lastLen = UTF16.getCharCount(cp);
+            }
+        }
+        return offset + lastLen;
     }
 
     private static int matchesAt(CharSequence text, int offsetInText, CharSequence substring) {
-        int len2 = substring.length();
-        if (text.length() + offsetInText > len2) {
+        int len = substring.length();
+        int textLength = text.length();
+        if (textLength + offsetInText > len) {
             return -1;
         }
         int i = 0;
         int j = offsetInText;
-        while (i < len2) {
-            if (substring.charAt(i) != text.charAt(j)) {
+        while (i < len) {
+            char pc = substring.charAt(i);
+            char tc = text.charAt(j);
+            if (pc != tc) {
                 return -1;
             }
             i++;
@@ -573,13 +556,14 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         return i;
     }
 
+    @Override // com.ibm.icu.text.UnicodeMatcher
     public void addMatchSetTo(UnicodeSet toUnionTo) {
         toUnionTo.addAll(this);
     }
 
     public int indexOf(int c) {
         if (c < 0 || c > 1114111) {
-            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex((long) c, 6));
+            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex(c, 6));
         }
         int start = 0;
         int n = 0;
@@ -601,22 +585,22 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     }
 
     public int charAt(int index) {
-        if (index < 0) {
-            return -1;
-        }
-        int len2 = this.len & -2;
-        int start = 0;
-        while (start < len2) {
-            int[] iArr = this.list;
-            int i = start + 1;
-            int start2 = iArr[start];
-            int i2 = i + 1;
-            int count = iArr[i] - start2;
-            if (index < count) {
-                return start2 + index;
+        if (index >= 0) {
+            int len2 = this.len & (-2);
+            int start = 0;
+            while (start < len2) {
+                int[] iArr = this.list;
+                int i = start + 1;
+                int start2 = iArr[start];
+                int i2 = i + 1;
+                int count = iArr[i] - start2;
+                if (index < count) {
+                    return start2 + index;
+                }
+                index -= count;
+                start = i2;
             }
-            index -= count;
-            start = i2;
+            return -1;
         }
         return -1;
     }
@@ -633,55 +617,55 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
 
     private UnicodeSet add_unchecked(int start, int end) {
         if (start < 0 || start > 1114111) {
-            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex((long) start, 6));
-        } else if (end < 0 || end > 1114111) {
-            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex((long) end, 6));
-        } else {
-            if (start < end) {
-                int limit = end + 1;
-                int i = this.len;
-                if ((i & 1) != 0) {
-                    int lastLimit = i == 1 ? -2 : this.list[i - 2];
-                    if (lastLimit <= start) {
-                        checkFrozen();
-                        if (lastLimit == start) {
-                            int[] iArr = this.list;
-                            int i2 = this.len;
-                            iArr[i2 - 2] = limit;
-                            if (limit == HIGH) {
-                                this.len = i2 - 1;
-                            }
-                        } else {
-                            int[] iArr2 = this.list;
-                            int i3 = this.len;
-                            iArr2[i3 - 1] = start;
-                            if (limit < HIGH) {
-                                ensureCapacity(i3 + 2);
-                                int[] iArr3 = this.list;
-                                int i4 = this.len;
-                                int i5 = i4 + 1;
-                                this.len = i5;
-                                iArr3[i4] = limit;
-                                this.len = i5 + 1;
-                                iArr3[i5] = HIGH;
-                            } else {
-                                ensureCapacity(i3 + 1);
-                                int[] iArr4 = this.list;
-                                int i6 = this.len;
-                                this.len = i6 + 1;
-                                iArr4[i6] = HIGH;
-                            }
-                        }
-                        this.pat = null;
-                        return this;
-                    }
-                }
-                add(range(start, end), 2, 0);
-            } else if (start == end) {
-                add(start);
-            }
-            return this;
+            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex(start, 6));
         }
+        if (end < 0 || end > 1114111) {
+            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex(end, 6));
+        }
+        if (start < end) {
+            int limit = end + 1;
+            int i = this.len;
+            if ((i & 1) != 0) {
+                int lastLimit = i == 1 ? -2 : this.list[i - 2];
+                if (lastLimit <= start) {
+                    checkFrozen();
+                    if (lastLimit == start) {
+                        int[] iArr = this.list;
+                        int i2 = this.len;
+                        iArr[i2 - 2] = limit;
+                        if (limit == HIGH) {
+                            this.len = i2 - 1;
+                        }
+                    } else {
+                        int[] iArr2 = this.list;
+                        int i3 = this.len;
+                        iArr2[i3 - 1] = start;
+                        if (limit < HIGH) {
+                            ensureCapacity(i3 + 2);
+                            int[] iArr3 = this.list;
+                            int i4 = this.len;
+                            int i5 = i4 + 1;
+                            this.len = i5;
+                            iArr3[i4] = limit;
+                            this.len = i5 + 1;
+                            iArr3[i5] = HIGH;
+                        } else {
+                            ensureCapacity(i3 + 1);
+                            int[] iArr4 = this.list;
+                            int i6 = this.len;
+                            this.len = i6 + 1;
+                            iArr4[i6] = HIGH;
+                        }
+                    }
+                    this.pat = null;
+                    return this;
+                }
+            }
+            add(range(start, end), 2, 0);
+        } else if (start == end) {
+            add(start);
+        }
+        return this;
     }
 
     public final UnicodeSet add(int c) {
@@ -691,7 +675,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
 
     private final UnicodeSet add_unchecked(int c) {
         if (c < 0 || c > 1114111) {
-            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex((long) c, 6));
+            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex(c, 6));
         }
         int i = findCodePoint(c);
         if ((i & 1) != 0) {
@@ -714,25 +698,25 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
                     this.len -= 2;
                 }
             }
-        } else if (i <= 0 || c != iArr[i - 1]) {
-            int i3 = this.len;
-            if (i3 + 2 > iArr.length) {
-                int[] temp = new int[nextCapacity(i3 + 2)];
+        } else if (i > 0 && c == iArr[i - 1]) {
+            int i3 = i - 1;
+            iArr[i3] = iArr[i3] + 1;
+        } else {
+            int i4 = this.len;
+            if (i4 + 2 > iArr.length) {
+                int[] temp = new int[nextCapacity(i4 + 2)];
                 if (i != 0) {
                     System.arraycopy(this.list, 0, temp, 0, i);
                 }
                 System.arraycopy(this.list, i, temp, i + 2, this.len - i);
                 this.list = temp;
             } else {
-                System.arraycopy(iArr, i, iArr, i + 2, i3 - i);
+                System.arraycopy(iArr, i, iArr, i + 2, i4 - i);
             }
             int[] iArr4 = this.list;
             iArr4[i] = c;
             iArr4[i + 1] = c + 1;
             this.len += 2;
-        } else {
-            int i4 = i - 1;
-            iArr[i4] = iArr[i4] + 1;
         }
         this.pat = null;
         return this;
@@ -763,18 +747,18 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     private static int getSingleCP(CharSequence s) {
         if (s.length() < 1) {
             throw new IllegalArgumentException("Can't use zero-length strings in UnicodeSet");
-        } else if (s.length() > 2) {
-            return -1;
-        } else {
-            if (s.length() == 1) {
-                return s.charAt(0);
-            }
-            int cp = UTF16.charAt(s, 0);
-            if (cp > 65535) {
-                return cp;
-            }
+        }
+        if (s.length() > 2) {
             return -1;
         }
+        if (s.length() == 1) {
+            return s.charAt(0);
+        }
+        int cp = UTF16.charAt(s, 0);
+        if (cp > 65535) {
+            return cp;
+        }
+        return -1;
     }
 
     public final UnicodeSet addAll(CharSequence s) {
@@ -820,17 +804,17 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     public UnicodeSet retain(int start, int end) {
         checkFrozen();
         if (start < 0 || start > 1114111) {
-            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex((long) start, 6));
-        } else if (end < 0 || end > 1114111) {
-            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex((long) end, 6));
-        } else {
-            if (start <= end) {
-                retain(range(start, end), 2, 0);
-            } else {
-                clear();
-            }
-            return this;
+            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex(start, 6));
         }
+        if (end < 0 || end > 1114111) {
+            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex(end, 6));
+        }
+        if (start <= end) {
+            retain(range(start, end), 2, 0);
+        } else {
+            clear();
+        }
+        return this;
     }
 
     public final UnicodeSet retain(int c) {
@@ -842,7 +826,8 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         if (cp < 0) {
             checkFrozen();
             String s = cs.toString();
-            if (this.strings.contains(s) && size() == 1) {
+            boolean isIn = this.strings.contains(s);
+            if (isIn && size() == 1) {
                 return this;
             }
             clear();
@@ -857,15 +842,15 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     public UnicodeSet remove(int start, int end) {
         checkFrozen();
         if (start < 0 || start > 1114111) {
-            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex((long) start, 6));
-        } else if (end < 0 || end > 1114111) {
-            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex((long) end, 6));
-        } else {
-            if (start <= end) {
-                retain(range(start, end), 2, 2);
-            }
-            return this;
+            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex(start, 6));
         }
+        if (end < 0 || end > 1114111) {
+            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex(end, 6));
+        }
+        if (start <= end) {
+            retain(range(start, end), 2, 2);
+        }
+        return this;
     }
 
     public final UnicodeSet remove(int c) {
@@ -890,16 +875,16 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     public UnicodeSet complement(int start, int end) {
         checkFrozen();
         if (start < 0 || start > 1114111) {
-            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex((long) start, 6));
-        } else if (end < 0 || end > 1114111) {
-            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex((long) end, 6));
-        } else {
-            if (start <= end) {
-                xor(range(start, end), 2, 0);
-            }
-            this.pat = null;
-            return this;
+            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex(start, 6));
         }
+        if (end < 0 || end > 1114111) {
+            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex(end, 6));
+        }
+        if (start <= end) {
+            xor(range(start, end), 2, 0);
+        }
+        this.pat = null;
+        return this;
     }
 
     public final UnicodeSet complement(int c) {
@@ -940,17 +925,19 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         return this;
     }
 
+    @Override // com.ibm.icu.text.UnicodeFilter
     public boolean contains(int c) {
         if (c < 0 || c > 1114111) {
-            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex((long) c, 6));
-        } else if (this.bmpSet != null) {
-            return this.bmpSet.contains(c);
-        } else {
-            if (this.stringSpan != null) {
-                return this.stringSpan.contains(c);
-            }
-            return (findCodePoint(c) & 1) != 0;
+            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex(c, 6));
         }
+        if (this.bmpSet != null) {
+            return this.bmpSet.contains(c);
+        }
+        if (this.stringSpan != null) {
+            return this.stringSpan.contains(c);
+        }
+        int i = findCodePoint(c);
+        return (i & 1) != 0;
     }
 
     private final int findCodePoint(int c) {
@@ -979,13 +966,13 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
 
     public boolean contains(int start, int end) {
         if (start < 0 || start > 1114111) {
-            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex((long) start, 6));
-        } else if (end < 0 || end > 1114111) {
-            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex((long) end, 6));
-        } else {
-            int i = findCodePoint(start);
-            return (i & 1) != 0 && end < this.list[i];
+            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex(start, 6));
         }
+        if (end < 0 || end > 1114111) {
+            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex(end, 6));
+        }
+        int i = findCodePoint(start);
+        return (i & 1) != 0 && end < this.list[i];
     }
 
     public final boolean contains(CharSequence s) {
@@ -996,30 +983,47 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         return contains(cp);
     }
 
+    /* JADX WARN: Code restructure failed: missing block: B:14:0x003c, code lost:
+        if (r18.strings.containsAll(r19.strings) != false) goto L13;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:15:0x003e, code lost:
+        return false;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:16:0x003f, code lost:
+        return true;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:24:0x005a, code lost:
+        return false;
+     */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
     public boolean containsAll(UnicodeSet b) {
-        UnicodeSet unicodeSet = b;
-        int[] listB = unicodeSet.list;
+        int[] listB = b.list;
         boolean needA = true;
         boolean needB = true;
         int startA = 0;
         int startB = 0;
         int aLen = this.len - 1;
-        int bLen = unicodeSet.len - 1;
+        int bLen = b.len - 1;
         int aPtr = 0;
         int bPtr = 0;
         int limitA = 0;
         int limitB = 0;
         while (true) {
             if (needA) {
-                if (startA < aLen) {
+                if (startA >= aLen) {
+                    if (!needB || startB < bLen) {
+                        return false;
+                    }
+                } else {
                     int[] iArr = this.list;
                     int aPtr2 = startA + 1;
-                    int aPtr3 = iArr[startA];
+                    int startA2 = iArr[startA];
+                    int startA3 = aPtr2 + 1;
                     limitA = iArr[aPtr2];
-                    aPtr = aPtr3;
-                    startA = aPtr2 + 1;
-                } else if (!needB || startB < bLen) {
-                    return false;
+                    aPtr = startA2;
+                    startA = startA3;
                 }
             }
             if (needB) {
@@ -1028,24 +1032,21 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
                 }
                 int bPtr2 = startB + 1;
                 int startB2 = listB[startB];
+                int startB3 = bPtr2 + 1;
                 limitB = listB[bPtr2];
                 bPtr = startB2;
-                startB = bPtr2 + 1;
+                startB = startB3;
             }
             if (bPtr >= limitA) {
                 needA = true;
                 needB = false;
             } else if (bPtr < aPtr || limitB > limitA) {
-                return false;
+                break;
             } else {
                 needA = false;
                 needB = true;
             }
         }
-        if (!this.strings.containsAll(unicodeSet.strings)) {
-            return false;
-        }
-        return true;
     }
 
     public boolean containsAll(String s) {
@@ -1054,10 +1055,10 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
             int cp = UTF16.charAt(s, i);
             if (contains(cp)) {
                 i += UTF16.getCharCount(cp);
-            } else if (!hasStrings()) {
-                return false;
-            } else {
+            } else if (hasStrings()) {
                 return containsAll(s, 0);
+            } else {
+                return false;
             }
         }
         return true;
@@ -1096,31 +1097,27 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     public boolean containsNone(int start, int end) {
         int[] iArr;
         if (start < 0 || start > 1114111) {
-            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex((long) start, 6));
-        } else if (end < 0 || end > 1114111) {
-            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex((long) end, 6));
-        } else {
-            int i = -1;
-            do {
-                iArr = this.list;
-                i++;
-            } while (start >= iArr[i]);
-            if ((i & 1) != 0 || end >= iArr[i]) {
-                return false;
-            }
-            return true;
+            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex(start, 6));
         }
+        if (end < 0 || end > 1114111) {
+            throw new IllegalArgumentException("Invalid code point U+" + Utility.hex(end, 6));
+        }
+        int i = -1;
+        do {
+            iArr = this.list;
+            i++;
+        } while (start >= iArr[i]);
+        return (i & 1) == 0 && end < iArr[i];
     }
 
     public boolean containsNone(UnicodeSet b) {
-        UnicodeSet unicodeSet = b;
-        int[] listB = unicodeSet.list;
+        int[] listB = b.list;
         boolean needA = true;
         boolean needB = true;
         int startA = 0;
         int startB = 0;
         int aLen = this.len - 1;
-        int bLen = unicodeSet.len - 1;
+        int bLen = b.len - 1;
         int aPtr = 0;
         int bPtr = 0;
         int limitA = 0;
@@ -1132,10 +1129,11 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
                 }
                 int[] iArr = this.list;
                 int aPtr2 = startA + 1;
-                int aPtr3 = iArr[startA];
+                int startA2 = iArr[startA];
+                int startA3 = aPtr2 + 1;
                 limitA = iArr[aPtr2];
-                aPtr = aPtr3;
-                startA = aPtr2 + 1;
+                aPtr = startA2;
+                startA = startA3;
             }
             if (needB) {
                 if (startB >= bLen) {
@@ -1143,24 +1141,22 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
                 }
                 int bPtr2 = startB + 1;
                 int startB2 = listB[startB];
+                int startB3 = bPtr2 + 1;
                 limitB = listB[bPtr2];
                 bPtr = startB2;
-                startB = bPtr2 + 1;
+                startB = startB3;
             }
             if (bPtr >= limitA) {
                 needA = true;
                 needB = false;
-            } else if (aPtr < limitB) {
-                return false;
-            } else {
+            } else if (aPtr >= limitB) {
                 needA = false;
                 needB = true;
+            } else {
+                return false;
             }
         }
-        if (!SortedSetRelation.hasRelation(this.strings, 5, unicodeSet.strings)) {
-            return false;
-        }
-        return true;
+        return SortedSetRelation.hasRelation(this.strings, 5, b.strings);
     }
 
     public boolean containsNone(CharSequence s) {
@@ -1185,7 +1181,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         if (c.hasStrings()) {
             SortedSet<String> sortedSet = this.strings;
             if (sortedSet == EMPTY_STRINGS) {
-                this.strings = new TreeSet(c.strings);
+                this.strings = new TreeSet((SortedSet) c.strings);
             } else {
                 sortedSet.addAll(c.strings);
             }
@@ -1221,7 +1217,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         if (c.hasStrings()) {
             SortedSet<String> sortedSet = this.strings;
             if (sortedSet == EMPTY_STRINGS) {
-                this.strings = new TreeSet(c.strings);
+                this.strings = new TreeSet((SortedSet) c.strings);
             } else {
                 SortedSetRelation.doOperation(sortedSet, 5, c.strings);
             }
@@ -1333,673 +1329,509 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         return this;
     }
 
-    /* JADX WARNING: Can't fix incorrect switch cases order */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private void applyPattern(com.ibm.icu.impl.RuleCharacterIterator r28, com.ibm.icu.text.SymbolTable r29, java.lang.Appendable r30, int r31, int r32) {
-        /*
-            r27 = this;
-            r1 = r27
-            r8 = r28
-            r9 = r29
-            r10 = r30
-            r11 = r32
-            r0 = 100
-            if (r11 <= r0) goto L_0x0013
-            java.lang.String r0 = "Pattern nested too deeply"
-            syntaxError(r8, r0)
-        L_0x0013:
-            r0 = 3
-            r2 = r31 & 1
-            if (r2 == 0) goto L_0x001c
-            r0 = r0 | 4
-            r12 = r0
-            goto L_0x001d
-        L_0x001c:
-            r12 = r0
-        L_0x001d:
-            java.lang.StringBuilder r0 = new java.lang.StringBuilder
-            r0.<init>()
-            r13 = r0
-            r0 = 0
-            r2 = 0
-            r3 = 0
-            r4 = 0
-            r5 = 0
-            r6 = 0
-            r7 = 0
-            r14 = 0
-            r15 = 0
-            r27.clear()
-            r16 = 0
-            r17 = r2
-            r2 = r7
-            r7 = r6
-            r6 = r14
-            r14 = r0
-            r26 = r16
-            r16 = r15
-            r15 = r26
-        L_0x003d:
-            r10 = 2
-            r18 = r15
-            if (r2 == r10) goto L_0x03d3
-            boolean r0 = r28.atEnd()
-            if (r0 != 0) goto L_0x03d3
-            r0 = 0
-            r19 = 0
-            r20 = 0
-            r21 = 0
-            boolean r22 = resemblesPropertyPattern((com.ibm.icu.impl.RuleCharacterIterator) r8, (int) r12)
-            if (r22 == 0) goto L_0x005b
-            r21 = 2
-            r10 = r2
-            r15 = r4
-            goto L_0x00de
-        L_0x005b:
-            java.lang.Object r4 = r8.getPos(r4)
-            int r15 = r8.next(r12)
-            boolean r19 = r28.isEscaped()
-            r0 = 91
-            if (r15 != r0) goto L_0x00bd
-            if (r19 != 0) goto L_0x00bd
-            r10 = 1
-            if (r2 != r10) goto L_0x007a
-            r8.setPos(r4)
-            r21 = 1
-            r10 = r2
-            r0 = r15
-            r15 = r4
-            goto L_0x00de
-        L_0x007a:
-            r2 = 1
-            r13.append(r0)
-            java.lang.Object r0 = r8.getPos(r4)
-            int r4 = r8.next(r12)
-            boolean r10 = r28.isEscaped()
-            r15 = 94
-            if (r4 != r15) goto L_0x00a7
-            if (r10 != 0) goto L_0x00a7
-            r16 = 1
-            r13.append(r15)
-            java.lang.Object r0 = r8.getPos(r0)
-            int r4 = r8.next(r12)
-            boolean r10 = r28.isEscaped()
-            r26 = r4
-            r4 = r0
-            r0 = r26
-            goto L_0x00ac
-        L_0x00a7:
-            r26 = r4
-            r4 = r0
-            r0 = r26
-        L_0x00ac:
-            r15 = 45
-            if (r0 != r15) goto L_0x00b5
-            r19 = 1
-            r10 = r2
-            r15 = r4
-            goto L_0x00de
-        L_0x00b5:
-            r8.setPos(r4)
-            r10 = r30
-            r15 = r18
-            goto L_0x003d
-        L_0x00bd:
-            if (r9 == 0) goto L_0x00db
-            com.ibm.icu.text.UnicodeMatcher r10 = r9.lookupMatcher(r15)
-            if (r10 == 0) goto L_0x00db
-            r0 = r10
-            com.ibm.icu.text.UnicodeSet r0 = (com.ibm.icu.text.UnicodeSet) r0     // Catch:{ ClassCastException -> 0x00d0 }
-            r20 = r0
-            r21 = 3
-            r10 = r2
-            r0 = r15
-            r15 = r4
-            goto L_0x00de
-        L_0x00d0:
-            r0 = move-exception
-            r24 = r0
-            r0 = r24
-            java.lang.String r0 = "Syntax error"
-            syntaxError(r8, r0)
-        L_0x00db:
-            r10 = r2
-            r0 = r15
-            r15 = r4
-        L_0x00de:
-            r2 = 38
-            if (r21 == 0) goto L_0x017b
-            r4 = 1
-            if (r5 != r4) goto L_0x00f8
-            if (r6 == 0) goto L_0x00ec
-            java.lang.String r4 = "Char expected after operator"
-            syntaxError(r8, r4)
-        L_0x00ec:
-            r1.add_unchecked(r7, r7)
-            r4 = 0
-            _appendToPat(r13, (int) r7, (boolean) r4)
-            r5 = 0
-            r6 = 0
-            r24 = r5
-            goto L_0x00fa
-        L_0x00f8:
-            r24 = r5
-        L_0x00fa:
-            r4 = 45
-            if (r6 == r4) goto L_0x0100
-            if (r6 != r2) goto L_0x0103
-        L_0x0100:
-            r13.append(r6)
-        L_0x0103:
-            if (r20 != 0) goto L_0x0112
-            if (r3 != 0) goto L_0x010d
-            com.ibm.icu.text.UnicodeSet r2 = new com.ibm.icu.text.UnicodeSet
-            r2.<init>()
-            r3 = r2
-        L_0x010d:
-            r20 = r3
-            r5 = r20
-            goto L_0x0116
-        L_0x0112:
-            r5 = r20
-            r20 = r3
-        L_0x0116:
-            switch(r21) {
-                case 1: goto L_0x0132;
-                case 2: goto L_0x0127;
-                case 3: goto L_0x011e;
-                default: goto L_0x0119;
+    /* JADX WARN: Code restructure failed: missing block: B:190:0x03d3, code lost:
+        r15 = r17;
+     */
+    /* JADX WARN: Removed duplicated region for block: B:172:0x037d  */
+    /* JADX WARN: Removed duplicated region for block: B:173:0x0380  */
+    /* JADX WARN: Removed duplicated region for block: B:176:0x038c  */
+    /* JADX WARN: Removed duplicated region for block: B:184:0x03b9  */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    private void applyPattern(RuleCharacterIterator chars, SymbolTable symbols, Appendable rebuiltPat, int options, int depth) {
+        int opts;
+        boolean usePat;
+        int mode;
+        Object backup;
+        char c;
+        UnicodeSet nested;
+        UnicodeSet nested2;
+        UnicodeSet nested3;
+        char op;
+        int lastChar;
+        UnicodeSet scratch;
+        String lastString;
+        boolean ok;
+        int c2;
+        UnicodeSet scratch2;
+        String lastString2;
+        UnicodeMatcher m;
+        SymbolTable symbolTable = symbols;
+        int i = depth;
+        if (i > 100) {
+            syntaxError(chars, "Pattern nested too deeply");
+        }
+        if ((options & 1) == 0) {
+            opts = 3;
+        } else {
+            int opts2 = 3 | 4;
+            opts = opts2;
+        }
+        StringBuilder patBuf = new StringBuilder();
+        UnicodeSet scratch3 = null;
+        Object backup2 = null;
+        char c3 = 0;
+        clear();
+        boolean usePat2 = false;
+        int mode2 = 0;
+        int mode3 = 0;
+        char op2 = 0;
+        StringBuilder buf = null;
+        boolean invert = false;
+        String lastString3 = null;
+        while (true) {
+            String lastString4 = lastString3;
+            if (mode2 != 2 && !chars.atEnd()) {
+                int c4 = 0;
+                boolean literal = false;
+                UnicodeSet nested4 = null;
+                int setMode = 0;
+                if (resemblesPropertyPattern(chars, opts)) {
+                    setMode = 2;
+                    mode = mode2;
+                    backup = backup2;
+                } else {
+                    Object backup3 = chars.getPos(backup2);
+                    int c5 = chars.next(opts);
+                    literal = chars.isEscaped();
+                    if (c5 == 91 && !literal) {
+                        if (mode2 == 1) {
+                            chars.setPos(backup3);
+                            setMode = 1;
+                            mode = mode2;
+                            c4 = c5;
+                            backup = backup3;
+                        } else {
+                            mode2 = 1;
+                            patBuf.append('[');
+                            Object backup4 = chars.getPos(backup3);
+                            int c6 = chars.next(opts);
+                            boolean literal2 = chars.isEscaped();
+                            if (c6 == 94 && !literal2) {
+                                invert = true;
+                                patBuf.append('^');
+                                Object backup5 = chars.getPos(backup4);
+                                int c7 = chars.next(opts);
+                                chars.isEscaped();
+                                backup2 = backup5;
+                                c4 = c7;
+                            } else {
+                                backup2 = backup4;
+                                c4 = c6;
+                            }
+                            if (c4 == 45) {
+                                literal = true;
+                                mode = 1;
+                                backup = backup2;
+                            } else {
+                                chars.setPos(backup2);
+                                lastString3 = lastString4;
+                            }
+                        }
+                    } else {
+                        if (symbolTable != null && (m = symbolTable.lookupMatcher(c5)) != null) {
+                            try {
+                                nested4 = (UnicodeSet) m;
+                                setMode = 3;
+                                mode = mode2;
+                                c4 = c5;
+                                backup = backup3;
+                            } catch (ClassCastException e) {
+                                syntaxError(chars, "Syntax error");
+                            }
+                        }
+                        mode = mode2;
+                        c4 = c5;
+                        backup = backup3;
+                    }
+                }
+                if (setMode != 0) {
+                    if (c3 != 1) {
+                        c = c3;
+                    } else {
+                        if (op2 != 0) {
+                            syntaxError(chars, "Char expected after operator");
+                        }
+                        add_unchecked(mode3, mode3);
+                        _appendToPat(patBuf, mode3, false);
+                        op2 = 0;
+                        c = 0;
+                    }
+                    if (op2 == '-' || op2 == '&') {
+                        patBuf.append(op2);
+                    }
+                    if (nested4 != null) {
+                        nested = nested4;
+                        nested2 = scratch3;
+                    } else {
+                        if (scratch3 == null) {
+                            scratch3 = new UnicodeSet();
+                        }
+                        nested2 = scratch3;
+                        nested = nested2;
+                    }
+                    switch (setMode) {
+                        case 1:
+                            int i2 = i + 1;
+                            nested3 = nested;
+                            op = op2;
+                            lastChar = mode3;
+                            nested.applyPattern(chars, symbols, patBuf, options, i2);
+                            break;
+                        case 2:
+                            chars.skipIgnored(opts);
+                            nested.applyPropertyPattern(chars, patBuf, symbolTable);
+                            nested3 = nested;
+                            op = op2;
+                            lastChar = mode3;
+                            break;
+                        case 3:
+                            nested._toPattern(patBuf, false);
+                            nested3 = nested;
+                            op = op2;
+                            lastChar = mode3;
+                            break;
+                        default:
+                            nested3 = nested;
+                            op = op2;
+                            lastChar = mode3;
+                            break;
+                    }
+                    usePat2 = true;
+                    if (mode == 0) {
+                        set(nested3);
+                        mode2 = 2;
+                        usePat = true;
+                    } else {
+                        switch (op) {
+                            case 0:
+                                addAll(nested3);
+                                break;
+                            case '&':
+                                retainAll(nested3);
+                                break;
+                            case '-':
+                                removeAll(nested3);
+                                break;
+                        }
+                        op2 = 0;
+                        c3 = 2;
+                        i = depth;
+                        mode3 = lastChar;
+                        mode2 = mode;
+                        backup2 = backup;
+                        lastString3 = lastString4;
+                        scratch3 = nested2;
+                        symbolTable = symbols;
+                    }
+                } else {
+                    int lastChar2 = mode3;
+                    if (mode == 0) {
+                        syntaxError(chars, "Missing '['");
+                    }
+                    if (literal) {
+                        scratch = scratch3;
+                        lastString = lastString4;
+                    } else {
+                        switch (c4) {
+                            case 36:
+                                scratch = scratch3;
+                                lastString = lastString4;
+                                Object backup6 = chars.getPos(backup);
+                                c4 = chars.next(opts);
+                                boolean literal3 = chars.isEscaped();
+                                boolean anchor = c4 == 93 && !literal3;
+                                if (symbols == null && !anchor) {
+                                    c4 = 36;
+                                    chars.setPos(backup6);
+                                    backup2 = backup6;
+                                } else if (anchor && op2 == 0) {
+                                    if (c3 == 1) {
+                                        add_unchecked(lastChar2, lastChar2);
+                                        _appendToPat(patBuf, lastChar2, false);
+                                    }
+                                    add_unchecked(65535);
+                                    usePat2 = true;
+                                    patBuf.append('$').append(']');
+                                    i = depth;
+                                    lastString3 = lastString;
+                                    mode3 = lastChar2;
+                                    scratch3 = scratch;
+                                    symbolTable = symbols;
+                                    backup2 = backup6;
+                                    mode2 = 2;
+                                    break;
+                                } else {
+                                    syntaxError(chars, "Unquoted '$'");
+                                    backup2 = backup6;
+                                }
+                                switch (c3) {
+                                    case 0:
+                                        if (op2 == '-' && lastString != null) {
+                                            syntaxError(chars, "Invalid range");
+                                        }
+                                        int lastItem = c4;
+                                        lastString3 = null;
+                                        mode3 = lastItem;
+                                        c3 = 1;
+                                        break;
+                                    case 1:
+                                        if (op2 != '-') {
+                                            add_unchecked(lastChar2, lastChar2);
+                                            _appendToPat(patBuf, lastChar2, false);
+                                            int lastChar3 = c4;
+                                            mode3 = lastChar3;
+                                            lastString3 = lastString;
+                                            break;
+                                        } else {
+                                            if (lastString != null) {
+                                                syntaxError(chars, "Invalid range");
+                                            }
+                                            if (lastChar2 >= c4) {
+                                                syntaxError(chars, "Invalid range");
+                                            }
+                                            add_unchecked(lastChar2, c4);
+                                            _appendToPat(patBuf, lastChar2, false);
+                                            patBuf.append(op2);
+                                            _appendToPat(patBuf, c4, false);
+                                            lastString3 = lastString;
+                                            op2 = 0;
+                                            mode3 = lastChar2;
+                                            c3 = 0;
+                                            break;
+                                        }
+                                    case 2:
+                                        if (op2 != 0) {
+                                            syntaxError(chars, "Set expected after operator");
+                                        }
+                                        int lastChar4 = c4;
+                                        c3 = 1;
+                                        mode3 = lastChar4;
+                                        lastString3 = lastString;
+                                        break;
+                                    default:
+                                        lastString3 = lastString;
+                                        mode3 = lastChar2;
+                                        break;
+                                }
+                                symbolTable = symbols;
+                                i = depth;
+                                mode2 = mode;
+                                scratch3 = scratch;
+                                break;
+                            case 38:
+                                scratch = scratch3;
+                                lastString = lastString4;
+                                if (c3 == 2 && op2 == 0) {
+                                    op2 = (char) c4;
+                                    i = depth;
+                                    mode3 = lastChar2;
+                                    mode2 = mode;
+                                    backup2 = backup;
+                                    symbolTable = symbols;
+                                    lastString3 = lastString;
+                                    scratch3 = scratch;
+                                    break;
+                                } else {
+                                    syntaxError(chars, "'&' not after set");
+                                    break;
+                                }
+                                break;
+                            case 45:
+                                scratch = scratch3;
+                                lastString = lastString4;
+                                if (op2 == 0) {
+                                    if (c3 != 0) {
+                                        op2 = (char) c4;
+                                        i = depth;
+                                        mode3 = lastChar2;
+                                        mode2 = mode;
+                                        backup2 = backup;
+                                        symbolTable = symbols;
+                                        lastString3 = lastString;
+                                        scratch3 = scratch;
+                                        break;
+                                    } else if (lastString != null) {
+                                        op2 = (char) c4;
+                                        i = depth;
+                                        mode3 = lastChar2;
+                                        mode2 = mode;
+                                        backup2 = backup;
+                                        symbolTable = symbols;
+                                        lastString3 = lastString;
+                                        scratch3 = scratch;
+                                        break;
+                                    } else {
+                                        add_unchecked(c4, c4);
+                                        c4 = chars.next(opts);
+                                        boolean literal4 = chars.isEscaped();
+                                        if (c4 == 93 && !literal4) {
+                                            patBuf.append("-]");
+                                            i = depth;
+                                            mode2 = 2;
+                                            mode3 = lastChar2;
+                                            backup2 = backup;
+                                            symbolTable = symbols;
+                                            lastString3 = lastString;
+                                            scratch3 = scratch;
+                                            break;
+                                        }
+                                    }
+                                }
+                                syntaxError(chars, "'-' not after char, string, or set");
+                                backup2 = backup;
+                                switch (c3) {
+                                }
+                                symbolTable = symbols;
+                                i = depth;
+                                mode2 = mode;
+                                scratch3 = scratch;
+                                break;
+                            case 93:
+                                UnicodeSet scratch4 = scratch3;
+                                if (c3 == 1) {
+                                    add_unchecked(lastChar2, lastChar2);
+                                    _appendToPat(patBuf, lastChar2, false);
+                                }
+                                if (op2 == '-') {
+                                    add_unchecked(op2, op2);
+                                    patBuf.append(op2);
+                                } else if (op2 == '&') {
+                                    syntaxError(chars, "Trailing '&'");
+                                }
+                                patBuf.append(']');
+                                mode2 = 2;
+                                i = depth;
+                                mode3 = lastChar2;
+                                backup2 = backup;
+                                symbolTable = symbols;
+                                lastString3 = lastString4;
+                                scratch3 = scratch4;
+                                break;
+                            case 94:
+                                scratch = scratch3;
+                                syntaxError(chars, "'^' not after '['");
+                                lastString = lastString4;
+                                break;
+                            case 123:
+                                if (op2 != 0 && op2 != '-') {
+                                    syntaxError(chars, "Missing operand after operator");
+                                }
+                                if (c3 == 1) {
+                                    add_unchecked(lastChar2, lastChar2);
+                                    _appendToPat(patBuf, lastChar2, false);
+                                }
+                                c3 = 0;
+                                if (buf == null) {
+                                    buf = new StringBuilder();
+                                } else {
+                                    buf.setLength(0);
+                                }
+                                while (true) {
+                                    if (chars.atEnd()) {
+                                        ok = false;
+                                        c2 = c4;
+                                    } else {
+                                        c4 = chars.next(opts);
+                                        boolean literal5 = chars.isEscaped();
+                                        if (c4 == 125 && !literal5) {
+                                            ok = true;
+                                            c2 = c4;
+                                        } else {
+                                            appendCodePoint(buf, c4);
+                                        }
+                                    }
+                                }
+                                int c8 = buf.length();
+                                if (c8 < 1 || !ok) {
+                                    syntaxError(chars, "Invalid multicharacter string");
+                                }
+                                String curString = buf.toString();
+                                if (op2 != '-') {
+                                    scratch2 = scratch3;
+                                    add(curString);
+                                    lastString2 = curString;
+                                } else {
+                                    int lastSingle = CharSequences.getSingleCodePoint(lastString4 == null ? "" : lastString4);
+                                    int curSingle = CharSequences.getSingleCodePoint(curString);
+                                    if (lastSingle != Integer.MAX_VALUE && curSingle != Integer.MAX_VALUE) {
+                                        add(lastSingle, curSingle);
+                                        scratch2 = scratch3;
+                                    } else {
+                                        if (this.strings == EMPTY_STRINGS) {
+                                            this.strings = new TreeSet();
+                                        }
+                                        try {
+                                            scratch2 = scratch3;
+                                            try {
+                                                StringRange.expand(lastString4, curString, true, this.strings);
+                                            } catch (Exception e2) {
+                                                e = e2;
+                                                syntaxError(chars, e.getMessage());
+                                                lastString2 = null;
+                                                op2 = 0;
+                                                patBuf.append('{');
+                                                _appendToPat(patBuf, curString, false);
+                                                patBuf.append('}');
+                                                i = depth;
+                                                mode3 = lastChar2;
+                                                mode2 = mode;
+                                                backup2 = backup;
+                                                scratch3 = scratch2;
+                                                symbolTable = symbols;
+                                                lastString3 = lastString2;
+                                            }
+                                        } catch (Exception e3) {
+                                            e = e3;
+                                            scratch2 = scratch3;
+                                        }
+                                    }
+                                    lastString2 = null;
+                                    op2 = 0;
+                                }
+                                patBuf.append('{');
+                                _appendToPat(patBuf, curString, false);
+                                patBuf.append('}');
+                                i = depth;
+                                mode3 = lastChar2;
+                                mode2 = mode;
+                                backup2 = backup;
+                                scratch3 = scratch2;
+                                symbolTable = symbols;
+                                lastString3 = lastString2;
+                                break;
+                            default:
+                                scratch = scratch3;
+                                lastString = lastString4;
+                                break;
+                        }
+                    }
+                    backup2 = backup;
+                    switch (c3) {
+                    }
+                    symbolTable = symbols;
+                    i = depth;
+                    mode2 = mode;
+                    scratch3 = scratch;
+                }
             }
-        L_0x0119:
-            r11 = r5
-            r25 = r6
-            r9 = r7
-            goto L_0x0146
-        L_0x011e:
-            r2 = 0
-            r5._toPattern(r13, r2)
-            r11 = r5
-            r25 = r6
-            r9 = r7
-            goto L_0x0146
-        L_0x0127:
-            r8.skipIgnored(r12)
-            r5.applyPropertyPattern((com.ibm.icu.impl.RuleCharacterIterator) r8, (java.lang.Appendable) r13, (com.ibm.icu.text.SymbolTable) r9)
-            r11 = r5
-            r25 = r6
-            r9 = r7
-            goto L_0x0146
-        L_0x0132:
-            int r23 = r11 + 1
-            r2 = r5
-            r3 = r28
-            r4 = r29
-            r11 = r5
-            r5 = r13
-            r25 = r6
-            r6 = r31
-            r9 = r7
-            r7 = r23
-            r2.applyPattern(r3, r4, r5, r6, r7)
-        L_0x0146:
-            r17 = 1
-            if (r10 != 0) goto L_0x015b
-            r1.set(r11)
-            r2 = 2
-            r4 = r15
-            r15 = r17
-            r3 = r18
-            r18 = r20
-            r5 = r24
-            r6 = r25
-            goto L_0x03dc
-        L_0x015b:
-            switch(r25) {
-                case 0: goto L_0x0167;
-                case 38: goto L_0x0163;
-                case 45: goto L_0x015f;
-                default: goto L_0x015e;
-            }
-        L_0x015e:
-            goto L_0x016a
-        L_0x015f:
-            r1.removeAll((com.ibm.icu.text.UnicodeSet) r11)
-            goto L_0x016a
-        L_0x0163:
-            r1.retainAll((com.ibm.icu.text.UnicodeSet) r11)
-            goto L_0x016a
-        L_0x0167:
-            r1.addAll((com.ibm.icu.text.UnicodeSet) r11)
-        L_0x016a:
-            r6 = 0
-            r5 = 2
-            r11 = r32
-            r7 = r9
-            r2 = r10
-            r4 = r15
-            r15 = r18
-            r3 = r20
-            r9 = r29
-            r10 = r30
-            goto L_0x003d
-        L_0x017b:
-            r9 = r7
-            if (r10 != 0) goto L_0x0183
-            java.lang.String r4 = "Missing '['"
-            syntaxError(r8, r4)
-        L_0x0183:
-            if (r19 != 0) goto L_0x0371
-            r4 = 93
-            switch(r0) {
-                case 36: goto L_0x0315;
-                case 38: goto L_0x02f4;
-                case 45: goto L_0x029d;
-                case 93: goto L_0x026a;
-                case 94: goto L_0x025e;
-                case 123: goto L_0x0192;
-                default: goto L_0x018a;
-            }
-        L_0x018a:
-            r26 = r18
-            r18 = r3
-            r3 = r26
-            goto L_0x0377
-        L_0x0192:
-            if (r6 == 0) goto L_0x019d
-            r2 = 45
-            if (r6 == r2) goto L_0x019d
-            java.lang.String r2 = "Missing operand after operator"
-            syntaxError(r8, r2)
-        L_0x019d:
-            r2 = 1
-            if (r5 != r2) goto L_0x01a7
-            r1.add_unchecked(r9, r9)
-            r2 = 0
-            _appendToPat(r13, (int) r9, (boolean) r2)
-        L_0x01a7:
-            r5 = 0
-            if (r14 != 0) goto L_0x01b1
-            java.lang.StringBuilder r2 = new java.lang.StringBuilder
-            r2.<init>()
-            r14 = r2
-            goto L_0x01b5
-        L_0x01b1:
-            r2 = 0
-            r14.setLength(r2)
-        L_0x01b5:
-            r2 = 0
-        L_0x01b6:
-            boolean r4 = r28.atEnd()
-            r7 = 125(0x7d, float:1.75E-43)
-            if (r4 != 0) goto L_0x01d2
-            int r0 = r8.next(r12)
-            boolean r19 = r28.isEscaped()
-            if (r0 != r7) goto L_0x01ce
-            if (r19 != 0) goto L_0x01ce
-            r2 = 1
-            r4 = r2
-            r2 = r0
-            goto L_0x01d4
-        L_0x01ce:
-            appendCodePoint(r14, r0)
-            goto L_0x01b6
-        L_0x01d2:
-            r4 = r2
-            r2 = r0
-        L_0x01d4:
-            int r0 = r14.length()
-            r11 = 1
-            if (r0 < r11) goto L_0x01dd
-            if (r4 != 0) goto L_0x01e2
-        L_0x01dd:
-            java.lang.String r0 = "Invalid multicharacter string"
-            syntaxError(r8, r0)
-        L_0x01e2:
-            java.lang.String r11 = r14.toString()
-            r7 = 45
-            if (r6 != r7) goto L_0x0238
-            if (r18 != 0) goto L_0x01ef
-            java.lang.String r0 = ""
-            goto L_0x01f1
-        L_0x01ef:
-            r0 = r18
-        L_0x01f1:
-            int r7 = com.ibm.icu.lang.CharSequences.getSingleCodePoint(r0)
-            r23 = r2
-            int r2 = com.ibm.icu.lang.CharSequences.getSingleCodePoint(r11)
-            r0 = 2147483647(0x7fffffff, float:NaN)
-            if (r7 == r0) goto L_0x020c
-            if (r2 == r0) goto L_0x020c
-            r1.add(r7, r2)
-            r24 = r2
-            r2 = r18
-            r18 = r3
-            goto L_0x0234
-        L_0x020c:
-            java.util.SortedSet<java.lang.String> r0 = r1.strings
-            r24 = r2
-            java.util.SortedSet<java.lang.String> r2 = EMPTY_STRINGS
-            if (r0 != r2) goto L_0x021b
-            java.util.TreeSet r0 = new java.util.TreeSet
-            r0.<init>()
-            r1.strings = r0
-        L_0x021b:
-            java.util.SortedSet<java.lang.String> r0 = r1.strings     // Catch:{ Exception -> 0x0228 }
-            r2 = r18
-            r18 = r3
-            r3 = 1
-            com.ibm.icu.impl.StringRange.expand(r2, r11, r3, r0)     // Catch:{ Exception -> 0x0226 }
-            goto L_0x0234
-        L_0x0226:
-            r0 = move-exception
-            goto L_0x022d
-        L_0x0228:
-            r0 = move-exception
-            r2 = r18
-            r18 = r3
-        L_0x022d:
-            java.lang.String r3 = r0.getMessage()
-            syntaxError(r8, r3)
-        L_0x0234:
-            r0 = 0
-            r2 = 0
-            r6 = r2
-            goto L_0x0242
-        L_0x0238:
-            r23 = r2
-            r2 = r18
-            r18 = r3
-            r1.add((java.lang.CharSequence) r11)
-            r0 = r11
-        L_0x0242:
-            r2 = 123(0x7b, float:1.72E-43)
-            r13.append(r2)
-            r2 = 0
-            _appendToPat(r13, (java.lang.String) r11, (boolean) r2)
-            r2 = 125(0x7d, float:1.75E-43)
-            r13.append(r2)
-            r11 = r32
-            r7 = r9
-            r2 = r10
-            r4 = r15
-            r3 = r18
-            r9 = r29
-            r10 = r30
-            r15 = r0
-            goto L_0x003d
-        L_0x025e:
-            r2 = r18
-            r18 = r3
-            java.lang.String r3 = "'^' not after '['"
-            syntaxError(r8, r3)
-            r3 = r2
-            goto L_0x0377
-        L_0x026a:
-            r26 = r18
-            r18 = r3
-            r3 = r26
-            r7 = 1
-            if (r5 != r7) goto L_0x027a
-            r1.add_unchecked(r9, r9)
-            r7 = 0
-            _appendToPat(r13, (int) r9, (boolean) r7)
-        L_0x027a:
-            r7 = 45
-            if (r6 != r7) goto L_0x0285
-            r1.add_unchecked(r6, r6)
-            r13.append(r6)
-            goto L_0x028c
-        L_0x0285:
-            if (r6 != r2) goto L_0x028c
-            java.lang.String r2 = "Trailing '&'"
-            syntaxError(r8, r2)
-        L_0x028c:
-            r13.append(r4)
-            r2 = 2
-            r10 = r30
-            r11 = r32
-            r7 = r9
-            r4 = r15
-            r9 = r29
-            r15 = r3
-            r3 = r18
-            goto L_0x003d
-        L_0x029d:
-            r26 = r18
-            r18 = r3
-            r3 = r26
-            if (r6 != 0) goto L_0x02ec
-            if (r5 == 0) goto L_0x02b6
-            char r6 = (char) r0
-            r11 = r32
-            r7 = r9
-            r2 = r10
-            r4 = r15
-            r9 = r29
-            r10 = r30
-            r15 = r3
-            r3 = r18
-            goto L_0x003d
-        L_0x02b6:
-            if (r3 == 0) goto L_0x02c7
-            char r6 = (char) r0
-            r11 = r32
-            r7 = r9
-            r2 = r10
-            r4 = r15
-            r9 = r29
-            r10 = r30
-            r15 = r3
-            r3 = r18
-            goto L_0x003d
-        L_0x02c7:
-            r1.add_unchecked(r0, r0)
-            int r0 = r8.next(r12)
-            boolean r2 = r28.isEscaped()
-            if (r0 != r4) goto L_0x02ea
-            if (r2 != 0) goto L_0x02ea
-            java.lang.String r4 = "-]"
-            r13.append(r4)
-            r4 = 2
-            r10 = r30
-            r11 = r32
-            r2 = r4
-            r7 = r9
-            r4 = r15
-            r9 = r29
-            r15 = r3
-            r3 = r18
-            goto L_0x003d
-        L_0x02ea:
-            r19 = r2
-        L_0x02ec:
-            java.lang.String r2 = "'-' not after char, string, or set"
-            syntaxError(r8, r2)
-            r4 = r15
-            goto L_0x0378
-        L_0x02f4:
-            r26 = r18
-            r18 = r3
-            r3 = r26
-            r2 = 2
-            if (r5 != r2) goto L_0x030e
-            if (r6 != 0) goto L_0x030e
-            char r6 = (char) r0
-            r11 = r32
-            r7 = r9
-            r2 = r10
-            r4 = r15
-            r9 = r29
-            r10 = r30
-            r15 = r3
-            r3 = r18
-            goto L_0x003d
-        L_0x030e:
-            java.lang.String r2 = "'&' not after set"
-            syntaxError(r8, r2)
-            goto L_0x0377
-        L_0x0315:
-            r26 = r18
-            r18 = r3
-            r3 = r26
-            java.lang.Object r2 = r8.getPos(r15)
-            int r0 = r8.next(r12)
-            boolean r19 = r28.isEscaped()
-            if (r0 != r4) goto L_0x032d
-            if (r19 != 0) goto L_0x032d
-            r7 = 1
-            goto L_0x032e
-        L_0x032d:
-            r7 = 0
-        L_0x032e:
-            if (r29 != 0) goto L_0x0339
-            if (r7 != 0) goto L_0x0339
-            r0 = 36
-            r8.setPos(r2)
-            r4 = r2
-            goto L_0x0378
-        L_0x0339:
-            if (r7 == 0) goto L_0x036a
-            if (r6 != 0) goto L_0x036a
-            r11 = 1
-            if (r5 != r11) goto L_0x0347
-            r1.add_unchecked(r9, r9)
-            r11 = 0
-            _appendToPat(r13, (int) r9, (boolean) r11)
-        L_0x0347:
-            r11 = 65535(0xffff, float:9.1834E-41)
-            r1.add_unchecked(r11)
-            r17 = 1
-            r11 = 36
-            java.lang.StringBuilder r11 = r13.append(r11)
-            r11.append(r4)
-            r4 = 2
-            r10 = r30
-            r11 = r32
-            r15 = r3
-            r7 = r9
-            r3 = r18
-            r9 = r29
-            r26 = r4
-            r4 = r2
-            r2 = r26
-            goto L_0x003d
-        L_0x036a:
-            java.lang.String r4 = "Unquoted '$'"
-            syntaxError(r8, r4)
-            r4 = r2
-            goto L_0x0378
-        L_0x0371:
-            r26 = r18
-            r18 = r3
-            r3 = r26
-        L_0x0377:
-            r4 = r15
-        L_0x0378:
-            java.lang.String r2 = "Invalid range"
-            switch(r5) {
-                case 0: goto L_0x03b9;
-                case 1: goto L_0x038c;
-                case 2: goto L_0x0380;
-                default: goto L_0x037d;
-            }
-        L_0x037d:
-            r15 = r3
-            r7 = r9
-            goto L_0x03c8
-        L_0x0380:
-            if (r6 == 0) goto L_0x0387
-            java.lang.String r2 = "Set expected after operator"
-            syntaxError(r8, r2)
-        L_0x0387:
-            r2 = r0
-            r5 = 1
-            r7 = r2
-            r15 = r3
-            goto L_0x03c8
-        L_0x038c:
-            r7 = 45
-            if (r6 != r7) goto L_0x03ae
-            if (r3 == 0) goto L_0x0395
-            syntaxError(r8, r2)
-        L_0x0395:
-            if (r9 < r0) goto L_0x039a
-            syntaxError(r8, r2)
-        L_0x039a:
-            r1.add_unchecked(r9, r0)
-            r2 = 0
-            _appendToPat(r13, (int) r9, (boolean) r2)
-            r13.append(r6)
-            _appendToPat(r13, (int) r0, (boolean) r2)
-            r2 = 0
-            r5 = 0
-            r15 = r3
-            r6 = r5
-            r7 = r9
-            r5 = r2
-            goto L_0x03c8
-        L_0x03ae:
-            r2 = 0
-            r1.add_unchecked(r9, r9)
-            _appendToPat(r13, (int) r9, (boolean) r2)
-            r2 = r0
-            r7 = r2
-            r15 = r3
-            goto L_0x03c8
-        L_0x03b9:
-            r7 = 45
-            if (r6 != r7) goto L_0x03c2
-            if (r3 == 0) goto L_0x03c2
-            syntaxError(r8, r2)
-        L_0x03c2:
-            r2 = 1
-            r5 = r0
-            r3 = 0
-            r15 = r3
-            r7 = r5
-            r5 = r2
-        L_0x03c8:
-            r9 = r29
-            r11 = r32
-            r2 = r10
-            r3 = r18
-            r10 = r30
-            goto L_0x003d
-        L_0x03d3:
-            r9 = r7
-            r26 = r18
-            r18 = r3
-            r3 = r26
-            r15 = r17
-        L_0x03dc:
-            r7 = 2
-            if (r2 == r7) goto L_0x03e4
-            java.lang.String r0 = "Missing ']'"
-            syntaxError(r8, r0)
-        L_0x03e4:
-            r8.skipIgnored(r12)
-            r0 = r31 & 2
-            if (r0 == 0) goto L_0x03ef
-            r7 = 2
-            r1.closeOver(r7)
-        L_0x03ef:
-            if (r16 == 0) goto L_0x03f4
-            r27.complement()
-        L_0x03f4:
-            if (r15 == 0) goto L_0x0400
-            java.lang.String r0 = r13.toString()
-            r7 = r30
-            append(r7, r0)
-            goto L_0x0407
-        L_0x0400:
-            r7 = r30
-            r10 = 1
-            r11 = 0
-            r1.appendNewPattern(r7, r11, r10)
-        L_0x0407:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.UnicodeSet.applyPattern(com.ibm.icu.impl.RuleCharacterIterator, com.ibm.icu.text.SymbolTable, java.lang.Appendable, int, int):void");
+        }
+        if (mode2 != 2) {
+            syntaxError(chars, "Missing ']'");
+        }
+        chars.skipIgnored(opts);
+        if ((options & 2) != 0) {
+            closeOver(2);
+        }
+        if (invert) {
+            complement();
+        }
+        if (!usePat) {
+            appendNewPattern(rebuiltPat, false, true);
+        } else {
+            append(rebuiltPat, patBuf.toString());
+        }
     }
 
     private static void syntaxError(RuleCharacterIterator chars, String msg) {
@@ -2007,15 +1839,15 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     }
 
     public <T extends Collection<String>> T addAllTo(T target) {
-        return addAllTo(this, target);
+        return (T) addAllTo(this, target);
     }
 
     public String[] addAllTo(String[] target) {
-        return (String[]) addAllTo(this, (T[]) target);
+        return (String[]) addAllTo(this, target);
     }
 
     public static String[] toArray(UnicodeSet set) {
-        return (String[]) addAllTo(set, (T[]) new String[set.size()]);
+        return (String[]) addAllTo(set, new String[set.size()]);
     }
 
     public UnicodeSet add(Iterable<?> source) {
@@ -2025,7 +1857,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     public UnicodeSet addAll(Iterable<?> source) {
         checkFrozen();
         for (Object o : source) {
-            add((CharSequence) o.toString());
+            add(o.toString());
         }
         return this;
     }
@@ -2048,11 +1880,13 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         if (newLen > MAX_LENGTH) {
             newLen = MAX_LENGTH;
         }
-        if (newLen > this.list.length) {
-            int[] temp = new int[nextCapacity(newLen)];
-            System.arraycopy(this.list, 0, temp, 0, this.len);
-            this.list = temp;
+        if (newLen <= this.list.length) {
+            return;
         }
+        int newCapacity = nextCapacity(newLen);
+        int[] temp = new int[newCapacity];
+        System.arraycopy(this.list, 0, temp, 0, this.len);
+        this.list = temp;
     }
 
     private void ensureBufferCapacity(int newLen) {
@@ -2061,7 +1895,8 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         }
         int[] iArr = this.buffer;
         if (iArr == null || newLen > iArr.length) {
-            this.buffer = new int[nextCapacity(newLen)];
+            int newCapacity = nextCapacity(newLen);
+            this.buffer = new int[newCapacity];
         }
     }
 
@@ -2080,40 +1915,50 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         int b;
         int j;
         ensureBufferCapacity(this.len + otherLen);
-        int k = 0;
-        int i = 0 + 1;
+        int j2 = 0;
+        int j3 = 0 + 1;
         int a = this.list[0];
-        if (polarity != 1 && polarity != 2) {
+        if (polarity == 1 || polarity == 2) {
+            if (other[0] != 0) {
+                b = 0;
+                j = 0;
+            } else {
+                int j4 = 0 + 1;
+                int b2 = other[j4];
+                b = j4;
+                j = b2;
+            }
+        } else {
             b = 0 + 1;
             j = other[0];
-        } else if (other[0] == 0) {
-            int j2 = 0 + 1;
-            b = j2;
-            j = other[j2];
-        } else {
-            b = 0;
-            j = 0;
         }
         while (true) {
             if (a < j) {
-                this.buffer[k] = a;
-                a = this.list[i];
-                i++;
-                k++;
+                int k = j2 + 1;
+                this.buffer[j2] = a;
+                int i = j3 + 1;
+                a = this.list[j3];
+                j3 = i;
+                j2 = k;
             } else if (j < a) {
-                this.buffer[k] = j;
+                int k2 = j2 + 1;
+                this.buffer[j2] = j;
+                int j5 = b + 1;
                 j = other[b];
-                b++;
-                k++;
+                b = j5;
+                j2 = k2;
             } else if (a != HIGH) {
-                a = this.list[i];
+                int i2 = j3 + 1;
+                a = this.list[j3];
+                int j6 = b + 1;
                 j = other[b];
-                b++;
-                i++;
+                b = j6;
+                j3 = i2;
             } else {
                 int[] iArr = this.buffer;
-                iArr[k] = HIGH;
-                this.len = k + 1;
+                int k3 = j2 + 1;
+                iArr[j2] = HIGH;
+                this.len = k3;
                 int[] temp = this.list;
                 this.list = iArr;
                 this.buffer = temp;
@@ -2124,155 +1969,155 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     }
 
     private UnicodeSet add(int[] other, int otherLen, int polarity) {
-        int a;
-        int j;
-        int j2;
         int k;
         ensureBufferCapacity(this.len + otherLen);
-        int j3 = 0;
+        int j = 0;
         int i = 0 + 1;
-        int a2 = this.list[0];
-        int j4 = 0 + 1;
+        int a = this.list[0];
+        int j2 = 0 + 1;
         int b = other[0];
         while (true) {
             switch (polarity) {
                 case 0:
-                    if (a2 < b) {
-                        if (j3 > 0) {
+                    if (a < b) {
+                        if (j > 0) {
                             int[] iArr = this.buffer;
-                            if (a2 <= iArr[j3 - 1]) {
-                                j3--;
-                                a2 = max(this.list[i], iArr[j3]);
+                            if (a <= iArr[j - 1]) {
+                                j--;
+                                a = max(this.list[i], iArr[j]);
                                 i++;
                                 polarity ^= 1;
-                                continue;
+                                break;
                             }
                         }
-                        this.buffer[j3] = a2;
-                        a2 = this.list[i];
-                        j3++;
+                        int k2 = j + 1;
+                        this.buffer[j] = a;
+                        a = this.list[i];
+                        j = k2;
                         i++;
                         polarity ^= 1;
-                        continue;
-                    } else if (b < a2) {
-                        if (j3 > 0) {
+                    } else if (b < a) {
+                        if (j > 0) {
                             int[] iArr2 = this.buffer;
-                            if (b <= iArr2[j3 - 1]) {
-                                j2 = j3 - 1;
-                                b = max(other[j4], iArr2[j2]);
-                                j4++;
+                            if (b <= iArr2[j - 1]) {
+                                j--;
+                                b = max(other[j2], iArr2[j]);
+                                j2++;
                                 polarity ^= 2;
                                 break;
                             }
                         }
-                        this.buffer[j3] = b;
-                        b = other[j4];
-                        j2 = j3 + 1;
-                        j4++;
+                        int k3 = j + 1;
+                        this.buffer[j] = b;
+                        b = other[j2];
+                        j = k3;
+                        j2++;
                         polarity ^= 2;
-                    } else if (a2 == HIGH) {
+                    } else if (a == HIGH) {
                         break;
                     } else {
-                        if (j3 > 0) {
+                        if (j > 0) {
                             int[] iArr3 = this.buffer;
-                            if (a2 <= iArr3[j3 - 1]) {
-                                j = j3 - 1;
+                            if (a <= iArr3[j - 1]) {
+                                j--;
                                 a = max(this.list[i], iArr3[j]);
                                 i++;
-                                b = other[j4];
+                                b = other[j2];
                                 polarity = (polarity ^ 1) ^ 2;
-                                j4++;
+                                j2++;
                                 break;
                             }
                         }
-                        this.buffer[j3] = a2;
+                        int k4 = j + 1;
+                        this.buffer[j] = a;
                         a = this.list[i];
-                        j = j3 + 1;
+                        j = k4;
                         i++;
-                        b = other[j4];
+                        b = other[j2];
                         polarity = (polarity ^ 1) ^ 2;
-                        j4++;
+                        j2++;
                     }
                 case 1:
-                    if (a2 >= b) {
-                        if (b >= a2) {
-                            if (a2 != HIGH) {
-                                a2 = this.list[i];
-                                b = other[j4];
-                                polarity = (polarity ^ 1) ^ 2;
-                                j4++;
-                                i++;
-                                break;
-                            } else {
-                                break;
-                            }
-                        } else {
-                            b = other[j4];
-                            polarity ^= 2;
-                            j4++;
-                            break;
-                        }
-                    } else {
-                        this.buffer[j3] = a2;
-                        a2 = this.list[i];
+                    if (a < b) {
+                        int k5 = j + 1;
+                        this.buffer[j] = a;
+                        a = this.list[i];
                         polarity ^= 1;
                         i++;
-                        j3++;
-                        continue;
+                        j = k5;
+                        break;
+                    } else if (b < a) {
+                        b = other[j2];
+                        polarity ^= 2;
+                        j2++;
+                        break;
+                    } else if (a != HIGH) {
+                        a = this.list[i];
+                        b = other[j2];
+                        polarity = (polarity ^ 1) ^ 2;
+                        j2++;
+                        i++;
+                        break;
+                    } else {
+                        break;
                     }
                 case 2:
-                    if (b >= a2) {
-                        if (a2 >= b) {
-                            if (a2 != HIGH) {
-                                a2 = this.list[i];
-                                b = other[j4];
-                                polarity = (polarity ^ 1) ^ 2;
-                                j4++;
-                                i++;
-                                break;
-                            } else {
-                                break;
-                            }
-                        } else {
-                            a2 = this.list[i];
-                            polarity ^= 1;
-                            i++;
-                            break;
-                        }
-                    } else {
-                        this.buffer[j3] = b;
-                        b = other[j4];
+                    if (b < a) {
+                        int k6 = j + 1;
+                        this.buffer[j] = b;
+                        b = other[j2];
                         polarity ^= 2;
-                        j4++;
-                        j3++;
-                        continue;
+                        j2++;
+                        j = k6;
+                        break;
+                    } else if (a < b) {
+                        a = this.list[i];
+                        polarity ^= 1;
+                        i++;
+                        break;
+                    } else if (a != HIGH) {
+                        a = this.list[i];
+                        b = other[j2];
+                        polarity = (polarity ^ 1) ^ 2;
+                        j2++;
+                        i++;
+                        break;
+                    } else {
+                        break;
                     }
                 case 3:
-                    if (b <= a2) {
-                        if (a2 == HIGH) {
+                    if (b <= a) {
+                        if (a != HIGH) {
+                            k = j + 1;
+                            this.buffer[j] = a;
+                            a = this.list[i];
+                            b = other[j2];
+                            polarity = (polarity ^ 1) ^ 2;
+                            j2++;
+                            i++;
+                            j = k;
                             break;
                         } else {
-                            k = j3 + 1;
-                            this.buffer[j3] = a2;
+                            break;
                         }
                     } else if (b == HIGH) {
                         break;
                     } else {
-                        k = j3 + 1;
-                        this.buffer[j3] = b;
+                        k = j + 1;
+                        this.buffer[j] = b;
+                        a = this.list[i];
+                        b = other[j2];
+                        polarity = (polarity ^ 1) ^ 2;
+                        j2++;
+                        i++;
+                        j = k;
                     }
-                    a2 = this.list[i];
-                    b = other[j4];
-                    polarity = (polarity ^ 1) ^ 2;
-                    j4++;
-                    i++;
-                    j3 = k;
-                    continue;
             }
         }
         int[] iArr4 = this.buffer;
-        iArr4[j3] = HIGH;
-        this.len = j3 + 1;
+        int k7 = j + 1;
+        iArr4[j] = HIGH;
+        this.len = k7;
         int[] temp = this.list;
         this.list = iArr4;
         this.buffer = temp;
@@ -2282,130 +2127,121 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
 
     private UnicodeSet retain(int[] other, int otherLen, int polarity) {
         ensureBufferCapacity(this.len + otherLen);
-        int k = 0;
+        int j = 0;
         int i = 0 + 1;
         int a = this.list[0];
-        int j = 0 + 1;
+        int j2 = 0 + 1;
         int b = other[0];
         while (true) {
             switch (polarity) {
                 case 0:
-                    if (a >= b) {
-                        if (b >= a) {
-                            if (a != HIGH) {
-                                this.buffer[k] = a;
-                                a = this.list[i];
-                                b = other[j];
-                                polarity = (polarity ^ 1) ^ 2;
-                                j++;
-                                i++;
-                                k++;
-                                break;
-                            } else {
-                                break;
-                            }
-                        } else {
-                            b = other[j];
-                            polarity ^= 2;
-                            j++;
-                            break;
-                        }
-                    } else {
+                    if (a < b) {
                         a = this.list[i];
                         polarity ^= 1;
                         i++;
-                        continue;
+                        break;
+                    } else if (b < a) {
+                        b = other[j2];
+                        polarity ^= 2;
+                        j2++;
+                        break;
+                    } else if (a != HIGH) {
+                        int k = j + 1;
+                        this.buffer[j] = a;
+                        a = this.list[i];
+                        b = other[j2];
+                        polarity = (polarity ^ 1) ^ 2;
+                        j2++;
+                        i++;
+                        j = k;
+                        break;
+                    } else {
+                        break;
                     }
                 case 1:
-                    if (a >= b) {
-                        if (b >= a) {
-                            if (a != HIGH) {
-                                a = this.list[i];
-                                b = other[j];
-                                polarity = (polarity ^ 1) ^ 2;
-                                j++;
-                                i++;
-                                break;
-                            } else {
-                                break;
-                            }
-                        } else {
-                            this.buffer[k] = b;
-                            b = other[j];
-                            polarity ^= 2;
-                            j++;
-                            k++;
-                            break;
-                        }
-                    } else {
+                    if (a < b) {
                         a = this.list[i];
                         polarity ^= 1;
                         i++;
-                        continue;
+                        break;
+                    } else if (b < a) {
+                        int k2 = j + 1;
+                        this.buffer[j] = b;
+                        b = other[j2];
+                        polarity ^= 2;
+                        j2++;
+                        j = k2;
+                        break;
+                    } else if (a != HIGH) {
+                        a = this.list[i];
+                        b = other[j2];
+                        polarity = (polarity ^ 1) ^ 2;
+                        j2++;
+                        i++;
+                        break;
+                    } else {
+                        break;
                     }
                 case 2:
-                    if (b >= a) {
-                        if (a >= b) {
-                            if (a != HIGH) {
-                                a = this.list[i];
-                                b = other[j];
-                                polarity = (polarity ^ 1) ^ 2;
-                                j++;
-                                i++;
-                                break;
-                            } else {
-                                break;
-                            }
-                        } else {
-                            this.buffer[k] = a;
-                            a = this.list[i];
-                            polarity ^= 1;
-                            i++;
-                            k++;
-                            break;
-                        }
-                    } else {
-                        b = other[j];
+                    if (b < a) {
+                        b = other[j2];
                         polarity ^= 2;
-                        j++;
-                        continue;
-                    }
-                case 3:
-                    if (a >= b) {
-                        if (b >= a) {
-                            if (a != HIGH) {
-                                this.buffer[k] = a;
-                                a = this.list[i];
-                                b = other[j];
-                                polarity = (polarity ^ 1) ^ 2;
-                                j++;
-                                i++;
-                                k++;
-                                break;
-                            } else {
-                                break;
-                            }
-                        } else {
-                            this.buffer[k] = b;
-                            b = other[j];
-                            polarity ^= 2;
-                            j++;
-                            k++;
-                            break;
-                        }
-                    } else {
-                        this.buffer[k] = a;
+                        j2++;
+                        break;
+                    } else if (a < b) {
+                        int k3 = j + 1;
+                        this.buffer[j] = a;
                         a = this.list[i];
                         polarity ^= 1;
                         i++;
-                        k++;
-                        continue;
+                        j = k3;
+                        break;
+                    } else if (a != HIGH) {
+                        a = this.list[i];
+                        b = other[j2];
+                        polarity = (polarity ^ 1) ^ 2;
+                        j2++;
+                        i++;
+                        break;
+                    } else {
+                        break;
+                    }
+                case 3:
+                    if (a < b) {
+                        int k4 = j + 1;
+                        this.buffer[j] = a;
+                        a = this.list[i];
+                        polarity ^= 1;
+                        i++;
+                        j = k4;
+                        break;
+                    } else if (b < a) {
+                        int k5 = j + 1;
+                        this.buffer[j] = b;
+                        b = other[j2];
+                        polarity ^= 2;
+                        j2++;
+                        j = k5;
+                        break;
+                    } else if (a != HIGH) {
+                        int k6 = j + 1;
+                        this.buffer[j] = a;
+                        a = this.list[i];
+                        b = other[j2];
+                        polarity = (polarity ^ 1) ^ 2;
+                        j2++;
+                        i++;
+                        j = k6;
+                        break;
+                    } else {
+                        break;
                     }
             }
         }
         int[] iArr = this.buffer;
-        iArr[k] = HIGH;
-        this.len = k + 1;
+        int k7 = j + 1;
+        iArr[j] = HIGH;
+        this.len = k7;
         int[] temp = this.list;
         this.list = iArr;
         this.buffer = temp;
@@ -2417,63 +2253,73 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         return a > b ? a : b;
     }
 
+    /* loaded from: classes.dex */
     private static final class NumericValueFilter implements Filter {
         double value;
 
-        NumericValueFilter(double value2) {
-            this.value = value2;
+        NumericValueFilter(double value) {
+            this.value = value;
         }
 
+        @Override // com.ibm.icu.text.UnicodeSet.Filter
         public boolean contains(int ch) {
             return UCharacter.getUnicodeNumericValue(ch) == this.value;
         }
     }
 
+    /* loaded from: classes.dex */
     private static final class GeneralCategoryMaskFilter implements Filter {
         int mask;
 
-        GeneralCategoryMaskFilter(int mask2) {
-            this.mask = mask2;
+        GeneralCategoryMaskFilter(int mask) {
+            this.mask = mask;
         }
 
+        @Override // com.ibm.icu.text.UnicodeSet.Filter
         public boolean contains(int ch) {
             return ((1 << UCharacter.getType(ch)) & this.mask) != 0;
         }
     }
 
+    /* loaded from: classes.dex */
     private static final class IntPropertyFilter implements Filter {
         int prop;
         int value;
 
-        IntPropertyFilter(int prop2, int value2) {
-            this.prop = prop2;
-            this.value = value2;
+        IntPropertyFilter(int prop, int value) {
+            this.prop = prop;
+            this.value = value;
         }
 
+        @Override // com.ibm.icu.text.UnicodeSet.Filter
         public boolean contains(int ch) {
             return UCharacter.getIntPropertyValue(ch, this.prop) == this.value;
         }
     }
 
+    /* loaded from: classes.dex */
     private static final class ScriptExtensionsFilter implements Filter {
         int script;
 
-        ScriptExtensionsFilter(int script2) {
-            this.script = script2;
+        ScriptExtensionsFilter(int script) {
+            this.script = script;
         }
 
+        @Override // com.ibm.icu.text.UnicodeSet.Filter
         public boolean contains(int c) {
             return UScript.hasScript(c, this.script);
         }
     }
 
+    /* loaded from: classes.dex */
     private static final class VersionFilter implements Filter {
         VersionInfo version;
 
-        VersionFilter(VersionInfo version2) {
-            this.version = version2;
+        VersionFilter(VersionInfo version) {
+            this.version = version;
         }
 
+        @Override // com.ibm.icu.text.UnicodeSet.Filter
         public boolean contains(int ch) {
             VersionInfo v = UCharacter.getAge(ch);
             return !Utility.sameObjects(v, UnicodeSet.NO_VERSION) && v.compareTo(this.version) <= 0;
@@ -2504,14 +2350,16 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     }
 
     private static String mungeCharName(String source) {
+        int i;
         String source2 = PatternProps.trimWhiteSpace(source);
         StringBuilder buf = null;
-        for (int i = 0; i < source2.length(); i++) {
+        while (i < source2.length()) {
             char ch = source2.charAt(i);
             if (PatternProps.isWhiteSpace(ch)) {
-                if (buf == null) {
-                    buf = new StringBuilder().append(source2, 0, i);
-                } else if (buf.charAt(buf.length() - 1) == ' ') {
+                if (buf != null) {
+                    i = buf.charAt(buf.length() + (-1)) == ' ' ? i + 1 : 0;
+                } else {
+                    buf = new StringBuilder().append((CharSequence) source2, 0, i);
                 }
                 ch = ' ';
             }
@@ -2524,32 +2372,36 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
 
     public UnicodeSet applyIntPropertyValue(int prop, int value) {
         if (prop == 8192) {
-            applyFilter(new GeneralCategoryMaskFilter(value), CharacterPropertiesImpl.getInclusionsForProperty(prop));
+            UnicodeSet inclusions = CharacterPropertiesImpl.getInclusionsForProperty(prop);
+            applyFilter(new GeneralCategoryMaskFilter(value), inclusions);
         } else if (prop == 28672) {
-            applyFilter(new ScriptExtensionsFilter(value), CharacterPropertiesImpl.getInclusionsForProperty(prop));
-        } else if (prop < 0 || prop >= 65) {
-            if (4096 > prop || prop >= 4121) {
-                throw new IllegalArgumentException("unsupported property " + prop);
+            UnicodeSet inclusions2 = CharacterPropertiesImpl.getInclusionsForProperty(prop);
+            applyFilter(new ScriptExtensionsFilter(value), inclusions2);
+        } else if (prop >= 0 && prop < 65) {
+            if (value == 0 || value == 1) {
+                set(CharacterProperties.getBinaryPropertySet(prop));
+                if (value == 0) {
+                    complement();
+                }
+            } else {
+                clear();
             }
-            applyFilter(new IntPropertyFilter(prop, value), CharacterPropertiesImpl.getInclusionsForProperty(prop));
-        } else if (value == 0 || value == 1) {
-            set(CharacterProperties.getBinaryPropertySet(prop));
-            if (value == 0) {
-                complement();
-            }
+        } else if (4096 <= prop && prop < 4121) {
+            UnicodeSet inclusions3 = CharacterPropertiesImpl.getInclusionsForProperty(prop);
+            applyFilter(new IntPropertyFilter(prop, value), inclusions3);
         } else {
-            clear();
+            throw new IllegalArgumentException("unsupported property " + prop);
         }
         return this;
     }
 
     public UnicodeSet applyPropertyAlias(String propertyAlias, String valueAlias) {
-        return applyPropertyAlias(propertyAlias, valueAlias, (SymbolTable) null);
+        return applyPropertyAlias(propertyAlias, valueAlias, null);
     }
 
     public UnicodeSet applyPropertyAlias(String propertyAlias, String valueAlias, SymbolTable symbols) {
-        int v;
         int p;
+        int v;
         checkFrozen();
         boolean invert = false;
         if (symbols != null && (symbols instanceof XSymbolTable) && ((XSymbolTable) symbols).applyPropertyAlias(propertyAlias, valueAlias, this)) {
@@ -2564,31 +2416,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
             if (p == 4101) {
                 p = 8192;
             }
-            if ((p < 0 || p >= 65) && ((p < 4096 || p >= 4121) && (p < 8192 || p >= 8193))) {
-                switch (p) {
-                    case 12288:
-                        applyFilter(new NumericValueFilter(Double.parseDouble(PatternProps.trimWhiteSpace(valueAlias))), CharacterPropertiesImpl.getInclusionsForProperty(p));
-                        return this;
-                    case 16384:
-                        applyFilter(new VersionFilter(VersionInfo.getInstance(mungeCharName(valueAlias))), CharacterPropertiesImpl.getInclusionsForProperty(p));
-                        return this;
-                    case 16389:
-                        int ch = UCharacter.getCharFromExtendedName(mungeCharName(valueAlias));
-                        if (ch != -1) {
-                            clear();
-                            add_unchecked(ch);
-                            return this;
-                        }
-                        throw new IllegalArgumentException("Invalid character name");
-                    case 16395:
-                        throw new IllegalArgumentException("Unicode_1_Name (na1) not supported");
-                    case 28672:
-                        v = UCharacter.getPropertyValueEnum(4106, valueAlias);
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Unsupported property");
-                }
-            } else {
+            if ((p >= 0 && p < 65) || ((p >= 4096 && p < 4121) || (p >= 8192 && p < 8193))) {
                 try {
                     v = UCharacter.getPropertyValueEnum(p, valueAlias);
                 } catch (IllegalArgumentException e) {
@@ -2602,13 +2430,47 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
                         throw e;
                     }
                 }
+            } else {
+                switch (p) {
+                    case 12288:
+                        double value = Double.parseDouble(PatternProps.trimWhiteSpace(valueAlias));
+                        applyFilter(new NumericValueFilter(value), CharacterPropertiesImpl.getInclusionsForProperty(p));
+                        return this;
+                    case 16384:
+                        String buf = mungeCharName(valueAlias);
+                        VersionInfo version = VersionInfo.getInstance(buf);
+                        applyFilter(new VersionFilter(version), CharacterPropertiesImpl.getInclusionsForProperty(p));
+                        return this;
+                    case 16389:
+                        String buf2 = mungeCharName(valueAlias);
+                        int ch = UCharacter.getCharFromExtendedName(buf2);
+                        if (ch == -1) {
+                            throw new IllegalArgumentException("Invalid character name");
+                        }
+                        clear();
+                        add_unchecked(ch);
+                        return this;
+                    case 16395:
+                        throw new IllegalArgumentException("Unicode_1_Name (na1) not supported");
+                    case 28672:
+                        v = UCharacter.getPropertyValueEnum(4106, valueAlias);
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Unsupported property");
+                }
             }
         } else {
             UPropertyAliases pnames = UPropertyAliases.INSTANCE;
             int v3 = pnames.getPropertyValueEnum(8192, propertyAlias);
-            if (v3 == -1) {
+            if (v3 != -1) {
+                p = 8192;
+                v = v3;
+            } else {
                 int v4 = pnames.getPropertyValueEnum(4106, propertyAlias);
-                if (v4 == -1) {
+                if (v4 != -1) {
+                    p = 4106;
+                    v = v4;
+                } else {
                     int p2 = pnames.getPropertyEnum(propertyAlias);
                     if (p2 == -1) {
                         p2 = -1;
@@ -2616,28 +2478,24 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
                     if (p2 >= 0 && p2 < 65) {
                         v = 1;
                         p = p2;
-                    } else if (p2 != -1) {
-                        throw new IllegalArgumentException("Missing property value");
-                    } else if (UPropertyAliases.compare(ANY_ID, propertyAlias) == 0) {
-                        set(0, 1114111);
-                        return this;
-                    } else if (UPropertyAliases.compare(ASCII_ID, propertyAlias) == 0) {
-                        set(0, 127);
-                        return this;
-                    } else if (UPropertyAliases.compare(ASSIGNED, propertyAlias) == 0) {
-                        invert = true;
-                        p = 8192;
-                        v = 1;
+                    } else if (p2 == -1) {
+                        if (UPropertyAliases.compare(ANY_ID, propertyAlias) == 0) {
+                            set(0, 1114111);
+                            return this;
+                        } else if (UPropertyAliases.compare(ASCII_ID, propertyAlias) == 0) {
+                            set(0, 127);
+                            return this;
+                        } else if (UPropertyAliases.compare(ASSIGNED, propertyAlias) == 0) {
+                            invert = true;
+                            p = 8192;
+                            v = 1;
+                        } else {
+                            throw new IllegalArgumentException("Invalid property alias: " + propertyAlias + "=" + valueAlias);
+                        }
                     } else {
-                        throw new IllegalArgumentException("Invalid property alias: " + propertyAlias + "=" + valueAlias);
+                        throw new IllegalArgumentException("Missing property value");
                     }
-                } else {
-                    p = 4106;
-                    v = v4;
                 }
-            } else {
-                p = 8192;
-                v = v3;
             }
         }
         applyIntPropertyValue(p, v);
@@ -2651,19 +2509,16 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         if (pos + 5 > pattern.length()) {
             return false;
         }
-        if (pattern.regionMatches(pos, "[:", 0, 2) || pattern.regionMatches(true, pos, "\\p", 0, 2) || pattern.regionMatches(pos, "\\N", 0, 2)) {
-            return true;
-        }
-        return false;
+        return pattern.regionMatches(pos, "[:", 0, 2) || pattern.regionMatches(true, pos, "\\p", 0, 2) || pattern.regionMatches(pos, "\\N", 0, 2);
     }
 
     private static boolean resemblesPropertyPattern(RuleCharacterIterator chars, int iterOpts) {
         boolean result = false;
-        int iterOpts2 = iterOpts & -3;
+        int iterOpts2 = iterOpts & (-3);
         Object pos = chars.getPos((Object) null);
         int c = chars.next(iterOpts2);
         if (c == 91 || c == 92) {
-            int d = chars.next(iterOpts2 & -5);
+            int d = chars.next(iterOpts2 & (-5));
             boolean z = false;
             if (c != 91 ? d == 78 || d == 112 || d == 80 : d == 58) {
                 z = true;
@@ -2676,9 +2531,8 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
 
     private UnicodeSet applyPropertyPattern(String pattern, ParsePosition ppos, SymbolTable symbols) {
         int pos;
-        String valueName;
         String propName;
-        String str = pattern;
+        String valueName;
         int pos2 = ppos.getIndex();
         if (pos2 + 5 > pattern.length()) {
             return null;
@@ -2686,64 +2540,49 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         boolean posix = false;
         boolean isName = false;
         boolean invert = false;
-        boolean z = false;
-        int i = 2;
-        if (str.regionMatches(pos2, "[:", 0, 2)) {
+        if (pattern.regionMatches(pos2, "[:", 0, 2)) {
             posix = true;
-            pos = PatternProps.skipWhiteSpace(str, pos2 + 2);
-            if (pos < pattern.length() && str.charAt(pos) == '^') {
+            pos = PatternProps.skipWhiteSpace(pattern, pos2 + 2);
+            if (pos < pattern.length() && pattern.charAt(pos) == '^') {
                 pos++;
                 invert = true;
             }
-        } else if (!pattern.regionMatches(true, pos2, "\\p", 0, 2) && !str.regionMatches(pos2, "\\N", 0, 2)) {
-            return null;
-        } else {
-            char c = str.charAt(pos2 + 1);
+        } else if (pattern.regionMatches(true, pos2, "\\p", 0, 2) || pattern.regionMatches(pos2, "\\N", 0, 2)) {
+            char c = pattern.charAt(pos2 + 1);
             invert = c == 'P';
-            if (c == 'N') {
-                z = true;
-            }
-            isName = z;
-            int pos3 = PatternProps.skipWhiteSpace(str, pos2 + 2);
+            isName = c == 'N';
+            int pos3 = PatternProps.skipWhiteSpace(pattern, pos2 + 2);
             if (pos3 != pattern.length()) {
                 int pos4 = pos3 + 1;
-                if (str.charAt(pos3) != 123) {
-                    ParsePosition parsePosition = ppos;
-                    SymbolTable symbolTable = symbols;
-                    int i2 = pos4;
-                } else {
+                if (pattern.charAt(pos3) == 123) {
                     pos = pos4;
                 }
-            } else {
-                ParsePosition parsePosition2 = ppos;
-                SymbolTable symbolTable2 = symbols;
             }
             return null;
+        } else {
+            return null;
         }
-        int close = str.indexOf(posix ? ":]" : "}", pos);
+        int close = pattern.indexOf(posix ? ":]" : "}", pos);
         if (close < 0) {
             return null;
         }
-        int equals = str.indexOf(61, pos);
-        if (equals < 0 || equals >= close || isName) {
-            propName = str.substring(pos, close);
+        int equals = pattern.indexOf(61, pos);
+        if (equals >= 0 && equals < close && !isName) {
+            propName = pattern.substring(pos, equals);
+            valueName = pattern.substring(equals + 1, close);
+        } else {
+            propName = pattern.substring(pos, close);
             valueName = "";
             if (isName) {
                 valueName = propName;
                 propName = "na";
             }
-        } else {
-            propName = str.substring(pos, equals);
-            valueName = str.substring(equals + 1, close);
         }
         applyPropertyAlias(propName, valueName, symbols);
         if (invert) {
             complement();
         }
-        if (!posix) {
-            i = 1;
-        }
-        ppos.setIndex(i + close);
+        ppos.setIndex((posix ? 2 : 1) + close);
         return this;
     }
 
@@ -2759,15 +2598,14 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     }
 
     private static final void addCaseMapping(UnicodeSet set, int result, StringBuilder full) {
-        if (result < 0) {
-            return;
+        if (result >= 0) {
+            if (result > 31) {
+                set.add(result);
+                return;
+            }
+            set.add(full.toString());
+            full.setLength(0);
         }
-        if (result > 31) {
-            set.add(result);
-            return;
-        }
-        set.add((CharSequence) full.toString());
-        full.setLength(0);
     }
 
     public UnicodeSet closeOver(int attribute) {
@@ -2790,28 +2628,32 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
                     }
                 } else {
                     for (int cp2 = start; cp2 <= end; cp2++) {
-                        addCaseMapping(foldSet, csp.toFullLower(cp2, (UCaseProps.ContextIterator) null, full, 1), full);
-                        addCaseMapping(foldSet, csp.toFullTitle(cp2, (UCaseProps.ContextIterator) null, full, 1), full);
-                        addCaseMapping(foldSet, csp.toFullUpper(cp2, (UCaseProps.ContextIterator) null, full, 1), full);
-                        addCaseMapping(foldSet, csp.toFullFolding(cp2, full, 0), full);
+                        int result = csp.toFullLower(cp2, (UCaseProps.ContextIterator) null, full, 1);
+                        addCaseMapping(foldSet, result, full);
+                        int result2 = csp.toFullTitle(cp2, (UCaseProps.ContextIterator) null, full, 1);
+                        addCaseMapping(foldSet, result2, full);
+                        int result3 = csp.toFullUpper(cp2, (UCaseProps.ContextIterator) null, full, 1);
+                        addCaseMapping(foldSet, result3, full);
+                        int result4 = csp.toFullFolding(cp2, full, 0);
+                        addCaseMapping(foldSet, result4, full);
                     }
                 }
             }
-            if (hasStrings() != 0) {
+            if (hasStrings()) {
                 if ((attribute & 2) != 0) {
                     for (String s : this.strings) {
                         String str = UCharacter.foldCase(s, 0);
                         if (!csp.addStringCaseClosure(str, foldSet)) {
-                            foldSet.add((CharSequence) str);
+                            foldSet.add(str);
                         }
                     }
                 } else {
                     BreakIterator bi = BreakIterator.getWordInstance(root);
                     for (String str2 : this.strings) {
-                        foldSet.add((CharSequence) UCharacter.toLowerCase(root, str2));
-                        foldSet.add((CharSequence) UCharacter.toTitleCase(root, str2, bi));
-                        foldSet.add((CharSequence) UCharacter.toUpperCase(root, str2));
-                        foldSet.add((CharSequence) UCharacter.foldCase(str2, 0));
+                        foldSet.add(UCharacter.toLowerCase(root, str2));
+                        foldSet.add(UCharacter.toTitleCase(root, str2, bi));
+                        foldSet.add(UCharacter.toUpperCase(root, str2));
+                        foldSet.add(UCharacter.foldCase(str2, 0));
                     }
                 }
             }
@@ -2820,7 +2662,9 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         return this;
     }
 
+    /* loaded from: classes.dex */
     public static abstract class XSymbolTable implements SymbolTable {
+        @Override // com.ibm.icu.text.SymbolTable
         public UnicodeMatcher lookupMatcher(int i) {
             return null;
         }
@@ -2829,10 +2673,12 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
             return false;
         }
 
+        @Override // com.ibm.icu.text.SymbolTable
         public char[] lookup(String s) {
             return null;
         }
 
+        @Override // com.ibm.icu.text.SymbolTable
         public String parseReference(String text, ParsePosition pos, int limit) {
             return null;
         }
@@ -2842,7 +2688,8 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         return (this.bmpSet == null && this.stringSpan == null) ? false : true;
     }
 
-    public UnicodeSet freeze() {
+    /* renamed from: freeze */
+    public UnicodeSet m87freeze() {
         if (!isFrozen()) {
             compact();
             if (hasStrings()) {
@@ -2873,35 +2720,40 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
             return this.stringSpan.span(s, start, spanCondition);
         }
         if (hasStrings()) {
-            UnicodeSetStringSpan strSpan = new UnicodeSetStringSpan(this, new ArrayList(this.strings), spanCondition == SpanCondition.NOT_CONTAINED ? 33 : 34);
+            int which = spanCondition == SpanCondition.NOT_CONTAINED ? 33 : 34;
+            UnicodeSetStringSpan strSpan = new UnicodeSetStringSpan(this, new ArrayList(this.strings), which);
             if (strSpan.needsStringSpanUTF16()) {
                 return strSpan.span(s, start, spanCondition);
             }
         }
-        return spanCodePointsAndCount(s, start, spanCondition, (OutputInt) null);
+        int which2 = spanCodePointsAndCount(s, start, spanCondition, null);
+        return which2;
     }
 
     @Deprecated
     public int spanAndCount(CharSequence s, int start, SpanCondition spanCondition, OutputInt outCount) {
-        if (outCount != null) {
-            int end = s.length();
-            if (start < 0) {
-                start = 0;
-            } else if (start >= end) {
-                return end;
-            }
-            if (this.stringSpan != null) {
-                return this.stringSpan.spanAndCount(s, start, spanCondition, outCount);
-            }
-            if (this.bmpSet != null) {
-                return this.bmpSet.span(s, start, spanCondition, outCount);
-            }
-            if (!hasStrings()) {
-                return spanCodePointsAndCount(s, start, spanCondition, outCount);
-            }
-            return new UnicodeSetStringSpan(this, new ArrayList(this.strings), (spanCondition == SpanCondition.NOT_CONTAINED ? 33 : 34) | 64).spanAndCount(s, start, spanCondition, outCount);
+        if (outCount == null) {
+            throw new IllegalArgumentException("outCount must not be null");
         }
-        throw new IllegalArgumentException("outCount must not be null");
+        int end = s.length();
+        if (start < 0) {
+            start = 0;
+        } else if (start >= end) {
+            return end;
+        }
+        if (this.stringSpan != null) {
+            return this.stringSpan.spanAndCount(s, start, spanCondition, outCount);
+        }
+        if (this.bmpSet != null) {
+            return this.bmpSet.span(s, start, spanCondition, outCount);
+        }
+        if (hasStrings()) {
+            int which = spanCondition == SpanCondition.NOT_CONTAINED ? 33 : 34;
+            UnicodeSetStringSpan strSpan = new UnicodeSetStringSpan(this, new ArrayList(this.strings), which | 64);
+            return strSpan.spanAndCount(s, start, spanCondition, outCount);
+        }
+        int which2 = spanCodePointsAndCount(s, start, spanCondition, outCount);
+        return which2;
     }
 
     private int spanCodePointsAndCount(CharSequence s, int start, SpanCondition spanCondition, OutputInt outCount) {
@@ -2928,8 +2780,6 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     }
 
     public int spanBack(CharSequence s, int fromIndex, SpanCondition spanCondition) {
-        int c;
-        boolean spanContained = false;
         if (fromIndex <= 0) {
             return 0;
         }
@@ -2943,32 +2793,31 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
             return this.stringSpan.spanBack(s, fromIndex, spanCondition);
         }
         if (hasStrings()) {
-            UnicodeSetStringSpan strSpan = new UnicodeSetStringSpan(this, new ArrayList(this.strings), spanCondition == SpanCondition.NOT_CONTAINED ? 17 : 18);
+            int which = spanCondition == SpanCondition.NOT_CONTAINED ? 17 : 18;
+            UnicodeSetStringSpan strSpan = new UnicodeSetStringSpan(this, new ArrayList(this.strings), which);
             if (strSpan.needsStringSpanUTF16()) {
                 return strSpan.spanBack(s, fromIndex, spanCondition);
             }
         }
-        if (spanCondition != SpanCondition.NOT_CONTAINED) {
-            spanContained = true;
-        }
+        boolean spanContained = spanCondition != SpanCondition.NOT_CONTAINED;
         int prev = fromIndex;
         do {
-            c = Character.codePointBefore(s, prev);
-            if (spanContained != contains(c) || (prev = prev - Character.charCount(c)) <= 0) {
-                return prev;
+            int c = Character.codePointBefore(s, prev);
+            if (spanContained != contains(c)) {
+                break;
             }
-            c = Character.codePointBefore(s, prev);
-            break;
-        } while ((prev = prev - Character.charCount(c)) <= 0);
+            prev -= Character.charCount(c);
+        } while (prev > 0);
         return prev;
     }
 
-    public UnicodeSet cloneAsThawed() {
+    /* renamed from: cloneAsThawed */
+    public UnicodeSet m86cloneAsThawed() {
         UnicodeSet result = new UnicodeSet(this);
-        if (!result.isFrozen()) {
-            return result;
+        if (result.isFrozen()) {
+            throw new AssertionError();
         }
-        throw new AssertionError();
+        return result;
     }
 
     private void checkFrozen() {
@@ -2977,6 +2826,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         }
     }
 
+    /* loaded from: classes.dex */
     public static class EntryRange {
         public int codepoint;
         public int codepointEnd;
@@ -2985,15 +2835,9 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         }
 
         public String toString() {
-            StringBuilder sb;
             StringBuilder b = new StringBuilder();
             int i = this.codepoint;
-            if (i == this.codepointEnd) {
-                sb = (StringBuilder) UnicodeSet._appendToPat(b, i, false);
-            } else {
-                sb = (StringBuilder) UnicodeSet._appendToPat(((StringBuilder) UnicodeSet._appendToPat(b, i, false)).append('-'), this.codepointEnd, false);
-            }
-            return sb.toString();
+            return (i == this.codepointEnd ? (StringBuilder) UnicodeSet._appendToPat(b, i, false) : (StringBuilder) UnicodeSet._appendToPat(((StringBuilder) UnicodeSet._appendToPat(b, i, false)).append('-'), this.codepointEnd, false)).toString();
         }
     }
 
@@ -3001,15 +2845,18 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         return new EntryRangeIterable();
     }
 
+    /* loaded from: classes.dex */
     private class EntryRangeIterable implements Iterable<EntryRange> {
         private EntryRangeIterable() {
         }
 
+        @Override // java.lang.Iterable
         public Iterator<EntryRange> iterator() {
             return new EntryRangeIterator();
         }
     }
 
+    /* loaded from: classes.dex */
     private class EntryRangeIterator implements Iterator<EntryRange> {
         int pos;
         EntryRange result;
@@ -3018,36 +2865,42 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
             this.result = new EntryRange();
         }
 
+        @Override // java.util.Iterator
         public boolean hasNext() {
             return this.pos < UnicodeSet.this.len - 1;
         }
 
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // java.util.Iterator
         public EntryRange next() {
             if (this.pos < UnicodeSet.this.len - 1) {
                 EntryRange entryRange = this.result;
-                int[] access$500 = UnicodeSet.this.list;
+                int[] iArr = UnicodeSet.this.list;
                 int i = this.pos;
                 this.pos = i + 1;
-                entryRange.codepoint = access$500[i];
+                entryRange.codepoint = iArr[i];
                 EntryRange entryRange2 = this.result;
-                int[] access$5002 = UnicodeSet.this.list;
+                int[] iArr2 = UnicodeSet.this.list;
                 int i2 = this.pos;
                 this.pos = i2 + 1;
-                entryRange2.codepointEnd = access$5002[i2] - 1;
+                entryRange2.codepointEnd = iArr2[i2] - 1;
                 return this.result;
             }
             throw new NoSuchElementException();
         }
 
+        @Override // java.util.Iterator
         public void remove() {
             throw new UnsupportedOperationException();
         }
     }
 
+    @Override // java.lang.Iterable
     public Iterator<String> iterator() {
         return new UnicodeSetIterator2(this);
     }
 
+    /* loaded from: classes.dex */
     private static class UnicodeSetIterator2 implements Iterator<String> {
         private char[] buffer;
         private int current;
@@ -3059,28 +2912,30 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         private Iterator<String> stringIterator;
 
         UnicodeSetIterator2(UnicodeSet source) {
-            int access$400 = source.len - 1;
-            this.len = access$400;
-            if (access$400 > 0) {
+            int i = source.len - 1;
+            this.len = i;
+            if (i > 0) {
                 this.sourceStrings = source.strings;
-                int[] access$500 = source.list;
-                this.sourceList = access$500;
-                int i = this.item;
-                int i2 = i + 1;
-                this.item = i2;
-                this.current = access$500[i];
-                this.item = i2 + 1;
-                this.limit = access$500[i2];
+                int[] iArr = source.list;
+                this.sourceList = iArr;
+                int i2 = this.item;
+                int i3 = i2 + 1;
+                this.item = i3;
+                this.current = iArr[i2];
+                this.item = i3 + 1;
+                this.limit = iArr[i3];
                 return;
             }
             this.stringIterator = source.strings.iterator();
             this.sourceList = null;
         }
 
+        @Override // java.util.Iterator
         public boolean hasNext() {
             return this.sourceList != null || this.stringIterator.hasNext();
         }
 
+        @Override // java.util.Iterator
         public String next() {
             int[] iArr = this.sourceList;
             if (iArr == null) {
@@ -3115,6 +2970,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
             return String.valueOf(cArr);
         }
 
+        @Override // java.util.Iterator
         public void remove() {
             throw new UnsupportedOperationException();
         }
@@ -3122,7 +2978,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
 
     public <T extends CharSequence> boolean containsAll(Iterable<T> collection) {
         for (T o : collection) {
-            if (!contains((CharSequence) o)) {
+            if (!contains(o)) {
                 return false;
             }
         }
@@ -3131,7 +2987,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
 
     public <T extends CharSequence> boolean containsNone(Iterable<T> collection) {
         for (T o : collection) {
-            if (contains((CharSequence) o)) {
+            if (contains(o)) {
                 return false;
             }
         }
@@ -3145,7 +3001,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     public <T extends CharSequence> UnicodeSet addAll(T... collection) {
         checkFrozen();
         for (T str : collection) {
-            add((CharSequence) str);
+            add(str);
         }
         return this;
     }
@@ -3153,7 +3009,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     public <T extends CharSequence> UnicodeSet removeAll(Iterable<T> collection) {
         checkFrozen();
         for (T o : collection) {
-            remove((CharSequence) o);
+            remove(o);
         }
         return this;
     }
@@ -3166,56 +3022,51 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         return this;
     }
 
+    @Override // java.lang.Comparable
     public int compareTo(UnicodeSet o) {
         return compareTo(o, ComparisonStyle.SHORTER_FIRST);
     }
 
     public int compareTo(UnicodeSet o, ComparisonStyle style) {
-        int compareResult;
         int diff;
-        boolean z = false;
-        if (style == ComparisonStyle.LEXICOGRAPHIC || (diff = size() - o.size()) == 0) {
-            int i = 0;
-            while (true) {
-                int[] iArr = this.list;
-                int i2 = iArr[i];
-                int[] iArr2 = o.list;
-                int i3 = i2 - iArr2[i];
-                int result = i3;
-                if (i3 != 0) {
-                    if (iArr[i] == HIGH) {
-                        if (!hasStrings()) {
-                            return 1;
-                        }
-                        return compare((CharSequence) this.strings.first(), o.list[i]);
-                    } else if (iArr2[i] != HIGH) {
-                        return (i & 1) == 0 ? result : -result;
-                    } else {
-                        if (o.hasStrings() && (compareResult = compare((CharSequence) o.strings.first(), this.list[i])) <= 0) {
-                            return compareResult < 0 ? 1 : 0;
-                        }
+        if (style != ComparisonStyle.LEXICOGRAPHIC && (diff = size() - o.size()) != 0) {
+            return (diff < 0) == (style == ComparisonStyle.SHORTER_FIRST) ? -1 : 1;
+        }
+        int i = 0;
+        while (true) {
+            int[] iArr = this.list;
+            int i2 = iArr[i];
+            int[] iArr2 = o.list;
+            int result = i2 - iArr2[i];
+            if (result != 0) {
+                if (iArr[i] == HIGH) {
+                    if (hasStrings()) {
+                        String item = this.strings.first();
+                        return compare(item, o.list[i]);
+                    }
+                    return 1;
+                } else if (iArr2[i] != HIGH) {
+                    return (i & 1) == 0 ? result : -result;
+                } else if (o.hasStrings()) {
+                    String item2 = o.strings.first();
+                    int compareResult = compare(item2, this.list[i]);
+                    if (compareResult > 0) {
                         return -1;
                     }
-                } else if (iArr[i] == HIGH) {
-                    return compare(this.strings, o.strings);
+                    return compareResult < 0 ? 1 : 0;
                 } else {
-                    i++;
+                    return -1;
                 }
+            } else if (iArr[i] != HIGH) {
+                i++;
+            } else {
+                return compare(this.strings, o.strings);
             }
-        } else {
-            boolean z2 = diff < 0;
-            if (style == ComparisonStyle.SHORTER_FIRST) {
-                z = true;
-            }
-            if (z2 == z) {
-                return -1;
-            }
-            return 1;
         }
     }
 
     public int compareTo(Iterable<String> other) {
-        return compare(this, (UnicodeSet) other);
+        return compare(this, other);
     }
 
     public static int compare(CharSequence string, int codePoint) {
@@ -3236,7 +3087,9 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
             if (!other.hasNext()) {
                 return 1;
             }
-            int result = ((Comparable) first.next()).compareTo((Comparable) other.next());
+            T item1 = first.next();
+            T item2 = other.next();
+            int result = item1.compareTo(item2);
             if (result != 0) {
                 return result;
             }
@@ -3249,12 +3102,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
         if (style == ComparisonStyle.LEXICOGRAPHIC || (diff = collection1.size() - collection2.size()) == 0) {
             return compare(collection1, collection2);
         }
-        boolean z = false;
-        boolean z2 = diff < 0;
-        if (style == ComparisonStyle.SHORTER_FIRST) {
-            z = true;
-        }
-        return z2 == z ? -1 : 1;
+        return (diff < 0) == (style == ComparisonStyle.SHORTER_FIRST) ? -1 : 1;
     }
 
     public static <T, U extends Collection<T>> U addAllTo(Iterable<T> source, U target) {
@@ -3287,9 +3135,10 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
 
     @Deprecated
     public UnicodeSet addBridges(UnicodeSet dontCare) {
-        UnicodeSetIterator it = new UnicodeSetIterator(new UnicodeSet(this).complement());
+        UnicodeSet notInInput = new UnicodeSet(this).complement();
+        UnicodeSetIterator it = new UnicodeSetIterator(notInInput);
         while (it.nextRange()) {
-            if (!(it.codepoint == 0 || it.codepoint == UnicodeSetIterator.IS_STRING || it.codepointEnd == 1114111 || !dontCare.contains(it.codepoint, it.codepointEnd))) {
+            if (it.codepoint != 0 && it.codepoint != UnicodeSetIterator.IS_STRING && it.codepointEnd != 1114111 && dontCare.contains(it.codepoint, it.codepointEnd)) {
                 add(it.codepoint, it.codepointEnd);
             }
         }

@@ -1,13 +1,13 @@
 package android.arch.persistence.room;
 
-import android.arch.persistence.db.SimpleSQLiteQuery;
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.db.SupportSQLiteOpenHelper;
-import android.arch.persistence.db.SupportSQLiteQuery;
+import android.arch.persistence.p000db.SimpleSQLiteQuery;
+import android.arch.persistence.p000db.SupportSQLiteDatabase;
+import android.arch.persistence.p000db.SupportSQLiteOpenHelper;
 import android.arch.persistence.room.migration.Migration;
 import android.database.Cursor;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public class RoomOpenHelper extends SupportSQLiteOpenHelper.Callback {
     private DatabaseConfiguration mConfiguration;
     private final Delegate mDelegate;
@@ -26,21 +26,24 @@ public class RoomOpenHelper extends SupportSQLiteOpenHelper.Callback {
         this(configuration, delegate, "", legacyHash);
     }
 
+    @Override // android.arch.persistence.p000db.SupportSQLiteOpenHelper.Callback
     public void onConfigure(SupportSQLiteDatabase db) {
         super.onConfigure(db);
     }
 
+    @Override // android.arch.persistence.p000db.SupportSQLiteOpenHelper.Callback
     public void onCreate(SupportSQLiteDatabase db) {
         updateIdentity(db);
         this.mDelegate.createAllTables(db);
         this.mDelegate.onCreate(db);
     }
 
+    @Override // android.arch.persistence.p000db.SupportSQLiteOpenHelper.Callback
     public void onUpgrade(SupportSQLiteDatabase db, int oldVersion, int newVersion) {
         List<Migration> migrations;
         boolean migrated = false;
         DatabaseConfiguration databaseConfiguration = this.mConfiguration;
-        if (!(databaseConfiguration == null || (migrations = databaseConfiguration.migrationContainer.findMigrationPath(oldVersion, newVersion)) == null)) {
+        if (databaseConfiguration != null && (migrations = databaseConfiguration.migrationContainer.findMigrationPath(oldVersion, newVersion)) != null) {
             for (Migration migration : migrations) {
                 migration.migrate(db);
             }
@@ -50,18 +53,21 @@ public class RoomOpenHelper extends SupportSQLiteOpenHelper.Callback {
         }
         if (!migrated) {
             DatabaseConfiguration databaseConfiguration2 = this.mConfiguration;
-            if (databaseConfiguration2 == null || databaseConfiguration2.isMigrationRequiredFrom(oldVersion)) {
-                throw new IllegalStateException("A migration from " + oldVersion + " to " + newVersion + " was required but not found. Please provide the " + "necessary Migration path via " + "RoomDatabase.Builder.addMigration(Migration ...) or allow for " + "destructive migrations via one of the " + "RoomDatabase.Builder.fallbackToDestructiveMigration* methods.");
+            if (databaseConfiguration2 != null && !databaseConfiguration2.isMigrationRequiredFrom(oldVersion)) {
+                this.mDelegate.dropAllTables(db);
+                this.mDelegate.createAllTables(db);
+                return;
             }
-            this.mDelegate.dropAllTables(db);
-            this.mDelegate.createAllTables(db);
+            throw new IllegalStateException("A migration from " + oldVersion + " to " + newVersion + " was required but not found. Please provide the necessary Migration path via RoomDatabase.Builder.addMigration(Migration ...) or allow for destructive migrations via one of the RoomDatabase.Builder.fallbackToDestructiveMigration* methods.");
         }
     }
 
+    @Override // android.arch.persistence.p000db.SupportSQLiteOpenHelper.Callback
     public void onDowngrade(SupportSQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
     }
 
+    @Override // android.arch.persistence.p000db.SupportSQLiteOpenHelper.Callback
     public void onOpen(SupportSQLiteDatabase db) {
         super.onOpen(db);
         checkIdentity(db);
@@ -72,7 +78,7 @@ public class RoomOpenHelper extends SupportSQLiteOpenHelper.Callback {
     private void checkIdentity(SupportSQLiteDatabase db) {
         String identityHash = null;
         if (hasRoomMasterTable(db)) {
-            Cursor cursor = db.query((SupportSQLiteQuery) new SimpleSQLiteQuery(RoomMasterTable.READ_QUERY));
+            Cursor cursor = db.query(new SimpleSQLiteQuery(RoomMasterTable.READ_QUERY));
             try {
                 if (cursor.moveToFirst()) {
                     identityHash = cursor.getString(0);
@@ -99,8 +105,10 @@ public class RoomOpenHelper extends SupportSQLiteOpenHelper.Callback {
         Cursor cursor = db.query("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name='room_master_table'");
         try {
             boolean z = false;
-            if (cursor.moveToFirst() && cursor.getInt(0) != 0) {
-                z = true;
+            if (cursor.moveToFirst()) {
+                if (cursor.getInt(0) != 0) {
+                    z = true;
+                }
             }
             return z;
         } finally {
@@ -108,26 +116,22 @@ public class RoomOpenHelper extends SupportSQLiteOpenHelper.Callback {
         }
     }
 
+    /* loaded from: classes.dex */
     public static abstract class Delegate {
         public final int version;
 
-        /* access modifiers changed from: protected */
-        public abstract void createAllTables(SupportSQLiteDatabase supportSQLiteDatabase);
+        protected abstract void createAllTables(SupportSQLiteDatabase supportSQLiteDatabase);
 
-        /* access modifiers changed from: protected */
-        public abstract void dropAllTables(SupportSQLiteDatabase supportSQLiteDatabase);
+        protected abstract void dropAllTables(SupportSQLiteDatabase supportSQLiteDatabase);
 
-        /* access modifiers changed from: protected */
-        public abstract void onCreate(SupportSQLiteDatabase supportSQLiteDatabase);
+        protected abstract void onCreate(SupportSQLiteDatabase supportSQLiteDatabase);
 
-        /* access modifiers changed from: protected */
-        public abstract void onOpen(SupportSQLiteDatabase supportSQLiteDatabase);
+        protected abstract void onOpen(SupportSQLiteDatabase supportSQLiteDatabase);
 
-        /* access modifiers changed from: protected */
-        public abstract void validateMigration(SupportSQLiteDatabase supportSQLiteDatabase);
+        protected abstract void validateMigration(SupportSQLiteDatabase supportSQLiteDatabase);
 
-        public Delegate(int version2) {
-            this.version = version2;
+        public Delegate(int version) {
+            this.version = version;
         }
     }
 }

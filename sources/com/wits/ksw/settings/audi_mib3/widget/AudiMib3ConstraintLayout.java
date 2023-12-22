@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/* loaded from: classes6.dex */
 public class AudiMib3ConstraintLayout extends ConstraintLayout {
-    private static final String TAG = ("KswApplication." + AudiMib3ConstraintLayout.class.getSimpleName());
+    private static final String TAG = "KswApplication." + AudiMib3ConstraintLayout.class.getSimpleName();
     private List<View> childViews;
 
     public AudiMib3ConstraintLayout(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
         Log.i(TAG, "AudiConstraintLayout: ");
         init();
     }
@@ -26,8 +27,8 @@ public class AudiMib3ConstraintLayout extends ConstraintLayout {
         Log.i(TAG, "AudiConstraintLayout: ");
     }
 
-    /* access modifiers changed from: protected */
-    public void onAttachedToWindow() {
+    @Override // android.view.ViewGroup, android.view.View
+    protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         init();
     }
@@ -38,7 +39,8 @@ public class AudiMib3ConstraintLayout extends ConstraintLayout {
         this.childViews = allChildViews;
         for (View mView : allChildViews) {
             if (mView instanceof CompoundButton) {
-                mView.setOnClickListener(new View.OnClickListener() {
+                mView.setOnClickListener(new View.OnClickListener() { // from class: com.wits.ksw.settings.audi_mib3.widget.AudiMib3ConstraintLayout.1
+                    @Override // android.view.View.OnClickListener
                     public void onClick(View v) {
                         AudiMib3ConstraintLayout.this.setSeleted(v);
                     }

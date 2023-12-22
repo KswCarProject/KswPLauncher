@@ -3,6 +3,7 @@ package android.support.constraint.motion.utils;
 import android.support.constraint.motion.KeyCycleOscillator;
 import android.support.constraint.motion.SplineSet;
 
+/* loaded from: classes.dex */
 public class VelocityMatrix {
     private static String TAG = "VelocityMatrix";
     float mDRotate;
@@ -61,19 +62,18 @@ public class VelocityMatrix {
     }
 
     public void setScaleVelocity(KeyCycleOscillator osc_sx, KeyCycleOscillator osc_sy, float position) {
-        if (osc_sx != null || osc_sy != null) {
-            if (osc_sx == null) {
-                this.mDScaleX = osc_sx.getSlope(position);
-            }
-            if (osc_sy == null) {
-                this.mDScaleY = osc_sy.getSlope(position);
-            }
+        if (osc_sx == null && osc_sy == null) {
+            return;
+        }
+        if (osc_sx == null) {
+            this.mDScaleX = osc_sx.getSlope(position);
+        }
+        if (osc_sy == null) {
+            this.mDScaleY = osc_sy.getSlope(position);
         }
     }
 
     public void applyTransform(float locationX, float locationY, int width, int height, float[] mAnchorDpDt) {
-        int i = width;
-        int i2 = height;
         float dx = mAnchorDpDt[0];
         float dy = mAnchorDpDt[1];
         float offx = (locationX - 0.5f) * 2.0f;
@@ -82,9 +82,9 @@ public class VelocityMatrix {
         float dy2 = dy + this.mDTranslateY;
         float dx3 = dx2 + (this.mDScaleX * offx);
         float dy3 = dy2 + (this.mDScaleY * offy);
-        float r = (float) Math.toRadians((double) this.mRotate);
-        float dr = (float) Math.toRadians((double) this.mDRotate);
-        mAnchorDpDt[0] = dx3 + (((float) ((((double) (((float) (-i)) * offx)) * Math.sin((double) r)) - (((double) (((float) i2) * offy)) * Math.cos((double) r)))) * dr);
-        mAnchorDpDt[1] = dy3 + (((float) ((((double) (((float) i) * offx)) * Math.cos((double) r)) - (((double) (((float) i2) * offy)) * Math.sin((double) r)))) * dr);
+        float r = (float) Math.toRadians(this.mRotate);
+        float dr = (float) Math.toRadians(this.mDRotate);
+        mAnchorDpDt[0] = dx3 + (((float) ((((-width) * offx) * Math.sin(r)) - ((height * offy) * Math.cos(r)))) * dr);
+        mAnchorDpDt[1] = dy3 + (((float) (((width * offx) * Math.cos(r)) - ((height * offy) * Math.sin(r)))) * dr);
     }
 }

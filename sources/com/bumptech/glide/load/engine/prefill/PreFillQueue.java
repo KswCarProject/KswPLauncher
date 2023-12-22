@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 final class PreFillQueue {
     private final Map<PreFillType, Integer> bitmapsPerType;
     private int bitmapsRemaining;
     private int keyIndex;
     private final List<PreFillType> keyList;
 
-    public PreFillQueue(Map<PreFillType, Integer> bitmapsPerType2) {
-        this.bitmapsPerType = bitmapsPerType2;
-        this.keyList = new ArrayList(bitmapsPerType2.keySet());
-        for (Integer count : bitmapsPerType2.values()) {
+    public PreFillQueue(Map<PreFillType, Integer> bitmapsPerType) {
+        this.bitmapsPerType = bitmapsPerType;
+        this.keyList = new ArrayList(bitmapsPerType.keySet());
+        for (Integer count : bitmapsPerType.values()) {
             this.bitmapsRemaining += count.intValue();
         }
     }

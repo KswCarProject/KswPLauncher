@@ -4,7 +4,8 @@ import com.ibm.icu.impl.number.DecimalQuantity_DualStorageBCD;
 import java.text.ParsePosition;
 import kotlin.text.Typography;
 
-/* compiled from: NFSubstitution */
+/* compiled from: NFSubstitution.java */
+/* loaded from: classes.dex */
 class FractionalPartSubstitution extends NFSubstitution {
     private final boolean byDigits;
     private final boolean useSpaces;
@@ -21,6 +22,7 @@ class FractionalPartSubstitution extends NFSubstitution {
         this.ruleSet.makeIntoFractionRuleSet();
     }
 
+    @Override // com.ibm.icu.text.NFSubstitution
     public void doSubstitution(double number, StringBuilder toInsertInto, int position, int recursionCount) {
         if (!this.byDigits) {
             super.doSubstitution(number, toInsertInto, position, recursionCount);
@@ -30,26 +32,28 @@ class FractionalPartSubstitution extends NFSubstitution {
         fq.roundToInfinity();
         boolean pad = false;
         for (int mag = fq.getLowerDisplayMagnitude(); mag < 0; mag++) {
-            if (!pad || !this.useSpaces) {
-                pad = true;
-            } else {
+            if (pad && this.useSpaces) {
                 toInsertInto.insert(this.pos + position, ' ');
+            } else {
+                pad = true;
             }
-            this.ruleSet.format((long) fq.getDigit(mag), toInsertInto, position + this.pos, recursionCount);
+            this.ruleSet.format(fq.getDigit(mag), toInsertInto, position + this.pos, recursionCount);
         }
     }
 
+    @Override // com.ibm.icu.text.NFSubstitution
     public long transformNumber(long number) {
-        return 0;
+        return 0L;
     }
 
+    @Override // com.ibm.icu.text.NFSubstitution
     public double transformNumber(double number) {
         return number - Math.floor(number);
     }
 
+    @Override // com.ibm.icu.text.NFSubstitution
     public Number doParse(String text, ParsePosition parsePosition, double baseValue, double upperBound, boolean lenientParse, int nonNumericalExecutedRuleMask) {
         Number n;
-        ParsePosition parsePosition2 = parsePosition;
         if (!this.byDigits) {
             return super.doParse(text, parsePosition, baseValue, 0.0d, lenientParse, nonNumericalExecutedRuleMask);
         }
@@ -66,28 +70,31 @@ class FractionalPartSubstitution extends NFSubstitution {
             if (workPos.getIndex() != 0) {
                 fq.appendDigit((byte) digit, 0, true);
                 totalDigits++;
-                parsePosition2.setIndex(parsePosition.getIndex() + workPos.getIndex());
+                parsePosition.setIndex(parsePosition.getIndex() + workPos.getIndex());
                 workText = workText.substring(workPos.getIndex());
                 while (workText.length() > 0 && workText.charAt(0) == ' ') {
                     workText = workText.substring(1);
-                    parsePosition2.setIndex(parsePosition.getIndex() + 1);
+                    parsePosition.setIndex(parsePosition.getIndex() + 1);
                 }
             }
         }
         fq.adjustMagnitude(-totalDigits);
-        return new Double(composeRuleValue(fq.toDouble(), baseValue));
+        double result = fq.toDouble();
+        return new Double(composeRuleValue(result, baseValue));
     }
 
+    @Override // com.ibm.icu.text.NFSubstitution
     public double composeRuleValue(double newRuleValue, double oldRuleValue) {
         return newRuleValue + oldRuleValue;
     }
 
+    @Override // com.ibm.icu.text.NFSubstitution
     public double calcUpperBound(double oldUpperBound) {
         return 0.0d;
     }
 
-    /* access modifiers changed from: package-private */
-    public char tokenChar() {
+    @Override // com.ibm.icu.text.NFSubstitution
+    char tokenChar() {
         return Typography.greater;
     }
 }

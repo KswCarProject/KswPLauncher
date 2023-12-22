@@ -9,63 +9,77 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
-import android.support.constraint.R;
+import android.support.constraint.C0088R;
 import android.support.constraint.utils.ImageFilterView;
-import android.support.v7.widget.AppCompatImageButton;
+import android.support.p004v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 
+/* loaded from: classes.dex */
 public class ImageFilterButton extends AppCompatImageButton {
-    private float mCrossfade = 0.0f;
-    private ImageFilterView.ImageMatrix mImageMatrix = new ImageFilterView.ImageMatrix();
+    private float mCrossfade;
+    private ImageFilterView.ImageMatrix mImageMatrix;
     LayerDrawable mLayer;
     Drawable[] mLayers;
-    private boolean mOverlay = true;
+    private boolean mOverlay;
     private Path mPath;
     RectF mRect;
-    /* access modifiers changed from: private */
-    public float mRound = Float.NaN;
-    /* access modifiers changed from: private */
-    public float mRoundPercent = 0.0f;
+    private float mRound;
+    private float mRoundPercent;
     ViewOutlineProvider mViewOutlineProvider;
 
     public ImageFilterButton(Context context) {
         super(context);
-        init(context, (AttributeSet) null);
+        this.mImageMatrix = new ImageFilterView.ImageMatrix();
+        this.mCrossfade = 0.0f;
+        this.mRoundPercent = 0.0f;
+        this.mRound = Float.NaN;
+        this.mOverlay = true;
+        init(context, null);
     }
 
     public ImageFilterButton(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.mImageMatrix = new ImageFilterView.ImageMatrix();
+        this.mCrossfade = 0.0f;
+        this.mRoundPercent = 0.0f;
+        this.mRound = Float.NaN;
+        this.mOverlay = true;
         init(context, attrs);
     }
 
     public ImageFilterButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.mImageMatrix = new ImageFilterView.ImageMatrix();
+        this.mCrossfade = 0.0f;
+        this.mRoundPercent = 0.0f;
+        this.mRound = Float.NaN;
+        this.mOverlay = true;
         init(context, attrs);
     }
 
     private void init(Context context, AttributeSet attrs) {
         setPadding(0, 0, 0, 0);
         if (attrs != null) {
-            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ImageFilterView);
+            TypedArray a = getContext().obtainStyledAttributes(attrs, C0088R.styleable.ImageFilterView);
             int N = a.getIndexCount();
-            Drawable drawable = a.getDrawable(R.styleable.ImageFilterView_altSrc);
+            Drawable drawable = a.getDrawable(C0088R.styleable.ImageFilterView_altSrc);
             for (int i = 0; i < N; i++) {
                 int attr = a.getIndex(i);
-                if (attr == R.styleable.ImageFilterView_crossfade) {
+                if (attr == C0088R.styleable.ImageFilterView_crossfade) {
                     this.mCrossfade = a.getFloat(attr, 0.0f);
-                } else if (attr == R.styleable.ImageFilterView_warmth) {
+                } else if (attr == C0088R.styleable.ImageFilterView_warmth) {
                     setWarmth(a.getFloat(attr, 0.0f));
-                } else if (attr == R.styleable.ImageFilterView_saturation) {
+                } else if (attr == C0088R.styleable.ImageFilterView_saturation) {
                     setSaturation(a.getFloat(attr, 0.0f));
-                } else if (attr == R.styleable.ImageFilterView_contrast) {
+                } else if (attr == C0088R.styleable.ImageFilterView_contrast) {
                     setContrast(a.getFloat(attr, 0.0f));
-                } else if (attr == R.styleable.ImageFilterView_round) {
+                } else if (attr == C0088R.styleable.ImageFilterView_round) {
                     setRound(a.getDimension(attr, 0.0f));
-                } else if (attr == R.styleable.ImageFilterView_roundPercent) {
+                } else if (attr == C0088R.styleable.ImageFilterView_roundPercent) {
                     setRoundPercent(a.getFloat(attr, 0.0f));
-                } else if (attr == R.styleable.ImageFilterView_overlay) {
+                } else if (attr == C0088R.styleable.ImageFilterView_overlay) {
                     setOverlay(a.getBoolean(attr, this.mOverlay));
                 }
             }
@@ -146,22 +160,24 @@ public class ImageFilterButton extends AppCompatImageButton {
             }
             if (Build.VERSION.SDK_INT >= 21) {
                 if (this.mViewOutlineProvider == null) {
-                    AnonymousClass1 r2 = new ViewOutlineProvider() {
+                    ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() { // from class: android.support.constraint.utils.ImageFilterButton.1
+                        @Override // android.view.ViewOutlineProvider
                         public void getOutline(View view, Outline outline) {
                             int w = ImageFilterButton.this.getWidth();
                             int h = ImageFilterButton.this.getHeight();
-                            outline.setRoundRect(0, 0, w, h, (((float) Math.min(w, h)) * ImageFilterButton.this.mRoundPercent) / 2.0f);
+                            float r = (Math.min(w, h) * ImageFilterButton.this.mRoundPercent) / 2.0f;
+                            outline.setRoundRect(0, 0, w, h, r);
                         }
                     };
-                    this.mViewOutlineProvider = r2;
-                    setOutlineProvider(r2);
+                    this.mViewOutlineProvider = viewOutlineProvider;
+                    setOutlineProvider(viewOutlineProvider);
                 }
                 setClipToOutline(true);
             }
             int w = getWidth();
             int h = getHeight();
-            float r = (((float) Math.min(w, h)) * this.mRoundPercent) / 2.0f;
-            this.mRect.set(0.0f, 0.0f, (float) w, (float) h);
+            float r = (Math.min(w, h) * this.mRoundPercent) / 2.0f;
+            this.mRect.set(0.0f, 0.0f, w, h);
             this.mPath.reset();
             this.mPath.addRoundRect(this.mRect, r, r, Path.Direction.CW);
         } else if (Build.VERSION.SDK_INT >= 21) {
@@ -180,7 +196,8 @@ public class ImageFilterButton extends AppCompatImageButton {
             setRoundPercent(tmp);
             return;
         }
-        boolean change = this.mRound != round;
+        float tmp2 = this.mRound;
+        boolean change = tmp2 != round;
         this.mRound = round;
         if (round != 0.0f) {
             if (this.mPath == null) {
@@ -191,17 +208,22 @@ public class ImageFilterButton extends AppCompatImageButton {
             }
             if (Build.VERSION.SDK_INT >= 21) {
                 if (this.mViewOutlineProvider == null) {
-                    AnonymousClass2 r2 = new ViewOutlineProvider() {
+                    ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() { // from class: android.support.constraint.utils.ImageFilterButton.2
+                        @Override // android.view.ViewOutlineProvider
                         public void getOutline(View view, Outline outline) {
-                            outline.setRoundRect(0, 0, ImageFilterButton.this.getWidth(), ImageFilterButton.this.getHeight(), ImageFilterButton.this.mRound);
+                            int w = ImageFilterButton.this.getWidth();
+                            int h = ImageFilterButton.this.getHeight();
+                            outline.setRoundRect(0, 0, w, h, ImageFilterButton.this.mRound);
                         }
                     };
-                    this.mViewOutlineProvider = r2;
-                    setOutlineProvider(r2);
+                    this.mViewOutlineProvider = viewOutlineProvider;
+                    setOutlineProvider(viewOutlineProvider);
                 }
                 setClipToOutline(true);
             }
-            this.mRect.set(0.0f, 0.0f, (float) getWidth(), (float) getHeight());
+            int w = getWidth();
+            int h = getHeight();
+            this.mRect.set(0.0f, 0.0f, w, h);
             this.mPath.reset();
             Path path = this.mPath;
             RectF rectF = this.mRect;
@@ -223,9 +245,10 @@ public class ImageFilterButton extends AppCompatImageButton {
         return this.mRound;
     }
 
+    @Override // android.view.View
     public void draw(Canvas canvas) {
         boolean clip = false;
-        if (!(Build.VERSION.SDK_INT >= 21 || this.mRound == 0.0f || this.mPath == null)) {
+        if (Build.VERSION.SDK_INT < 21 && this.mRound != 0.0f && this.mPath != null) {
             clip = true;
             canvas.save();
             canvas.clipPath(this.mPath);

@@ -1,7 +1,7 @@
 package com.wits.ksw.launcher.dabebase;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.db.SupportSQLiteOpenHelper;
+import android.arch.persistence.p000db.SupportSQLiteDatabase;
+import android.arch.persistence.p000db.SupportSQLiteOpenHelper;
 import android.arch.persistence.room.DatabaseConfiguration;
 import android.arch.persistence.room.InvalidationTracker;
 import android.arch.persistence.room.RoomDatabase;
@@ -11,24 +11,27 @@ import android.arch.persistence.room.util.TableInfo;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/* loaded from: classes10.dex */
 public class AppInfoRoomDatabase_Impl extends AppInfoRoomDatabase {
     private volatile AppInfoDao _appInfoDao;
 
-    /* access modifiers changed from: protected */
-    public SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration configuration) {
-        return configuration.sqliteOpenHelperFactory.create(SupportSQLiteOpenHelper.Configuration.builder(configuration.context).name(configuration.name).callback(new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(1) {
+    @Override // com.wits.ksw.launcher.dabebase.AppInfoRoomDatabase, android.arch.persistence.room.RoomDatabase
+    protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration configuration) {
+        SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(1) { // from class: com.wits.ksw.launcher.dabebase.AppInfoRoomDatabase_Impl.1
+            @Override // android.arch.persistence.room.RoomOpenHelper.Delegate
             public void createAllTables(SupportSQLiteDatabase _db) {
                 _db.execSQL("CREATE TABLE IF NOT EXISTS `appList_table` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `className` TEXT NOT NULL)");
                 _db.execSQL(RoomMasterTable.CREATE_QUERY);
                 _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2828c787948669ef5ff291539e502ded\")");
             }
 
+            @Override // android.arch.persistence.room.RoomOpenHelper.Delegate
             public void dropAllTables(SupportSQLiteDatabase _db) {
                 _db.execSQL("DROP TABLE IF EXISTS `appList_table`");
             }
 
-            /* access modifiers changed from: protected */
-            public void onCreate(SupportSQLiteDatabase _db) {
+            @Override // android.arch.persistence.room.RoomOpenHelper.Delegate
+            protected void onCreate(SupportSQLiteDatabase _db) {
                 if (AppInfoRoomDatabase_Impl.this.mCallbacks != null) {
                     int _size = AppInfoRoomDatabase_Impl.this.mCallbacks.size();
                     for (int _i = 0; _i < _size; _i++) {
@@ -37,8 +40,9 @@ public class AppInfoRoomDatabase_Impl extends AppInfoRoomDatabase {
                 }
             }
 
+            @Override // android.arch.persistence.room.RoomOpenHelper.Delegate
             public void onOpen(SupportSQLiteDatabase _db) {
-                SupportSQLiteDatabase unused = AppInfoRoomDatabase_Impl.this.mDatabase = _db;
+                AppInfoRoomDatabase_Impl.this.mDatabase = _db;
                 AppInfoRoomDatabase_Impl.this.internalInitInvalidationTracker(_db);
                 if (AppInfoRoomDatabase_Impl.this.mCallbacks != null) {
                     int _size = AppInfoRoomDatabase_Impl.this.mCallbacks.size();
@@ -48,25 +52,31 @@ public class AppInfoRoomDatabase_Impl extends AppInfoRoomDatabase {
                 }
             }
 
-            /* access modifiers changed from: protected */
-            public void validateMigration(SupportSQLiteDatabase _db) {
+            @Override // android.arch.persistence.room.RoomOpenHelper.Delegate
+            protected void validateMigration(SupportSQLiteDatabase _db) {
                 HashMap<String, TableInfo.Column> _columnsAppListTable = new HashMap<>(2);
                 _columnsAppListTable.put("uid", new TableInfo.Column("uid", "INTEGER", true, 1));
                 _columnsAppListTable.put("className", new TableInfo.Column("className", "TEXT", true, 0));
-                TableInfo _infoAppListTable = new TableInfo("appList_table", _columnsAppListTable, new HashSet<>(0), new HashSet<>(0));
+                HashSet<TableInfo.ForeignKey> _foreignKeysAppListTable = new HashSet<>(0);
+                HashSet<TableInfo.Index> _indicesAppListTable = new HashSet<>(0);
+                TableInfo _infoAppListTable = new TableInfo("appList_table", _columnsAppListTable, _foreignKeysAppListTable, _indicesAppListTable);
                 TableInfo _existingAppListTable = TableInfo.read(_db, "appList_table");
                 if (!_infoAppListTable.equals(_existingAppListTable)) {
                     throw new IllegalStateException("Migration didn't properly handle appList_table(com.wits.ksw.launcher.dabebase.AppList).\n Expected:\n" + _infoAppListTable + "\n Found:\n" + _existingAppListTable);
                 }
             }
-        }, "2828c787948669ef5ff291539e502ded", "d4edf6b2018e016beab5666f80ef6681")).build());
+        }, "2828c787948669ef5ff291539e502ded", "d4edf6b2018e016beab5666f80ef6681");
+        SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context).name(configuration.name).callback(_openCallback).build();
+        SupportSQLiteOpenHelper _helper = configuration.sqliteOpenHelperFactory.create(_sqliteConfig);
+        return _helper;
     }
 
-    /* access modifiers changed from: protected */
-    public InvalidationTracker createInvalidationTracker() {
+    @Override // com.wits.ksw.launcher.dabebase.AppInfoRoomDatabase, android.arch.persistence.room.RoomDatabase
+    protected InvalidationTracker createInvalidationTracker() {
         return new InvalidationTracker(this, "appList_table");
     }
 
+    @Override // com.wits.ksw.launcher.dabebase.AppInfoRoomDatabase, android.arch.persistence.room.RoomDatabase
     public void clearAllTables() {
         super.assertNotMainThread();
         SupportSQLiteDatabase _db = super.getOpenHelper().getWritableDatabase();
@@ -83,6 +93,7 @@ public class AppInfoRoomDatabase_Impl extends AppInfoRoomDatabase {
         }
     }
 
+    @Override // com.wits.ksw.launcher.dabebase.AppInfoRoomDatabase
     public AppInfoDao getAppInfoDao() {
         AppInfoDao appInfoDao;
         if (this._appInfoDao != null) {

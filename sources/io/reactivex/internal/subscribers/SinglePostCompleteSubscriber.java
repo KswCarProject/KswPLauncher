@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public abstract class SinglePostCompleteSubscriber<T, R> extends AtomicLong implements FlowableSubscriber<T>, Subscription {
     static final long COMPLETE_MASK = Long.MIN_VALUE;
     static final long REQUEST_MASK = Long.MAX_VALUE;
@@ -16,10 +17,11 @@ public abstract class SinglePostCompleteSubscriber<T, R> extends AtomicLong impl
     protected Subscription upstream;
     protected R value;
 
-    public SinglePostCompleteSubscriber(Subscriber<? super R> downstream2) {
-        this.downstream = downstream2;
+    public SinglePostCompleteSubscriber(Subscriber<? super R> downstream) {
+        this.downstream = downstream;
     }
 
+    @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
     public void onSubscribe(Subscription s) {
         if (SubscriptionHelper.validate(this.upstream, s)) {
             this.upstream = s;
@@ -27,51 +29,52 @@ public abstract class SinglePostCompleteSubscriber<T, R> extends AtomicLong impl
         }
     }
 
-    /* access modifiers changed from: protected */
-    public final void complete(R n) {
+    protected final void complete(R n) {
         long p = this.produced;
         if (p != 0) {
             BackpressureHelper.produced(this, p);
         }
         while (true) {
             long r = get();
-            if ((r & Long.MIN_VALUE) != 0) {
-                onDrop(n);
-                return;
-            } else if ((Long.MAX_VALUE & r) != 0) {
-                lazySet(-9223372036854775807L);
-                this.downstream.onNext(n);
-                this.downstream.onComplete();
-                return;
-            } else {
-                this.value = n;
-                if (!compareAndSet(0, Long.MIN_VALUE)) {
-                    this.value = null;
-                } else {
+            if ((r & Long.MIN_VALUE) == 0) {
+                if ((Long.MAX_VALUE & r) != 0) {
+                    lazySet(-9223372036854775807L);
+                    this.downstream.onNext(n);
+                    this.downstream.onComplete();
                     return;
                 }
+                this.value = n;
+                if (compareAndSet(0L, Long.MIN_VALUE)) {
+                    return;
+                }
+                this.value = null;
+            } else {
+                onDrop(n);
+                return;
             }
         }
     }
 
-    /* access modifiers changed from: protected */
-    public void onDrop(R r) {
+    protected void onDrop(R n) {
     }
 
+    @Override // org.reactivestreams.Subscription
     public final void request(long n) {
         long r;
+        long u;
         if (SubscriptionHelper.validate(n)) {
             do {
                 r = get();
                 if ((r & Long.MIN_VALUE) != 0) {
                     if (compareAndSet(Long.MIN_VALUE, -9223372036854775807L)) {
-                        this.downstream.onNext(this.value);
+                        this.downstream.onNext((R) this.value);
                         this.downstream.onComplete();
                         return;
                     }
                     return;
                 }
-            } while (!compareAndSet(r, BackpressureHelper.addCap(r, n)));
+                u = BackpressureHelper.addCap(r, n);
+            } while (!compareAndSet(r, u));
             this.upstream.request(n);
         }
     }

@@ -15,34 +15,45 @@ import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/* loaded from: classes.dex */
 public final class ObservableUsing<T, D> extends Observable<T> {
     final Consumer<? super D> disposer;
     final boolean eager;
     final Callable<? extends D> resourceSupplier;
     final Function<? super D, ? extends ObservableSource<? extends T>> sourceSupplier;
 
-    public ObservableUsing(Callable<? extends D> resourceSupplier2, Function<? super D, ? extends ObservableSource<? extends T>> sourceSupplier2, Consumer<? super D> disposer2, boolean eager2) {
-        this.resourceSupplier = resourceSupplier2;
-        this.sourceSupplier = sourceSupplier2;
-        this.disposer = disposer2;
-        this.eager = eager2;
+    public ObservableUsing(Callable<? extends D> resourceSupplier, Function<? super D, ? extends ObservableSource<? extends T>> sourceSupplier, Consumer<? super D> disposer, boolean eager) {
+        this.resourceSupplier = resourceSupplier;
+        this.sourceSupplier = sourceSupplier;
+        this.disposer = disposer;
+        this.eager = eager;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super T> observer) {
         try {
             D resource = this.resourceSupplier.call();
             try {
-                ((ObservableSource) ObjectHelper.requireNonNull(this.sourceSupplier.apply(resource), "The sourceSupplier returned a null ObservableSource")).subscribe(new UsingObserver<>(observer, resource, this.disposer, this.eager));
-            } catch (Throwable ex) {
-                Exceptions.throwIfFatal(ex);
-                EmptyDisposable.error((Throwable) new CompositeException(e, ex), (Observer<?>) observer);
+                ObservableSource<? extends T> source = (ObservableSource) ObjectHelper.requireNonNull(this.sourceSupplier.apply(resource), "The sourceSupplier returned a null ObservableSource");
+                UsingObserver<T, D> us = new UsingObserver<>(observer, resource, this.disposer, this.eager);
+                source.subscribe(us);
+            } catch (Throwable e) {
+                Exceptions.throwIfFatal(e);
+                try {
+                    this.disposer.accept(resource);
+                    EmptyDisposable.error(e, observer);
+                } catch (Throwable ex) {
+                    Exceptions.throwIfFatal(ex);
+                    EmptyDisposable.error(new CompositeException(e, ex), observer);
+                }
             }
-        } catch (Throwable e) {
-            Exceptions.throwIfFatal(e);
-            EmptyDisposable.error(e, (Observer<?>) observer);
+        } catch (Throwable e2) {
+            Exceptions.throwIfFatal(e2);
+            EmptyDisposable.error(e2, observer);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class UsingObserver<T, D> extends AtomicBoolean implements Observer<T>, Disposable {
         private static final long serialVersionUID = 5904473792286235046L;
         final Consumer<? super D> disposer;
@@ -51,13 +62,14 @@ public final class ObservableUsing<T, D> extends Observable<T> {
         final D resource;
         Disposable upstream;
 
-        UsingObserver(Observer<? super T> actual, D resource2, Consumer<? super D> disposer2, boolean eager2) {
+        UsingObserver(Observer<? super T> actual, D resource, Consumer<? super D> disposer, boolean eager) {
             this.downstream = actual;
-            this.resource = resource2;
-            this.disposer = disposer2;
-            this.eager = eager2;
+            this.resource = resource;
+            this.disposer = disposer;
+            this.eager = eager;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -65,15 +77,17 @@ public final class ObservableUsing<T, D> extends Observable<T> {
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             this.downstream.onNext(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             if (this.eager) {
                 if (compareAndSet(false, true)) {
                     try {
-                        this.disposer.accept(this.resource);
+                        this.disposer.accept((D) this.resource);
                     } catch (Throwable e) {
                         Exceptions.throwIfFatal(e);
                         t = new CompositeException(t, e);
@@ -88,11 +102,12 @@ public final class ObservableUsing<T, D> extends Observable<T> {
             disposeAfter();
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             if (this.eager) {
                 if (compareAndSet(false, true)) {
                     try {
-                        this.disposer.accept(this.resource);
+                        this.disposer.accept((D) this.resource);
                     } catch (Throwable e) {
                         Exceptions.throwIfFatal(e);
                         this.downstream.onError(e);
@@ -108,20 +123,21 @@ public final class ObservableUsing<T, D> extends Observable<T> {
             disposeAfter();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             disposeAfter();
             this.upstream.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return get();
         }
 
-        /* access modifiers changed from: package-private */
-        public void disposeAfter() {
+        void disposeAfter() {
             if (compareAndSet(false, true)) {
                 try {
-                    this.disposer.accept(this.resource);
+                    this.disposer.accept((D) this.resource);
                 } catch (Throwable e) {
                     Exceptions.throwIfFatal(e);
                     RxJavaPlugins.onError(e);

@@ -5,8 +5,10 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.RelativeLayout;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
+import java.util.Locale;
 
+/* loaded from: classes10.dex */
 public class RtlId6SetBgLayout extends RelativeLayout {
     private static final String TAG = "RtlId6SetBgLayout";
 
@@ -26,11 +28,13 @@ public class RtlId6SetBgLayout extends RelativeLayout {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    @Override // android.view.View
     public void setBackground(Drawable background) {
-        String language = getResources().getConfiguration().locale.getLanguage();
+        Locale locale = getResources().getConfiguration().locale;
+        String language = locale.getLanguage();
         Log.i(TAG, "init: language=" + language);
         if (language.contains("ar")) {
-            background = getResources().getDrawable(R.mipmap.id6_bg_rtl);
+            background = getResources().getDrawable(C0899R.mipmap.id6_bg_rtl);
         }
         super.setBackground(background);
     }

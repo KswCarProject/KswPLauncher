@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class MusicDataBinding extends ViewDataBinding {
     public final ImageView ivMask;
     public final ImageView ivMusicAlbum;
@@ -21,15 +22,15 @@ public abstract class MusicDataBinding extends ViewDataBinding {
     public final TextView tvSinger;
     public final TextView tvSongTitle;
 
-    public abstract void setMediaViewModel(LauncherViewModel launcherViewModel);
+    public abstract void setMediaViewModel(LauncherViewModel MediaViewModel);
 
-    protected MusicDataBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivMask2, ImageView ivMusicAlbum2, RelativeLayout llContainer2, TextView tvSinger2, TextView tvSongTitle2) {
+    protected MusicDataBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView ivMask, ImageView ivMusicAlbum, RelativeLayout llContainer, TextView tvSinger, TextView tvSongTitle) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.ivMask = ivMask2;
-        this.ivMusicAlbum = ivMusicAlbum2;
-        this.llContainer = llContainer2;
-        this.tvSinger = tvSinger2;
-        this.tvSongTitle = tvSongTitle2;
+        this.ivMask = ivMask;
+        this.ivMusicAlbum = ivMusicAlbum;
+        this.llContainer = llContainer;
+        this.tvSinger = tvSinger;
+        this.tvSongTitle = tvSongTitle;
     }
 
     public LauncherViewModel getMediaViewModel() {
@@ -42,7 +43,7 @@ public abstract class MusicDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static MusicDataBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (MusicDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_music, root, attachToRoot, component);
+        return (MusicDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_music, root, attachToRoot, component);
     }
 
     public static MusicDataBinding inflate(LayoutInflater inflater) {
@@ -51,7 +52,7 @@ public abstract class MusicDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static MusicDataBinding inflate(LayoutInflater inflater, Object component) {
-        return (MusicDataBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fragment_music, (ViewGroup) null, false, component);
+        return (MusicDataBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.fragment_music, null, false, component);
     }
 
     public static MusicDataBinding bind(View view) {
@@ -60,6 +61,6 @@ public abstract class MusicDataBinding extends ViewDataBinding {
 
     @Deprecated
     public static MusicDataBinding bind(View view, Object component) {
-        return (MusicDataBinding) bind(component, view, R.layout.fragment_music);
+        return (MusicDataBinding) bind(component, view, C0899R.C0902layout.fragment_music);
     }
 }

@@ -9,54 +9,63 @@ import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.internal.disposables.SequentialDisposable;
 import java.util.concurrent.atomic.AtomicReference;
 
+/* loaded from: classes.dex */
 public final class SingleSubscribeOn<T> extends Single<T> {
     final Scheduler scheduler;
     final SingleSource<? extends T> source;
 
-    public SingleSubscribeOn(SingleSource<? extends T> source2, Scheduler scheduler2) {
-        this.source = source2;
-        this.scheduler = scheduler2;
+    public SingleSubscribeOn(SingleSource<? extends T> source, Scheduler scheduler) {
+        this.source = source;
+        this.scheduler = scheduler;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(SingleObserver<? super T> observer) {
+    @Override // io.reactivex.Single
+    protected void subscribeActual(SingleObserver<? super T> observer) {
         SubscribeOnObserver<T> parent = new SubscribeOnObserver<>(observer, this.source);
         observer.onSubscribe(parent);
-        parent.task.replace(this.scheduler.scheduleDirect(parent));
+        Disposable f = this.scheduler.scheduleDirect(parent);
+        parent.task.replace(f);
     }
 
+    /* loaded from: classes.dex */
     static final class SubscribeOnObserver<T> extends AtomicReference<Disposable> implements SingleObserver<T>, Disposable, Runnable {
         private static final long serialVersionUID = 7000911171163930287L;
         final SingleObserver<? super T> downstream;
         final SingleSource<? extends T> source;
         final SequentialDisposable task = new SequentialDisposable();
 
-        SubscribeOnObserver(SingleObserver<? super T> actual, SingleSource<? extends T> source2) {
+        SubscribeOnObserver(SingleObserver<? super T> actual, SingleSource<? extends T> source) {
             this.downstream = actual;
-            this.source = source2;
+            this.source = source;
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSubscribe(Disposable d) {
             DisposableHelper.setOnce(this, d);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onSuccess(T value) {
             this.downstream.onSuccess(value);
         }
 
+        @Override // io.reactivex.SingleObserver
         public void onError(Throwable e) {
             this.downstream.onError(e);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             DisposableHelper.dispose(this);
             this.task.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
-            return DisposableHelper.isDisposed((Disposable) get());
+            return DisposableHelper.isDisposed(get());
         }
 
+        @Override // java.lang.Runnable
         public void run() {
             this.source.subscribe(this);
         }

@@ -11,20 +11,22 @@ import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.internal.functions.ObjectHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 
+/* loaded from: classes.dex */
 public final class ObservableReduceMaybe<T> extends Maybe<T> {
     final BiFunction<T, T, T> reducer;
     final ObservableSource<T> source;
 
-    public ObservableReduceMaybe(ObservableSource<T> source2, BiFunction<T, T, T> reducer2) {
-        this.source = source2;
-        this.reducer = reducer2;
+    public ObservableReduceMaybe(ObservableSource<T> source, BiFunction<T, T, T> reducer) {
+        this.source = source;
+        this.reducer = reducer;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(MaybeObserver<? super T> observer) {
+    @Override // io.reactivex.Maybe
+    protected void subscribeActual(MaybeObserver<? super T> observer) {
         this.source.subscribe(new ReduceObserver(observer, this.reducer));
     }
 
+    /* loaded from: classes.dex */
     static final class ReduceObserver<T> implements Observer<T>, Disposable {
         boolean done;
         final MaybeObserver<? super T> downstream;
@@ -32,11 +34,12 @@ public final class ObservableReduceMaybe<T> extends Maybe<T> {
         Disposable upstream;
         T value;
 
-        ReduceObserver(MaybeObserver<? super T> observer, BiFunction<T, T, T> reducer2) {
+        ReduceObserver(MaybeObserver<? super T> observer, BiFunction<T, T, T> reducer) {
             this.downstream = observer;
-            this.reducer = reducer2;
+            this.reducer = reducer;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -44,15 +47,16 @@ public final class ObservableReduceMaybe<T> extends Maybe<T> {
             }
         }
 
-        public void onNext(T value2) {
+        @Override // io.reactivex.Observer
+        public void onNext(T value) {
             if (!this.done) {
                 T v = this.value;
                 if (v == null) {
-                    this.value = value2;
+                    this.value = value;
                     return;
                 }
                 try {
-                    this.value = ObjectHelper.requireNonNull(this.reducer.apply(v, value2), "The reducer returned a null value");
+                    this.value = (T) ObjectHelper.requireNonNull(this.reducer.apply(v, value), "The reducer returned a null value");
                 } catch (Throwable ex) {
                     Exceptions.throwIfFatal(ex);
                     this.upstream.dispose();
@@ -61,6 +65,7 @@ public final class ObservableReduceMaybe<T> extends Maybe<T> {
             }
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable e) {
             if (this.done) {
                 RxJavaPlugins.onError(e);
@@ -71,23 +76,27 @@ public final class ObservableReduceMaybe<T> extends Maybe<T> {
             this.downstream.onError(e);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
-            if (!this.done) {
-                this.done = true;
-                T v = this.value;
-                this.value = null;
-                if (v != null) {
-                    this.downstream.onSuccess(v);
-                } else {
-                    this.downstream.onComplete();
-                }
+            if (this.done) {
+                return;
+            }
+            this.done = true;
+            T v = this.value;
+            this.value = null;
+            if (v != null) {
+                this.downstream.onSuccess(v);
+            } else {
+                this.downstream.onComplete();
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }

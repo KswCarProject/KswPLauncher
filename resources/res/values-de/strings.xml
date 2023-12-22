@@ -244,10 +244,17 @@
     <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Falsches Passwort!</string>
     <string name="mcu_file_corrupted">Datei wird beschädigt!</string>
+    <string name="mic_control">MIC externer eingebauter Kippschalter</string>
+    <string name="mic_external">Extern</string>
+    <string name="mic_internal">Eingebaut</string>
     <string name="mic_text">MIC Gewinnen</string>
     <string name="music_app_sel">Musik-App</string>
+    <string name="music_player">Musikspieler</string>
     <string name="ntg6_dvr_toast">Keine Geräte!</string>
     <string name="oil_size">Öl: %s</string>
+    <string name="original_radar_reverse">Original-Radaranzeige rückwärts</string>
+    <string name="radar_normal">Normal</string>
+    <string name="radar_reverse">Umgekehrt</string>
     <string name="raw_car_text1">Vollbildanzeige</string>
     <string name="raw_car_text2">Aktuelle Auswahl:</string>
     <string name="reverse_exit_time_agreement">Ausfahrt gemäß der ursprünglichen Fahrzeugvereinbarung</string>
@@ -324,6 +331,8 @@
     <string name="text_logo_two">P2</string>
     <string name="text_ram">RAM: %s</string>
     <string name="touch_continuous_send">Touch-Daten kontinuierlich gesendet</string>
+    <string name="tv_id8_brake">Bremse</string>
+    <string name="tv_id8_seat_belt">Sicherheitsgurt</string>
     <string name="txz_oil_text">Einstellung des Alarms für die Kraftstoffmenge</string>
     <string name="txz_speed_text">Einstellung der Geschwindigkeitsanzeige für Mitreisende</string>
     <string name="txz_temp_text">Einstellung der Umgebungstemperatur</string>

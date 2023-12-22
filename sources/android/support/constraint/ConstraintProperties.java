@@ -5,6 +5,7 @@ import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.view.ViewGroup;
 
+/* loaded from: classes.dex */
 public class ConstraintProperties {
     public static final int BASELINE = 5;
     public static final int BOTTOM = 4;
@@ -25,26 +26,27 @@ public class ConstraintProperties {
     public ConstraintProperties center(int firstID, int firstSide, int firstMargin, int secondId, int secondSide, int secondMargin, float bias) {
         if (firstMargin < 0) {
             throw new IllegalArgumentException("margin must be > 0");
-        } else if (secondMargin < 0) {
-            throw new IllegalArgumentException("margin must be > 0");
-        } else if (bias <= 0.0f || bias > 1.0f) {
-            throw new IllegalArgumentException("bias must be between 0 and 1 inclusive");
-        } else {
-            if (firstSide == 1 || firstSide == 2) {
-                connect(1, firstID, firstSide, firstMargin);
-                connect(2, secondId, secondSide, secondMargin);
-                this.mParams.horizontalBias = bias;
-            } else if (firstSide == 6 || firstSide == 7) {
-                connect(6, firstID, firstSide, firstMargin);
-                connect(7, secondId, secondSide, secondMargin);
-                this.mParams.horizontalBias = bias;
-            } else {
-                connect(3, firstID, firstSide, firstMargin);
-                connect(4, secondId, secondSide, secondMargin);
-                this.mParams.verticalBias = bias;
-            }
-            return this;
         }
+        if (secondMargin < 0) {
+            throw new IllegalArgumentException("margin must be > 0");
+        }
+        if (bias <= 0.0f || bias > 1.0f) {
+            throw new IllegalArgumentException("bias must be between 0 and 1 inclusive");
+        }
+        if (firstSide == 1 || firstSide == 2) {
+            connect(1, firstID, firstSide, firstMargin);
+            connect(2, secondId, secondSide, secondMargin);
+            this.mParams.horizontalBias = bias;
+        } else if (firstSide == 6 || firstSide == 7) {
+            connect(6, firstID, firstSide, firstMargin);
+            connect(7, secondId, secondSide, secondMargin);
+            this.mParams.horizontalBias = bias;
+        } else {
+            connect(3, firstID, firstSide, firstMargin);
+            connect(4, secondId, secondSide, secondMargin);
+            this.mParams.verticalBias = bias;
+        }
+        return this;
     }
 
     public ConstraintProperties centerHorizontally(int leftId, int leftSide, int leftMargin, int rightId, int rightSide, int rightMargin, float bias) {
@@ -357,10 +359,14 @@ public class ConstraintProperties {
         connect(1, leftId, leftId == 0 ? 1 : 2, 0);
         connect(2, rightId, rightId == 0 ? 2 : 1, 0);
         if (leftId != 0) {
-            new ConstraintProperties(((ViewGroup) this.mView.getParent()).findViewById(leftId)).connect(2, this.mView.getId(), 1, 0);
+            View leftView = ((ViewGroup) this.mView.getParent()).findViewById(leftId);
+            ConstraintProperties leftProp = new ConstraintProperties(leftView);
+            leftProp.connect(2, this.mView.getId(), 1, 0);
         }
         if (rightId != 0) {
-            new ConstraintProperties(((ViewGroup) this.mView.getParent()).findViewById(rightId)).connect(1, this.mView.getId(), 2, 0);
+            View rightView = ((ViewGroup) this.mView.getParent()).findViewById(rightId);
+            ConstraintProperties rightProp = new ConstraintProperties(rightView);
+            rightProp.connect(1, this.mView.getId(), 2, 0);
         }
         return this;
     }
@@ -369,10 +375,14 @@ public class ConstraintProperties {
         connect(6, leftId, leftId == 0 ? 6 : 7, 0);
         connect(7, rightId, rightId == 0 ? 7 : 6, 0);
         if (leftId != 0) {
-            new ConstraintProperties(((ViewGroup) this.mView.getParent()).findViewById(leftId)).connect(7, this.mView.getId(), 6, 0);
+            View leftView = ((ViewGroup) this.mView.getParent()).findViewById(leftId);
+            ConstraintProperties leftProp = new ConstraintProperties(leftView);
+            leftProp.connect(7, this.mView.getId(), 6, 0);
         }
         if (rightId != 0) {
-            new ConstraintProperties(((ViewGroup) this.mView.getParent()).findViewById(rightId)).connect(6, this.mView.getId(), 7, 0);
+            View rightView = ((ViewGroup) this.mView.getParent()).findViewById(rightId);
+            ConstraintProperties rightProp = new ConstraintProperties(rightView);
+            rightProp.connect(6, this.mView.getId(), 7, 0);
         }
         return this;
     }
@@ -381,10 +391,14 @@ public class ConstraintProperties {
         connect(3, topId, topId == 0 ? 3 : 4, 0);
         connect(4, bottomId, bottomId == 0 ? 4 : 3, 0);
         if (topId != 0) {
-            new ConstraintProperties(((ViewGroup) this.mView.getParent()).findViewById(topId)).connect(4, this.mView.getId(), 3, 0);
+            View topView = ((ViewGroup) this.mView.getParent()).findViewById(topId);
+            ConstraintProperties topProp = new ConstraintProperties(topView);
+            topProp.connect(4, this.mView.getId(), 3, 0);
         }
         if (bottomId != 0) {
-            new ConstraintProperties(((ViewGroup) this.mView.getParent()).findViewById(bottomId)).connect(3, this.mView.getId(), 4, 0);
+            View bottomView = ((ViewGroup) this.mView.getParent()).findViewById(bottomId);
+            ConstraintProperties bottomProp = new ConstraintProperties(bottomView);
+            bottomProp.connect(3, this.mView.getId(), 4, 0);
         }
         return this;
     }
@@ -392,14 +406,16 @@ public class ConstraintProperties {
     public ConstraintProperties removeFromVerticalChain() {
         int topId = this.mParams.topToBottom;
         int bottomId = this.mParams.bottomToTop;
-        if (!(topId == -1 && bottomId == -1)) {
-            ConstraintProperties topProp = new ConstraintProperties(((ViewGroup) this.mView.getParent()).findViewById(topId));
-            ConstraintProperties bottomProp = new ConstraintProperties(((ViewGroup) this.mView.getParent()).findViewById(bottomId));
+        if (topId != -1 || bottomId != -1) {
+            View topView = ((ViewGroup) this.mView.getParent()).findViewById(topId);
+            ConstraintProperties topProp = new ConstraintProperties(topView);
+            View bottomView = ((ViewGroup) this.mView.getParent()).findViewById(bottomId);
+            ConstraintProperties bottomProp = new ConstraintProperties(bottomView);
             ConstraintLayout.LayoutParams layoutParams = this.mParams;
             if (topId != -1 && bottomId != -1) {
                 topProp.connect(4, bottomId, 3, 0);
                 bottomProp.connect(3, topId, 4, 0);
-            } else if (!(topId == -1 && bottomId == -1)) {
+            } else if (topId != -1 || bottomId != -1) {
                 int i = layoutParams.bottomToBottom;
                 ConstraintLayout.LayoutParams layoutParams2 = this.mParams;
                 if (i != -1) {
@@ -422,54 +438,58 @@ public class ConstraintProperties {
         int leftId = this.mParams.leftToRight;
         int rightId = this.mParams.rightToLeft;
         ConstraintLayout.LayoutParams layoutParams = this.mParams;
-        if (leftId == -1 && rightId == -1) {
+        if (leftId != -1 || rightId != -1) {
+            View leftView = ((ViewGroup) this.mView.getParent()).findViewById(leftId);
+            ConstraintProperties leftProp = new ConstraintProperties(leftView);
+            View rightView = ((ViewGroup) this.mView.getParent()).findViewById(rightId);
+            ConstraintProperties rightProp = new ConstraintProperties(rightView);
+            ConstraintLayout.LayoutParams layoutParams2 = this.mParams;
+            if (leftId != -1 && rightId != -1) {
+                leftProp.connect(2, rightId, 1, 0);
+                rightProp.connect(1, leftId, 2, 0);
+            } else if (leftId != -1 || rightId != -1) {
+                int i = layoutParams2.rightToRight;
+                ConstraintLayout.LayoutParams layoutParams3 = this.mParams;
+                if (i != -1) {
+                    leftProp.connect(2, layoutParams3.rightToRight, 2, 0);
+                } else {
+                    int i2 = layoutParams3.leftToLeft;
+                    ConstraintLayout.LayoutParams layoutParams4 = this.mParams;
+                    if (i2 != -1) {
+                        rightProp.connect(1, layoutParams4.leftToLeft, 1, 0);
+                    }
+                }
+            }
+            removeConstraints(1);
+            removeConstraints(2);
+        } else {
             int startId = layoutParams.startToEnd;
             int endId = this.mParams.endToStart;
-            if (!(startId == -1 && endId == -1)) {
-                ConstraintProperties startProp = new ConstraintProperties(((ViewGroup) this.mView.getParent()).findViewById(startId));
-                ConstraintProperties endProp = new ConstraintProperties(((ViewGroup) this.mView.getParent()).findViewById(endId));
-                ConstraintLayout.LayoutParams layoutParams2 = this.mParams;
+            if (startId != -1 || endId != -1) {
+                View startView = ((ViewGroup) this.mView.getParent()).findViewById(startId);
+                ConstraintProperties startProp = new ConstraintProperties(startView);
+                View endView = ((ViewGroup) this.mView.getParent()).findViewById(endId);
+                ConstraintProperties endProp = new ConstraintProperties(endView);
+                ConstraintLayout.LayoutParams layoutParams5 = this.mParams;
                 if (startId != -1 && endId != -1) {
                     startProp.connect(7, endId, 6, 0);
                     endProp.connect(6, leftId, 7, 0);
-                } else if (!(leftId == -1 && endId == -1)) {
-                    int i = layoutParams2.rightToRight;
-                    ConstraintLayout.LayoutParams layoutParams3 = this.mParams;
-                    if (i != -1) {
-                        startProp.connect(7, layoutParams3.rightToRight, 7, 0);
+                } else if (leftId != -1 || endId != -1) {
+                    int i3 = layoutParams5.rightToRight;
+                    ConstraintLayout.LayoutParams layoutParams6 = this.mParams;
+                    if (i3 != -1) {
+                        startProp.connect(7, layoutParams6.rightToRight, 7, 0);
                     } else {
-                        int i2 = layoutParams3.leftToLeft;
-                        ConstraintLayout.LayoutParams layoutParams4 = this.mParams;
-                        if (i2 != -1) {
-                            endProp.connect(6, layoutParams4.leftToLeft, 6, 0);
+                        int i4 = layoutParams6.leftToLeft;
+                        ConstraintLayout.LayoutParams layoutParams7 = this.mParams;
+                        if (i4 != -1) {
+                            endProp.connect(6, layoutParams7.leftToLeft, 6, 0);
                         }
                     }
                 }
             }
             removeConstraints(6);
             removeConstraints(7);
-        } else {
-            ConstraintProperties leftProp = new ConstraintProperties(((ViewGroup) this.mView.getParent()).findViewById(leftId));
-            ConstraintProperties rightProp = new ConstraintProperties(((ViewGroup) this.mView.getParent()).findViewById(rightId));
-            ConstraintLayout.LayoutParams layoutParams5 = this.mParams;
-            if (leftId != -1 && rightId != -1) {
-                leftProp.connect(2, rightId, 1, 0);
-                rightProp.connect(1, leftId, 2, 0);
-            } else if (!(leftId == -1 && rightId == -1)) {
-                int i3 = layoutParams5.rightToRight;
-                ConstraintLayout.LayoutParams layoutParams6 = this.mParams;
-                if (i3 != -1) {
-                    leftProp.connect(2, layoutParams6.rightToRight, 2, 0);
-                } else {
-                    int i4 = layoutParams6.leftToLeft;
-                    ConstraintLayout.LayoutParams layoutParams7 = this.mParams;
-                    if (i4 != -1) {
-                        rightProp.connect(1, layoutParams7.leftToLeft, 1, 0);
-                    }
-                }
-            }
-            removeConstraints(1);
-            removeConstraints(2);
         }
         return this;
     }

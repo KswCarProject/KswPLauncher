@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:tag="layout-hdpi-1920x720/audimbi3_sel_third_app_layout_0" android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout android:gravity="center" android:id="@+id/title" android:paddingLeft="19dp" android:layout_width="wrap_content" android:layout_height="63dp">
+        <ImageView android:id="@+id/iv_title" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginLeft="45dp" android:scaleType="fitCenter" android:layout_centerVertical="true"/>
+        <TextView android:textSize="26sp" android:textColor="@android:color/white" android:gravity="center" android:id="@+id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_toRightOf="@+id/iv_title" android:layout_centerVertical="true"/>
+    </RelativeLayout>
+    <View android:id="@+id/title_divider" android:background="@drawable/audi_mib3_settings_list_line" android:layout_width="920dp" android:layout_height="1dp" android:layout_below="@+id/title"/>
+    <LinearLayout android:id="@+id/ll_selapp" android:layout_width="920dp" android:layout_height="wrap_content" android:layout_below="@+id/title_divider" android:paddingStart="115dp" android:paddingEnd="80dp">
+        <android.support.p004v7.widget.RecyclerView android:id="@+id/listview_music" android:visibility="visible" android:scrollbars="none" android:clipChildren="false" android:layout_width="wrap_content" android:layout_height="match_parent" android:divider="@drawable/audi_mib3_settings_list_line"/>
+        <android.support.p004v7.widget.RecyclerView android:id="@+id/listview_video" android:focusable="true" android:visibility="gone" android:scrollbars="none" android:clipChildren="false" android:layout_width="wrap_content" android:layout_height="match_parent" android:divider="@drawable/audi_mib3_settings_list_line" android:overScrollMode="never"/>
+    </LinearLayout>
+    <View android:background="@drawable/audi_mib3_settings_list_line" android:layout_width="920dp" android:layout_height="1dp" android:layout_below="@+id/title"/>
+    <View android:id="@+id/v_divider" android:background="#6a6a6a" android:layout_width="1dp" android:layout_height="match_parent" android:layout_marginTop="10dp" android:layout_marginBottom="13dp" android:layout_marginStart="10dp" android:layout_toEndOf="@+id/ll_selapp"/>
+    <ImageView android:layout_gravity="center" android:layout_width="match_parent" android:layout_height="wrap_content" android:scaleType="centerInside" android:layout_centerVertical="true" android:layout_toEndOf="@+id/v_divider" app:srcCompat="@drawable/audi_mib3_settings_pic"/>
+    <ImageView android:id="@+id/iv_show" android:layout_width="58dp" android:layout_height="58dp" android:layout_marginTop="72dp" android:scaleType="fitCenter" android:layout_marginStart="31dp" android:layout_toEndOf="@+id/v_divider"/>
+</RelativeLayout>

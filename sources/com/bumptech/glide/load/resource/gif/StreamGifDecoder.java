@@ -13,28 +13,32 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public class StreamGifDecoder implements ResourceDecoder<InputStream, GifDrawable> {
     private static final String TAG = "StreamGifDecoder";
     private final ArrayPool byteArrayPool;
     private final ResourceDecoder<ByteBuffer, GifDrawable> byteBufferDecoder;
     private final List<ImageHeaderParser> parsers;
 
-    public StreamGifDecoder(List<ImageHeaderParser> parsers2, ResourceDecoder<ByteBuffer, GifDrawable> byteBufferDecoder2, ArrayPool byteArrayPool2) {
-        this.parsers = parsers2;
-        this.byteBufferDecoder = byteBufferDecoder2;
-        this.byteArrayPool = byteArrayPool2;
+    public StreamGifDecoder(List<ImageHeaderParser> parsers, ResourceDecoder<ByteBuffer, GifDrawable> byteBufferDecoder, ArrayPool byteArrayPool) {
+        this.parsers = parsers;
+        this.byteBufferDecoder = byteBufferDecoder;
+        this.byteArrayPool = byteArrayPool;
     }
 
+    @Override // com.bumptech.glide.load.ResourceDecoder
     public boolean handles(InputStream source, Options options) throws IOException {
         return !((Boolean) options.get(GifOptions.DISABLE_ANIMATION)).booleanValue() && ImageHeaderParserUtils.getType(this.parsers, source, this.byteArrayPool) == ImageHeaderParser.ImageType.GIF;
     }
 
+    @Override // com.bumptech.glide.load.ResourceDecoder
     public Resource<GifDrawable> decode(InputStream source, int width, int height, Options options) throws IOException {
         byte[] data = inputStreamToBytes(source);
         if (data == null) {
             return null;
         }
-        return this.byteBufferDecoder.decode(ByteBuffer.wrap(data), width, height, options);
+        ByteBuffer byteBuffer = ByteBuffer.wrap(data);
+        return this.byteBufferDecoder.decode(byteBuffer, width, height, options);
     }
 
     private static byte[] inputStreamToBytes(InputStream is) {
@@ -42,9 +46,8 @@ public class StreamGifDecoder implements ResourceDecoder<InputStream, GifDrawabl
         try {
             byte[] data = new byte[16384];
             while (true) {
-                int read = is.read(data);
-                int nRead = read;
-                if (read != -1) {
+                int nRead = is.read(data);
+                if (nRead != -1) {
                     buffer.write(data, 0, nRead);
                 } else {
                     buffer.flush();
@@ -52,10 +55,10 @@ public class StreamGifDecoder implements ResourceDecoder<InputStream, GifDrawabl
                 }
             }
         } catch (IOException e) {
-            if (!Log.isLoggable(TAG, 5)) {
+            if (Log.isLoggable(TAG, 5)) {
+                Log.w(TAG, "Error reading data from stream", e);
                 return null;
             }
-            Log.w(TAG, "Error reading data from stream", e);
             return null;
         }
     }

@@ -1,15 +1,16 @@
 package skin.support.widget;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatImageView;
+import android.support.p004v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
+/* loaded from: classes.dex */
 public class SkinCompatImageView extends AppCompatImageView implements SkinCompatSupportable {
     private SkinCompatBackgroundHelper mBackgroundTintHelper;
     private SkinCompatImageHelper mImageHelper;
 
     public SkinCompatImageView(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public SkinCompatImageView(Context context, AttributeSet attrs) {
@@ -26,6 +27,7 @@ public class SkinCompatImageView extends AppCompatImageView implements SkinCompa
         skinCompatImageHelper.loadFromAttributes(attrs, defStyleAttr);
     }
 
+    @Override // android.support.p004v7.widget.AppCompatImageView, android.view.View
     public void setBackgroundResource(int resId) {
         super.setBackgroundResource(resId);
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
@@ -34,6 +36,7 @@ public class SkinCompatImageView extends AppCompatImageView implements SkinCompa
         }
     }
 
+    @Override // android.support.p004v7.widget.AppCompatImageView, android.widget.ImageView
     public void setImageResource(int resId) {
         SkinCompatImageHelper skinCompatImageHelper = this.mImageHelper;
         if (skinCompatImageHelper != null) {
@@ -41,6 +44,7 @@ public class SkinCompatImageView extends AppCompatImageView implements SkinCompa
         }
     }
 
+    @Override // skin.support.widget.SkinCompatSupportable
     public void applySkin() {
         SkinCompatBackgroundHelper skinCompatBackgroundHelper = this.mBackgroundTintHelper;
         if (skinCompatBackgroundHelper != null) {

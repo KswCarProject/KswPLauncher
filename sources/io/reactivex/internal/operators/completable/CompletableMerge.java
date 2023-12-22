@@ -16,46 +16,53 @@ import kotlin.jvm.internal.LongCompanionObject;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class CompletableMerge extends Completable {
     final boolean delayErrors;
     final int maxConcurrency;
     final Publisher<? extends CompletableSource> source;
 
-    public CompletableMerge(Publisher<? extends CompletableSource> source2, int maxConcurrency2, boolean delayErrors2) {
-        this.source = source2;
-        this.maxConcurrency = maxConcurrency2;
-        this.delayErrors = delayErrors2;
+    public CompletableMerge(Publisher<? extends CompletableSource> source, int maxConcurrency, boolean delayErrors) {
+        this.source = source;
+        this.maxConcurrency = maxConcurrency;
+        this.delayErrors = delayErrors;
     }
 
+    @Override // io.reactivex.Completable
     public void subscribeActual(CompletableObserver observer) {
-        this.source.subscribe(new CompletableMergeSubscriber(observer, this.maxConcurrency, this.delayErrors));
+        CompletableMergeSubscriber parent = new CompletableMergeSubscriber(observer, this.maxConcurrency, this.delayErrors);
+        this.source.subscribe(parent);
     }
 
+    /* loaded from: classes.dex */
     static final class CompletableMergeSubscriber extends AtomicInteger implements FlowableSubscriber<CompletableSource>, Disposable {
         private static final long serialVersionUID = -2108443387387077490L;
         final boolean delayErrors;
         final CompletableObserver downstream;
-        final AtomicThrowable error = new AtomicThrowable();
         final int maxConcurrency;
-        final CompositeDisposable set = new CompositeDisposable();
         Subscription upstream;
+        final CompositeDisposable set = new CompositeDisposable();
+        final AtomicThrowable error = new AtomicThrowable();
 
-        CompletableMergeSubscriber(CompletableObserver actual, int maxConcurrency2, boolean delayErrors2) {
+        CompletableMergeSubscriber(CompletableObserver actual, int maxConcurrency, boolean delayErrors) {
             this.downstream = actual;
-            this.maxConcurrency = maxConcurrency2;
-            this.delayErrors = delayErrors2;
+            this.maxConcurrency = maxConcurrency;
+            this.delayErrors = delayErrors;
             lazySet(1);
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.cancel();
             this.set.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.set.isDisposed();
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
             if (SubscriptionHelper.validate(this.upstream, s)) {
                 this.upstream = s;
@@ -64,11 +71,12 @@ public final class CompletableMerge extends Completable {
                 if (i == Integer.MAX_VALUE) {
                     s.request(LongCompanionObject.MAX_VALUE);
                 } else {
-                    s.request((long) i);
+                    s.request(i);
                 }
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(CompletableSource t) {
             getAndIncrement();
             MergeInnerObserver inner = new MergeInnerObserver();
@@ -76,89 +84,105 @@ public final class CompletableMerge extends Completable {
             t.subscribe(inner);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             if (!this.delayErrors) {
                 this.set.dispose();
-                if (!this.error.addThrowable(t)) {
-                    RxJavaPlugins.onError(t);
-                } else if (getAndSet(0) > 0) {
+                if (this.error.addThrowable(t)) {
+                    if (getAndSet(0) > 0) {
+                        this.downstream.onError(this.error.terminate());
+                        return;
+                    }
+                    return;
+                }
+                RxJavaPlugins.onError(t);
+            } else if (this.error.addThrowable(t)) {
+                if (decrementAndGet() == 0) {
                     this.downstream.onError(this.error.terminate());
                 }
-            } else if (!this.error.addThrowable(t)) {
-                RxJavaPlugins.onError(t);
-            } else if (decrementAndGet() == 0) {
-                this.downstream.onError(this.error.terminate());
-            }
-        }
-
-        public void onComplete() {
-            if (decrementAndGet() != 0) {
-                return;
-            }
-            if (((Throwable) this.error.get()) != null) {
-                this.downstream.onError(this.error.terminate());
             } else {
-                this.downstream.onComplete();
+                RxJavaPlugins.onError(t);
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerError(MergeInnerObserver inner, Throwable t) {
+        @Override // org.reactivestreams.Subscriber
+        public void onComplete() {
+            if (decrementAndGet() == 0) {
+                Throwable ex = this.error.get();
+                if (ex != null) {
+                    this.downstream.onError(this.error.terminate());
+                } else {
+                    this.downstream.onComplete();
+                }
+            }
+        }
+
+        void innerError(MergeInnerObserver inner, Throwable t) {
             this.set.delete(inner);
             if (!this.delayErrors) {
                 this.upstream.cancel();
                 this.set.dispose();
-                if (!this.error.addThrowable(t)) {
-                    RxJavaPlugins.onError(t);
-                } else if (getAndSet(0) > 0) {
-                    this.downstream.onError(this.error.terminate());
+                if (this.error.addThrowable(t)) {
+                    if (getAndSet(0) > 0) {
+                        this.downstream.onError(this.error.terminate());
+                        return;
+                    }
+                    return;
                 }
-            } else if (!this.error.addThrowable(t)) {
                 RxJavaPlugins.onError(t);
-            } else if (decrementAndGet() == 0) {
-                this.downstream.onError(this.error.terminate());
-            } else if (this.maxConcurrency != Integer.MAX_VALUE) {
-                this.upstream.request(1);
+            } else if (this.error.addThrowable(t)) {
+                if (decrementAndGet() == 0) {
+                    this.downstream.onError(this.error.terminate());
+                } else if (this.maxConcurrency != Integer.MAX_VALUE) {
+                    this.upstream.request(1L);
+                }
+            } else {
+                RxJavaPlugins.onError(t);
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void innerComplete(MergeInnerObserver inner) {
+        void innerComplete(MergeInnerObserver inner) {
             this.set.delete(inner);
             if (decrementAndGet() == 0) {
-                Throwable ex = (Throwable) this.error.get();
+                Throwable ex = this.error.get();
                 if (ex != null) {
                     this.downstream.onError(ex);
                 } else {
                     this.downstream.onComplete();
                 }
             } else if (this.maxConcurrency != Integer.MAX_VALUE) {
-                this.upstream.request(1);
+                this.upstream.request(1L);
             }
         }
 
+        /* loaded from: classes.dex */
         final class MergeInnerObserver extends AtomicReference<Disposable> implements CompletableObserver, Disposable {
             private static final long serialVersionUID = 251330541679988317L;
 
             MergeInnerObserver() {
             }
 
+            @Override // io.reactivex.CompletableObserver
             public void onSubscribe(Disposable d) {
                 DisposableHelper.setOnce(this, d);
             }
 
+            @Override // io.reactivex.CompletableObserver
             public void onError(Throwable e) {
                 CompletableMergeSubscriber.this.innerError(this, e);
             }
 
+            @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
             public void onComplete() {
                 CompletableMergeSubscriber.this.innerComplete(this);
             }
 
+            @Override // io.reactivex.disposables.Disposable
             public boolean isDisposed() {
-                return DisposableHelper.isDisposed((Disposable) get());
+                return DisposableHelper.isDisposed(get());
             }
 
+            @Override // io.reactivex.disposables.Disposable
             public void dispose() {
                 DisposableHelper.dispose(this);
             }

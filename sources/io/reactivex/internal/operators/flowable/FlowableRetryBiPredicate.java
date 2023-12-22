@@ -11,51 +11,61 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+/* loaded from: classes.dex */
 public final class FlowableRetryBiPredicate<T> extends AbstractFlowableWithUpstream<T, T> {
     final BiPredicate<? super Integer, ? super Throwable> predicate;
 
-    public FlowableRetryBiPredicate(Flowable<T> source, BiPredicate<? super Integer, ? super Throwable> predicate2) {
+    public FlowableRetryBiPredicate(Flowable<T> source, BiPredicate<? super Integer, ? super Throwable> predicate) {
         super(source);
-        this.predicate = predicate2;
+        this.predicate = predicate;
     }
 
+    @Override // io.reactivex.Flowable
     public void subscribeActual(Subscriber<? super T> s) {
         SubscriptionArbiter sa = new SubscriptionArbiter(false);
         s.onSubscribe(sa);
-        new RetryBiSubscriber<>(s, this.predicate, sa, this.source).subscribeNext();
+        RetryBiSubscriber<T> rs = new RetryBiSubscriber<>(s, this.predicate, sa, this.source);
+        rs.subscribeNext();
     }
 
+    /* loaded from: classes.dex */
     static final class RetryBiSubscriber<T> extends AtomicInteger implements FlowableSubscriber<T> {
         private static final long serialVersionUID = -7098360935104053232L;
         final Subscriber<? super T> downstream;
         final BiPredicate<? super Integer, ? super Throwable> predicate;
         long produced;
         int retries;
-        final SubscriptionArbiter sa;
+
+        /* renamed from: sa */
+        final SubscriptionArbiter f295sa;
         final Publisher<? extends T> source;
 
-        RetryBiSubscriber(Subscriber<? super T> actual, BiPredicate<? super Integer, ? super Throwable> predicate2, SubscriptionArbiter sa2, Publisher<? extends T> source2) {
+        RetryBiSubscriber(Subscriber<? super T> actual, BiPredicate<? super Integer, ? super Throwable> predicate, SubscriptionArbiter sa, Publisher<? extends T> source) {
             this.downstream = actual;
-            this.sa = sa2;
-            this.source = source2;
-            this.predicate = predicate2;
+            this.f295sa = sa;
+            this.source = source;
+            this.predicate = predicate;
         }
 
+        @Override // io.reactivex.FlowableSubscriber, org.reactivestreams.Subscriber
         public void onSubscribe(Subscription s) {
-            this.sa.setSubscription(s);
+            this.f295sa.setSubscription(s);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onNext(T t) {
             this.produced++;
             this.downstream.onNext(t);
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onError(Throwable t) {
             try {
                 BiPredicate<? super Integer, ? super Throwable> biPredicate = this.predicate;
                 int i = this.retries + 1;
                 this.retries = i;
-                if (!biPredicate.test(Integer.valueOf(i), t)) {
+                boolean b = biPredicate.test(Integer.valueOf(i), t);
+                if (!b) {
                     this.downstream.onError(t);
                 } else {
                     subscribeNext();
@@ -66,19 +76,19 @@ public final class FlowableRetryBiPredicate<T> extends AbstractFlowableWithUpstr
             }
         }
 
+        @Override // org.reactivestreams.Subscriber
         public void onComplete() {
             this.downstream.onComplete();
         }
 
-        /* access modifiers changed from: package-private */
-        public void subscribeNext() {
+        void subscribeNext() {
             if (getAndIncrement() == 0) {
                 int missed = 1;
-                while (!this.sa.isCancelled()) {
+                while (!this.f295sa.isCancelled()) {
                     long p = this.produced;
                     if (p != 0) {
-                        this.produced = 0;
-                        this.sa.produced(p);
+                        this.produced = 0L;
+                        this.f295sa.produced(p);
                     }
                     this.source.subscribe(this);
                     missed = addAndGet(-missed);

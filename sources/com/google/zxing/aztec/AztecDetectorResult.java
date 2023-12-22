@@ -4,16 +4,17 @@ import com.google.zxing.ResultPoint;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.DetectorResult;
 
+/* loaded from: classes.dex */
 public final class AztecDetectorResult extends DetectorResult {
     private final boolean compact;
     private final int nbDatablocks;
     private final int nbLayers;
 
-    public AztecDetectorResult(BitMatrix bits, ResultPoint[] points, boolean compact2, int nbDatablocks2, int nbLayers2) {
+    public AztecDetectorResult(BitMatrix bits, ResultPoint[] points, boolean compact, int nbDatablocks, int nbLayers) {
         super(bits, points);
-        this.compact = compact2;
-        this.nbDatablocks = nbDatablocks2;
-        this.nbLayers = nbLayers2;
+        this.compact = compact;
+        this.nbDatablocks = nbDatablocks;
+        this.nbLayers = nbLayers;
     }
 
     public int getNbLayers() {

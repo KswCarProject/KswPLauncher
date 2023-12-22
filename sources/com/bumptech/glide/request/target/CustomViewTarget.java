@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import com.bumptech.glide.R;
+import com.bumptech.glide.C0502R;
 import com.bumptech.glide.request.Request;
 import com.bumptech.glide.util.Preconditions;
 import java.lang.ref.WeakReference;
@@ -17,9 +17,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/* loaded from: classes.dex */
 public abstract class CustomViewTarget<T extends View, Z> implements Target<Z> {
     private static final String TAG = "CustomViewTarget";
-    private static final int VIEW_TAG_ID = R.id.glide_custom_view_target_tag;
+    private static final int VIEW_TAG_ID = C0502R.C0504id.glide_custom_view_target_tag;
     private View.OnAttachStateChangeListener attachStateListener;
     private boolean isAttachStateListenerAdded;
     private boolean isClearedByUs;
@@ -27,24 +28,25 @@ public abstract class CustomViewTarget<T extends View, Z> implements Target<Z> {
     private final SizeDeterminer sizeDeterminer;
     protected final T view;
 
-    /* access modifiers changed from: protected */
-    public abstract void onResourceCleared(Drawable drawable);
+    protected abstract void onResourceCleared(Drawable drawable);
 
-    public CustomViewTarget(T view2) {
-        this.view = (View) Preconditions.checkNotNull(view2);
-        this.sizeDeterminer = new SizeDeterminer(view2);
+    public CustomViewTarget(T view) {
+        this.view = (T) Preconditions.checkNotNull(view);
+        this.sizeDeterminer = new SizeDeterminer(view);
     }
 
-    /* access modifiers changed from: protected */
-    public void onResourceLoading(Drawable placeholder) {
+    protected void onResourceLoading(Drawable placeholder) {
     }
 
+    @Override // com.bumptech.glide.manager.LifecycleListener
     public void onStart() {
     }
 
+    @Override // com.bumptech.glide.manager.LifecycleListener
     public void onStop() {
     }
 
+    @Override // com.bumptech.glide.manager.LifecycleListener
     public void onDestroy() {
     }
 
@@ -57,11 +59,13 @@ public abstract class CustomViewTarget<T extends View, Z> implements Target<Z> {
         if (this.attachStateListener != null) {
             return this;
         }
-        this.attachStateListener = new View.OnAttachStateChangeListener() {
+        this.attachStateListener = new View.OnAttachStateChangeListener() { // from class: com.bumptech.glide.request.target.CustomViewTarget.1
+            @Override // android.view.View.OnAttachStateChangeListener
             public void onViewAttachedToWindow(View v) {
                 CustomViewTarget.this.resumeMyRequest();
             }
 
+            @Override // android.view.View.OnAttachStateChangeListener
             public void onViewDetachedFromWindow(View v) {
                 CustomViewTarget.this.pauseMyRequest();
             }
@@ -71,30 +75,34 @@ public abstract class CustomViewTarget<T extends View, Z> implements Target<Z> {
     }
 
     public final CustomViewTarget<T, Z> useTagId(int tagId) {
-        if (this.overrideTag == 0) {
-            this.overrideTag = tagId;
-            return this;
+        if (this.overrideTag != 0) {
+            throw new IllegalArgumentException("You cannot change the tag id once it has been set.");
         }
-        throw new IllegalArgumentException("You cannot change the tag id once it has been set.");
+        this.overrideTag = tagId;
+        return this;
     }
 
     public final T getView() {
         return this.view;
     }
 
+    @Override // com.bumptech.glide.request.target.Target
     public final void getSize(SizeReadyCallback cb) {
         this.sizeDeterminer.getSize(cb);
     }
 
+    @Override // com.bumptech.glide.request.target.Target
     public final void removeCallback(SizeReadyCallback cb) {
         this.sizeDeterminer.removeCallback(cb);
     }
 
+    @Override // com.bumptech.glide.request.target.Target
     public final void onLoadStarted(Drawable placeholder) {
         maybeAddAttachStateListener();
         onResourceLoading(placeholder);
     }
 
+    @Override // com.bumptech.glide.request.target.Target
     public final void onLoadCleared(Drawable placeholder) {
         this.sizeDeterminer.clearCallbacksAndListener();
         onResourceCleared(placeholder);
@@ -103,35 +111,35 @@ public abstract class CustomViewTarget<T extends View, Z> implements Target<Z> {
         }
     }
 
+    @Override // com.bumptech.glide.request.target.Target
     public final void setRequest(Request request) {
         setTag(request);
     }
 
+    @Override // com.bumptech.glide.request.target.Target
     public final Request getRequest() {
         Object tag = getTag();
-        if (tag == null) {
-            return null;
+        if (tag != null) {
+            if (tag instanceof Request) {
+                return (Request) tag;
+            }
+            throw new IllegalArgumentException("You must not pass non-R.id ids to setTag(id)");
         }
-        if (tag instanceof Request) {
-            return (Request) tag;
-        }
-        throw new IllegalArgumentException("You must not pass non-R.id ids to setTag(id)");
+        return null;
     }
 
     public String toString() {
         return "Target for: " + this.view;
     }
 
-    /* access modifiers changed from: package-private */
-    public final void resumeMyRequest() {
+    final void resumeMyRequest() {
         Request request = getRequest();
         if (request != null && request.isCleared()) {
             request.begin();
         }
     }
 
-    /* access modifiers changed from: package-private */
-    public final void pauseMyRequest() {
+    final void pauseMyRequest() {
         Request request = getRequest();
         if (request != null) {
             this.isClearedByUs = true;
@@ -160,20 +168,23 @@ public abstract class CustomViewTarget<T extends View, Z> implements Target<Z> {
 
     private void maybeAddAttachStateListener() {
         View.OnAttachStateChangeListener onAttachStateChangeListener = this.attachStateListener;
-        if (onAttachStateChangeListener != null && !this.isAttachStateListenerAdded) {
-            this.view.addOnAttachStateChangeListener(onAttachStateChangeListener);
-            this.isAttachStateListenerAdded = true;
+        if (onAttachStateChangeListener == null || this.isAttachStateListenerAdded) {
+            return;
         }
+        this.view.addOnAttachStateChangeListener(onAttachStateChangeListener);
+        this.isAttachStateListenerAdded = true;
     }
 
     private void maybeRemoveAttachStateListener() {
         View.OnAttachStateChangeListener onAttachStateChangeListener = this.attachStateListener;
-        if (onAttachStateChangeListener != null && this.isAttachStateListenerAdded) {
-            this.view.removeOnAttachStateChangeListener(onAttachStateChangeListener);
-            this.isAttachStateListenerAdded = false;
+        if (onAttachStateChangeListener == null || !this.isAttachStateListenerAdded) {
+            return;
         }
+        this.view.removeOnAttachStateChangeListener(onAttachStateChangeListener);
+        this.isAttachStateListenerAdded = false;
     }
 
+    /* loaded from: classes.dex */
     static final class SizeDeterminer {
         private static final int PENDING_SIZE = 0;
         static Integer maxDisplayLength;
@@ -182,13 +193,14 @@ public abstract class CustomViewTarget<T extends View, Z> implements Target<Z> {
         private final View view;
         boolean waitForLayout;
 
-        SizeDeterminer(View view2) {
-            this.view = view2;
+        SizeDeterminer(View view) {
+            this.view = view;
         }
 
         private static int getMaxDisplayLength(Context context) {
             if (maxDisplayLength == null) {
-                Display display = ((WindowManager) Preconditions.checkNotNull((WindowManager) context.getSystemService("window"))).getDefaultDisplay();
+                WindowManager windowManager = (WindowManager) context.getSystemService("window");
+                Display display = ((WindowManager) Preconditions.checkNotNull(windowManager)).getDefaultDisplay();
                 Point displayDimensions = new Point();
                 display.getSize(displayDimensions);
                 maxDisplayLength = Integer.valueOf(Math.max(displayDimensions.x, displayDimensions.y));
@@ -199,24 +211,25 @@ public abstract class CustomViewTarget<T extends View, Z> implements Target<Z> {
         private void notifyCbs(int width, int height) {
             Iterator it = new ArrayList(this.cbs).iterator();
             while (it.hasNext()) {
-                ((SizeReadyCallback) it.next()).onSizeReady(width, height);
+                SizeReadyCallback cb = (SizeReadyCallback) it.next();
+                cb.onSizeReady(width, height);
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void checkCurrentDimens() {
-            if (!this.cbs.isEmpty()) {
-                int currentWidth = getTargetWidth();
-                int currentHeight = getTargetHeight();
-                if (isViewStateAndSizeValid(currentWidth, currentHeight)) {
-                    notifyCbs(currentWidth, currentHeight);
-                    clearCallbacksAndListener();
-                }
+        void checkCurrentDimens() {
+            if (this.cbs.isEmpty()) {
+                return;
             }
+            int currentWidth = getTargetWidth();
+            int currentHeight = getTargetHeight();
+            if (!isViewStateAndSizeValid(currentWidth, currentHeight)) {
+                return;
+            }
+            notifyCbs(currentWidth, currentHeight);
+            clearCallbacksAndListener();
         }
 
-        /* access modifiers changed from: package-private */
-        public void getSize(SizeReadyCallback cb) {
+        void getSize(SizeReadyCallback cb) {
             int currentWidth = getTargetWidth();
             int currentHeight = getTargetHeight();
             if (isViewStateAndSizeValid(currentWidth, currentHeight)) {
@@ -234,13 +247,11 @@ public abstract class CustomViewTarget<T extends View, Z> implements Target<Z> {
             }
         }
 
-        /* access modifiers changed from: package-private */
-        public void removeCallback(SizeReadyCallback cb) {
+        void removeCallback(SizeReadyCallback cb) {
             this.cbs.remove(cb);
         }
 
-        /* access modifiers changed from: package-private */
-        public void clearCallbacksAndListener() {
+        void clearCallbacksAndListener() {
             ViewTreeObserver observer = this.view.getViewTreeObserver();
             if (observer.isAlive()) {
                 observer.removeOnPreDrawListener(this.layoutListener);
@@ -256,13 +267,15 @@ public abstract class CustomViewTarget<T extends View, Z> implements Target<Z> {
         private int getTargetHeight() {
             int verticalPadding = this.view.getPaddingTop() + this.view.getPaddingBottom();
             ViewGroup.LayoutParams layoutParams = this.view.getLayoutParams();
-            return getTargetDimen(this.view.getHeight(), layoutParams != null ? layoutParams.height : 0, verticalPadding);
+            int layoutParamSize = layoutParams != null ? layoutParams.height : 0;
+            return getTargetDimen(this.view.getHeight(), layoutParamSize, verticalPadding);
         }
 
         private int getTargetWidth() {
             int horizontalPadding = this.view.getPaddingLeft() + this.view.getPaddingRight();
             ViewGroup.LayoutParams layoutParams = this.view.getLayoutParams();
-            return getTargetDimen(this.view.getWidth(), layoutParams != null ? layoutParams.width : 0, horizontalPadding);
+            int layoutParamSize = layoutParams != null ? layoutParams.width : 0;
+            return getTargetDimen(this.view.getWidth(), layoutParamSize, horizontalPadding);
         }
 
         private int getTargetDimen(int viewSize, int paramSize, int paddingSize) {
@@ -290,6 +303,7 @@ public abstract class CustomViewTarget<T extends View, Z> implements Target<Z> {
             return size > 0 || size == Integer.MIN_VALUE;
         }
 
+        /* loaded from: classes.dex */
         private static final class SizeDeterminerLayoutListener implements ViewTreeObserver.OnPreDrawListener {
             private final WeakReference<SizeDeterminer> sizeDeterminerRef;
 
@@ -297,15 +311,16 @@ public abstract class CustomViewTarget<T extends View, Z> implements Target<Z> {
                 this.sizeDeterminerRef = new WeakReference<>(sizeDeterminer);
             }
 
+            @Override // android.view.ViewTreeObserver.OnPreDrawListener
             public boolean onPreDraw() {
                 if (Log.isLoggable(CustomViewTarget.TAG, 2)) {
                     Log.v(CustomViewTarget.TAG, "OnGlobalLayoutListener called attachStateListener=" + this);
                 }
-                SizeDeterminer sizeDeterminer = (SizeDeterminer) this.sizeDeterminerRef.get();
-                if (sizeDeterminer == null) {
+                SizeDeterminer sizeDeterminer = this.sizeDeterminerRef.get();
+                if (sizeDeterminer != null) {
+                    sizeDeterminer.checkCurrentDimens();
                     return true;
                 }
-                sizeDeterminer.checkCurrentDimens();
                 return true;
             }
         }

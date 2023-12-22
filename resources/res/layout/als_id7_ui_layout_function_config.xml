@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:scrollbars="none" android:layout_width="match_parent" android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:scrollbars="none" android:layout_width="match_parent" android:layout_height="match_parent">
     <LinearLayout android:orientation="vertical" android:paddingRight="16dp" android:layout_width="match_parent" android:layout_height="match_parent">
         <com.wits.ksw.settings.utlis_view.CustomSkinCheckBox android:textSize="20sp" android:textColor="@color/color1" android:id="@+id/cbox_function1" android:layout_width="match_parent" android:layout_height="wrap_content" android:button="@drawable/als_id7_ui_checkbox_selector" android:text="@string/function_text1"/>
         <com.wits.ksw.settings.utlis_view.CustomSkinCheckBox android:textSize="20sp" android:textColor="@color/color1" android:id="@+id/cbox_function_google_off" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:button="@drawable/als_id7_ui_checkbox_selector" android:text="@string/function_google_off"/>

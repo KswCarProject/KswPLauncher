@@ -1,30 +1,34 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
+import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.generated.callback.OnClickListener;
-import com.wits.ksw.settings.audi.vm.AudiSettingViewModel;
+import com.wits.ksw.settings.audi.p007vm.AudiSettingViewModel;
+import com.wits.ksw.settings.audi.widget.DateView;
 
+/* loaded from: classes7.dex */
 public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback255;
-    private final View.OnClickListener mCallback256;
-    private final View.OnClickListener mCallback257;
-    private final View.OnClickListener mCallback258;
-    private final View.OnClickListener mCallback259;
-    private final View.OnClickListener mCallback260;
-    private final View.OnClickListener mCallback261;
-    private final View.OnClickListener mCallback262;
-    private final View.OnClickListener mCallback263;
-    private final View.OnClickListener mCallback264;
+    private final View.OnClickListener mCallback378;
+    private final View.OnClickListener mCallback379;
+    private final View.OnClickListener mCallback380;
+    private final View.OnClickListener mCallback381;
+    private final View.OnClickListener mCallback382;
+    private final View.OnClickListener mCallback383;
+    private final View.OnClickListener mCallback384;
+    private final View.OnClickListener mCallback385;
+    private final View.OnClickListener mCallback386;
+    private final View.OnClickListener mCallback387;
     private long mDirtyFlags;
     private OnClickListenerImpl mVmOnDeleteClickAndroidViewViewOnClickListener;
     private OnLongClickListenerImpl mVmOnDeleteLongClickAndroidViewViewOnLongClickListener;
@@ -33,9 +37,9 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.audioViewPager, 13);
-        sparseIntArray.put(R.id.audi_key_ok, 14);
-        sparseIntArray.put(R.id.bottomFrameLayout, 15);
+        sparseIntArray.put(C0899R.C0901id.audioViewPager, 13);
+        sparseIntArray.put(C0899R.C0901id.audi_key_ok, 14);
+        sparseIntArray.put(C0899R.C0901id.bottomFrameLayout, 15);
     }
 
     public AudiPasswordBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -43,44 +47,46 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
     }
 
     private AudiPasswordBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 1, bindings[3], bindings[4], bindings[5], bindings[6], bindings[7], bindings[8], bindings[9], bindings[10], bindings[11], bindings[12], bindings[2], bindings[14], bindings[13], bindings[15], bindings[0]);
-        this.mDirtyFlags = -1;
-        this.audiKey0.setTag((Object) null);
-        this.audiKey1.setTag((Object) null);
-        this.audiKey2.setTag((Object) null);
-        this.audiKey3.setTag((Object) null);
-        this.audiKey4.setTag((Object) null);
-        this.audiKey5.setTag((Object) null);
-        this.audiKey6.setTag((Object) null);
-        this.audiKey7.setTag((Object) null);
-        this.audiKey8.setTag((Object) null);
-        this.audiKey9.setTag((Object) null);
-        this.audiKeyDelete.setTag((Object) null);
-        this.linearLayout4.setTag((Object) null);
-        TextView textView = bindings[1];
+        super(bindingComponent, root, 1, (ImageView) bindings[3], (ImageView) bindings[4], (ImageView) bindings[5], (ImageView) bindings[6], (ImageView) bindings[7], (ImageView) bindings[8], (ImageView) bindings[9], (ImageView) bindings[10], (ImageView) bindings[11], (ImageView) bindings[12], (ImageView) bindings[2], (ImageView) bindings[14], (GridLayout) bindings[13], (DateView) bindings[15], (ConstraintLayout) bindings[0]);
+        this.mDirtyFlags = -1L;
+        this.audiKey0.setTag(null);
+        this.audiKey1.setTag(null);
+        this.audiKey2.setTag(null);
+        this.audiKey3.setTag(null);
+        this.audiKey4.setTag(null);
+        this.audiKey5.setTag(null);
+        this.audiKey6.setTag(null);
+        this.audiKey7.setTag(null);
+        this.audiKey8.setTag(null);
+        this.audiKey9.setTag(null);
+        this.audiKeyDelete.setTag(null);
+        this.linearLayout4.setTag(null);
+        TextView textView = (TextView) bindings[1];
         this.mboundView1 = textView;
-        textView.setTag((Object) null);
+        textView.setTag(null);
         setRootTag(root);
-        this.mCallback259 = new OnClickListener(this, 5);
-        this.mCallback257 = new OnClickListener(this, 3);
-        this.mCallback255 = new OnClickListener(this, 1);
-        this.mCallback263 = new OnClickListener(this, 9);
-        this.mCallback261 = new OnClickListener(this, 7);
-        this.mCallback258 = new OnClickListener(this, 4);
-        this.mCallback256 = new OnClickListener(this, 2);
-        this.mCallback264 = new OnClickListener(this, 10);
-        this.mCallback262 = new OnClickListener(this, 8);
-        this.mCallback260 = new OnClickListener(this, 6);
+        this.mCallback386 = new OnClickListener(this, 9);
+        this.mCallback378 = new OnClickListener(this, 1);
+        this.mCallback382 = new OnClickListener(this, 5);
+        this.mCallback384 = new OnClickListener(this, 7);
+        this.mCallback380 = new OnClickListener(this, 3);
+        this.mCallback379 = new OnClickListener(this, 2);
+        this.mCallback387 = new OnClickListener(this, 10);
+        this.mCallback383 = new OnClickListener(this, 6);
+        this.mCallback385 = new OnClickListener(this, 8);
+        this.mCallback381 = new OnClickListener(this, 4);
         invalidateAll();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 4;
+            this.mDirtyFlags = 4L;
         }
         requestRebind();
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean hasPendingBindings() {
         synchronized (this) {
             if (this.mDirtyFlags != 0) {
@@ -90,14 +96,16 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
         }
     }
 
+    @Override // android.databinding.ViewDataBinding
     public boolean setVariable(int variableId, Object variable) {
-        if (26 != variableId) {
-            return false;
+        if (26 == variableId) {
+            setVm((AudiSettingViewModel) variable);
+            return true;
         }
-        setVm((AudiSettingViewModel) variable);
-        return true;
+        return false;
     }
 
+    @Override // com.wits.ksw.databinding.AudiPasswordBinding
     public void setVm(AudiSettingViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
@@ -107,8 +115,8 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
         super.requestRebind();
     }
 
-    /* access modifiers changed from: protected */
-    public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
+    @Override // android.databinding.ViewDataBinding
+    protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
                 return onChangeVmKeyBuffer((ObservableField) object, fieldId);
@@ -117,22 +125,22 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
         }
     }
 
-    private boolean onChangeVmKeyBuffer(ObservableField<String> observableField, int fieldId) {
-        if (fieldId != 0) {
-            return false;
+    private boolean onChangeVmKeyBuffer(ObservableField<String> VmKeyBuffer, int fieldId) {
+        if (fieldId == 0) {
+            synchronized (this) {
+                this.mDirtyFlags |= 1;
+            }
+            return true;
         }
-        synchronized (this) {
-            this.mDirtyFlags |= 1;
-        }
-        return true;
+        return false;
     }
 
-    /* access modifiers changed from: protected */
-    public void executeBindings() {
+    @Override // android.databinding.ViewDataBinding
+    protected void executeBindings() {
         long dirtyFlags;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
+            this.mDirtyFlags = 0L;
         }
         String vmKeyBufferGet = null;
         AudiSettingViewModel vm = this.mVm;
@@ -140,7 +148,7 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
         ObservableField<String> vmKeyBuffer = null;
         View.OnClickListener vmOnDeleteClickAndroidViewViewOnClickListener = null;
         if ((dirtyFlags & 7) != 0) {
-            if (!((dirtyFlags & 6) == 0 || vm == null)) {
+            if ((dirtyFlags & 6) != 0 && vm != null) {
                 OnLongClickListenerImpl onLongClickListenerImpl = this.mVmOnDeleteLongClickAndroidViewViewOnLongClickListener;
                 if (onLongClickListenerImpl == null) {
                     onLongClickListenerImpl = new OnLongClickListenerImpl();
@@ -157,22 +165,22 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
             if (vm != null) {
                 vmKeyBuffer = vm.keyBuffer;
             }
-            updateRegistration(0, (Observable) vmKeyBuffer);
+            updateRegistration(0, vmKeyBuffer);
             if (vmKeyBuffer != null) {
                 vmKeyBufferGet = vmKeyBuffer.get();
             }
         }
         if ((4 & dirtyFlags) != 0) {
-            this.audiKey0.setOnClickListener(this.mCallback255);
-            this.audiKey1.setOnClickListener(this.mCallback256);
-            this.audiKey2.setOnClickListener(this.mCallback257);
-            this.audiKey3.setOnClickListener(this.mCallback258);
-            this.audiKey4.setOnClickListener(this.mCallback259);
-            this.audiKey5.setOnClickListener(this.mCallback260);
-            this.audiKey6.setOnClickListener(this.mCallback261);
-            this.audiKey7.setOnClickListener(this.mCallback262);
-            this.audiKey8.setOnClickListener(this.mCallback263);
-            this.audiKey9.setOnClickListener(this.mCallback264);
+            this.audiKey0.setOnClickListener(this.mCallback378);
+            this.audiKey1.setOnClickListener(this.mCallback379);
+            this.audiKey2.setOnClickListener(this.mCallback380);
+            this.audiKey3.setOnClickListener(this.mCallback381);
+            this.audiKey4.setOnClickListener(this.mCallback382);
+            this.audiKey5.setOnClickListener(this.mCallback383);
+            this.audiKey6.setOnClickListener(this.mCallback384);
+            this.audiKey7.setOnClickListener(this.mCallback385);
+            this.audiKey8.setOnClickListener(this.mCallback386);
+            this.audiKey9.setOnClickListener(this.mCallback387);
         }
         if ((dirtyFlags & 6) != 0) {
             this.audiKeyDelete.setOnClickListener(vmOnDeleteClickAndroidViewViewOnClickListener);
@@ -183,47 +191,49 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
         }
     }
 
+    /* loaded from: classes7.dex */
     public static class OnLongClickListenerImpl implements View.OnLongClickListener {
         private AudiSettingViewModel value;
 
-        public OnLongClickListenerImpl setValue(AudiSettingViewModel value2) {
-            this.value = value2;
-            if (value2 == null) {
+        public OnLongClickListenerImpl setValue(AudiSettingViewModel value) {
+            this.value = value;
+            if (value == null) {
                 return null;
             }
             return this;
         }
 
+        @Override // android.view.View.OnLongClickListener
         public boolean onLongClick(View arg0) {
             return this.value.onDeleteLongClick(arg0);
         }
     }
 
+    /* loaded from: classes7.dex */
     public static class OnClickListenerImpl implements View.OnClickListener {
         private AudiSettingViewModel value;
 
-        public OnClickListenerImpl setValue(AudiSettingViewModel value2) {
-            this.value = value2;
-            if (value2 == null) {
+        public OnClickListenerImpl setValue(AudiSettingViewModel value) {
+            this.value = value;
+            if (value == null) {
                 return null;
             }
             return this;
         }
 
+        @Override // android.view.View.OnClickListener
         public void onClick(View arg0) {
             this.value.onDeleteClick(arg0);
         }
     }
 
+    @Override // com.wits.ksw.generated.callback.OnClickListener.Listener
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean vmJavaLangObjectNull = true;
-        boolean vmJavaLangObjectNull2 = false;
+        boolean vmJavaLangObjectNull;
         switch (sourceId) {
             case 1:
                 AudiSettingViewModel vm = this.mVm;
-                if (vm == null) {
-                    vmJavaLangObjectNull = false;
-                }
+                vmJavaLangObjectNull = vm != null;
                 if (vmJavaLangObjectNull) {
                     vm.onKeyClick(callbackArg_0, 0);
                     return;
@@ -232,18 +242,13 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
             case 2:
                 AudiSettingViewModel vm2 = this.mVm;
                 if (vm2 != null) {
-                    vmJavaLangObjectNull2 = true;
-                }
-                if (vmJavaLangObjectNull2) {
                     vm2.onKeyClick(callbackArg_0, 1);
                     return;
                 }
                 return;
             case 3:
                 AudiSettingViewModel vm3 = this.mVm;
-                if (vm3 == null) {
-                    vmJavaLangObjectNull = false;
-                }
+                vmJavaLangObjectNull = vm3 != null;
                 if (vmJavaLangObjectNull) {
                     vm3.onKeyClick(callbackArg_0, 2);
                     return;
@@ -251,9 +256,7 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
                 return;
             case 4:
                 AudiSettingViewModel vm4 = this.mVm;
-                if (vm4 == null) {
-                    vmJavaLangObjectNull = false;
-                }
+                vmJavaLangObjectNull = vm4 != null;
                 if (vmJavaLangObjectNull) {
                     vm4.onKeyClick(callbackArg_0, 3);
                     return;
@@ -261,9 +264,7 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
                 return;
             case 5:
                 AudiSettingViewModel vm5 = this.mVm;
-                if (vm5 == null) {
-                    vmJavaLangObjectNull = false;
-                }
+                vmJavaLangObjectNull = vm5 != null;
                 if (vmJavaLangObjectNull) {
                     vm5.onKeyClick(callbackArg_0, 4);
                     return;
@@ -271,9 +272,7 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
                 return;
             case 6:
                 AudiSettingViewModel vm6 = this.mVm;
-                if (vm6 == null) {
-                    vmJavaLangObjectNull = false;
-                }
+                vmJavaLangObjectNull = vm6 != null;
                 if (vmJavaLangObjectNull) {
                     vm6.onKeyClick(callbackArg_0, 5);
                     return;
@@ -281,9 +280,7 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
                 return;
             case 7:
                 AudiSettingViewModel vm7 = this.mVm;
-                if (vm7 == null) {
-                    vmJavaLangObjectNull = false;
-                }
+                vmJavaLangObjectNull = vm7 != null;
                 if (vmJavaLangObjectNull) {
                     vm7.onKeyClick(callbackArg_0, 6);
                     return;
@@ -291,9 +288,7 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
                 return;
             case 8:
                 AudiSettingViewModel vm8 = this.mVm;
-                if (vm8 == null) {
-                    vmJavaLangObjectNull = false;
-                }
+                vmJavaLangObjectNull = vm8 != null;
                 if (vmJavaLangObjectNull) {
                     vm8.onKeyClick(callbackArg_0, 7);
                     return;
@@ -301,9 +296,7 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
                 return;
             case 9:
                 AudiSettingViewModel vm9 = this.mVm;
-                if (vm9 == null) {
-                    vmJavaLangObjectNull = false;
-                }
+                vmJavaLangObjectNull = vm9 != null;
                 if (vmJavaLangObjectNull) {
                     vm9.onKeyClick(callbackArg_0, 8);
                     return;
@@ -311,9 +304,7 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
                 return;
             case 10:
                 AudiSettingViewModel vm10 = this.mVm;
-                if (vm10 == null) {
-                    vmJavaLangObjectNull = false;
-                }
+                vmJavaLangObjectNull = vm10 != null;
                 if (vmJavaLangObjectNull) {
                     vm10.onKeyClick(callbackArg_0, 9);
                     return;

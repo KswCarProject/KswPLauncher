@@ -11,6 +11,7 @@ import io.reactivex.internal.functions.ObjectHelper;
 import java.util.Collection;
 import java.util.concurrent.Callable;
 
+/* loaded from: classes.dex */
 public final class ObservableToList<T, U extends Collection<? super T>> extends AbstractObservableWithUpstream<T, U> {
     final Callable<U> collectionSupplier;
 
@@ -19,30 +20,33 @@ public final class ObservableToList<T, U extends Collection<? super T>> extends 
         this.collectionSupplier = Functions.createArrayList(defaultCapacityHint);
     }
 
-    public ObservableToList(ObservableSource<T> source, Callable<U> collectionSupplier2) {
+    public ObservableToList(ObservableSource<T> source, Callable<U> collectionSupplier) {
         super(source);
-        this.collectionSupplier = collectionSupplier2;
+        this.collectionSupplier = collectionSupplier;
     }
 
+    @Override // io.reactivex.Observable
     public void subscribeActual(Observer<? super U> t) {
         try {
             this.source.subscribe(new ToListObserver(t, (Collection) ObjectHelper.requireNonNull(this.collectionSupplier.call(), "The collectionSupplier returned a null collection. Null values are generally not allowed in 2.x operators and sources.")));
         } catch (Throwable e) {
             Exceptions.throwIfFatal(e);
-            EmptyDisposable.error(e, (Observer<?>) t);
+            EmptyDisposable.error(e, t);
         }
     }
 
+    /* loaded from: classes.dex */
     static final class ToListObserver<T, U extends Collection<? super T>> implements Observer<T>, Disposable {
         U collection;
         final Observer<? super U> downstream;
         Disposable upstream;
 
-        ToListObserver(Observer<? super U> actual, U collection2) {
+        ToListObserver(Observer<? super U> actual, U collection) {
             this.downstream = actual;
-            this.collection = collection2;
+            this.collection = collection;
         }
 
+        @Override // io.reactivex.Observer
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -50,23 +54,28 @@ public final class ObservableToList<T, U extends Collection<? super T>> extends 
             }
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.upstream.dispose();
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }
 
+        @Override // io.reactivex.Observer
         public void onNext(T t) {
             this.collection.add(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onError(Throwable t) {
             this.collection = null;
             this.downstream.onError(t);
         }
 
+        @Override // io.reactivex.Observer
         public void onComplete() {
             U c = this.collection;
             this.collection = null;

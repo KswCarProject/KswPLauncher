@@ -13,46 +13,47 @@ import com.google.zxing.datamatrix.encoder.SymbolShapeHint;
 import com.google.zxing.qrcode.encoder.ByteMatrix;
 import java.util.Map;
 
+/* loaded from: classes.dex */
 public final class DataMatrixWriter implements Writer {
+    @Override // com.google.zxing.Writer
     public BitMatrix encode(String contents, BarcodeFormat format, int width, int height) {
-        return encode(contents, format, width, height, (Map<EncodeHintType, ?>) null);
+        return encode(contents, format, width, height, null);
     }
 
+    @Override // com.google.zxing.Writer
     public BitMatrix encode(String contents, BarcodeFormat format, int width, int height, Map<EncodeHintType, ?> hints) {
         if (contents.isEmpty()) {
             throw new IllegalArgumentException("Found empty contents");
-        } else if (format != BarcodeFormat.DATA_MATRIX) {
-            throw new IllegalArgumentException("Can only encode DATA_MATRIX, but got ".concat(String.valueOf(format)));
-        } else if (width < 0 || height < 0) {
-            throw new IllegalArgumentException("Requested dimensions can't be negative: " + width + 'x' + height);
-        } else {
-            SymbolShapeHint shape = SymbolShapeHint.FORCE_NONE;
-            Dimension minSize = null;
-            Dimension maxSize = null;
-            if (hints != null) {
-                SymbolShapeHint symbolShapeHint = (SymbolShapeHint) hints.get(EncodeHintType.DATA_MATRIX_SHAPE);
-                SymbolShapeHint requestedShape = symbolShapeHint;
-                if (symbolShapeHint != null) {
-                    shape = requestedShape;
-                }
-                Dimension dimension = (Dimension) hints.get(EncodeHintType.MIN_SIZE);
-                Dimension requestedMinSize = dimension;
-                if (dimension != null) {
-                    minSize = requestedMinSize;
-                }
-                Dimension dimension2 = (Dimension) hints.get(EncodeHintType.MAX_SIZE);
-                Dimension requestedMaxSize = dimension2;
-                if (dimension2 != null) {
-                    maxSize = requestedMaxSize;
-                }
-            }
-            String encodeHighLevel = HighLevelEncoder.encodeHighLevel(contents, shape, minSize, maxSize);
-            String encoded = encodeHighLevel;
-            SymbolInfo symbolInfo = SymbolInfo.lookup(encodeHighLevel.length(), shape, minSize, maxSize, true);
-            DefaultPlacement placement = new DefaultPlacement(ErrorCorrection.encodeECC200(encoded, symbolInfo), symbolInfo.getSymbolDataWidth(), symbolInfo.getSymbolDataHeight());
-            placement.place();
-            return encodeLowLevel(placement, symbolInfo, width, height);
         }
+        if (format != BarcodeFormat.DATA_MATRIX) {
+            throw new IllegalArgumentException("Can only encode DATA_MATRIX, but got ".concat(String.valueOf(format)));
+        }
+        if (width < 0 || height < 0) {
+            throw new IllegalArgumentException("Requested dimensions can't be negative: " + width + 'x' + height);
+        }
+        SymbolShapeHint shape = SymbolShapeHint.FORCE_NONE;
+        Dimension minSize = null;
+        Dimension maxSize = null;
+        if (hints != null) {
+            SymbolShapeHint requestedShape = (SymbolShapeHint) hints.get(EncodeHintType.DATA_MATRIX_SHAPE);
+            if (requestedShape != null) {
+                shape = requestedShape;
+            }
+            Dimension requestedMinSize = (Dimension) hints.get(EncodeHintType.MIN_SIZE);
+            if (requestedMinSize != null) {
+                minSize = requestedMinSize;
+            }
+            Dimension requestedMaxSize = (Dimension) hints.get(EncodeHintType.MAX_SIZE);
+            if (requestedMaxSize != null) {
+                maxSize = requestedMaxSize;
+            }
+        }
+        String encoded = HighLevelEncoder.encodeHighLevel(contents, shape, minSize, maxSize);
+        SymbolInfo symbolInfo = SymbolInfo.lookup(encoded.length(), shape, minSize, maxSize, true);
+        String codewords = ErrorCorrection.encodeECC200(encoded, symbolInfo);
+        DefaultPlacement placement = new DefaultPlacement(codewords, symbolInfo.getSymbolDataWidth(), symbolInfo.getSymbolDataHeight());
+        placement.place();
+        return encodeLowLevel(placement, symbolInfo, width, height);
     }
 
     private static BitMatrix encodeLowLevel(DefaultPlacement placement, SymbolInfo symbolInfo, int width, int height) {
@@ -97,21 +98,19 @@ public final class DataMatrixWriter implements Writer {
 
     private static BitMatrix convertByteMatrixToBitMatrix(ByteMatrix matrix, int reqWidth, int reqHeight) {
         BitMatrix output;
-        int i = reqWidth;
-        int i2 = reqHeight;
         int matrixWidth = matrix.getWidth();
         int matrixHeight = matrix.getHeight();
-        int outputWidth = Math.max(i, matrixWidth);
-        int outputHeight = Math.max(i2, matrixHeight);
+        int outputWidth = Math.max(reqWidth, matrixWidth);
+        int outputHeight = Math.max(reqHeight, matrixHeight);
         int multiple = Math.min(outputWidth / matrixWidth, outputHeight / matrixHeight);
         int leftPadding = (outputWidth - (matrixWidth * multiple)) / 2;
         int topPadding = (outputHeight - (matrixHeight * multiple)) / 2;
-        if (i2 < matrixHeight || i < matrixWidth) {
+        if (reqHeight >= matrixHeight && reqWidth >= matrixWidth) {
+            output = new BitMatrix(reqWidth, reqHeight);
+        } else {
             leftPadding = 0;
             topPadding = 0;
             output = new BitMatrix(matrixWidth, matrixHeight);
-        } else {
-            output = new BitMatrix(i, i2);
         }
         output.clear();
         int inputY = 0;
@@ -125,14 +124,10 @@ public final class DataMatrixWriter implements Writer {
                 }
                 inputX++;
                 outputX += multiple;
-                int i3 = reqWidth;
             }
-            ByteMatrix byteMatrix = matrix;
             inputY++;
             outputY += multiple;
-            int i4 = reqWidth;
         }
-        ByteMatrix byteMatrix2 = matrix;
         return output;
     }
 }

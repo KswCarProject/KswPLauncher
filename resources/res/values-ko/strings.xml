@@ -245,10 +245,17 @@
     <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">비밀번호 에러!</string>
     <string name="mcu_file_corrupted">업그레이드 파일 손상!</string>
+    <string name="mic_control">마이크 외부 내장 토글 스위치</string>
+    <string name="mic_external">외부</string>
+    <string name="mic_internal">내장</string>
     <string name="mic_text">MIC 얻다</string>
     <string name="music_app_sel">음악 앱 선택</string>
+    <string name="music_player">음악 플레이어</string>
     <string name="ntg6_dvr_toast">장치 없슴!</string>
     <string name="oil_size">기름: %s</string>
+    <string name="original_radar_reverse">오리지널 레이더 디스플레이 반전</string>
+    <string name="radar_normal">정상</string>
+    <string name="radar_reverse">반전</string>
     <string name="raw_car_text1">풀스크린 모드 선택</string>
     <string name="raw_car_text2">현재 선택:</string>
     <string name="reverse_exit_time_agreement">원차 협의에 따라 탈퇴하다</string>
@@ -325,6 +332,8 @@
     <string name="text_logo_two">P2</string>
     <string name="text_ram">RAM: %s</string>
     <string name="touch_continuous_send">지속적으로 전송되는 터치 데이터</string>
+    <string name="tv_id8_brake">브레이크</string>
+    <string name="tv_id8_seat_belt">안전 벨트</string>
     <string name="txz_oil_text">동행자 유량 경고 설치</string>
     <string name="txz_speed_text">동행자 속도 경고 설정</string>
     <string name="txz_temp_text">동행자 환경 온도 경고 설정</string>

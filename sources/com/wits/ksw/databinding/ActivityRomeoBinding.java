@@ -3,14 +3,15 @@ package com.wits.ksw.databinding;
 import android.databinding.Bindable;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.v7.widget.RecyclerView;
+import android.support.p004v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.model.RomeoViewModel;
 
+/* loaded from: classes7.dex */
 public abstract class ActivityRomeoBinding extends ViewDataBinding {
     @Bindable
     protected RomeoViewModel mViewModel;
@@ -30,26 +31,25 @@ public abstract class ActivityRomeoBinding extends ViewDataBinding {
     public final ImageView romeoSetting;
     public final ImageView romeoVideo;
 
-    public abstract void setViewModel(RomeoViewModel romeoViewModel);
+    public abstract void setViewModel(RomeoViewModel viewModel);
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected ActivityRomeoBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView pageIndicator12, ImageView pageIndicator22, ImageView romeoApp2, ImageView romeoIndicator12, ImageView romeoIndicator22, ImageView romeoIndicator32, ImageView romeoIndicator42, ImageView romeoIndicator52, ImageView romeoIndicator62, RecyclerView romeoMainRv2, ImageView romeoMusic2, ImageView romeoNavi2, ImageView romeoPhone2, ImageView romeoSetting2, ImageView romeoVideo2) {
+    protected ActivityRomeoBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView pageIndicator1, ImageView pageIndicator2, ImageView romeoApp, ImageView romeoIndicator1, ImageView romeoIndicator2, ImageView romeoIndicator3, ImageView romeoIndicator4, ImageView romeoIndicator5, ImageView romeoIndicator6, RecyclerView romeoMainRv, ImageView romeoMusic, ImageView romeoNavi, ImageView romeoPhone, ImageView romeoSetting, ImageView romeoVideo) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.pageIndicator1 = pageIndicator12;
-        this.pageIndicator2 = pageIndicator22;
-        this.romeoApp = romeoApp2;
-        this.romeoIndicator1 = romeoIndicator12;
-        this.romeoIndicator2 = romeoIndicator22;
-        this.romeoIndicator3 = romeoIndicator32;
-        this.romeoIndicator4 = romeoIndicator42;
-        this.romeoIndicator5 = romeoIndicator52;
-        this.romeoIndicator6 = romeoIndicator62;
-        this.romeoMainRv = romeoMainRv2;
-        this.romeoMusic = romeoMusic2;
-        this.romeoNavi = romeoNavi2;
-        this.romeoPhone = romeoPhone2;
-        this.romeoSetting = romeoSetting2;
-        this.romeoVideo = romeoVideo2;
+        this.pageIndicator1 = pageIndicator1;
+        this.pageIndicator2 = pageIndicator2;
+        this.romeoApp = romeoApp;
+        this.romeoIndicator1 = romeoIndicator1;
+        this.romeoIndicator2 = romeoIndicator2;
+        this.romeoIndicator3 = romeoIndicator3;
+        this.romeoIndicator4 = romeoIndicator4;
+        this.romeoIndicator5 = romeoIndicator5;
+        this.romeoIndicator6 = romeoIndicator6;
+        this.romeoMainRv = romeoMainRv;
+        this.romeoMusic = romeoMusic;
+        this.romeoNavi = romeoNavi;
+        this.romeoPhone = romeoPhone;
+        this.romeoSetting = romeoSetting;
+        this.romeoVideo = romeoVideo;
     }
 
     public RomeoViewModel getViewModel() {
@@ -62,7 +62,7 @@ public abstract class ActivityRomeoBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityRomeoBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (ActivityRomeoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_romeo, root, attachToRoot, component);
+        return (ActivityRomeoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_romeo, root, attachToRoot, component);
     }
 
     public static ActivityRomeoBinding inflate(LayoutInflater inflater) {
@@ -71,7 +71,7 @@ public abstract class ActivityRomeoBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityRomeoBinding inflate(LayoutInflater inflater, Object component) {
-        return (ActivityRomeoBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_romeo, (ViewGroup) null, false, component);
+        return (ActivityRomeoBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.activity_romeo, null, false, component);
     }
 
     public static ActivityRomeoBinding bind(View view) {
@@ -80,6 +80,6 @@ public abstract class ActivityRomeoBinding extends ViewDataBinding {
 
     @Deprecated
     public static ActivityRomeoBinding bind(View view, Object component) {
-        return (ActivityRomeoBinding) bind(component, view, R.layout.activity_romeo);
+        return (ActivityRomeoBinding) bind(component, view, C0899R.C0902layout.activity_romeo);
     }
 }

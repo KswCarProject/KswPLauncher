@@ -6,36 +6,41 @@ import io.reactivex.CompletableSource;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 
+/* loaded from: classes.dex */
 public final class CompletableDetach extends Completable {
     final CompletableSource source;
 
-    public CompletableDetach(CompletableSource source2) {
-        this.source = source2;
+    public CompletableDetach(CompletableSource source) {
+        this.source = source;
     }
 
-    /* access modifiers changed from: protected */
-    public void subscribeActual(CompletableObserver observer) {
+    @Override // io.reactivex.Completable
+    protected void subscribeActual(CompletableObserver observer) {
         this.source.subscribe(new DetachCompletableObserver(observer));
     }
 
+    /* loaded from: classes.dex */
     static final class DetachCompletableObserver implements CompletableObserver, Disposable {
         CompletableObserver downstream;
         Disposable upstream;
 
-        DetachCompletableObserver(CompletableObserver downstream2) {
-            this.downstream = downstream2;
+        DetachCompletableObserver(CompletableObserver downstream) {
+            this.downstream = downstream;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public void dispose() {
             this.downstream = null;
             this.upstream.dispose();
             this.upstream = DisposableHelper.DISPOSED;
         }
 
+        @Override // io.reactivex.disposables.Disposable
         public boolean isDisposed() {
             return this.upstream.isDisposed();
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onSubscribe(Disposable d) {
             if (DisposableHelper.validate(this.upstream, d)) {
                 this.upstream = d;
@@ -43,6 +48,7 @@ public final class CompletableDetach extends Completable {
             }
         }
 
+        @Override // io.reactivex.CompletableObserver
         public void onError(Throwable e) {
             this.upstream = DisposableHelper.DISPOSED;
             CompletableObserver a = this.downstream;
@@ -52,6 +58,7 @@ public final class CompletableDetach extends Completable {
             }
         }
 
+        @Override // io.reactivex.CompletableObserver, io.reactivex.MaybeObserver
         public void onComplete() {
             this.upstream = DisposableHelper.DISPOSED;
             CompletableObserver a = this.downstream;

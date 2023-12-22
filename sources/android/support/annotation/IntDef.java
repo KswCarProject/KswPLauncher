@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.SOURCE)
+/* loaded from: classes.dex */
 public @interface IntDef {
     boolean flag() default false;
 

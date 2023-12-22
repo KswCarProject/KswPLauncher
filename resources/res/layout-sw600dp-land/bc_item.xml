@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:id="@+id/naviCusLinearLayout" android:tag="layout-sw600dp-land/bc_item_0" android:focusable="false" android:focusableInTouchMode="false" android:layout_width="204dp" android:layout_height="376dp" android:defaultFocusHighlightEnabled="false">
+    <com.wits.ksw.launcher.view.CustomBcImageView android:tag="binding_1" android:focusable="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:defaultFocusHighlightEnabled="false"/>
+    <TextView android:textSize="25sp" android:textColor="@android:color/white" android:tag="binding_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="-20dp"/>
+</LinearLayout>

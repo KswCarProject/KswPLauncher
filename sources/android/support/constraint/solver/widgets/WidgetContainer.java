@@ -3,20 +3,25 @@ package android.support.constraint.solver.widgets;
 import android.support.constraint.solver.Cache;
 import java.util.ArrayList;
 
+/* loaded from: classes.dex */
 public class WidgetContainer extends ConstraintWidget {
-    public ArrayList<ConstraintWidget> mChildren = new ArrayList<>();
+    public ArrayList<ConstraintWidget> mChildren;
 
     public WidgetContainer() {
+        this.mChildren = new ArrayList<>();
     }
 
     public WidgetContainer(int x, int y, int width, int height) {
         super(x, y, width, height);
+        this.mChildren = new ArrayList<>();
     }
 
     public WidgetContainer(int width, int height) {
         super(width, height);
+        this.mChildren = new ArrayList<>();
     }
 
+    @Override // android.support.constraint.solver.widgets.ConstraintWidget
     public void reset() {
         this.mChildren.clear();
         super.reset();
@@ -25,20 +30,21 @@ public class WidgetContainer extends ConstraintWidget {
     public void add(ConstraintWidget widget) {
         this.mChildren.add(widget);
         if (widget.getParent() != null) {
-            ((WidgetContainer) widget.getParent()).remove(widget);
+            WidgetContainer container = (WidgetContainer) widget.getParent();
+            container.remove(widget);
         }
         widget.setParent(this);
     }
 
     public void add(ConstraintWidget... widgets) {
-        for (ConstraintWidget add : widgets) {
-            add(add);
+        for (ConstraintWidget constraintWidget : widgets) {
+            add(constraintWidget);
         }
     }
 
     public void remove(ConstraintWidget widget) {
         this.mChildren.remove(widget);
-        widget.setParent((ConstraintWidget) null);
+        widget.setParent(null);
     }
 
     public ArrayList<ConstraintWidget> getChildren() {
@@ -61,32 +67,37 @@ public class WidgetContainer extends ConstraintWidget {
         return container;
     }
 
+    @Override // android.support.constraint.solver.widgets.ConstraintWidget
     public void setOffset(int x, int y) {
         super.setOffset(x, y);
         int count = this.mChildren.size();
         for (int i = 0; i < count; i++) {
-            this.mChildren.get(i).setOffset(getRootX(), getRootY());
+            ConstraintWidget widget = this.mChildren.get(i);
+            widget.setOffset(getRootX(), getRootY());
         }
     }
 
     public void layout() {
         ArrayList<ConstraintWidget> arrayList = this.mChildren;
-        if (arrayList != null) {
-            int count = arrayList.size();
-            for (int i = 0; i < count; i++) {
-                ConstraintWidget widget = this.mChildren.get(i);
-                if (widget instanceof WidgetContainer) {
-                    ((WidgetContainer) widget).layout();
-                }
+        if (arrayList == null) {
+            return;
+        }
+        int count = arrayList.size();
+        for (int i = 0; i < count; i++) {
+            ConstraintWidget widget = this.mChildren.get(i);
+            if (widget instanceof WidgetContainer) {
+                ((WidgetContainer) widget).layout();
             }
         }
     }
 
+    @Override // android.support.constraint.solver.widgets.ConstraintWidget
     public void resetSolverVariables(Cache cache) {
         super.resetSolverVariables(cache);
         int count = this.mChildren.size();
         for (int i = 0; i < count; i++) {
-            this.mChildren.get(i).resetSolverVariables(cache);
+            ConstraintWidget widget = this.mChildren.get(i);
+            widget.resetSolverVariables(cache);
         }
     }
 

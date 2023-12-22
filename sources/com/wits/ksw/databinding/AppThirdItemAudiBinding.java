@@ -8,10 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wits.ksw.R;
+import com.wits.ksw.C0899R;
 import com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean;
 import com.wits.ksw.settings.utlis_view.RtlNaviRadioButton;
 
+/* loaded from: classes7.dex */
 public abstract class AppThirdItemAudiBinding extends ViewDataBinding {
     @Bindable
     protected LexusLsAppSelBean mListItem;
@@ -19,13 +20,13 @@ public abstract class AppThirdItemAudiBinding extends ViewDataBinding {
     public final RtlNaviRadioButton rbtApps;
     public final TextView textView;
 
-    public abstract void setListItem(LexusLsAppSelBean lexusLsAppSelBean);
+    public abstract void setListItem(LexusLsAppSelBean listItem);
 
-    protected AppThirdItemAudiBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView nameImageView2, RtlNaviRadioButton rbtApps2, TextView textView2) {
+    protected AppThirdItemAudiBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView nameImageView, RtlNaviRadioButton rbtApps, TextView textView) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.nameImageView = nameImageView2;
-        this.rbtApps = rbtApps2;
-        this.textView = textView2;
+        this.nameImageView = nameImageView;
+        this.rbtApps = rbtApps;
+        this.textView = textView;
     }
 
     public LexusLsAppSelBean getListItem() {
@@ -38,7 +39,7 @@ public abstract class AppThirdItemAudiBinding extends ViewDataBinding {
 
     @Deprecated
     public static AppThirdItemAudiBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
-        return (AppThirdItemAudiBinding) ViewDataBinding.inflateInternal(inflater, R.layout.app_third_item_audi, root, attachToRoot, component);
+        return (AppThirdItemAudiBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.app_third_item_audi, root, attachToRoot, component);
     }
 
     public static AppThirdItemAudiBinding inflate(LayoutInflater inflater) {
@@ -47,7 +48,7 @@ public abstract class AppThirdItemAudiBinding extends ViewDataBinding {
 
     @Deprecated
     public static AppThirdItemAudiBinding inflate(LayoutInflater inflater, Object component) {
-        return (AppThirdItemAudiBinding) ViewDataBinding.inflateInternal(inflater, R.layout.app_third_item_audi, (ViewGroup) null, false, component);
+        return (AppThirdItemAudiBinding) ViewDataBinding.inflateInternal(inflater, C0899R.C0902layout.app_third_item_audi, null, false, component);
     }
 
     public static AppThirdItemAudiBinding bind(View view) {
@@ -56,6 +57,6 @@ public abstract class AppThirdItemAudiBinding extends ViewDataBinding {
 
     @Deprecated
     public static AppThirdItemAudiBinding bind(View view, Object component) {
-        return (AppThirdItemAudiBinding) bind(component, view, R.layout.app_third_item_audi);
+        return (AppThirdItemAudiBinding) bind(component, view, C0899R.C0902layout.app_third_item_audi);
     }
 }

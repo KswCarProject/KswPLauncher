@@ -1,5 +1,6 @@
 package com.google.zxing.pdf417.decoder;
 
+/* loaded from: classes.dex */
 final class Codeword {
     private static final int BARCODE_ROW_UNKNOWN = -1;
     private final int bucket;
@@ -8,61 +9,51 @@ final class Codeword {
     private final int startX;
     private final int value;
 
-    Codeword(int startX2, int endX2, int bucket2, int value2) {
-        this.startX = startX2;
-        this.endX = endX2;
-        this.bucket = bucket2;
-        this.value = value2;
+    Codeword(int startX, int endX, int bucket, int value) {
+        this.startX = startX;
+        this.endX = endX;
+        this.bucket = bucket;
+        this.value = value;
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean hasValidRowNumber() {
+    boolean hasValidRowNumber() {
         return isValidRowNumber(this.rowNumber);
     }
 
-    /* access modifiers changed from: package-private */
-    public boolean isValidRowNumber(int rowNumber2) {
-        return rowNumber2 != -1 && this.bucket == (rowNumber2 % 3) * 3;
+    boolean isValidRowNumber(int rowNumber) {
+        return rowNumber != -1 && this.bucket == (rowNumber % 3) * 3;
     }
 
-    /* access modifiers changed from: package-private */
-    public void setRowNumberAsRowIndicatorColumn() {
+    void setRowNumberAsRowIndicatorColumn() {
         this.rowNumber = ((this.value / 30) * 3) + (this.bucket / 3);
     }
 
-    /* access modifiers changed from: package-private */
-    public int getWidth() {
+    int getWidth() {
         return this.endX - this.startX;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getStartX() {
+    int getStartX() {
         return this.startX;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getEndX() {
+    int getEndX() {
         return this.endX;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getBucket() {
+    int getBucket() {
         return this.bucket;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getValue() {
+    int getValue() {
         return this.value;
     }
 
-    /* access modifiers changed from: package-private */
-    public int getRowNumber() {
+    int getRowNumber() {
         return this.rowNumber;
     }
 
-    /* access modifiers changed from: package-private */
-    public void setRowNumber(int rowNumber2) {
-        this.rowNumber = rowNumber2;
+    void setRowNumber(int rowNumber) {
+        this.rowNumber = rowNumber;
     }
 
     public String toString() {

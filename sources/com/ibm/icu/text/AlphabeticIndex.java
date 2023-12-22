@@ -11,10 +11,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+/* loaded from: classes.dex */
 public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
     static final /* synthetic */ boolean $assertionsDisabled = false;
-    private static final String BASE = "﷐";
-    private static final char CGJ = '͏';
+    private static final String BASE = "\ufdd0";
+    private static final char CGJ = '\u034f';
     private static final int GC_CN_MASK = 1;
     private static final int GC_LL_MASK = 4;
     private static final int GC_LM_MASK = 16;
@@ -25,8 +26,7 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
     private static final Comparator<String> binaryCmp = new UTF16.StringComparator(true, false, 0);
     private BucketList<V> buckets;
     private RuleBasedCollator collatorExternal;
-    /* access modifiers changed from: private */
-    public final RuleBasedCollator collatorOriginal;
+    private final RuleBasedCollator collatorOriginal;
     private final RuleBasedCollator collatorPrimaryOnly;
     private final List<String> firstCharsInScripts;
     private String inflowLabel;
@@ -37,13 +37,14 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
     private final Comparator<Record<V>> recordComparator;
     private String underflowLabel;
 
+    /* loaded from: classes.dex */
     public static final class ImmutableIndex<V> implements Iterable<Bucket<V>> {
         private final BucketList<V> buckets;
         private final Collator collatorPrimaryOnly;
 
-        private ImmutableIndex(BucketList<V> bucketList, Collator collatorPrimaryOnly2) {
+        private ImmutableIndex(BucketList<V> bucketList, Collator collatorPrimaryOnly) {
             this.buckets = bucketList;
-            this.collatorPrimaryOnly = collatorPrimaryOnly2;
+            this.collatorPrimaryOnly = collatorPrimaryOnly;
         }
 
         public int getBucketCount() {
@@ -58,47 +59,53 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
             if (index < 0 || index >= this.buckets.getBucketCount()) {
                 return null;
             }
-            return (Bucket) this.buckets.immutableVisibleList.get(index);
+            return (Bucket) ((BucketList) this.buckets).immutableVisibleList.get(index);
         }
 
+        @Override // java.lang.Iterable
         public Iterator<Bucket<V>> iterator() {
             return this.buckets.iterator();
         }
     }
 
     public AlphabeticIndex(ULocale locale) {
-        this(locale, (RuleBasedCollator) null);
+        this(locale, null);
     }
 
     public AlphabeticIndex(Locale locale) {
-        this(ULocale.forLocale(locale), (RuleBasedCollator) null);
+        this(ULocale.forLocale(locale), null);
     }
 
     public AlphabeticIndex(RuleBasedCollator collator) {
-        this((ULocale) null, collator);
+        this(null, collator);
     }
 
     private AlphabeticIndex(ULocale locale, RuleBasedCollator collator) {
-        this.recordComparator = new Comparator<Record<V>>() {
+        this.recordComparator = new Comparator<Record<V>>() { // from class: com.ibm.icu.text.AlphabeticIndex.1
+            @Override // java.util.Comparator
+            public /* bridge */ /* synthetic */ int compare(Object obj, Object obj2) {
+                return compare((Record) ((Record) obj), (Record) ((Record) obj2));
+            }
+
             public int compare(Record<V> o1, Record<V> o2) {
-                return AlphabeticIndex.this.collatorOriginal.compare((Object) o1.name, (Object) o2.name);
+                return AlphabeticIndex.this.collatorOriginal.compare(((Record) o1).name, ((Record) o2).name);
             }
         };
         this.initialLabels = new UnicodeSet();
-        this.overflowLabel = "…";
-        this.underflowLabel = "…";
-        this.inflowLabel = "…";
+        this.overflowLabel = "\u2026";
+        this.underflowLabel = "\u2026";
+        this.inflowLabel = "\u2026";
         this.maxLabelCount = 99;
         RuleBasedCollator ruleBasedCollator = collator != null ? collator : (RuleBasedCollator) Collator.getInstance(locale);
         this.collatorOriginal = ruleBasedCollator;
         try {
-            RuleBasedCollator cloneAsThawed = ruleBasedCollator.cloneAsThawed();
-            this.collatorPrimaryOnly = cloneAsThawed;
-            cloneAsThawed.setStrength(0);
-            cloneAsThawed.freeze();
+            RuleBasedCollator mo73cloneAsThawed = ruleBasedCollator.mo73cloneAsThawed();
+            this.collatorPrimaryOnly = mo73cloneAsThawed;
+            mo73cloneAsThawed.setStrength(0);
+            mo73cloneAsThawed.mo74freeze();
             List<String> firstCharactersInScripts = getFirstCharactersInScripts();
             this.firstCharsInScripts = firstCharactersInScripts;
-            Collections.sort(firstCharactersInScripts, cloneAsThawed);
+            Collections.sort(firstCharactersInScripts, mo73cloneAsThawed);
             while (!this.firstCharsInScripts.isEmpty()) {
                 if (this.collatorPrimaryOnly.compare(this.firstCharsInScripts.get(0), "") == 0) {
                     this.firstCharsInScripts.remove(0);
@@ -137,8 +144,8 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
         return this;
     }
 
-    public AlphabeticIndex<V> setOverflowLabel(String overflowLabel2) {
-        this.overflowLabel = overflowLabel2;
+    public AlphabeticIndex<V> setOverflowLabel(String overflowLabel) {
+        this.overflowLabel = overflowLabel;
         this.buckets = null;
         return this;
     }
@@ -147,8 +154,8 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
         return this.underflowLabel;
     }
 
-    public AlphabeticIndex<V> setUnderflowLabel(String underflowLabel2) {
-        this.underflowLabel = underflowLabel2;
+    public AlphabeticIndex<V> setUnderflowLabel(String underflowLabel) {
+        this.underflowLabel = underflowLabel;
         this.buckets = null;
         return this;
     }
@@ -157,8 +164,8 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
         return this.overflowLabel;
     }
 
-    public AlphabeticIndex<V> setInflowLabel(String inflowLabel2) {
-        this.inflowLabel = inflowLabel2;
+    public AlphabeticIndex<V> setInflowLabel(String inflowLabel) {
+        this.inflowLabel = inflowLabel;
         this.buckets = null;
         return this;
     }
@@ -171,8 +178,8 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
         return this.maxLabelCount;
     }
 
-    public AlphabeticIndex<V> setMaxLabelCount(int maxLabelCount2) {
-        this.maxLabelCount = maxLabelCount2;
+    public AlphabeticIndex<V> setMaxLabelCount(int maxLabelCount) {
+        this.maxLabelCount = maxLabelCount;
         this.buckets = null;
         return this;
     }
@@ -189,18 +196,19 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
             String item = it.next();
             if (!UTF16.hasMoreCodePointsThan(item, 1)) {
                 checkDistinct = false;
-            } else if (item.charAt(item.length() - 1) != '*' || item.charAt(item.length() - 2) == '*') {
-                checkDistinct = true;
-            } else {
+            } else if (item.charAt(item.length() - 1) == '*' && item.charAt(item.length() - 2) != '*') {
                 item = item.substring(0, item.length() - 1);
                 checkDistinct = false;
+            } else {
+                checkDistinct = true;
             }
-            if (this.collatorPrimaryOnly.compare(item, firstScriptBoundary) >= 0 && this.collatorPrimaryOnly.compare(item, overflowBoundary) < 0) {
-                if (!checkDistinct || this.collatorPrimaryOnly.compare(item, separated(item)) != 0) {
-                    int insertionPoint = Collections.binarySearch(indexCharacters, item, this.collatorPrimaryOnly);
-                    if (insertionPoint < 0) {
-                        indexCharacters.add(~insertionPoint, item);
-                    } else if (isOneLabelBetterThanOther(nfkdNormalizer, item, indexCharacters.get(insertionPoint))) {
+            if (this.collatorPrimaryOnly.compare(item, firstScriptBoundary) >= 0 && this.collatorPrimaryOnly.compare(item, overflowBoundary) < 0 && (!checkDistinct || this.collatorPrimaryOnly.compare(item, separated(item)) != 0)) {
+                int insertionPoint = Collections.binarySearch(indexCharacters, item, this.collatorPrimaryOnly);
+                if (insertionPoint < 0) {
+                    indexCharacters.add(~insertionPoint, item);
+                } else {
+                    String itemAlreadyIn = indexCharacters.get(insertionPoint);
+                    if (isOneLabelBetterThanOther(nfkdNormalizer, item, itemAlreadyIn)) {
                         indexCharacters.set(insertionPoint, item);
                     }
                 }
@@ -230,34 +238,35 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
             return current;
         }
         int rest = current.charAt(BASE.length());
-        if (10240 >= rest || rest > 10495) {
-            return current.substring(BASE.length());
+        if (10240 < rest && rest <= 10495) {
+            return (rest - 10240) + "\u5283";
         }
-        return (rest - 10240) + "劃";
+        return current.substring(BASE.length());
     }
 
     private void addIndexExemplars(ULocale locale) {
         UnicodeSet exemplars = LocaleData.getExemplarSet(locale, 0, 2);
-        if (exemplars == null || exemplars.isEmpty()) {
-            UnicodeSet exemplars2 = LocaleData.getExemplarSet(locale, 0, 0).cloneAsThawed();
-            if (exemplars2.containsSome(97, 122) || exemplars2.isEmpty()) {
-                exemplars2.addAll(97, 122);
-            }
-            if (exemplars2.containsSome(44032, 55203)) {
-                exemplars2.remove(44032, 55203).add(44032).add(45208).add(45796).add(46972).add(47560).add(48148).add(49324).add(50500).add(51088).add(52264).add(52852).add(53440).add(54028).add(54616);
-            }
-            if (exemplars2.containsSome(4608, 4991)) {
-                UnicodeSet ethiopic = new UnicodeSet("[ሀለሐመሠረሰሸቀቈቐቘበቨተቸኀኈነኘአከኰኸዀወዐዘዠየደዸጀገጐጘጠጨጰጸፀፈፐፘ]");
-                ethiopic.retainAll(exemplars2);
-                exemplars2.remove(4608, 4991).addAll(ethiopic);
-            }
-            Iterator<String> it = exemplars2.iterator();
-            while (it.hasNext()) {
-                this.initialLabels.add((CharSequence) UCharacter.toUpperCase(locale, it.next()));
-            }
+        if (exemplars != null && !exemplars.isEmpty()) {
+            this.initialLabels.addAll(exemplars);
             return;
         }
-        this.initialLabels.addAll(exemplars);
+        UnicodeSet exemplars2 = LocaleData.getExemplarSet(locale, 0, 0).m86cloneAsThawed();
+        if (exemplars2.containsSome(97, 122) || exemplars2.isEmpty()) {
+            exemplars2.addAll(97, 122);
+        }
+        if (exemplars2.containsSome(44032, 55203)) {
+            exemplars2.remove(44032, 55203).add(44032).add(45208).add(45796).add(46972).add(47560).add(48148).add(49324).add(50500).add(51088).add(52264).add(52852).add(53440).add(54028).add(54616);
+        }
+        if (exemplars2.containsSome(4608, 4991)) {
+            UnicodeSet ethiopic = new UnicodeSet("[\u1200\u1208\u1210\u1218\u1220\u1228\u1230\u1238\u1240\u1248\u1250\u1258\u1260\u1268\u1270\u1278\u1280\u1288\u1290\u1298\u12a0\u12a8\u12b0\u12b8\u12c0\u12c8\u12d0\u12d8\u12e0\u12e8\u12f0\u12f8\u1300\u1308\u1310\u1318\u1320\u1328\u1330\u1338\u1340\u1348\u1350\u1358]");
+            ethiopic.retainAll(exemplars2);
+            exemplars2.remove(4608, 4991).addAll(ethiopic);
+        }
+        Iterator<String> it = exemplars2.iterator();
+        while (it.hasNext()) {
+            String item = it.next();
+            this.initialLabels.add(UCharacter.toUpperCase(locale, item));
+        }
     }
 
     private boolean addChineseIndexCharacters() {
@@ -274,14 +283,13 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
                     break;
                 }
                 String s = it.next();
-                if (s.startsWith(BASE)) {
-                    char c = s.charAt(s.length() - 1);
-                    if ('A' <= c && c <= 'Z') {
-                        this.initialLabels.add(65, 90);
-                        break;
-                    }
-                } else {
+                if (!s.startsWith(BASE)) {
                     throw new AssertionError();
+                }
+                char c = s.charAt(s.length() - 1);
+                if ('A' <= c && c <= 'Z') {
+                    this.initialLabels.add(65, 90);
+                    break;
                 }
             }
             return true;
@@ -308,13 +316,14 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
     public ImmutableIndex<V> buildImmutableIndex() {
         BucketList<V> immutableBucketList;
         List<Record<V>> list = this.inputList;
-        if (list == null || list.isEmpty()) {
-            if (this.buckets == null) {
+        if (list != null && !list.isEmpty()) {
+            immutableBucketList = createBucketList();
+        } else {
+            BucketList<V> immutableBucketList2 = this.buckets;
+            if (immutableBucketList2 == null) {
                 this.buckets = createBucketList();
             }
             immutableBucketList = this.buckets;
-        } else {
-            immutableBucketList = createBucketList();
         }
         return new ImmutableIndex<>(immutableBucketList, this.collatorPrimaryOnly);
     }
@@ -324,7 +333,8 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
         ArrayList<String> result = new ArrayList<>();
         Iterator<Bucket<V>> it = this.buckets.iterator();
         while (it.hasNext()) {
-            result.add(it.next().getLabel());
+            Bucket<V> bucket = it.next();
+            result.add(bucket.getLabel());
         }
         return result;
     }
@@ -345,7 +355,7 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
         if (this.inputList == null) {
             this.inputList = new ArrayList();
         }
-        this.inputList.add(new Record(name, data));
+        this.inputList.add(new Record<>(name, data));
         return this;
     }
 
@@ -376,126 +386,75 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
         return 0;
     }
 
+    @Override // java.lang.Iterable
     public Iterator<Bucket<V>> iterator() {
         initBuckets();
         return this.buckets.iterator();
     }
 
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r6v6, resolved type: java.lang.Object} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v5, resolved type: com.ibm.icu.text.AlphabeticIndex$Bucket} */
-    /* JADX WARNING: Multi-variable type inference failed */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
     private void initBuckets() {
-        /*
-            r8 = this;
-            com.ibm.icu.text.AlphabeticIndex$BucketList<V> r0 = r8.buckets
-            if (r0 == 0) goto L_0x0005
-            return
-        L_0x0005:
-            com.ibm.icu.text.AlphabeticIndex$BucketList r0 = r8.createBucketList()
-            r8.buckets = r0
-            java.util.List<com.ibm.icu.text.AlphabeticIndex$Record<V>> r0 = r8.inputList
-            if (r0 == 0) goto L_0x0094
-            boolean r0 = r0.isEmpty()
-            if (r0 == 0) goto L_0x0017
-            goto L_0x0094
-        L_0x0017:
-            java.util.List<com.ibm.icu.text.AlphabeticIndex$Record<V>> r0 = r8.inputList
-            java.util.Comparator<com.ibm.icu.text.AlphabeticIndex$Record<V>> r1 = r8.recordComparator
-            java.util.Collections.sort(r0, r1)
-            com.ibm.icu.text.AlphabeticIndex$BucketList<V> r0 = r8.buckets
-            java.util.Iterator r0 = r0.fullIterator()
-            java.lang.Object r1 = r0.next()
-            com.ibm.icu.text.AlphabeticIndex$Bucket r1 = (com.ibm.icu.text.AlphabeticIndex.Bucket) r1
-            boolean r2 = r0.hasNext()
-            if (r2 == 0) goto L_0x003b
-            java.lang.Object r2 = r0.next()
-            com.ibm.icu.text.AlphabeticIndex$Bucket r2 = (com.ibm.icu.text.AlphabeticIndex.Bucket) r2
-            java.lang.String r3 = r2.lowerBoundary
-            goto L_0x003d
-        L_0x003b:
-            r2 = 0
-            r3 = 0
-        L_0x003d:
-            java.util.List<com.ibm.icu.text.AlphabeticIndex$Record<V>> r4 = r8.inputList
-            java.util.Iterator r4 = r4.iterator()
-        L_0x0043:
-            boolean r5 = r4.hasNext()
-            if (r5 == 0) goto L_0x0093
-            java.lang.Object r5 = r4.next()
-            com.ibm.icu.text.AlphabeticIndex$Record r5 = (com.ibm.icu.text.AlphabeticIndex.Record) r5
-        L_0x004f:
-            if (r3 == 0) goto L_0x0072
-            com.ibm.icu.text.RuleBasedCollator r6 = r8.collatorPrimaryOnly
-            java.lang.CharSequence r7 = r5.name
-            int r6 = r6.compare((java.lang.Object) r7, (java.lang.Object) r3)
-            if (r6 < 0) goto L_0x0072
-            r1 = r2
-            boolean r6 = r0.hasNext()
-            if (r6 == 0) goto L_0x0070
-            java.lang.Object r6 = r0.next()
-            r2 = r6
-            com.ibm.icu.text.AlphabeticIndex$Bucket r2 = (com.ibm.icu.text.AlphabeticIndex.Bucket) r2
-            java.lang.String r3 = r2.lowerBoundary
-            goto L_0x004f
-        L_0x0070:
-            r3 = 0
-            goto L_0x004f
-        L_0x0072:
-            r6 = r1
-            com.ibm.icu.text.AlphabeticIndex$Bucket r7 = r6.displayBucket
-            if (r7 == 0) goto L_0x007d
-            com.ibm.icu.text.AlphabeticIndex$Bucket r6 = r6.displayBucket
-        L_0x007d:
-            java.util.List r7 = r6.records
-            if (r7 != 0) goto L_0x008b
-            java.util.ArrayList r7 = new java.util.ArrayList
-            r7.<init>()
-            java.util.List unused = r6.records = r7
-        L_0x008b:
-            java.util.List r7 = r6.records
-            r7.add(r5)
-            goto L_0x0043
-        L_0x0093:
-            return
-        L_0x0094:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.AlphabeticIndex.initBuckets():void");
+        Bucket<V> nextBucket;
+        String upperBoundary;
+        if (this.buckets != null) {
+            return;
+        }
+        this.buckets = createBucketList();
+        List<Record<V>> list = this.inputList;
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+        Collections.sort(this.inputList, this.recordComparator);
+        Iterator<Bucket<V>> bucketIterator = this.buckets.fullIterator();
+        Bucket<V> currentBucket = bucketIterator.next();
+        if (bucketIterator.hasNext()) {
+            nextBucket = bucketIterator.next();
+            upperBoundary = ((Bucket) nextBucket).lowerBoundary;
+        } else {
+            nextBucket = null;
+            upperBoundary = null;
+        }
+        for (Record<V> r : this.inputList) {
+            while (upperBoundary != null && this.collatorPrimaryOnly.compare(((Record) r).name, upperBoundary) >= 0) {
+                currentBucket = nextBucket;
+                if (bucketIterator.hasNext()) {
+                    Bucket<V> nextBucket2 = bucketIterator.next();
+                    nextBucket = nextBucket2;
+                    upperBoundary = ((Bucket) nextBucket).lowerBoundary;
+                } else {
+                    upperBoundary = null;
+                }
+            }
+            Bucket<V> bucket = currentBucket;
+            if (((Bucket) bucket).displayBucket != null) {
+                bucket = ((Bucket) bucket).displayBucket;
+            }
+            if (((Bucket) bucket).records == null) {
+                ((Bucket) bucket).records = new ArrayList();
+            }
+            ((Bucket) bucket).records.add(r);
+        }
     }
 
     private static boolean isOneLabelBetterThanOther(Normalizer2 nfkdNormalizer, String one, String other) {
         String n1 = nfkdNormalizer.normalize(one);
         String n2 = nfkdNormalizer.normalize(other);
         int result = n1.codePointCount(0, n1.length()) - n2.codePointCount(0, n2.length());
-        if (result == 0) {
-            Comparator<String> comparator = binaryCmp;
-            int result2 = comparator.compare(n1, n2);
-            if (result2 != 0) {
-                if (result2 < 0) {
-                    return true;
-                }
-                return false;
-            } else if (comparator.compare(one, other) < 0) {
-                return true;
-            } else {
-                return false;
-            }
-        } else if (result < 0) {
-            return true;
-        } else {
-            return false;
+        if (result != 0) {
+            return result < 0;
         }
+        Comparator<String> comparator = binaryCmp;
+        int result2 = comparator.compare(n1, n2);
+        return result2 != 0 ? result2 < 0 : comparator.compare(one, other) < 0;
     }
 
+    /* loaded from: classes.dex */
     public static class Record<V> {
         private final V data;
-        /* access modifiers changed from: private */
-        public final CharSequence name;
+        private final CharSequence name;
 
-        private Record(CharSequence name2, V data2) {
-            this.name = name2;
-            this.data = data2;
+        private Record(CharSequence name, V data) {
+            this.name = name;
+            this.data = data;
         }
 
         public CharSequence getName() {
@@ -507,23 +466,20 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
         }
 
         public String toString() {
-            return this.name + "=" + this.data;
+            return ((Object) this.name) + "=" + this.data;
         }
     }
 
+    /* loaded from: classes.dex */
     public static class Bucket<V> implements Iterable<Record<V>> {
-        /* access modifiers changed from: private */
-        public Bucket<V> displayBucket;
-        /* access modifiers changed from: private */
-        public int displayIndex;
+        private Bucket<V> displayBucket;
+        private int displayIndex;
         private final String label;
-        /* access modifiers changed from: private */
-        public final LabelType labelType;
-        /* access modifiers changed from: private */
-        public final String lowerBoundary;
-        /* access modifiers changed from: private */
-        public List<Record<V>> records;
+        private final LabelType labelType;
+        private final String lowerBoundary;
+        private List<Record<V>> records;
 
+        /* loaded from: classes.dex */
         public enum LabelType {
             NORMAL,
             UNDERFLOW,
@@ -531,10 +487,10 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
             OVERFLOW
         }
 
-        private Bucket(String label2, String lowerBoundary2, LabelType labelType2) {
-            this.label = label2;
-            this.lowerBoundary = lowerBoundary2;
-            this.labelType = labelType2;
+        private Bucket(String label, String lowerBoundary, LabelType labelType) {
+            this.label = label;
+            this.lowerBoundary = lowerBoundary;
+            this.labelType = labelType;
         }
 
         public String getLabel() {
@@ -553,6 +509,7 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
             return list.size();
         }
 
+        @Override // java.lang.Iterable
         public Iterator<Record<V>> iterator() {
             List<Record<V>> list = this.records;
             if (list == null) {
@@ -566,337 +523,231 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
         }
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:39:0x0100  */
-    /* JADX WARNING: Removed duplicated region for block: B:54:0x016a  */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private com.ibm.icu.text.AlphabeticIndex.BucketList<V> createBucketList() {
-        /*
-            r21 = this;
-            r0 = r21
-            java.util.List r1 = r21.initLabels()
-            com.ibm.icu.text.RuleBasedCollator r2 = r0.collatorPrimaryOnly
-            boolean r2 = r2.isAlternateHandlingShifted()
-            if (r2 == 0) goto L_0x001c
-            com.ibm.icu.text.RuleBasedCollator r2 = r0.collatorPrimaryOnly
-            int r2 = r2.getVariableTop()
-            long r2 = (long) r2
-            r4 = 4294967295(0xffffffff, double:2.1219957905E-314)
-            long r2 = r2 & r4
-            goto L_0x001e
-        L_0x001c:
-            r2 = 0
-        L_0x001e:
-            r4 = 0
-            r5 = 26
-            com.ibm.icu.text.AlphabeticIndex$Bucket[] r6 = new com.ibm.icu.text.AlphabeticIndex.Bucket[r5]
-            com.ibm.icu.text.AlphabeticIndex$Bucket[] r7 = new com.ibm.icu.text.AlphabeticIndex.Bucket[r5]
-            r8 = 0
-            java.util.ArrayList r9 = new java.util.ArrayList
-            r9.<init>()
-            com.ibm.icu.text.AlphabeticIndex$Bucket r10 = new com.ibm.icu.text.AlphabeticIndex$Bucket
-            java.lang.String r11 = r21.getUnderflowLabel()
-            com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r12 = com.ibm.icu.text.AlphabeticIndex.Bucket.LabelType.UNDERFLOW
-            java.lang.String r13 = ""
-            r14 = 0
-            r10.<init>(r11, r13, r12)
-            r9.add(r10)
-            r10 = -1
-            java.lang.String r11 = ""
-            java.util.Iterator r12 = r1.iterator()
-        L_0x0043:
-            boolean r15 = r12.hasNext()
-            r5 = 1
-            if (r15 == 0) goto L_0x0179
-            java.lang.Object r15 = r12.next()
-            java.lang.String r15 = (java.lang.String) r15
-            com.ibm.icu.text.RuleBasedCollator r14 = r0.collatorPrimaryOnly
-            int r14 = r14.compare(r15, r11)
-            if (r14 < 0) goto L_0x009d
-            r14 = r11
-            r16 = 0
-        L_0x005b:
-            r17 = r1
-            java.util.List<java.lang.String> r1 = r0.firstCharsInScripts
-            int r10 = r10 + r5
-            java.lang.Object r1 = r1.get(r10)
-            r11 = r1
-            java.lang.String r11 = (java.lang.String) r11
-            com.ibm.icu.text.RuleBasedCollator r1 = r0.collatorPrimaryOnly
-            int r1 = r1.compare(r15, r11)
-            if (r1 >= 0) goto L_0x0093
-            if (r16 == 0) goto L_0x008c
-            int r1 = r9.size()
-            if (r1 <= r5) goto L_0x008c
-            com.ibm.icu.text.AlphabeticIndex$Bucket r1 = new com.ibm.icu.text.AlphabeticIndex$Bucket
-            java.lang.String r5 = r21.getInflowLabel()
-            r18 = r4
-            com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r4 = com.ibm.icu.text.AlphabeticIndex.Bucket.LabelType.INFLOW
-            r19 = r10
-            r10 = 0
-            r1.<init>(r5, r14, r4)
-            r9.add(r1)
-            goto L_0x0090
-        L_0x008c:
-            r18 = r4
-            r19 = r10
-        L_0x0090:
-            r10 = r19
-            goto L_0x00a1
-        L_0x0093:
-            r18 = r4
-            r19 = r10
-            r16 = 1
-            r1 = r17
-            r5 = 1
-            goto L_0x005b
-        L_0x009d:
-            r17 = r1
-            r18 = r4
-        L_0x00a1:
-            com.ibm.icu.text.AlphabeticIndex$Bucket r1 = new com.ibm.icu.text.AlphabeticIndex$Bucket
-            java.lang.String r4 = fixLabel(r15)
-            com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r5 = com.ibm.icu.text.AlphabeticIndex.Bucket.LabelType.NORMAL
-            r14 = 0
-            r1.<init>(r4, r15, r5)
-            r9.add(r1)
-            int r4 = r15.length()
-            java.lang.String r5 = "﷐"
-            r14 = 1
-            if (r4 != r14) goto L_0x00cf
-            r4 = 0
-            char r4 = r15.charAt(r4)
-            r14 = r4
-            r20 = r10
-            r10 = 65
-            if (r10 > r4) goto L_0x00d1
-            r4 = 90
-            if (r14 > r4) goto L_0x00d1
-            int r4 = r14 + -65
-            r6[r4] = r1
-            goto L_0x00fa
-        L_0x00cf:
-            r20 = r10
-        L_0x00d1:
-            int r4 = r15.length()
-            int r10 = r5.length()
-            r14 = 1
-            int r10 = r10 + r14
-            if (r4 != r10) goto L_0x00fa
-            boolean r4 = r15.startsWith(r5)
-            if (r4 == 0) goto L_0x00fa
-            int r4 = r5.length()
-            char r4 = r15.charAt(r4)
-            r10 = r4
-            r14 = 65
-            if (r14 > r4) goto L_0x00fa
-            r4 = 90
-            if (r10 > r4) goto L_0x00fa
-            int r4 = r10 + -65
-            r7[r4] = r1
-            r4 = 1
-            r8 = r4
-        L_0x00fa:
-            boolean r4 = r15.startsWith(r5)
-            if (r4 != 0) goto L_0x016a
-            com.ibm.icu.text.RuleBasedCollator r4 = r0.collatorPrimaryOnly
-            boolean r4 = hasMultiplePrimaryWeights(r4, r2, r15)
-            if (r4 == 0) goto L_0x0167
-            java.lang.String r4 = "￿"
-            boolean r5 = r15.endsWith(r4)
-            if (r5 != 0) goto L_0x0164
-            int r5 = r9.size()
-            int r5 = r5 + -2
-        L_0x0117:
-            java.lang.Object r10 = r9.get(r5)
-            com.ibm.icu.text.AlphabeticIndex$Bucket r10 = (com.ibm.icu.text.AlphabeticIndex.Bucket) r10
-            com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r14 = r10.labelType
-            r16 = r1
-            com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r1 = com.ibm.icu.text.AlphabeticIndex.Bucket.LabelType.NORMAL
-            if (r14 == r1) goto L_0x0128
-            goto L_0x016c
-        L_0x0128:
-            com.ibm.icu.text.AlphabeticIndex$Bucket r1 = r10.displayBucket
-            if (r1 != 0) goto L_0x015d
-            com.ibm.icu.text.RuleBasedCollator r1 = r0.collatorPrimaryOnly
-            java.lang.String r14 = r10.lowerBoundary
-            boolean r1 = hasMultiplePrimaryWeights(r1, r2, r14)
-            if (r1 != 0) goto L_0x015d
-            com.ibm.icu.text.AlphabeticIndex$Bucket r1 = new com.ibm.icu.text.AlphabeticIndex$Bucket
-            java.lang.StringBuilder r14 = new java.lang.StringBuilder
-            r14.<init>()
-            java.lang.StringBuilder r14 = r14.append(r15)
-            java.lang.StringBuilder r4 = r14.append(r4)
-            java.lang.String r4 = r4.toString()
-            com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r14 = com.ibm.icu.text.AlphabeticIndex.Bucket.LabelType.NORMAL
-            r0 = 0
-            r1.<init>(r13, r4, r14)
-            r0 = r1
-            com.ibm.icu.text.AlphabeticIndex.Bucket unused = r0.displayBucket = r10
-            r9.add(r0)
-            r1 = 1
-            r4 = r1
-            goto L_0x016e
-        L_0x015d:
-            int r5 = r5 + -1
-            r0 = r21
-            r1 = r16
-            goto L_0x0117
-        L_0x0164:
-            r16 = r1
-            goto L_0x016c
-        L_0x0167:
-            r16 = r1
-            goto L_0x016c
-        L_0x016a:
-            r16 = r1
-        L_0x016c:
-            r4 = r18
-        L_0x016e:
-            r5 = 26
-            r14 = 0
-            r0 = r21
-            r1 = r17
-            r10 = r20
-            goto L_0x0043
-        L_0x0179:
-            r17 = r1
-            r18 = r4
-            int r0 = r9.size()
-            r1 = 1
-            if (r0 != r1) goto L_0x018b
-            com.ibm.icu.text.AlphabeticIndex$BucketList r0 = new com.ibm.icu.text.AlphabeticIndex$BucketList
-            r1 = 0
-            r0.<init>(r9, r9)
-            return r0
-        L_0x018b:
-            r1 = 0
-            com.ibm.icu.text.AlphabeticIndex$Bucket r0 = new com.ibm.icu.text.AlphabeticIndex$Bucket
-            java.lang.String r4 = r21.getOverflowLabel()
-            com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r5 = com.ibm.icu.text.AlphabeticIndex.Bucket.LabelType.OVERFLOW
-            r0.<init>(r4, r11, r5)
-            r9.add(r0)
-            if (r8 == 0) goto L_0x01b9
-            r0 = 0
-            r1 = 0
-            r4 = r18
-        L_0x01a0:
-            r5 = 26
-            if (r1 >= r5) goto L_0x01bb
-            r12 = r6[r1]
-            if (r12 == 0) goto L_0x01aa
-            r0 = r6[r1]
-        L_0x01aa:
-            r12 = r7[r1]
-            if (r12 == 0) goto L_0x01b6
-            if (r0 == 0) goto L_0x01b6
-            r12 = r7[r1]
-            com.ibm.icu.text.AlphabeticIndex.Bucket unused = r12.displayBucket = r0
-            r4 = 1
-        L_0x01b6:
-            int r1 = r1 + 1
-            goto L_0x01a0
-        L_0x01b9:
-            r4 = r18
-        L_0x01bb:
-            if (r4 != 0) goto L_0x01c4
-            com.ibm.icu.text.AlphabeticIndex$BucketList r0 = new com.ibm.icu.text.AlphabeticIndex$BucketList
-            r1 = 0
-            r0.<init>(r9, r9)
-            return r0
-        L_0x01c4:
-            int r0 = r9.size()
-            r1 = 1
-            int r0 = r0 - r1
-            java.lang.Object r1 = r9.get(r0)
-            com.ibm.icu.text.AlphabeticIndex$Bucket r1 = (com.ibm.icu.text.AlphabeticIndex.Bucket) r1
-        L_0x01d0:
-            int r0 = r0 + -1
-            if (r0 <= 0) goto L_0x01f7
-            java.lang.Object r5 = r9.get(r0)
-            com.ibm.icu.text.AlphabeticIndex$Bucket r5 = (com.ibm.icu.text.AlphabeticIndex.Bucket) r5
-            com.ibm.icu.text.AlphabeticIndex$Bucket r12 = r5.displayBucket
-            if (r12 == 0) goto L_0x01e1
-            goto L_0x01d0
-        L_0x01e1:
-            com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r12 = r5.labelType
-            com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r13 = com.ibm.icu.text.AlphabeticIndex.Bucket.LabelType.INFLOW
-            if (r12 != r13) goto L_0x01f5
-            com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r12 = r1.labelType
-            com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r13 = com.ibm.icu.text.AlphabeticIndex.Bucket.LabelType.NORMAL
-            if (r12 == r13) goto L_0x01f5
-            com.ibm.icu.text.AlphabeticIndex.Bucket unused = r5.displayBucket = r1
-            goto L_0x01d0
-        L_0x01f5:
-            r1 = r5
-            goto L_0x01d0
-        L_0x01f7:
-            java.util.ArrayList r5 = new java.util.ArrayList
-            r5.<init>()
-            java.util.Iterator r12 = r9.iterator()
-        L_0x0200:
-            boolean r13 = r12.hasNext()
-            if (r13 == 0) goto L_0x0216
-            java.lang.Object r13 = r12.next()
-            com.ibm.icu.text.AlphabeticIndex$Bucket r13 = (com.ibm.icu.text.AlphabeticIndex.Bucket) r13
-            com.ibm.icu.text.AlphabeticIndex$Bucket r14 = r13.displayBucket
-            if (r14 != 0) goto L_0x0215
-            r5.add(r13)
-        L_0x0215:
-            goto L_0x0200
-        L_0x0216:
-            com.ibm.icu.text.AlphabeticIndex$BucketList r12 = new com.ibm.icu.text.AlphabeticIndex$BucketList
-            r13 = 0
-            r12.<init>(r9, r5)
-            return r12
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.AlphabeticIndex.createBucketList():com.ibm.icu.text.AlphabeticIndex$BucketList");
+    /* JADX WARN: Removed duplicated region for block: B:106:0x016c A[EDGE_INSN: B:106:0x016c->B:58:0x016c ?: BREAK  , SYNTHETIC] */
+    /* JADX WARN: Removed duplicated region for block: B:49:0x0128  */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    private BucketList<V> createBucketList() {
+        long variableTop;
+        boolean hasInvisibleBuckets;
+        List<String> indexCharacters;
+        boolean hasInvisibleBuckets2;
+        int scriptIndex;
+        char c;
+        int i;
+        Bucket<V> singleBucket;
+        int scriptIndex2;
+        AlphabeticIndex<V> alphabeticIndex = this;
+        List<String> indexCharacters2 = initLabels();
+        if (alphabeticIndex.collatorPrimaryOnly.isAlternateHandlingShifted()) {
+            variableTop = alphabeticIndex.collatorPrimaryOnly.getVariableTop() & 4294967295L;
+        } else {
+            variableTop = 0;
+        }
+        boolean hasInvisibleBuckets3 = false;
+        Bucket<V>[] asciiBuckets = new Bucket[26];
+        Bucket<V>[] pinyinBuckets = new Bucket[26];
+        boolean hasPinyin = false;
+        ArrayList<Bucket<V>> bucketList = new ArrayList<>();
+        bucketList.add(new Bucket<>(getUnderflowLabel(), "", Bucket.LabelType.UNDERFLOW));
+        int scriptIndex3 = -1;
+        String scriptUpperBoundary = "";
+        Iterator<String> it = indexCharacters2.iterator();
+        while (true) {
+            int i2 = 1;
+            if (!it.hasNext()) {
+                break;
+            }
+            String current = it.next();
+            if (alphabeticIndex.collatorPrimaryOnly.compare(current, scriptUpperBoundary) < 0) {
+                indexCharacters = indexCharacters2;
+                hasInvisibleBuckets2 = hasInvisibleBuckets3;
+            } else {
+                String inflowBoundary = scriptUpperBoundary;
+                boolean skippedScript = false;
+                while (true) {
+                    indexCharacters = indexCharacters2;
+                    scriptIndex3 += i2;
+                    String scriptUpperBoundary2 = alphabeticIndex.firstCharsInScripts.get(scriptIndex3);
+                    scriptUpperBoundary = scriptUpperBoundary2;
+                    if (alphabeticIndex.collatorPrimaryOnly.compare(current, scriptUpperBoundary) < 0) {
+                        break;
+                    }
+                    skippedScript = true;
+                    indexCharacters2 = indexCharacters;
+                    i2 = 1;
+                }
+                if (!skippedScript || bucketList.size() <= i2) {
+                    hasInvisibleBuckets2 = hasInvisibleBuckets3;
+                    scriptIndex2 = scriptIndex3;
+                } else {
+                    hasInvisibleBuckets2 = hasInvisibleBuckets3;
+                    scriptIndex2 = scriptIndex3;
+                    bucketList.add(new Bucket<>(getInflowLabel(), inflowBoundary, Bucket.LabelType.INFLOW));
+                }
+                scriptIndex3 = scriptIndex2;
+            }
+            Bucket<V> bucket = new Bucket<>(fixLabel(current), current, Bucket.LabelType.NORMAL);
+            bucketList.add(bucket);
+            if (current.length() == 1) {
+                char c2 = current.charAt(0);
+                scriptIndex = scriptIndex3;
+                if ('A' <= c2 && c2 <= 'Z') {
+                    asciiBuckets[c2 - 'A'] = bucket;
+                    if (!current.startsWith(BASE) && hasMultiplePrimaryWeights(alphabeticIndex.collatorPrimaryOnly, variableTop, current) && !current.endsWith("\uffff")) {
+                        i = bucketList.size() - 2;
+                        while (true) {
+                            singleBucket = bucketList.get(i);
+                            Bucket<V> bucket2 = bucket;
+                            if (((Bucket) singleBucket).labelType == Bucket.LabelType.NORMAL) {
+                                break;
+                            } else if (((Bucket) singleBucket).displayBucket == null && !hasMultiplePrimaryWeights(alphabeticIndex.collatorPrimaryOnly, variableTop, ((Bucket) singleBucket).lowerBoundary)) {
+                                Bucket<V> bucket3 = new Bucket<>("", current + "\uffff", Bucket.LabelType.NORMAL);
+                                ((Bucket) bucket3).displayBucket = singleBucket;
+                                bucketList.add(bucket3);
+                                hasInvisibleBuckets3 = true;
+                                break;
+                            } else {
+                                i--;
+                                alphabeticIndex = this;
+                                bucket = bucket2;
+                            }
+                        }
+                        alphabeticIndex = this;
+                        indexCharacters2 = indexCharacters;
+                        scriptIndex3 = scriptIndex;
+                    }
+                    hasInvisibleBuckets3 = hasInvisibleBuckets2;
+                    alphabeticIndex = this;
+                    indexCharacters2 = indexCharacters;
+                    scriptIndex3 = scriptIndex;
+                }
+            } else {
+                scriptIndex = scriptIndex3;
+            }
+            if (current.length() == BASE.length() + 1 && current.startsWith(BASE) && 'A' <= (c = current.charAt(BASE.length())) && c <= 'Z') {
+                pinyinBuckets[c - 'A'] = bucket;
+                hasPinyin = true;
+            }
+            if (!current.startsWith(BASE)) {
+                i = bucketList.size() - 2;
+                while (true) {
+                    singleBucket = bucketList.get(i);
+                    Bucket<V> bucket22 = bucket;
+                    if (((Bucket) singleBucket).labelType == Bucket.LabelType.NORMAL) {
+                    }
+                    i--;
+                    alphabeticIndex = this;
+                    bucket = bucket22;
+                }
+                alphabeticIndex = this;
+                indexCharacters2 = indexCharacters;
+                scriptIndex3 = scriptIndex;
+            }
+            hasInvisibleBuckets3 = hasInvisibleBuckets2;
+            alphabeticIndex = this;
+            indexCharacters2 = indexCharacters;
+            scriptIndex3 = scriptIndex;
+        }
+        boolean hasInvisibleBuckets4 = hasInvisibleBuckets3;
+        if (bucketList.size() == 1) {
+            return new BucketList<>(bucketList, bucketList);
+        }
+        bucketList.add(new Bucket<>(getOverflowLabel(), scriptUpperBoundary, Bucket.LabelType.OVERFLOW));
+        if (!hasPinyin) {
+            hasInvisibleBuckets = hasInvisibleBuckets4;
+        } else {
+            Bucket<V> asciiBucket = null;
+            hasInvisibleBuckets = hasInvisibleBuckets4;
+            for (int i3 = 0; i3 < 26; i3++) {
+                if (asciiBuckets[i3] != null) {
+                    asciiBucket = asciiBuckets[i3];
+                }
+                if (pinyinBuckets[i3] != null && asciiBucket != null) {
+                    ((Bucket) pinyinBuckets[i3]).displayBucket = asciiBucket;
+                    hasInvisibleBuckets = true;
+                }
+            }
+        }
+        if (!hasInvisibleBuckets) {
+            return new BucketList<>(bucketList, bucketList);
+        }
+        int i4 = bucketList.size() - 1;
+        Bucket<V> nextBucket = bucketList.get(i4);
+        while (true) {
+            i4--;
+            if (i4 <= 0) {
+                break;
+            }
+            Bucket<V> bucket4 = bucketList.get(i4);
+            if (((Bucket) bucket4).displayBucket == null) {
+                if (((Bucket) bucket4).labelType == Bucket.LabelType.INFLOW && ((Bucket) nextBucket).labelType != Bucket.LabelType.NORMAL) {
+                    ((Bucket) bucket4).displayBucket = nextBucket;
+                } else {
+                    nextBucket = bucket4;
+                }
+            }
+        }
+        ArrayList<Bucket<V>> publicBucketList = new ArrayList<>();
+        Iterator<Bucket<V>> it2 = bucketList.iterator();
+        while (it2.hasNext()) {
+            Bucket<V> bucket5 = it2.next();
+            if (((Bucket) bucket5).displayBucket == null) {
+                publicBucketList.add(bucket5);
+            }
+        }
+        return new BucketList<>(bucketList, publicBucketList);
     }
 
+    /* loaded from: classes.dex */
     private static class BucketList<V> implements Iterable<Bucket<V>> {
         private final ArrayList<Bucket<V>> bucketList;
-        /* access modifiers changed from: private */
-        public final List<Bucket<V>> immutableVisibleList;
+        private final List<Bucket<V>> immutableVisibleList;
 
-        private BucketList(ArrayList<Bucket<V>> bucketList2, ArrayList<Bucket<V>> publicBucketList) {
-            this.bucketList = bucketList2;
+        private BucketList(ArrayList<Bucket<V>> bucketList, ArrayList<Bucket<V>> publicBucketList) {
+            this.bucketList = bucketList;
             int displayIndex = 0;
             Iterator<Bucket<V>> it = publicBucketList.iterator();
             while (it.hasNext()) {
-                int unused = it.next().displayIndex = displayIndex;
+                Bucket<V> bucket = it.next();
+                ((Bucket) bucket).displayIndex = displayIndex;
                 displayIndex++;
             }
             this.immutableVisibleList = Collections.unmodifiableList(publicBucketList);
         }
 
-        /* access modifiers changed from: private */
+        /* JADX INFO: Access modifiers changed from: private */
         public int getBucketCount() {
             return this.immutableVisibleList.size();
         }
 
-        /* access modifiers changed from: private */
+        /* JADX INFO: Access modifiers changed from: private */
         public int getBucketIndex(CharSequence name, Collator collatorPrimaryOnly) {
             int start = 0;
             int limit = this.bucketList.size();
             while (start + 1 < limit) {
                 int i = (start + limit) / 2;
-                if (collatorPrimaryOnly.compare((Object) name, (Object) this.bucketList.get(i).lowerBoundary) < 0) {
+                int nameVsBucket = collatorPrimaryOnly.compare(name, ((Bucket) this.bucketList.get(i)).lowerBoundary);
+                if (nameVsBucket < 0) {
                     limit = i;
                 } else {
                     start = i;
                 }
             }
             Bucket<V> bucket = this.bucketList.get(start);
-            if (bucket.displayBucket != null) {
-                bucket = bucket.displayBucket;
+            if (((Bucket) bucket).displayBucket != null) {
+                bucket = ((Bucket) bucket).displayBucket;
             }
-            return bucket.displayIndex;
+            return ((Bucket) bucket).displayIndex;
         }
 
-        /* access modifiers changed from: private */
+        /* JADX INFO: Access modifiers changed from: private */
         public Iterator<Bucket<V>> fullIterator() {
             return this.bucketList.iterator();
         }
 
+        @Override // java.lang.Iterable
         public Iterator<Bucket<V>> iterator() {
             return this.immutableVisibleList.iterator();
         }
@@ -906,7 +757,8 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
         long[] ces = coll.internalGetCEs(s);
         boolean seenPrimary = false;
         for (long ce : ces) {
-            if ((ce >>> 32) > variableTop) {
+            long p = ce >>> 32;
+            if (p > variableTop) {
                 if (seenPrimary) {
                     return true;
                 }
@@ -921,16 +773,17 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
         List<String> dest = new ArrayList<>(200);
         UnicodeSet set = new UnicodeSet();
         this.collatorPrimaryOnly.internalAddContractions(64977, set);
-        if (!set.isEmpty()) {
-            Iterator<String> it = set.iterator();
-            while (it.hasNext()) {
-                String boundary = it.next();
-                if (((1 << UCharacter.getType(boundary.codePointAt(1))) & 63) != 0) {
-                    dest.add(boundary);
-                }
-            }
-            return dest;
+        if (set.isEmpty()) {
+            throw new UnsupportedOperationException("AlphabeticIndex requires script-first-primary contractions");
         }
-        throw new UnsupportedOperationException("AlphabeticIndex requires script-first-primary contractions");
+        Iterator<String> it = set.iterator();
+        while (it.hasNext()) {
+            String boundary = it.next();
+            int gcMask = 1 << UCharacter.getType(boundary.codePointAt(1));
+            if ((gcMask & 63) != 0) {
+                dest.add(boundary);
+            }
+        }
+        return dest;
     }
 }
